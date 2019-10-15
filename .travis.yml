@@ -1,0 +1,37 @@
+language: generic
+dist: xenial
+sudo: required
+env:
+  matrix:
+  - TARGET=xenial_x64
+  - TARGET=bionic_x64
+addons:
+  apt:
+    update: true
+    packages:
+    - qemu-user-static
+    - binfmt-support
+services:
+- docker
+before_script: cd ..
+script:
+- whoami
+- pwd
+- ls -la
+- chmod 777 $PWD
+- chmod 777 $PWD/nugu-linux
+- docker run -t --rm --privileged -v $PWD:$PWD -w $PWD/nugu-linux -v /var/lib/schroot/chroots
+  nugulinux/buildenv:$TARGET sdkbuild.sh
+- ls -l
+- mkdir /tmp/result
+- cp *.deb /tmp/result/
+deploy:
+  provider: releases
+  api_key:
+    secure: LkNwnmUuywy8ZkNkYV/yk2rLRDH5UwScyUh1yIxNoQ+WiL62INr9G8VNbMk59XbsVDHtIDH/FycYPQmOjIHVwp4cn4Ffk3Yx7bRXAoS/xbQhkNXj42ZBGiuxQOZg+F3CIv3HYdC4+s5HkKK/2tNBgs+zU7bNH0xK3MbU9H7WvyD8AlAsIZ80p1v0aByquR+c3z7jlPKxwvOWOJlBgjhajQMr5Y/RkQPZXKUH3y6wue9gUcxp/RduQt4UkMkQLh96gMf+9MEaiLf+6MTW2vZmcNt3Z/N8YSueIMAbvFURpkePqCXd1mgUi0JKrSXu67jQwkFd+fhbagzVA8R9D/DD3d6fZlS1SLpGWZb3UIbxOOA4ExLkWtSdp9tfGMrgfH2oRthZnmoKZmOBh/LDbrI30nfHXjfqh/RL+CPuyYYkNBVcxXfwyXUdJJlk+5fgOtSY5nyiQqMHg08q5jGgaDrwxNTLtq6Xz2vp9eEuG/++RD436WGTaSoMAeJNWxarczQmSbxhlCBmhOnOZod+flDJRAXyWo8iqOrski5+KX/4SMnavBhhfI6tfIfdQnznZFWNU0yFy7RqG//B3cTi8F7BLsI/5Rwa0f9IW5tq7aarHb8ymrHwRneq2HWvBBjo5/d3e93oaMB4IfBac2EJPtXh+VtRRrFkjhPOB0UUboYGpuw=
+  file_glob: true
+  file: /tmp/result/*.deb
+  skip_cleanup: true
+  on:
+    repo: nugu-developers/nugu-linux
+    tags: true

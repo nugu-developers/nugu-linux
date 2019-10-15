@@ -1,0 +1,13 @@
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -644,6 +644,10 @@ endif()
+ #
+ # CA handling
+ #
++set(CURL_CA_BUNDLE_SET FALSE)
++set(CURL_CA_PATH_AUTODETECT FALSE)
++set(CURL_CA_PATH_SET FALSE)
++
+ set(CURL_CA_BUNDLE "auto" CACHE STRING
+     "Path to the CA bundle. Set 'none' to disable or 'auto' for auto-detection. Defaults to 'auto'.")
+ set(CURL_CA_FALLBACK OFF CACHE BOOL

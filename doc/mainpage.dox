@@ -1,0 +1,44 @@
+/**
+ * @mainpage NUGU SDK Documentation
+ *
+ * @section intro Introduction
+ *
+ * The NUGU SDK supports NUGU platform interworking on various devices and apps
+ * to provide various AI functions based on voice interface.
+ *
+ * It sends user requests (voice commands) to the NUGU platform and
+ * controls the functionality of the device or application depending on the
+ * processing results of the NUGU platform.
+ *
+ * Since the Linux SDK is implemented based on GLib's mainloop, your
+ * application should be developed in an event-driven way based on GMainLoop.
+ *
+ * @section overview Overview
+ *
+ * The NUGU SDK Linux API consists of three parts:
+ *   - @ref SDKAPI\n
+ *     C++ API for application developer
+ *
+ *   - @ref SDKCore\n
+ *     C API for internal developer or plugin developer
+ *
+ *   - @ref SDKDriver\n
+ *     C API for HAL(hardware abstraction layer) developer
+ *
+ * @section license License
+ *
+ * Apache v2
+ *
+ * Copyright (c) 2019 SK Telecom Co., Ltd. All rights reserved.
+ *
+ * @defgroup SDKAPI High-level public API
+ * @defgroup SDKCore Low-level public API
+ * @defgroup SDKDriver Driver API
+ *
+ * @defgroup SDKNuguClientKit NuguClientKit
+ * @ingroup SDKAPI
+ *
+ * @defgroup SDKNuguInterface NuguInterface
+ * @ingroup SDKAPI
+ *
+ */

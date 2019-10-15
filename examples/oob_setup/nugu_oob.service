@@ -1,0 +1,12 @@
+[Unit]
+Description=NUGU OOB Service
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/nugu_oob_server
+Restart=always
+StandardInput=tty-force
+
+[Install]
+WantedBy=multi-user.target

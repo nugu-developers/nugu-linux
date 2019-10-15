@@ -1,0 +1,4 @@
+binary-without-manpage usr/bin/nugusdk_start_sample
+binary-without-manpage usr/bin/nugu_sample
+binary-without-manpage usr/bin/nugu_oob_server
+python-script-but-no-python-dep usr/bin/nugu_oob_server #!/usr/bin/python

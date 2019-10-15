@@ -1,0 +1,31 @@
+# IDE
+nbproject
+.vscode/
+.project
+.cproject
+
+build/
+
+# Binary
+*.o
+*.a
+*.so*
+
+# GNU Global
+GPATH
+GRTAGS
+GTAGS
+GSYMS
+
+# Debian package
+debian
+obj-x86_64-linux-gnu/
+obj-arm-linux-gnu/
+obj-aarch64-linux-gnu/
+
+# Doxygen
+doc/html
+doc/latex
+
+# Etc
+.DS_Store

@@ -1,0 +1,10 @@
+[submodule "externals/jsoncpp"]
+	path = externals/jsoncpp
+	url = https://github.com/open-source-parsers/jsoncpp.git
+[submodule "externals/nghttp2"]
+	path = externals/nghttp2
+	url = https://github.com/nghttp2/nghttp2.git
+	branch = v1.39.x
+[submodule "externals/curl"]
+	path = externals/curl
+	url = https://github.com/curl/curl.git

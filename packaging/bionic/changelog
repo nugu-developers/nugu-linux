@@ -1,0 +1,48 @@
+nugu (0.2.0ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed a lot of bugs.
+  * Added document
+  * Added PlaySyncManager
+
+ -- nugulinux <nugulinux@gmail.com>  Tue, 15 Oct 2019 10:50:00 +0900
+
+nugu (0.1.4ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed TTS agent
+  * Fixed context manager
+  * Fixed media player
+
+ -- nugulinux <nugulinux@gmail.com>  Fri, 11 Oct 2019 09:30:00 +0900
+
+nugu (0.1.3ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed a lot of bugs.
+  * Fixed multipart parsing error
+  * Added Capability instance builder
+  * Removed gRPC network
+
+ -- nugulinux <nugulinux@gmail.com>  Tue, 8 Oct 2019 13:50:00 +0900
+
+nugu (0.1.2ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed a lot of bugs.
+  * Fixed dialog-message-id
+
+ -- nugulinux <nugulinux@gmail.com>  Wed, 2 Oct 2019 13:30:00 +0900
+
+nugu (0.1.1ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed a lot of bugs.
+  * Added Text agent.
+  * Added HTTP/2 network.
+  * Added OAuth2 support.
+  * Added context sync.
+  * The wakeup module has been detached from the ASR agent.
+
+ -- nugulinux <nugulinux@gmail.com>  Wed, 25 Sep 2019 10:00:00 +0900
+
+nugu (0.1.0ubuntu1~bionic) bionic; urgency=medium
+
+  * Initial release.
+
+ -- nugulinux <nugulinux@gmail.com>  Mon, 25 Mar 2019 11:07:59 +0900
