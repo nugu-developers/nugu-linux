@@ -22,41 +22,6 @@
 
 #include "nugu_log.h"
 #include "nugu_player.h"
-#include "nugu_dbus.h"
-
-#define INTROSPECTION_PLAYER                                                   \
-	"<node>"                                                               \
-	"  <interface name='" NUGU_DBUS_SERVICE ".Player'>"                    \
-	"    <method name='SET_SOURCE'>"                                       \
-	"      <arg type='s' name='url' direction='in'/>"                      \
-	"    </method>"                                                        \
-	"    <method name='SEEK'>"                                             \
-	"      <arg type='s' name='sec' direction='in'/>"                      \
-	"    </method>"                                                        \
-	"    <method name='START'>"                                            \
-	"    </method>"                                                        \
-	"    <method name='STOP'>"                                             \
-	"    </method>"                                                        \
-	"    <method name='PAUSE'>"                                            \
-	"    </method>"                                                        \
-	"    <method name='RESUME'>"                                           \
-	"    </method>"                                                        \
-	"    <method name='GET_DURATION'>"                                     \
-	"      <arg type='i' name='duration' direction='out'/>"                \
-	"    </method>"                                                        \
-	"    <method name='GET_POSITION'>"                                     \
-	"      <arg type='i' name='pos' direction='out'/>"                     \
-	"    </method>"                                                        \
-	"    <method name='SET_VOLUME'>"                                       \
-	"      <arg type='s' name='vol' direction='in'/>"                      \
-	"    </method>"                                                        \
-	"    <method name='GET_VOLUME'>"                                       \
-	"      <arg type='i' name='vol' direction='out'/>"                     \
-	"    </method>"                                                        \
-	"  </interface>"                                                       \
-	"</node>"
-
-#define OBJECT_PATH_PLAYER "/Player"
 
 struct _nugu_player_driver {
 	char *name;
@@ -75,186 +40,11 @@ struct _nugu_player {
 	void *eud; /* user data for event callback */
 	void *sud; /* user data for status callback */
 	void *device;
-	DObject *dbus;
 };
 
 static GList *_players;
 static GList *_player_drivers;
 static NuguPlayerDriver *_default_driver;
-
-static void _player_method_call(GDBusConnection *connection,
-				const gchar *sender, const gchar *object_path,
-				const gchar *interface_name,
-				const gchar *method_name, GVariant *parameters,
-				GDBusMethodInvocation *invocation,
-				gpointer user_data)
-{
-	nugu_dbg("method: '%s' from '%s'", method_name, sender);
-
-	if (!g_strcmp0(method_name, "SET_SOURCE")) {
-		const gchar *param_str;
-		NuguPlayer *player = nugu_dbus_object_get_data(user_data);
-
-		g_variant_get(parameters, "(&s)", &param_str);
-		if (!param_str || strlen(param_str) == 0) {
-			g_dbus_method_invocation_return_error(
-				invocation, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-				"invalid parameter");
-			return;
-		}
-		if (nugu_player_set_source(player, param_str) != 0) {
-			g_dbus_method_invocation_return_error(
-				invocation, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-				"failed to set source");
-			return;
-		}
-		g_dbus_method_invocation_return_value(invocation,
-						      g_variant_new("()"));
-		return;
-	} else if (!g_strcmp0(method_name, "SEEK")) {
-		const gchar *param_str;
-		NuguPlayer *player = nugu_dbus_object_get_data(user_data);
-
-		g_variant_get(parameters, "(&s)", &param_str);
-		if (!param_str || strlen(param_str) == 0) {
-			g_dbus_method_invocation_return_error(
-				invocation, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-				"invalid parameter");
-			return;
-		}
-		if (nugu_player_seek(player, atoi(param_str)) != 0) {
-			g_dbus_method_invocation_return_error(
-				invocation, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-				"failed to seek");
-			return;
-		}
-		g_dbus_method_invocation_return_value(invocation,
-						      g_variant_new("()"));
-		return;
-	} else if (!g_strcmp0(method_name, "START")) {
-		NuguPlayer *player = nugu_dbus_object_get_data(user_data);
-
-		if (nugu_player_start(player) != 0) {
-			g_dbus_method_invocation_return_error(
-				invocation, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-				"failed to start");
-			return;
-		}
-		g_dbus_method_invocation_return_value(invocation,
-						      g_variant_new("()"));
-		return;
-	} else if (!g_strcmp0(method_name, "STOP")) {
-		NuguPlayer *player = nugu_dbus_object_get_data(user_data);
-
-		if (nugu_player_stop(player) != 0) {
-			g_dbus_method_invocation_return_error(
-				invocation, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-				"failed to stop");
-			return;
-		}
-		g_dbus_method_invocation_return_value(invocation,
-						      g_variant_new("()"));
-		return;
-	} else if (!g_strcmp0(method_name, "PAUSE")) {
-		NuguPlayer *player = nugu_dbus_object_get_data(user_data);
-
-		if (nugu_player_pause(player) != 0) {
-			g_dbus_method_invocation_return_error(
-				invocation, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-				"failed to pause");
-			return;
-		}
-		g_dbus_method_invocation_return_value(invocation,
-						      g_variant_new("()"));
-		return;
-	} else if (!g_strcmp0(method_name, "RESUME")) {
-		NuguPlayer *player = nugu_dbus_object_get_data(user_data);
-
-		if (nugu_player_resume(player) != 0) {
-			g_dbus_method_invocation_return_error(
-				invocation, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-				"failed to resume");
-			return;
-		}
-		g_dbus_method_invocation_return_value(invocation,
-						      g_variant_new("()"));
-		return;
-	} else if (!g_strcmp0(method_name, "GET_DURATION")) {
-		int duration;
-		NuguPlayer *player = nugu_dbus_object_get_data(user_data);
-
-		duration = nugu_player_get_duration(player);
-		if (duration == -1) {
-			g_dbus_method_invocation_return_error(
-				invocation, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-				"failed to get duration");
-			return;
-		}
-		g_dbus_method_invocation_return_value(
-			invocation, g_variant_new("(i)", duration));
-		return;
-	} else if (!g_strcmp0(method_name, "GET_POSITION")) {
-		int position;
-		NuguPlayer *player = nugu_dbus_object_get_data(user_data);
-
-		position = nugu_player_get_position(player);
-		if (position == -1) {
-			g_dbus_method_invocation_return_error(
-				invocation, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-				"failed to get position");
-			return;
-		}
-		g_dbus_method_invocation_return_value(
-			invocation, g_variant_new("(i)", position));
-		return;
-	} else if (!g_strcmp0(method_name, "GET_VOLUME")) {
-		int volume;
-		NuguPlayer *player = nugu_dbus_object_get_data(user_data);
-
-		volume = nugu_player_get_volume(player);
-		if (volume == -1) {
-			g_dbus_method_invocation_return_error(
-				invocation, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-				"failed to get volume");
-			return;
-		}
-		g_dbus_method_invocation_return_value(
-			invocation, g_variant_new("(i)", volume));
-		return;
-	} else if (!g_strcmp0(method_name, "SET_VOLUME")) {
-		const gchar *param_str;
-		int volume;
-		NuguPlayer *player = nugu_dbus_object_get_data(user_data);
-
-		g_variant_get(parameters, "(&s)", &param_str);
-		if (!param_str || strlen(param_str) == 0) {
-			g_dbus_method_invocation_return_error(
-				invocation, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-				"invalid parameter");
-			return;
-		}
-
-		volume = atoi(param_str);
-		if (nugu_player_set_volume(player, volume) != 0) {
-			g_dbus_method_invocation_return_error(
-				invocation, G_DBUS_ERROR, G_DBUS_ERROR_FAILED,
-				"failed to set volume");
-			return;
-		}
-		g_dbus_method_invocation_return_value(invocation,
-						      g_variant_new("()"));
-		return;
-	}
-
-	g_dbus_method_invocation_return_error(invocation, G_DBUS_ERROR,
-					      G_DBUS_ERROR_FAILED,
-					      "Internal error");
-}
-
-static const GDBusInterfaceVTable _player_ops = { .method_call =
-							  _player_method_call,
-						  .get_property = NULL,
-						  .set_property = NULL };
 
 EXPORT_API NuguPlayerDriver *
 nugu_player_driver_new(const char *name, struct nugu_player_driver_ops *ops)
@@ -379,12 +169,6 @@ EXPORT_API NuguPlayer *nugu_player_new(const char *name,
 	player->device = player->driver->ops->create(player);
 	player->status = MEDIA_STATUS_STOPPED;
 
-	player->dbus = nugu_dbus_object_new(INTROSPECTION_PLAYER, &_player_ops);
-	if (!player->dbus)
-		nugu_warn("dbus object creation failed.");
-
-	nugu_dbus_object_set_data(player->dbus, player);
-
 	return player;
 }
 
@@ -394,9 +178,6 @@ EXPORT_API void nugu_player_free(NuguPlayer *player)
 	g_return_if_fail(player->driver != NULL);
 	g_return_if_fail(player->driver->ops != NULL);
 	g_return_if_fail(player->driver->ops->destroy != NULL);
-
-	if (player->dbus)
-		nugu_dbus_object_free(player->dbus);
 
 	player->driver->ref_count--;
 	player->driver->ops->destroy(player->device, player);
@@ -410,8 +191,6 @@ EXPORT_API void nugu_player_free(NuguPlayer *player)
 
 EXPORT_API int nugu_player_add(NuguPlayer *player)
 {
-	char *object_path;
-
 	g_return_val_if_fail(player != NULL, -1);
 
 	if (nugu_player_find(player->name)) {
@@ -420,11 +199,6 @@ EXPORT_API int nugu_player_add(NuguPlayer *player)
 	}
 
 	_players = g_list_append(_players, player);
-
-	object_path =
-		g_strdup_printf("%s/%s", OBJECT_PATH_PLAYER, player->name);
-	nugu_dbus_object_export(player->dbus, object_path);
-	g_free(object_path);
 
 	return 0;
 }
@@ -438,8 +212,6 @@ EXPORT_API int nugu_player_remove(NuguPlayer *player)
 		return -1;
 
 	_players = g_list_remove_link(_players, l);
-
-	nugu_dbus_object_unexport(player->dbus);
 
 	return 0;
 }
