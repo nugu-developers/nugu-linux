@@ -22,7 +22,6 @@
 
 #include "nugu_log.h"
 #include "nugu_pcm.h"
-#include "nugu_dbus.h"
 #include "nugu_buffer.h"
 
 struct _nugu_pcm_driver {
