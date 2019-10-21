@@ -40,6 +40,7 @@ NuguClientImpl::NuguClientImpl()
 NuguClientImpl::~NuguClientImpl()
 {
     CapabilityManagerHelper::destroyInstance();
+    nugu_config_deinitialize();
 }
 
 void NuguClientImpl::setAccessToken(std::string access_token)
@@ -161,6 +162,11 @@ int NuguClientImpl::createCapabilities(void)
 
 bool NuguClientImpl::initialize(void)
 {
+    if (initialized) {
+        nugu_info("It's already initialized.");
+        return true;
+    }
+
     if (nugu_plugin_load_directory(CONFIG_PLUGIN_PATH) < 0) {
         nugu_error("Fail to load nugu_plugin ");
         return false;
@@ -179,6 +185,7 @@ bool NuguClientImpl::initialize(void)
     if (listener)
         listener->onInitialized(this);
 
+    initialized = true;
     return true;
 }
 
@@ -196,14 +203,16 @@ void NuguClientImpl::deInitialize(void)
 
     icapability_map.clear();
 
-    if (wakeup_handler)
+    if (wakeup_handler) {
         delete wakeup_handler;
+        wakeup_handler = nullptr;
+    }
 
     // deinitialize core component
     nugu_plugin_deinitialize();
-    nugu_config_deinitialize();
 
     nugu_dbg("NuguClientImpl deInitialize succeess.");
+    initialized = false;
 }
 
 void NuguClientImpl::onConnected()
