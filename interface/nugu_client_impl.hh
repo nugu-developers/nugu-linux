@@ -61,6 +61,7 @@ private:
     INuguClientListener* listener = nullptr;
     IWakeupHandler* wakeup_handler = nullptr;
     std::unique_ptr<INetworkManager> network_manager = nullptr;
+    bool initialized = false;
 
     int createCapabilities(void);
     void setConfiguration(void);
