@@ -292,7 +292,7 @@ static void on_policy(GatewayRegistry *registry, int response_code,
 H2Manager *h2manager_new(void)
 {
 	H2Manager *manager;
-	char *token_value;
+	const char *token_value;
 
 	manager = calloc(1, sizeof(H2Manager));
 	if (!manager) {
@@ -308,7 +308,6 @@ H2Manager *h2manager_new(void)
 	if (token_value) {
 		manager->token = g_strdup_printf("authorization: Bearer %s",
 						 token_value);
-		free(token_value);
 	}
 
 	nugu_info("created");

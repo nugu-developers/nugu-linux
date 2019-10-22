@@ -58,7 +58,7 @@ WakeupDetector::WakeupDetector()
     }
 
     rec_kwd = nugu_recorder_new("rec_kwd", driver);
-    nugu_recorder_set_property(rec_kwd, (NuguAudioProperty) { AUDIO_SAMPLE_RATE_16K, AUDIO_FORMAT_S16_LE, 1 });
+    nugu_recorder_set_property(rec_kwd, (NuguAudioProperty){ AUDIO_SAMPLE_RATE_16K, AUDIO_FORMAT_S16_LE, 1 });
 
     thread_created = false;
     kwd_destroy = 0;
@@ -117,23 +117,21 @@ void WakeupDetector::loopWakeup(void)
 {
     int pcm_size;
     int length;
-    char* model_net_file = NULL;
-    char* model_search_file = NULL;
-    char* model_path;
+    std::string model_net_file;
+    std::string model_search_file;
+    std::string model_path;
 
     nugu_dbg("Wakeup Thread: started");
 
     model_path = nugu_config_get(NuguConfig::Key::MODEL_PATH.c_str());
-    if (model_path) {
-        nugu_dbg("model path: %s", model_path);
+    if (model_path.size()) {
+        nugu_dbg("model path: %s", model_path.c_str());
 
-        model_net_file = g_strdup_printf("%s/%s", model_path, WAKEUP_NET_MODEL_FILE);
-        nugu_dbg("kwd model net-file: %s", model_net_file);
+        model_net_file = model_path + "/" + WAKEUP_NET_MODEL_FILE;
+        nugu_dbg("kwd model net-file: %s", model_net_file.c_str());
 
-        model_search_file = g_strdup_printf("%s/%s", model_path, WAKEUP_SEARCH_MODEL_FILE);
-        nugu_dbg("kwd model search-file: %s", model_search_file);
-
-        free(model_path);
+        model_search_file = model_path + "/" + WAKEUP_SEARCH_MODEL_FILE;
+        nugu_dbg("kwd model search-file: %s", model_search_file.c_str());
     }
 
     kwd_mutex.lock();
@@ -151,7 +149,7 @@ void WakeupDetector::loopWakeup(void)
 
         nugu_dbg("Wakeup Thread: kwd_is_running=%d", kwd_is_running);
 
-        if (kwd_initialize(model_net_file, model_search_file) < 0) {
+        if (kwd_initialize(model_net_file.c_str(), model_search_file.c_str()) < 0) {
             nugu_error("kwd_initialize() failed");
             break;
         }
@@ -197,12 +195,6 @@ void WakeupDetector::loopWakeup(void)
         if (g_atomic_int_get(&kwd_destroy) == 0)
             sendSyncWakeupEvent(WakeupState::DONE);
     }
-
-    if (model_net_file)
-        g_free(model_net_file);
-
-    if (model_search_file)
-        g_free(model_search_file);
 
     nugu_dbg("Wakeup Thread: exited");
 }

@@ -40,7 +40,6 @@ namespace NuguConfig {
         const std::string SERVER_TYPE = "server_type";
         const std::string USER_AGENT = NUGU_CONFIG_KEY_USER_AGENT;
         const std::string GATEWAY_REGISTRY_DNS = NUGU_CONFIG_KEY_GATEWAY_REGISTRY_DNS;
-        const std::string UUID_PHASE = NUGU_CONFIG_KEY_UUID_PHASE;
     }
 
     const NuguConfigType getDefaultValues();

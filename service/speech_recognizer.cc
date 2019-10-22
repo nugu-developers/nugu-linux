@@ -59,7 +59,7 @@ SpeechRecognizer::SpeechRecognizer()
     }
 
     rec_asr = nugu_recorder_new("rec_asr", driver);
-    nugu_recorder_set_property(rec_asr, (NuguAudioProperty) { AUDIO_SAMPLE_RATE_16K, AUDIO_FORMAT_S16_LE, 1 });
+    nugu_recorder_set_property(rec_asr, (NuguAudioProperty){ AUDIO_SAMPLE_RATE_16K, AUDIO_FORMAT_S16_LE, 1 });
 
     asr_destroy = 0;
     asr_thread = std::thread([this] { this->loopListening(); });
@@ -115,8 +115,8 @@ void SpeechRecognizer::loopListening(void)
     int length;
     int prev_epd_ret = 0;
     bool is_epd_end = false;
-    char* model_file = NULL;
-    char* model_path;
+    std::string model_file;
+    std::string model_path;
 
     epd_param.sample_rate = 16000;
     epd_param.max_speech_duration = 10;
@@ -126,13 +126,11 @@ void SpeechRecognizer::loopListening(void)
     nugu_dbg("Listening Thread: started");
 
     model_path = nugu_config_get(NuguConfig::Key::MODEL_PATH.c_str());
-    if (model_path) {
-        nugu_dbg("model path: %s", model_path);
+    if (model_path.size()) {
+        nugu_dbg("model path: %s", model_path.c_str());
 
-        model_file = g_strdup_printf("%s/%s", model_path, EPD_MODEL_FILE);
-        nugu_dbg("epd model file: %s", model_file);
-
-        free(model_path);
+        model_file = model_path + "/" + EPD_MODEL_FILE;
+        nugu_dbg("epd model file: %s", model_file.c_str());
     }
 
     while (g_atomic_int_get(&asr_destroy) == 0) {
@@ -145,7 +143,7 @@ void SpeechRecognizer::loopListening(void)
 
         nugu_dbg("Listening Thread: asr_is_running=%d", asr_is_running);
 
-        if (epd_client_start(model_file, epd_param) < 0) {
+        if (epd_client_start(model_file.c_str(), epd_param) < 0) {
             nugu_error("epd_client_start() failed");
             break;
         };
@@ -232,9 +230,6 @@ void SpeechRecognizer::loopListening(void)
         if (g_atomic_int_get(&asr_destroy) == 0)
             sendSyncListeningEvent(ListeningState::DONE);
     }
-
-    if (model_file)
-        g_free(model_file);
 
     nugu_dbg("Listening Thread: exited");
 }

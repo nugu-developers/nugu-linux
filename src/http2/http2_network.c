@@ -52,7 +52,7 @@ struct _http2_network {
 	gboolean log;
 	pthread_t thread_id;
 
-	char *useragent;
+	const char *useragent;
 
 	/* communication with thread loop */
 	int wakeup_fd;
@@ -319,9 +319,6 @@ void http2_network_free(HTTP2Network *net)
 
 	if (net->requests)
 		g_async_queue_unref(net->requests);
-
-	if (net->useragent)
-		free(net->useragent);
 
 	close(net->wakeup_fd);
 

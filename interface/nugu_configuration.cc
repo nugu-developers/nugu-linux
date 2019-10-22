@@ -24,12 +24,11 @@ namespace NuguConfig {
     namespace {
         NuguConfigType DEFAULT_VALUES = {
             { Key::WAKEUP_WITH_LISTENING, "false" },
-            { Key::WAKEUP_WORD, "1" },
+            { Key::WAKEUP_WORD, "아리아" },
             { Key::ASR_EPD_TYPE, "CLIENT" },
             { Key::ASR_ENCODING, "COMPLETE" },
             { Key::MODEL_PATH, "./" },
             { Key::SERVER_TYPE, "PRD" },
-            { Key::UUID_PHASE, "0" },
             { Key::USER_AGENT, NUGU_USERAGENT },
             { Key::GATEWAY_REGISTRY_DNS, "reg-http.sktnugu.com" }
         };
@@ -60,15 +59,12 @@ namespace NuguConfig {
 
     const NuguConfigType getDefaultValues()
     {
-        DEFAULT_VALUES[Key::USER_AGENT].append(toChangeCase(DEFAULT_VALUES[Key::SERVER_TYPE]));
-
         return DEFAULT_VALUES;
     }
 
     const NuguConfigType getDefaultValues(NuguConfigType& user_map)
     {
         std::string server_type;
-        std::string uuid_phase;
 
         // set user defined SERVER_TYPE
         if (getenv("NUGU_SERVER_TYPE"))
@@ -79,16 +75,6 @@ namespace NuguConfig {
 
         if (server_type.empty())
             server_type = DEFAULT_VALUES[Key::SERVER_TYPE];
-
-        // set user defined UUID_PHASE
-        if (getenv("NUGU_UUID_PHASE")) {
-            uuid_phase = getenv("NUGU_UUID_PHASE");
-
-            if (!uuid_phase.empty())
-                user_map[Key::UUID_PHASE] = uuid_phase;
-        }
-
-        DEFAULT_VALUES[Key::USER_AGENT].append(toChangeCase(server_type));
 
         if (!isEqualString(server_type, DEFAULT_VALUES[Key::SERVER_TYPE]))
             DEFAULT_VALUES[Key::GATEWAY_REGISTRY_DNS].insert(0, toChangeCase(server_type, true).append("-"));
