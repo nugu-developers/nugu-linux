@@ -26,8 +26,6 @@
 
 #define BASE_TIMESTAMP 1546300800 /* GMT: 2019/1/1 00:00:00 */
 
-static int _phase = -1;
-
 static void _convert_base16(const unsigned char *input, size_t input_len,
 			    char *out)
 {
@@ -116,16 +114,7 @@ EXPORT_API char *nugu_uuid_generate_time(void)
 	struct timespec spec;
 	long milliseconds;
 	time_t seconds;
-	char *seed;
-
-	if (_phase == -1) {
-		char *uuid_phase = nugu_config_get(NUGU_CONFIG_KEY_UUID_PHASE);
-
-		if (uuid_phase) {
-			_phase = atoi(uuid_phase);
-			free(uuid_phase);
-		}
-	}
+	const char *seed;
 
 	/**
 	 * 0.1 seconds unit is used.
@@ -139,7 +128,7 @@ EXPORT_API char *nugu_uuid_generate_time(void)
 	buf[1] = (seconds & 0x00FF0000) >> 16;
 	buf[2] = (seconds & 0x0000FF00) >> 8;
 	buf[3] = (seconds & 0x000000FF);
-	buf[4] = _phase;
+	buf[4] = 0;
 
 	RAND_status();
 	RAND_bytes(buf + 5, 3);
@@ -147,7 +136,6 @@ EXPORT_API char *nugu_uuid_generate_time(void)
 	seed = nugu_config_get(NUGU_CONFIG_KEY_TOKEN);
 	if (seed) {
 		SHA1((unsigned char *)seed, strlen(seed), mdbuf);
-		free(seed);
 		memcpy(buf + 8, mdbuf, 8);
 	} else {
 		RAND_status();

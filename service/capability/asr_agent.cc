@@ -173,15 +173,8 @@ void ASRAgent::initialize()
         return;
     }
 
-    char* tmp;
-
-    tmp = nugu_config_get(NuguConfig::Key::ASR_EPD_TYPE.c_str());
-    epd_type = tmp;
-    free(tmp);
-
-    tmp = nugu_config_get(NuguConfig::Key::ASR_ENCODING.c_str());
-    asr_encoding = tmp;
-    free(tmp);
+    epd_type = nugu_config_get(NuguConfig::Key::ASR_EPD_TYPE.c_str());
+    asr_encoding = nugu_config_get(NuguConfig::Key::ASR_ENCODING.c_str());
 
     speech_recognizer = std::unique_ptr<SpeechRecognizer>(new SpeechRecognizer());
     speech_recognizer->setListener(this);

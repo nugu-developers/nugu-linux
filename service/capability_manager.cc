@@ -19,9 +19,13 @@
 #include <string.h>
 
 #include "capability_manager.hh"
+#include "nugu_configuration.hh"
 #include "nugu_log.h"
 
 namespace NuguCore {
+
+using namespace NuguClientKit;
+
 CapabilityManager* CapabilityManager::instance = NULL;
 
 static NuguFocusResult on_focus(NuguFocus* focus, NuguFocusResource rsrc,
@@ -49,10 +53,10 @@ static NuguFocusStealResult on_steal_request(NuguFocus* focus, NuguFocusResource
 }
 
 CapabilityManager::CapabilityManager()
-    : wword("아리아")
 {
     nugu_dirseq_add_callback(dirseqCallback, this);
 
+    wword = nugu_config_get(NuguConfig::Key::WAKEUP_WORD.c_str());
     playsync_manager = std::unique_ptr<PlaySyncManager>(new PlaySyncManager());
 }
 

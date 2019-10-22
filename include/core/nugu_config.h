@@ -46,11 +46,6 @@ extern "C" {
 #define NUGU_CONFIG_KEY_GATEWAY_REGISTRY_DNS "gateway_registry_dns"
 
 /**
- * @brief Predefined key name for uuid_phase
- */
-#define NUGU_CONFIG_KEY_UUID_PHASE "uuid_phase"
-
-/**
  * @brief Initialize configuration hash table
  */
 void nugu_config_initialize(void);
@@ -63,10 +58,9 @@ void nugu_config_deinitialize(void);
 /**
  * @brief Get the value of configuration key
  * @param[in] key key name
- * @return Memory allocated string value.
- * Developer must free the memory manually.
+ * @return string value
  */
-char *nugu_config_get(const char *key);
+const char *nugu_config_get(const char *key);
 
 /**
  * @brief Store key and value to configuration

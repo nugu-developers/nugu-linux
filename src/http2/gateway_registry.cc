@@ -61,7 +61,7 @@ GatewayRegistry* gateway_registry_new(void)
 {
     struct _gateway_registry* registry;
 
-    char* gateway_registry_dns = nugu_config_get(NUGU_CONFIG_KEY_GATEWAY_REGISTRY_DNS);
+    const char* gateway_registry_dns = nugu_config_get(NUGU_CONFIG_KEY_GATEWAY_REGISTRY_DNS);
 
     if (!gateway_registry_dns) {
         nugu_error("Gateway registry dns is not set.");
@@ -75,7 +75,6 @@ GatewayRegistry* gateway_registry_new(void)
     }
 
     registry->host = g_strdup_printf(GATEWAY_REGISTRY_URL_FORMAT, gateway_registry_dns);
-    free(gateway_registry_dns);
 
     return registry;
 }

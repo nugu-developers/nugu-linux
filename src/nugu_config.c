@@ -38,12 +38,12 @@ EXPORT_API void nugu_config_deinitialize(void)
 	}
 }
 
-EXPORT_API char *nugu_config_get(const char *key)
+EXPORT_API const char *nugu_config_get(const char *key)
 {
 	g_return_val_if_fail(key != NULL, NULL);
 	g_return_val_if_fail(_default_hash != NULL, NULL);
 
-	return g_strdup(g_hash_table_lookup(_default_hash, key));
+	return (const char *)g_hash_table_lookup(_default_hash, key);
 }
 
 EXPORT_API int nugu_config_set(const char *key, const char *value)
