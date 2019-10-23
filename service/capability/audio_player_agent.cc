@@ -175,9 +175,9 @@ void AudioPlayerAgent::updateInfoForContext(Json::Value& ctx)
 
     aplayer["version"] = getVersion();
     aplayer["playerActivity"] = playerActivity(cur_aplayer_state);
+    aplayer["offsetInMilliseconds"] = offset;
     if (cur_aplayer_state != AudioPlayerState::IDLE) {
         aplayer["token"] = cur_token;
-        aplayer["offsetInMilliseconds"] = offset;
         if (duration)
             aplayer["durationInMilliseconds"] = duration;
     }
