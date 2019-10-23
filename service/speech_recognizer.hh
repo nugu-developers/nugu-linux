@@ -17,12 +17,7 @@
 #ifndef __NUGU_SPEECH_RECOGNIZER_H__
 #define __NUGU_SPEECH_RECOGNIZER_H__
 
-#include <condition_variable>
-#include <glib.h>
-#include <mutex>
-#include <thread>
-
-#include <core/nugu_recorder.h>
+#include "audio_input_processor.hh"
 
 #define EPD_MODEL_FILE "nugu_model_epd.raw"
 
@@ -49,10 +44,10 @@ public:
     virtual void onRecordData(unsigned char* buf, int length) = 0;
 };
 
-class SpeechRecognizer {
+class SpeechRecognizer : public AudioInputProcessor {
 public:
     SpeechRecognizer();
-    ~SpeechRecognizer();
+    virtual ~SpeechRecognizer() = default;
 
     void setListener(ISpeechRecognizerListener* listener);
     void startListening(void);
@@ -61,19 +56,12 @@ public:
     void stopRecorder(void);
 
 private:
-    void loopListening(void);
+    void loop(void) override;
     void sendSyncListeningEvent(ListeningState state);
 
     const unsigned int OUT_DATA_SIZE = 1024 * 9;
     int epd_ret = -1;
     ISpeechRecognizerListener* listener = nullptr;
-
-    std::thread asr_thread;
-    std::condition_variable asr_cond;
-    std::mutex asr_mutex;
-    gint asr_destroy;
-    bool asr_is_running = false;
-    NuguRecorder* rec_asr = nullptr;
 };
 
 } // NuguCore

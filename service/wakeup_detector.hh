@@ -17,12 +17,7 @@
 #ifndef __NUGU_WAKEUP_DETECTOR_H__
 #define __NUGU_WAKEUP_DETECTOR_H__
 
-#include <condition_variable>
-#include <glib.h>
-#include <mutex>
-#include <thread>
-
-#include <core/nugu_recorder.h>
+#include "audio_input_processor.hh"
 
 #define WAKEUP_NET_MODEL_FILE "nugu_model_wakeup_net.raw"
 #define WAKEUP_SEARCH_MODEL_FILE "nugu_model_wakeup_search.raw"
@@ -44,27 +39,20 @@ public:
     virtual void onWakeupState(WakeupState state) = 0;
 };
 
-class WakeupDetector {
+class WakeupDetector : public AudioInputProcessor {
 public:
     WakeupDetector();
-    ~WakeupDetector();
+    virtual ~WakeupDetector() = default;
 
     void setListener(IWakeupDetectorListener* listener);
     void startWakeup(void);
     void stopWakeup(void);
 
 private:
-    void loopWakeup(void);
+    void loop(void) override;
     void sendSyncWakeupEvent(WakeupState state);
 
     IWakeupDetectorListener* listener = nullptr;
-    std::thread kwd_thread;
-    std::condition_variable kwd_cond;
-    std::mutex kwd_mutex;
-    gint kwd_destroy;
-    bool kwd_is_running = false;
-    NuguRecorder* rec_kwd = nullptr;
-    bool thread_created;
 };
 
 } // NuguCore
