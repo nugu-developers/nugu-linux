@@ -27,85 +27,17 @@ namespace NuguCore {
 
 using namespace NuguClientKit;
 
-class SyncEvent {
-public:
-    WakeupState wakeup_state;
-    IWakeupDetectorListener* listener;
-    std::condition_variable cond;
-    std::mutex mutex;
-};
-
-static gboolean invoke_sync_event(gpointer userdata)
-{
-    SyncEvent* e = static_cast<SyncEvent*>(userdata);
-
-    e->listener->onWakeupState(e->wakeup_state);
-    e->mutex.lock();
-    e->cond.notify_all();
-    e->mutex.unlock();
-
-    return FALSE;
-}
-
 WakeupDetector::WakeupDetector()
 {
-    NuguRecorderDriver* driver = nugu_recorder_driver_get_default();
-    int ret;
-
-    if (!driver) {
-        nugu_error("there is no recorder driver");
-        return;
-    }
-
-    rec_kwd = nugu_recorder_new("rec_kwd", driver);
-    nugu_recorder_set_property(rec_kwd, (NuguAudioProperty){ AUDIO_SAMPLE_RATE_16K, AUDIO_FORMAT_S16_LE, 1 });
-
-    thread_created = false;
-    kwd_destroy = 0;
-    kwd_thread = std::thread([this] { this->loopWakeup(); });
-
-    ret = pthread_setname_np(kwd_thread.native_handle(), "kwdloop");
-    if (ret < 0)
-        nugu_error("pthread_setname_np() failed");
-
-    /* Wait until kwd_thread creation */
-    std::unique_lock<std::mutex> lock(kwd_mutex);
-    if (thread_created == false)
-        kwd_cond.wait(lock);
-    lock.unlock();
-}
-
-WakeupDetector::~WakeupDetector()
-{
-    g_atomic_int_set(&kwd_destroy, 1);
-    stopWakeup();
-    kwd_mutex.lock();
-    kwd_cond.notify_all();
-    kwd_mutex.unlock();
-
-    if (kwd_thread.joinable())
-        kwd_thread.join();
-
-    nugu_recorder_free(rec_kwd);
+    AudioInputProcessor::init("kwd");
 }
 
 void WakeupDetector::sendSyncWakeupEvent(WakeupState state)
 {
-    g_return_if_fail(listener != nullptr);
-
-    SyncEvent* data = new SyncEvent;
-
-    data->wakeup_state = state;
-    data->listener = listener;
-
-    std::unique_lock<std::mutex> lock(data->mutex);
-
-    g_main_context_invoke(NULL, invoke_sync_event, data);
-
-    data->cond.wait(lock);
-    lock.unlock();
-
-    delete data;
+    AudioInputProcessor::sendSyncEvent([&] {
+        if (listener)
+            listener->onWakeupState(state);
+    });
 }
 
 void WakeupDetector::setListener(IWakeupDetectorListener* listener)
@@ -113,7 +45,7 @@ void WakeupDetector::setListener(IWakeupDetectorListener* listener)
     this->listener = listener;
 }
 
-void WakeupDetector::loopWakeup(void)
+void WakeupDetector::loop(void)
 {
     int pcm_size;
     int length;
@@ -134,43 +66,43 @@ void WakeupDetector::loopWakeup(void)
         nugu_dbg("kwd model search-file: %s", model_search_file.c_str());
     }
 
-    kwd_mutex.lock();
+    mutex.lock();
     thread_created = true;
-    kwd_cond.notify_all();
-    kwd_mutex.unlock();
+    cond.notify_all();
+    mutex.unlock();
 
-    while (g_atomic_int_get(&kwd_destroy) == 0) {
-        std::unique_lock<std::mutex> lock(kwd_mutex);
-        kwd_cond.wait(lock);
+    while (g_atomic_int_get(&destroy) == 0) {
+        std::unique_lock<std::mutex> lock(mutex);
+        cond.wait(lock);
         lock.unlock();
 
-        if (kwd_is_running == false)
+        if (is_running == false)
             continue;
 
-        nugu_dbg("Wakeup Thread: kwd_is_running=%d", kwd_is_running);
+        nugu_dbg("Wakeup Thread: kwd_is_running=%d", is_running);
 
         if (kwd_initialize(model_net_file.c_str(), model_search_file.c_str()) < 0) {
             nugu_error("kwd_initialize() failed");
             break;
         }
 
-        if (nugu_recorder_start(rec_kwd) < 0) {
+        if (nugu_recorder_start(rec) < 0) {
             nugu_error("nugu_recorder_start() failed.");
             break;
         }
 
-        nugu_recorder_get_frame_size(rec_kwd, &pcm_size, &length);
+        nugu_recorder_get_frame_size(rec, &pcm_size, &length);
 
-        while (kwd_is_running) {
+        while (is_running) {
             char pcm_buf[pcm_size];
 
-            if (nugu_recorder_is_recording(rec_kwd) == 0) {
+            if (nugu_recorder_is_recording(rec) == 0) {
                 nugu_dbg("Wakeup Thread: not recording state");
                 usleep(10 * 1000);
                 continue;
             }
 
-            if (nugu_recorder_get_frame_timeout(rec_kwd, pcm_buf, &pcm_size, 0) < 0) {
+            if (nugu_recorder_get_frame_timeout(rec, pcm_buf, &pcm_size, 0) < 0) {
                 nugu_error("nugu_recorder_get_frame_timeout() failed");
                 sendSyncWakeupEvent(WakeupState::FAIL);
                 break;
@@ -184,15 +116,15 @@ void WakeupDetector::loopWakeup(void)
 
             if (kwd_put_audio((short*)pcm_buf, pcm_size) == 1) {
                 sendSyncWakeupEvent(WakeupState::DETECTED);
-                kwd_is_running = false;
+                is_running = false;
                 break;
             }
         }
 
-        nugu_recorder_stop(rec_kwd);
+        nugu_recorder_stop(rec);
         kwd_deinitialize();
 
-        if (g_atomic_int_get(&kwd_destroy) == 0)
+        if (g_atomic_int_get(&destroy) == 0)
             sendSyncWakeupEvent(WakeupState::DONE);
     }
 
@@ -201,29 +133,15 @@ void WakeupDetector::loopWakeup(void)
 
 void WakeupDetector::startWakeup(void)
 {
-    if (kwd_is_running) {
-        nugu_dbg("Wakeup Thread is already running...");
-        return;
-    }
-
-    if (listener)
-        listener->onWakeupState(WakeupState::DETECTING);
-
-    kwd_is_running = true;
-
-    kwd_mutex.lock();
-    kwd_cond.notify_all();
-    kwd_mutex.unlock();
+    AudioInputProcessor::start([&] {
+        if (listener)
+            listener->onWakeupState(WakeupState::DETECTING);
+    });
 }
 
 void WakeupDetector::stopWakeup(void)
 {
-    if (!kwd_is_running) {
-        nugu_dbg("Wakeup Thread is not running...");
-        return;
-    }
-
-    kwd_is_running = false;
+    AudioInputProcessor::stop();
 }
 
 } // NuguCore

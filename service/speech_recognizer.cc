@@ -28,78 +28,17 @@ namespace NuguCore {
 
 using namespace NuguClientKit;
 
-class SyncEvent {
-public:
-    ListeningState listening_state;
-    ISpeechRecognizerListener* listener;
-    std::condition_variable cond;
-    std::mutex mutex;
-};
-
-static gboolean invoke_sync_event(gpointer userdata)
-{
-    SyncEvent* e = static_cast<SyncEvent*>(userdata);
-
-    e->listener->onListeningState(e->listening_state);
-    e->mutex.lock();
-    e->cond.notify_all();
-    e->mutex.unlock();
-
-    return FALSE;
-}
-
 SpeechRecognizer::SpeechRecognizer()
 {
-    NuguRecorderDriver* driver = nugu_recorder_driver_get_default();
-    int ret;
-
-    if (!driver) {
-        nugu_error("there is no recorder driver");
-        return;
-    }
-
-    rec_asr = nugu_recorder_new("rec_asr", driver);
-    nugu_recorder_set_property(rec_asr, (NuguAudioProperty){ AUDIO_SAMPLE_RATE_16K, AUDIO_FORMAT_S16_LE, 1 });
-
-    asr_destroy = 0;
-    asr_thread = std::thread([this] { this->loopListening(); });
-
-    ret = pthread_setname_np(asr_thread.native_handle(), "asrloop");
-    if (ret < 0)
-        nugu_error("pthread_setname_np() failed");
-}
-
-SpeechRecognizer::~SpeechRecognizer()
-{
-    g_atomic_int_set(&asr_destroy, 1);
-    stopListening();
-    asr_mutex.lock();
-    asr_cond.notify_all();
-    asr_mutex.unlock();
-
-    if (asr_thread.joinable())
-        asr_thread.join();
-
-    nugu_recorder_free(rec_asr);
+    AudioInputProcessor::init("asr");
 }
 
 void SpeechRecognizer::sendSyncListeningEvent(ListeningState state)
 {
-    g_return_if_fail(listener != nullptr);
-
-    SyncEvent* data = new SyncEvent;
-
-    data->listening_state = state;
-    data->listener = listener;
-
-    std::unique_lock<std::mutex> lock(data->mutex);
-
-    g_main_context_invoke(NULL, invoke_sync_event, data);
-
-    data->cond.wait(lock);
-    lock.unlock();
-
-    delete data;
+    AudioInputProcessor::sendSyncEvent([&] {
+        if (listener)
+            listener->onListeningState(state);
+    });
 }
 
 void SpeechRecognizer::setListener(ISpeechRecognizerListener* listener)
@@ -107,7 +46,7 @@ void SpeechRecognizer::setListener(ISpeechRecognizerListener* listener)
     this->listener = listener;
 }
 
-void SpeechRecognizer::loopListening(void)
+void SpeechRecognizer::loop(void)
 {
     unsigned char epd_buf[OUT_DATA_SIZE];
     EpdParam epd_param;
@@ -133,43 +72,48 @@ void SpeechRecognizer::loopListening(void)
         nugu_dbg("epd model file: %s", model_file.c_str());
     }
 
-    while (g_atomic_int_get(&asr_destroy) == 0) {
-        std::unique_lock<std::mutex> lock(asr_mutex);
-        asr_cond.wait(lock);
+    mutex.lock();
+    thread_created = true;
+    cond.notify_all();
+    mutex.unlock();
+
+    while (g_atomic_int_get(&destroy) == 0) {
+        std::unique_lock<std::mutex> lock(mutex);
+        cond.wait(lock);
         lock.unlock();
 
-        if (asr_is_running == false)
+        if (is_running == false)
             continue;
 
-        nugu_dbg("Listening Thread: asr_is_running=%d", asr_is_running);
+        nugu_dbg("Listening Thread: asr_is_running=%d", is_running);
 
         if (epd_client_start(model_file.c_str(), epd_param) < 0) {
             nugu_error("epd_client_start() failed");
             break;
         };
 
-        if (nugu_recorder_start(rec_asr) < 0) {
+        if (nugu_recorder_start(rec) < 0) {
             nugu_error("nugu_recorder_start() failed.");
             break;
         }
 
-        nugu_recorder_get_frame_size(rec_asr, &pcm_size, &length);
+        nugu_recorder_get_frame_size(rec, &pcm_size, &length);
 
         sendSyncListeningEvent(ListeningState::LISTENING);
 
         prev_epd_ret = 0;
         is_epd_end = false;
 
-        while (asr_is_running) {
+        while (is_running) {
             char pcm_buf[pcm_size];
 
-            if (nugu_recorder_is_recording(rec_asr) == 0) {
+            if (nugu_recorder_is_recording(rec) == 0) {
                 nugu_dbg("Listening Thread: not recording state");
                 usleep(10 * 1000);
                 continue;
             }
 
-            if (nugu_recorder_get_frame_timeout(rec_asr, pcm_buf, &pcm_size, 0) < 0) {
+            if (nugu_recorder_get_frame_timeout(rec, pcm_buf, &pcm_size, 0) < 0) {
                 nugu_error("nugu_recorder_get_frame_timeout() failed");
                 sendSyncListeningEvent(ListeningState::FAILED);
                 break;
@@ -224,10 +168,10 @@ void SpeechRecognizer::loopListening(void)
             prev_epd_ret = epd_ret;
         }
 
-        nugu_recorder_stop(rec_asr);
+        nugu_recorder_stop(rec);
         epd_client_release();
 
-        if (g_atomic_int_get(&asr_destroy) == 0)
+        if (g_atomic_int_get(&destroy) == 0)
             sendSyncListeningEvent(ListeningState::DONE);
     }
 
@@ -236,42 +180,29 @@ void SpeechRecognizer::loopListening(void)
 
 void SpeechRecognizer::startListening(void)
 {
-    if (asr_is_running) {
-        nugu_dbg("Listening Thread is already running...");
-        return;
-    }
+    AudioInputProcessor::start([&] {
+        if (listener)
+            listener->onListeningState(ListeningState::READY);
 
-    if (listener)
-        listener->onListeningState(ListeningState::READY);
-
-    asr_is_running = true;
-    epd_ret = 0;
-
-    asr_mutex.lock();
-    asr_cond.notify_all();
-    asr_mutex.unlock();
+        epd_ret = 0;
+    });
 }
 
 void SpeechRecognizer::stopListening(void)
 {
-    if (!asr_is_running) {
-        nugu_dbg("Listening Thread is not running...");
-        return;
-    }
-
-    asr_is_running = false;
+    AudioInputProcessor::stop();
 }
 
 void SpeechRecognizer::startRecorder(void)
 {
-    if (asr_is_running && nugu_recorder_is_recording(rec_asr) == 1)
-        nugu_recorder_start(rec_asr);
+    if (is_running && nugu_recorder_is_recording(rec) == 1)
+        nugu_recorder_start(rec);
 }
 
 void SpeechRecognizer::stopRecorder(void)
 {
-    if (asr_is_running && nugu_recorder_is_recording(rec_asr) == 1)
-        nugu_recorder_stop(rec_asr);
+    if (is_running && nugu_recorder_is_recording(rec) == 1)
+        nugu_recorder_stop(rec);
 }
 
 } // NuguCore
