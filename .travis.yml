@@ -1,20 +1,33 @@
 language: generic
 dist: xenial
 sudo: required
-env:
-  matrix:
-  - TARGET=xenial_x64
-  - TARGET=bionic_x64
-addons:
-  apt:
-    update: true
-    packages:
-    - qemu-user-static
-    - binfmt-support
+
+matrix:
+  fast_finish: true
+  include:
+    - env:
+      - TARGET=xenial_x64
+    - env:
+      - TARGET=bionic_x64
+    - env:
+      - TARGET=xenial_armhf
+      if: type != pull_request
+    - env:
+      - TARGET=xenial_arm64
+      if: type != pull_request
+    - env:
+      - TARGET=bionic_armhf
+      if: type != pull_request
+    - env:
+      - TARGET=bionic_arm64
+      if: type != pull_request
+
 services:
 - docker
+
 before_script: cd ..
 script:
+- echo "Triggered from PR - $TRAVIS_PULL_REQUEST"
 - whoami
 - pwd
 - ls -la
@@ -25,6 +38,7 @@ script:
 - ls -l
 - mkdir /tmp/result
 - cp *.deb /tmp/result/
+
 deploy:
   provider: releases
   api_key:
