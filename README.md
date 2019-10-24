@@ -1,6 +1,6 @@
 # NUGU SDK for Linux
 
-![Platform](https://img.shields.io/badge/platform-Linux-lightgrey) ![License](https://img.shields.io/badge/license-Apache%202.0-yellowgreen.svg) [![Build Status](https://travis-ci.org/nugu-developers/nugu-linux.svg?branch=master)](https://travis-ci.org/nugu-developers/nugu-linux)
+![Platform](https://img.shields.io/badge/platform-Linux-lightgrey) [![GitHub release](https://img.shields.io/github/v/release/nugu-developers/nugu-linux?sort=semver)](https://github.com/nugu-developers/nugu-linux/releases) [![License](https://img.shields.io/github/license/nugu-developers/nugu-linux)](https://github.com/nugu-developers/nugu-linux/blob/master/LICENSE) [![Build Status](https://travis-ci.org/nugu-developers/nugu-linux.svg?branch=master)](https://travis-ci.org/nugu-developers/nugu-linux)
 
 NUGU SDK is Linux based client library which is possible to use various NUGU Service by connecting to NUGU Platform. It also provides components and APIs for developing user application.
 
