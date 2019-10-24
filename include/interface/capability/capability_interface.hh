@@ -150,28 +150,28 @@ public:
      * @param[in] command command
      * @param[in] param command parameter
      */
-    virtual void receiveCommand(CapabilityType from, std::string command, std::string param) = 0;
+    virtual void receiveCommand(CapabilityType from, std::string command, const std::string& param) = 0;
 
     /**
      * @brief Processes command received from capability manager.
      * @param[in] command command
      * @param[in] param command parameter
      */
-    virtual void receiveCommandAll(std::string command, std::string param) = 0;
+    virtual void receiveCommandAll(std::string command, const std::string& param) = 0;
 
     /**
      * @brief It is possible to share own property value among objects.
      * @param[in] property calability property
      * @param[in] values capability property value
      */
-    virtual void getProperty(std::string property, std::string& value) = 0;
+    virtual void getProperty(const std::string& property, std::string& value) = 0;
 
     /**
      * @brief It is possible to share own property values among objects.
      * @param[in] property calability property
      * @param[in] values capability property values
      */
-    virtual void getProperties(std::string property, std::list<std::string>& values) = 0;
+    virtual void getProperties(const std::string& property, std::list<std::string>& values) = 0;
 
     /**
      * @brief Set the listener object

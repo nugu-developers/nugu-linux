@@ -19,7 +19,7 @@
 #include "display_listener.hh"
 #include "nugu_log.h"
 
-void DisplayListener::renderDisplay(std::string type, std::string json)
+void DisplayListener::renderDisplay(const std::string& type, const std::string& json)
 {
     nugu_info("got received to render display template");
 }

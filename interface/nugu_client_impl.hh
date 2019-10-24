@@ -24,8 +24,8 @@
 #include <set>
 
 #include <interface/capability/capability_interface.hh>
-#include <interface/wakeup_interface.hh>
 #include <interface/network_manager_interface.hh>
+#include <interface/wakeup_interface.hh>
 
 #include "nugu_client_listener.hh"
 
@@ -39,7 +39,7 @@ public:
     virtual ~NuguClientImpl();
 
     void setAccessToken(std::string access_token);
-    void setConfig(std::string key, std::string value);
+    void setConfig(const std::string& key, const std::string& value);
     void setConfigs(std::map<std::string, std::string> cfgs);
     void setListener(INuguClientListener* listener);
     INuguClientListener* getListener();

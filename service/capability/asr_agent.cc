@@ -251,7 +251,7 @@ void ASRAgent::saveAllContextInfo()
     all_context_info = CapabilityManager::getInstance()->makeAllContextInfoStack();
 }
 
-void ASRAgent::receiveCommand(CapabilityType from, std::string command, std::string param)
+void ASRAgent::receiveCommand(CapabilityType from, std::string command, const std::string& param)
 {
     std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
@@ -270,11 +270,7 @@ void ASRAgent::receiveCommand(CapabilityType from, std::string command, std::str
     }
 }
 
-void ASRAgent::receiveCommandAll(std::string command, std::string param)
-{
-}
-
-void ASRAgent::getProperty(std::string property, std::string& value)
+void ASRAgent::getProperty(const std::string& property, std::string& value)
 {
     if (property == "playServiceId") {
         value = es_attr.play_service_id;
@@ -287,7 +283,7 @@ void ASRAgent::getProperty(std::string property, std::string& value)
     }
 }
 
-void ASRAgent::getProperties(std::string property, std::list<std::string>& values)
+void ASRAgent::getProperties(const std::string& property, std::list<std::string>& values)
 {
     if (property == "domainTypes") {
         for (int i = 0; i < (int)es_attr.domain_types.size(); i++) {

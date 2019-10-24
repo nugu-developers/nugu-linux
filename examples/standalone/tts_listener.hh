@@ -27,7 +27,7 @@ class TTSListener : public ITTSListener {
 public:
     virtual ~TTSListener() = default;
     void onTTSState(TTSState state) override;
-    void onTTSText(std::string text) override;
+    void onTTSText(const std::string& text) override;
 
 private:
     std::string extractText(std::string raw_text);

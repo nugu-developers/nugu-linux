@@ -33,8 +33,8 @@ using namespace NuguInterface;
 class IPlaySyncManagerListener {
 public:
     virtual ~IPlaySyncManagerListener() = default;
-    virtual void onSyncContext(std::string ps_id, std::pair<std::string, std::string> render_info) = 0;
-    virtual void onReleaseContext(std::string ps_id) = 0;
+    virtual void onSyncContext(const std::string& ps_id, std::pair<std::string, std::string> render_info) = 0;
+    virtual void onReleaseContext(const std::string& ps_id) = 0;
 };
 
 class PlaySyncManager {
@@ -57,8 +57,8 @@ public:
     PlaySyncManager();
     virtual ~PlaySyncManager();
 
-    void addContext(std::string ps_id, CapabilityType cap_type);
-    void addContext(std::string ps_id, CapabilityType cap_type, DisplayRenderer renderer);
+    void addContext(const std::string& ps_id, CapabilityType cap_type);
+    void addContext(const std::string& ps_id, CapabilityType cap_type, DisplayRenderer renderer);
     void removeContext(std::string ps_id, CapabilityType cap_type, bool immediately = false);
     std::vector<std::string> getAllPlayStackItems();
     std::string getPlayStackItem(CapabilityType cap_type);

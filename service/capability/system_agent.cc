@@ -94,14 +94,6 @@ std::string SystemAgent::getContextInfo(void)
     return cmanager->makeContextInfo(ctx);
 }
 
-void SystemAgent::receiveCommand(CapabilityType from, std::string command, std::string param)
-{
-}
-
-void SystemAgent::receiveCommandAll(std::string command, std::string param)
-{
-}
-
 void SystemAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)

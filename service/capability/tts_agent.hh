@@ -42,16 +42,14 @@ public:
     void processDirective(NuguDirective* ndir) override;
     void updateInfoForContext(Json::Value& ctx) override;
     std::string getContextInfo();
-    void receiveCommand(CapabilityType from, std::string command, std::string param) override;
-    void receiveCommandAll(std::string command, std::string param) override;
 
     void stopTTS() override;
-    void requestTTS(std::string text, std::string play_service_id) override;
+    void requestTTS(const std::string& text, const std::string& play_service_id) override;
 
-    void sendEventSpeechStarted(std::string token);
-    void sendEventSpeechFinished(std::string token);
-    void sendEventSpeechStopped(std::string token);
-    void sendEventSpeechPlay(std::string token, std::string text, std::string play_service_id = "");
+    void sendEventSpeechStarted(const std::string& token);
+    void sendEventSpeechFinished(const std::string& token);
+    void sendEventSpeechStopped(const std::string& token);
+    void sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id = "");
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     static void pcmStatusCallback(enum nugu_media_status status, void* userdata);
@@ -64,7 +62,7 @@ public:
     bool finish;
 
 private:
-    void sendEventCommon(std::string ename, std::string token);
+    void sendEventCommon(const std::string& ename, const std::string& token);
     // parsing directive
     void parsingSpeak(const char* message, NuguDirective* ndir);
     void parsingStop(const char* message);

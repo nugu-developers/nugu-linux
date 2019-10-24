@@ -53,7 +53,7 @@ void NuguClientImpl::setAccessToken(std::string access_token)
     nugu_config_set(NUGU_CONFIG_KEY_TOKEN, access_token.c_str());
 }
 
-void NuguClientImpl::setConfig(std::string key, std::string value)
+void NuguClientImpl::setConfig(const std::string& key, const std::string& value)
 {
     config_map[key] = value;
 }

@@ -50,7 +50,7 @@ public:
      * @param[in] json template in json format for display
      * @see IAudioPlayerListener::renderDisplay()
      */
-    virtual void renderDisplay(std::string type, std::string json) = 0;
+    virtual void renderDisplay(const std::string& type, const std::string& json) = 0;
 
     /**
      * @brief The SDK will ask you to delete the rendered display on the display according to the service context maintenance policy.
@@ -71,7 +71,7 @@ public:
      * @brief The user reports that the display was rendered with the parsed token.
      * @param[in] token parsed token from metadata
      */
-    virtual void displayRendered(std::string token) = 0;
+    virtual void displayRendered(const std::string& token) = 0;
 
     /**
      * @brief The user reports that the display is cleared.
@@ -82,7 +82,7 @@ public:
      * @brief The user informs the selected item of the list and reports the token information of the item.
      * @param[in] item_token parsed token from metadata
      */
-    virtual void elementSelected(std::string item_token) = 0;
+    virtual void elementSelected(const std::string& item_token) = 0;
 };
 
 /**

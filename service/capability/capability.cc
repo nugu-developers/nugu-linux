@@ -24,7 +24,7 @@
 #include "nugu_log.h"
 
 namespace NuguCore {
-Capability::Capability(CapabilityType type, std::string ver)
+Capability::Capability(CapabilityType type, const std::string& ver)
     : ctype(type)
     , version(ver)
 {
@@ -83,7 +83,7 @@ std::string Capability::getTypeName(CapabilityType type)
     return _name;
 }
 
-void Capability::setVersion(std::string ver)
+void Capability::setVersion(const std::string& ver)
 {
     version = ver;
 }
@@ -98,12 +98,12 @@ void Capability::destoryDirective(NuguDirective* ndir)
     nugu_dirseq_complete(ndir);
 }
 
-void Capability::getProperty(std::string property, std::string& value)
+void Capability::getProperty(const std::string& property, std::string& value)
 {
     value = "";
 }
 
-void Capability::getProperties(std::string property, std::list<std::string>& values)
+void Capability::getProperties(const std::string& property, std::list<std::string>& values)
 {
     values.clear();
 }
@@ -125,6 +125,15 @@ void Capability::sendEvent(NuguEvent* event, bool is_end, size_t size,
 void Capability::setCapabilityListener(ICapabilityListener* clistener)
 {
 }
+
+void Capability::receiveCommand(CapabilityType from, std::string command, const std::string& param)
+{
+}
+
+void Capability::receiveCommandAll(std::string command, const std::string& param)
+{
+}
+
 /********************************************************************
  * implements ICapabilityObservable
  ********************************************************************/

@@ -36,7 +36,7 @@ using namespace NuguInterface;
 
 class Capability : public ICapabilityInterface {
 public:
-    Capability(CapabilityType type, std::string ver = "1.0");
+    Capability(CapabilityType type, const std::string& ver = "1.0");
     virtual ~Capability();
     virtual void initialize() = 0;
 
@@ -44,15 +44,17 @@ public:
     CapabilityType getType() override;
     void setName(CapabilityType type);
     std::string getName();
-    void setVersion(std::string ver);
+    void setVersion(const std::string& ver);
     std::string getVersion();
 
     void destoryDirective(NuguDirective* ndir);
     void sendEvent(NuguEvent* event, bool is_end = false, size_t size = 0, unsigned char* data = NULL);
 
-    virtual void getProperty(std::string property, std::string& value) override;
-    virtual void getProperties(std::string property, std::list<std::string>& values) override;
+    virtual void getProperty(const std::string& property, std::string& value) override;
+    virtual void getProperties(const std::string& property, std::list<std::string>& values) override;
     virtual void setCapabilityListener(ICapabilityListener* clistener) override;
+    virtual void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;
+    virtual void receiveCommandAll(std::string command, const std::string& param) override;
 
     // implements ICapabilityObservable
     void registerObserver(ICapabilityObserver* observer) override;

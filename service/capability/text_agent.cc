@@ -105,11 +105,7 @@ std::string TextAgent::getContextInfo()
     return cmanager->makeContextInfo(ctx);
 }
 
-void TextAgent::receiveCommand(CapabilityType from, std::string command, std::string param)
-{
-}
-
-void TextAgent::receiveCommandAll(std::string command, std::string param)
+void TextAgent::receiveCommandAll(std::string command, const std::string& param)
 {
     std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
@@ -158,7 +154,7 @@ void TextAgent::notifyResponseTimeout()
         text_listener->onState(cur_state);
 }
 
-void TextAgent::sendEventTextInput(std::string text, std::string token)
+void TextAgent::sendEventTextInput(const std::string& text, const std::string& token)
 {
     Json::StyledWriter writer;
     Json::Value root;

@@ -85,12 +85,12 @@ PlaySyncManager::~PlaySyncManager()
     context_stack.clear();
 }
 
-void PlaySyncManager::addContext(std::string ps_id, CapabilityType cap_type)
+void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_type)
 {
     addContext(ps_id, cap_type, {});
 }
 
-void PlaySyncManager::addContext(std::string ps_id, CapabilityType cap_type, DisplayRenderer renderer)
+void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_type, DisplayRenderer renderer)
 {
     if (ps_id.empty()) {
         nugu_error("Invalid PlayServiceId.");
