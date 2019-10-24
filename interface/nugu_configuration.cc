@@ -29,6 +29,7 @@ namespace NuguConfig {
             { Key::ASR_EPD_TIMEOUT_SEC, "10" },
             { Key::ASR_EPD_MAX_SPEECH_SEC, "10" },
             { Key::ASR_ENCODING, "COMPLETE" },
+            { Key::MOVEMENT_WITH_LIGHT, "true" },
             { Key::SERVER_RESPONSE_TIMEOUT_MSEC, "10000" },
             { Key::MODEL_PATH, "./" },
             { Key::TTS_ENGINE, "skt" },

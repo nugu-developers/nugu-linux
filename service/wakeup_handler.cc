@@ -63,6 +63,7 @@ void WakeupHandler::onWakeupState(WakeupState state)
         nugu_dbg("WakeupState::DETECTED");
 
         CapabilityManager::getInstance()->sendCommand(CapabilityType::ASR, CapabilityType::ASR, "wakeup_detected", "");
+        CapabilityManager::getInstance()->sendCommand(CapabilityType::ASR, CapabilityType::Movement, "wakeup_detected", "");
         CapabilityManager::getInstance()->releaseFocus("kwd", NUGU_FOCUS_RESOURCE_MIC);
 
         if (listener)

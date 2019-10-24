@@ -38,6 +38,7 @@ namespace NuguConfig {
         const std::string ASR_EPD_MAX_SPEECH_SEC = "asr_epd_max_speech_sec";
         const std::string ASR_EPD_TIMEOUT_SEC = "asr_epd_timeout_sec";
         const std::string ASR_ENCODING = "asr_encoding";
+        const std::string MOVEMENT_WITH_LIGHT = "movement_with_light";
         const std::string SERVER_RESPONSE_TIMEOUT_MSEC = "server_response_timeout_msec";
         const std::string MODEL_PATH = "model_path";
         const std::string TTS_ENGINE = "tts_engine";

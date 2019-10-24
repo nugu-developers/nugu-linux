@@ -28,6 +28,7 @@
 #include <interface/capability/delegation_interface.hh>
 #include <interface/capability/display_interface.hh>
 #include <interface/capability/extension_interface.hh>
+#include <interface/capability/movement_interface.hh>
 #include <interface/capability/system_interface.hh>
 #include <interface/capability/text_interface.hh>
 #include <interface/capability/tts_interface.hh>
@@ -179,6 +180,12 @@ public:
      * @return IDelegationHandler if a feature agent has been created with the feature builder, otherwise NULL
      */
     IDelegationHandler* getDelegationHandler();
+
+    /**
+     * @brief Get MovementHandler object
+     * @return IMovementHandler if a feature agent has been created with the feature builder, otherwise NULL
+     */
+    IMovementHandler* getMovementHandler();
 
     /**
      * @brief Get SystemHandler object

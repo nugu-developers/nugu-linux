@@ -26,6 +26,7 @@
 #include "system_agent.hh"
 #include "text_agent.hh"
 #include "tts_agent.hh"
+#include "movement_agent.hh"
 #include "wakeup_handler.hh"
 
 namespace NuguCore {
@@ -38,7 +39,8 @@ const std::list<CapabilityType> CapabilityCreator::CAPABILITY_LIST {
     CapabilityType::Display,
     CapabilityType::Extension,
     CapabilityType::Text,
-    CapabilityType::Delegation
+    CapabilityType::Delegation,
+    CapabilityType::Movement
 };
 
 ICapabilityInterface* CapabilityCreator::createCapability(CapabilityType ctype)
@@ -60,6 +62,8 @@ ICapabilityInterface* CapabilityCreator::createCapability(CapabilityType ctype)
         return new TextAgent();
     case CapabilityType::Delegation:
         return new DelegationAgent();
+    case CapabilityType::Movement:
+        return new MovementAgent();
     default:
         return nullptr;
     }

@@ -125,6 +125,11 @@ IDelegationHandler* NuguClient::getDelegationHandler()
     return dynamic_cast<IDelegationHandler*>(impl->getCapabilityHandler(CapabilityType::Delegation));
 }
 
+IMovementHandler* NuguClient::getMovementHandler()
+{
+    return dynamic_cast<IMovementHandler*>(impl->getCapabilityHandler(CapabilityType::Movement));
+}
+
 ISystemHandler* NuguClient::getSystemHandler()
 {
     return dynamic_cast<ISystemHandler*>(impl->getCapabilityHandler(CapabilityType::System));
