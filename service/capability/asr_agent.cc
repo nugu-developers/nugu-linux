@@ -28,8 +28,6 @@
 
 namespace NuguCore {
 
-using namespace NuguClientKit;
-
 static const std::string capability_version = "1.0";
 
 class ASRFocusListener : public IFocusListener {

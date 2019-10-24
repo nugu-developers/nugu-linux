@@ -60,6 +60,6 @@ public:
  * @}
  */
 
-} // NuguClientKit
+} // NuguInterface
 
 #endif /* __NUGU_CAPABILITY_OBSERVER_H__ */

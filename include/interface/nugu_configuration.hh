@@ -22,7 +22,7 @@
 
 #include <core/nugu_config.h>
 
-namespace NuguClientKit {
+namespace NuguInterface {
 
 /**
  * @file nugu_configuration.hh
@@ -46,6 +46,6 @@ namespace NuguConfig {
     const NuguConfigType getDefaultValues(NuguConfigType& user_map);
 }
 
-} // NuguClientKit
+} // NuguInterface
 
 #endif /* __NUGU_CONFIGURATION__ */
