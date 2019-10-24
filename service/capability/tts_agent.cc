@@ -83,7 +83,7 @@ void TTSAgent::initialize()
     nugu_pcm_set_status_callback(pcm, pcmStatusCallback, this);
     nugu_pcm_set_event_callback(pcm, pcmEventCallback, this);
 
-    nugu_pcm_set_property(pcm, (NuguAudioProperty){ AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
+    nugu_pcm_set_property(pcm, (NuguAudioProperty) { AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
 
     CapabilityManager::getInstance()->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
@@ -220,7 +220,7 @@ void TTSAgent::startTTS(NuguDirective* ndir)
     }
 }
 
-void TTSAgent::requestTTS(std::string text, std::string play_service_id)
+void TTSAgent::requestTTS(const std::string& text, const std::string& play_service_id)
 {
     std::string token;
     char* uuid;
@@ -296,15 +296,7 @@ std::string TTSAgent::getContextInfo()
     return cmanager->makeContextInfo(ctx);
 }
 
-void TTSAgent::receiveCommand(CapabilityType from, std::string command, std::string param)
-{
-}
-
-void TTSAgent::receiveCommandAll(std::string command, std::string param)
-{
-}
-
-void TTSAgent::sendEventSpeechStarted(std::string token)
+void TTSAgent::sendEventSpeechStarted(const std::string& token)
 {
     sendEventCommon("SpeechStarted", token);
 
@@ -312,7 +304,7 @@ void TTSAgent::sendEventSpeechStarted(std::string token)
         tts_listener->onTTSState(TTSState::TTS_SPEECH_START);
 }
 
-void TTSAgent::sendEventSpeechFinished(std::string token)
+void TTSAgent::sendEventSpeechFinished(const std::string& token)
 {
     sendEventCommon("SpeechFinished", token);
 
@@ -320,12 +312,12 @@ void TTSAgent::sendEventSpeechFinished(std::string token)
         tts_listener->onTTSState(TTSState::TTS_SPEECH_FINISH);
 }
 
-void TTSAgent::sendEventSpeechStopped(std::string token)
+void TTSAgent::sendEventSpeechStopped(const std::string& token)
 {
     sendEventCommon("SpeechStopped", token);
 }
 
-void TTSAgent::sendEventSpeechPlay(std::string token, std::string text, std::string play_service_id)
+void TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id)
 {
     Json::StyledWriter writer;
     Json::Value root;
@@ -360,7 +352,7 @@ void TTSAgent::sendEventSpeechPlay(std::string token, std::string text, std::str
     nugu_event_free(event);
 }
 
-void TTSAgent::sendEventCommon(std::string ename, std::string token)
+void TTSAgent::sendEventCommon(const std::string& ename, const std::string& token)
 {
     Json::StyledWriter writer;
     Json::Value root;

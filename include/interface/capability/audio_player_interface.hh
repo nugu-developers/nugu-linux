@@ -63,7 +63,7 @@ public:
      * @param[in] json template in json format for display
      * @see IDisplayListener::renderDisplay()
      */
-    virtual void renderDisplay(std::string type, std::string json) = 0;
+    virtual void renderDisplay(const std::string& type, const std::string& json) = 0;
 
     /**
      * @brief The SDK will ask you to delete the rendered display on the display according to the service context maintenance policy.

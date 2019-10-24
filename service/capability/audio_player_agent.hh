@@ -50,8 +50,7 @@ public:
     void processDirective(NuguDirective* ndir) override;
     void updateInfoForContext(Json::Value& ctx) override;
     std::string getContextInfo();
-    void receiveCommand(CapabilityType from, std::string command, std::string param) override;
-    void receiveCommandAll(std::string command, std::string param) override;
+    void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     // implement handler
@@ -71,26 +70,26 @@ public:
     void sendEventPlaybackPaused();
     void sendEventPlaybackResumed();
 
-    void sendEventPlaybackError(PlaybackError err, std::string reason);
+    void sendEventPlaybackError(PlaybackError err, const std::string& reason);
 
     void sendEventProgressReportDelayElapsed();
     void sendEventProgressReportIntervalElapsed();
-    void sendEventByDisplayInterface(std::string command);
+    void sendEventByDisplayInterface(const std::string& command);
 
     void mediaStateChanged(MediaPlayerState state);
     void mediaEventReport(MediaPlayerEvent event);
     void mediaFinished();
     void mediaLoaded();
 
-    void mediaChanged(std::string url);
+    void mediaChanged(const std::string& url) override;
     void durationChanged(int duration);
     void positionChanged(int position);
     void volumeChanged(int volume);
     void muteChanged(int mute);
 
     // implement IContextManagerListener
-    void onSyncContext(std::string ps_id, std::pair<std::string, std::string> render_info) override;
-    void onReleaseContext(std::string ps_id) override;
+    void onSyncContext(const std::string& ps_id, std::pair<std::string, std::string> render_info) override;
+    void onReleaseContext(const std::string& ps_id) override;
 
 private:
     void sendEventCommon(std::string ename);

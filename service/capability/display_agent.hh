@@ -34,21 +34,19 @@ public:
     void processDirective(NuguDirective* ndir) override;
     void updateInfoForContext(Json::Value& ctx) override;
     std::string getContextInfo();
-    void receiveCommand(CapabilityType from, std::string command, std::string param) override;
-    void receiveCommandAll(std::string command, std::string param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     // implement handler
-    void displayRendered(std::string token);
-    void displayCleared();
-    void elementSelected(std::string item_token) override;
+    void displayRendered(const std::string& token) override;
+    void displayCleared() override;
+    void elementSelected(const std::string& item_token) override;
 
     // implement IContextManagerListener
-    void onSyncContext(std::string ps_id, std::pair<std::string, std::string> render_info) override;
-    void onReleaseContext(std::string ps_id) override;
+    void onSyncContext(const std::string& ps_id, std::pair<std::string, std::string> render_info) override;
+    void onReleaseContext(const std::string& ps_id) override;
 
 private:
-    void sendEventElementSelected(std::string item_token);
+    void sendEventElementSelected(const std::string& item_token);
 
     IDisplayListener* display_listener;
     std::string ps_id;

@@ -34,8 +34,6 @@ public:
     void processDirective(NuguDirective* ndir) override;
     void updateInfoForContext(Json::Value& ctx) override;
     std::string getContextInfo();
-    void receiveCommand(CapabilityType from, std::string command, std::string param) override;
-    void receiveCommandAll(std::string command, std::string param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
 private:

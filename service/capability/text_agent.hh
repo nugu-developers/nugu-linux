@@ -37,15 +37,14 @@ public:
     void processDirective(NuguDirective* ndir) override;
     void updateInfoForContext(Json::Value& ctx) override;
     std::string getContextInfo();
-    void receiveCommand(CapabilityType from, std::string command, std::string param) override;
-    void receiveCommandAll(std::string command, std::string param) override;
+    void receiveCommandAll(std::string command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     bool requestTextInput(std::string text) override;
     void notifyResponseTimeout();
 
 private:
-    void sendEventTextInput(std::string text, std::string token);
+    void sendEventTextInput(const std::string& text, const std::string& token);
     void parsingTextSource(const char* message);
 
     ITextListener* text_listener;

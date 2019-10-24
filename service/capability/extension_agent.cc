@@ -78,14 +78,6 @@ std::string ExtensionAgent::getContextInfo()
     return cmanager->makeContextInfo(ctx);
 }
 
-void ExtensionAgent::receiveCommand(CapabilityType from, std::string command, std::string param)
-{
-}
-
-void ExtensionAgent::receiveCommandAll(std::string command, std::string param)
-{
-}
-
 void ExtensionAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)

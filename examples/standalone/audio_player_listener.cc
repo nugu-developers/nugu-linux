@@ -17,7 +17,7 @@
 #include "audio_player_listener.hh"
 #include "nugu_log.h"
 
-void AudioPlayerListener::renderDisplay(std::string type, std::string json)
+void AudioPlayerListener::renderDisplay(const std::string& type, const std::string& json)
 {
     nugu_info("got received to render display template");
 }

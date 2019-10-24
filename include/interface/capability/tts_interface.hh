@@ -59,7 +59,7 @@ public:
      * @brief Report the speech sentence to the User.
      * @param[in] text sentense
      */
-    virtual void onTTSText(std::string text) = 0;
+    virtual void onTTSText(const std::string& text) = 0;
 };
 
 /**
@@ -80,7 +80,7 @@ public:
      * @param[in] text sentense
      * @param[in] play_service_id received from server
      */
-    virtual void requestTTS(std::string text, std::string play_service_id) = 0;
+    virtual void requestTTS(const std::string& text, const std::string& play_service_id) = 0;
 };
 
 /**

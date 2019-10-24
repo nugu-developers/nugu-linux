@@ -85,7 +85,7 @@ public:
      * @brief The media player reports that the media content has changed.
      * @param[in] url changed media content url
      */
-    virtual void mediaChanged(std::string url) = 0;
+    virtual void mediaChanged(const std::string& url) = 0;
 
     /**
      * @brief The media player reports the changed duration of the media content.

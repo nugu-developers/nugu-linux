@@ -33,7 +33,7 @@ void TTSListener::onTTSState(TTSState state)
     }
 }
 
-void TTSListener::onTTSText(std::string text)
+void TTSListener::onTTSText(const std::string& text)
 {
     std::cout << "[TTS] text : ";
     std::cout << "\033[1;36m" << extractText(text) << "\033[0m" << std::endl;

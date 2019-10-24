@@ -102,21 +102,13 @@ std::string DisplayAgent::getContextInfo()
     return cmanager->makeContextInfo(ctx);
 }
 
-void DisplayAgent::receiveCommand(CapabilityType from, std::string command, std::string param)
-{
-}
-
-void DisplayAgent::receiveCommandAll(std::string command, std::string param)
-{
-}
-
 void DisplayAgent::setCapabilityListener(ICapabilityListener* listener)
 {
     if (listener)
         display_listener = dynamic_cast<IDisplayListener*>(listener);
 }
 
-void DisplayAgent::displayRendered(std::string token)
+void DisplayAgent::displayRendered(const std::string& token)
 {
     cur_token = token;
 }
@@ -126,12 +118,12 @@ void DisplayAgent::displayCleared()
     cur_token = "";
 }
 
-void DisplayAgent::elementSelected(std::string item_token)
+void DisplayAgent::elementSelected(const std::string& item_token)
 {
     sendEventElementSelected(item_token);
 }
 
-void DisplayAgent::sendEventElementSelected(std::string item_token)
+void DisplayAgent::sendEventElementSelected(const std::string& item_token)
 {
     Json::StyledWriter writer;
     Json::Value root;
@@ -154,14 +146,14 @@ void DisplayAgent::sendEventElementSelected(std::string item_token)
     nugu_event_free(event);
 }
 
-void DisplayAgent::onSyncContext(std::string ps_id, std::pair<std::string, std::string> render_info)
+void DisplayAgent::onSyncContext(const std::string& ps_id, std::pair<std::string, std::string> render_info)
 {
     nugu_dbg("Display sync context");
 
     if (display_listener)
         display_listener->renderDisplay(render_info.first, render_info.second);
 }
-void DisplayAgent::onReleaseContext(std::string ps_id)
+void DisplayAgent::onReleaseContext(const std::string& ps_id)
 {
     nugu_dbg("Display release context");
 

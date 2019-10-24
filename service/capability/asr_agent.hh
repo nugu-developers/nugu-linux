@@ -60,10 +60,9 @@ public:
     std::string getContextInfo();
     void saveAllContextInfo();
 
-    void receiveCommand(CapabilityType from, std::string command, std::string param) override;
-    void receiveCommandAll(std::string command, std::string param) override;
-    void getProperty(std::string property, std::string& value) override;
-    void getProperties(std::string property, std::list<std::string>& values) override;
+    void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;
+    void getProperty(const std::string& property, std::string& value) override;
+    void getProperties(const std::string& property, std::list<std::string>& values) override;
 
     void checkResponseTimeout();
     void clearResponseTimeout();

@@ -194,17 +194,13 @@ std::string AudioPlayerAgent::getContextInfo()
     return cmanager->makeContextInfo(ctx);
 }
 
-void AudioPlayerAgent::receiveCommand(CapabilityType from, std::string command, std::string param)
+void AudioPlayerAgent::receiveCommand(CapabilityType from, std::string command, const std::string& param)
 {
     std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
     if (!command.compare("setvolume")) {
         player->setVolume(atoi(param.c_str()));
     }
-}
-
-void AudioPlayerAgent::receiveCommandAll(std::string command, std::string param)
-{
 }
 
 void AudioPlayerAgent::setCapabilityListener(ICapabilityListener* listener)
@@ -254,7 +250,7 @@ void AudioPlayerAgent::sendEventPlaybackResumed()
     sendEventCommon("PlaybackResumed");
 }
 
-void AudioPlayerAgent::sendEventPlaybackError(PlaybackError err, std::string reason)
+void AudioPlayerAgent::sendEventPlaybackError(PlaybackError err, const std::string& reason)
 {
     Json::StyledWriter writer;
     Json::Value root;
@@ -303,7 +299,7 @@ void AudioPlayerAgent::sendEventProgressReportIntervalElapsed()
     sendEventCommon("ProgressReportIntervalElapsed");
 }
 
-void AudioPlayerAgent::sendEventByDisplayInterface(std::string command)
+void AudioPlayerAgent::sendEventByDisplayInterface(const std::string& command)
 {
     sendEventCommon(command);
 }
@@ -624,7 +620,7 @@ void AudioPlayerAgent::mediaLoaded()
 {
 }
 
-void AudioPlayerAgent::mediaChanged(std::string url)
+void AudioPlayerAgent::mediaChanged(const std::string& url)
 {
 }
 
@@ -654,7 +650,7 @@ void AudioPlayerAgent::muteChanged(int mute)
 {
 }
 
-void AudioPlayerAgent::onSyncContext(std::string ps_id, std::pair<std::string, std::string> render_info)
+void AudioPlayerAgent::onSyncContext(const std::string& ps_id, std::pair<std::string, std::string> render_info)
 {
     nugu_dbg("AudioPlayer sync context");
 
@@ -662,7 +658,7 @@ void AudioPlayerAgent::onSyncContext(std::string ps_id, std::pair<std::string, s
         aplayer_listener->renderDisplay(render_info.first, render_info.second);
 }
 
-void AudioPlayerAgent::onReleaseContext(std::string ps_id)
+void AudioPlayerAgent::onReleaseContext(const std::string& ps_id)
 {
     nugu_dbg("AudioPlayer release context");
 
