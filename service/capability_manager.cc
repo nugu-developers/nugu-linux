@@ -24,7 +24,7 @@
 
 namespace NuguCore {
 
-using namespace NuguClientKit;
+using namespace NuguInterface;
 
 CapabilityManager* CapabilityManager::instance = NULL;
 

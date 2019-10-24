@@ -80,6 +80,6 @@ public:
  * @}
  */
 
-} // NuguClientKit
+} // NuguInterface
 
 #endif /* __NUGU_WAKEUP_INTERFACE_H__ */

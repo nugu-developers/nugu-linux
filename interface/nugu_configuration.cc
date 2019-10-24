@@ -18,7 +18,7 @@
 
 #include <interface/nugu_configuration.hh>
 
-namespace NuguClientKit {
+namespace NuguInterface {
 
 namespace NuguConfig {
     namespace {
@@ -83,4 +83,4 @@ namespace NuguConfig {
     }
 }
 
-} // NuguClientKit
+} // NuguInterface

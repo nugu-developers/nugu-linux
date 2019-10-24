@@ -247,6 +247,6 @@ public:
  * @}
  */
 
-} // NuguCore
+} // NuguInterface
 
 #endif

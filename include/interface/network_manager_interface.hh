@@ -98,6 +98,6 @@ public:
  * @}
  */
 
-} // NuguCore
+} // NuguInterface
 
 #endif /* __NUGU_INETWORK_MANAGER_INTERFACE_H__ */

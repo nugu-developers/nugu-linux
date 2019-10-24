@@ -25,7 +25,7 @@
 
 namespace NuguCore {
 
-using namespace NuguClientKit;
+using namespace NuguInterface;
 
 WakeupDetector::WakeupDetector()
 {
