@@ -15,6 +15,10 @@ This project uses two programming languages, C and C++. Therefore, please follow
 
 [Submitting patches: the essential guide to getting your code into the kernel](https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/submitting-patches.rst?id=HEAD)
 
+## Pull request
+
+Please refer to the [wiki](https://github.com/nugu-developers/nugu-linux/wiki/Pull-Request) document.
+
 ## Merge strategy
 
 This project merges PR using the rebase strategy to avoid creating unnecessary merge commits. Therefore, your PR should not conflict with the latest master branch.
