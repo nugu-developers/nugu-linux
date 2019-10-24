@@ -49,7 +49,7 @@ NUGU SDK provides sample application which is possible to test simple NUGU servi
 
 ## Contributing
 
-This project welcomes contributions and suggestions. The best way to contribute is to create issues or pull requests right here on Github. Please see [Contributing.md](doc/contributing.md)
+This project welcomes contributions and suggestions. The best way to contribute is to create issues or pull requests right here on Github. Please see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License
 
