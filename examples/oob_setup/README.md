@@ -1,27 +1,34 @@
 # OOB Setup example
 
-Unfortunately, authentication information is only available through the smartphone(iOS, Android) application. (Only T-ID integration is supported and OAuth is not supported currently.)
-
-This OOB(Out-of-Box) program is an example for exchanging authentication information with a sample companion application. It provides only basic functions such as device information and authentication information.
+This **OOB**(Out-of-Box) program is an example for exchanging authentication information using NUGU OAuth2. It provides only basic functions such as token exchange, but does not support automatic token refresh.
 
 This program is just an example and is not implemented for security or other exceptions. So **DO NOT USE** this sample in production environment.
 
-The `nugu_oob_server.py` python script provides `GET` and `PUT` REST APIs for companion applications via `http://IP:8080/device` and `http://IP:8080/auth` endpoints.
-
 ## Install
-
-### Install libnugu-examples package
 
 The nugu_oob program is included in the `libnugu-examples` debian package.
 
     apt install libnugu-examples
 
-### Register systemd service
+## Get OAuth2 token
 
-    systemctl enable nugu_oob
+First, please open the [http://lvh.me:8080](http://lvh.me:8080) using web browser.
 
-## Configure
+Next, fill the information like `client_id`, `client_secret`, etc. in the `OAuth2 information` form and press the `Save` button to save it.
 
-### How to configure the device information
+Now, click the [Get OAuth2 token](http://lvh.me:8080/login) link to proceed with authentication.
 
-Please modify the `/var/lib/nugu-device.json` file. If this file does not exist, it is created automatically when the nugu_oob service starts.
+## How to get the OAuth2 token in your program
+
+If the OAuth2 authentication process is successful, the token information is displayed on the web browser screen and the information is also stored in the /var/lib/nugu/nugu-auth.json file as shown below.
+
+    {
+        "access_token": "",
+        "expires_in": "",
+        "refresh_token": "",
+        "token_type": ""
+    }
+
+Therefore, you can parse and use token information in the file as shown below.
+
+    cat /var/lib/nugu/nugu-auth.json | jq '.access_token' -r
