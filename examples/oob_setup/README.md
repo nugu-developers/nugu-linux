@@ -22,6 +22,6 @@ The nugu_oob program is included in the `libnugu-examples` debian package.
 
 ## Configure
 
-### How to configure the device information.
+### How to configure the device information
 
 Please modify the `/var/lib/nugu-device.json` file. If this file does not exist, it is created automatically when the nugu_oob service starts.

@@ -31,7 +31,7 @@ CapabilityManager* CapabilityManager::instance = NULL;
 static NuguFocusResult on_focus(NuguFocus* focus, NuguFocusResource rsrc,
     void* event, void* userdata)
 {
-    IFocusListener* listener = (IFocusListener*)userdata;
+    IFocusListener* listener = static_cast<IFocusListener*>(userdata);
 
     return listener->onFocus(rsrc, event);
 }
@@ -39,7 +39,7 @@ static NuguFocusResult on_focus(NuguFocus* focus, NuguFocusResource rsrc,
 static NuguFocusResult on_unfocus(NuguFocus* focus, NuguFocusResource rsrc,
     void* event, void* userdata)
 {
-    IFocusListener* listener = (IFocusListener*)userdata;
+    IFocusListener* listener = static_cast<IFocusListener*>(userdata);
 
     return listener->onUnfocus(rsrc, event);
 }
