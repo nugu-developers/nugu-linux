@@ -21,8 +21,8 @@
 namespace NuguCore {
 
 WakeupHandler::WakeupHandler()
+    : wakeup_detector(std::unique_ptr<WakeupDetector>(new WakeupDetector()))
 {
-    wakeup_detector = std::unique_ptr<WakeupDetector>(new WakeupDetector());
     wakeup_detector->setListener(this);
 
     CapabilityManager::getInstance()->addFocus("kwd", NUGU_FOCUS_TYPE_WAKEWORD, this);

@@ -325,7 +325,7 @@ void TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& 
     std::string event_json;
     std::string skml = text;
 
-    if (text.size() <= 0)
+    if (text.size() == 0)
         return;
 
     if (text.find("<skml", 0) == std::string::npos)

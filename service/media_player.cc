@@ -35,7 +35,7 @@ static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
 
 class MediaPlayerPrivate {
 public:
-    MediaPlayerPrivate(int vol)
+    explicit MediaPlayerPrivate(int vol)
         : state(MediaPlayerState::IDLE)
         , playurl("")
         , player_name("")
@@ -280,9 +280,7 @@ bool MediaPlayer::seek(int sec)
 
     int next_position = sec + d->position;
 
-    if (!d->position && !d->duration)
-        sec = sec;
-    else if (next_position < 0)
+    if (next_position < 0)
         sec = 0;
     else if (next_position > d->duration)
         sec = d->duration - d->position;
