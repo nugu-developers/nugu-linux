@@ -355,17 +355,17 @@ EXPORT_API void nugu_log_print(enum nugu_log_module module,
 	}
 }
 
-EXPORT_API int nugu_log_set_system(enum nugu_log_system system)
+EXPORT_API int nugu_log_set_system(enum nugu_log_system log_system)
 {
-	if (system > NUGU_LOG_SYSTEM_CUSTOM) {
-		nugu_error("invalid system(%d)", system);
+	if (log_system > NUGU_LOG_SYSTEM_CUSTOM) {
+		nugu_error("invalid log system(%d)", log_system);
 		return -EINVAL;
 	}
 
 	if (_log_override_enabled)
 		return 0;
 
-	_log_system = system;
+	_log_system = log_system;
 
 	return 0;
 }

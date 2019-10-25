@@ -26,10 +26,15 @@
 
 #define BASE_TIMESTAMP 1546300800 /* GMT: 2019/1/1 00:00:00 */
 
-static void _convert_base16(const unsigned char *input, size_t input_len,
-			    char *out)
+static int _convert_base16(const unsigned char *input, size_t input_len,
+			    char *out, size_t output_len)
 {
 	size_t i;
+
+	if (output_len < input_len * 2) {
+		nugu_error("buffer size not enough");
+		return -1;
+	}
 
 	for (i = 0; i < input_len; i++) {
 		uint8_t upper;
@@ -50,36 +55,8 @@ static void _convert_base16(const unsigned char *input, size_t input_len,
 	}
 
 	out[input_len * 2] = '\0';
-}
 
-static void _convert_bytes(const char *base16, size_t input_len,
-			   unsigned char *out)
-{
-	size_t i;
-
-	for (i = 0; i < input_len; i += 2) {
-		uint8_t upper;
-		uint8_t lower;
-
-		upper = base16[i];
-		lower = base16[i + 1];
-
-		if (upper >= 'a')
-			upper = upper - 'a' + 10;
-		else if (upper >= 'A')
-			upper = upper - 'A' + 10;
-		else
-			upper = upper - '0';
-
-		if (lower >= 'a')
-			lower = lower - 'a' + 10;
-		else if (lower >= 'A')
-			lower = lower - 'A' + 10;
-		else
-			lower = lower - '0';
-
-		out[i / 2] = (upper << 4) | lower;
-	}
+	return 0;
 }
 
 /**
@@ -94,7 +71,7 @@ EXPORT_API char *nugu_uuid_generate_short(void)
 	RAND_status();
 	RAND_bytes(buf, 8);
 
-	_convert_base16(buf, 8, base16);
+	_convert_base16(buf, sizeof(buf), base16, sizeof(base16));
 
 	return strdup(base16);
 }
@@ -108,7 +85,6 @@ EXPORT_API char *nugu_uuid_generate_short(void)
  */
 EXPORT_API char *nugu_uuid_generate_time(void)
 {
-	unsigned char mdbuf[SHA_DIGEST_LENGTH];
 	unsigned char buf[16];
 	char base16[33];
 	struct timespec spec;
@@ -135,6 +111,8 @@ EXPORT_API char *nugu_uuid_generate_time(void)
 
 	seed = nugu_config_get(NUGU_CONFIG_KEY_TOKEN);
 	if (seed) {
+		unsigned char mdbuf[SHA_DIGEST_LENGTH];
+
 		SHA1((unsigned char *)seed, strlen(seed), mdbuf);
 		memcpy(buf + 8, mdbuf, 8);
 	} else {
@@ -142,28 +120,7 @@ EXPORT_API char *nugu_uuid_generate_time(void)
 		RAND_bytes(buf + 8, 8);
 	}
 
-	_convert_base16(buf, 16, base16);
+	_convert_base16(buf, sizeof(buf), base16, sizeof(base16));
 
 	return strdup(base16);
-}
-
-EXPORT_API void nugu_dump_timeuuid(const char *uuid)
-{
-	time_t cur_time;
-	unsigned char buf[16];
-	struct tm tt;
-	char timestr[30];
-
-	_convert_bytes(uuid, 32, buf);
-
-	cur_time = (buf[0] << 24) | (buf[1] << 16) | (buf[2] << 8) | (buf[3]);
-	cur_time = BASE_TIMESTAMP + cur_time / 10;
-	localtime_r(&cur_time, &tt);
-	asctime_r(&tt, timestr);
-
-	/* Remove new-line */
-	if (strlen(timestr) > 0)
-		timestr[strlen(timestr) - 1] = '\0';
-
-	nugu_dbg("Phase: %d, Time:%d (UTC %s)", buf[4], cur_time, timestr);
 }

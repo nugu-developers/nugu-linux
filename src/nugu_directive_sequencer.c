@@ -63,13 +63,13 @@ EXPORT_API int nugu_dirseq_add_callback(DirseqCallback callback, void *userdata)
 EXPORT_API int nugu_dirseq_remove_callback(DirseqCallback callback)
 {
 	GList *l;
-	struct _dirseq_callback *cb;
 
 	g_return_val_if_fail(callback != NULL, -1);
 
 	l = list_callbacks;
 	while (l != NULL) {
-		cb = l->data;
+		struct _dirseq_callback *cb = l->data;
+
 		if (cb->callback != callback) {
 			l = l->next;
 			continue;

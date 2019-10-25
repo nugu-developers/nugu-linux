@@ -47,8 +47,6 @@ V1Ping *v1_ping_new(H2Manager *mgr, const GatewayHealthPolicy *policy)
 	ping->host = g_strdup_printf("%s/v1/ping", h2manager_peek_host(mgr));
 	memcpy(&ping->policy, policy, sizeof(GatewayHealthPolicy));
 
-	srand((unsigned int)time(0));
-
 	return ping;
 }
 
@@ -87,9 +85,9 @@ static int _get_next_timeout(V1Ping *ping)
 	int timeout;
 
 	/**
-	 * max(ttl_max * (0 < rand() <= 1), ttl)
+	 * max(ttl_max * (0 < random() <= 1), ttl)
 	 */
-	timeout = ping->policy.ttl_max  * (rand() / (float)RAND_MAX * 1.0f);
+	timeout = ping->policy.ttl_max  * (random() / (float)RAND_MAX * 1.0f);
 	if (timeout < ping->policy.ttl)
 		timeout = ping->policy.ttl;
 
