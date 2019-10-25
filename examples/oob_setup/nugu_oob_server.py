@@ -9,13 +9,17 @@ os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
 PORT = 8080
 
-# Receive from companion application
 if 'NUGU_CONFIG_PATH' in os.environ:
     CONFIG_PATH = os.environ['NUGU_CONFIG_PATH']
 else:
     CONFIG_PATH = '/var/lib/nugu'
-
 print 'Configuration path = %s' % CONFIG_PATH
+
+if 'NUGU_OAUTH2_URL' in os.environ:
+    OAUTH2_URL = os.environ['NUGU_OAUTH2_URL']
+else:
+    OAUTH2_URL = 'https://api.sktnugu.com/'
+print 'OAuth2 url = %s' % OAUTH2_URL
 
 if os.path.isdir(CONFIG_PATH):
     print 'path exist'
@@ -42,8 +46,8 @@ DEFAULT_JSON_OAUTH = """{
 }
 """
 
-authorization_base_url = 'https://api.sktnugu.com/v1/auth/oauth/authorize'
-token_url = 'https://api.sktnugu.com/v1/auth/oauth/token'
+authorization_base_url = OAUTH2_URL + '/v1/auth/oauth/authorize'
+token_url = OAUTH2_URL + '/v1/auth/oauth/token'
 redirect_uri = 'http://lvh.me:8080/callback'
 
 app = Flask(__name__)
