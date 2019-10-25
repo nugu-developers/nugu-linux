@@ -153,7 +153,7 @@ typedef void (*nugu_log_handler)(enum nugu_log_module module,
  * @brief Set logging backend system
  * @see enum nugu_log_system
  */
-int nugu_log_set_system(enum nugu_log_system system);
+int nugu_log_set_system(enum nugu_log_system log_system);
 
 /**
  * @brief Set custom log handler

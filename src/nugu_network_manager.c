@@ -16,6 +16,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <sys/eventfd.h>
 #include <glib.h>
 #include <unistd.h>
@@ -122,8 +123,8 @@ static gboolean on_event(GIOChannel *channel, GIOCondition cond,
 		return FALSE;
 	}
 
-	nread = read(_network->efd, &ev, sizeof(uint64_t));
-	if (nread != sizeof(uint64_t)) {
+	nread = read(_network->efd, &ev, sizeof(ev));
+	if (nread == -1 || nread != sizeof(ev)) {
 		nugu_error("read failed");
 		return TRUE;
 	}
@@ -308,10 +309,15 @@ static void nugu_network_manager_free(NetworkManager *nm)
 
 EXPORT_API int nugu_network_manager_initialize(void)
 {
+	struct timespec spec;
+
 	if (_network) {
 		nugu_dbg("already initialized");
 		return 0;
 	}
+
+	clock_gettime(CLOCK_REALTIME, &spec);
+	srandom(spec.tv_nsec ^ spec.tv_sec);
 
 	_network = nugu_network_manager_new();
 	if (!_network)

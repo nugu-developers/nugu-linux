@@ -185,8 +185,8 @@ static void *_loop(void *data)
 			uint64_t ev = 0;
 			ssize_t nread;
 
-			nread = read(extra_fds[0].fd, &ev, sizeof(uint64_t));
-			if (nread != sizeof(uint64_t)) {
+			nread = read(extra_fds[0].fd, &ev, sizeof(ev));
+			if (nread == -1 || nread != sizeof(ev)) {
 				nugu_error("read failed");
 				break;
 			}
@@ -251,12 +251,12 @@ static void _init_once(void)
 
 	cinfo = curl_version_info(CURLVERSION_NOW);
 	if (cinfo) {
-		const char *const *proto;
-
 		nugu_dbg("curl %s (%s), ssl_version=%s", cinfo->version,
 			 cinfo->host, cinfo->ssl_version);
 
 		if (cinfo->protocols) {
+			const char *const *proto;
+
 			nugu_dbg("Supported protocols: ");
 			for (proto = cinfo->protocols; *proto; ++proto)
 				nugu_dbg("  <%s>", *proto);

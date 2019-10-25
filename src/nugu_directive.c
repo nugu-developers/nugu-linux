@@ -191,11 +191,11 @@ EXPORT_API const char *nugu_directive_peek_media_type(NuguDirective *ndir)
 EXPORT_API int nugu_directive_add_data(NuguDirective *ndir, size_t length,
 				       unsigned char *data)
 {
-	size_t written;
-
 	g_return_val_if_fail(ndir != NULL, -1);
 
 	if (length > 0) {
+		size_t written;
+
 		if (!data) {
 			nugu_error("invalid input (data is NULL)");
 			return -1;

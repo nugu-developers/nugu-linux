@@ -108,8 +108,13 @@ void SpeechRecognizer::loop(void)
             char pcm_buf[pcm_size];
 
             if (nugu_recorder_is_recording(rec) == 0) {
+                struct timespec ts;
+
+                ts.tv_sec = 0;
+                ts.tv_nsec = 10 * 1000 * 1000; /* 10ms */
+
                 nugu_dbg("Listening Thread: not recording state");
-                usleep(10 * 1000);
+                nanosleep(&ts, NULL);
                 continue;
             }
 

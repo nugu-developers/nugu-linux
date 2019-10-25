@@ -43,12 +43,6 @@ char *nugu_uuid_generate_short(void);
 char *nugu_uuid_generate_time(void);
 
 /**
- * @brief Parsing the time based UUID and dump to debug log
- * @param[in] uuid time based UUID string
- */
-void nugu_dump_timeuuid(const char *uuid);
-
-/**
  * @}
  */
 
