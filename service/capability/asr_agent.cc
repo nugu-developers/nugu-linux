@@ -145,6 +145,8 @@ ASRAgent::ASRAgent()
     , rec_event(nullptr)
     , timer(nullptr)
     , mic_off(false)
+    , asr_focus_listener(nullptr)
+    , expect_focus_listener(nullptr)
 {
 }
 

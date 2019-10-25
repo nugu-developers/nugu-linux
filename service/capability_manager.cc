@@ -47,7 +47,7 @@ static NuguFocusResult on_unfocus(NuguFocus* focus, NuguFocusResource rsrc,
 static NuguFocusStealResult on_steal_request(NuguFocus* focus, NuguFocusResource rsrc,
     void* event, NuguFocus* target, void* userdata)
 {
-    IFocusListener* listener = (IFocusListener*)userdata;
+    IFocusListener* listener = static_cast<IFocusListener*>(userdata);
 
     return listener->onStealRequest(rsrc, event, nugu_focus_get_type(target));
 }
@@ -86,7 +86,7 @@ void CapabilityManager::destroyInstance()
 
 DirseqReturn CapabilityManager::dirseqCallback(NuguDirective* ndir, void* userdata)
 {
-    CapabilityManager* agent = (CapabilityManager*)userdata;
+    CapabilityManager* agent = static_cast<CapabilityManager*>(userdata);
     const char* name_space = nugu_directive_peek_namespace(ndir);
     ICapabilityInterface* cap = agent->findCapability(std::string(name_space));
     if (!cap) {
