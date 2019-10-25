@@ -2,7 +2,6 @@
 
 from flask import Flask, request, redirect, session, json, url_for, make_response
 from flask.json import jsonify
-from flask_restful import Resource, Api
 from requests_oauthlib import OAuth2Session
 import os
 
