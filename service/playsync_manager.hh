@@ -39,16 +39,10 @@ public:
 
 class PlaySyncManager {
 public:
-    enum class HoldDuration {
-        SHORT,
-        MID,
-        LONG
-    };
-
     typedef struct display_renderer {
         IPlaySyncManagerListener* listener;
         CapabilityType cap_type;
-        HoldDuration duration = HoldDuration::SHORT;
+        std::string duration;
         std::pair<std::string, std::string> render_info;
         bool only_rendering = false;
     } DisplayRenderer;
@@ -72,6 +66,9 @@ private:
     bool removeStackElement(std::string ps_id, CapabilityType cap_type);
     void addRenderer(std::string ps_id, DisplayRenderer& renderer);
     void removeRenderer(std::string ps_id);
+    void setTimerInterval(const std::string& ps_id);
+
+    static const std::map<std::string, long> DURATION_MAP;
 
     template <typename T, typename V>
     std::vector<std::string> getKeyOfMap(std::map<T, V>& map);

@@ -28,6 +28,13 @@
 
 namespace NuguCore {
 
+const std::map<std::string, long> PlaySyncManager::DURATION_MAP = {
+    { "SHORT", HOLD_TIME_SHORT },
+    { "MID", HOLD_TIME_MID },
+    { "LONG", HOLD_TIME_LONG },
+    { "LONGEST", HOLD_TIME_LONGEST }
+};
+
 /*******************************************************************************
  * >>> Temp
  ******************************************************************************/
@@ -162,6 +169,7 @@ void PlaySyncManager::removeContext(std::string ps_id, CapabilityType cap_type, 
             nugu_dbg("[context] try to remove context by timer.");
 
             nugu_timer_set_callback(timer, timerCallback, &timer_cb_param);
+            setTimerInterval(ps_id);
             nugu_timer_start(timer);
         }
     }
@@ -226,6 +234,21 @@ void PlaySyncManager::removeRenderer(std::string ps_id)
         renderer_map[ps_id].listener->onReleaseContext(ps_id);
         renderer_map.erase(ps_id);
     }
+}
+
+void PlaySyncManager::setTimerInterval(const std::string& ps_id)
+{
+    long duration_time = DEFAULT_HOLD_TIME;
+
+    if (renderer_map.find(ps_id) != renderer_map.end()) {
+        try {
+            duration_time = DURATION_MAP.at(renderer_map.at(ps_id).duration);
+        } catch (std::out_of_range& exception) {
+            nugu_error(exception.what());
+        }
+    }
+
+    nugu_timer_set_interval(timer, duration_time);
 }
 
 template <typename T, typename V>
