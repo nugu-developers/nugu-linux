@@ -67,12 +67,14 @@ void DisplayAgent::processDirective(NuguDirective* ndir)
         return;
     }
     ps_id = root["playServiceId"].asString();
+    duration = root["duration"].asString();
 
     // sync display rendering with context
     PlaySyncManager::DisplayRenderer renderer;
     renderer.cap_type = getType();
     renderer.listener = this;
     renderer.only_rendering = true;
+    renderer.duration = duration;
     renderer.render_info = std::make_pair<std::string, std::string>(dname, message);
 
     playsync_manager->addContext(ps_id, getType(), renderer);
