@@ -466,7 +466,6 @@ void ASRAgent::parsingNotifyResult(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
-    std::string token;
     std::string result;
     std::string state;
 
@@ -475,7 +474,6 @@ void ASRAgent::parsingNotifyResult(const char* message)
         return;
     }
 
-    token = root["token"].asString();
     result = root["result"].asString();
     state = root["state"].asString();
 
@@ -484,11 +482,7 @@ void ASRAgent::parsingNotifyResult(const char* message)
         return;
     }
 
-    (void)token;
-
-    if (state == "PARTIAL" || state == "COMPLETE") {
-        clearResponseTimeout();
-    }
+    clearResponseTimeout();
 
     for (auto asr_listener : asr_listeners) {
         if (state == "PARTIAL")
