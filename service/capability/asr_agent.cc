@@ -223,8 +223,6 @@ void ASRAgent::processDirective(NuguDirective* ndir)
         parsingExpectSpeech(message);
     else if (!strcmp(dname, "NotifyResult"))
         parsingNotifyResult(message);
-    else if (!strcmp(dname, "StopCapture"))
-        parsingStopCapture(message);
     else
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
 
@@ -306,8 +304,7 @@ void ASRAgent::clearResponseTimeout()
     nugu_timer_stop(timer);
 }
 
-void ASRAgent::sendEventRecognize(unsigned char* data,
-    size_t length, bool is_end)
+void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_end)
 {
     Json::StyledWriter writer;
     Json::Value root;
@@ -354,8 +351,17 @@ void ASRAgent::sendEventResponseTimeout()
 
     nugu_event_set_context(event, getContextInfo().c_str());
 
-    sendEvent(event);
+    if (es_attr.is_handle) {
+        Json::StyledWriter writer;
+        Json::Value root;
+        std::string event_json;
 
+        root["playServiceId"] = es_attr.play_service_id;
+        event_json = writer.write(root);
+        nugu_event_set_json(event, event_json.c_str());
+    }
+
+    sendEvent(event);
     nugu_event_free(event);
 }
 
@@ -387,6 +393,29 @@ void ASRAgent::sendEventListenFailed()
     NuguEvent* event;
 
     event = nugu_event_new(getName().c_str(), "ListenFailed",
+        getVersion().c_str());
+
+    nugu_event_set_context(event, getContextInfo().c_str());
+
+    if (es_attr.is_handle) {
+        Json::StyledWriter writer;
+        Json::Value root;
+        std::string event_json;
+
+        root["playServiceId"] = es_attr.play_service_id;
+        event_json = writer.write(root);
+        nugu_event_set_json(event, event_json.c_str());
+    }
+
+    sendEvent(event);
+    nugu_event_free(event);
+}
+
+void ASRAgent::sendEventStopRecognize()
+{
+    NuguEvent* event;
+
+    event = nugu_event_new(getName().c_str(), "StopRecognize",
         getVersion().c_str());
 
     nugu_event_set_context(event, getContextInfo().c_str());
@@ -494,10 +523,6 @@ void ASRAgent::parsingNotifyResult(const char* message)
         else if (state == "ERROR")
             asr_listener->onError(ASRError::RECOGNIZE_ERROR);
     }
-}
-
-void ASRAgent::parsingStopCapture(const char* message)
-{
 }
 
 void ASRAgent::onListeningState(ListeningState state)

@@ -71,6 +71,7 @@ public:
     void sendEventResponseTimeout();
     void sendEventListenTimeout();
     void sendEventListenFailed();
+    void sendEventStopRecognize();
 
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void addListener(IASRListener* listener);
@@ -88,7 +89,6 @@ private:
     // parsing directive
     void parsingExpectSpeech(const char* message);
     void parsingNotifyResult(const char* message);
-    void parsingStopCapture(const char* message);
 
     void releaseASRSpeakFocus(bool is_cancel, ASRError error);
 
