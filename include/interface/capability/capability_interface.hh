@@ -133,6 +133,18 @@ public:
     virtual CapabilityType getType() = 0;
 
     /**
+     * @brief Get the capability name of the current object.
+     * @return capability name of the object
+     */
+    virtual std::string getName() = 0;
+
+    /**
+     * @brief Get the capability version of the current object.
+     * @return capability version of the object
+     */
+    virtual std::string getVersion() = 0;
+
+    /**
      * @brief Process directive received from Directive Sequencer.
      * @param[in] ndir directive
      */

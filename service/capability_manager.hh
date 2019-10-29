@@ -58,6 +58,7 @@ public:
     std::string makeAllContextInfoStack();
 
     void preprocessDirective(NuguDirective* ndir);
+    bool isSupportDirectiveVersion(std::string version, ICapabilityInterface* cap);
 
     void sendCommand(CapabilityType from, CapabilityType to, std::string command, std::string param);
     void sendCommandAll(std::string command, std::string param);
