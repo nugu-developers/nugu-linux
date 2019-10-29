@@ -179,7 +179,7 @@ void ASRAgent::initialize()
     speech_recognizer = std::unique_ptr<SpeechRecognizer>(new SpeechRecognizer());
     speech_recognizer->setListener(this);
 
-    std::string timeout = nugu_config_get(NuguConfig::Key::SERVER_RESPONSE_TIMEOUT.c_str());
+    std::string timeout = nugu_config_get(NuguConfig::Key::SERVER_RESPONSE_TIMEOUT_MSEC.c_str());
     timer = nugu_timer_new(std::stoi(timeout), 1);
     nugu_timer_set_callback(
         timer, [](void* userdata) {
