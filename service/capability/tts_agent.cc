@@ -17,9 +17,11 @@
 #include <glib.h>
 #include <stdlib.h>
 #include <string.h>
+#include <interface/nugu_configuration.hh>
 
 #include "nugu_log.h"
 #include "nugu_uuid.h"
+#include "nugu_config.h"
 #include "tts_agent.hh"
 
 namespace NuguCore {
@@ -264,6 +266,7 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
 {
     Json::Value tts;
 
+    tts["engine"] = nugu_config_get(NuguConfig::Key::TTS_ENGINE.c_str());
     tts["version"] = getVersion();
     switch (speak_status) {
     case -1:
@@ -383,7 +386,6 @@ void TTSAgent::parsingSpeak(const char* message, NuguDirective* ndir)
     std::string format;
     std::string text;
     std::string token;
-    std::string charge;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -393,7 +395,6 @@ void TTSAgent::parsingSpeak(const char* message, NuguDirective* ndir)
     format = root["format"].asString();
     text = root["text"].asString();
     token = root["token"].asString();
-    charge = root["charge"].asString();
     ps_id = root["playServiceId"].asString();
 
     if (format.size() == 0 || text.size() == 0 || token.size() == 0) {
@@ -401,7 +402,6 @@ void TTSAgent::parsingSpeak(const char* message, NuguDirective* ndir)
         return;
     }
 
-    (void)charge;
     cur_token = token;
 
     stopTTS();
@@ -430,7 +430,7 @@ void TTSAgent::parsingStop(const char* message)
     token = root["token"].asString();
     ps_id = root["playServiceId"].asString();
 
-    if (token.size() == 0 || ps_id.size() == 0) {
+    if (token.size() == 0) {
         nugu_error("There is no mandatory data in directive message");
         return;
     }

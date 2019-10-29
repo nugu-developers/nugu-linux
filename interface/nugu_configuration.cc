@@ -31,6 +31,7 @@ namespace NuguConfig {
             { Key::ASR_ENCODING, "COMPLETE" },
             { Key::SERVER_RESPONSE_TIMEOUT_MSEC, "10000" },
             { Key::MODEL_PATH, "./" },
+            { Key::TTS_ENGINE, "skt" },
             { Key::SERVER_TYPE, "PRD" },
             { Key::USER_AGENT, NUGU_USERAGENT },
             { Key::GATEWAY_REGISTRY_DNS, "reg-http.sktnugu.com" }
