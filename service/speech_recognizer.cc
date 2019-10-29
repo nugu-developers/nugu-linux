@@ -59,8 +59,8 @@ void SpeechRecognizer::loop(void)
     std::string timeout;
     std::string max_speech;
 
-    timeout = nugu_config_get(NuguConfig::Key::ASR_EPD_TIMEOUT.c_str());
-    max_speech = nugu_config_get(NuguConfig::Key::ASR_EPD_MAX_SPEECH.c_str());
+    timeout = nugu_config_get(NuguConfig::Key::ASR_EPD_TIMEOUT_SEC.c_str());
+    max_speech = nugu_config_get(NuguConfig::Key::ASR_EPD_MAX_SPEECH_SEC.c_str());
 
     epd_param.sample_rate = 16000;
     epd_param.max_speech_duration = std::stoi(max_speech);
