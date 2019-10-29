@@ -179,7 +179,8 @@ void ASRAgent::initialize()
     speech_recognizer = std::unique_ptr<SpeechRecognizer>(new SpeechRecognizer());
     speech_recognizer->setListener(this);
 
-    timer = nugu_timer_new(DEFAULT_RESPONSE_TIMEOUT, 1);
+    std::string timeout = nugu_config_get(NuguConfig::Key::SERVER_RESPONSE_TIMEOUT.c_str());
+    timer = nugu_timer_new(std::stoi(timeout), 1);
     nugu_timer_set_callback(
         timer, [](void* userdata) {
             ASRAgent* asr = static_cast<ASRAgent*>(userdata);

@@ -33,8 +33,6 @@ namespace NuguCore {
 
 using namespace NuguInterface;
 
-#define DEFAULT_RESPONSE_TIMEOUT (10 * 1000) // 10ms
-
 typedef struct expect_speech_attr {
     bool is_handle;
     std::string timeout;
