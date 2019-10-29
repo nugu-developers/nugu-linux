@@ -35,7 +35,10 @@ namespace NuguConfig {
         const std::string WAKEUP_WITH_LISTENING = "wakeup_with_listening";
         const std::string WAKEUP_WORD = "wakeup_word";
         const std::string ASR_EPD_TYPE = "asr_epd_type";
+        const std::string ASR_EPD_MAX_SPEECH = "asr_epd_max_speech";
+        const std::string ASR_EPD_TIMEOUT = "asr_epd_timeout";
         const std::string ASR_ENCODING = "asr_encoding";
+        const std::string SERVER_RESPONSE_TIMEOUT = "server_response_timeout";
         const std::string MODEL_PATH = "model_path";
         const std::string SERVER_TYPE = "server_type";
         const std::string USER_AGENT = NUGU_CONFIG_KEY_USER_AGENT;

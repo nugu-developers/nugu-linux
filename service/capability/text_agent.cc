@@ -17,6 +17,7 @@
 #include <glib.h>
 #include <stdlib.h>
 #include <string.h>
+#include <interface/nugu_configuration.hh>
 
 #include "capability_manager.hh"
 #include "nugu_log.h"
@@ -49,7 +50,8 @@ void TextAgent::initialize()
         return;
     }
 
-    timer = nugu_timer_new(DEFAULT_RESPONSE_TIMEOUT, 1);
+    std::string timeout = nugu_config_get(NuguConfig::Key::SERVER_RESPONSE_TIMEOUT.c_str());
+    timer = nugu_timer_new(std::stoi(timeout), 1);
     nugu_timer_set_callback(
         timer, [](void* userdata) {
             TextAgent* text = static_cast<TextAgent*>(userdata);

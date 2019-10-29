@@ -56,10 +56,15 @@ void SpeechRecognizer::loop(void)
     bool is_epd_end = false;
     std::string model_file;
     std::string model_path;
+    std::string timeout;
+    std::string max_speech;
+
+    timeout = nugu_config_get(NuguConfig::Key::ASR_EPD_TIMEOUT.c_str());
+    max_speech = nugu_config_get(NuguConfig::Key::ASR_EPD_MAX_SPEECH.c_str());
 
     epd_param.sample_rate = 16000;
-    epd_param.max_speech_duration = 10;
-    epd_param.time_out = 10;
+    epd_param.max_speech_duration = std::stoi(max_speech);
+    epd_param.time_out = std::stoi(timeout);
     epd_param.pause_length = 700;
 
     nugu_dbg("Listening Thread: started");

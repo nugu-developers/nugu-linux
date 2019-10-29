@@ -26,8 +26,6 @@ namespace NuguCore {
 
 using namespace NuguInterface;
 
-#define DEFAULT_RESPONSE_TIMEOUT (10 * 1000) // 10ms
-
 class TextAgent : public Capability, public ITextHandler {
 public:
     TextAgent();
