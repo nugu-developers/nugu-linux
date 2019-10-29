@@ -43,9 +43,9 @@ public:
     std::string getTypeName(CapabilityType type) override;
     CapabilityType getType() override;
     void setName(CapabilityType type);
-    std::string getName();
+    std::string getName() override;
     void setVersion(const std::string& ver);
-    std::string getVersion();
+    std::string getVersion() override;
 
     void destoryDirective(NuguDirective* ndir);
     void sendEvent(NuguEvent* event, bool is_end = false, size_t size = 0, unsigned char* data = NULL);

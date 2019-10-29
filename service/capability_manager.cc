@@ -15,6 +15,7 @@
  */
 
 #include <glib.h>
+#include <cmath>
 #include <stdlib.h>
 #include <string.h>
 
@@ -90,11 +91,19 @@ DirseqReturn CapabilityManager::dirseqCallback(NuguDirective* ndir, void* userda
     const char* name_space = nugu_directive_peek_namespace(ndir);
     ICapabilityInterface* cap = agent->findCapability(std::string(name_space));
     if (!cap) {
-        nugu_dbg("capability(%s) is not support", name_space);
+        nugu_warn("capability(%s) is not support", name_space);
         return DIRSEQ_REMOVE;
     }
 
     agent->preprocessDirective(ndir);
+
+    const char* version = nugu_directive_peek_version(ndir);
+    if (!agent->isSupportDirectiveVersion(version, cap)) {
+        nugu_error("directives[%s] cannot work on %s[%s] agent",
+            version, cap->getName().c_str(), cap->getVersion().c_str());
+        return DIRSEQ_REMOVE;
+    }
+
     cap->processDirective(ndir);
     return DIRSEQ_CONTINUE;
 }
@@ -180,6 +189,20 @@ std::string CapabilityManager::makeAllContextInfoStack()
 void CapabilityManager::preprocessDirective(NuguDirective* ndir)
 {
     sendCommandAll("directive_dialog_id", nugu_directive_peek_dialog_id(ndir));
+}
+
+bool CapabilityManager::isSupportDirectiveVersion(std::string version, ICapabilityInterface* cap)
+{
+    if (!version.size() || cap == nullptr)
+        return false;
+
+    int cur_ver = std::floor(std::stof(cap->getVersion()));
+    int dir_ver = std::floor(std::stof(version));
+
+    if (cur_ver != dir_ver)
+        return false;
+
+    return true;
 }
 
 void CapabilityManager::sendCommandAll(std::string command, std::string param)
