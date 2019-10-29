@@ -15,7 +15,6 @@
  */
 
 #include <algorithm>
-#include <iostream>
 
 #include "nugu_log.h"
 #include "playsync_manager.hh"
@@ -39,35 +38,28 @@ const std::map<std::string, long> PlaySyncManager::DURATION_MAP = {
  * >>> Temp
  ******************************************************************************/
 namespace Test {
-    const std::string C_WHITE = "\033[1;97m";
-    const std::string C_RESET = "\033[0m";
-
     void showAllContents(std::map<std::string, std::vector<CapabilityType>> context_map)
     {
-        std::string cap_name;
-
-        std::cout << C_WHITE
-                  << "\n>>>>> (ContextStack) >>>>>\n";
+        std::string context_log("\n>>>>> (ContextStack) >>>>>\n");
 
         for (auto context : context_map) {
-            std::cout << "[" << context.first << "] ";
+            context_log.append("[")
+                .append(context.first)
+                .append("] ");
 
             for (auto element : context.second) {
                 if (element == CapabilityType::TTS)
-                    cap_name = "TTS";
+                    context_log.append("TTS, ");
                 else if (element == CapabilityType::AudioPlayer)
-                    cap_name = "AudioPlayer";
-                else if (element == CapabilityType::Display)
-                    cap_name = "Display";
-
-                std::cout << cap_name
-                          << ", ";
+                    context_log.append("AudioPlayer, ");
             }
-            std::cout << std::endl;
+
+            context_log.append("\n");
         }
 
-        std::cout << "<<<<< (ContextStack) <<<<<\n"
-                  << C_RESET;
+        context_log.append("<<<<< (ContextStack) <<<<<\n");
+
+        nugu_dbg(context_log.c_str());
     }
 }
 /*******************************************************************************

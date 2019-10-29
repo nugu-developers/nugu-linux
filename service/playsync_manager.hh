@@ -39,13 +39,13 @@ public:
 
 class PlaySyncManager {
 public:
-    typedef struct display_renderer {
+    using DisplayRenderer = struct {
         IPlaySyncManagerListener* listener;
         CapabilityType cap_type;
         std::string duration;
         std::pair<std::string, std::string> render_info;
         bool only_rendering = false;
-    } DisplayRenderer;
+    };
 
 public:
     PlaySyncManager();
@@ -73,11 +73,11 @@ private:
     template <typename T, typename V>
     std::vector<std::string> getKeyOfMap(std::map<T, V>& map);
 
-    typedef struct timer_callback_param {
+    using TimerCallbackParam = struct {
         PlaySyncManager* instance;
         std::string ps_id;
         std::function<void()> callback; // temp : for holding function for stack log
-    } TimerCallbackParam;
+    };
 
     std::vector<std::string> context_stack;
     std::map<std::string, std::vector<CapabilityType>> context_map;
