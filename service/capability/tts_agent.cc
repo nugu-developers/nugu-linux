@@ -15,13 +15,13 @@
  */
 
 #include <glib.h>
+#include <interface/nugu_configuration.hh>
 #include <stdlib.h>
 #include <string.h>
-#include <interface/nugu_configuration.hh>
 
+#include "nugu_config.h"
 #include "nugu_log.h"
 #include "nugu_uuid.h"
-#include "nugu_config.h"
 #include "tts_agent.hh"
 
 namespace NuguCore {
@@ -288,15 +288,6 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
         tts["ttsActivity"] = "FINISHED";
 
     ctx[getName()] = tts;
-}
-
-std::string TTSAgent::getContextInfo()
-{
-    Json::Value ctx;
-    CapabilityManager* cmanager = CapabilityManager::getInstance();
-
-    updateInfoForContext(ctx);
-    return cmanager->makeContextInfo(ctx);
 }
 
 void TTSAgent::sendEventSpeechStarted(const std::string& token)

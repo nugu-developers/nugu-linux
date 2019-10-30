@@ -46,10 +46,6 @@ SystemAgent::~SystemAgent()
     }
 }
 
-void SystemAgent::initialize()
-{
-}
-
 void SystemAgent::processDirective(NuguDirective* ndir)
 {
     const char* dname;
@@ -92,15 +88,6 @@ void SystemAgent::updateInfoForContext(Json::Value& ctx)
     if (battery)
         root["battery"] = battery;
     ctx[getName()] = root;
-}
-
-std::string SystemAgent::getContextInfo(void)
-{
-    Json::Value ctx;
-    CapabilityManager* cmanager = CapabilityManager::getInstance();
-
-    updateInfoForContext(ctx);
-    return cmanager->makeContextInfo(ctx);
 }
 
 void SystemAgent::setCapabilityListener(ICapabilityListener* clistener)

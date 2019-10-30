@@ -184,15 +184,6 @@ void AudioPlayerAgent::updateInfoForContext(Json::Value& ctx)
     ctx[getName()] = aplayer;
 }
 
-std::string AudioPlayerAgent::getContextInfo()
-{
-    Json::Value ctx;
-    CapabilityManager* cmanager = CapabilityManager::getInstance();
-
-    updateInfoForContext(ctx);
-    return cmanager->makeContextInfo(ctx);
-}
-
 void AudioPlayerAgent::receiveCommand(CapabilityType from, std::string command, const std::string& param)
 {
     std::transform(command.begin(), command.end(), command.begin(), ::tolower);

@@ -32,13 +32,11 @@ public:
     DelegationAgent();
     virtual ~DelegationAgent();
 
-    void initialize() override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
-
     bool setContextInfo(const std::string& ps_id, const std::string& data) override;
     void removeContextInfo() override;
     void updateInfoForContext(Json::Value& ctx) override;
-    std::string getContextInfo();
+    std::string getContextInfo() override;
     void processDirective(NuguDirective* ndir) override;
     bool request() override;
 

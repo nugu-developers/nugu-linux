@@ -29,11 +29,9 @@ class DisplayAgent : public Capability, public IDisplayHandler, public IPlaySync
 public:
     DisplayAgent();
     virtual ~DisplayAgent();
-    void initialize() override;
 
     void processDirective(NuguDirective* ndir) override;
     void updateInfoForContext(Json::Value& ctx) override;
-    std::string getContextInfo();
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     // implement handler

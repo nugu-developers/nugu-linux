@@ -36,10 +36,6 @@ ExtensionAgent::~ExtensionAgent()
 {
 }
 
-void ExtensionAgent::initialize()
-{
-}
-
 void ExtensionAgent::processDirective(NuguDirective* ndir)
 {
     const char* dname = nugu_directive_peek_name(ndir);
@@ -72,22 +68,13 @@ void ExtensionAgent::updateInfoForContext(Json::Value& ctx)
     ctx[getName()] = extension;
 }
 
-std::string ExtensionAgent::getContextInfo()
-{
-    Json::Value ctx;
-    CapabilityManager* cmanager = CapabilityManager::getInstance();
-
-    updateInfoForContext(ctx);
-    return cmanager->makeContextInfo(ctx);
-}
-
 void ExtensionAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)
         extension_listener = dynamic_cast<IExtensionListener*>(clistener);
 }
 
-void ExtensionAgent::setContextData(std::string &data)
+void ExtensionAgent::setContextData(std::string& data)
 {
     Json::Value root;
     Json::Reader reader;
@@ -119,7 +106,7 @@ void ExtensionAgent::sendEventCommon(std::string ename)
     Json::Value root;
     Json::StyledWriter writer;
     root["playServiceId"] = ps_id;
-    if(ext_data.size())
+    if (ext_data.size())
         root["data"] = ext_data;
 
     nugu_event_set_json(event, writer.write(root).c_str());

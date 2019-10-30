@@ -238,15 +238,6 @@ void ASRAgent::updateInfoForContext(Json::Value& ctx)
     ctx[getName()] = asr;
 }
 
-std::string ASRAgent::getContextInfo()
-{
-    Json::Value ctx;
-    CapabilityManager* cmanager = CapabilityManager::getInstance();
-
-    updateInfoForContext(ctx);
-    return cmanager->makeContextInfo(ctx);
-}
-
 void ASRAgent::saveAllContextInfo()
 {
     all_context_info = CapabilityManager::getInstance()->makeAllContextInfoStack();

@@ -29,13 +29,11 @@ class ExtensionAgent : public Capability, public IExtensionHandler {
 public:
     ExtensionAgent();
     virtual ~ExtensionAgent();
-    void initialize() override;
 
     void processDirective(NuguDirective* ndir) override;
     void updateInfoForContext(Json::Value& ctx) override;
-    std::string getContextInfo();
     void setCapabilityListener(ICapabilityListener* clistener) override;
-    void setContextData(std::string &data) override;
+    void setContextData(std::string& data) override;
 
 private:
     void sendEventCommon(std::string ename);
