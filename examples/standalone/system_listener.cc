@@ -25,5 +25,27 @@ void SystemListener::onSystemMessageReport(SystemMessage message)
     case SystemMessage::ROUTE_ERROR_NOT_FOUND_PLAY:
         std::cout << "ROUTE_ERROR_NOT_FOUND_PLAY" << std::endl;
         break;
+    default:
+        std::cout << "invalid message" << std::endl;
+        break;
+    }
+}
+
+void SystemListener::onTurnOff()
+{
+    std::cout << "[SYSTEM] Device turn off" << std::endl;
+}
+
+void SystemListener::onRevoke(RevokeReason reason)
+{
+    std::cout << "[SYSTEM] ";
+
+    switch (reason) {
+    case RevokeReason::REVOKED_DEVICE:
+        std::cout << "REVOKED_DEVICE" << std::endl;
+        break;
+    default:
+        std::cout << "invalid reason" << std::endl;
+        break;
     }
 }

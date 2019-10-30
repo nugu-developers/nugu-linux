@@ -191,6 +191,12 @@ bool NuguClientImpl::initialize(void)
 
 void NuguClientImpl::deInitialize(void)
 {
+    ISystemHandler* sys_handler = dynamic_cast<ISystemHandler*>(getCapabilityHandler(CapabilityType::System));
+
+    // Send a disconnect event indicating normal termination
+    if (sys_handler)
+        sys_handler->disconnect();
+
     // release capabilities
     for (auto& element : icapability_map) {
         std::string cname = element.second.first->getTypeName(element.first);
@@ -220,7 +226,7 @@ void NuguClientImpl::onConnected()
     ISystemHandler* sys_handler = dynamic_cast<ISystemHandler*>(getCapabilityHandler(CapabilityType::System));
 
     if (sys_handler)
-        sys_handler->sendEventSynchronizeState();
+        sys_handler->synchronizeState();
 }
 
 INetworkManager* NuguClientImpl::getNetworkManager()

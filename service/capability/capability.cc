@@ -120,6 +120,7 @@ void Capability::sendEvent(NuguEvent* event, bool is_end, size_t size,
     if ((size && data) || is_end) {
         nugu_network_manager_send_event_data(event, is_end, size, data);
     } else {
+        CapabilityManager::getInstance()->sendCommand(getType(), CapabilityType::System, "activity", "");
         nugu_network_manager_send_event(event);
         // dialog_request_id is made every time to send event
         notifyObservers(DIALOG_REQUEST_ID, (void*)nugu_event_peek_dialog_id(event));
