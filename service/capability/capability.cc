@@ -79,7 +79,11 @@ std::string Capability::getTypeName(CapabilityType type)
     case CapabilityType::Extension:
         _name = "Extension";
         break;
+    case CapabilityType::Delegation:
+        _name = "Delegation";
+        break;
     }
+
     return _name;
 }
 

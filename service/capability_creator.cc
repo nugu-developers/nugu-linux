@@ -18,6 +18,7 @@
 
 #include "asr_agent.hh"
 #include "audio_player_agent.hh"
+#include "delegation_agent.hh"
 #include "display_agent.hh"
 #include "extension_agent.hh"
 #include "network_manager.hh"
@@ -36,7 +37,8 @@ const std::list<CapabilityType> CapabilityCreator::CAPABILITY_LIST {
     CapabilityType::System,
     CapabilityType::Display,
     CapabilityType::Extension,
-    CapabilityType::Text
+    CapabilityType::Text,
+    CapabilityType::Delegation
 };
 
 ICapabilityInterface* CapabilityCreator::createCapability(CapabilityType ctype)
@@ -56,6 +58,8 @@ ICapabilityInterface* CapabilityCreator::createCapability(CapabilityType ctype)
         return new ExtensionAgent();
     case CapabilityType::Text:
         return new TextAgent();
+    case CapabilityType::Delegation:
+        return new DelegationAgent();
     default:
         return nullptr;
     }

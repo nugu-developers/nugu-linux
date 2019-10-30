@@ -47,7 +47,8 @@ enum class CapabilityType {
     TTS, /**< the type of TTS agent */
     ASR, /**< the type of ASR agent */
     Text, /**< the type of Text agent */
-    Extension /**< the type of Extension agent */
+    Extension, /**< the type of Extension agent */
+    Delegation /**< the type of Delegation agent */
 };
 
 /**
