@@ -25,6 +25,7 @@
 #include <interface/capability/asr_interface.hh>
 #include <interface/capability/audio_player_interface.hh>
 #include <interface/capability/capability_interface.hh>
+#include <interface/capability/delegation_interface.hh>
 #include <interface/capability/display_interface.hh>
 #include <interface/capability/extension_interface.hh>
 #include <interface/capability/system_interface.hh>
@@ -172,6 +173,12 @@ public:
      * @return IExtensionHandler if a feature agent has been created with the feature builder, otherwise NULL
      */
     IExtensionHandler* getExtensionHandler();
+
+    /**
+     * @brief Get DelegationHandler object
+     * @return IDelegationHandler if a feature agent has been created with the feature builder, otherwise NULL
+     */
+    IDelegationHandler* getDelegationHandler();
 
     /**
      * @brief Get SystemHandler object

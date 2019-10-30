@@ -120,6 +120,11 @@ IExtensionHandler* NuguClient::getExtensionHandler()
     return dynamic_cast<IExtensionHandler*>(impl->getCapabilityHandler(CapabilityType::Extension));
 }
 
+IDelegationHandler* NuguClient::getDelegationHandler()
+{
+    return dynamic_cast<IDelegationHandler*>(impl->getCapabilityHandler(CapabilityType::Delegation));
+}
+
 ISystemHandler* NuguClient::getSystemHandler()
 {
     return dynamic_cast<ISystemHandler*>(impl->getCapabilityHandler(CapabilityType::System));
