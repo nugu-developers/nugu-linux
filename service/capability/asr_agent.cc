@@ -273,11 +273,11 @@ void ASRAgent::receiveCommand(CapabilityType from, std::string command, const st
 
 void ASRAgent::getProperty(const std::string& property, std::string& value)
 {
-    if (property == "playServiceId") {
+    if (property == "es.playServiceId") {
         value = es_attr.play_service_id;
-    } else if (property == "property") {
+    } else if (property == "es.property") {
         value = es_attr.property;
-    } else if (property == "sessionId") {
+    } else if (property == "es.sessionId") {
         value = es_attr.session_id;
     } else {
         value = "";
@@ -286,7 +286,7 @@ void ASRAgent::getProperty(const std::string& property, std::string& value)
 
 void ASRAgent::getProperties(const std::string& property, std::list<std::string>& values)
 {
-    if (property == "domainTypes") {
+    if (property == "es.domainTypes") {
         for (int i = 0; i < (int)es_attr.domain_types.size(); i++) {
             values.push_back(es_attr.domain_types[i].asString());
         }

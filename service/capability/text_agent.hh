@@ -43,6 +43,7 @@ public:
 
 private:
     void sendEventTextInput(const std::string& text, const std::string& token);
+    void sendEventTextSourceFailed(const std::string& text, const std::string& token);
     void parsingTextSource(const char* message);
 
     ITextListener* text_listener;
