@@ -124,11 +124,11 @@ MediaPlayer::MediaPlayer(int volume)
             break;
         case MEDIA_EVENT_MEDIA_INVALID:
             for (auto l : d->llist)
-                l->mediaEventReport(MediaPlayerEvent::INVALID_MEDIA);
+                l->mediaEventReport(MediaPlayerEvent::INVALID_MEDIA_URL);
             break;
         case MEDIA_EVENT_MEDIA_LOAD_FAILED:
             for (auto l : d->llist)
-                l->mediaEventReport(MediaPlayerEvent::LOADING_MEDIA);
+                l->mediaEventReport(MediaPlayerEvent::LOADING_MEDIA_FAILED);
             break;
         case MEDIA_EVENT_MEDIA_LOADED: {
             int duration = nugu_player_get_duration(player);
@@ -136,14 +136,14 @@ MediaPlayer::MediaPlayer(int volume)
                 mplayer->setDuration(duration);
 
             for (auto l : d->llist)
-                l->mediaLoaded();
+                l->mediaEventReport(MediaPlayerEvent::LOADING_MEDIA_SUCCESS);
         } break;
         case MEDIA_EVENT_END_OF_STREAM:
             // ignore STOP event after EOF
             d->state = MediaPlayerState::STOPPED;
 
             for (auto l : d->llist)
-                l->mediaFinished();
+                l->mediaEventReport(MediaPlayerEvent::PLAYING_MEDIA_FINISHED);
             break;
         default:
             break;
@@ -223,6 +223,9 @@ bool MediaPlayer::setSource(std::string url)
     if (nugu_player_set_source(d->player, d->playurl.c_str()) < 0)
         return false;
 
+    // set prepare state until media probed
+    setState(MediaPlayerState::PREPARE);
+
     return true;
 }
 
@@ -234,9 +237,6 @@ bool MediaPlayer::play()
     }
 
     nugu_dbg("request to play mediaplayer");
-
-    // set prepare state until media probed
-    d->state = MediaPlayerState::PREPARE;
 
     if (nugu_player_start(d->player) < 0)
         return false;
@@ -278,12 +278,8 @@ bool MediaPlayer::seek(int sec)
 {
     nugu_dbg("request to seek(%d) mediaplayer", sec);
 
-    int next_position = sec + d->position;
-
-    if (next_position < 0)
+    if (sec < 0)
         sec = 0;
-    else if (next_position > d->duration)
-        sec = d->duration - d->position;
 
     if (nugu_player_seek(d->player, sec) < 0)
         return false;
