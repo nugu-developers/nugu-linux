@@ -98,15 +98,6 @@ void TextAgent::updateInfoForContext(Json::Value& ctx)
     ctx[getName()] = text;
 }
 
-std::string TextAgent::getContextInfo()
-{
-    Json::Value ctx;
-    CapabilityManager* cmanager = CapabilityManager::getInstance();
-
-    updateInfoForContext(ctx);
-    return cmanager->makeContextInfo(ctx);
-}
-
 void TextAgent::receiveCommandAll(std::string command, const std::string& param)
 {
     std::transform(command.begin(), command.end(), command.begin(), ::tolower);

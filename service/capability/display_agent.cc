@@ -38,10 +38,6 @@ DisplayAgent::~DisplayAgent()
 {
 }
 
-void DisplayAgent::initialize()
-{
-}
-
 void DisplayAgent::processDirective(NuguDirective* ndir)
 {
     Json::Value root;
@@ -93,15 +89,6 @@ void DisplayAgent::updateInfoForContext(Json::Value& ctx)
     }
 
     ctx[getName()] = display;
-}
-
-std::string DisplayAgent::getContextInfo()
-{
-    Json::Value ctx;
-    CapabilityManager* cmanager = CapabilityManager::getInstance();
-
-    updateInfoForContext(ctx);
-    return cmanager->makeContextInfo(ctx);
 }
 
 void DisplayAgent::setCapabilityListener(ICapabilityListener* listener)

@@ -41,7 +41,6 @@ public:
 
     void processDirective(NuguDirective* ndir) override;
     void updateInfoForContext(Json::Value& ctx) override;
-    std::string getContextInfo();
 
     void stopTTS() override;
     void requestTTS(const std::string& text, const std::string& play_service_id) override;

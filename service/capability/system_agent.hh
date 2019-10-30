@@ -32,11 +32,9 @@ class SystemAgent : public Capability, public ISystemHandler {
 public:
     SystemAgent();
     virtual ~SystemAgent();
-    void initialize() override;
 
     void processDirective(NuguDirective* ndir) override;
     void updateInfoForContext(Json::Value& ctx) override;
-    std::string getContextInfo();
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;

@@ -38,6 +38,10 @@ Capability::~Capability()
         observers.clear();
 }
 
+void Capability::initialize()
+{
+}
+
 void Capability::setName(CapabilityType type)
 {
     cname = getTypeName(type);
@@ -137,6 +141,14 @@ void Capability::receiveCommand(CapabilityType from, std::string command, const 
 
 void Capability::receiveCommandAll(std::string command, const std::string& param)
 {
+}
+
+std::string Capability::getContextInfo()
+{
+    Json::Value ctx;
+    updateInfoForContext(ctx);
+
+    return CapabilityManager::getInstance()->makeContextInfo(ctx);
 }
 
 /********************************************************************

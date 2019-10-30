@@ -55,7 +55,6 @@ public:
 
     void processDirective(NuguDirective* ndir) override;
     void updateInfoForContext(Json::Value& ctx) override;
-    std::string getContextInfo();
     void saveAllContextInfo();
 
     void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;

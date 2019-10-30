@@ -33,10 +33,6 @@ DelegationAgent::~DelegationAgent()
 {
 }
 
-void DelegationAgent::initialize()
-{
-}
-
 void DelegationAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)

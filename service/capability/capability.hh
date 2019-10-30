@@ -38,7 +38,7 @@ class Capability : public ICapabilityInterface {
 public:
     Capability(CapabilityType type, const std::string& ver = "1.0");
     virtual ~Capability();
-    virtual void initialize() = 0;
+    virtual void initialize();
 
     std::string getTypeName(CapabilityType type) override;
     CapabilityType getType() override;
@@ -55,6 +55,7 @@ public:
     virtual void setCapabilityListener(ICapabilityListener* clistener) override;
     virtual void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;
     virtual void receiveCommandAll(std::string command, const std::string& param) override;
+    virtual std::string getContextInfo();
 
     // implements ICapabilityObservable
     void registerObserver(ICapabilityObserver* observer) override;
