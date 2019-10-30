@@ -35,6 +35,7 @@ public:
     void updateInfoForContext(Json::Value& ctx) override;
     std::string getContextInfo();
     void setCapabilityListener(ICapabilityListener* clistener) override;
+    void setContextData(std::string &data) override;
 
 private:
     void sendEventCommon(std::string ename);
@@ -43,8 +44,9 @@ private:
 
     void parsingAction(const char* message);
 
-    IExtensionListener* extension_listener = nullptr;
-    std::string ps_id = "";
+    IExtensionListener* extension_listener;
+    std::string ext_data;
+    std::string ps_id;
 };
 
 } // NuguCore

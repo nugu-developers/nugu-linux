@@ -64,6 +64,12 @@ public:
 class IExtensionHandler : public ICapabilityHandler {
 public:
     virtual ~IExtensionHandler() = default;
+
+    /**
+     * @brief Set the value of the context data field.
+     * @param[in] data data for context
+     */
+    virtual void setContextData(std::string &data) = 0;
 };
 
 /**
