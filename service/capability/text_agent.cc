@@ -15,9 +15,9 @@
  */
 
 #include <glib.h>
+#include <interface/nugu_configuration.hh>
 #include <stdlib.h>
 #include <string.h>
-#include <interface/nugu_configuration.hh>
 
 #include "capability_manager.hh"
 #include "nugu_log.h"
@@ -168,10 +168,10 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
     std::list<std::string> domainTypes;
 
     CapabilityManager* cmanager = CapabilityManager::getInstance();
-    cmanager->getCapabilityProperty(CapabilityType::ASR, "playServiceId", ps_id);
-    cmanager->getCapabilityProperty(CapabilityType::ASR, "property", property);
-    cmanager->getCapabilityProperty(CapabilityType::ASR, "sessionId", session_id);
-    cmanager->getCapabilityProperties(CapabilityType::ASR, "domainTypes", domainTypes);
+    cmanager->getCapabilityProperty(CapabilityType::ASR, "es.playServiceId", ps_id);
+    cmanager->getCapabilityProperty(CapabilityType::ASR, "es.property", property);
+    cmanager->getCapabilityProperty(CapabilityType::ASR, "es.sessionId", session_id);
+    cmanager->getCapabilityProperties(CapabilityType::ASR, "es.domainTypes", domainTypes);
 
     event = nugu_event_new(getName().c_str(), "TextInput",
         getVersion().c_str());
@@ -195,6 +195,30 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
             domainTypes.pop_front();
         }
     }
+    event_json = writer.write(root);
+
+    nugu_event_set_json(event, event_json.c_str());
+
+    sendEvent(event);
+
+    nugu_event_free(event);
+}
+
+void TextAgent::sendEventTextSourceFailed(const std::string& text, const std::string& token)
+{
+    Json::StyledWriter writer;
+    Json::Value root;
+    NuguEvent* event;
+    std::string event_json;
+
+    event = nugu_event_new(getName().c_str(), "TextSourceFailed",
+        getVersion().c_str());
+
+    nugu_event_set_context(event, getContextInfo().c_str());
+
+    root["text"] = text;
+    root["token"] = token;
+
     event_json = writer.write(root);
 
     nugu_event_set_json(event, event_json.c_str());
@@ -228,6 +252,7 @@ void TextAgent::parsingTextSource(const char* message)
 
     if (cur_state == TextState::BUSY) {
         nugu_warn("already request nugu service to the server");
+        sendEventTextSourceFailed(text, token);
         return;
     }
 
