@@ -69,9 +69,7 @@ public:
     void sendEventPlaybackStopped();
     void sendEventPlaybackPaused();
     void sendEventPlaybackResumed();
-
-    void sendEventPlaybackError(PlaybackError err, const std::string& reason);
-
+    void sendEventPlaybackFailed(PlaybackError err, const std::string& reason);
     void sendEventProgressReportDelayElapsed();
     void sendEventProgressReportIntervalElapsed();
     void sendEventByDisplayInterface(const std::string& command);

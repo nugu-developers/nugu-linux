@@ -49,8 +49,10 @@ enum class MediaPlayerState {
  * @brief MediaPlayerEvent
  */
 enum class MediaPlayerEvent {
-    INVALID_MEDIA, /**< Failed to load media content */
-    LOADING_MEDIA /**< Successful loading of media content */
+    INVALID_MEDIA_URL, /**< Invalid media content url */
+    LOADING_MEDIA_FAILED, /**< Loading of media content failed */
+    LOADING_MEDIA_SUCCESS, /**< Loading of media content success */
+    PLAYING_MEDIA_FINISHED /**< Playing media content to the end */
 };
 
 /**
@@ -70,16 +72,6 @@ public:
      * @param[in] event mediaplayer playback event
      */
     virtual void mediaEventReport(MediaPlayerEvent event) = 0;
-
-    /**
-     * @brief Report the media player playing media content to the end.
-     */
-    virtual void mediaFinished() = 0;
-
-    /**
-     * @brief Report the media player loading media content successfully.
-     */
-    virtual void mediaLoaded() = 0;
 
     /**
      * @brief The media player reports that the media content has changed.

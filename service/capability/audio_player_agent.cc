@@ -68,7 +68,7 @@ NuguFocusResult AudioPlayerAgent::onFocus(NuguFocusResource rsrc, void* event)
 
     if (!player->play()) {
         nugu_error("play media failed");
-        sendEventPlaybackError(AudioPlayerAgent::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
+        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
             "player can't play");
         return NUGU_FOCUS_FAIL;
     }
@@ -86,7 +86,7 @@ NuguFocusResult AudioPlayerAgent::onUnfocus(NuguFocusResource rsrc, void* event)
 
     if (!player->pause()) {
         nugu_error("pause media failed");
-        sendEventPlaybackError(AudioPlayerAgent::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
+        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
             "player can't pause");
         return NUGU_FOCUS_REMOVE;
     }
@@ -158,12 +158,10 @@ void AudioPlayerAgent::processDirective(NuguDirective* ndir)
         parsingPlay(message);
     else if (!strcmp(dname, "Pause"))
         parsingPause(message);
-    else if (!strcmp(dname, "Stop")) {
+    else if (!strcmp(dname, "Stop"))
         parsingStop(message);
-    } else {
-        nugu_warn("%s[%s] is not support %s directive", getName().c_str(),
-            getVersion().c_str(), dname);
-    }
+    else
+        nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
 
     destoryDirective(ndir);
 }
@@ -199,9 +197,8 @@ void AudioPlayerAgent::receiveCommand(CapabilityType from, std::string command, 
 {
     std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
-    if (!command.compare("setvolume")) {
+    if (!command.compare("setvolume"))
         player->setVolume(atoi(param.c_str()));
-    }
 }
 
 void AudioPlayerAgent::setCapabilityListener(ICapabilityListener* listener)
@@ -251,7 +248,7 @@ void AudioPlayerAgent::sendEventPlaybackResumed()
     sendEventCommon("PlaybackResumed");
 }
 
-void AudioPlayerAgent::sendEventPlaybackError(PlaybackError err, const std::string& reason)
+void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::string& reason)
 {
     Json::StyledWriter writer;
     Json::Value root;
@@ -288,15 +285,13 @@ void AudioPlayerAgent::sendEventPlaybackError(PlaybackError err, const std::stri
 
 void AudioPlayerAgent::sendEventProgressReportDelayElapsed()
 {
-    nugu_dbg("report_delay_time: %d, position: %d", report_delay_time / 1000,
-        player->position());
+    nugu_dbg("report_delay_time: %d, position: %d", report_delay_time / 1000, player->position());
     sendEventCommon("ProgressReportDelayElapsed");
 }
 
 void AudioPlayerAgent::sendEventProgressReportIntervalElapsed()
 {
-    nugu_dbg("report_interval_time: %d, position: %d",
-        report_interval_time / 1000, player->position());
+    nugu_dbg("report_interval_time: %d, position: %d", report_interval_time / 1000, player->position());
     sendEventCommon("ProgressReportIntervalElapsed");
 }
 
@@ -379,10 +374,8 @@ void AudioPlayerAgent::parsingPlay(const char* message)
 
     report = stream["progressReport"];
     if (!report.empty()) {
-        report_delay_time = report["progressReportDelayInMilliseconds"]
-                                .asLargestInt();
-        report_interval_time = report["progressReportIntervalInMilliseconds"]
-                                   .asLargestInt();
+        report_delay_time = report["progressReportDelayInMilliseconds"].asLargestInt();
+        report_interval_time = report["progressReportIntervalInMilliseconds"].asLargestInt();
     }
 
     PlaySyncManager::DisplayRenderer renderer;
@@ -410,26 +403,20 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     if (token != prev_token) {
         if (!player->stop()) {
             nugu_error("stop media failed");
-            sendEventPlaybackError(
-                AudioPlayerAgent::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
-                "player can't stop");
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
         }
     }
     cur_token = token;
 
     if (!player->setSource(url)) {
         nugu_error("set source failed");
-        sendEventPlaybackError(
-            AudioPlayerAgent::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
-            "can't set source");
+        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "can't set source");
         return;
     }
 
     if (offset >= 0 && !player->seek(offset / 1000)) {
         nugu_error("seek media failed");
-        sendEventPlaybackError(
-            AudioPlayerAgent::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
-            "can't seek");
+        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "can't seek");
         return;
     }
 
@@ -456,9 +443,7 @@ void AudioPlayerAgent::parsingPause(const char* message)
 
         if (!player->pause()) {
             nugu_error("pause media failed");
-            sendEventPlaybackError(
-                AudioPlayerAgent::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
-                "player can't pause");
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't pause");
         }
 
         CapabilityManager::getInstance()->releaseFocus("cap_audio", NUGU_FOCUS_RESOURCE_SPK);
@@ -492,9 +477,7 @@ void AudioPlayerAgent::parsingStop(const char* message)
 
         if (!player->stop()) {
             nugu_error("stop media failed");
-            sendEventPlaybackError(
-                AudioPlayerAgent::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
-                "player can't stop");
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
         }
     }
 }
@@ -556,6 +539,8 @@ void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
         break;
     case MediaPlayerState::PREPARE:
     case MediaPlayerState::READY:
+        prev_aplayer_state = AudioPlayerState::IDLE;
+        return;
         break;
     case MediaPlayerState::PLAYING:
         if (prev_aplayer_state == AudioPlayerState::PAUSED)
@@ -595,30 +580,25 @@ void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
 void AudioPlayerAgent::mediaEventReport(MediaPlayerEvent event)
 {
     switch (event) {
-    case MediaPlayerEvent::INVALID_MEDIA:
-        nugu_warn("INVALID_MEDIA");
-        sendEventPlaybackError(AudioPlayerAgent::MEDIA_ERROR_INVALID_REQUEST,
-            "media source is wrong");
+    case MediaPlayerEvent::INVALID_MEDIA_URL:
+        nugu_warn("INVALID_MEDIA_URL");
+        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INVALID_REQUEST, "media source is wrong");
         break;
-    case MediaPlayerEvent::LOADING_MEDIA:
-        nugu_warn("LOADING_MEDIA");
-        sendEventPlaybackError(
-            AudioPlayerAgent::MEDIA_ERROR_SERVICE_UNAVAILABLE,
-            "player can't play the media");
+    case MediaPlayerEvent::LOADING_MEDIA_FAILED:
+        nugu_warn("LOADING_MEDIA_FAILED");
+        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_SERVICE_UNAVAILABLE, "player can't play the media");
+        break;
+    case MediaPlayerEvent::LOADING_MEDIA_SUCCESS:
+        nugu_dbg("LOADING_MEDIA_SUCCESS");
+        break;
+    case MediaPlayerEvent::PLAYING_MEDIA_FINISHED:
+        nugu_dbg("PLAYING_MEDIA_FINISHED");
+        is_finished = true;
+        mediaStateChanged(MediaPlayerState::STOPPED);
         break;
     default:
         break;
     }
-}
-
-void AudioPlayerAgent::mediaFinished()
-{
-    is_finished = true;
-    mediaStateChanged(MediaPlayerState::STOPPED);
-}
-
-void AudioPlayerAgent::mediaLoaded()
-{
 }
 
 void AudioPlayerAgent::mediaChanged(const std::string& url)
