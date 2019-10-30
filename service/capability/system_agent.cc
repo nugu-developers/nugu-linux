@@ -21,7 +21,10 @@
 #include "capability_manager.hh"
 #include "nugu_config.h"
 #include "nugu_log.h"
+#include "nugu_network_manager.h"
 #include "system_agent.hh"
+
+#define DEFAULT_INACTIVITY_TIMEOUT (60 * 60) /* 1 hour */
 
 namespace NuguCore {
 
@@ -31,11 +34,16 @@ SystemAgent::SystemAgent()
     : Capability(CapabilityType::System, capability_version)
     , system_listener(nullptr)
     , battery(0)
+    , timer(nullptr)
 {
 }
 
 SystemAgent::~SystemAgent()
 {
+    if (timer) {
+        nugu_timer_delete(timer);
+        timer = nullptr;
+    }
 }
 
 void SystemAgent::initialize()
@@ -101,6 +109,50 @@ void SystemAgent::setCapabilityListener(ICapabilityListener* clistener)
         system_listener = dynamic_cast<ISystemListener*>(clistener);
 }
 
+void SystemAgent::receiveCommand(CapabilityType from, std::string command, const std::string& param)
+{
+    std::transform(command.begin(), command.end(), command.begin(), ::tolower);
+
+    if (!command.compare("activity")) {
+        nugu_dbg("update timer");
+        if (timer)
+            nugu_timer_start(timer);
+    }
+}
+
+void SystemAgent::synchronizeState(void)
+{
+    if (!timer) {
+        timer = nugu_timer_new(DEFAULT_INACTIVITY_TIMEOUT * 1000, 1);
+        nugu_timer_set_callback(
+            timer, [](void* userdata) {
+                SystemAgent* sa = static_cast<SystemAgent*>(userdata);
+
+                nugu_dbg("inactivity timeout");
+                sa->sendEventUserInactivityReport(DEFAULT_INACTIVITY_TIMEOUT);
+            },
+            this);
+    }
+
+    nugu_timer_start(timer);
+
+    sendEventSynchronizeState();
+}
+
+void SystemAgent::disconnect(void)
+{
+    if (timer)
+        nugu_timer_stop(timer);
+
+    sendEventDisconnect();
+}
+
+void SystemAgent::updateUserActivity(void)
+{
+    if (timer)
+        nugu_timer_start(timer);
+}
+
 void SystemAgent::sendEventSynchronizeState(void)
 {
     NuguEvent* event;
@@ -155,6 +207,8 @@ void SystemAgent::sendEventEcho(void)
 
 void SystemAgent::parsingResetUserInactivity(const char* message)
 {
+    if (timer)
+        nugu_timer_start(timer);
 }
 
 void SystemAgent::parsingHandoffConnection(const char* message)
@@ -189,6 +243,8 @@ void SystemAgent::parsingHandoffConnection(const char* message)
 
 void SystemAgent::parsingTurnOff(const char* message)
 {
+    if (system_listener)
+        system_listener->onTurnOff();
 }
 
 void SystemAgent::parsingUpdateState(const char* message)
@@ -271,6 +327,13 @@ void SystemAgent::parsingRevoke(const char* message)
     }
 
     nugu_dbg("reason: %s", reason.c_str());
+
+    if (reason.compare("REVOKED_DEVICE") == 0) {
+        if (system_listener)
+            system_listener->onRevoke(RevokeReason::REVOKED_DEVICE);
+    } else {
+        nugu_error("invalid reason");
+    }
 }
 
 } // NuguCore

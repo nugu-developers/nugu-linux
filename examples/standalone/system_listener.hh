@@ -28,6 +28,8 @@ public:
     virtual ~SystemListener() = default;
 
     void onSystemMessageReport(SystemMessage message) override;
+    void onTurnOff(void) override;
+    void onRevoke(RevokeReason reason) override;
 };
 
 #endif /* __TTS_LISTENER_H__ */

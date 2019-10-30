@@ -19,6 +19,7 @@
 
 #include <functional>
 
+#include <core/nugu_timer.h>
 #include <interface/capability/system_interface.hh>
 
 #include "capability.hh"
@@ -38,7 +39,13 @@ public:
     std::string getContextInfo();
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
-    void sendEventSynchronizeState(void) override;
+    void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;
+
+    void synchronizeState(void) override;
+    void disconnect(void) override;
+    void updateUserActivity(void) override;
+
+    void sendEventSynchronizeState(void);
     void sendEventUserInactivityReport(int seconds);
     void sendEventDisconnect(void);
     void sendEventEcho(void);
@@ -55,6 +62,7 @@ private:
 
     ISystemListener* system_listener;
     int battery;
+    NuguTimer* timer;
 };
 
 } // NuguCore
