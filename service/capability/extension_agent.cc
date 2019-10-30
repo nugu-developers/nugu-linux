@@ -26,6 +26,9 @@ static const std::string capability_version = "1.0";
 
 ExtensionAgent::ExtensionAgent()
     : Capability(CapabilityType::Extension, capability_version)
+    , extension_listener(nullptr)
+    , ext_data("")
+    , ps_id("")
 {
 }
 
@@ -84,6 +87,19 @@ void ExtensionAgent::setCapabilityListener(ICapabilityListener* clistener)
         extension_listener = dynamic_cast<IExtensionListener*>(clistener);
 }
 
+void ExtensionAgent::setContextData(std::string &data)
+{
+    Json::Value root;
+    Json::Reader reader;
+
+    if (!reader.parse(data, root)) {
+        nugu_error("data is not json format");
+        return;
+    }
+
+    ext_data = data;
+}
+
 void ExtensionAgent::sendEventActionSucceeded()
 {
     sendEventCommon("ActionSucceeded");
@@ -103,6 +119,8 @@ void ExtensionAgent::sendEventCommon(std::string ename)
     Json::Value root;
     Json::StyledWriter writer;
     root["playServiceId"] = ps_id;
+    if(ext_data.size())
+        root["data"] = ext_data;
 
     nugu_event_set_json(event, writer.write(root).c_str());
 
@@ -128,6 +146,8 @@ void ExtensionAgent::parsingAction(const char* message)
         nugu_error("There is no mandatory data in directive message");
         return;
     }
+
+    ext_data = "";
 
     if (extension_listener) {
         Json::StyledWriter writer;
