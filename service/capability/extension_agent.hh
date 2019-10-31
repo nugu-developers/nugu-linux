@@ -33,7 +33,6 @@ public:
     void processDirective(NuguDirective* ndir) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
-    void setContextData(std::string& data) override;
 
 private:
     void sendEventCommon(std::string ename);

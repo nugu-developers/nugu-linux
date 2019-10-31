@@ -24,7 +24,9 @@ using namespace NuguInterface;
 class ExtensionListener : public IExtensionListener {
 public:
     virtual ~ExtensionListener() = default;
-    ExtensionResult action(std::string data) override;
+
+    ExtensionResult receiveAction(std::string& data);
+    void requestContext(std::string& data);
 };
 
 #endif /* __EXTENSION_LISTENER_H__ */
