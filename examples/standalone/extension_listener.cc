@@ -18,7 +18,7 @@
 #include <iostream>
 #include <string.h>
 
-ExtensionResult ExtensionListener::action(std::string data)
+ExtensionResult ExtensionListener::receiveAction(std::string& data)
 {
     // TODO : need to handle argument and define method to execute related 3rd party application
 
@@ -27,4 +27,13 @@ ExtensionResult ExtensionListener::action(std::string data)
     std::cout << "=======================================================\n";
 
     return ExtensionResult::SUCCEEDED;
+}
+
+void ExtensionListener::requestContext(std::string& data)
+{
+    std::cout << "=======================================================\n";
+    std::cout << "Extension data: \"\"\n";
+    std::cout << "=======================================================\n";
+
+    data = "";
 }

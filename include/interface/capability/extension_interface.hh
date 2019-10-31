@@ -54,7 +54,13 @@ public:
      * @brief Pass it to the user to control the external application.
      * @param[in] data extension action message
      */
-    virtual ExtensionResult action(std::string data) = 0;
+    virtual ExtensionResult receiveAction(std::string& data) = 0;
+
+    /**
+     * @brief Request context information from the external application.
+     * @param[in] data context information
+     */
+    virtual void requestContext(std::string& data) = 0;
 };
 
 /**
@@ -64,12 +70,6 @@ public:
 class IExtensionHandler : public ICapabilityHandler {
 public:
     virtual ~IExtensionHandler() = default;
-
-    /**
-     * @brief Set the value of the context data field.
-     * @param[in] data data for context
-     */
-    virtual void setContextData(std::string &data) = 0;
 };
 
 /**
