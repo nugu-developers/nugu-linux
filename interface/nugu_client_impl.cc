@@ -33,6 +33,9 @@ using namespace NuguCore;
 NuguClientImpl::NuguClientImpl()
 {
     nugu_config_initialize();
+    readEnviromentVariables();
+    setDefaultConfigs();
+
     network_manager = std::unique_ptr<INetworkManager>(CapabilityCreator::createNetworkManager());
     network_manager->addListener(this);
 }
@@ -43,27 +46,27 @@ NuguClientImpl::~NuguClientImpl()
     nugu_config_deinitialize();
 }
 
-void NuguClientImpl::setAccessToken(std::string access_token)
-{
-    if (access_token.empty()) {
-        nugu_error("There are no access token");
-        return;
-    }
-
-    nugu_config_set(NUGU_CONFIG_KEY_TOKEN, access_token.c_str());
-}
-
 void NuguClientImpl::setConfig(const std::string& key, const std::string& value)
 {
-    config_map[key] = value;
+    if (config_env_map.find(key) == config_env_map.end()) {
+        config_map[key] = value;
+        nugu_config_set(key.c_str(), value.c_str());
+    }
 }
 
-void NuguClientImpl::setConfigs(std::map<std::string, std::string> cfgs)
+void NuguClientImpl::setConfigs(std::map<std::string, std::string>& cfgs)
 {
     if (cfgs.empty())
         return;
 
-    config_map.insert(cfgs.begin(), cfgs.end());
+    for (auto config : cfgs)
+        config_map[config.first] = config.second;
+
+    for (auto config : config_env_map)
+        config_map[config.first] = config.second;
+
+    for (auto config : config_map)
+        nugu_config_set(config.first.c_str(), config.second.c_str());
 }
 
 void NuguClientImpl::setListener(INuguClientListener* listener)
@@ -102,20 +105,22 @@ IWakeupHandler* NuguClientImpl::getWakeupHandler()
     return wakeup_handler;
 }
 
-void NuguClientImpl::setConfiguration(void)
+void NuguClientImpl::setDefaultConfigs(void)
 {
-    const std::map<std::string, std::string> default_config_map = NuguConfig::getDefaultValues(config_map);
-    config_map.insert(default_config_map.cbegin(), default_config_map.cend());
+    const std::map<std::string, std::string> default_config_map = NuguConfig::getDefaultValues();
 
-    for (auto config : config_map) {
+    for (auto config : default_config_map)
+        config_map[config.first] = config.second;
+
+    for (auto config : config_env_map)
+        config_map[config.first] = config.second;
+
+    for (auto config : config_map)
         nugu_config_set(config.first.c_str(), config.second.c_str());
-    }
 }
 
 int NuguClientImpl::create(void)
 {
-    setConfiguration();
-
     if (createCapabilities() <= 0) {
         nugu_error("No Capabilities are created");
         return -1;
@@ -233,4 +238,16 @@ INetworkManager* NuguClientImpl::getNetworkManager()
 {
     return network_manager.get();
 }
+
+void NuguClientImpl::readEnviromentVariables()
+{
+    std::string server_type;
+
+    server_type = getenv("NUGU_SERVER_TYPE");
+    if (server_type.size()) {
+        config_env_map[NuguConfig::Key::SERVER_TYPE] = server_type;
+        config_env_map[NuguConfig::Key::GATEWAY_REGISTRY_DNS] = NuguConfig::getGatewayRegistryDns(server_type);
+    }
+}
+
 } // NuguClientKit

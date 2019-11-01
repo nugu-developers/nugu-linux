@@ -335,9 +335,7 @@ int main(int argc, char** argv)
     network_manager_listener = std::unique_ptr<NetworkManagerListener>(new NetworkManagerListener());
 
     nugu_client = std::unique_ptr<NuguClient>(new NuguClient());
-    nugu_client->setAccessToken(getenv("NUGU_TOKEN"));
-
-    nugu_client->setConfig(NuguConfig::Key::SERVER_TYPE, "PRD");
+    nugu_client->setConfig(NuguConfig::Key::ACCESS_TOKEN, getenv("NUGU_TOKEN"));
     nugu_client->setConfig(NuguConfig::Key::MODEL_PATH, model_path);
     nugu_client->setListener(nugu_client_listener.get());
 

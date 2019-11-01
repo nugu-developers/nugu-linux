@@ -92,12 +92,6 @@ public:
     ~NuguClient();
 
     /**
-     * @brief Set access token for connection with NUGU server
-     * @param[in] access_token access token
-     */
-    void setAccessToken(std::string access_token);
-
-    /**
      * @brief Set config to change nugu sdk internal behavior
      * @param[in] key config key
      * @param[in] value config value

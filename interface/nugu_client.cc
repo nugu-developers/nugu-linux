@@ -50,11 +50,6 @@ NuguClient::~NuguClient()
 {
 }
 
-void NuguClient::setAccessToken(std::string access_token)
-{
-    impl->setAccessToken(access_token);
-}
-
 void NuguClient::setConfig(std::string key, std::string value)
 {
     impl->setConfig(key, value);
