@@ -39,42 +39,28 @@ void DelegationAgent::setCapabilityListener(ICapabilityListener* clistener)
         delegation_listener = dynamic_cast<IDelegationListener*>(clistener);
 }
 
-bool DelegationAgent::setContextInfo(const std::string& ps_id, const std::string& data)
-{
-    if (ps_id.empty() || data.empty()) {
-        nugu_error("The required datas are empty");
-        return false;
-    }
-
-    std::get<ContextInfo::IS_USE>(context_info) = true;
-    std::get<ContextInfo::PLAY_SERVICE_ID>(context_info) = ps_id;
-    std::get<ContextInfo::DATA>(context_info) = data;
-
-    return true;
-}
-
-void DelegationAgent::removeContextInfo()
-{
-    std::get<ContextInfo::IS_USE>(context_info) = false;
-    std::get<ContextInfo::PLAY_SERVICE_ID>(context_info).clear();
-    std::get<ContextInfo::DATA>(context_info).clear();
-}
-
 void DelegationAgent::updateInfoForContext(Json::Value& ctx)
 {
-    if (std::get<ContextInfo::IS_USE>(context_info)) {
-        Json::Value delegation;
-        delegation["version"] = getVersion();
-        delegation["playServiceId"] = std::get<ContextInfo::PLAY_SERVICE_ID>(context_info);
+    if (!delegation_listener) {
+        nugu_warn("DelegationListener is not set");
+        return;
+    }
 
+    std::string ps_id;
+    std::string data;
+
+    if (delegation_listener->requestContext(ps_id, data)) {
         Json::Value root;
         Json::Reader reader;
 
-        if (!reader.parse(std::get<ContextInfo::DATA>(context_info), root)) {
-            nugu_error("parsing error");
+        if (ps_id.empty() || !reader.parse(data, root)) {
+            nugu_error("The required parameters are not set");
             return;
         }
 
+        Json::Value delegation;
+        delegation["version"] = getVersion();
+        delegation["playServiceId"] = ps_id;
         delegation["data"] = root;
 
         ctx[getName()] = delegation;

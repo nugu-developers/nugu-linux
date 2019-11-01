@@ -29,3 +29,10 @@ void DelegationListener::delegate(const std::string& app_id, const std::string& 
               << "data : " << data
               << std::endl;
 }
+
+bool DelegationListener::requestContext(std::string& ps_id, std::string& data)
+{
+    // TODO: If it need to send context, set ps_id and data value and return true
+
+    return false;
+}
