@@ -49,7 +49,7 @@ namespace NuguConfig {
     }
 
     const NuguConfigType getDefaultValues();
-    const std::string& getGatewayRegistryDns(std::string& server_type);
+    const std::string getGatewayRegistryDns(std::string& server_type);
 }
 
 } // NuguInterface

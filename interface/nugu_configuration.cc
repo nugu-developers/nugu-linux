@@ -68,12 +68,14 @@ namespace NuguConfig {
         return DEFAULT_VALUES;
     }
 
-    const std::string& getGatewayRegistryDns(std::string& server_type)
+    const std::string getGatewayRegistryDns(std::string& server_type)
     {
+        std::string dns = DEFAULT_VALUES[Key::GATEWAY_REGISTRY_DNS];
+
         if (!isEqualString(server_type, DEFAULT_VALUES[Key::SERVER_TYPE]))
-            return DEFAULT_VALUES[Key::GATEWAY_REGISTRY_DNS].insert(0, toChangeCase(server_type, true).append("-"));
-        else
-            return DEFAULT_VALUES[Key::GATEWAY_REGISTRY_DNS];
+            return dns.insert(0, toChangeCase(server_type, true).append("-"));
+
+        return dns;
     }
 }
 
