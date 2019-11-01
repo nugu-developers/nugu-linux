@@ -62,11 +62,12 @@ NuguFocusResult ASRFocusListener::onFocus(NuguFocusResource rsrc, void* event)
 
     if (rsrc == NUGU_FOCUS_RESOURCE_MIC) {
         agent->saveAllContextInfo();
+        CapabilityManager::getInstance()->requestFocus("asr", NUGU_FOCUS_RESOURCE_SPK, NULL);
+
         if (agent->isExpectSpeechState()) {
             agent->resetExpectSpeechState();
             CapabilityManager::getInstance()->releaseFocus("expect", NUGU_FOCUS_RESOURCE_SPK);
         }
-        CapabilityManager::getInstance()->requestFocus("asr", NUGU_FOCUS_RESOURCE_SPK, NULL);
     } else if (rsrc == NUGU_FOCUS_RESOURCE_SPK) {
         speech_recognizer->startListening();
     }
