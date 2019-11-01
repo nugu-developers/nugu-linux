@@ -38,9 +38,8 @@ public:
     NuguClientImpl();
     virtual ~NuguClientImpl();
 
-    void setAccessToken(std::string access_token);
     void setConfig(const std::string& key, const std::string& value);
-    void setConfigs(std::map<std::string, std::string> cfgs);
+    void setConfigs(std::map<std::string, std::string>& cfgs);
     void setListener(INuguClientListener* listener);
     INuguClientListener* getListener();
     void registerCapability(const CapabilityType ctype, std::pair<ICapabilityInterface*, ICapabilityListener*> capability);
@@ -56,15 +55,17 @@ public:
     void onConnected() override;
 
 private:
+    int createCapabilities(void);
+    void setDefaultConfigs();
+    void readEnviromentVariables();
+
     std::map<CapabilityType, std::pair<ICapabilityInterface*, ICapabilityListener*>> icapability_map;
     std::map<std::string, std::string> config_map;
+    std::map<std::string, std::string> config_env_map;
     INuguClientListener* listener = nullptr;
     IWakeupHandler* wakeup_handler = nullptr;
     std::unique_ptr<INetworkManager> network_manager = nullptr;
     bool initialized = false;
-
-    int createCapabilities(void);
-    void setConfiguration(void);
 };
 
 } // NuguClientKit

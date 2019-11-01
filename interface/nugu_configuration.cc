@@ -26,13 +26,15 @@ namespace NuguConfig {
             { Key::WAKEUP_WITH_LISTENING, "false" },
             { Key::WAKEUP_WORD, "아리아" },
             { Key::ASR_EPD_TYPE, "CLIENT" },
-            { Key::ASR_EPD_TIMEOUT_SEC, "10" },
-            { Key::ASR_EPD_MAX_SPEECH_SEC, "10" },
+            { Key::ASR_EPD_TIMEOUT_SEC, "7" },
+            { Key::ASR_EPD_MAX_DURATION_SEC, "10" },
+            { Key::ASR_EPD_PAUSE_LENGTH_MSEC, "700" },
             { Key::ASR_ENCODING, "COMPLETE" },
             { Key::SERVER_RESPONSE_TIMEOUT_MSEC, "10000" },
             { Key::MODEL_PATH, "./" },
             { Key::TTS_ENGINE, "skt" },
             { Key::SERVER_TYPE, "PRD" },
+            { Key::ACCESS_TOKEN, "" },
             { Key::USER_AGENT, NUGU_USERAGENT },
             { Key::GATEWAY_REGISTRY_DNS, "reg-http.sktnugu.com" }
         };
@@ -66,24 +68,12 @@ namespace NuguConfig {
         return DEFAULT_VALUES;
     }
 
-    const NuguConfigType getDefaultValues(NuguConfigType& user_map)
+    const std::string& getGatewayRegistryDns(std::string& server_type)
     {
-        std::string server_type;
-
-        // set user defined SERVER_TYPE
-        if (getenv("NUGU_SERVER_TYPE"))
-            server_type = getenv("NUGU_SERVER_TYPE");
-
-        if (server_type.empty())
-            server_type = user_map[Key::SERVER_TYPE];
-
-        if (server_type.empty())
-            server_type = DEFAULT_VALUES[Key::SERVER_TYPE];
-
         if (!isEqualString(server_type, DEFAULT_VALUES[Key::SERVER_TYPE]))
-            DEFAULT_VALUES[Key::GATEWAY_REGISTRY_DNS].insert(0, toChangeCase(server_type, true).append("-"));
-
-        return DEFAULT_VALUES;
+            return DEFAULT_VALUES[Key::GATEWAY_REGISTRY_DNS].insert(0, toChangeCase(server_type, true).append("-"));
+        else
+            return DEFAULT_VALUES[Key::GATEWAY_REGISTRY_DNS];
     }
 }
 

@@ -35,19 +35,21 @@ namespace NuguConfig {
         const std::string WAKEUP_WITH_LISTENING = "wakeup_with_listening";
         const std::string WAKEUP_WORD = "wakeup_word";
         const std::string ASR_EPD_TYPE = "asr_epd_type";
-        const std::string ASR_EPD_MAX_SPEECH_SEC = "asr_epd_max_speech_sec";
+        const std::string ASR_EPD_MAX_DURATION_SEC = "asr_epd_max_duration_sec";
+        const std::string ASR_EPD_PAUSE_LENGTH_MSEC = "asr_epd_pause_length_msec";
         const std::string ASR_EPD_TIMEOUT_SEC = "asr_epd_timeout_sec";
         const std::string ASR_ENCODING = "asr_encoding";
         const std::string SERVER_RESPONSE_TIMEOUT_MSEC = "server_response_timeout_msec";
         const std::string MODEL_PATH = "model_path";
         const std::string TTS_ENGINE = "tts_engine";
         const std::string SERVER_TYPE = "server_type";
+        const std::string ACCESS_TOKEN = NUGU_CONFIG_KEY_TOKEN;
         const std::string USER_AGENT = NUGU_CONFIG_KEY_USER_AGENT;
         const std::string GATEWAY_REGISTRY_DNS = NUGU_CONFIG_KEY_GATEWAY_REGISTRY_DNS;
     }
 
     const NuguConfigType getDefaultValues();
-    const NuguConfigType getDefaultValues(NuguConfigType& user_map);
+    const std::string& getGatewayRegistryDns(std::string& server_type);
 }
 
 } // NuguInterface
