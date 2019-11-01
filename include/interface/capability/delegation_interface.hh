@@ -44,11 +44,18 @@ public:
 
     /**
      * @brief receive result of delegate directive
-     * @param[in] information for executing target application
-     * @param[in] identifier for request play service
-     * @param[in] data which is needed to handle by application
+     * @param[in] app_id information for executing target application
+     * @param[in] ps_id identifier for request play service
+     * @param[in] data data which is needed to handle by application
      */
     virtual void delegate(const std::string& app_id, const std::string& ps_id, const std::string& data) = 0;
+
+    /**
+     * @brief Request context information from the external application.
+     * @param[in] ps_id identifier for request play service
+     * @param[in] data context information
+     */
+    virtual bool requestContext(std::string& ps_id, std::string& data) = 0;
 };
 
 /**
@@ -64,19 +71,6 @@ public:
      * @return true if request succeed
      */
     virtual bool request() = 0;
-
-    /**
-     * @brief set context info which is needed to request play service
-     * @param[in] identifier for request play service
-     * @param[in] data which is needed to request play service
-     * @return true if setting context info succeed
-     */
-    virtual bool setContextInfo(const std::string& ps_id, const std::string& data) = 0;
-
-    /**
-     * @brief remove previous set context info
-     */
-    virtual void removeContextInfo() = 0;
 };
 
 /**

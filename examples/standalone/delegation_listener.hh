@@ -24,7 +24,9 @@ using namespace NuguInterface;
 class DelegationListener : public IDelegationListener {
 public:
     virtual ~DelegationListener() = default;
+
     void delegate(const std::string& app_id, const std::string& ps_id, const std::string& data) override;
+    bool requestContext(std::string& ps_id, std::string& data) override;
 };
 
 #endif /* __DELEGATION_LISTENER_H__ */
