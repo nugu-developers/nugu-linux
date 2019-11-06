@@ -142,54 +142,38 @@ void SystemAgent::updateUserActivity(void)
 
 void SystemAgent::sendEventSynchronizeState(void)
 {
-    NuguEvent* event;
-    CapabilityManager* agent = CapabilityManager::getInstance();
+    std::string ename = "SynchronizeState";
+    std::string payload = "";
 
-    event = nugu_event_new(getName().c_str(), "SynchronizeState",
-        getVersion().c_str());
-    nugu_event_set_context(event, agent->makeAllContextInfo().c_str());
-
-    sendEvent(event);
-    nugu_event_free(event);
+    sendEvent(ename, CapabilityManager::getInstance()->makeAllContextInfo(), payload);
 }
 
 void SystemAgent::sendEventUserInactivityReport(int seconds)
 {
-    NuguEvent* event;
+    std::string ename = "UserInactivityReport";
+    std::string payload = "";
     char buf[64];
 
     snprintf(buf, 64, "{\"inactiveTimeInSeconds\": %d}", seconds);
+    payload = buf;
 
-    event = nugu_event_new(getName().c_str(), "UserInactivityReport",
-        getVersion().c_str());
-    nugu_event_set_context(event, getContextInfo().c_str());
-    nugu_event_set_json(event, buf);
-
-    sendEvent(event);
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void SystemAgent::sendEventDisconnect(void)
 {
-    NuguEvent* event;
+    std::string ename = "Disconnect";
+    std::string payload = "";
 
-    event = nugu_event_new(getName().c_str(), "Disconnect",
-        getVersion().c_str());
-    nugu_event_set_context(event, getContextInfo().c_str());
-
-    sendEvent(event);
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void SystemAgent::sendEventEcho(void)
 {
-    NuguEvent* event;
+    std::string ename = "Echo";
+    std::string payload = "";
 
-    event = nugu_event_new(getName().c_str(), "Echo", getVersion().c_str());
-    nugu_event_set_context(event, getContextInfo().c_str());
-
-    sendEvent(event);
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void SystemAgent::parsingResetUserInactivity(const char* message)

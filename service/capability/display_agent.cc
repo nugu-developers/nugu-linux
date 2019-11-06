@@ -114,25 +114,16 @@ void DisplayAgent::elementSelected(const std::string& item_token)
 
 void DisplayAgent::sendEventElementSelected(const std::string& item_token)
 {
+    std::string ename = "ElementSelected";
+    std::string payload = "";
     Json::StyledWriter writer;
     Json::Value root;
-    NuguEvent* event;
-    std::string event_json;
-
-    event = nugu_event_new(getName().c_str(), "ElementSelected",
-        getVersion().c_str());
-
-    nugu_event_set_context(event, getContextInfo().c_str());
 
     root["playServiceId"] = ps_id;
     root["token"] = item_token;
-    event_json = writer.write(root);
+    payload = writer.write(root);
 
-    nugu_event_set_json(event, event_json.c_str());
-
-    sendEvent(event);
-
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void DisplayAgent::onSyncContext(const std::string& ps_id, std::pair<std::string, std::string> render_info)

@@ -90,7 +90,7 @@ private:
     void releaseASRSpeakFocus(bool is_cancel, ASRError error);
 
     ExpectSpeechAttr es_attr;
-    NuguEvent* rec_event;
+    CapabilityEvent* rec_event;
     NuguTimer* timer;
     bool mic_off;
     std::unique_ptr<SpeechRecognizer> speech_recognizer;

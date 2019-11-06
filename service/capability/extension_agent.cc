@@ -100,19 +100,14 @@ void ExtensionAgent::sendEventActionFailed()
 
 void ExtensionAgent::sendEventCommon(std::string ename)
 {
-    NuguEvent* event = nugu_event_new(getName().c_str(), ename.c_str(), getVersion().c_str());
-
-    nugu_event_set_context(event, getContextInfo().c_str());
-
+    std::string payload = "";
     Json::Value root;
     Json::StyledWriter writer;
+
     root["playServiceId"] = ps_id;
+    payload = writer.write(root);
 
-    nugu_event_set_json(event, writer.write(root).c_str());
-
-    sendEvent(event);
-
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void ExtensionAgent::parsingAction(const char* message)

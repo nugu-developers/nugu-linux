@@ -34,6 +34,24 @@ namespace NuguCore {
 
 using namespace NuguInterface;
 
+class Capability;
+class CapabilityEvent {
+public:
+    CapabilityEvent(const std::string& name, Capability* cap);
+    virtual ~CapabilityEvent();
+
+    std::string getDialogMessageId();
+    void setDialogMessageId(const std::string& id);
+
+    void sendEvent(const std::string& context, const std::string& payload);
+    void sendAttachmentEvent(bool is_end, size_t size, unsigned char* data);
+
+private:
+    Capability* capability;
+    NuguEvent* event;
+    std::string dialog_id;
+};
+
 class Capability : public ICapabilityInterface {
 public:
     Capability(CapabilityType type, const std::string& ver = "1.0");
@@ -48,7 +66,9 @@ public:
     std::string getVersion() override;
 
     void destoryDirective(NuguDirective* ndir);
-    void sendEvent(NuguEvent* event, bool is_end = false, size_t size = 0, unsigned char* data = NULL);
+    void sendEvent(const std::string& name, const std::string& context, const std::string& payload);
+    void sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload);
+    void sendAttachmentEvent(CapabilityEvent* event, bool is_end, size_t size, unsigned char* data);
 
     virtual void getProperty(const std::string& property, std::string& value) override;
     virtual void getProperties(const std::string& property, std::list<std::string>& values) override;

@@ -149,10 +149,10 @@ void TextAgent::notifyResponseTimeout()
 
 void TextAgent::sendEventTextInput(const std::string& text, const std::string& token)
 {
+    CapabilityEvent event("TextInput", this);
+    std::string payload = "";
     Json::StyledWriter writer;
     Json::Value root;
-    NuguEvent* event;
-    std::string event_json;
     std::string ps_id = "";
     std::string property = "";
     std::string session_id = "";
@@ -163,13 +163,6 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
     cmanager->getCapabilityProperty(CapabilityType::ASR, "es.property", property);
     cmanager->getCapabilityProperty(CapabilityType::ASR, "es.sessionId", session_id);
     cmanager->getCapabilityProperties(CapabilityType::ASR, "es.domainTypes", domainTypes);
-
-    event = nugu_event_new(getName().c_str(), "TextInput",
-        getVersion().c_str());
-
-    cur_dialog_id = nugu_event_peek_dialog_id(event);
-
-    nugu_event_set_context(event, getContextInfo().c_str());
 
     root["text"] = text;
     if (token.size())
@@ -186,37 +179,24 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
             domainTypes.pop_front();
         }
     }
-    event_json = writer.write(root);
+    payload = writer.write(root);
 
-    nugu_event_set_json(event, event_json.c_str());
-
-    sendEvent(event);
-
-    nugu_event_free(event);
+    cur_dialog_id = event.getDialogMessageId();
+    sendEvent(&event, getContextInfo(), payload);
 }
 
 void TextAgent::sendEventTextSourceFailed(const std::string& text, const std::string& token)
 {
+    std::string ename = "TextSourceFailed";
+    std::string payload = "";
     Json::StyledWriter writer;
     Json::Value root;
-    NuguEvent* event;
-    std::string event_json;
-
-    event = nugu_event_new(getName().c_str(), "TextSourceFailed",
-        getVersion().c_str());
-
-    nugu_event_set_context(event, getContextInfo().c_str());
 
     root["text"] = text;
     root["token"] = token;
+    payload = writer.write(root);
 
-    event_json = writer.write(root);
-
-    nugu_event_set_json(event, event_json.c_str());
-
-    sendEvent(event);
-
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void TextAgent::parsingTextSource(const char* message)

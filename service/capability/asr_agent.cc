@@ -159,7 +159,7 @@ ASRAgent::~ASRAgent()
     }
 
     if (rec_event) {
-        nugu_event_free(rec_event);
+        delete rec_event;
         rec_event = nullptr;
     }
 
@@ -301,16 +301,12 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
 {
     Json::StyledWriter writer;
     Json::Value root;
-    std::string event_json;
+    std::string payload = "";
 
     if (!rec_event) {
-        nugu_error("recorder event is not created");
+        nugu_error("recognize event is not created");
         return;
     }
-
-    dialog_id = nugu_event_peek_dialog_id(rec_event);
-
-    nugu_event_set_context(rec_event, all_context_info.c_str());
 
     root["codec"] = "SPEEX";
     root["property"] = "NORMAL";
@@ -323,108 +319,80 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
         root["playServiceId"] = es_attr.play_service_id;
         root["domainTypes"] = es_attr.domain_types;
 
-        if (!es_attr.property.empty()) {
+        if (!es_attr.property.empty())
             root["property"] = es_attr.property;
-        }
     }
+    payload = writer.write(root);
 
-    event_json = writer.write(root);
-
-    nugu_event_set_json(rec_event, event_json.c_str());
-
-    sendEvent(rec_event, is_end, length, data);
+    dialog_id = rec_event->getDialogMessageId();
+    if (length == 0 || data == nullptr)
+        sendEvent(rec_event, all_context_info, payload);
+    else
+        sendAttachmentEvent(rec_event, is_end, length, data);
 }
 
 void ASRAgent::sendEventResponseTimeout()
 {
-    NuguEvent* event;
-
-    event = nugu_event_new(getName().c_str(), "ResponseTimeout",
-        getVersion().c_str());
-
-    nugu_event_set_context(event, getContextInfo().c_str());
+    std::string ename = "ResponseTimeout";
+    std::string payload = "";
 
     if (es_attr.is_handle) {
         Json::StyledWriter writer;
         Json::Value root;
-        std::string event_json;
 
         root["playServiceId"] = es_attr.play_service_id;
-        event_json = writer.write(root);
-        nugu_event_set_json(event, event_json.c_str());
+        payload = writer.write(root);
     }
 
-    sendEvent(event);
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void ASRAgent::sendEventListenTimeout()
 {
-    NuguEvent* event;
-
-    event = nugu_event_new(getName().c_str(), "ListenTimeout",
-        getVersion().c_str());
-
-    nugu_event_set_context(event, getContextInfo().c_str());
+    std::string ename = "ListenTimeout";
+    std::string payload = "";
 
     if (es_attr.is_handle) {
         Json::StyledWriter writer;
         Json::Value root;
-        std::string event_json;
 
         root["playServiceId"] = es_attr.play_service_id;
-        event_json = writer.write(root);
-        nugu_event_set_json(event, event_json.c_str());
+        payload = writer.write(root);
     }
 
-    sendEvent(event);
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void ASRAgent::sendEventListenFailed()
 {
-    NuguEvent* event;
-
-    event = nugu_event_new(getName().c_str(), "ListenFailed",
-        getVersion().c_str());
-
-    nugu_event_set_context(event, getContextInfo().c_str());
+    std::string ename = "ListenFailed";
+    std::string payload = "";
 
     if (es_attr.is_handle) {
         Json::StyledWriter writer;
         Json::Value root;
-        std::string event_json;
 
         root["playServiceId"] = es_attr.play_service_id;
-        event_json = writer.write(root);
-        nugu_event_set_json(event, event_json.c_str());
+        payload = writer.write(root);
     }
 
-    sendEvent(event);
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void ASRAgent::sendEventStopRecognize()
 {
-    NuguEvent* event;
-
-    event = nugu_event_new(getName().c_str(), "StopRecognize",
-        getVersion().c_str());
-
-    nugu_event_set_context(event, getContextInfo().c_str());
+    std::string ename = "StopRecognize";
+    std::string payload = "";
 
     if (es_attr.is_handle) {
         Json::StyledWriter writer;
         Json::Value root;
-        std::string event_json;
 
         root["playServiceId"] = es_attr.play_service_id;
-        event_json = writer.write(root);
-        nugu_event_set_json(event, event_json.c_str());
+        payload = writer.write(root);
     }
 
-    sendEvent(event);
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void ASRAgent::setCapabilityListener(ICapabilityListener* clistener)
@@ -527,9 +495,9 @@ void ASRAgent::onListeningState(ListeningState state)
         clearResponseTimeout();
 
         if (rec_event)
-            nugu_event_free(rec_event);
+            delete rec_event;
 
-        rec_event = nugu_event_new(getName().c_str(), "Recognize", getVersion().c_str());
+        rec_event = new CapabilityEvent("Recognize", this);
 
         playsync_manager->onMicOn();
 
@@ -586,8 +554,8 @@ void ASRAgent::onListeningState(ListeningState state)
         nugu_dbg("ListeningState::DONE");
 
         if (rec_event) {
-            nugu_event_free(rec_event);
-            rec_event = NULL;
+            delete rec_event;
+            rec_event = nullptr;
         }
 
         // it consider cancel by user
