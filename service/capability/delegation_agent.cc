@@ -150,12 +150,10 @@ bool DelegationAgent::sendEventRequest()
         return false;
     }
 
-    NuguEvent* event = nugu_event_new(getName().c_str(), "Request", getVersion().c_str());
-    nugu_event_set_context(event, context_info.c_str());
+    std::string ename = "Request";
+    std::string payload = "";
 
-    sendEvent(event);
-    nugu_event_free(event);
-
+    sendEvent(ename, context_info, payload);
     return true;
 }
 

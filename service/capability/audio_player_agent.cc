@@ -241,21 +241,16 @@ void AudioPlayerAgent::sendEventPlaybackResumed()
 
 void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::string& reason)
 {
+    std::string ename = "PlaybackFailed";
+    std::string payload = "";
     Json::StyledWriter writer;
     Json::Value root;
-    NuguEvent* event;
-    std::string event_json;
     long offset = player->position() * 1000;
 
     if (offset < 0 && cur_token.size() == 0) {
         nugu_error("there is something wrong ");
         return;
     }
-
-    event = nugu_event_new(getName().c_str(), "PlaybackFailed",
-        getVersion().c_str());
-
-    nugu_event_set_context(event, getContextInfo().c_str());
 
     root["token"] = cur_token;
     root["playServiceId"] = ps_id;
@@ -265,13 +260,9 @@ void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::str
     root["currentPlaybackState.token"] = cur_token;
     root["currentPlaybackState.offsetInMilliseconds"] = std::to_string(offset);
     root["currentPlaybackState.playActivity"] = playerActivity(cur_aplayer_state);
-    event_json = writer.write(root);
+    payload = writer.write(root);
 
-    nugu_event_set_json(event, event_json.c_str());
-
-    sendEvent(event);
-
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void AudioPlayerAgent::sendEventProgressReportDelayElapsed()
@@ -293,10 +284,9 @@ void AudioPlayerAgent::sendEventByDisplayInterface(const std::string& command)
 
 void AudioPlayerAgent::sendEventCommon(std::string ename)
 {
+    std::string payload = "";
     Json::StyledWriter writer;
     Json::Value root;
-    NuguEvent* event;
-    std::string event_json;
     long offset = player->position() * 1000;
 
     if (offset < 0 && cur_token.size() == 0) {
@@ -304,21 +294,12 @@ void AudioPlayerAgent::sendEventCommon(std::string ename)
         return;
     }
 
-    event = nugu_event_new(getName().c_str(), ename.c_str(),
-        getVersion().c_str());
-
-    nugu_event_set_context(event, getContextInfo().c_str());
-
     root["token"] = cur_token;
     root["playServiceId"] = ps_id;
     root["offsetInMilliseconds"] = std::to_string(offset);
-    event_json = writer.write(root);
+    payload = writer.write(root);
 
-    nugu_event_set_json(event, event_json.c_str());
-
-    sendEvent(event);
-
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void AudioPlayerAgent::parsingPlay(const char* message)

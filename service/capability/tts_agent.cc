@@ -85,7 +85,7 @@ void TTSAgent::initialize()
     nugu_pcm_set_status_callback(pcm, pcmStatusCallback, this);
     nugu_pcm_set_event_callback(pcm, pcmEventCallback, this);
 
-    nugu_pcm_set_property(pcm, (NuguAudioProperty) { AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
+    nugu_pcm_set_property(pcm, (NuguAudioProperty){ AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
 
     CapabilityManager::getInstance()->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
@@ -313,10 +313,10 @@ void TTSAgent::sendEventSpeechStopped(const std::string& token)
 
 void TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id)
 {
+    std::string ename = "SpeechPlay";
+    std::string payload = "";
     Json::StyledWriter writer;
     Json::Value root;
-    NuguEvent* event;
-    std::string event_json;
     std::string skml = text;
 
     if (text.size() == 0)
@@ -325,11 +325,6 @@ void TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& 
     if (text.find("<skml", 0) == std::string::npos)
         skml = "<skml domain=\"general\">" + text + "</skml>";
 
-    event = nugu_event_new(getName().c_str(), "SpeechPlay",
-        getVersion().c_str());
-
-    nugu_event_set_context(event, getContextInfo().c_str());
-
     root["format"] = "SKML";
     root["text"] = skml;
     root["token"] = token;
@@ -337,37 +332,22 @@ void TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& 
         root["playServiceId"] = play_service_id;
     else
         root["playServiceId"] = ps_id;
-    event_json = writer.write(root);
+    payload = writer.write(root);
 
-    nugu_event_set_json(event, event_json.c_str());
-
-    sendEvent(event);
-
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void TTSAgent::sendEventCommon(const std::string& ename, const std::string& token)
 {
+    std::string payload = "";
     Json::StyledWriter writer;
     Json::Value root;
-    NuguEvent* event;
-    std::string event_json;
-
-    event = nugu_event_new(getName().c_str(), ename.c_str(),
-        getVersion().c_str());
-
-    nugu_event_set_context(event, getContextInfo().c_str());
 
     root["token"] = token;
     root["playServiceId"] = ps_id;
+    payload = writer.write(root);
 
-    event_json = writer.write(root);
-
-    nugu_event_set_json(event, event_json.c_str());
-
-    sendEvent(event);
-
-    nugu_event_free(event);
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void TTSAgent::parsingSpeak(const char* message, NuguDirective* ndir)

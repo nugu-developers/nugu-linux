@@ -24,6 +24,60 @@
 #include "nugu_log.h"
 
 namespace NuguCore {
+
+CapabilityEvent::CapabilityEvent(const std::string& name, Capability* cap)
+{
+    capability = cap;
+
+    event = nugu_event_new(cap->getName().c_str(), name.c_str(), cap->getVersion().c_str());
+    dialog_id = nugu_event_peek_dialog_id(event);
+}
+
+CapabilityEvent::~CapabilityEvent()
+{
+    if (event) {
+        nugu_event_free(event);
+        event = nullptr;
+    }
+}
+
+std::string CapabilityEvent::getDialogMessageId()
+{
+    return dialog_id;
+}
+
+void CapabilityEvent::setDialogMessageId(const std::string& id)
+{
+    dialog_id = id;
+    nugu_event_set_dialog_id(event, dialog_id.c_str());
+}
+
+void CapabilityEvent::sendEvent(const std::string& context, const std::string& payload)
+{
+    g_return_if_fail(event != NULL);
+
+    if (context.size())
+        nugu_event_set_context(event, context.c_str());
+
+    if (payload.size())
+        nugu_event_set_json(event, payload.c_str());
+
+    CapabilityManager* cap_manager = CapabilityManager::getInstance();
+    cap_manager->sendCommand(capability->getType(), CapabilityType::System, "activity", "");
+
+    nugu_network_manager_send_event(event);
+    // dialog_request_id is made every time to send event
+    capability->notifyObservers(DIALOG_REQUEST_ID, (void*)dialog_id.c_str());
+}
+
+void CapabilityEvent::sendAttachmentEvent(bool is_end, size_t size, unsigned char* data)
+{
+    g_return_if_fail(event != NULL);
+
+    if ((size && data) || is_end)
+        nugu_network_manager_send_event_data(event, is_end, size, data);
+}
+
 Capability::Capability(CapabilityType type, const std::string& ver)
     : ctype(type)
     , version(ver)
@@ -116,19 +170,27 @@ void Capability::getProperties(const std::string& property, std::list<std::strin
     values.clear();
 }
 
-void Capability::sendEvent(NuguEvent* event, bool is_end, size_t size,
-    unsigned char* data)
+void Capability::sendEvent(const std::string& name, const std::string& context, const std::string& payload)
 {
-    g_return_if_fail(event != NULL);
+    CapabilityEvent event(name, this);
 
-    if ((size && data) || is_end) {
-        nugu_network_manager_send_event_data(event, is_end, size, data);
-    } else {
-        CapabilityManager::getInstance()->sendCommand(getType(), CapabilityType::System, "activity", "");
-        nugu_network_manager_send_event(event);
-        // dialog_request_id is made every time to send event
-        notifyObservers(DIALOG_REQUEST_ID, (void*)nugu_event_peek_dialog_id(event));
-    }
+    event.sendEvent(context, payload);
+}
+
+void Capability::sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload)
+{
+    if (!event)
+        return;
+
+    event->sendEvent(context, payload);
+}
+
+void Capability::sendAttachmentEvent(CapabilityEvent* event, bool is_end, size_t size, unsigned char* data)
+{
+    if (!event)
+        return;
+
+    event->sendAttachmentEvent(is_end, size, data);
 }
 
 void Capability::setCapabilityListener(ICapabilityListener* clistener)
