@@ -182,7 +182,8 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
     payload = writer.write(root);
 
     cur_dialog_id = event.getDialogMessageId();
-    sendEvent(&event, getContextInfo(), payload);
+
+    sendEvent(&event, CapabilityManager::getInstance()->makeAllContextInfoStack(), payload);
 }
 
 void TextAgent::sendEventTextSourceFailed(const std::string& text, const std::string& token)
