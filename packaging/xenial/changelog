@@ -1,3 +1,9 @@
+nugu (0.3.1ubuntu1~xenial) xenial; urgency=medium
+
+  * Fixed the bug (about Recognize event, TextInfo event)
+
+ -- nugulinux <nugulinux@gmail.com>  Thu, 7 Nov 2019 16:00:00 +0900
+
 nugu (0.3.0ubuntu1~xenial) xenial; urgency=medium
 
   * Applied updated version of capability interface
