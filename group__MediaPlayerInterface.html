@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.1</span>
    </div>
   </td>
  </tr>
@@ -131,8 +131,10 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ga9a0e307c741ea670763d4c9e5c633b2f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MediaPlayerInterface.html#ga9a0e307c741ea670763d4c9e5c633b2f">NuguInterface::MediaPlayerEvent</a> { <a class="el" href="group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa6715efbf6b3bfdbc1cfe4e9e1344489f">NuguInterface::MediaPlayerEvent::INVALID_MEDIA</a>, 
-<a class="el" href="group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa4cc38b699816ec1a5561986583c992dc">NuguInterface::MediaPlayerEvent::LOADING_MEDIA</a>
+<tr class="memitem:ga9a0e307c741ea670763d4c9e5c633b2f"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__MediaPlayerInterface.html#ga9a0e307c741ea670763d4c9e5c633b2f">NuguInterface::MediaPlayerEvent</a> { <a class="el" href="group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa8c30cba168f5791d184af6ed7643b0d1">NuguInterface::MediaPlayerEvent::INVALID_MEDIA_URL</a>, 
+<a class="el" href="group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa1b5b0ec7563b006b267a82a514bcbb8b">NuguInterface::MediaPlayerEvent::LOADING_MEDIA_FAILED</a>, 
+<a class="el" href="group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa0d42d3f5ee2bf7356d33b623cfa12dfd">NuguInterface::MediaPlayerEvent::LOADING_MEDIA_SUCCESS</a>, 
+<a class="el" href="group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa8aa89e3b945415649b8fa48f74865763">NuguInterface::MediaPlayerEvent::PLAYING_MEDIA_FINISHED</a>
  }<tr class="memdesc:ga9a0e307c741ea670763d4c9e5c633b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">MediaPlayerEvent.  <a href="group__MediaPlayerInterface.html#ga9a0e307c741ea670763d4c9e5c633b2f">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:ga9a0e307c741ea670763d4c9e5c633b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,11 +217,17 @@ Enumerations</h2></td></tr>
 
 <p>MediaPlayerEvent. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="gga9a0e307c741ea670763d4c9e5c633b2fa6715efbf6b3bfdbc1cfe4e9e1344489f"></a>INVALID_MEDIA&#160;</td><td class="fielddoc">
-<p>Failed to load media content </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="gga9a0e307c741ea670763d4c9e5c633b2fa8c30cba168f5791d184af6ed7643b0d1"></a>INVALID_MEDIA_URL&#160;</td><td class="fielddoc">
+<p>Invalid media content url </p>
 </td></tr>
-<tr><td class="fieldname"><a class="anchor" id="gga9a0e307c741ea670763d4c9e5c633b2fa4cc38b699816ec1a5561986583c992dc"></a>LOADING_MEDIA&#160;</td><td class="fielddoc">
-<p>Successful loading of media content </p>
+<tr><td class="fieldname"><a class="anchor" id="gga9a0e307c741ea670763d4c9e5c633b2fa1b5b0ec7563b006b267a82a514bcbb8b"></a>LOADING_MEDIA_FAILED&#160;</td><td class="fielddoc">
+<p>Loading of media content failed </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga9a0e307c741ea670763d4c9e5c633b2fa0d42d3f5ee2bf7356d33b623cfa12dfd"></a>LOADING_MEDIA_SUCCESS&#160;</td><td class="fielddoc">
+<p>Loading of media content success </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga9a0e307c741ea670763d4c9e5c633b2fa8aa89e3b945415649b8fa48f74865763"></a>PLAYING_MEDIA_FINISHED&#160;</td><td class="fielddoc">
+<p>Playing media content to the end </p>
 </td></tr>
 </table>
 
@@ -230,7 +238,7 @@ Enumerations</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Oct 15 2019 10:18:54 for NUGU SDK Linux by
+    <li class="footer">Generated on Thu Nov 7 2019 16:17:58 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

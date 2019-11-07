@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.1</span>
    </div>
   </td>
  </tr>
@@ -141,18 +141,24 @@ $(document).ready(function(){initNavTree('classNuguInterface_1_1ICapabilityInter
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2786312beac6af584e97d9275eccd316"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a2786312beac6af584e97d9275eccd316">getProperties</a> (std::string property, std::list&lt; std::string &gt; &amp;values)=0</td></tr>
-<tr class="memdesc:a2786312beac6af584e97d9275eccd316"><td class="mdescLeft">&#160;</td><td class="mdescRight">It is possible to share own property values among objects.  <a href="#a2786312beac6af584e97d9275eccd316">More...</a><br /></td></tr>
-<tr class="separator:a2786312beac6af584e97d9275eccd316"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3ccd4a83aaef9de81e0c81f76f40de8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#ac3ccd4a83aaef9de81e0c81f76f40de8">getProperty</a> (std::string property, std::string &amp;value)=0</td></tr>
-<tr class="memdesc:ac3ccd4a83aaef9de81e0c81f76f40de8"><td class="mdescLeft">&#160;</td><td class="mdescRight">It is possible to share own property value among objects.  <a href="#ac3ccd4a83aaef9de81e0c81f76f40de8">More...</a><br /></td></tr>
-<tr class="separator:ac3ccd4a83aaef9de81e0c81f76f40de8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11624e64e5c2988f9bbebe184b9456e3"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a11624e64e5c2988f9bbebe184b9456e3">getName</a> ()=0</td></tr>
+<tr class="memdesc:a11624e64e5c2988f9bbebe184b9456e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the capability name of the current object.  <a href="#a11624e64e5c2988f9bbebe184b9456e3">More...</a><br /></td></tr>
+<tr class="separator:a11624e64e5c2988f9bbebe184b9456e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5730dfc9748e47d55d9b48aba2f2aa3f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a5730dfc9748e47d55d9b48aba2f2aa3f">getProperties</a> (const std::string &amp;property, std::list&lt; std::string &gt; &amp;values)=0</td></tr>
+<tr class="memdesc:a5730dfc9748e47d55d9b48aba2f2aa3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">It is possible to share own property values among objects.  <a href="#a5730dfc9748e47d55d9b48aba2f2aa3f">More...</a><br /></td></tr>
+<tr class="separator:a5730dfc9748e47d55d9b48aba2f2aa3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a2b2437ed312becca6cf00072367e4e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a9a2b2437ed312becca6cf00072367e4e">getProperty</a> (const std::string &amp;property, std::string &amp;value)=0</td></tr>
+<tr class="memdesc:a9a2b2437ed312becca6cf00072367e4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">It is possible to share own property value among objects.  <a href="#a9a2b2437ed312becca6cf00072367e4e">More...</a><br /></td></tr>
+<tr class="separator:a9a2b2437ed312becca6cf00072367e4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ac3902e86dd64d16c70d6d2fbe726c5"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__CapabilityInterface.html#gacf07cae71da4a8dcafc46ed5459bec7a">CapabilityType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a5ac3902e86dd64d16c70d6d2fbe726c5">getType</a> ()=0</td></tr>
 <tr class="memdesc:a5ac3902e86dd64d16c70d6d2fbe726c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the capability type of the current object.  <a href="#a5ac3902e86dd64d16c70d6d2fbe726c5">More...</a><br /></td></tr>
 <tr class="separator:a5ac3902e86dd64d16c70d6d2fbe726c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e36b9961743f5a61702a05504c596f8"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a1e36b9961743f5a61702a05504c596f8">getTypeName</a> (<a class="el" href="group__CapabilityInterface.html#gacf07cae71da4a8dcafc46ed5459bec7a">CapabilityType</a> type)=0</td></tr>
 <tr class="memdesc:a1e36b9961743f5a61702a05504c596f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the capability type name of the current object.  <a href="#a1e36b9961743f5a61702a05504c596f8">More...</a><br /></td></tr>
 <tr class="separator:a1e36b9961743f5a61702a05504c596f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5987bc6485133e8c4eb9fc4da1e2d895"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a5987bc6485133e8c4eb9fc4da1e2d895">getVersion</a> ()=0</td></tr>
+<tr class="memdesc:a5987bc6485133e8c4eb9fc4da1e2d895"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the capability version of the current object.  <a href="#a5987bc6485133e8c4eb9fc4da1e2d895">More...</a><br /></td></tr>
+<tr class="separator:a5987bc6485133e8c4eb9fc4da1e2d895"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f861d606d2ffb92621f01f041cf5e76"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0f861d606d2ffb92621f01f041cf5e76"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a0f861d606d2ffb92621f01f041cf5e76">initialize</a> ()=0</td></tr>
 <tr class="memdesc:a0f861d606d2ffb92621f01f041cf5e76"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the current object. <br /></td></tr>
@@ -160,12 +166,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:ad220031d06942255cf012b6c10e6fcf7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#ad220031d06942255cf012b6c10e6fcf7">processDirective</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)=0</td></tr>
 <tr class="memdesc:ad220031d06942255cf012b6c10e6fcf7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process directive received from Directive Sequencer.  <a href="#ad220031d06942255cf012b6c10e6fcf7">More...</a><br /></td></tr>
 <tr class="separator:ad220031d06942255cf012b6c10e6fcf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab20cd46b7631140df3a679af378e1b17"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#ab20cd46b7631140df3a679af378e1b17">receiveCommand</a> (<a class="el" href="group__CapabilityInterface.html#gacf07cae71da4a8dcafc46ed5459bec7a">CapabilityType</a> from, std::string command, std::string param)=0</td></tr>
-<tr class="memdesc:ab20cd46b7631140df3a679af378e1b17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process commands from other objects.  <a href="#ab20cd46b7631140df3a679af378e1b17">More...</a><br /></td></tr>
-<tr class="separator:ab20cd46b7631140df3a679af378e1b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87838f9d0af3e86ec04293ec5262ed55"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a87838f9d0af3e86ec04293ec5262ed55">receiveCommandAll</a> (std::string command, std::string param)=0</td></tr>
-<tr class="memdesc:a87838f9d0af3e86ec04293ec5262ed55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes command received from capability manager.  <a href="#a87838f9d0af3e86ec04293ec5262ed55">More...</a><br /></td></tr>
-<tr class="separator:a87838f9d0af3e86ec04293ec5262ed55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acca53b279b80e9fbc9057157a0f6d79a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#acca53b279b80e9fbc9057157a0f6d79a">receiveCommand</a> (<a class="el" href="group__CapabilityInterface.html#gacf07cae71da4a8dcafc46ed5459bec7a">CapabilityType</a> from, std::string command, const std::string &amp;param)=0</td></tr>
+<tr class="memdesc:acca53b279b80e9fbc9057157a0f6d79a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process commands from other objects.  <a href="#acca53b279b80e9fbc9057157a0f6d79a">More...</a><br /></td></tr>
+<tr class="separator:acca53b279b80e9fbc9057157a0f6d79a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74e16481867af0c22ed2012397236fef"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a74e16481867af0c22ed2012397236fef">receiveCommandAll</a> (std::string command, const std::string &amp;param)=0</td></tr>
+<tr class="memdesc:a74e16481867af0c22ed2012397236fef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes command received from capability manager.  <a href="#a74e16481867af0c22ed2012397236fef">More...</a><br /></td></tr>
+<tr class="separator:a74e16481867af0c22ed2012397236fef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44f7d0d72ae9f06044fa1a3068cbe416"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a44f7d0d72ae9f06044fa1a3068cbe416">setCapabilityListener</a> (<a class="el" href="classNuguInterface_1_1ICapabilityListener.html">ICapabilityListener</a> *clistener)=0</td></tr>
 <tr class="memdesc:a44f7d0d72ae9f06044fa1a3068cbe416"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the listener object.  <a href="#a44f7d0d72ae9f06044fa1a3068cbe416">More...</a><br /></td></tr>
 <tr class="separator:a44f7d0d72ae9f06044fa1a3068cbe416"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -248,6 +254,58 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
+<a class="anchor" id="a11624e64e5c2988f9bbebe184b9456e3"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::string NuguInterface::ICapabilityInterface::getName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the capability name of the current object. </p>
+<dl class="section return"><dt>Returns</dt><dd>capability name of the object </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a5987bc6485133e8c4eb9fc4da1e2d895"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual std::string NuguInterface::ICapabilityInterface::getVersion </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get the capability version of the current object. </p>
+<dl class="section return"><dt>Returns</dt><dd>capability version of the object </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="ad220031d06942255cf012b6c10e6fcf7"></a>
 <div class="memitem">
 <div class="memproto">
@@ -312,7 +370,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a class="anchor" id="ab20cd46b7631140df3a679af378e1b17"></a>
+<a class="anchor" id="acca53b279b80e9fbc9057157a0f6d79a"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -334,7 +392,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>param</em>&#160;</td>
         </tr>
         <tr>
@@ -362,7 +420,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a class="anchor" id="a87838f9d0af3e86ec04293ec5262ed55"></a>
+<a class="anchor" id="a74e16481867af0c22ed2012397236fef"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -378,7 +436,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>param</em>&#160;</td>
         </tr>
         <tr>
@@ -405,7 +463,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a class="anchor" id="ac3ccd4a83aaef9de81e0c81f76f40de8"></a>
+<a class="anchor" id="a9a2b2437ed312becca6cf00072367e4e"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -415,7 +473,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="memname">virtual void NuguInterface::ICapabilityInterface::getProperty </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>property</em>, </td>
         </tr>
         <tr>
@@ -448,7 +506,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a class="anchor" id="a2786312beac6af584e97d9275eccd316"></a>
+<a class="anchor" id="a5730dfc9748e47d55d9b48aba2f2aa3f"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -458,7 +516,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="memname">virtual void NuguInterface::ICapabilityInterface::getProperties </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>property</em>, </td>
         </tr>
         <tr>
@@ -532,7 +590,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguInterface</b></li><li class="navelem"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html">ICapabilityInterface</a></li>
-    <li class="footer">Generated on Tue Oct 15 2019 10:18:54 for NUGU SDK Linux by
+    <li class="footer">Generated on Thu Nov 7 2019 16:17:58 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

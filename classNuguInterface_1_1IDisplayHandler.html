@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.1</span>
    </div>
   </td>
  </tr>
@@ -145,18 +145,18 @@ Public Member Functions</h2></td></tr>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#a8d7a5a54398172019894dda4a44033a8">displayCleared</a> ()=0</td></tr>
 <tr class="memdesc:a8d7a5a54398172019894dda4a44033a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user reports that the display is cleared. <br /></td></tr>
 <tr class="separator:a8d7a5a54398172019894dda4a44033a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb7f30f5ce4e3cb21d33b66c5be47dd1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#adb7f30f5ce4e3cb21d33b66c5be47dd1">displayRendered</a> (std::string token)=0</td></tr>
-<tr class="memdesc:adb7f30f5ce4e3cb21d33b66c5be47dd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user reports that the display was rendered with the parsed token.  <a href="#adb7f30f5ce4e3cb21d33b66c5be47dd1">More...</a><br /></td></tr>
-<tr class="separator:adb7f30f5ce4e3cb21d33b66c5be47dd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0132c3797a65449d073df62627da9ed3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#a0132c3797a65449d073df62627da9ed3">elementSelected</a> (std::string item_token)=0</td></tr>
-<tr class="memdesc:a0132c3797a65449d073df62627da9ed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user informs the selected item of the list and reports the token information of the item.  <a href="#a0132c3797a65449d073df62627da9ed3">More...</a><br /></td></tr>
-<tr class="separator:a0132c3797a65449d073df62627da9ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e749c59e51e06a12edbe00f22d72b5b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#a1e749c59e51e06a12edbe00f22d72b5b">displayRendered</a> (const std::string &amp;token)=0</td></tr>
+<tr class="memdesc:a1e749c59e51e06a12edbe00f22d72b5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user reports that the display was rendered with the parsed token.  <a href="#a1e749c59e51e06a12edbe00f22d72b5b">More...</a><br /></td></tr>
+<tr class="separator:a1e749c59e51e06a12edbe00f22d72b5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03916f9841507934d2fbc5409a46bafd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#a03916f9841507934d2fbc5409a46bafd">elementSelected</a> (const std::string &amp;item_token)=0</td></tr>
+<tr class="memdesc:a03916f9841507934d2fbc5409a46bafd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user informs the selected item of the list and reports the token information of the item.  <a href="#a03916f9841507934d2fbc5409a46bafd">More...</a><br /></td></tr>
+<tr class="separator:a03916f9841507934d2fbc5409a46bafd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>display handler interface </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguInterface_1_1IDisplayListener.html" title="display listener interface ">IDisplayListener</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="adb7f30f5ce4e3cb21d33b66c5be47dd1"></a>
+<a class="anchor" id="a1e749c59e51e06a12edbe00f22d72b5b"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -166,7 +166,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="memname">virtual void NuguInterface::IDisplayHandler::displayRendered </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>token</em></td><td>)</td>
           <td></td>
         </tr>
@@ -188,7 +188,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a class="anchor" id="a0132c3797a65449d073df62627da9ed3"></a>
+<a class="anchor" id="a03916f9841507934d2fbc5409a46bafd"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -198,7 +198,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="memname">virtual void NuguInterface::IDisplayHandler::elementSelected </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>item_token</em></td><td>)</td>
           <td></td>
         </tr>
@@ -229,7 +229,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguInterface</b></li><li class="navelem"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html">IDisplayHandler</a></li>
-    <li class="footer">Generated on Tue Oct 15 2019 10:18:54 for NUGU SDK Linux by
+    <li class="footer">Generated on Thu Nov 7 2019 16:17:58 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

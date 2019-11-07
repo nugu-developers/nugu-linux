@@ -27,9 +27,7 @@ var group__MediaPlayerInterface =
     [ "IMediaPlayerListener", "classNuguInterface_1_1IMediaPlayerListener.html", [
       [ "mediaStateChanged", "classNuguInterface_1_1IMediaPlayerListener.html#ad66920d634a2e0f11d8829780b492f9f", null ],
       [ "mediaEventReport", "classNuguInterface_1_1IMediaPlayerListener.html#a64d7b5e26edc3efacea6da4821879d1a", null ],
-      [ "mediaFinished", "classNuguInterface_1_1IMediaPlayerListener.html#adab03cea596ece377dc8e16e6674c930", null ],
-      [ "mediaLoaded", "classNuguInterface_1_1IMediaPlayerListener.html#a87d52ac6c95ecb4f9859b7f819e155a7", null ],
-      [ "mediaChanged", "classNuguInterface_1_1IMediaPlayerListener.html#aec384ceffd3c6e4558723371e16b52e6", null ],
+      [ "mediaChanged", "classNuguInterface_1_1IMediaPlayerListener.html#a86ab2997dcced51207c9524f45133d88", null ],
       [ "durationChanged", "classNuguInterface_1_1IMediaPlayerListener.html#a8bb0b7d9cef23c675630b81899e385e0", null ],
       [ "positionChanged", "classNuguInterface_1_1IMediaPlayerListener.html#a6e312b258bf8f72f6d7d52560cd14bfc", null ],
       [ "volumeChanged", "classNuguInterface_1_1IMediaPlayerListener.html#a7098f1898f3ab58246d57d25663d26e5", null ],
@@ -44,7 +42,9 @@ var group__MediaPlayerInterface =
       [ "STOPPED", "group__MediaPlayerInterface.html#ggad0ce90f562db76975afd0fb74f6713c8a09d4d696b4e935115b9313e3c412509a", null ]
     ] ],
     [ "MediaPlayerEvent", "group__MediaPlayerInterface.html#ga9a0e307c741ea670763d4c9e5c633b2f", [
-      [ "INVALID_MEDIA", "group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa6715efbf6b3bfdbc1cfe4e9e1344489f", null ],
-      [ "LOADING_MEDIA", "group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa4cc38b699816ec1a5561986583c992dc", null ]
+      [ "INVALID_MEDIA_URL", "group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa8c30cba168f5791d184af6ed7643b0d1", null ],
+      [ "LOADING_MEDIA_FAILED", "group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa1b5b0ec7563b006b267a82a514bcbb8b", null ],
+      [ "LOADING_MEDIA_SUCCESS", "group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa0d42d3f5ee2bf7356d33b623cfa12dfd", null ],
+      [ "PLAYING_MEDIA_FINISHED", "group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa8aa89e3b945415649b8fa48f74865763", null ]
     ] ]
 ];

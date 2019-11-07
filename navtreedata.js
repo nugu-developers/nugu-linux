@@ -34,10 +34,10 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"group__AudioPlayerInterface.html",
-"group__NuguDirective.html#ga3c47cee7d491756581879a06dc4f2100",
-"group__NuguPlayerDriver.html#ga5ada3a88cbd038a5775ef29532047d24",
-"group__uuid.html#gaa9ba86139cb5e850c77f1deb0902a434"
+"globals_t.html",
+"group__NuguDecoderDriver.html#gga620edd0fe431577547eb1c2b73d37daca7ad79a7a0e1c249f22ef51a1bf16233f",
+"group__NuguPlayer.html#gac6b278a6b80c6b72b18653cea4111eee",
+"group__nugu__network.html#gaf2c89a802a1efa44f944db692305ed1c"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

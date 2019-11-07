@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.1</span>
    </div>
   </td>
  </tr>
@@ -142,9 +142,12 @@ $(document).ready(function(){initNavTree('classNuguInterface_1_1IExtensionListen
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abaf2afed5bc12ef635e86dc8a6c12426"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__ExtensionInterface.html#ga9a0f5226a32aa7629e7e2444c4009478">ExtensionResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IExtensionListener.html#abaf2afed5bc12ef635e86dc8a6c12426">action</a> (std::string data)=0</td></tr>
-<tr class="memdesc:abaf2afed5bc12ef635e86dc8a6c12426"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass it to the user to control the external application.  <a href="#abaf2afed5bc12ef635e86dc8a6c12426">More...</a><br /></td></tr>
-<tr class="separator:abaf2afed5bc12ef635e86dc8a6c12426"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c0c8490ab694aa94370af5a98409b69"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__ExtensionInterface.html#ga9a0f5226a32aa7629e7e2444c4009478">ExtensionResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IExtensionListener.html#a0c0c8490ab694aa94370af5a98409b69">receiveAction</a> (std::string &amp;data)=0</td></tr>
+<tr class="memdesc:a0c0c8490ab694aa94370af5a98409b69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pass it to the user to control the external application.  <a href="#a0c0c8490ab694aa94370af5a98409b69">More...</a><br /></td></tr>
+<tr class="separator:a0c0c8490ab694aa94370af5a98409b69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e9d01766ca4a09d942c6394a2ad9ac7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IExtensionListener.html#a3e9d01766ca4a09d942c6394a2ad9ac7">requestContext</a> (std::string &amp;data)=0</td></tr>
+<tr class="memdesc:a3e9d01766ca4a09d942c6394a2ad9ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request context information from the external application.  <a href="#a3e9d01766ca4a09d942c6394a2ad9ac7">More...</a><br /></td></tr>
+<tr class="separator:a3e9d01766ca4a09d942c6394a2ad9ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classNuguInterface_1_1ICapabilityListener"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classNuguInterface_1_1ICapabilityListener')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classNuguInterface_1_1ICapabilityListener.html">NuguInterface::ICapabilityListener</a></td></tr>
 <tr class="memitem:a856f8dd4f20d90ac92b5beb1114bad15 inherit pub_methods_classNuguInterface_1_1ICapabilityListener"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityListener.html#a856f8dd4f20d90ac92b5beb1114bad15">registerCapabilityHandler</a> (<a class="el" href="classNuguInterface_1_1ICapabilityHandler.html">ICapabilityHandler</a> *capa_handler)</td></tr>
 <tr class="memdesc:a856f8dd4f20d90ac92b5beb1114bad15 inherit pub_methods_classNuguInterface_1_1ICapabilityListener"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the handler object.  <a href="#a856f8dd4f20d90ac92b5beb1114bad15">More...</a><br /></td></tr>
@@ -161,7 +164,7 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>extension listener interface </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguInterface_1_1IExtensionHandler.html" title="extension handler interface ">IExtensionHandler</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="abaf2afed5bc12ef635e86dc8a6c12426"></a>
+<a class="anchor" id="a0c0c8490ab694aa94370af5a98409b69"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -169,9 +172,9 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual <a class="el" href="group__ExtensionInterface.html#ga9a0f5226a32aa7629e7e2444c4009478">ExtensionResult</a> NuguInterface::IExtensionListener::action </td>
+          <td class="memname">virtual <a class="el" href="group__ExtensionInterface.html#ga9a0f5226a32aa7629e7e2444c4009478">ExtensionResult</a> NuguInterface::IExtensionListener::receiveAction </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">std::string &amp;&#160;</td>
           <td class="paramname"><em>data</em></td><td>)</td>
           <td></td>
         </tr>
@@ -193,6 +196,38 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="a3e9d01766ca4a09d942c6394a2ad9ac7"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguInterface::IExtensionListener::requestContext </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Request context information from the external application. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>context information </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="extension__interface_8hh_source.html">extension_interface.hh</a></li>
 </ul>
@@ -202,7 +237,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguInterface</b></li><li class="navelem"><a class="el" href="classNuguInterface_1_1IExtensionListener.html">IExtensionListener</a></li>
-    <li class="footer">Generated on Tue Oct 15 2019 10:18:54 for NUGU SDK Linux by
+    <li class="footer">Generated on Thu Nov 7 2019 16:17:58 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

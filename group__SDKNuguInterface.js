@@ -3,6 +3,7 @@ var group__SDKNuguInterface =
     [ "ASRInterface", "group__ASRInterface.html", "group__ASRInterface" ],
     [ "AudioPlayerInterface", "group__AudioPlayerInterface.html", "group__AudioPlayerInterface" ],
     [ "CapabilityInterface", "group__CapabilityInterface.html", "group__CapabilityInterface" ],
+    [ "DelegationInterface", "group__DelegationInterface.html", "group__DelegationInterface" ],
     [ "DisplayInterface", "group__DisplayInterface.html", "group__DisplayInterface" ],
     [ "ExtensionInterface", "group__ExtensionInterface.html", "group__ExtensionInterface" ],
     [ "SystemInterface", "group__SystemInterface.html", "group__SystemInterface" ],

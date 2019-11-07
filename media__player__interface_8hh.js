@@ -9,7 +9,9 @@ var media__player__interface_8hh =
       [ "STOPPED", "media__player__interface_8hh.html#ggad0ce90f562db76975afd0fb74f6713c8a09d4d696b4e935115b9313e3c412509a", null ]
     ] ],
     [ "MediaPlayerEvent", "media__player__interface_8hh.html#ga9a0e307c741ea670763d4c9e5c633b2f", [
-      [ "INVALID_MEDIA", "media__player__interface_8hh.html#gga9a0e307c741ea670763d4c9e5c633b2fa6715efbf6b3bfdbc1cfe4e9e1344489f", null ],
-      [ "LOADING_MEDIA", "media__player__interface_8hh.html#gga9a0e307c741ea670763d4c9e5c633b2fa4cc38b699816ec1a5561986583c992dc", null ]
+      [ "INVALID_MEDIA_URL", "media__player__interface_8hh.html#gga9a0e307c741ea670763d4c9e5c633b2fa8c30cba168f5791d184af6ed7643b0d1", null ],
+      [ "LOADING_MEDIA_FAILED", "media__player__interface_8hh.html#gga9a0e307c741ea670763d4c9e5c633b2fa1b5b0ec7563b006b267a82a514bcbb8b", null ],
+      [ "LOADING_MEDIA_SUCCESS", "media__player__interface_8hh.html#gga9a0e307c741ea670763d4c9e5c633b2fa0d42d3f5ee2bf7356d33b623cfa12dfd", null ],
+      [ "PLAYING_MEDIA_FINISHED", "media__player__interface_8hh.html#gga9a0e307c741ea670763d4c9e5c633b2fa8aa89e3b945415649b8fa48f74865763", null ]
     ] ]
 ];

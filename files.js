@@ -4,6 +4,7 @@ var files =
     [ "audio_player_interface.hh", "audio__player__interface_8hh.html", "audio__player__interface_8hh" ],
     [ "capability_interface.hh", "capability__interface_8hh.html", "capability__interface_8hh" ],
     [ "capability_observer.hh", "capability__observer_8hh.html", "capability__observer_8hh" ],
+    [ "delegation_interface.hh", "delegation__interface_8hh.html", null ],
     [ "display_interface.hh", "display__interface_8hh.html", null ],
     [ "extension_interface.hh", "extension__interface_8hh.html", "extension__interface_8hh" ],
     [ "media_player_interface.hh", "media__player__interface_8hh.html", "media__player__interface_8hh" ],

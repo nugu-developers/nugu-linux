@@ -8,12 +8,14 @@ var group__CapabilityInterface =
       [ "initialize", "classNuguInterface_1_1ICapabilityInterface.html#a0f861d606d2ffb92621f01f041cf5e76", null ],
       [ "getTypeName", "classNuguInterface_1_1ICapabilityInterface.html#a1e36b9961743f5a61702a05504c596f8", null ],
       [ "getType", "classNuguInterface_1_1ICapabilityInterface.html#a5ac3902e86dd64d16c70d6d2fbe726c5", null ],
+      [ "getName", "classNuguInterface_1_1ICapabilityInterface.html#a11624e64e5c2988f9bbebe184b9456e3", null ],
+      [ "getVersion", "classNuguInterface_1_1ICapabilityInterface.html#a5987bc6485133e8c4eb9fc4da1e2d895", null ],
       [ "processDirective", "classNuguInterface_1_1ICapabilityInterface.html#ad220031d06942255cf012b6c10e6fcf7", null ],
       [ "updateInfoForContext", "classNuguInterface_1_1ICapabilityInterface.html#a1dd597efa67e1448324ef4a876770f22", null ],
-      [ "receiveCommand", "classNuguInterface_1_1ICapabilityInterface.html#ab20cd46b7631140df3a679af378e1b17", null ],
-      [ "receiveCommandAll", "classNuguInterface_1_1ICapabilityInterface.html#a87838f9d0af3e86ec04293ec5262ed55", null ],
-      [ "getProperty", "classNuguInterface_1_1ICapabilityInterface.html#ac3ccd4a83aaef9de81e0c81f76f40de8", null ],
-      [ "getProperties", "classNuguInterface_1_1ICapabilityInterface.html#a2786312beac6af584e97d9275eccd316", null ],
+      [ "receiveCommand", "classNuguInterface_1_1ICapabilityInterface.html#acca53b279b80e9fbc9057157a0f6d79a", null ],
+      [ "receiveCommandAll", "classNuguInterface_1_1ICapabilityInterface.html#a74e16481867af0c22ed2012397236fef", null ],
+      [ "getProperty", "classNuguInterface_1_1ICapabilityInterface.html#a9a2b2437ed312becca6cf00072367e4e", null ],
+      [ "getProperties", "classNuguInterface_1_1ICapabilityInterface.html#a5730dfc9748e47d55d9b48aba2f2aa3f", null ],
       [ "setCapabilityListener", "classNuguInterface_1_1ICapabilityInterface.html#a44f7d0d72ae9f06044fa1a3068cbe416", null ]
     ] ],
     [ "ICapabilityListener", "classNuguInterface_1_1ICapabilityListener.html", [
@@ -38,7 +40,8 @@ var group__CapabilityInterface =
       [ "TTS", "group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa4616606d5a8590d8c1d305d50dce2f73", null ],
       [ "ASR", "group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa1a3cf7bfb644cba9516cc28e2cb360ca", null ],
       [ "Text", "group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa9dffbf69ffba8bc38bc4e01abf4b1675", null ],
-      [ "Extension", "group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa63e4e92bb7d207ca577b11c07f827279", null ]
+      [ "Extension", "group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa63e4e92bb7d207ca577b11c07f827279", null ],
+      [ "Delegation", "group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa57b11d3816e9f83adb4dd2ecb2a311b5", null ]
     ] ],
     [ "CapabilitySignal", "group__CapabilityInterface.html#ga7969bc4408d26d7cb1ad72c1950cd5c0", [
       [ "SYSTEM_INTERNAL_SERVICE_EXCEPTION", "group__CapabilityInterface.html#gga7969bc4408d26d7cb1ad72c1950cd5c0a3626aebe4ad7f576c962eb8ba0a9e429", null ],

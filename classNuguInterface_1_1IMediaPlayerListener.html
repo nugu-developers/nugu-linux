@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.1</span>
    </div>
   </td>
  </tr>
@@ -124,20 +124,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a8bb0b7d9cef23c675630b81899e385e0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IMediaPlayerListener.html#a8bb0b7d9cef23c675630b81899e385e0">durationChanged</a> (int duration)=0</td></tr>
 <tr class="memdesc:a8bb0b7d9cef23c675630b81899e385e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The media player reports the changed duration of the media content.  <a href="#a8bb0b7d9cef23c675630b81899e385e0">More...</a><br /></td></tr>
 <tr class="separator:a8bb0b7d9cef23c675630b81899e385e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec384ceffd3c6e4558723371e16b52e6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IMediaPlayerListener.html#aec384ceffd3c6e4558723371e16b52e6">mediaChanged</a> (std::string url)=0</td></tr>
-<tr class="memdesc:aec384ceffd3c6e4558723371e16b52e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The media player reports that the media content has changed.  <a href="#aec384ceffd3c6e4558723371e16b52e6">More...</a><br /></td></tr>
-<tr class="separator:aec384ceffd3c6e4558723371e16b52e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86ab2997dcced51207c9524f45133d88"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IMediaPlayerListener.html#a86ab2997dcced51207c9524f45133d88">mediaChanged</a> (const std::string &amp;url)=0</td></tr>
+<tr class="memdesc:a86ab2997dcced51207c9524f45133d88"><td class="mdescLeft">&#160;</td><td class="mdescRight">The media player reports that the media content has changed.  <a href="#a86ab2997dcced51207c9524f45133d88">More...</a><br /></td></tr>
+<tr class="separator:a86ab2997dcced51207c9524f45133d88"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64d7b5e26edc3efacea6da4821879d1a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IMediaPlayerListener.html#a64d7b5e26edc3efacea6da4821879d1a">mediaEventReport</a> (<a class="el" href="group__MediaPlayerInterface.html#ga9a0e307c741ea670763d4c9e5c633b2f">MediaPlayerEvent</a> event)=0</td></tr>
 <tr class="memdesc:a64d7b5e26edc3efacea6da4821879d1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report an event occurred during mediaplayer playback to the user.  <a href="#a64d7b5e26edc3efacea6da4821879d1a">More...</a><br /></td></tr>
 <tr class="separator:a64d7b5e26edc3efacea6da4821879d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adab03cea596ece377dc8e16e6674c930"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adab03cea596ece377dc8e16e6674c930"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IMediaPlayerListener.html#adab03cea596ece377dc8e16e6674c930">mediaFinished</a> ()=0</td></tr>
-<tr class="memdesc:adab03cea596ece377dc8e16e6674c930"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report the media player playing media content to the end. <br /></td></tr>
-<tr class="separator:adab03cea596ece377dc8e16e6674c930"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87d52ac6c95ecb4f9859b7f819e155a7"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a87d52ac6c95ecb4f9859b7f819e155a7"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IMediaPlayerListener.html#a87d52ac6c95ecb4f9859b7f819e155a7">mediaLoaded</a> ()=0</td></tr>
-<tr class="memdesc:a87d52ac6c95ecb4f9859b7f819e155a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report the media player loading media content successfully. <br /></td></tr>
-<tr class="separator:a87d52ac6c95ecb4f9859b7f819e155a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad66920d634a2e0f11d8829780b492f9f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IMediaPlayerListener.html#ad66920d634a2e0f11d8829780b492f9f">mediaStateChanged</a> (<a class="el" href="group__MediaPlayerInterface.html#gad0ce90f562db76975afd0fb74f6713c8">MediaPlayerState</a> state)=0</td></tr>
 <tr class="memdesc:ad66920d634a2e0f11d8829780b492f9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report changes in the mediaplayer state to the user.  <a href="#ad66920d634a2e0f11d8829780b492f9f">More...</a><br /></td></tr>
 <tr class="separator:ad66920d634a2e0f11d8829780b492f9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -219,7 +211,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a class="anchor" id="aec384ceffd3c6e4558723371e16b52e6"></a>
+<a class="anchor" id="a86ab2997dcced51207c9524f45133d88"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -229,7 +221,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="memname">virtual void NuguInterface::IMediaPlayerListener::mediaChanged </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>url</em></td><td>)</td>
           <td></td>
         </tr>
@@ -388,7 +380,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguInterface</b></li><li class="navelem"><a class="el" href="classNuguInterface_1_1IMediaPlayerListener.html">IMediaPlayerListener</a></li>
-    <li class="footer">Generated on Tue Oct 15 2019 10:18:54 for NUGU SDK Linux by
+    <li class="footer">Generated on Thu Nov 7 2019 16:17:58 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.1</span>
    </div>
   </td>
  </tr>
@@ -141,6 +141,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a1d3014c080d1f098c56b7fda5ddc505d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html">CapabilityBuilder</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguClient.html#a1d3014c080d1f098c56b7fda5ddc505d">getCapabilityBuilder</a> ()</td></tr>
 <tr class="memdesc:a1d3014c080d1f098c56b7fda5ddc505d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get <a class="el" href="classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html" title="CapabilityBuilder. ">CapabilityBuilder</a> object.  <a href="#a1d3014c080d1f098c56b7fda5ddc505d">More...</a><br /></td></tr>
 <tr class="separator:a1d3014c080d1f098c56b7fda5ddc505d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3de5bf957487a17083cabb21ce94d181"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNuguInterface_1_1IDelegationHandler.html">IDelegationHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguClient.html#a3de5bf957487a17083cabb21ce94d181">getDelegationHandler</a> ()</td></tr>
+<tr class="memdesc:a3de5bf957487a17083cabb21ce94d181"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get DelegationHandler object.  <a href="#a3de5bf957487a17083cabb21ce94d181">More...</a><br /></td></tr>
+<tr class="separator:a3de5bf957487a17083cabb21ce94d181"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add84d98e7a8a3b9b022e0b4252f2d239"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html">IDisplayHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguClient.html#add84d98e7a8a3b9b022e0b4252f2d239">getDisplayHandler</a> ()</td></tr>
 <tr class="memdesc:add84d98e7a8a3b9b022e0b4252f2d239"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get DisplayHandler object.  <a href="#add84d98e7a8a3b9b022e0b4252f2d239">More...</a><br /></td></tr>
 <tr class="separator:add84d98e7a8a3b9b022e0b4252f2d239"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,9 +169,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguClient.html#aae1f4508ab77758bec29c5ef54f2736a">initialize</a> (void)</td></tr>
 <tr class="memdesc:aae1f4508ab77758bec29c5ef54f2736a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request nugu sdk initialization. <br /></td></tr>
 <tr class="separator:aae1f4508ab77758bec29c5ef54f2736a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abfd43c0b9dee1b5faae037300374fab7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguClient.html#abfd43c0b9dee1b5faae037300374fab7">setAccessToken</a> (std::string access_token)</td></tr>
-<tr class="memdesc:abfd43c0b9dee1b5faae037300374fab7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set access token for connection with NUGU server.  <a href="#abfd43c0b9dee1b5faae037300374fab7">More...</a><br /></td></tr>
-<tr class="separator:abfd43c0b9dee1b5faae037300374fab7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a993b0c65a793586ec792c6d57ddbf1eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguClient.html#a993b0c65a793586ec792c6d57ddbf1eb">setConfig</a> (std::string key, std::string value)</td></tr>
 <tr class="memdesc:a993b0c65a793586ec792c6d57ddbf1eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set config to change nugu sdk internal behavior.  <a href="#a993b0c65a793586ec792c6d57ddbf1eb">More...</a><br /></td></tr>
 <tr class="separator:a993b0c65a793586ec792c6d57ddbf1eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,30 +183,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <div class="textblock"><p>NUGU Client. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguClientKit_1_1INuguClientListener.html" title="nugu client listener interface ">INuguClientListener</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="abfd43c0b9dee1b5faae037300374fab7"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void NuguClientKit::NuguClient::setAccessToken </td>
-          <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
-          <td class="paramname"><em>access_token</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set access token for connection with NUGU server. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">access_token</td><td>access token </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a class="anchor" id="a993b0c65a793586ec792c6d57ddbf1eb"></a>
 <div class="memitem">
 <div class="memproto">
@@ -434,6 +410,24 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a class="anchor" id="a3de5bf957487a17083cabb21ce94d181"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classNuguInterface_1_1IDelegationHandler.html">IDelegationHandler</a>* NuguClientKit::NuguClient::getDelegationHandler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get DelegationHandler object. </p>
+<dl class="section return"><dt>Returns</dt><dd>IDelegationHandler if a feature agent has been created with the feature builder, otherwise NULL </dd></dl>
+
+</div>
+</div>
 <a class="anchor" id="a51fe06395d15f479be2b5a22e4e9577a"></a>
 <div class="memitem">
 <div class="memproto">
@@ -479,7 +473,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1NuguClient.html">NuguClient</a></li>
-    <li class="footer">Generated on Tue Oct 15 2019 10:18:54 for NUGU SDK Linux by
+    <li class="footer">Generated on Thu Nov 7 2019 16:17:58 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

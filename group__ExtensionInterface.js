@@ -5,7 +5,8 @@ var group__ExtensionInterface =
     ] ],
     [ "IExtensionListener", "classNuguInterface_1_1IExtensionListener.html", [
       [ "~IExtensionListener", "classNuguInterface_1_1IExtensionListener.html#a9c9d94303f4f7b54e6d11d100550f85d", null ],
-      [ "action", "classNuguInterface_1_1IExtensionListener.html#abaf2afed5bc12ef635e86dc8a6c12426", null ]
+      [ "receiveAction", "classNuguInterface_1_1IExtensionListener.html#a0c0c8490ab694aa94370af5a98409b69", null ],
+      [ "requestContext", "classNuguInterface_1_1IExtensionListener.html#a3e9d01766ca4a09d942c6394a2ad9ac7", null ]
     ] ],
     [ "ExtensionResult", "group__ExtensionInterface.html#ga9a0f5226a32aa7629e7e2444c4009478", [
       [ "SUCCEEDED", "group__ExtensionInterface.html#gga9a0f5226a32aa7629e7e2444c4009478afd9f6519d3f45276829fe74eb2c4bb85", null ],

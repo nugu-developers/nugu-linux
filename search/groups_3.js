@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['delegationinterface',['DelegationInterface',['../group__DelegationInterface.html',1,'']]],
   ['displayinterface',['DisplayInterface',['../group__DisplayInterface.html',1,'']]],
   ['directive_20sequencer',['Directive Sequencer',['../group__nugu__dirseq.html',1,'']]],
   ['decoder',['Decoder',['../group__NuguDecoder.html',1,'']]],

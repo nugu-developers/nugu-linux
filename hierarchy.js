@@ -4,6 +4,7 @@ var hierarchy =
     [ "NuguInterface::ICapabilityHandler", "classNuguInterface_1_1ICapabilityHandler.html", [
       [ "NuguInterface::IASRHandler", "classNuguInterface_1_1IASRHandler.html", null ],
       [ "NuguInterface::IAudioPlayerHandler", "classNuguInterface_1_1IAudioPlayerHandler.html", null ],
+      [ "NuguInterface::IDelegationHandler", "classNuguInterface_1_1IDelegationHandler.html", null ],
       [ "NuguInterface::IDisplayHandler", "classNuguInterface_1_1IDisplayHandler.html", null ],
       [ "NuguInterface::IExtensionHandler", "classNuguInterface_1_1IExtensionHandler.html", null ],
       [ "NuguInterface::ISystemHandler", "classNuguInterface_1_1ISystemHandler.html", null ],
@@ -13,6 +14,7 @@ var hierarchy =
     [ "NuguInterface::ICapabilityListener", "classNuguInterface_1_1ICapabilityListener.html", [
       [ "NuguInterface::IASRListener", "classNuguInterface_1_1IASRListener.html", null ],
       [ "NuguInterface::IAudioPlayerListener", "classNuguInterface_1_1IAudioPlayerListener.html", null ],
+      [ "NuguInterface::IDelegationListener", "classNuguInterface_1_1IDelegationListener.html", null ],
       [ "NuguInterface::IDisplayListener", "classNuguInterface_1_1IDisplayListener.html", null ],
       [ "NuguInterface::IExtensionListener", "classNuguInterface_1_1IExtensionListener.html", null ],
       [ "NuguInterface::ISystemListener", "classNuguInterface_1_1ISystemListener.html", null ],

@@ -1,10 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classNuguInterface_1_1ICapabilityHandler.html" title="capability handler interface " alt="" coords="5,174,180,215"/>
+<area shape="rect" id="node1" href="$classNuguInterface_1_1ICapabilityHandler.html" title="capability handler interface " alt="" coords="5,210,180,251"/>
 <area shape="rect" id="node2" href="$classNuguInterface_1_1IASRHandler.html" title="ASR handler interface. " alt="" coords="237,5,426,32"/>
 <area shape="rect" id="node3" href="$classNuguInterface_1_1IAudioPlayerHandler.html" title="audioplayer handler interface " alt="" coords="238,57,425,98"/>
-<area shape="rect" id="node4" href="$classNuguInterface_1_1IDisplayHandler.html" title="display handler interface " alt="" coords="229,123,434,149"/>
-<area shape="rect" id="node5" href="$classNuguInterface_1_1IExtensionHandler.html" title="extension handler interface " alt="" coords="244,174,419,215"/>
-<area shape="rect" id="node6" href="$classNuguInterface_1_1ISystemHandler.html" title="system handler interface " alt="" coords="228,240,435,267"/>
-<area shape="rect" id="node7" href="$classNuguInterface_1_1ITextHandler.html" title="text handler interface " alt="" coords="238,291,425,317"/>
-<area shape="rect" id="node8" href="$classNuguInterface_1_1ITTSHandler.html" title="tts handler interface " alt="" coords="238,341,425,368"/>
+<area shape="rect" id="node4" href="$classNuguInterface_1_1IDelegationHandler.html" title="delegation handler interface " alt="" coords="242,122,421,163"/>
+<area shape="rect" id="node5" href="$classNuguInterface_1_1IDisplayHandler.html" title="display handler interface " alt="" coords="229,188,434,215"/>
+<area shape="rect" id="node6" href="$classNuguInterface_1_1IExtensionHandler.html" title="extension handler interface " alt="" coords="244,239,419,281"/>
+<area shape="rect" id="node7" href="$classNuguInterface_1_1ISystemHandler.html" title="system handler interface " alt="" coords="228,305,435,332"/>
+<area shape="rect" id="node8" href="$classNuguInterface_1_1ITextHandler.html" title="text handler interface " alt="" coords="238,356,425,383"/>
+<area shape="rect" id="node9" href="$classNuguInterface_1_1ITTSHandler.html" title="tts handler interface " alt="" coords="238,407,425,433"/>
 </map>

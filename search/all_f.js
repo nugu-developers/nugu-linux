@@ -1,10 +1,8 @@
 var searchData=
 [
   ['seek',['seek',['../structnugu__player__driver__ops.html#a5010caa42413af6f622bbb34e56689cb',1,'nugu_player_driver_ops::seek()'],['../classNuguInterface_1_1IAudioPlayerHandler.html#ad36e6e3b15e22420c49dcd946baf087f',1,'NuguInterface::IAudioPlayerHandler::seek()'],['../classNuguInterface_1_1IMediaPlayer.html#a598351814277302487852529a2a2d12b',1,'NuguInterface::IMediaPlayer::seek()']]],
-  ['sendeventsynchronizestate',['sendEventSynchronizeState',['../classNuguInterface_1_1ISystemHandler.html#a5b3c4ddae448339b320d3d89e0fff1d2',1,'NuguInterface::ISystemHandler']]],
   ['set_5fsource',['set_source',['../structnugu__player__driver__ops.html#a30ed371dfd423b78e635c34e9433c393',1,'nugu_player_driver_ops']]],
   ['set_5fvolume',['set_volume',['../structnugu__player__driver__ops.html#ae11c85fcfbbe42b12bf5e4c07476be2f',1,'nugu_player_driver_ops']]],
-  ['setaccesstoken',['setAccessToken',['../classNuguClientKit_1_1NuguClient.html#abfd43c0b9dee1b5faae037300374fab7',1,'NuguClientKit::NuguClient']]],
   ['setcapabilitylistener',['setCapabilityListener',['../classNuguInterface_1_1ICapabilityInterface.html#a44f7d0d72ae9f06044fa1a3068cbe416',1,'NuguInterface::ICapabilityInterface']]],
   ['setconfig',['setConfig',['../classNuguClientKit_1_1NuguClient.html#a993b0c65a793586ec792c6d57ddbf1eb',1,'NuguClientKit::NuguClient']]],
   ['setconfigs',['setConfigs',['../classNuguClientKit_1_1NuguClient.html#a0107158669353dcd50af068b45c2c46f',1,'NuguClientKit::NuguClient']]],
@@ -25,6 +23,7 @@ var searchData=
   ['stoprecognition',['stopRecognition',['../classNuguInterface_1_1IASRHandler.html#a688cdc7ac7b659d3576bc7c68ee35405',1,'NuguInterface::IASRHandler']]],
   ['stoptts',['stopTTS',['../classNuguInterface_1_1ITTSHandler.html#abe7686d2362fe6157642767b6d65a995',1,'NuguInterface::ITTSHandler']]],
   ['succeeded',['SUCCEEDED',['../group__ExtensionInterface.html#gga9a0f5226a32aa7629e7e2444c4009478afd9f6519d3f45276829fe74eb2c4bb85',1,'NuguInterface']]],
+  ['synchronizestate',['synchronizeState',['../classNuguInterface_1_1ISystemHandler.html#a902947797b4da99cb5d9999b72edc99e',1,'NuguInterface::ISystemHandler']]],
   ['system',['System',['../group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aaa45da96d0bf6575970f2d27af22be28a',1,'NuguInterface']]],
   ['system_5finterface_2ehh',['system_interface.hh',['../system__interface_8hh.html',1,'']]],
   ['system_5finternal_5fservice_5fexception',['SYSTEM_INTERNAL_SERVICE_EXCEPTION',['../group__CapabilityInterface.html#gga7969bc4408d26d7cb1ad72c1950cd5c0a3626aebe4ad7f576c962eb8ba0a9e429',1,'NuguInterface']]],

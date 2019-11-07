@@ -13,7 +13,6 @@ var group__NuguClient =
       ] ],
       [ "NuguClient", "classNuguClientKit_1_1NuguClient.html#ab76e297d16ec30b63dc3b2140680aa46", null ],
       [ "~NuguClient", "classNuguClientKit_1_1NuguClient.html#a27631157bc56e59781c78f950ecdd17b", null ],
-      [ "setAccessToken", "classNuguClientKit_1_1NuguClient.html#abfd43c0b9dee1b5faae037300374fab7", null ],
       [ "setConfig", "classNuguClientKit_1_1NuguClient.html#a993b0c65a793586ec792c6d57ddbf1eb", null ],
       [ "setConfigs", "classNuguClientKit_1_1NuguClient.html#a0107158669353dcd50af068b45c2c46f", null ],
       [ "setListener", "classNuguClientKit_1_1NuguClient.html#a338da30822046808076f3f8e728e87d4", null ],
@@ -27,6 +26,7 @@ var group__NuguClient =
       [ "getDisplayHandler", "classNuguClientKit_1_1NuguClient.html#add84d98e7a8a3b9b022e0b4252f2d239", null ],
       [ "getTextHandler", "classNuguClientKit_1_1NuguClient.html#a17d4a7a29b48d91376d9e38f4290529d", null ],
       [ "getExtensionHandler", "classNuguClientKit_1_1NuguClient.html#a05370413c07abfb71061e7f963eb79d6", null ],
+      [ "getDelegationHandler", "classNuguClientKit_1_1NuguClient.html#a3de5bf957487a17083cabb21ce94d181", null ],
       [ "getSystemHandler", "classNuguClientKit_1_1NuguClient.html#a51fe06395d15f479be2b5a22e4e9577a", null ],
       [ "getNetworkManager", "classNuguClientKit_1_1NuguClient.html#aa600061f3d9fd1f07eb933d10069ed81", null ]
     ] ]

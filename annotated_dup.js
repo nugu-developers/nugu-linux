@@ -14,6 +14,8 @@ var annotated_dup =
       [ "ICapabilityListener", "classNuguInterface_1_1ICapabilityListener.html", "classNuguInterface_1_1ICapabilityListener" ],
       [ "ICapabilityObservable", "classNuguInterface_1_1ICapabilityObservable.html", "classNuguInterface_1_1ICapabilityObservable" ],
       [ "ICapabilityObserver", "classNuguInterface_1_1ICapabilityObserver.html", "classNuguInterface_1_1ICapabilityObserver" ],
+      [ "IDelegationHandler", "classNuguInterface_1_1IDelegationHandler.html", "classNuguInterface_1_1IDelegationHandler" ],
+      [ "IDelegationListener", "classNuguInterface_1_1IDelegationListener.html", "classNuguInterface_1_1IDelegationListener" ],
       [ "IDisplayHandler", "classNuguInterface_1_1IDisplayHandler.html", "classNuguInterface_1_1IDisplayHandler" ],
       [ "IDisplayListener", "classNuguInterface_1_1IDisplayListener.html", "classNuguInterface_1_1IDisplayListener" ],
       [ "IExtensionHandler", "classNuguInterface_1_1IExtensionHandler.html", "classNuguInterface_1_1IExtensionHandler" ],

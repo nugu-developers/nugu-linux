@@ -9,6 +9,8 @@ var searchData=
   ['icapabilitylistener',['ICapabilityListener',['../classNuguInterface_1_1ICapabilityListener.html',1,'NuguInterface']]],
   ['icapabilityobservable',['ICapabilityObservable',['../classNuguInterface_1_1ICapabilityObservable.html',1,'NuguInterface']]],
   ['icapabilityobserver',['ICapabilityObserver',['../classNuguInterface_1_1ICapabilityObserver.html',1,'NuguInterface']]],
+  ['idelegationhandler',['IDelegationHandler',['../classNuguInterface_1_1IDelegationHandler.html',1,'NuguInterface']]],
+  ['idelegationlistener',['IDelegationListener',['../classNuguInterface_1_1IDelegationListener.html',1,'NuguInterface']]],
   ['idisplayhandler',['IDisplayHandler',['../classNuguInterface_1_1IDisplayHandler.html',1,'NuguInterface']]],
   ['idisplaylistener',['IDisplayListener',['../classNuguInterface_1_1IDisplayListener.html',1,'NuguInterface']]],
   ['iextensionhandler',['IExtensionHandler',['../classNuguInterface_1_1IExtensionHandler.html',1,'NuguInterface']]],

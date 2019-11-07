@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['systemmessage',['SystemMessage',['../group__SystemInterface.html#gaace286aef98f9d3c21e77ebe9f45c732',1,'NuguInterface']]]
+  ['revokereason',['RevokeReason',['../group__SystemInterface.html#gaa87a31f522637900c9ae0315e5e97a92',1,'NuguInterface']]]
 ];

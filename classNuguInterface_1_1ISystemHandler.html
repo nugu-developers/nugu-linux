@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.2.0</span>
+   &#160;<span id="projectnumber">0.3.1</span>
    </div>
   </td>
  </tr>
@@ -141,10 +141,18 @@ $(document).ready(function(){initNavTree('classNuguInterface_1_1ISystemHandler.h
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5b3c4ddae448339b320d3d89e0fff1d2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a5b3c4ddae448339b320d3d89e0fff1d2"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ISystemHandler.html#a5b3c4ddae448339b320d3d89e0fff1d2">sendEventSynchronizeState</a> (void)=0</td></tr>
-<tr class="memdesc:a5b3c4ddae448339b320d3d89e0fff1d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">When the device is connected to NUGU Platform, all state information is delivered through the context. <br /></td></tr>
-<tr class="separator:a5b3c4ddae448339b320d3d89e0fff1d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4694ad015ff69bc8d95233bb00725f4d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4694ad015ff69bc8d95233bb00725f4d"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ISystemHandler.html#a4694ad015ff69bc8d95233bb00725f4d">disconnect</a> (void)=0</td></tr>
+<tr class="memdesc:a4694ad015ff69bc8d95233bb00725f4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send disconnect event to server. <br /></td></tr>
+<tr class="separator:a4694ad015ff69bc8d95233bb00725f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a902947797b4da99cb5d9999b72edc99e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a902947797b4da99cb5d9999b72edc99e"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ISystemHandler.html#a902947797b4da99cb5d9999b72edc99e">synchronizeState</a> (void)=0</td></tr>
+<tr class="memdesc:a902947797b4da99cb5d9999b72edc99e"><td class="mdescLeft">&#160;</td><td class="mdescRight">When the device is connected to NUGU Platform, all state information is delivered through the context. <br /></td></tr>
+<tr class="separator:a902947797b4da99cb5d9999b72edc99e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d2773e630f19815042f41ed4aa2dcf0"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a6d2773e630f19815042f41ed4aa2dcf0"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ISystemHandler.html#a6d2773e630f19815042f41ed4aa2dcf0">updateUserActivity</a> (void)=0</td></tr>
+<tr class="memdesc:a6d2773e630f19815042f41ed4aa2dcf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update a timer that measures the user's inactivity. <br /></td></tr>
+<tr class="separator:a6d2773e630f19815042f41ed4aa2dcf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>system handler interface </p>
@@ -158,7 +166,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguInterface</b></li><li class="navelem"><a class="el" href="classNuguInterface_1_1ISystemHandler.html">ISystemHandler</a></li>
-    <li class="footer">Generated on Tue Oct 15 2019 10:18:54 for NUGU SDK Linux by
+    <li class="footer">Generated on Thu Nov 7 2019 16:17:58 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

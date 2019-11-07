@@ -40,7 +40,7 @@ var group__Log =
       [ "NUGU_LOG_MODULE_ALL", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1ac434ac7176e2d04c33b39173efc56df9", null ]
     ] ],
     [ "nugu_log_print", "group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc", null ],
-    [ "nugu_log_set_system", "group__Log.html#ga6bf1b653f3d2bcd0f8a621931862c854", null ],
+    [ "nugu_log_set_system", "group__Log.html#gaca8cc0bab36ec5c7b568fa2b4c0d66ad", null ],
     [ "nugu_log_set_handler", "group__Log.html#gac3e37b75ab756b2fcf9ef4b3c5dac5ec", null ],
     [ "nugu_log_set_prefix_fields", "group__Log.html#ga8830d523cfb27148de726b161e1712fe", null ],
     [ "nugu_log_get_prefix_fields", "group__Log.html#gafae3378cc5a0bb08288002898f9b6d99", null ],

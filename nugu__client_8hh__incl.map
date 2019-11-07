@@ -1,17 +1,18 @@
 <map id="nugu_client.hh" name="nugu_client.hh">
-<area shape="rect" id="node6" href="$asr__interface_8hh.html" title="interface/capability\l/asr_interface.hh" alt="" coords="904,80,1035,121"/>
-<area shape="rect" id="node7" href="$capability__interface_8hh.html" title="interface/capability\l/capability_interface.hh" alt="" coords="737,169,893,211"/>
-<area shape="rect" id="node11" href="$audio__player__interface_8hh.html" title="interface/capability\l/audio_player_interface.hh" alt="" coords="1225,80,1399,121"/>
-<area shape="rect" id="node15" href="$display__interface_8hh.html" title="interface/capability\l/display_interface.hh" alt="" coords="1058,80,1201,121"/>
-<area shape="rect" id="node16" href="$extension__interface_8hh.html" title="interface/capability\l/extension_interface.hh" alt="" coords="195,80,352,121"/>
-<area shape="rect" id="node17" href="$system__interface_8hh.html" title="interface/capability\l/system_interface.hh" alt="" coords="427,80,571,121"/>
-<area shape="rect" id="node18" href="$text__interface_8hh.html" title="interface/capability\l/text_interface.hh" alt="" coords="749,80,880,121"/>
-<area shape="rect" id="node19" href="$tts__interface_8hh.html" title="interface/capability\l/tts_interface.hh" alt="" coords="595,80,725,121"/>
-<area shape="rect" id="node20" href="$network__manager__interface_8hh.html" title="interface/network_manager\l_interface.hh" alt="" coords="1475,80,1653,121"/>
-<area shape="rect" id="node21" href="$nugu__client__listener_8hh.html" title="interface/nugu_client\l_listener.hh" alt="" coords="149,169,291,211"/>
-<area shape="rect" id="node22" href="$wakeup__interface_8hh.html" title="interface/wakeup_interface.hh" alt="" coords="1729,87,1925,114"/>
-<area shape="rect" id="node8" href="$nugu__directive_8h.html" title="core/nugu_directive.h" alt="" coords="616,266,763,293"/>
-<area shape="rect" id="node9" href="$capability__observer_8hh.html" title="interface/capability\l/capability_observer.hh" alt="" coords="385,259,541,300"/>
-<area shape="rect" id="node13" href="$media__player__interface_8hh.html" title="interface/media_player\l_interface.hh" alt="" coords="1365,169,1518,211"/>
-<area shape="rect" id="node14" href="$nugu__media_8h.html" title="core/nugu_media.h" alt="" coords="1375,266,1507,293"/>
+<area shape="rect" id="node6" href="$asr__interface_8hh.html" title="interface/capability\l/asr_interface.hh" alt="" coords="1115,80,1245,121"/>
+<area shape="rect" id="node7" href="$capability__interface_8hh.html" title="interface/capability\l/capability_interface.hh" alt="" coords="810,169,966,211"/>
+<area shape="rect" id="node11" href="$audio__player__interface_8hh.html" title="interface/capability\l/audio_player_interface.hh" alt="" coords="1487,80,1662,121"/>
+<area shape="rect" id="node15" href="$delegation__interface_8hh.html" title="interface/capability\l/delegation_interface.hh" alt="" coords="5,80,165,121"/>
+<area shape="rect" id="node16" href="$display__interface_8hh.html" title="interface/capability\l/display_interface.hh" alt="" coords="1269,80,1411,121"/>
+<area shape="rect" id="node17" href="$extension__interface_8hh.html" title="interface/capability\l/extension_interface.hh" alt="" coords="779,80,936,121"/>
+<area shape="rect" id="node18" href="$system__interface_8hh.html" title="interface/capability\l/system_interface.hh" alt="" coords="456,80,600,121"/>
+<area shape="rect" id="node19" href="$text__interface_8hh.html" title="interface/capability\l/text_interface.hh" alt="" coords="960,80,1091,121"/>
+<area shape="rect" id="node20" href="$tts__interface_8hh.html" title="interface/capability\l/tts_interface.hh" alt="" coords="624,80,755,121"/>
+<area shape="rect" id="node21" href="$network__manager__interface_8hh.html" title="interface/network_manager\l_interface.hh" alt="" coords="1687,80,1865,121"/>
+<area shape="rect" id="node22" href="$nugu__client__listener_8hh.html" title="interface/nugu_client\l_listener.hh" alt="" coords="427,169,570,211"/>
+<area shape="rect" id="node23" href="$wakeup__interface_8hh.html" title="interface/wakeup_interface.hh" alt="" coords="1941,87,2137,114"/>
+<area shape="rect" id="node8" href="$nugu__directive_8h.html" title="core/nugu_directive.h" alt="" coords="735,266,881,293"/>
+<area shape="rect" id="node9" href="$capability__observer_8hh.html" title="interface/capability\l/capability_observer.hh" alt="" coords="554,259,710,300"/>
+<area shape="rect" id="node13" href="$media__player__interface_8hh.html" title="interface/media_player\l_interface.hh" alt="" coords="1626,169,1779,211"/>
+<area shape="rect" id="node14" href="$nugu__media_8h.html" title="core/nugu_media.h" alt="" coords="1626,266,1758,293"/>
 </map>
