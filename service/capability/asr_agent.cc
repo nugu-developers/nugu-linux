@@ -325,7 +325,7 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
     payload = writer.write(root);
 
     dialog_id = rec_event->getDialogMessageId();
-    if (length == 0 || data == nullptr)
+    if (!is_end && (length == 0 || data == nullptr))
         sendEvent(rec_event, all_context_info, payload);
     else
         sendAttachmentEvent(rec_event, is_end, length, data);
