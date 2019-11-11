@@ -42,14 +42,12 @@ namespace NuguConfig {
         const std::string SERVER_RESPONSE_TIMEOUT_MSEC = "server_response_timeout_msec";
         const std::string MODEL_PATH = "model_path";
         const std::string TTS_ENGINE = "tts_engine";
-        const std::string SERVER_TYPE = "server_type";
         const std::string ACCESS_TOKEN = NUGU_CONFIG_KEY_TOKEN;
         const std::string USER_AGENT = NUGU_CONFIG_KEY_USER_AGENT;
         const std::string GATEWAY_REGISTRY_DNS = NUGU_CONFIG_KEY_GATEWAY_REGISTRY_DNS;
     }
 
     const NuguConfigType getDefaultValues();
-    const std::string getGatewayRegistryDns(std::string& server_type);
 }
 
 } // NuguInterface

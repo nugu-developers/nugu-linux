@@ -33,49 +33,15 @@ namespace NuguConfig {
             { Key::SERVER_RESPONSE_TIMEOUT_MSEC, "10000" },
             { Key::MODEL_PATH, "./" },
             { Key::TTS_ENGINE, "skt" },
-            { Key::SERVER_TYPE, "PRD" },
             { Key::ACCESS_TOKEN, "" },
             { Key::USER_AGENT, NUGU_USERAGENT },
-            { Key::GATEWAY_REGISTRY_DNS, "reg-http.sktnugu.com" }
+            { Key::GATEWAY_REGISTRY_DNS, "https://reg-http.sktnugu.com" }
         };
-
-        std::string toChangeCase(const std::string& src_string, bool is_tolower = false)
-        {
-            if (src_string.empty())
-                return src_string;
-
-            std::string changed_string;
-            changed_string.resize(src_string.size());
-            std::transform(src_string.begin(), src_string.end(), changed_string.begin(), is_tolower ? tolower : toupper);
-
-            return changed_string;
-        }
-
-        bool isEqualString(std::string str1, std::string str2)
-        {
-            if (str1.empty() || str2.empty() || str1.size() != str2.size())
-                return false;
-
-            return std::equal(str1.begin(), str1.end(), str2.begin(),
-                [](const char& a, const char& b) {
-                    return (std::tolower(a) == std::tolower(b));
-                });
-        }
     }
 
     const NuguConfigType getDefaultValues()
     {
         return DEFAULT_VALUES;
-    }
-
-    const std::string getGatewayRegistryDns(std::string& server_type)
-    {
-        std::string dns = DEFAULT_VALUES[Key::GATEWAY_REGISTRY_DNS];
-
-        if (!isEqualString(server_type, DEFAULT_VALUES[Key::SERVER_TYPE]))
-            return dns.insert(0, toChangeCase(server_type, true).append("-"));
-
-        return dns;
     }
 }
 
