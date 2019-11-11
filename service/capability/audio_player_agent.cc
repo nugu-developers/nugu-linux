@@ -611,12 +611,20 @@ void AudioPlayerAgent::onSyncContext(const std::string& ps_id, std::pair<std::st
         aplayer_listener->renderDisplay(render_info.first, render_info.second);
 }
 
-void AudioPlayerAgent::onReleaseContext(const std::string& ps_id)
+bool AudioPlayerAgent::onReleaseContext(const std::string& ps_id, bool unconditionally)
 {
     nugu_dbg("AudioPlayer release context");
 
+    unsigned int no_clear_count = 0;
+
     for (auto aplayer_listener : aplayer_listeners)
-        aplayer_listener->clearDisplay();
+        if (!aplayer_listener->clearDisplay(unconditionally))
+            no_clear_count++;
+
+    if (unconditionally && no_clear_count)
+        nugu_warn("should clear display if unconditionally is true!!");
+
+    return (no_clear_count == 0);
 }
 
 } // NuguCore

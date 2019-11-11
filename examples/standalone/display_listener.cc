@@ -24,7 +24,17 @@ void DisplayListener::renderDisplay(const std::string& type, const std::string& 
     nugu_info("got received to render display template");
 }
 
-void DisplayListener::clearDisplay()
+bool DisplayListener::clearDisplay(bool unconditionally)
 {
     nugu_info("got received to clear display template");
+
+    // clear display unconditionally
+    if (unconditionally) {
+        return true;
+    }
+
+    // It need to decide whether clear display immediately or not.
+    // If you decide to clear immediately, return true, or return false
+
+    return false;
 }

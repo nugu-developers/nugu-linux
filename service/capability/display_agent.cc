@@ -105,6 +105,7 @@ void DisplayAgent::displayRendered(const std::string& token)
 void DisplayAgent::displayCleared()
 {
     cur_token = "";
+    playsync_manager->clearPendingContext(ps_id);
 }
 
 void DisplayAgent::elementSelected(const std::string& item_token)
@@ -133,12 +134,12 @@ void DisplayAgent::onSyncContext(const std::string& ps_id, std::pair<std::string
     if (display_listener)
         display_listener->renderDisplay(render_info.first, render_info.second);
 }
-void DisplayAgent::onReleaseContext(const std::string& ps_id)
+
+bool DisplayAgent::onReleaseContext(const std::string& ps_id, bool unconditionally)
 {
     nugu_dbg("Display release context");
 
-    if (display_listener)
-        display_listener->clearDisplay();
+    return display_listener ? display_listener->clearDisplay(unconditionally) : true;
 }
 
 } // NuguCore

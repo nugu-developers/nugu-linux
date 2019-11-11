@@ -110,7 +110,7 @@ void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_ty
 
     for (auto play_item : play_stack) {
         if (ps_id != play_item)
-            removeContext(play_item, cap_type, true);
+            removeContext(play_item, cap_type);
     }
 
     if (context_map.find(ps_id) != context_map.end()) {
@@ -140,14 +140,18 @@ void PlaySyncManager::removeContext(std::string ps_id, CapabilityType cap_type, 
             nugu_dbg("[context] remove context");
 
             TimerCallbackParam* param = static_cast<TimerCallbackParam*>(userdata);
+
+            if (!param->instance->removeRenderer(param->ps_id, param->immediately))
+                return;
+
             param->instance->context_map.erase(param->ps_id);
             param->instance->context_stack.erase(remove(param->instance->context_stack.begin(), param->instance->context_stack.end(), param->ps_id),
                 param->instance->context_stack.end());
-            param->instance->removeRenderer(param->ps_id);
             param->callback();
         };
 
         timer_cb_param.ps_id = ps_id;
+        timer_cb_param.immediately = immediately;
         timer_cb_param.callback = [&]() {
             // temp: Just debugging & test. Please, maintain in some period.
             Test::showAllContents(context_map);
@@ -167,6 +171,12 @@ void PlaySyncManager::removeContext(std::string ps_id, CapabilityType cap_type, 
     }
 
     is_expect_speech = false;
+}
+
+void PlaySyncManager::clearPendingContext(std::string ps_id)
+{
+    renderer_map.erase(ps_id);
+    removeContext(ps_id, CapabilityType::Display);
 }
 
 std::vector<std::string> PlaySyncManager::getAllPlayStackItems()
@@ -201,9 +211,6 @@ bool PlaySyncManager::removeStackElement(std::string ps_id, CapabilityType cap_t
     auto& stack_elements = context_map[ps_id];
     stack_elements.erase(remove(stack_elements.begin(), stack_elements.end(), cap_type), stack_elements.end());
 
-    // temp: Just debugging & test. Please, maintain in some period.
-    Test::showAllContents(context_map);
-
     return stack_elements.empty();
 }
 
@@ -220,12 +227,18 @@ void PlaySyncManager::addRenderer(std::string ps_id, DisplayRenderer& renderer)
     renderer.listener->onSyncContext(ps_id, renderer.render_info);
 }
 
-void PlaySyncManager::removeRenderer(std::string ps_id)
+bool PlaySyncManager::removeRenderer(std::string ps_id, bool unconditionally)
 {
     if (renderer_map.find(ps_id) != renderer_map.end()) {
-        renderer_map[ps_id].listener->onReleaseContext(ps_id);
-        renderer_map.erase(ps_id);
+        bool result = renderer_map[ps_id].listener->onReleaseContext(ps_id, unconditionally) || unconditionally;
+
+        if (result)
+            renderer_map.erase(ps_id);
+
+        return result;
     }
+
+    return true;
 }
 
 void PlaySyncManager::setTimerInterval(const std::string& ps_id)
@@ -272,6 +285,6 @@ void PlaySyncManager::onASRError()
     is_expect_speech = false;
 
     if (!context_stack.empty())
-        removeContext(context_stack.back(), CapabilityType::TTS, true);
+        removeContext(context_stack.back(), CapabilityType::TTS);
 }
 } // NuguCore
