@@ -29,7 +29,11 @@ using namespace NuguInterface;
 
 WakeupDetector::WakeupDetector()
 {
-    AudioInputProcessor::init("kwd");
+    std::string sample = nugu_config_get(NuguConfig::Key::KWD_SAMPLERATE.c_str());
+    std::string format = nugu_config_get(NuguConfig::Key::KWD_FORMAT.c_str());
+    std::string channel = nugu_config_get(NuguConfig::Key::KWD_CHANNEL.c_str());
+
+    AudioInputProcessor::init("kwd", sample, format, channel);
 }
 
 void WakeupDetector::sendSyncWakeupEvent(WakeupState state)

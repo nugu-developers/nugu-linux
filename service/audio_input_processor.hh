@@ -33,10 +33,12 @@ public:
     virtual ~AudioInputProcessor();
 
 protected:
-    void init(std::string name);
+    void init(std::string name, std::string& sample, std::string& format, std::string& channel);
     void start(std::function<void()> extra_func = nullptr);
     void stop(void);
     void sendSyncEvent(std::function<void()> action = nullptr);
+    void setProperty(std::string& sample, std::string& format, std::string& channel);
+    const NuguAudioProperty& getProperty();
 
     virtual void loop(void) = 0;
 
@@ -47,6 +49,7 @@ protected:
     std::thread thread;
     std::condition_variable cond;
     std::mutex mutex;
+    NuguAudioProperty prop;
     NuguRecorder* rec = nullptr;
 };
 
