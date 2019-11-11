@@ -321,6 +321,12 @@ int http2_request_set_url(HTTP2Request *req, const char *url)
 
 	curl_easy_setopt(req->easy, CURLOPT_URL, url);
 
+	if (strncmp(url, "http://", 7) == 0) {
+		nugu_dbg("use HTTP/2 over clean TCP");
+		curl_easy_setopt(req->easy, CURLOPT_HTTP_VERSION,
+				 CURL_HTTP_VERSION_2_PRIOR_KNOWLEDGE);
+	}
+
 	return 0;
 }
 
