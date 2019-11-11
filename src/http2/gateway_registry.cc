@@ -26,7 +26,7 @@
 #include "http2_network.h"
 #include "http2_request.h"
 
-#define GATEWAY_REGISTRY_URL_FORMAT "https://%s/v1/policies?protocol=H2"
+#define GATEWAY_REGISTRY_URL_FORMAT "%s/v1/policies?protocol=H2"
 
 struct _gateway_registry {
     char* body;

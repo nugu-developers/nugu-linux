@@ -241,13 +241,13 @@ INetworkManager* NuguClientImpl::getNetworkManager()
 
 void NuguClientImpl::readEnviromentVariables()
 {
-    std::string server_type;
+    char* registry_override;
 
-    server_type = getenv("NUGU_SERVER_TYPE");
-    if (server_type.size()) {
-        config_env_map[NuguConfig::Key::SERVER_TYPE] = server_type;
-        config_env_map[NuguConfig::Key::GATEWAY_REGISTRY_DNS] = NuguConfig::getGatewayRegistryDns(server_type);
-    }
+    registry_override = getenv("NUGU_REGISTRY_SERVER");
+    if (!registry_override)
+        return;
+
+    config_env_map[NuguConfig::Key::GATEWAY_REGISTRY_DNS] = registry_override;
 }
 
 } // NuguClientKit
