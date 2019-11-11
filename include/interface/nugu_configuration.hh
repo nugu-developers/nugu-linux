@@ -39,6 +39,12 @@ namespace NuguConfig {
         const std::string ASR_EPD_PAUSE_LENGTH_MSEC = "asr_epd_pause_length_msec";
         const std::string ASR_EPD_TIMEOUT_SEC = "asr_epd_timeout_sec";
         const std::string ASR_ENCODING = "asr_encoding";
+        const std::string ASR_EPD_SAMPLERATE = "asr_epd_samplerate";
+        const std::string ASR_EPD_FORMAT = "asr_epd_format";
+        const std::string ASR_EPD_CHANNEL = "asr_epd_channel";
+        const std::string KWD_SAMPLERATE = "kwd_samplerate";
+        const std::string KWD_FORMAT = "kwd_format";
+        const std::string KWD_CHANNEL = "kwd_channel";
         const std::string SERVER_RESPONSE_TIMEOUT_MSEC = "server_response_timeout_msec";
         const std::string MODEL_PATH = "model_path";
         const std::string TTS_ENGINE = "tts_engine";

@@ -16,6 +16,7 @@
 
 #include "audio_input_processor.hh"
 #include "nugu_log.h"
+#include <algorithm>
 
 namespace NuguCore {
 
@@ -42,7 +43,7 @@ AudioInputProcessor::~AudioInputProcessor()
     nugu_recorder_free(rec);
 }
 
-void AudioInputProcessor::init(std::string name)
+void AudioInputProcessor::init(std::string name, std::string& sample, std::string& format, std::string& channel)
 {
     if (is_initialized) {
         nugu_dbg("It's already initialized.");
@@ -57,8 +58,10 @@ void AudioInputProcessor::init(std::string name)
         return;
     }
 
+    setProperty(sample, format, channel);
+
     rec = nugu_recorder_new(name.append("_rec").c_str(), driver);
-    nugu_recorder_set_property(rec, (NuguAudioProperty) { AUDIO_SAMPLE_RATE_16K, AUDIO_FORMAT_S16_LE, 1 });
+    nugu_recorder_set_property(rec, prop);
 
     thread_created = false;
     destroy = 0;
@@ -133,6 +136,66 @@ void AudioInputProcessor::sendSyncEvent(std::function<void()> action)
     lock.unlock();
 
     delete data;
+}
+
+void AudioInputProcessor::setProperty(std::string& sample, std::string& format, std::string& channel)
+{
+    std::transform(sample.begin(), sample.end(), sample.begin(), ::tolower);
+    std::transform(format.begin(), format.end(), format.begin(), ::tolower);
+
+    if (sample == "8k")
+        prop.samplerate = AUDIO_SAMPLE_RATE_8K;
+    else if (sample == "16k")
+        prop.samplerate = AUDIO_SAMPLE_RATE_16K;
+    else if (sample == "32k")
+        prop.samplerate = AUDIO_SAMPLE_RATE_32K;
+    else if (sample == "22k")
+        prop.samplerate = AUDIO_SAMPLE_RATE_22K;
+    else if (sample == "44k")
+        prop.samplerate = AUDIO_SAMPLE_RATE_44K;
+    else
+        nugu_error("not support the sample rate => %s", sample.c_str());
+
+    if (format == "s8")
+        prop.format = AUDIO_FORMAT_S8;
+    else if (format == "u8")
+        prop.format = AUDIO_FORMAT_U8;
+    else if (format == "s16le")
+        prop.format = AUDIO_FORMAT_S16_LE;
+    else if (format == "s16be")
+        prop.format = AUDIO_FORMAT_S16_BE;
+    else if (format == "u16le")
+        prop.format = AUDIO_FORMAT_U16_LE;
+    else if (format == "u16be")
+        prop.format = AUDIO_FORMAT_U16_BE;
+    else if (format == "s24le")
+        prop.format = AUDIO_FORMAT_S24_LE;
+    else if (format == "s24be")
+        prop.format = AUDIO_FORMAT_S24_BE;
+    else if (format == "u24le")
+        prop.format = AUDIO_FORMAT_U24_LE;
+    else if (format == "u24be")
+        prop.format = AUDIO_FORMAT_U24_BE;
+    else if (format == "s32le")
+        prop.format = AUDIO_FORMAT_S32_LE;
+    else if (format == "s32be")
+        prop.format = AUDIO_FORMAT_S32_BE;
+    else if (format == "u32le")
+        prop.format = AUDIO_FORMAT_U32_LE;
+    else if (format == "u32be")
+        prop.format = AUDIO_FORMAT_U32_BE;
+    else
+        nugu_error("not support the format => %s", format.c_str());
+
+    if (atoi(channel.c_str()))
+        prop.channel = std::stoi(channel);
+    else
+        nugu_error("wrong channel parameter => %s", channel.c_str());
+}
+
+const NuguAudioProperty& AudioInputProcessor::getProperty()
+{
+    return prop;
 }
 
 } // NuguCore

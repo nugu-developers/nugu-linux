@@ -30,7 +30,11 @@ using namespace NuguInterface;
 
 SpeechRecognizer::SpeechRecognizer()
 {
-    AudioInputProcessor::init("asr");
+    std::string sample = nugu_config_get(NuguConfig::Key::ASR_EPD_SAMPLERATE.c_str());
+    std::string format = nugu_config_get(NuguConfig::Key::ASR_EPD_FORMAT.c_str());
+    std::string channel = nugu_config_get(NuguConfig::Key::ASR_EPD_CHANNEL.c_str());
+
+    AudioInputProcessor::init("asr", sample, format, channel);
 }
 
 void SpeechRecognizer::sendSyncListeningEvent(ListeningState state)
@@ -64,7 +68,29 @@ void SpeechRecognizer::loop(void)
     max_duration = nugu_config_get(NuguConfig::Key::ASR_EPD_MAX_DURATION_SEC.c_str());
     pause_length = nugu_config_get(NuguConfig::Key::ASR_EPD_PAUSE_LENGTH_MSEC.c_str());
 
-    epd_param.sample_rate = 16000;
+    NuguAudioProperty prop = AudioInputProcessor::getProperty();
+    switch(prop.samplerate) {
+        case AUDIO_SAMPLE_RATE_8K:
+            epd_param.sample_rate = 8000;
+        break;
+        case AUDIO_SAMPLE_RATE_16K:
+            epd_param.sample_rate = 16000;
+        break;
+        case AUDIO_SAMPLE_RATE_32K:
+            epd_param.sample_rate = 32000;
+        break;
+        case AUDIO_SAMPLE_RATE_22K:
+            epd_param.sample_rate = 22050;
+        break;
+        case AUDIO_SAMPLE_RATE_44K:
+            epd_param.sample_rate = 44100;
+        break;
+        default:
+            // set default value: 16K
+            epd_param.sample_rate = 16000;
+        break;
+    }
+
     epd_param.max_speech_duration = std::stoi(max_duration);
     epd_param.time_out = std::stoi(timeout);
     epd_param.pause_length = std::stoi(pause_length);
