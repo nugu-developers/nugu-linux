@@ -34,7 +34,7 @@ class IPlaySyncManagerListener {
 public:
     virtual ~IPlaySyncManagerListener() = default;
     virtual void onSyncContext(const std::string& ps_id, std::pair<std::string, std::string> render_info) = 0;
-    virtual void onReleaseContext(const std::string& ps_id) = 0;
+    virtual bool onReleaseContext(const std::string& ps_id, bool unconditionally) = 0;
 };
 
 class PlaySyncManager {
@@ -53,7 +53,8 @@ public:
 
     void addContext(const std::string& ps_id, CapabilityType cap_type);
     void addContext(const std::string& ps_id, CapabilityType cap_type, DisplayRenderer renderer);
-    void removeContext(std::string ps_id, CapabilityType cap_type, bool immediately = false);
+    void removeContext(std::string ps_id, CapabilityType cap_type, bool immediately = true);
+    void clearPendingContext(std::string ps_id);
     std::vector<std::string> getAllPlayStackItems();
     std::string getPlayStackItem(CapabilityType cap_type);
 
@@ -65,7 +66,7 @@ private:
     void addStackElement(std::string ps_id, CapabilityType cap_type);
     bool removeStackElement(std::string ps_id, CapabilityType cap_type);
     void addRenderer(std::string ps_id, DisplayRenderer& renderer);
-    void removeRenderer(std::string ps_id);
+    bool removeRenderer(std::string ps_id, bool unconditionally = true);
     void setTimerInterval(const std::string& ps_id);
 
     static const std::map<std::string, long> DURATION_MAP;
@@ -76,6 +77,7 @@ private:
     using TimerCallbackParam = struct {
         PlaySyncManager* instance;
         std::string ps_id;
+        bool immediately;
         std::function<void()> callback; // temp : for holding function for stack log
     };
 

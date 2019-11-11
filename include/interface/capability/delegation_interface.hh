@@ -54,6 +54,7 @@ public:
      * @brief Request context information from the external application.
      * @param[in] ps_id identifier for request play service
      * @param[in] data context information
+     * @return true if request succeed
      */
     virtual bool requestContext(std::string& ps_id, std::string& data) = 0;
 };

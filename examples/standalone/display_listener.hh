@@ -25,7 +25,7 @@ class DisplayListener : public IDisplayListener {
 public:
     virtual ~DisplayListener() = default;
     void renderDisplay(const std::string& type, const std::string& json) override;
-    void clearDisplay() override;
+    bool clearDisplay(bool unconditionally) override;
 };
 
 #endif /* __DISPLAY_LISTENER_H__ */

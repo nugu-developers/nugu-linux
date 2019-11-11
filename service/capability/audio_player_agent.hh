@@ -86,7 +86,7 @@ public:
 
     // implement IContextManagerListener
     void onSyncContext(const std::string& ps_id, std::pair<std::string, std::string> render_info) override;
-    void onReleaseContext(const std::string& ps_id) override;
+    bool onReleaseContext(const std::string& ps_id, bool unconditionally) override;
 
 private:
     void sendEventCommon(std::string ename);

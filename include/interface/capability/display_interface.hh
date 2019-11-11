@@ -54,9 +54,11 @@ public:
 
     /**
      * @brief The SDK will ask you to delete the rendered display on the display according to the service context maintenance policy.
+     * @param[in] unconditionally whether clear display unconditionally or not
+     * @return true if display is cleared
      * @see IAudioPlayerListener::clearDisplay()
      */
-    virtual void clearDisplay() = 0;
+    virtual bool clearDisplay(bool unconditionally) = 0;
 };
 
 /**

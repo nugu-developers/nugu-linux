@@ -21,18 +21,24 @@ void AudioPlayerListener::renderDisplay(const std::string& type, const std::stri
 {
     nugu_info("got received to render display template");
 }
-void AudioPlayerListener::clearDisplay()
+
+bool AudioPlayerListener::clearDisplay(bool unconditionally)
 {
     nugu_info("got received to clear display template");
+
+    return true;
 }
+
 void AudioPlayerListener::mediaStateChanged(AudioPlayerState state)
 {
     nugu_info("%s - %d", __FUNCTION__, (int)state);
 }
+
 void AudioPlayerListener::durationChanged(int duration)
 {
     nugu_info("%s - %d", __FUNCTION__, duration);
 }
+
 void AudioPlayerListener::positionChanged(int position)
 {
     nugu_info("%s - %d", __FUNCTION__, position);

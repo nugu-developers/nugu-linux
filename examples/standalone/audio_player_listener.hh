@@ -25,7 +25,7 @@ class AudioPlayerListener : public IAudioPlayerListener {
 public:
     virtual ~AudioPlayerListener() = default;
     void renderDisplay(const std::string& type, const std::string& json) override;
-    void clearDisplay() override;
+    bool clearDisplay(bool unconditionally) override;
     void mediaStateChanged(AudioPlayerState state) override;
     void durationChanged(int duration) override;
     void positionChanged(int position) override;
