@@ -20,8 +20,8 @@
 #include <list>
 
 #include <interface/capability/capability_interface.hh>
-#include <interface/wakeup_interface.hh>
 #include <interface/network_manager_interface.hh>
+#include <interface/wakeup_interface.hh>
 
 namespace NuguCore {
 
@@ -30,7 +30,7 @@ using namespace NuguInterface;
 class CapabilityCreator {
 public:
     virtual ~CapabilityCreator() = default;
-    static const std::list<CapabilityType> CAPABILITY_LIST;
+    static const std::list<std::pair<CapabilityType, bool>> CAPABILITY_LIST;
     static ICapabilityInterface* createCapability(CapabilityType ctype);
     static IWakeupHandler* createWakeupHandler();
     static INetworkManager* createNetworkManager();

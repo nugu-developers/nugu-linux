@@ -30,15 +30,15 @@
 
 namespace NuguCore {
 
-const std::list<CapabilityType> CapabilityCreator::CAPABILITY_LIST {
-    CapabilityType::ASR,
-    CapabilityType::TTS,
-    CapabilityType::AudioPlayer,
-    CapabilityType::System,
-    CapabilityType::Display,
-    CapabilityType::Extension,
-    CapabilityType::Text,
-    CapabilityType::Delegation
+const std::list<std::pair<CapabilityType, bool>> CapabilityCreator::CAPABILITY_LIST {
+    std::make_pair(CapabilityType::ASR, true),
+    std::make_pair(CapabilityType::TTS, true),
+    std::make_pair(CapabilityType::AudioPlayer, true),
+    std::make_pair(CapabilityType::System, true),
+    std::make_pair(CapabilityType::Display, false),
+    std::make_pair(CapabilityType::Extension, false),
+    std::make_pair(CapabilityType::Text, false),
+    std::make_pair(CapabilityType::Delegation, false)
 };
 
 ICapabilityInterface* CapabilityCreator::createCapability(CapabilityType ctype)
