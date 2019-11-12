@@ -357,7 +357,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         Json::StyledWriter writer;
         renderer.cap_type = getType();
         renderer.listener = this;
-        renderer.render_info = std::make_pair<std::string, std::string>("AudioPlayer", writer.write(meta["template"]));
+        renderer.render_info = std::make_pair<std::string, std::string>(meta["template"]["type"].asString(), writer.write(meta["template"]));
     }
 
     // sync display rendering with context
