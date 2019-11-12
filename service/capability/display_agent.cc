@@ -42,10 +42,13 @@ void DisplayAgent::processDirective(NuguDirective* ndir)
 {
     Json::Value root;
     Json::Reader reader;
+    const char* dnamespace;
     const char* dname;
     const char* message;
+    std::string type;
     std::string duration;
 
+    dnamespace = nugu_directive_peek_namespace(ndir);
     message = nugu_directive_peek_json(ndir);
     dname = nugu_directive_peek_name(ndir);
 
@@ -54,6 +57,7 @@ void DisplayAgent::processDirective(NuguDirective* ndir)
         destoryDirective(ndir);
         return;
     }
+    type = std::string(dnamespace) + "." + std::string(dname);
 
     nugu_dbg("message: %s", message);
 
@@ -71,7 +75,7 @@ void DisplayAgent::processDirective(NuguDirective* ndir)
     renderer.listener = this;
     renderer.only_rendering = true;
     renderer.duration = duration;
-    renderer.render_info = std::make_pair<std::string, std::string>(dname, message);
+    renderer.render_info = std::make_pair<std::string, std::string>(type.c_str(), message);
 
     playsync_manager->addContext(ps_id, getType(), renderer);
 
