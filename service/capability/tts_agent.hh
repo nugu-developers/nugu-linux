@@ -75,6 +75,7 @@ private:
     NuguPcm* pcm;
     NuguDecoder* decoder;
 
+    std::string dialog_id;
     std::string ps_id;
     ITTSListener* tts_listener;
 };

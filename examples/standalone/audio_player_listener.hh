@@ -24,8 +24,8 @@ using namespace NuguInterface;
 class AudioPlayerListener : public IAudioPlayerListener {
 public:
     virtual ~AudioPlayerListener() = default;
-    void renderDisplay(const std::string& type, const std::string& json) override;
-    bool clearDisplay(bool unconditionally) override;
+    void renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id) override;
+    bool clearDisplay(const std::string& id, bool unconditionally) override;
     void mediaStateChanged(AudioPlayerState state) override;
     void durationChanged(int duration) override;
     void positionChanged(int position) override;

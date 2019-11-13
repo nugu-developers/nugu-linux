@@ -24,8 +24,8 @@ using namespace NuguInterface;
 class DisplayListener : public IDisplayListener {
 public:
     virtual ~DisplayListener() = default;
-    void renderDisplay(const std::string& type, const std::string& json) override;
-    bool clearDisplay(bool unconditionally) override;
+    void renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id) override;
+    bool clearDisplay(const std::string& id, bool unconditionally) override;
 };
 
 #endif /* __DISPLAY_LISTENER_H__ */

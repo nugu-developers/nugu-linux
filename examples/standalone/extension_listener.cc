@@ -15,6 +15,7 @@
  */
 
 #include "extension_listener.hh"
+#include "nugu_log.h"
 #include <iostream>
 #include <string.h>
 
@@ -22,18 +23,13 @@ ExtensionResult ExtensionListener::receiveAction(std::string& data)
 {
     // TODO : need to handle argument and define method to execute related 3rd party application
 
-    std::cout << "=======================================================\n";
-    std::cout << "Extension data: " << data.c_str() << "\n";
-    std::cout << "=======================================================\n";
+    std::cout << "[Extension] receive action - " << data << std::endl;
 
     return ExtensionResult::SUCCEEDED;
 }
 
 void ExtensionListener::requestContext(std::string& data)
 {
-    std::cout << "=======================================================\n";
-    std::cout << "Extension data: \"\"\n";
-    std::cout << "=======================================================\n";
-
+    nugu_info("[Extension] request context");
     data = "";
 }

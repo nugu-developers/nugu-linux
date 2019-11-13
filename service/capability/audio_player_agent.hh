@@ -19,6 +19,7 @@
 
 #include <core/nugu_focus.h>
 #include <interface/capability/audio_player_interface.hh>
+#include <interface/capability/display_interface.hh>
 #include <interface/media_player_interface.hh>
 
 #include "capability.hh"
@@ -53,6 +54,12 @@ public:
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     // implement handler
+    void displayRendered(const std::string& id) override;
+    void displayCleared(const std::string& id) override;
+    void elementSelected(const std::string& id, const std::string& item_token) override;
+    void setListener(IDisplayListener* listener) override;
+    void removeListener(IDisplayListener* listener) override;
+
     void addListener(IAudioPlayerListener* listener) override;
     void removeListener(IAudioPlayerListener* listener) override;
     void play() override;
@@ -85,15 +92,15 @@ public:
     void muteChanged(int mute);
 
     // implement IContextManagerListener
-    void onSyncContext(const std::string& ps_id, std::pair<std::string, std::string> render_info) override;
-    bool onReleaseContext(const std::string& ps_id, bool unconditionally) override;
+    void onSyncDisplayContext(const std::string& id) override;
+    bool onReleaseDisplayContext(const std::string& id, bool unconditionally) override;
 
 private:
     void sendEventCommon(std::string ename);
 
     AudioPlayerState audioPlayerState();
 
-    void parsingPlay(const char* message);
+    void parsingPlay(const char* message, NuguDirective* ndir);
     void parsingPause(const char* message);
     void parsingStop(const char* message);
 
@@ -114,6 +121,8 @@ private:
     std::string cur_token;
     bool is_finished;
     std::vector<IAudioPlayerListener*> aplayer_listeners;
+    IDisplayListener* display_listener;
+    std::map<std::string, PlaySyncManager::DisplayRenderInfo*> render_info;
 };
 
 } // NuguCore

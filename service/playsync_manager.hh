@@ -33,17 +33,25 @@ using namespace NuguInterface;
 class IPlaySyncManagerListener {
 public:
     virtual ~IPlaySyncManagerListener() = default;
-    virtual void onSyncContext(const std::string& ps_id, std::pair<std::string, std::string> render_info) = 0;
-    virtual bool onReleaseContext(const std::string& ps_id, bool unconditionally) = 0;
+    virtual void onSyncDisplayContext(const std::string& id) = 0;
+    virtual bool onReleaseDisplayContext(const std::string& id, bool unconditionally) = 0;
 };
 
 class PlaySyncManager {
 public:
+    using DisplayRenderInfo = struct {
+        std::string id;
+        std::string type;
+        std::string payload;
+        std::string dialog_id;
+        std::string ps_id;
+        std::string token;
+    };
     using DisplayRenderer = struct {
         IPlaySyncManagerListener* listener;
         CapabilityType cap_type;
         std::string duration;
-        std::pair<std::string, std::string> render_info;
+        std::string display_id;
         bool only_rendering = false;
     };
 

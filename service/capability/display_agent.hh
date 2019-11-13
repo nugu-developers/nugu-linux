@@ -25,7 +25,9 @@ namespace NuguCore {
 
 using namespace NuguInterface;
 
-class DisplayAgent : public Capability, public IDisplayHandler, public IPlaySyncManagerListener {
+class DisplayAgent : public Capability,
+                     public IDisplayHandler,
+                     public IPlaySyncManagerListener {
 public:
     DisplayAgent();
     virtual ~DisplayAgent();
@@ -35,19 +37,22 @@ public:
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     // implement handler
-    void displayRendered(const std::string& token) override;
-    void displayCleared() override;
-    void elementSelected(const std::string& item_token) override;
+    void displayRendered(const std::string& id) override;
+    void displayCleared(const std::string& id) override;
+    void elementSelected(const std::string& id, const std::string& item_token) override;
+    void setListener(IDisplayListener* listener) override;
+    void removeListener(IDisplayListener* listener) override;
 
     // implement IContextManagerListener
-    void onSyncContext(const std::string& ps_id, std::pair<std::string, std::string> render_info) override;
-    bool onReleaseContext(const std::string& ps_id, bool unconditionally) override;
+    void onSyncDisplayContext(const std::string& id) override;
+    bool onReleaseDisplayContext(const std::string& id, bool unconditionally) override;
 
 private:
     void sendEventElementSelected(const std::string& item_token);
 
     IDisplayListener* display_listener;
-    std::string ps_id;
+    std::map<std::string, PlaySyncManager::DisplayRenderInfo*> render_info;
+    std::string cur_ps_id;
     std::string cur_token;
 };
 

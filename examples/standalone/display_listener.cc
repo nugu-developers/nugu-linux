@@ -19,14 +19,14 @@
 #include "display_listener.hh"
 #include "nugu_log.h"
 
-void DisplayListener::renderDisplay(const std::string& type, const std::string& json)
+void DisplayListener::renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id)
 {
-    nugu_info("got received to render display template");
+    std::cout << "[Display] render display template - id: " << id << ", type: " << type << ", dialog_id: " << dialog_id << std::endl;
 }
 
-bool DisplayListener::clearDisplay(bool unconditionally)
+bool DisplayListener::clearDisplay(const std::string& id, bool unconditionally)
 {
-    nugu_info("got received to clear display template");
+    std::cout << "[Display] clear display template - id: " << id << ", unconditionally: " << unconditionally << std::endl;
 
     // clear display unconditionally
     if (unconditionally) {

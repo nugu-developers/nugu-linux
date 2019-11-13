@@ -17,6 +17,8 @@
 #include <glib.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 #include "audio_player_agent.hh"
 #include "media_player.hh"
@@ -28,7 +30,7 @@ static const std::string capability_version = "1.0";
 
 AudioPlayerAgent::AudioPlayerAgent()
     : Capability(CapabilityType::AudioPlayer, capability_version)
-    , player(NULL)
+    , player(nullptr)
     , cur_aplayer_state(AudioPlayerState::IDLE)
     , prev_aplayer_state(AudioPlayerState::IDLE)
     , is_paused(false)
@@ -37,13 +39,27 @@ AudioPlayerAgent::AudioPlayerAgent()
     , report_interval_time(-1)
     , cur_token("")
     , is_finished(false)
+    , display_listener(nullptr)
 {
 }
 
 AudioPlayerAgent::~AudioPlayerAgent()
 {
+    display_listener = nullptr;
+    aplayer_listeners.clear();
+
+    for (auto info : render_info) {
+        delete info.second;
+    }
+    render_info.clear();
+
     CapabilityManager::getInstance()->removeFocus("cap_audio");
-    delete player;
+
+    if (player) {
+        player->removeListener(this);
+        delete player;
+        player = nullptr;
+    }
 }
 
 void AudioPlayerAgent::initialize()
@@ -155,7 +171,7 @@ void AudioPlayerAgent::processDirective(NuguDirective* ndir)
 
     // directive name check
     if (!strcmp(dname, "Play"))
-        parsingPlay(message);
+        parsingPlay(message, ndir);
     else if (!strcmp(dname, "Pause"))
         parsingPause(message);
     else if (!strcmp(dname, "Stop"))
@@ -194,8 +210,45 @@ void AudioPlayerAgent::receiveCommand(CapabilityType from, std::string command, 
 
 void AudioPlayerAgent::setCapabilityListener(ICapabilityListener* listener)
 {
-    if (listener)
+    if (listener) {
+        setListener(dynamic_cast<IDisplayListener*>(listener));
         addListener(dynamic_cast<IAudioPlayerListener*>(listener));
+    }
+}
+
+void AudioPlayerAgent::displayRendered(const std::string& id)
+{
+}
+
+void AudioPlayerAgent::displayCleared(const std::string& id)
+{
+    std::string ps_id = "";
+
+    if (render_info.find(id) != render_info.end()) {
+        auto info = render_info[id];
+        ps_id = info->ps_id;
+        render_info.erase(id);
+        delete info;
+    }
+    playsync_manager->clearPendingContext(ps_id);
+}
+
+void AudioPlayerAgent::elementSelected(const std::string& id, const std::string& item_token)
+{
+}
+
+void AudioPlayerAgent::setListener(IDisplayListener* listener)
+{
+    if (!listener)
+        return;
+
+    display_listener = listener;
+}
+
+void AudioPlayerAgent::removeListener(IDisplayListener* listener)
+{
+    if (display_listener == listener)
+        display_listener = nullptr;
 }
 
 void AudioPlayerAgent::addListener(IAudioPlayerListener* listener)
@@ -302,7 +355,7 @@ void AudioPlayerAgent::sendEventCommon(std::string ename)
     sendEvent(ename, getContextInfo(), payload);
 }
 
-void AudioPlayerAgent::parsingPlay(const char* message)
+void AudioPlayerAgent::parsingPlay(const char* message, NuguDirective* ndir)
 {
     Json::Value root;
     Json::Value audio_item;
@@ -354,10 +407,26 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     meta = audio_item["metadata"];
 
     if (!meta.empty() && !meta["template"].empty()) {
+        PlaySyncManager::DisplayRenderInfo* info;
         Json::StyledWriter writer;
+        struct timeval tv;
+        std::string id;
+
+        gettimeofday(&tv, NULL);
+        id = std::to_string(tv.tv_sec) + std::to_string(tv.tv_usec);
+
+        info = new PlaySyncManager::DisplayRenderInfo;
+        info->id = id;
+        info->ps_id = ps_id;
+        info->type = meta["template"]["type"].asString();
+        info->payload = writer.write(meta["template"]);
+        info->dialog_id = nugu_directive_peek_dialog_id(ndir);
+        info->token = root["token"].asString();
+        render_info[id] = info;
+
         renderer.cap_type = getType();
         renderer.listener = this;
-        renderer.render_info = std::make_pair<std::string, std::string>(meta["template"]["type"].asString(), writer.write(meta["template"]));
+        renderer.display_id = id;
     }
 
     // sync display rendering with context
@@ -603,28 +672,34 @@ void AudioPlayerAgent::muteChanged(int mute)
 {
 }
 
-void AudioPlayerAgent::onSyncContext(const std::string& ps_id, std::pair<std::string, std::string> render_info)
+void AudioPlayerAgent::onSyncDisplayContext(const std::string& id)
 {
     nugu_dbg("AudioPlayer sync context");
 
-    for (auto aplayer_listener : aplayer_listeners)
-        aplayer_listener->renderDisplay(render_info.first, render_info.second);
+    if (render_info.find(id) == render_info.end())
+        return;
+
+    display_listener->renderDisplay(id, render_info[id]->type, render_info[id]->payload, render_info[id]->dialog_id);
 }
 
-bool AudioPlayerAgent::onReleaseContext(const std::string& ps_id, bool unconditionally)
+bool AudioPlayerAgent::onReleaseDisplayContext(const std::string& id, bool unconditionally)
 {
     nugu_dbg("AudioPlayer release context");
 
-    unsigned int no_clear_count = 0;
+    if (render_info.find(id) == render_info.end())
+        return true;
 
-    for (auto aplayer_listener : aplayer_listeners)
-        if (!aplayer_listener->clearDisplay(unconditionally))
-            no_clear_count++;
+    bool ret = display_listener->clearDisplay(id, unconditionally);
+    if (ret || unconditionally) {
+        auto info = render_info[id];
+        render_info.erase(id);
+        delete info;
+    }
 
-    if (unconditionally && no_clear_count)
+    if (unconditionally && !ret)
         nugu_warn("should clear display if unconditionally is true!!");
 
-    return (no_clear_count == 0);
+    return ret;
 }
 
 } // NuguCore
