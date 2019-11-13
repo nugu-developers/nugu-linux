@@ -191,8 +191,20 @@ static void *_connect_in_thread(void *userdata)
 		GatewayServer *item = cur->data;
 		char *host = NULL;
 
-		host = g_strdup_printf("https://%s:%d", item->hostname,
-				       item->port);
+		if (!item->protocol)
+			continue;
+
+		if (g_ascii_strcasecmp(item->protocol, "H2") == 0)
+			host = g_strdup_printf("https://%s:%d", item->hostname,
+					       item->port);
+		else if (g_ascii_strcasecmp(item->protocol, "H2C") == 0)
+			host = g_strdup_printf("http://%s:%d", item->hostname,
+					       item->port);
+		else {
+			nugu_dbg("not supported protocol: %s", item->protocol);
+			continue;
+		}
+
 		if (!host)
 			continue;
 
