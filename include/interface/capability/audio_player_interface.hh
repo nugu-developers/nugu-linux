@@ -22,6 +22,7 @@
 #include <string>
 
 #include <interface/capability/capability_interface.hh>
+#include <interface/capability/display_interface.hh>
 #include <interface/media_player_interface.hh>
 
 namespace NuguInterface {
@@ -53,25 +54,9 @@ enum class AudioPlayerState {
  * @brief audioplayer listener interface
  * @see IAudioPlayerHandler
  */
-class IAudioPlayerListener : public ICapabilityListener {
+class IAudioPlayerListener : public IDisplayListener {
 public:
     virtual ~IAudioPlayerListener() = default;
-
-    /**
-     * @brief Request rendering by passing metadata so that the device with the display can draw on the screen.
-     * @param[in] type display template type
-     * @param[in] json template in json format for display
-     * @see IDisplayListener::renderDisplay()
-     */
-    virtual void renderDisplay(const std::string& type, const std::string& json) = 0;
-
-    /**
-     * @brief The SDK will ask you to delete the rendered display on the display according to the service context maintenance policy.
-     * @param[in] unconditionally whether clear display unconditionally or not
-     * @return true if display is cleared
-     * @see IDisplayListener::clearDisplay()
-     */
-    virtual bool clearDisplay(bool unconditionally) = 0;
 
     /**
      * @brief Report this to the user when the state of the audio player changes.
@@ -96,7 +81,7 @@ public:
  * @brief audioplayer handler interface
  * @see IAudioPlayerListener
  */
-class IAudioPlayerHandler : public ICapabilityHandler {
+class IAudioPlayerHandler : public IDisplayHandler {
 public:
     virtual ~IAudioPlayerHandler() = default;
 

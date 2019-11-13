@@ -17,6 +17,8 @@
 #include <glib.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/time.h>
+#include <unistd.h>
 
 #include "capability_manager.hh"
 #include "display_agent.hh"
@@ -28,23 +30,34 @@ static const std::string capability_version = "1.0";
 
 DisplayAgent::DisplayAgent()
     : Capability(CapabilityType::Display, capability_version)
-    , display_listener(NULL)
-    , ps_id("")
+    , display_listener(nullptr)
+    , cur_ps_id("")
     , cur_token("")
 {
 }
 
 DisplayAgent::~DisplayAgent()
 {
+    cur_token = cur_ps_id = "";
+    display_listener = nullptr;
+
+    for (auto info : render_info) {
+        delete info.second;
+    }
+    render_info.clear();
 }
 
 void DisplayAgent::processDirective(NuguDirective* ndir)
 {
+    PlaySyncManager::DisplayRenderInfo* info;
+    struct timeval tv;
     Json::Value root;
     Json::Reader reader;
     const char* dnamespace;
     const char* dname;
     const char* message;
+    std::string id;
+    std::string ps_id;
     std::string type;
     std::string duration;
 
@@ -69,13 +82,25 @@ void DisplayAgent::processDirective(NuguDirective* ndir)
     ps_id = root["playServiceId"].asString();
     duration = root["duration"].asString();
 
+    gettimeofday(&tv, NULL);
+    id = std::to_string(tv.tv_sec) + std::to_string(tv.tv_usec);
+
+    info = new PlaySyncManager::DisplayRenderInfo;
+    info->id = id;
+    info->ps_id = ps_id;
+    info->type = type;
+    info->payload = message;
+    info->dialog_id = nugu_directive_peek_dialog_id(ndir);
+    info->token = root["token"].asString();
+    render_info[id] = info;
+
     // sync display rendering with context
     PlaySyncManager::DisplayRenderer renderer;
     renderer.cap_type = getType();
     renderer.listener = this;
     renderer.only_rendering = true;
     renderer.duration = duration;
-    renderer.render_info = std::make_pair<std::string, std::string>(type.c_str(), message);
+    renderer.display_id = id;
 
     playsync_manager->addContext(ps_id, getType(), renderer);
 
@@ -88,7 +113,7 @@ void DisplayAgent::updateInfoForContext(Json::Value& ctx)
 
     display["version"] = getVersion();
     if (cur_token.size()) {
-        display["playServiceId"] = ps_id;
+        display["playServiceId"] = cur_ps_id;
         display["token"] = cur_token;
     }
 
@@ -98,23 +123,55 @@ void DisplayAgent::updateInfoForContext(Json::Value& ctx)
 void DisplayAgent::setCapabilityListener(ICapabilityListener* listener)
 {
     if (listener)
-        display_listener = dynamic_cast<IDisplayListener*>(listener);
+        setListener(dynamic_cast<IDisplayListener*>(listener));
 }
 
-void DisplayAgent::displayRendered(const std::string& token)
+void DisplayAgent::displayRendered(const std::string& id)
 {
-    cur_token = token;
+    if (render_info.find(id) != render_info.end()) {
+        cur_token = render_info[id]->token;
+        cur_ps_id = render_info[id]->ps_id;
+    }
 }
 
-void DisplayAgent::displayCleared()
+void DisplayAgent::displayCleared(const std::string& id)
 {
-    cur_token = "";
+    std::string ps_id = "";
+
+    if (render_info.find(id) != render_info.end()) {
+        auto info = render_info[id];
+        cur_token = cur_ps_id = "";
+        ps_id = info->ps_id;
+        render_info.erase(id);
+        delete info;
+    }
     playsync_manager->clearPendingContext(ps_id);
 }
 
-void DisplayAgent::elementSelected(const std::string& item_token)
+void DisplayAgent::elementSelected(const std::string& id, const std::string& item_token)
 {
+    if (render_info.find(id) == render_info.end()) {
+        nugu_warn("SDK doesn't know or manage the template(%s)", id.c_str());
+        return;
+    }
+
+    cur_token = render_info[id]->token;
+    cur_ps_id = render_info[id]->ps_id;
     sendEventElementSelected(item_token);
+}
+
+void DisplayAgent::setListener(IDisplayListener* listener)
+{
+    if (!listener)
+        return;
+
+    display_listener = listener;
+}
+
+void DisplayAgent::removeListener(IDisplayListener* listener)
+{
+    if (display_listener == listener)
+        display_listener = nullptr;
 }
 
 void DisplayAgent::sendEventElementSelected(const std::string& item_token)
@@ -124,26 +181,41 @@ void DisplayAgent::sendEventElementSelected(const std::string& item_token)
     Json::StyledWriter writer;
     Json::Value root;
 
-    root["playServiceId"] = ps_id;
+    root["playServiceId"] = cur_ps_id;
     root["token"] = item_token;
     payload = writer.write(root);
 
     sendEvent(ename, getContextInfo(), payload);
 }
 
-void DisplayAgent::onSyncContext(const std::string& ps_id, std::pair<std::string, std::string> render_info)
+void DisplayAgent::onSyncDisplayContext(const std::string& id)
 {
     nugu_dbg("Display sync context");
 
-    if (display_listener)
-        display_listener->renderDisplay(render_info.first, render_info.second);
+    if (render_info.find(id) == render_info.end())
+        return;
+
+    display_listener->renderDisplay(id, render_info[id]->type, render_info[id]->payload, render_info[id]->dialog_id);
 }
 
-bool DisplayAgent::onReleaseContext(const std::string& ps_id, bool unconditionally)
+bool DisplayAgent::onReleaseDisplayContext(const std::string& id, bool unconditionally)
 {
     nugu_dbg("Display release context");
 
-    return display_listener ? display_listener->clearDisplay(unconditionally) : true;
+    if (render_info.find(id) == render_info.end())
+        return true;
+
+    bool ret = display_listener->clearDisplay(id, unconditionally);
+    if (unconditionally || ret) {
+        auto info = render_info[id];
+        render_info.erase(id);
+        delete info;
+    }
+
+    if (unconditionally && !ret)
+        nugu_warn("should clear display if unconditionally is true!!");
+
+    return ret;
 }
 
 } // NuguCore

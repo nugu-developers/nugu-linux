@@ -26,8 +26,8 @@ using namespace NuguInterface;
 class TTSListener : public ITTSListener {
 public:
     virtual ~TTSListener() = default;
-    void onTTSState(TTSState state) override;
-    void onTTSText(const std::string& text) override;
+    void onTTSState(TTSState state, const std::string& dialog_id) override;
+    void onTTSText(const std::string& text, const std::string& dialog_id) override;
 
 private:
     std::string extractText(std::string raw_text);

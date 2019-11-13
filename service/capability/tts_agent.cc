@@ -36,6 +36,7 @@ TTSAgent::TTSAgent()
     , speak_dir(nullptr)
     , pcm(nullptr)
     , decoder(nullptr)
+    , dialog_id("")
     , ps_id("")
     , tts_listener(nullptr)
 {
@@ -212,14 +213,12 @@ void TTSAgent::stopTTS()
 void TTSAgent::startTTS(NuguDirective* ndir)
 {
     finish = false;
+    speak_dir = ndir;
 
     if (pcm)
         nugu_pcm_start(pcm);
 
-    if (ndir) {
-        speak_dir = ndir;
-        nugu_directive_set_data_callback(speak_dir, directiveDataCallback, this);
-    }
+    nugu_directive_set_data_callback(speak_dir, directiveDataCallback, this);
 }
 
 void TTSAgent::requestTTS(const std::string& text, const std::string& play_service_id)
@@ -295,7 +294,7 @@ void TTSAgent::sendEventSpeechStarted(const std::string& token)
     sendEventCommon("SpeechStarted", token);
 
     if (tts_listener)
-        tts_listener->onTTSState(TTSState::TTS_SPEECH_START);
+        tts_listener->onTTSState(TTSState::TTS_SPEECH_START, dialog_id);
 }
 
 void TTSAgent::sendEventSpeechFinished(const std::string& token)
@@ -303,7 +302,7 @@ void TTSAgent::sendEventSpeechFinished(const std::string& token)
     sendEventCommon("SpeechFinished", token);
 
     if (tts_listener)
-        tts_listener->onTTSState(TTSState::TTS_SPEECH_FINISH);
+        tts_listener->onTTSState(TTSState::TTS_SPEECH_FINISH, dialog_id);
 }
 
 void TTSAgent::sendEventSpeechStopped(const std::string& token)
@@ -374,6 +373,7 @@ void TTSAgent::parsingSpeak(const char* message, NuguDirective* ndir)
     }
 
     cur_token = token;
+    dialog_id = nugu_directive_peek_dialog_id(ndir);
 
     stopTTS();
 
@@ -384,7 +384,7 @@ void TTSAgent::parsingSpeak(const char* message, NuguDirective* ndir)
     CapabilityManager::getInstance()->requestFocus("cap_tts", NUGU_FOCUS_RESOURCE_SPK, NULL);
 
     if (tts_listener)
-        tts_listener->onTTSText(text);
+        tts_listener->onTTSText(text, dialog_id);
 }
 
 void TTSAgent::parsingStop(const char* message)

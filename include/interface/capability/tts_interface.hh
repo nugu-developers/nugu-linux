@@ -51,15 +51,17 @@ public:
     /**
      * @brief Report changes in the speech state to the user.
      * @param[in] state tts state
+     * @param[in] dialog_id dialog request id
      * @see ITTSHandler::requestTTS()
      */
-    virtual void onTTSState(TTSState state) = 0;
+    virtual void onTTSState(TTSState state, const std::string& dialog_id) = 0;
 
     /**
      * @brief Report the speech sentence to the User.
      * @param[in] text sentense
+     * @param[in] dialog_id dialog request id
      */
-    virtual void onTTSText(const std::string& text) = 0;
+    virtual void onTTSText(const std::string& text, const std::string& dialog_id) = 0;
 };
 
 /**

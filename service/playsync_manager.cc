@@ -224,21 +224,22 @@ void PlaySyncManager::addRenderer(std::string ps_id, DisplayRenderer& renderer)
     }
 
     renderer_map[ps_id] = renderer;
-    renderer.listener->onSyncContext(ps_id, renderer.render_info);
+    renderer.listener->onSyncDisplayContext(renderer.display_id);
 }
 
 bool PlaySyncManager::removeRenderer(std::string ps_id, bool unconditionally)
 {
-    if (renderer_map.find(ps_id) != renderer_map.end()) {
-        bool result = renderer_map[ps_id].listener->onReleaseContext(ps_id, unconditionally) || unconditionally;
+    if (renderer_map.find(ps_id) == renderer_map.end())
+        return true;
 
-        if (result)
-            renderer_map.erase(ps_id);
+    auto renderer = renderer_map[ps_id];
+    bool result = renderer.listener->onReleaseDisplayContext(renderer.display_id, unconditionally)
+        || unconditionally;
 
-        return result;
-    }
+    if (result)
+        renderer_map.erase(ps_id);
 
-    return true;
+    return result;
 }
 
 void PlaySyncManager::setTimerInterval(const std::string& ps_id)

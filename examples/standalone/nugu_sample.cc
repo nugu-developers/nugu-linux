@@ -218,7 +218,7 @@ public:
             break;
         case DIALOG_REQUEST_ID:
             if (data)
-                std::cout << "DIALOG_REQUEST_ID = " << (const char*)data << std::endl;
+                nugu_info("DIALOG_REQUEST_ID = %s", data);
             break;
         }
     }
