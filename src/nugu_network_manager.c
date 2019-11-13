@@ -79,7 +79,8 @@ EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
 		_network->h2, nugu_event_peek_namespace(nev),
 		nugu_event_peek_name(nev), nugu_event_peek_version(nev),
 		nugu_event_peek_context(nev), nugu_event_peek_msg_id(nev),
-		nugu_event_peek_dialog_id(nev), nugu_event_peek_json(nev));
+		nugu_event_peek_dialog_id(nev),
+		nugu_event_peek_referrer_id(nev), nugu_event_peek_json(nev));
 }
 
 EXPORT_API int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,

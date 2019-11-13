@@ -28,6 +28,7 @@ struct _nugu_event {
 	char *version;
 	char *msg_id;
 	char *dialog_id;
+	char *referrer_id;
 
 	int seq;
 	char *json;
@@ -48,6 +49,7 @@ EXPORT_API NuguEvent *nugu_event_new(const char *name_space, const char *name,
 	nev->name = strdup(name);
 	nev->msg_id = nugu_uuid_generate_short();
 	nev->dialog_id = nugu_uuid_generate_time();
+	nev->referrer_id = NULL;
 	nev->seq = 0;
 	nev->version = strdup(version);
 
@@ -63,6 +65,9 @@ EXPORT_API void nugu_event_free(NuguEvent *nev)
 	free(nev->msg_id);
 	free(nev->dialog_id);
 	free(nev->version);
+
+	if (nev->referrer_id)
+		free(nev->referrer_id);
 
 	if (nev->json)
 		free(nev->json);
@@ -162,6 +167,27 @@ EXPORT_API const char *nugu_event_peek_dialog_id(NuguEvent *nev)
 	g_return_val_if_fail(nev != NULL, NULL);
 
 	return nev->dialog_id;
+}
+
+EXPORT_API int nugu_event_set_referrer_id(NuguEvent *nev,
+					  const char *referrer_id)
+{
+	g_return_val_if_fail(nev != NULL, -1);
+	g_return_val_if_fail(referrer_id != NULL, -1);
+
+	if (nev->referrer_id)
+		free(nev->referrer_id);
+
+	nev->referrer_id = strdup(referrer_id);
+
+	return 0;
+}
+
+EXPORT_API const char *nugu_event_peek_referrer_id(NuguEvent *nev)
+{
+	g_return_val_if_fail(nev != NULL, NULL);
+
+	return nev->referrer_id;
 }
 
 EXPORT_API int nugu_event_get_seq(NuguEvent *nev)

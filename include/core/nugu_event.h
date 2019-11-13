@@ -33,7 +33,7 @@ extern "C" {
  *   - name
  *   - version
  *   - message-id
- *   - dialog-message-id
+ *   - dialog-request-id
  *   - context
  *   - payload
  *
@@ -126,9 +126,9 @@ int nugu_event_set_json(NuguEvent *nev, const char *json);
 const char *nugu_event_peek_json(NuguEvent *nev);
 
 /**
- * @brief  Set the dialog-message-id of event
+ * @brief  Set the dialog-request-id of event
  * @param[in] nev event object
- * @param[in] dialog_id dialog-message-id
+ * @param[in] dialog_id dialog-request-id
  * @return result
  * @retval 0 success
  * @retval -1 failure
@@ -136,11 +136,28 @@ const char *nugu_event_peek_json(NuguEvent *nev);
 int nugu_event_set_dialog_id(NuguEvent *nev, const char *dialog_id);
 
 /**
- * @brief Get the dialog-message-id of event
+ * @brief Get the dialog-request-id of event
  * @param[in] nev event object
- * @return dialog-message-id. Please don't free the data manually.
+ * @return dialog-request-id. Please don't free the data manually.
  */
 const char *nugu_event_peek_dialog_id(NuguEvent *nev);
+
+/**
+ * @brief  Set the referer-dialog-request-id of event
+ * @param[in] nev event object
+ * @param[in] referrer_id referrer-dialog-request-id
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_event_set_referrer_id(NuguEvent *nev, const char *referrer_id);
+
+/**
+ * @brief Get the referer-dialog-request-id of event
+ * @param[in] nev event object
+ * @return referrer-dialog-request-id. Please don't free the data manually.
+ */
+const char *nugu_event_peek_referrer_id(NuguEvent *nev);
 
 /**
  * @brief Get the current sequence number of attachment data
