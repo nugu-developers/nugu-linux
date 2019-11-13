@@ -33,7 +33,7 @@ extern "C" {
  *   - name
  *   - version
  *   - message-id
- *   - dialog-message-id
+ *   - dialog-request-id
  *   - payload (json)
  *
  * @{
@@ -55,7 +55,7 @@ typedef void (*DirectiveDataCallback)(NuguDirective *ndir, void *userdata);
  * @param[in] name capability name (e.g. "Speak")
  * @param[in] version version string (e.g. "1.0")
  * @param[in] msg_id unique message-id
- * @param[in] dialog_id unique dialog-message-id
+ * @param[in] dialog_id unique dialog-request-id
  * @param[in] json payload
  * @return directive object
  * @see nugu_directive_free()
@@ -100,9 +100,9 @@ const char *nugu_directive_peek_version(NuguDirective *ndir);
 const char *nugu_directive_peek_msg_id(NuguDirective *ndir);
 
 /**
- * @brief Get the dialog-message-id of directive
+ * @brief Get the dialog-request-id of directive
  * @param[in] ndir directive object
- * @return dialog-message-id. Please don't free the data manually.
+ * @return dialog-request-id. Please don't free the data manually.
  */
 const char *nugu_directive_peek_dialog_id(NuguDirective *ndir);
 

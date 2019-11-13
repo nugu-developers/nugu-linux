@@ -51,6 +51,22 @@
 	"  }\n"                                                                \
 	"}"
 
+#define TPL_EVENT_REFERRER                                                     \
+	"{\n"                                                                  \
+	"  \"context\": %s,\n"                                                 \
+	"  \"event\": {\n"                                                     \
+	"    \"header\": {\n"                                                  \
+	"      \"referrerDialogRequestId\": \"%s\",\n"                         \
+	"      \"dialogRequestId\": \"%s\",\n"                                 \
+	"      \"messageId\": \"%s\",\n"                                       \
+	"      \"name\": \"%s\",\n"                                            \
+	"      \"namespace\": \"%s\",\n"                                       \
+	"      \"version\": \"%s\"\n"                                          \
+	"    },\n"                                                             \
+	"    \"payload\": %s\n"                                                \
+	"  }\n"                                                                \
+	"}"
+
 struct _h2_manager {
 	HTTP2Network *network;
 
@@ -541,7 +557,8 @@ int h2manager_disconnect(H2Manager *manager)
 int h2manager_send_event(H2Manager *manager, const char *name_space,
 			 const char *name, const char *version,
 			 const char *context, const char *msg_id,
-			 const char *dialog_id, const char *json)
+			 const char *dialog_id, const char *referrer_id,
+			 const char *json)
 {
 	char *buf;
 	const char *payload;
@@ -562,8 +579,14 @@ int h2manager_send_event(H2Manager *manager, const char *name_space,
 	else
 		payload = "{}";
 
-	buf = g_strdup_printf(TPL_EVENT, context, dialog_id, msg_id, name,
-			      name_space, version, payload);
+	if (referrer_id)
+		buf = g_strdup_printf(TPL_EVENT_REFERRER, context, referrer_id,
+				      dialog_id, msg_id, name, name_space,
+				      version, payload);
+	else
+		buf = g_strdup_printf(TPL_EVENT, context, dialog_id, msg_id,
+				      name, name_space, version, payload);
+
 	v1_event_set_json(e, buf, strlen(buf));
 	g_free(buf);
 
