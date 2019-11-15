@@ -48,7 +48,8 @@ enum class CapabilityType {
     ASR, /**< the type of ASR agent */
     Text, /**< the type of Text agent */
     Extension, /**< the type of Extension agent */
-    Delegation /**< the type of Delegation agent */
+    Delegation, /**< the type of Delegation agent */
+    Permission /**< the type of Permission agent */
 };
 
 /**

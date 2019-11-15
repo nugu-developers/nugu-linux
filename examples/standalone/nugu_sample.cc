@@ -30,6 +30,7 @@
 #include "extension_listener.hh"
 #include "nugu_client.hh"
 #include "nugu_log.h"
+#include "permission_listener.hh"
 #include "speech_operator.hh"
 #include "system_listener.hh"
 #include "text_listener.hh"
@@ -80,6 +81,7 @@ std::unique_ptr<ISystemListener> system_listener;
 std::unique_ptr<ITextListener> text_listener;
 std::unique_ptr<IExtensionListener> extension_listener;
 std::unique_ptr<IDelegationListener> delegation_listener;
+std::unique_ptr<IPermissionListener> permission_listener;
 ITextHandler* text_handler;
 IDisplayHandler* display_handler;
 IAudioPlayerHandler* aplayer_handler;
@@ -275,6 +277,7 @@ void registerCapabilities()
     text_listener = std::unique_ptr<ITextListener>(new TextListener());
     extension_listener = std::unique_ptr<IExtensionListener>(new ExtensionListener());
     delegation_listener = std::unique_ptr<IDelegationListener>(new DelegationListener());
+    permission_listener = std::unique_ptr<IPermissionListener>(new PermissionListener());
 
     // create capability instance. It's possible to set user customized capability using below builder
     nugu_client->getCapabilityBuilder()
@@ -286,6 +289,7 @@ void registerCapabilities()
         ->add(CapabilityType::Text, text_listener.get())
         ->add(CapabilityType::Extension, extension_listener.get())
         ->add(CapabilityType::Delegation, delegation_listener.get())
+        ->add(CapabilityType::Permission, permission_listener.get())
         ->construct();
 }
 
