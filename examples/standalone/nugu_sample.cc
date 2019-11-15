@@ -38,6 +38,12 @@
 
 using namespace NuguClientKit;
 
+template <typename T, typename... Ts>
+std::unique_ptr<T> make_unique(Ts&&... params)
+{
+    return std::unique_ptr<T>(new T(std::forward<Ts>(params)...));
+}
+
 // define cout color
 const std::string C_RED = "\033[1;91m";
 const std::string C_YELLOW = "\033[1;93m";
@@ -45,6 +51,26 @@ const std::string C_BLUE = "\033[1;94m";
 const std::string C_CYAN = "\033[1;96m";
 const std::string C_WHITE = "\033[1;97m";
 const std::string C_RESET = "\033[0m";
+
+GMainContext* context;
+GMainLoop* loop;
+
+int text_input;
+bool isConnected = false;
+
+std::unique_ptr<NuguClient> nugu_client = nullptr;
+ITextHandler* text_handler = nullptr;
+INetworkManager* network_manager = nullptr;
+
+auto speech_operator(make_unique<SpeechOperator>());
+auto tts_listener(make_unique<TTSListener>());
+auto display_listener(make_unique<DisplayListener>());
+auto aplayer_listener(make_unique<AudioPlayerListener>());
+auto system_listener(make_unique<SystemListener>());
+auto text_listener(make_unique<TextListener>());
+auto extension_listener(make_unique<ExtensionListener>());
+auto delegation_listener(make_unique<DelegationListener>());
+auto permission_listener(make_unique<PermissionListener>());
 
 void msg_error(const std::string& message)
 {
@@ -63,32 +89,6 @@ void msg_info(const std::string& message)
               << C_RESET;
     std::cout.flush();
 }
-
-class NuguClientListener;
-
-GMainContext* context;
-GMainLoop* loop;
-
-const bool REGISTER_CAPABILITIES_MANUALLY = true; // have to set TRUE currently
-std::unique_ptr<NuguClient> nugu_client = nullptr;
-std::unique_ptr<NuguClientListener> nugu_client_listener;
-std::unique_ptr<INetworkManagerListener> network_manager_listener;
-std::unique_ptr<SpeechOperator> speech_operator;
-std::unique_ptr<ITTSListener> tts_listener;
-std::unique_ptr<IDisplayListener> display_listener;
-std::unique_ptr<IAudioPlayerListener> aplayer_listener;
-std::unique_ptr<ISystemListener> system_listener;
-std::unique_ptr<ITextListener> text_listener;
-std::unique_ptr<IExtensionListener> extension_listener;
-std::unique_ptr<IDelegationListener> delegation_listener;
-std::unique_ptr<IPermissionListener> permission_listener;
-ITextHandler* text_handler;
-IDisplayHandler* display_handler;
-IAudioPlayerHandler* aplayer_handler;
-INetworkManager* network_manager;
-
-int text_input;
-bool isConnected = false;
 
 void quit()
 {
@@ -269,16 +269,6 @@ void registerCapabilities()
     if (!nugu_client)
         return;
 
-    speech_operator = std::unique_ptr<SpeechOperator>(new SpeechOperator());
-    tts_listener = std::unique_ptr<ITTSListener>(new TTSListener());
-    display_listener = std::unique_ptr<IDisplayListener>(new DisplayListener());
-    aplayer_listener = std::unique_ptr<IAudioPlayerListener>(new AudioPlayerListener());
-    system_listener = std::unique_ptr<ISystemListener>(new SystemListener());
-    text_listener = std::unique_ptr<ITextListener>(new TextListener());
-    extension_listener = std::unique_ptr<IExtensionListener>(new ExtensionListener());
-    delegation_listener = std::unique_ptr<IDelegationListener>(new DelegationListener());
-    permission_listener = std::unique_ptr<IPermissionListener>(new PermissionListener());
-
     // create capability instance. It's possible to set user customized capability using below builder
     nugu_client->getCapabilityBuilder()
         ->add(CapabilityType::ASR, speech_operator->getASRListener())
@@ -335,16 +325,15 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    nugu_client_listener = std::unique_ptr<NuguClientListener>(new NuguClientListener());
-    network_manager_listener = std::unique_ptr<NetworkManagerListener>(new NetworkManagerListener());
+    auto nugu_client_listener(make_unique<NuguClientListener>());
+    auto network_manager_listener(make_unique<NetworkManagerListener>());
 
     nugu_client = std::unique_ptr<NuguClient>(new NuguClient());
     nugu_client->setConfig(NuguConfig::Key::ACCESS_TOKEN, getenv("NUGU_TOKEN"));
     nugu_client->setConfig(NuguConfig::Key::MODEL_PATH, model_path);
     nugu_client->setListener(nugu_client_listener.get());
 
-    if (REGISTER_CAPABILITIES_MANUALLY)
-        registerCapabilities();
+    registerCapabilities();
 
     network_manager = nugu_client->getNetworkManager();
     network_manager->addListener(network_manager_listener.get());
