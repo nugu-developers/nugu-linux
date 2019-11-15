@@ -39,12 +39,6 @@ public:
     bool request() override;
 
 private:
-    enum ContextInfo {
-        IS_USE = 0,
-        PLAY_SERVICE_ID,
-        DATA
-    };
-
     void parsingDelegate(const char* message);
     bool sendEventRequest();
 
