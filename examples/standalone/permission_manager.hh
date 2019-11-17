@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
-#ifndef __PERMISSION_LISTENER_H__
-#define __PERMISSION_LISTENER_H__
+#ifndef __PERMISSION_MANAGER_H__
+#define __PERMISSION_MANAGER_H__
 
+#include <interface/capability/location_interface.hh>
 #include <interface/capability/permission_interface.hh>
 
 using namespace NuguInterface;
 
-class PermissionListener : public IPermissionListener {
-
+class PermissionManager : public IPermissionListener,
+                          public ILocationListener {
 public:
     void requestContext(std::list<PermissionState>& permission_list) override;
+    void requestContext(LocationInfo& location_info) override;
     void requestPermission(const std::set<Permission::Type>& permission_set) override;
+
+    IPermissionListener* getPermissionListener();
+    ILocationListener* getLocationListener();
 
 private:
     PermissionState location_permission { Permission::Type::LOCATION, Permission::State::UNDETERMINED };
+    Location::State location_state = Location::State::UNAVAILABLE;
 };
 
-#endif /* __PERMISSION_LISTENER_H__ */
+#endif /* __PERMISSION_MANAGER_H__ */

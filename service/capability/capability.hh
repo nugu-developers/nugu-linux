@@ -75,6 +75,7 @@ public:
     virtual void setCapabilityListener(ICapabilityListener* clistener) override;
     virtual void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;
     virtual void receiveCommandAll(std::string command, const std::string& param) override;
+    virtual void processDirective(NuguDirective* ndir) override;
     virtual std::string getContextInfo();
 
     // implements ICapabilityObservable
