@@ -21,6 +21,7 @@
 #include "delegation_agent.hh"
 #include "display_agent.hh"
 #include "extension_agent.hh"
+#include "location_agent.hh"
 #include "network_manager.hh"
 #include "permission_agent.hh"
 #include "speech_recognizer.hh"
@@ -40,7 +41,8 @@ const std::list<std::pair<CapabilityType, bool>> CapabilityCreator::CAPABILITY_L
     std::make_pair(CapabilityType::Extension, false),
     std::make_pair(CapabilityType::Text, false),
     std::make_pair(CapabilityType::Delegation, false),
-    std::make_pair(CapabilityType::Permission, false)
+    std::make_pair(CapabilityType::Permission, false),
+    std::make_pair(CapabilityType::Location, false),
 };
 
 ICapabilityInterface* CapabilityCreator::createCapability(CapabilityType ctype)
@@ -64,6 +66,8 @@ ICapabilityInterface* CapabilityCreator::createCapability(CapabilityType ctype)
         return new DelegationAgent();
     case CapabilityType::Permission:
         return new PermissionAgent();
+    case CapabilityType::Location:
+        return new LocationAgent();
     default:
         return nullptr;
     }

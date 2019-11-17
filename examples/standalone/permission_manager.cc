@@ -14,14 +14,24 @@
  * limitations under the License.
  */
 
-#include "permission_listener.hh"
+#include "permission_manager.hh"
 
-void PermissionListener::requestContext(std::list<PermissionState>& permission_list)
+void PermissionManager::requestContext(std::list<PermissionState>& permission_list)
 {
     permission_list.push_back(location_permission);
 }
 
-void PermissionListener::requestPermission(const std::set<Permission::Type>& permission_set)
+void PermissionManager::requestContext(LocationInfo& location_info)
+{
+    // TODO: It has to extract location state and current from application.
+
+    location_info.state = location_state;
+    location_info.permission_granted = (location_permission.state == Permission::State::GRANTED);
+    location_info.latitude = "37.565715"; // dummy data
+    location_info.longitude = "126.988675"; // dummy data
+}
+
+void PermissionManager::requestPermission(const std::set<Permission::Type>& permission_set)
 {
     // TODO: It has to do permission acquirement process in application.
 
@@ -29,7 +39,18 @@ void PermissionListener::requestPermission(const std::set<Permission::Type>& per
         switch (permission_type) {
         case Permission::Type::LOCATION:
             location_permission.state = Permission::State::GRANTED;
+            location_state = Location::State::AVAILABLE;
             break;
         }
     }
+}
+
+IPermissionListener* PermissionManager::getPermissionListener()
+{
+    return this;
+}
+
+ILocationListener* PermissionManager::getLocationListener()
+{
+    return this;
 }

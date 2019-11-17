@@ -143,6 +143,9 @@ std::string Capability::getTypeName(CapabilityType type)
     case CapabilityType::Permission:
         _name = "Permission";
         break;
+    case CapabilityType::Location:
+        _name = "Location";
+        break;
     }
 
     return _name;
@@ -205,6 +208,10 @@ void Capability::receiveCommand(CapabilityType from, std::string command, const 
 }
 
 void Capability::receiveCommandAll(std::string command, const std::string& param)
+{
+}
+
+void Capability::processDirective(NuguDirective* ndir)
 {
 }
 

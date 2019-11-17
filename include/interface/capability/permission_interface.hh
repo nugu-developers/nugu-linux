@@ -49,7 +49,7 @@ namespace Permission {
     * @brief Permission State
     */
     enum class State {
-        UNDETERMINED, /**< Not check whether permission granted */
+        UNDETERMINED, /**< not check whether permission granted */
         GRANTED, /**< permission granted by user */
         DENIED, /**< permission denied by user */
         NOT_SUPPORTED /**< not support such permission */

@@ -49,7 +49,8 @@ enum class CapabilityType {
     Text, /**< the type of Text agent */
     Extension, /**< the type of Extension agent */
     Delegation, /**< the type of Delegation agent */
-    Permission /**< the type of Permission agent */
+    Permission, /**< the type of Permission agent */
+    Location /**< the type of Location agent */
 };
 
 /**

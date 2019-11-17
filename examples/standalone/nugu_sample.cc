@@ -30,7 +30,7 @@
 #include "extension_listener.hh"
 #include "nugu_client.hh"
 #include "nugu_log.h"
-#include "permission_listener.hh"
+#include "permission_manager.hh"
 #include "speech_operator.hh"
 #include "system_listener.hh"
 #include "text_listener.hh"
@@ -70,7 +70,7 @@ auto system_listener(make_unique<SystemListener>());
 auto text_listener(make_unique<TextListener>());
 auto extension_listener(make_unique<ExtensionListener>());
 auto delegation_listener(make_unique<DelegationListener>());
-auto permission_listener(make_unique<PermissionListener>());
+auto permission_manager(make_unique<PermissionManager>());
 
 void msg_error(const std::string& message)
 {
@@ -279,7 +279,8 @@ void registerCapabilities()
         ->add(CapabilityType::Text, text_listener.get())
         ->add(CapabilityType::Extension, extension_listener.get())
         ->add(CapabilityType::Delegation, delegation_listener.get())
-        ->add(CapabilityType::Permission, permission_listener.get())
+        ->add(CapabilityType::Permission, permission_manager->getPermissionListener())
+        ->add(CapabilityType::Location, permission_manager->getPermissionListener())
         ->construct();
 }
 
