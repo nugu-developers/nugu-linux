@@ -64,6 +64,7 @@ public:
     std::string getName() override;
     void setVersion(const std::string& ver);
     std::string getVersion() override;
+    std::string getPlayServiceIdInStackControl(const Json::Value& playstack_control);
 
     void destoryDirective(NuguDirective* ndir);
     void sendEvent(const std::string& name, const std::string& context, const std::string& payload);

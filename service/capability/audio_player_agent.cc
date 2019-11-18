@@ -361,7 +361,6 @@ void AudioPlayerAgent::parsingPlay(const char* message, NuguDirective* ndir)
     Json::Value audio_item;
     Json::Value stream;
     Json::Value report;
-    Json::Value meta;
     Json::Reader reader;
     std::string url;
     long offset;
@@ -403,34 +402,38 @@ void AudioPlayerAgent::parsingPlay(const char* message, NuguDirective* ndir)
         report_interval_time = report["progressReportIntervalInMilliseconds"].asLargestInt();
     }
 
-    PlaySyncManager::DisplayRenderer renderer;
-    meta = audio_item["metadata"];
+    std::string playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
-    if (!meta.empty() && !meta["template"].empty()) {
-        PlaySyncManager::DisplayRenderInfo* info;
-        Json::StyledWriter writer;
-        struct timeval tv;
-        std::string id;
+    if (!playstackctl_ps_id.empty()) {
+        PlaySyncManager::DisplayRenderer renderer;
+        Json::Value meta = audio_item["metadata"];
 
-        gettimeofday(&tv, NULL);
-        id = std::to_string(tv.tv_sec) + std::to_string(tv.tv_usec);
+        if (!meta.empty() && !meta["template"].empty()) {
+            PlaySyncManager::DisplayRenderInfo* info;
+            Json::StyledWriter writer;
+            struct timeval tv;
+            std::string id;
 
-        info = new PlaySyncManager::DisplayRenderInfo;
-        info->id = id;
-        info->ps_id = ps_id;
-        info->type = meta["template"]["type"].asString();
-        info->payload = writer.write(meta["template"]);
-        info->dialog_id = nugu_directive_peek_dialog_id(ndir);
-        info->token = root["token"].asString();
-        render_info[id] = info;
+            gettimeofday(&tv, NULL);
+            id = std::to_string(tv.tv_sec) + std::to_string(tv.tv_usec);
 
-        renderer.cap_type = getType();
-        renderer.listener = this;
-        renderer.display_id = id;
+            info = new PlaySyncManager::DisplayRenderInfo;
+            info->id = id;
+            info->ps_id = ps_id;
+            info->type = meta["template"]["type"].asString();
+            info->payload = writer.write(meta["template"]);
+            info->dialog_id = nugu_directive_peek_dialog_id(ndir);
+            info->token = root["token"].asString();
+            render_info[id] = info;
+
+            renderer.cap_type = getType();
+            renderer.listener = this;
+            renderer.display_id = id;
+        }
+
+        // sync display rendering with context
+        playsync_manager->addContext(playstackctl_ps_id, getType(), renderer);
     }
-
-    // sync display rendering with context
-    playsync_manager->addContext(ps_id, getType(), renderer);
 
     is_finished = false;
 
@@ -496,22 +499,22 @@ void AudioPlayerAgent::parsingStop(const char* message)
     Json::Value root;
     Json::Value audio_item;
     Json::Reader reader;
-    std::string playserviceid;
+    std::string playstackctl_ps_id;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
         return;
     }
 
-    playserviceid = root["playServiceId"].asString();
+    playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
-    if (playserviceid.size()) {
-        playsync_manager->removeContext(playserviceid, getType(), !is_finished);
+    if (!playstackctl_ps_id.empty()) {
+        playsync_manager->removeContext(playstackctl_ps_id, getType(), !is_finished);
         std::string stacked_ps_id = playsync_manager->getPlayStackItem(getType());
 
         CapabilityManager::getInstance()->sendCommand(CapabilityType::AudioPlayer, CapabilityType::ASR, "releaseFocus", "");
 
-        if (!stacked_ps_id.empty() && playserviceid != stacked_ps_id)
+        if (!stacked_ps_id.empty() && playstackctl_ps_id != stacked_ps_id)
             return;
         else if (stacked_ps_id.empty())
             CapabilityManager::getInstance()->releaseFocus("cap_audio", NUGU_FOCUS_RESOURCE_SPK);

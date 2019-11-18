@@ -49,17 +49,12 @@ DisplayAgent::~DisplayAgent()
 
 void DisplayAgent::processDirective(NuguDirective* ndir)
 {
-    PlaySyncManager::DisplayRenderInfo* info;
-    struct timeval tv;
     Json::Value root;
     Json::Reader reader;
     const char* dnamespace;
     const char* dname;
     const char* message;
-    std::string id;
-    std::string ps_id;
     std::string type;
-    std::string duration;
 
     dnamespace = nugu_directive_peek_namespace(ndir);
     message = nugu_directive_peek_json(ndir);
@@ -79,30 +74,34 @@ void DisplayAgent::processDirective(NuguDirective* ndir)
         destoryDirective(ndir);
         return;
     }
-    ps_id = root["playServiceId"].asString();
-    duration = root["duration"].asString();
 
-    gettimeofday(&tv, NULL);
-    id = std::to_string(tv.tv_sec) + std::to_string(tv.tv_usec);
+    std::string playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
-    info = new PlaySyncManager::DisplayRenderInfo;
-    info->id = id;
-    info->ps_id = ps_id;
-    info->type = type;
-    info->payload = message;
-    info->dialog_id = nugu_directive_peek_dialog_id(ndir);
-    info->token = root["token"].asString();
-    render_info[id] = info;
+    if (!playstackctl_ps_id.empty()) {
+        struct timeval tv;
 
-    // sync display rendering with context
-    PlaySyncManager::DisplayRenderer renderer;
-    renderer.cap_type = getType();
-    renderer.listener = this;
-    renderer.only_rendering = true;
-    renderer.duration = duration;
-    renderer.display_id = id;
+        gettimeofday(&tv, NULL);
+        std::string id = std::to_string(tv.tv_sec) + std::to_string(tv.tv_usec);
 
-    playsync_manager->addContext(ps_id, getType(), renderer);
+        PlaySyncManager::DisplayRenderInfo* info = new PlaySyncManager::DisplayRenderInfo;
+        info->id = id;
+        info->ps_id = root["playServiceId"].asString();
+        info->type = type;
+        info->payload = message;
+        info->dialog_id = nugu_directive_peek_dialog_id(ndir);
+        info->token = root["token"].asString();
+        render_info[id] = info;
+
+        // sync display rendering with context
+        PlaySyncManager::DisplayRenderer renderer;
+        renderer.cap_type = getType();
+        renderer.listener = this;
+        renderer.only_rendering = true;
+        renderer.duration = root["duration"].asString();
+        renderer.display_id = id;
+
+        playsync_manager->addContext(playstackctl_ps_id, getType(), renderer);
+    }
 
     destoryDirective(ndir);
 }
