@@ -267,6 +267,11 @@ void AudioPlayerAgent::removeListener(IAudioPlayerListener* listener)
         aplayer_listeners.erase(iterator);
 }
 
+void AudioPlayerAgent::stopRenderingTimer(const std::string& id)
+{
+    playsync_manager->clearContextHold();
+}
+
 void AudioPlayerAgent::sendEventPlaybackStarted()
 {
     sendEventCommon("PlaybackStarted");

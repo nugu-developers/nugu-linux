@@ -42,6 +42,7 @@ public:
     void elementSelected(const std::string& id, const std::string& item_token) override;
     void setListener(IDisplayListener* listener) override;
     void removeListener(IDisplayListener* listener) override;
+    void stopRenderingTimer(const std::string& id) override;
 
     // implement IContextManagerListener
     void onSyncDisplayContext(const std::string& id) override;

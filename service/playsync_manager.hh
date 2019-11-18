@@ -68,6 +68,7 @@ public:
 
     void setExpectSpeech(bool expect_speech);
     void onMicOn();
+    void clearContextHold();
     void onASRError();
 
 private:
