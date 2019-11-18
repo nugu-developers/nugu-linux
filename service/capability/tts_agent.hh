@@ -77,6 +77,7 @@ private:
 
     std::string dialog_id;
     std::string ps_id;
+    std::string playstackctl_ps_id;
     ITTSListener* tts_listener;
 };
 

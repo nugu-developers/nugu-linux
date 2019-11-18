@@ -86,7 +86,7 @@ void TTSAgent::initialize()
     nugu_pcm_set_status_callback(pcm, pcmStatusCallback, this);
     nugu_pcm_set_event_callback(pcm, pcmEventCallback, this);
 
-    nugu_pcm_set_property(pcm, (NuguAudioProperty){ AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
+    nugu_pcm_set_property(pcm, (NuguAudioProperty) { AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
 
     CapabilityManager::getInstance()->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
@@ -185,7 +185,7 @@ NuguFocusResult TTSAgent::onUnfocus(NuguFocusResource rsrc, void* event)
 {
     nugu_pcm_stop(pcm);
 
-    playsync_manager->removeContext(ps_id, getType(), !finish);
+    playsync_manager->removeContext(playstackctl_ps_id, getType(), !finish);
 
     return NUGU_FOCUS_REMOVE;
 }
@@ -377,7 +377,11 @@ void TTSAgent::parsingSpeak(const char* message, NuguDirective* ndir)
 
     stopTTS();
 
-    playsync_manager->addContext(ps_id, getType());
+    playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
+
+    if (!playstackctl_ps_id.empty()) {
+        playsync_manager->addContext(playstackctl_ps_id, getType());
+    }
 
     startTTS(ndir);
 

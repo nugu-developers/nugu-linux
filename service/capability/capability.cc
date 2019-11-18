@@ -161,6 +161,21 @@ std::string Capability::getVersion()
     return version;
 }
 
+std::string Capability::getPlayServiceIdInStackControl(const Json::Value& playstack_control)
+{
+    std::string playstack_ps_id;
+
+    if (!playstack_control.isNull() && !playstack_control.empty()) {
+        std::string playstack_type = playstack_control["type"].asString();
+
+        if (playstack_type.size() > 0 && playstack_type == "PUSH") {
+            playstack_ps_id = playstack_control["playServiceId"].asString();
+        }
+    }
+
+    return playstack_ps_id;
+}
+
 void Capability::destoryDirective(NuguDirective* ndir)
 {
     nugu_dirseq_complete(ndir);
