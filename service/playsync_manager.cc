@@ -281,6 +281,11 @@ void PlaySyncManager::onMicOn()
     nugu_timer_stop(timer);
 }
 
+void PlaySyncManager::clearContextHold()
+{
+    nugu_timer_stop(timer);
+}
+
 void PlaySyncManager::onASRError()
 {
     is_expect_speech = false;

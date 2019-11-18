@@ -144,6 +144,7 @@ void DisplayAgent::displayCleared(const std::string& id)
         render_info.erase(id);
         delete info;
     }
+
     playsync_manager->clearPendingContext(ps_id);
 }
 
@@ -171,6 +172,11 @@ void DisplayAgent::removeListener(IDisplayListener* listener)
 {
     if (display_listener == listener)
         display_listener = nullptr;
+}
+
+void DisplayAgent::stopRenderingTimer(const std::string& id)
+{
+    playsync_manager->clearContextHold();
 }
 
 void DisplayAgent::sendEventElementSelected(const std::string& item_token)
