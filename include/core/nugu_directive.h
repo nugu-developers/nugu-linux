@@ -56,13 +56,15 @@ typedef void (*DirectiveDataCallback)(NuguDirective *ndir, void *userdata);
  * @param[in] version version string (e.g. "1.0")
  * @param[in] msg_id unique message-id
  * @param[in] dialog_id unique dialog-request-id
+ * @param[in] referrer_id referrer-dialog-request-id
  * @param[in] json payload
  * @return directive object
  * @see nugu_directive_free()
  */
 NuguDirective *nugu_directive_new(const char *name_space, const char *name,
 				  const char *version, const char *msg_id,
-				  const char *dialog_id, const char *json);
+				  const char *dialog_id,
+				  const char *referrer_id, const char *json);
 
 /**
  * @brief Destroy the directive object
@@ -105,6 +107,13 @@ const char *nugu_directive_peek_msg_id(NuguDirective *ndir);
  * @return dialog-request-id. Please don't free the data manually.
  */
 const char *nugu_directive_peek_dialog_id(NuguDirective *ndir);
+
+/**
+ * @brief Get the referer-dialog-request-id of directive
+ * @param[in] ndir directive object
+ * @return referrer-dialog-request-id. Please don't free the data manually.
+ */
+const char *nugu_directive_peek_referrer_id(NuguDirective *ndir);
 
 /**
  * @brief Get the payload of directive

@@ -30,6 +30,7 @@ struct _nugu_directive {
 	char *msg_id;
 	char *dialog_id;
 	char *json;
+	char *referrer_id;
 
 	int is_active;
 	int is_end;
@@ -43,7 +44,8 @@ struct _nugu_directive {
 EXPORT_API NuguDirective *
 nugu_directive_new(const char *name_space, const char *name,
 		   const char *version, const char *msg_id,
-		   const char *dialog_id, const char *json)
+		   const char *dialog_id, const char *referrer_id,
+		   const char *json)
 {
 	NuguDirective *ndir;
 
@@ -60,6 +62,7 @@ nugu_directive_new(const char *name_space, const char *name,
 	ndir->version = strdup(version);
 	ndir->msg_id = strdup(msg_id);
 	ndir->dialog_id = strdup(dialog_id);
+	ndir->referrer_id = strdup(referrer_id);
 	ndir->json = strdup(json);
 
 	ndir->is_active = 0;
@@ -90,6 +93,9 @@ EXPORT_API void nugu_directive_free(NuguDirective *ndir)
 
 	free(ndir->dialog_id);
 	ndir->dialog_id = NULL;
+
+	free(ndir->referrer_id);
+	ndir->referrer_id = NULL;
 
 	free(ndir->json);
 	ndir->json = NULL;
@@ -154,6 +160,13 @@ EXPORT_API const char *nugu_directive_peek_dialog_id(NuguDirective *ndir)
 	g_return_val_if_fail(ndir != NULL, NULL);
 
 	return ndir->dialog_id;
+}
+
+EXPORT_API const char *nugu_directive_peek_referrer_id(NuguDirective *ndir)
+{
+	g_return_val_if_fail(ndir != NULL, NULL);
+
+	return ndir->referrer_id;
 }
 
 EXPORT_API const char *nugu_directive_peek_json(NuguDirective *ndir)
