@@ -178,16 +178,20 @@ static void _body_json(const char* data, size_t length)
         Json::Value dir = dir_list[i];
         Json::Value h;
         NuguDirective* ndir;
+        std::string referrer;
         std::string p;
 
         h = dir["header"];
 
         p = writer.write(dir["payload"]);
 
+        if (!h["referrerDialogRequestId"].empty())
+            referrer = h["referrerDialogRequestId"].asString();
+
         ndir = nugu_directive_new(h["namespace"].asCString(),
             h["name"].asCString(), h["version"].asCString(),
             h["messageId"].asCString(), h["dialogRequestId"].asCString(),
-            p.c_str());
+            referrer.c_str(), p.c_str());
         if (!ndir)
             continue;
 
