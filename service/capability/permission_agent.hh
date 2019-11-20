@@ -32,7 +32,7 @@ public:
 
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void updateInfoForContext(Json::Value& ctx) override;
-    void processDirective(NuguDirective* ndir) override;
+    void parsingDirective(const char* dname, const char* message) override;
 
 private:
     void parsingRequestAccess(const char* message);

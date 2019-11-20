@@ -81,6 +81,7 @@ void CapabilityEvent::sendAttachmentEvent(bool is_end, size_t size, unsigned cha
 Capability::Capability(CapabilityType type, const std::string& ver)
     : ctype(type)
     , version(ver)
+    , cur_ndir(NULL)
 {
     cname = getTypeName(type);
     playsync_manager = CapabilityManager::getInstance()->getPlaySyncManager();
@@ -176,9 +177,56 @@ std::string Capability::getPlayServiceIdInStackControl(const Json::Value& playst
     return playstack_ps_id;
 }
 
+void Capability::processDirective(NuguDirective* ndir)
+{
+    if (ndir) {
+        const char* dname;
+        const char* message;
+
+        message = nugu_directive_peek_json(ndir);
+        dname = nugu_directive_peek_name(ndir);
+
+        cur_ndir = ndir;
+
+        if (!message || !dname) {
+            nugu_error("directive message is not correct");
+            destoryDirective(ndir);
+            return;
+        }
+
+        parsingDirective(dname, message);
+
+        // the directive with attachment should destroy by agent
+        if (!hasDirectiveAttachment(dname))
+            destoryDirective(ndir);
+    }
+}
+
 void Capability::destoryDirective(NuguDirective* ndir)
 {
+    if (ndir == cur_ndir)
+        cur_ndir = NULL;
+
     nugu_dirseq_complete(ndir);
+}
+
+NuguDirective* Capability::getNuguDirective()
+{
+    return cur_ndir;
+}
+
+bool Capability::hasDirectiveAttachment(const char* dname)
+{
+    if (getType()==CapabilityType::TTS && !strcmp(dname, "Speak"))
+        return true;
+    else
+        return false;
+}
+
+void Capability::parsingDirective(const char* dname, const char* message)
+{
+    nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
+    destoryDirective(cur_ndir);
 }
 
 void Capability::getProperty(const std::string& property, std::string& value)
@@ -223,10 +271,6 @@ void Capability::receiveCommand(CapabilityType from, std::string command, const 
 }
 
 void Capability::receiveCommandAll(std::string command, const std::string& param)
-{
-}
-
-void Capability::processDirective(NuguDirective* ndir)
 {
 }
 

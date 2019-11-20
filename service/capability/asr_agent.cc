@@ -206,29 +206,14 @@ void ASRAgent::stopRecognition()
     CapabilityManager::getInstance()->releaseFocus("asr", NUGU_FOCUS_RESOURCE_MIC);
 }
 
-void ASRAgent::processDirective(NuguDirective* ndir)
+void ASRAgent::parsingDirective(const char* dname, const char* message)
 {
-    const char* dname;
-    const char* message;
-
-    message = nugu_directive_peek_json(ndir);
-    dname = nugu_directive_peek_name(ndir);
-
-    if (!message || !dname) {
-        nugu_error("directive message is not correct");
-        destoryDirective(ndir);
-        return;
-    }
-
-    // directive name check
     if (!strcmp(dname, "ExpectSpeech"))
         parsingExpectSpeech(message);
     else if (!strcmp(dname, "NotifyResult"))
         parsingNotifyResult(message);
     else
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
-
-    destoryDirective(ndir);
 }
 
 void ASRAgent::updateInfoForContext(Json::Value& ctx)

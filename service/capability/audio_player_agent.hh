@@ -48,7 +48,7 @@ public:
     virtual ~AudioPlayerAgent();
     void initialize() override;
 
-    void processDirective(NuguDirective* ndir) override;
+    void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
@@ -101,7 +101,7 @@ private:
 
     AudioPlayerState audioPlayerState();
 
-    void parsingPlay(const char* message, NuguDirective* ndir);
+    void parsingPlay(const char* message);
     void parsingPause(const char* message);
     void parsingStop(const char* message);
 

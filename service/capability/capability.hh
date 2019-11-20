@@ -66,7 +66,12 @@ public:
     std::string getVersion() override;
     std::string getPlayServiceIdInStackControl(const Json::Value& playstack_control);
 
+    void processDirective(NuguDirective* ndir) override;
     void destoryDirective(NuguDirective* ndir);
+
+    NuguDirective* getNuguDirective();
+    bool hasDirectiveAttachment(const char* dname);
+
     void sendEvent(const std::string& name, const std::string& context, const std::string& payload);
     void sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload);
     void sendAttachmentEvent(CapabilityEvent* event, bool is_end, size_t size, unsigned char* data);
@@ -76,7 +81,7 @@ public:
     virtual void setCapabilityListener(ICapabilityListener* clistener) override;
     virtual void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;
     virtual void receiveCommandAll(std::string command, const std::string& param) override;
-    virtual void processDirective(NuguDirective* ndir) override;
+    virtual void parsingDirective(const char* dname, const char* message);
     virtual std::string getContextInfo();
 
     // implements ICapabilityObservable
@@ -93,6 +98,7 @@ private:
     std::string cname;
     std::string version;
     std::vector<ICapabilityObserver*> observers;
+    NuguDirective* cur_ndir;
 };
 
 } // NuguCore

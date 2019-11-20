@@ -81,17 +81,8 @@ void PermissionAgent::updateInfoForContext(Json::Value& ctx)
     ctx[getName()] = permission;
 }
 
-void PermissionAgent::processDirective(NuguDirective* ndir)
+void PermissionAgent::parsingDirective(const char* dname, const char* message)
 {
-    const char* dname = nugu_directive_peek_name(ndir);
-    const char* message = nugu_directive_peek_json(ndir);
-
-    if (!message || !dname) {
-        nugu_error("directive message is not correct");
-        destoryDirective(ndir);
-        return;
-    }
-
     nugu_dbg("message: %s", message);
 
     if (!strcmp(dname, "RequestAccess"))
@@ -99,8 +90,6 @@ void PermissionAgent::processDirective(NuguDirective* ndir)
     else {
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
     }
-
-    destoryDirective(ndir);
 }
 
 void PermissionAgent::parsingRequestAccess(const char* message)
