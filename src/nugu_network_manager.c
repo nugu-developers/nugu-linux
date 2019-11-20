@@ -17,40 +17,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <sys/eventfd.h>
 #include <glib.h>
 #include <unistd.h>
 #include <string.h>
 
 #include "nugu_log.h"
 #include "nugu_uuid.h"
+#include "nugu_equeue.h"
 #include "nugu_network_manager.h"
 #include "nugu_directive_sequencer.h"
 
 #include "http2_manage.h"
 
-enum pending_type {
-	PENDING_DIRECTIVE,
-	PENDING_ATTACHMENT
-};
-
-struct recv_pending {
-	enum pending_type type;
-	void *data;
-	size_t length;
-	char *parent_msg_id;
-	char *media_type;
-	int is_end;
-};
-
 struct _nugu_network {
 	NuguNetworkStatus cur_status;
 	NetworkManagerCallback callback;
 	void *callback_userdata;
-
-	int efd;
-	guint event_source;
-	GAsyncQueue *recv_pendings;
 
 	guint idle_source;
 
@@ -113,134 +95,45 @@ EXPORT_API int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
 	return 0;
 }
 
-static gboolean on_event(GIOChannel *channel, GIOCondition cond,
-			 gpointer userdata)
+static void on_directive(enum nugu_equeue_type type, void *data, void *userdata)
 {
-	uint64_t ev = 0;
-	ssize_t nread;
-
-	if (!_network) {
-		nugu_error("network manager not initialized");
-		return FALSE;
-	}
-
-	nread = read(_network->efd, &ev, sizeof(ev));
-	if (nread == -1 || nread != sizeof(ev)) {
-		nugu_error("read failed");
-		return TRUE;
-	}
-
-	while (g_async_queue_length(_network->recv_pendings) > 0) {
-		struct recv_pending *item;
-
-		item = g_async_queue_try_pop(_network->recv_pendings);
-		if (!item)
-			break;
-
-		if (item->type == PENDING_DIRECTIVE) {
-			nugu_dirseq_push(item->data);
-		} else if (item->type == PENDING_ATTACHMENT) {
-			NuguDirective *ndir;
-
-			ndir = nugu_dirseq_find_by_msgid(item->parent_msg_id);
-			if (ndir) {
-				if (item->is_end)
-					nugu_directive_close_data(ndir);
-
-				nugu_directive_set_media_type(ndir,
-							      item->media_type);
-				nugu_directive_add_data(ndir, item->length,
-							item->data);
-			}
-
-			if (item->data)
-				free(item->data);
-			if (item->parent_msg_id)
-				free(item->parent_msg_id);
-			if (item->media_type)
-				free(item->media_type);
-		} else {
-			nugu_error("invalid type: %d", item->type);
-		}
-
-		free(item);
-	}
-
-	return TRUE;
+	nugu_dirseq_push(data);
 }
 
-static int _event_to_main_context(struct recv_pending *item)
+static void on_attachment(enum nugu_equeue_type type, void *data,
+			  void *userdata)
 {
-	uint64_t ev = 1;
-	ssize_t written;
+	NuguDirective *ndir;
+	struct equeue_data_attachment *item = data;
 
-	g_async_queue_push(_network->recv_pendings, item);
+	ndir = nugu_dirseq_find_by_msgid(item->parent_msg_id);
+	if (!ndir)
+		return;
 
-	written = write(_network->efd, &ev, sizeof(uint64_t));
-	if (written != sizeof(uint64_t)) {
-		nugu_error("write failed");
-		return -1;
-	}
+	if (item->is_end)
+		nugu_directive_close_data(ndir);
 
-	return 0;
+	nugu_directive_set_media_type(ndir, item->media_type);
+	nugu_directive_add_data(ndir, item->length, item->data);
 }
 
-EXPORT_API int nugu_network_manager_recv_directive(NuguDirective *ndir)
+static void on_destroy_attachment(void *data)
 {
-	struct recv_pending *item;
+	struct equeue_data_attachment *item = data;
 
-	g_return_val_if_fail(ndir != NULL, -1);
+	if (item->data)
+		free(item->data);
+	if (item->parent_msg_id)
+		free(item->parent_msg_id);
+	if (item->media_type)
+		free(item->media_type);
 
-	if (!_network) {
-		nugu_error("network manager not initialized");
-		return -1;
-	}
-
-	item = (struct recv_pending *)malloc(sizeof(struct recv_pending));
-	if (!item) {
-		error_nomem();
-		return -1;
-	}
-
-	item->type = PENDING_DIRECTIVE;
-	item->data = ndir;
-
-	return _event_to_main_context(item);
-}
-
-EXPORT_API int nugu_network_manager_recv_directive_data(char *parent_msg_id,
-							char *media_type,
-							int is_end,
-							size_t length,
-							unsigned char *data)
-{
-	struct recv_pending *item;
-
-	if (!_network) {
-		nugu_error("network manager not initialized");
-		return -1;
-	}
-
-	item = (struct recv_pending *)malloc(sizeof(struct recv_pending));
-	if (!item) {
-		error_nomem();
-		return -1;
-	}
-
-	item->type = PENDING_ATTACHMENT;
-	item->data = data;
-	item->length = length;
-	item->is_end = is_end;
-	item->parent_msg_id = parent_msg_id;
-	item->media_type = media_type;
-
-	return _event_to_main_context(item);
+	free(item);
 }
 
 static NetworkManager *nugu_network_manager_new(void)
 {
 	NetworkManager *nm;
-	GIOChannel *channel;
 
 	nm = calloc(1, sizeof(NetworkManager));
 	if (!nm) {
@@ -248,18 +141,11 @@ static NetworkManager *nugu_network_manager_new(void)
 		return NULL;
 	}
 
-	nm->efd = eventfd(0, EFD_CLOEXEC);
-	if (nm->efd < 0) {
-		nugu_error("eventfd() failed");
-		free(nm);
-		return NULL;
-	}
+	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_NEW_DIRECTIVE, on_directive,
+				NULL, nm);
 
-	channel = g_io_channel_unix_new(nm->efd);
-	nm->event_source = g_io_add_watch(channel, G_IO_IN, on_event, NULL);
-	g_io_channel_unref(channel);
-
-	nm->recv_pendings = g_async_queue_new_full(g_free);
+	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_NEW_ATTACHMENT, on_attachment,
+				on_destroy_attachment, nm);
 
 	nm->cur_status = NUGU_NETWORK_UNKNOWN;
 
@@ -270,39 +156,8 @@ static void nugu_network_manager_free(NetworkManager *nm)
 {
 	g_return_if_fail(nm != NULL);
 
-	if (nm->efd != -1)
-		close(nm->efd);
-
 	if (nm->idle_source > 0)
 		g_source_remove(nm->idle_source);
-
-	if (nm->event_source > 0)
-		g_source_remove(nm->event_source);
-
-	if (nm->recv_pendings) {
-		/* Remove pendings */
-		while (g_async_queue_length(nm->recv_pendings) > 0) {
-			struct recv_pending *item;
-
-			item = g_async_queue_try_pop(nm->recv_pendings);
-			if (!item)
-				break;
-
-			if (item->type == PENDING_DIRECTIVE) {
-				nugu_directive_free(item->data);
-			} else if (item->type == PENDING_ATTACHMENT) {
-				if (item->data)
-					free(item->data);
-				if (item->parent_msg_id)
-					free(item->parent_msg_id);
-				if (item->media_type)
-					free(item->media_type);
-			}
-			free(item);
-		}
-
-		g_async_queue_unref(nm->recv_pendings);
-	}
 
 	memset(nm, 0, sizeof(NetworkManager));
 	free(nm);

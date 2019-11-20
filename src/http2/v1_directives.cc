@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "nugu_equeue.h"
 #include "nugu_log.h"
 #include "nugu_network_manager.h"
 #include "json/json.h"
@@ -190,20 +191,26 @@ static void _body_json(const char* data, size_t length)
         if (!ndir)
             continue;
 
-        nugu_network_manager_recv_directive(ndir);
+        nugu_equeue_push(NUGU_EQUEUE_TYPE_NEW_DIRECTIVE, ndir);
     }
 }
 
 static void _body_opus(const char* parent_msg_id, int is_end, const char* data, size_t length)
 {
-    unsigned char* buf;
-    char* p_msgid;
-    char* media_type;
+    struct equeue_data_attachment* item;
 
-    p_msgid = strdup(parent_msg_id);
-    buf = (unsigned char*)malloc(length);
-    memcpy(buf, data, length);
-    media_type = strdup("audio/opus");
+    item = (struct equeue_data_attachment*)malloc(sizeof(struct equeue_data_attachment));
+    if (!item) {
+        error_nomem();
+        return;
+    }
+
+    item->parent_msg_id = strdup(parent_msg_id);
+    item->media_type = strdup("audio/opus");
+    item->is_end = is_end;
+    item->length = length;
+    item->data = (unsigned char*)malloc(length);
+    memcpy(item->data, data, length);
 
     if ((nugu_log_get_modules() & NUGU_LOG_MODULE_NETWORK_TRACE) != 0) {
         enum nugu_log_prefix back;
@@ -211,12 +218,12 @@ static void _body_opus(const char* parent_msg_id, int is_end, const char* data, 
         back = nugu_log_get_prefix_fields();
         nugu_log_set_prefix_fields((nugu_log_prefix)(back & ~(NUGU_LOG_PREFIX_FILENAME | NUGU_LOG_PREFIX_LINE)));
 
-        nugu_info("<-- Attachment: parent=%s (%zd bytes, is_end=%d)", p_msgid, length, is_end);
+        nugu_info("<-- Attachment: parent=%s (%zd bytes, is_end=%d)", parent_msg_id, length, is_end);
 
         nugu_log_set_prefix_fields(back);
     }
 
-    nugu_network_manager_recv_directive_data(p_msgid, media_type, is_end, length, buf);
+    nugu_equeue_push(NUGU_EQUEUE_TYPE_NEW_ATTACHMENT, item);
 }
 
 static void _on_parsing_body(MultipartParser* parser, const char* data, size_t length, void* userdata)
@@ -328,7 +335,7 @@ static void _on_finish(HTTP2Request* req, void* userdata)
     return;
 }
 
-V1Directives* v1_directives_new(H2Manager *mgr)
+V1Directives* v1_directives_new(H2Manager* mgr)
 {
     struct _v1_directives* dir;
 
@@ -374,17 +381,17 @@ int v1_directives_set_header(V1Directives* dir, const char* header)
     g_return_val_if_fail(dir != NULL, -1);
     g_return_val_if_fail(header != NULL, -1);
 
-	if (dir->header)
-		free(dir->header);
+    if (dir->header)
+        free(dir->header);
 
-	dir->header = strdup(header);
+    dir->header = strdup(header);
 
     return 0;
 }
 
 int v1_directives_establish(V1Directives* dir, HTTP2Network* net)
 {
-    HTTP2Request *req;
+    HTTP2Request* req;
     int ret;
     int code;
 

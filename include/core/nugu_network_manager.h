@@ -142,32 +142,6 @@ int nugu_network_manager_connect(void);
 int nugu_network_manager_disconnect(void);
 
 /**
- * @brief Receive a directive. The directive is passed to the sequencer.
- * @param[in] ndir directive object
- * @return result
- * @retval 0 success
- * @retval -1 failure
- * @see nugu_directive_new()
- */
-int nugu_network_manager_recv_directive(NuguDirective *ndir);
-
-/**
- * @brief Append the attachment data to directive object by message-id
- * @param[in] parent_msg_id ID indicating the owner of the data.
- * @param[in] media_type mime info
- * @param[in] is_end data is last(is_end=1) or not(is_end=0)
- * @param[in] length length of data
- * @param[in] data data
- * @return result
- * @retval 0 success
- * @retval -1 failure
- */
-int nugu_network_manager_recv_directive_data(char *parent_msg_id,
-					     char *media_type, int is_end,
-					     size_t length,
-					     unsigned char *data);
-
-/**
  * @}
  */
 
