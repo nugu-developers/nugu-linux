@@ -151,35 +151,21 @@ void AudioPlayerAgent::seek(int msec)
         player->seek(msec * 1000);
 }
 
-void AudioPlayerAgent::processDirective(NuguDirective* ndir)
+void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
 {
-    const char* dname;
-    const char* message;
-
-    message = nugu_directive_peek_json(ndir);
-    dname = nugu_directive_peek_name(ndir);
-
-    if (!message || !dname) {
-        nugu_error("directive message is not correct");
-        destoryDirective(ndir);
-        return;
-    }
-
     nugu_dbg("message: %s", message);
 
     is_paused = strcmp(dname, "Pause") == 0;
 
     // directive name check
     if (!strcmp(dname, "Play"))
-        parsingPlay(message, ndir);
+        parsingPlay(message);
     else if (!strcmp(dname, "Pause"))
         parsingPause(message);
     else if (!strcmp(dname, "Stop"))
         parsingStop(message);
     else
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
-
-    destoryDirective(ndir);
 }
 
 void AudioPlayerAgent::updateInfoForContext(Json::Value& ctx)
@@ -360,7 +346,7 @@ void AudioPlayerAgent::sendEventCommon(std::string ename)
     sendEvent(ename, getContextInfo(), payload);
 }
 
-void AudioPlayerAgent::parsingPlay(const char* message, NuguDirective* ndir)
+void AudioPlayerAgent::parsingPlay(const char* message)
 {
     Json::Value root;
     Json::Value audio_item;
@@ -427,7 +413,7 @@ void AudioPlayerAgent::parsingPlay(const char* message, NuguDirective* ndir)
             info->ps_id = ps_id;
             info->type = meta["template"]["type"].asString();
             info->payload = writer.write(meta["template"]);
-            info->dialog_id = nugu_directive_peek_dialog_id(ndir);
+            info->dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
             info->token = root["token"].asString();
             render_info[id] = info;
 

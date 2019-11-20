@@ -46,20 +46,8 @@ SystemAgent::~SystemAgent()
     }
 }
 
-void SystemAgent::processDirective(NuguDirective* ndir)
+void SystemAgent::parsingDirective(const char* dname, const char* message)
 {
-    const char* dname;
-    const char* message;
-
-    message = nugu_directive_peek_json(ndir);
-    dname = nugu_directive_peek_name(ndir);
-
-    if (!message || !dname) {
-        nugu_error("directive message is not correct");
-        destoryDirective(ndir);
-        return;
-    }
-
     if (!strcmp(dname, "ResetUserInactivity"))
         parsingResetUserInactivity(message);
     else if (!strcmp(dname, "HandoffConnection"))
@@ -71,13 +59,11 @@ void SystemAgent::processDirective(NuguDirective* ndir)
     else if (!strcmp(dname, "Exception"))
         parsingException(message);
     else if (!strcmp(dname, "NoDirectives"))
-        parsingNoDirectives(message, nugu_directive_peek_dialog_id(ndir));
+        parsingNoDirectives(message);
     else if (!strcmp(dname, "Revoke"))
         parsingRevoke(message);
     else
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
-
-    destoryDirective(ndir);
 }
 
 void SystemAgent::updateInfoForContext(Json::Value& ctx)
@@ -267,16 +253,18 @@ void SystemAgent::parsingException(const char* message)
     notifyObservers(SYSTEM_INTERNAL_SERVICE_EXCEPTION, nullptr);
 }
 
-void SystemAgent::parsingNoDirectives(const char* message, const char* dialog_id)
+void SystemAgent::parsingNoDirectives(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
+    const char* dialog_id;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
         return;
     }
 
+    dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
     CapabilityManager::getInstance()->sendCommand(CapabilityType::System, CapabilityType::ASR, "releasefocus", dialog_id);
 }
 

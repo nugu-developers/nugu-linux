@@ -62,20 +62,8 @@ void TextAgent::initialize()
     initialized = true;
 }
 
-void TextAgent::processDirective(NuguDirective* ndir)
+void TextAgent::parsingDirective(const char* dname, const char* message)
 {
-    const char* dname;
-    const char* message;
-
-    message = nugu_directive_peek_json(ndir);
-    dname = nugu_directive_peek_name(ndir);
-
-    if (!message || !dname) {
-        nugu_error("directive message is not correct");
-        destoryDirective(ndir);
-        return;
-    }
-
     nugu_dbg("message: %s", message);
 
     // directive name check
@@ -85,8 +73,6 @@ void TextAgent::processDirective(NuguDirective* ndir)
         nugu_warn("%s[%s] is not support %s directive",
             getName().c_str(), getVersion().c_str(), dname);
     }
-
-    destoryDirective(ndir);
 }
 
 void TextAgent::updateInfoForContext(Json::Value& ctx)

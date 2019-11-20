@@ -32,7 +32,7 @@ public:
     DisplayAgent();
     virtual ~DisplayAgent();
 
-    void processDirective(NuguDirective* ndir) override;
+    void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 

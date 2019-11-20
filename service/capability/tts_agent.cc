@@ -233,31 +233,17 @@ void TTSAgent::requestTTS(const std::string& text, const std::string& play_servi
     sendEventSpeechPlay(token, text, play_service_id);
 }
 
-void TTSAgent::processDirective(NuguDirective* ndir)
+void TTSAgent::parsingDirective(const char* dname, const char* message)
 {
-    const char* dname;
-    const char* message;
-
-    message = nugu_directive_peek_json(ndir);
-    dname = nugu_directive_peek_name(ndir);
-
-    if (!message || !dname) {
-        nugu_error("directive message is not correct");
-        destoryDirective(ndir);
-        return;
-    }
-
     nugu_dbg("message: %s", message);
 
     // directive name check
     if (!strcmp(dname, "Speak")) {
-        parsingSpeak(message, ndir);
+        parsingSpeak(message);
     } else if (!strcmp(dname, "Stop")) {
         parsingStop(message);
-        destoryDirective(ndir);
     } else {
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
-        destoryDirective(ndir);
     }
 }
 
@@ -349,7 +335,7 @@ void TTSAgent::sendEventCommon(const std::string& ename, const std::string& toke
     sendEvent(ename, getContextInfo(), payload);
 }
 
-void TTSAgent::parsingSpeak(const char* message, NuguDirective* ndir)
+void TTSAgent::parsingSpeak(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
@@ -373,7 +359,7 @@ void TTSAgent::parsingSpeak(const char* message, NuguDirective* ndir)
     }
 
     cur_token = token;
-    dialog_id = nugu_directive_peek_dialog_id(ndir);
+    dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
 
     stopTTS();
 
@@ -383,7 +369,7 @@ void TTSAgent::parsingSpeak(const char* message, NuguDirective* ndir)
         playsync_manager->addContext(playstackctl_ps_id, getType());
     }
 
-    startTTS(ndir);
+    startTTS(getNuguDirective());
 
     CapabilityManager::getInstance()->requestFocus("cap_tts", NUGU_FOCUS_RESOURCE_SPK, NULL);
 

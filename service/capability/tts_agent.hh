@@ -39,7 +39,7 @@ public:
     virtual ~TTSAgent();
     void initialize() override;
 
-    void processDirective(NuguDirective* ndir) override;
+    void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
 
     void stopTTS() override;
@@ -63,7 +63,7 @@ public:
 private:
     void sendEventCommon(const std::string& ename, const std::string& token);
     // parsing directive
-    void parsingSpeak(const char* message, NuguDirective* ndir);
+    void parsingSpeak(const char* message);
     void parsingStop(const char* message);
 
     void startTTS(NuguDirective* ndir);

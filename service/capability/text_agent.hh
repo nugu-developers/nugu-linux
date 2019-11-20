@@ -32,7 +32,7 @@ public:
     virtual ~TextAgent();
     void initialize() override;
 
-    void processDirective(NuguDirective* ndir) override;
+    void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void receiveCommandAll(std::string command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;

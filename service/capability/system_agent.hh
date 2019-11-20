@@ -33,7 +33,7 @@ public:
     SystemAgent();
     virtual ~SystemAgent();
 
-    void processDirective(NuguDirective* ndir) override;
+    void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
@@ -55,7 +55,7 @@ private:
     void parsingTurnOff(const char* message);
     void parsingUpdateState(const char* message);
     void parsingException(const char* message);
-    void parsingNoDirectives(const char* message, const char* dialog_id);
+    void parsingNoDirectives(const char* message);
     void parsingRevoke(const char* message);
 
     ISystemListener* system_listener;

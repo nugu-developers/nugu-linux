@@ -47,31 +47,20 @@ DisplayAgent::~DisplayAgent()
     render_info.clear();
 }
 
-void DisplayAgent::processDirective(NuguDirective* ndir)
+void DisplayAgent::parsingDirective(const char* dname, const char* message)
 {
     Json::Value root;
     Json::Reader reader;
     const char* dnamespace;
-    const char* dname;
-    const char* message;
     std::string type;
 
-    dnamespace = nugu_directive_peek_namespace(ndir);
-    message = nugu_directive_peek_json(ndir);
-    dname = nugu_directive_peek_name(ndir);
-
-    if (!message || !dname) {
-        nugu_error("directive message is not correct");
-        destoryDirective(ndir);
-        return;
-    }
+    dnamespace = nugu_directive_peek_namespace(getNuguDirective());
     type = std::string(dnamespace) + "." + std::string(dname);
 
     nugu_dbg("message: %s", message);
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
-        destoryDirective(ndir);
         return;
     }
 
@@ -88,7 +77,7 @@ void DisplayAgent::processDirective(NuguDirective* ndir)
         info->ps_id = root["playServiceId"].asString();
         info->type = type;
         info->payload = message;
-        info->dialog_id = nugu_directive_peek_dialog_id(ndir);
+        info->dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
         info->token = root["token"].asString();
         render_info[id] = info;
 
@@ -102,8 +91,6 @@ void DisplayAgent::processDirective(NuguDirective* ndir)
 
         playsync_manager->addContext(playstackctl_ps_id, getType(), renderer);
     }
-
-    destoryDirective(ndir);
 }
 
 void DisplayAgent::updateInfoForContext(Json::Value& ctx)

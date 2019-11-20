@@ -75,17 +75,8 @@ std::string DelegationAgent::getContextInfo()
     return !ctx.empty() ? CapabilityManager::getInstance()->makeContextInfo(ctx) : "";
 }
 
-void DelegationAgent::processDirective(NuguDirective* ndir)
+void DelegationAgent::parsingDirective(const char* dname, const char* message)
 {
-    const char* dname = nugu_directive_peek_name(ndir);
-    const char* message = nugu_directive_peek_json(ndir);
-
-    if (!message || !dname) {
-        nugu_error("directive message is not correct");
-        destoryDirective(ndir);
-        return;
-    }
-
     nugu_dbg("message: %s", message);
 
     if (!strcmp(dname, "Delegate"))
@@ -93,8 +84,6 @@ void DelegationAgent::processDirective(NuguDirective* ndir)
     else {
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
     }
-
-    destoryDirective(ndir);
 }
 
 void DelegationAgent::parsingDelegate(const char* message)
