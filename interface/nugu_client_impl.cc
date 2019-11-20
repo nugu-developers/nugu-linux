@@ -25,6 +25,7 @@
 #include "nugu_config.h"
 #include "nugu_log.h"
 #include "nugu_plugin.h"
+#include "nugu_equeue.h"
 
 namespace NuguClientKit {
 
@@ -33,6 +34,7 @@ using namespace NuguCore;
 NuguClientImpl::NuguClientImpl()
 {
     nugu_config_initialize();
+    nugu_equeue_initialize();
     readEnviromentVariables();
     setDefaultConfigs();
 
@@ -43,6 +45,7 @@ NuguClientImpl::NuguClientImpl()
 NuguClientImpl::~NuguClientImpl()
 {
     CapabilityManagerHelper::destroyInstance();
+    nugu_equeue_deinitialize();
     nugu_config_deinitialize();
 }
 
