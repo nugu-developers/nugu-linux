@@ -17,43 +17,28 @@
 #include "audio_player_listener.hh"
 #include "nugu_log.h"
 
-void AudioPlayerListener::renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id)
+AudioPlayerListener::AudioPlayerListener()
 {
-    std::cout << "[AudioPlayer] render display template - id: " << id << ", type: " << type << ", dialog_id: " << dialog_id << std::endl;
-}
-
-bool AudioPlayerListener::clearDisplay(const std::string& id, bool unconditionally)
-{
-    std::cout << "[AudioPlayer] clear display template - id: " << id << ", unconditionally: " << unconditionally << std::endl;
-
-    // clear display unconditionally
-    if (unconditionally) {
-        return true;
-    }
-
-    // It need to decide whether clear display immediately or not.
-    // If you decide to clear immediately, return true, or return false
-
-    return false;
+    listener_name = "[AudioPlayer]";
 }
 
 void AudioPlayerListener::mediaStateChanged(AudioPlayerState state)
 {
     std::cout << "[AudioPlayer] ";
-    switch(state) {
-        case AudioPlayerState::IDLE:
+    switch (state) {
+    case AudioPlayerState::IDLE:
         std::cout << "IDLE\n";
         break;
-        case AudioPlayerState::PLAYING:
+    case AudioPlayerState::PLAYING:
         std::cout << "PLAYING\n";
         break;
-        case AudioPlayerState::STOPPED:
+    case AudioPlayerState::STOPPED:
         std::cout << "STOPPED\n";
         break;
-        case AudioPlayerState::PAUSED:
+    case AudioPlayerState::PAUSED:
         std::cout << "PAUSED\n";
         break;
-        case AudioPlayerState::FINISHED:
+    case AudioPlayerState::FINISHED:
         std::cout << "FINISHED\n";
         break;
     }

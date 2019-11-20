@@ -20,15 +20,15 @@
 
 void TTSListener::onTTSState(TTSState state, const std::string& dialog_id)
 {
-    std::cout << "[TTS] - ";
+    std::cout << "[TTS] ";
 
     switch (state) {
     case TTSState::TTS_SPEECH_START:
-        std::cout << "tts playing...";
+        std::cout << "PLAYING...";
         break;
 
     case TTSState::TTS_SPEECH_FINISH:
-        std::cout << "tts playing finished";
+        std::cout << "PLAYING FINISHED";
         break;
     }
     std::cout << ", dialog_id: " << dialog_id << std::endl;
@@ -36,7 +36,7 @@ void TTSListener::onTTSState(TTSState state, const std::string& dialog_id)
 
 void TTSListener::onTTSText(const std::string& text, const std::string& dialog_id)
 {
-    std::cout << "[TTS] - text : ";
+    std::cout << "[TTS] TEXT > ";
     std::cout << "\033[1;36m" << extractText(text) << "\033[0m, dialog_id: " << dialog_id << std::endl;
 }
 

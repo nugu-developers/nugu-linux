@@ -43,7 +43,7 @@ namespace asr {
         std::cout << C_CYAN
                   << TAG
                   << func
-                  << (!message.empty() ? " : " + message : "")
+                  << (!message.empty() ? " > " + message : "")
                   << C_RESET
                   << std::endl;
     }

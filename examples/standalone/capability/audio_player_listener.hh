@@ -19,13 +19,15 @@
 
 #include <interface/capability/audio_player_interface.hh>
 
+#include "display_listener.hh"
+
 using namespace NuguInterface;
 
-class AudioPlayerListener : public IAudioPlayerListener {
+class AudioPlayerListener : public IAudioPlayerListener, public DisplayListener {
 public:
+    AudioPlayerListener();
     virtual ~AudioPlayerListener() = default;
-    void renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id) override;
-    bool clearDisplay(const std::string& id, bool unconditionally) override;
+
     void mediaStateChanged(AudioPlayerState state) override;
     void durationChanged(int duration) override;
     void positionChanged(int position) override;

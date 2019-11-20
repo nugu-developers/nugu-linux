@@ -54,7 +54,7 @@ enum class AudioPlayerState {
  * @brief audioplayer listener interface
  * @see IAudioPlayerHandler
  */
-class IAudioPlayerListener : public IDisplayListener {
+class IAudioPlayerListener : virtual public IDisplayListener {
 public:
     virtual ~IAudioPlayerListener() = default;
 
