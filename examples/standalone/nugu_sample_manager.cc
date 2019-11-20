@@ -235,7 +235,6 @@ gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpoint
     } else if (g_strcmp0(keybuf, "d") == 0) {
         if (commander.network_callback.disconnect && commander.network_callback.disconnect()) {
             commander.is_connected = false;
-            showPrompt();
         }
     } else if (g_strcmp0(keybuf, "q") == 0) {
         g_main_loop_quit((GMainLoop*)userdata);
