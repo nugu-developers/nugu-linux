@@ -30,6 +30,14 @@ enum h2manager_status {
 	H2_STATUS_TOKEN_FAILED
 };
 
+struct equeue_data_attachment {
+	void *data;
+	size_t length;
+	char *parent_msg_id;
+	char *media_type;
+	int is_end;
+};
+
 typedef void (*H2ManagerStatusCallback)(void *userdata);
 
 typedef struct _h2_manager H2Manager;
