@@ -14,13 +14,6 @@
  * limitations under the License.
  */
 
-#include <glib.h>
-#include <iostream>
-#include <mutex>
-#include <string.h>
-#include <time.h>
-#include <unistd.h>
-
 #include <interface/nugu_configuration.hh>
 #include <interface/wakeup_interface.hh>
 
@@ -30,6 +23,7 @@
 #include "extension_listener.hh"
 #include "nugu_client.hh"
 #include "nugu_log.h"
+#include "nugu_sample_manager.hh"
 #include "permission_manager.hh"
 #include "speech_operator.hh"
 #include "system_listener.hh"
@@ -44,24 +38,10 @@ std::unique_ptr<T> make_unique(Ts&&... params)
     return std::unique_ptr<T>(new T(std::forward<Ts>(params)...));
 }
 
-// define cout color
-const std::string C_RED = "\033[1;91m";
-const std::string C_YELLOW = "\033[1;93m";
-const std::string C_BLUE = "\033[1;94m";
-const std::string C_CYAN = "\033[1;96m";
-const std::string C_WHITE = "\033[1;97m";
-const std::string C_RESET = "\033[0m";
-
-GMainContext* context;
-GMainLoop* loop;
-
-int text_input;
-bool isConnected = false;
-
 std::unique_ptr<NuguClient> nugu_client = nullptr;
-ITextHandler* text_handler = nullptr;
 INetworkManager* network_manager = nullptr;
 
+auto nugu_sample_manager(make_unique<NuguSampleManager>());
 auto speech_operator(make_unique<SpeechOperator>());
 auto tts_listener(make_unique<TTSListener>());
 auto display_listener(make_unique<DisplayListener>());
@@ -74,140 +54,16 @@ auto permission_manager(make_unique<PermissionManager>());
 
 void msg_error(const std::string& message)
 {
-    std::cout << C_RED
-              << message
-              << std::endl
-              << C_RESET;
-    std::cout.flush();
+    NuguSampleManager::error(message);
 }
 
 void msg_info(const std::string& message)
 {
-    std::cout << C_CYAN
-              << message
-              << std::endl
-              << C_RESET;
-    std::cout.flush();
-}
-
-void quit()
-{
-    if (loop)
-        g_main_loop_quit(loop);
-}
-
-void signal_handler(int signal)
-{
-    quit();
-}
-
-static void _show_prompt(void)
-{
-    if (text_input)
-        std::cout << C_WHITE
-                  << "\nEnter Service > "
-                  << C_RESET;
-    else {
-        std::cout << C_YELLOW
-                  << "=======================================================\n"
-                  << C_RED
-                  << "NUGU SDK Command (" << (isConnected ? "Connected" : "Disconnected") << ")\n"
-                  << C_YELLOW
-                  << "=======================================================\n"
-                  << C_BLUE;
-
-        if (isConnected)
-            std::cout << "w : start wakeup\n"
-                      << "l : start listening\n"
-                      << "s : stop listening\n"
-                      << "t : text input\n";
-
-        std::cout << "c : connect\n"
-                  << "d : disconnect\n"
-                  << "q : quit\n"
-                  << C_YELLOW
-                  << "-------------------------------------------------------\n"
-                  << C_WHITE
-                  << "Select Command > "
-                  << C_RESET;
-    }
-
-    fflush(stdout);
-}
-
-static gboolean on_key_input(GIOChannel* src, GIOCondition con, gpointer userdata)
-{
-    char keybuf[4096];
-
-    if (fgets(keybuf, 4096, stdin) == NULL)
-        return TRUE;
-
-    if (strlen(keybuf) > 0) {
-        if (keybuf[strlen(keybuf) - 1] == '\n')
-            keybuf[strlen(keybuf) - 1] = '\0';
-    }
-
-    if (strlen(keybuf) < 1) {
-        _show_prompt();
-        return TRUE;
-    }
-
-    // handle case when NuguClient is disconnected
-    if (!isConnected) {
-        if (g_strcmp0(keybuf, "q") != 0 && g_strcmp0(keybuf, "c") != 0 && g_strcmp0(keybuf, "d") != 0) {
-            msg_error("invalid input");
-            _show_prompt();
-
-            return TRUE;
-        }
-    }
-
-    if (text_input) {
-        text_input = 0;
-        if (text_handler)
-            text_handler->requestTextInput(keybuf);
-    } else if (g_strcmp0(keybuf, "w") == 0) {
-        text_input = 0;
-        if (speech_operator)
-            speech_operator->startWakeup();
-    } else if (g_strcmp0(keybuf, "l") == 0) {
-        text_input = 0;
-        if (speech_operator)
-            speech_operator->startListening();
-    } else if (g_strcmp0(keybuf, "s") == 0) {
-        text_input = 0;
-        if (speech_operator)
-            speech_operator->stopListening();
-        _show_prompt();
-    } else if (g_strcmp0(keybuf, "t") == 0) {
-        text_input = 1;
-        _show_prompt();
-    } else if (g_strcmp0(keybuf, "c") == 0) {
-        if (isConnected) {
-            msg_info("It's already connected.");
-            _show_prompt();
-        } else {
-            network_manager->connect();
-        }
-    } else if (g_strcmp0(keybuf, "d") == 0) {
-        if (network_manager->disconnect()) {
-            isConnected = false;
-            _show_prompt();
-        }
-    } else if (g_strcmp0(keybuf, "q") == 0) {
-        g_main_loop_quit((GMainLoop*)userdata);
-    } else {
-        msg_error("invalid input");
-        _show_prompt();
-    }
-
-    return TRUE;
+    NuguSampleManager::info(message);
 }
 
 class NuguClientListener : public INuguClientListener {
 public:
-    NuguClientListener() = default;
-
     void onInitialized(void* userdata)
     {
     }
@@ -232,14 +88,14 @@ public:
     {
         msg_info("Network connected.");
 
-        handleResult(true);
+        nugu_sample_manager->handleNetworkResult(true);
     }
 
     void onDisconnected()
     {
         msg_info("Network disconnected.");
 
-        handleResult(false);
+        nugu_sample_manager->handleNetworkResult(false);
     }
 
     void onError(NetworkError error)
@@ -253,14 +109,7 @@ public:
             break;
         }
 
-        handleResult(false);
-    }
-
-private:
-    void handleResult(bool result)
-    {
-        isConnected = result;
-        _show_prompt();
+        nugu_sample_manager->handleNetworkResult(false);
     }
 };
 
@@ -286,52 +135,22 @@ void registerCapabilities()
 
 int main(int argc, char** argv)
 {
-    int c;
-    std::string model_path = "./";
+    if (!nugu_sample_manager->handleArguments(argc, argv))
+        return EXIT_FAILURE;
 
-    nugu_log_set_system(NUGU_LOG_SYSTEM_NONE);
-
-    while ((c = getopt(argc, argv, "dm:")) != -1) {
-        switch (c) {
-        case 'd':
-            nugu_log_set_system(NUGU_LOG_SYSTEM_STDERR);
-            break;
-        case 'm':
-            model_path = optarg;
-            break;
-        default:
-            std::cout << "Usage: " << argv[0] << " [-d] [-m model-path]" << std::endl;
-            return 0;
-        }
-    }
-
-    std::cout << "=======================================================\n";
-    std::cout << "User Application\n";
-    std::cout << " - Model path: " << model_path << std::endl;
-    std::cout << "=======================================================\n";
-
-    signal(SIGINT, &signal_handler);
-
-    context = g_main_context_default();
-    loop = g_main_loop_new(context, FALSE);
-
-    GIOChannel* channel = g_io_channel_unix_new(STDIN_FILENO);
-    g_io_add_watch(channel, (GIOCondition)(G_IO_IN | G_IO_ERR | G_IO_HUP | G_IO_NVAL), on_key_input, loop);
-    g_io_channel_unref(channel);
-
-    // if no token exist, exit application
     if (!getenv("NUGU_TOKEN")) {
         msg_error("< Token is empty");
-
         return EXIT_FAILURE;
     }
+
+    nugu_sample_manager->prepare();
 
     auto nugu_client_listener(make_unique<NuguClientListener>());
     auto network_manager_listener(make_unique<NetworkManagerListener>());
 
-    nugu_client = std::unique_ptr<NuguClient>(new NuguClient());
+    nugu_client = make_unique<NuguClient>();
     nugu_client->setConfig(NuguConfig::Key::ACCESS_TOKEN, getenv("NUGU_TOKEN"));
-    nugu_client->setConfig(NuguConfig::Key::MODEL_PATH, model_path);
+    nugu_client->setConfig(NuguConfig::Key::MODEL_PATH, nugu_sample_manager->getModelPath());
     nugu_client->setListener(nugu_client_listener.get());
 
     registerCapabilities();
@@ -347,15 +166,14 @@ int main(int argc, char** argv)
     if (!nugu_client->initialize()) {
         msg_error("< It failed to initialize NUGU SDK. Please Check authorization.");
     } else {
-        text_handler = nugu_client->getTextHandler();
+        speech_operator->setWakeupHandler(nugu_client->getWakeupHandler());
 
-        if (speech_operator)
-            speech_operator->setWakeupHandler(nugu_client->getWakeupHandler());
-
-        g_main_loop_run(loop);
-        g_main_loop_unref(loop);
-
-        msg_info("mainloop exited");
+        nugu_sample_manager->setTextHandler(nugu_client->getTextHandler())
+            ->setSpeechOperator(speech_operator.get())
+            ->setNetworkCallback(NuguSampleManager::NetworkCallback {
+                [&]() { return network_manager->connect(); },
+                [&]() { return network_manager->disconnect(); } })
+            ->runLoop();
     }
 
     nugu_client->deInitialize();
