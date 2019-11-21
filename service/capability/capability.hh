@@ -40,6 +40,8 @@ public:
     CapabilityEvent(const std::string& name, Capability* cap);
     virtual ~CapabilityEvent();
 
+    bool isUserAction(const std::string& name);
+
     std::string getDialogMessageId();
     void setDialogMessageId(const std::string& id);
 
@@ -58,6 +60,8 @@ public:
     virtual ~Capability();
     virtual void initialize();
 
+    std::string getReferrerDialoRequestId();
+    void setReferrerDialoRequestId(const std::string& id);
     std::string getTypeName(CapabilityType type) override;
     CapabilityType getType() override;
     void setName(CapabilityType type);
@@ -97,6 +101,7 @@ private:
     CapabilityType ctype;
     std::string cname;
     std::string version;
+    std::string ref_dialog_id;
     std::vector<ICapabilityObserver*> observers;
     NuguDirective* cur_ndir;
 };

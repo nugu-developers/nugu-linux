@@ -31,6 +31,9 @@ CapabilityEvent::CapabilityEvent(const std::string& name, Capability* cap)
 
     event = nugu_event_new(cap->getName().c_str(), name.c_str(), cap->getVersion().c_str());
     dialog_id = nugu_event_peek_dialog_id(event);
+
+    if (isUserAction(name))
+        cap->setReferrerDialoRequestId(dialog_id);
 }
 
 CapabilityEvent::~CapabilityEvent()
@@ -39,6 +42,21 @@ CapabilityEvent::~CapabilityEvent()
         nugu_event_free(event);
         event = nullptr;
     }
+}
+
+bool CapabilityEvent::isUserAction(const std::string& name)
+{
+    CapabilityType type = capability->getType();
+
+    if ((type == CapabilityType::ASR && name == "Recognize")
+        || (type == CapabilityType::TTS && name == "SpeechPlay")
+        || (type == CapabilityType::AudioPlayer
+               && (name.find("CommandIssued") != std::string::npos))
+        || (type == CapabilityType::Text && name == "TextInput")
+        || (type == CapabilityType::Display && name == "ElementSelected"))
+        return true;
+    else
+        return false;
 }
 
 std::string CapabilityEvent::getDialogMessageId()
@@ -62,6 +80,10 @@ void CapabilityEvent::sendEvent(const std::string& context, const std::string& p
     if (payload.size())
         nugu_event_set_json(event, payload.c_str());
 
+    std::string ref_dialog_id = capability->getReferrerDialoRequestId();
+    if (ref_dialog_id.size())
+        nugu_event_set_referrer_id(event, ref_dialog_id.c_str());
+
     CapabilityManager* cap_manager = CapabilityManager::getInstance();
     cap_manager->sendCommand(capability->getType(), CapabilityType::System, "activity", "");
 
@@ -81,6 +103,7 @@ void CapabilityEvent::sendAttachmentEvent(bool is_end, size_t size, unsigned cha
 Capability::Capability(CapabilityType type, const std::string& ver)
     : ctype(type)
     , version(ver)
+    , ref_dialog_id("")
     , cur_ndir(NULL)
 {
     cname = getTypeName(type);
@@ -95,6 +118,17 @@ Capability::~Capability()
 
 void Capability::initialize()
 {
+}
+
+std::string Capability::getReferrerDialoRequestId()
+{
+    return ref_dialog_id;
+}
+
+void Capability::setReferrerDialoRequestId(const std::string& id)
+{
+    if (id.size())
+        ref_dialog_id = id;
 }
 
 void Capability::setName(CapabilityType type)
@@ -194,6 +228,8 @@ void Capability::processDirective(NuguDirective* ndir)
             return;
         }
 
+        setReferrerDialoRequestId(nugu_directive_peek_referrer_id(ndir));
+
         parsingDirective(dname, message);
 
         // the directive with attachment should destroy by agent
@@ -243,7 +279,7 @@ void Capability::sendEvent(const std::string& name, const std::string& context, 
 {
     CapabilityEvent event(name, this);
 
-    event.sendEvent(context, payload);
+    sendEvent(&event, context, payload);
 }
 
 void Capability::sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload)
