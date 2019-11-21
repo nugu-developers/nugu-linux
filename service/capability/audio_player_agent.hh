@@ -120,6 +120,7 @@ private:
     long report_delay_time;
     long report_interval_time;
     std::string cur_token;
+    std::string pre_ref_dialog_id;
     bool is_finished;
     std::vector<IAudioPlayerListener*> aplayer_listeners;
     IDisplayListener* display_listener;
