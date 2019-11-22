@@ -53,7 +53,8 @@ bool CapabilityEvent::isUserAction(const std::string& name)
         || (type == CapabilityType::AudioPlayer
                && (name.find("CommandIssued") != std::string::npos))
         || (type == CapabilityType::Text && name == "TextInput")
-        || (type == CapabilityType::Display && name == "ElementSelected"))
+        || (type == CapabilityType::Display && name == "ElementSelected")
+        || (type == CapabilityType::Permission && name == "RequestAccessCompleted"))
         return true;
     else
         return false;
@@ -253,7 +254,7 @@ NuguDirective* Capability::getNuguDirective()
 
 bool Capability::hasDirectiveAttachment(const char* dname)
 {
-    if (getType()==CapabilityType::TTS && !strcmp(dname, "Speak"))
+    if (getType() == CapabilityType::TTS && !strcmp(dname, "Speak"))
         return true;
     else
         return false;
