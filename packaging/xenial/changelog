@@ -1,3 +1,15 @@
+nugu (0.4.0ubuntu1~xenial) xenial; urgency=medium
+
+  * Added Location Agent
+  * Added Permission Agent
+  * Added playStackControl to context management
+  * Added ReferrerDialogRequestId for user action analysis
+  * Added interface for display handling
+  * Added event queue for raising event callbacks
+  * Optimized nugu_sample
+
+ -- nugulinux <nugulinux@gmail.com>  Fri, 22 Nov 2019 14:40:00 +0900
+
 nugu (0.3.1ubuntu1~xenial) xenial; urgency=medium
 
   * Fixed the bug (about Recognize event, TextInfo event)
