@@ -22,6 +22,37 @@
 #include "nugu_uuid.h"
 #include "nugu_event.h"
 
+#define TPL_EVENT                                                              \
+	"{\n"                                                                  \
+	"  \"context\": %s,\n"                                                 \
+	"  \"event\": {\n"                                                     \
+	"    \"header\": {\n"                                                  \
+	"      \"dialogRequestId\": \"%s\",\n"                                 \
+	"      \"messageId\": \"%s\",\n"                                       \
+	"      \"name\": \"%s\",\n"                                            \
+	"      \"namespace\": \"%s\",\n"                                       \
+	"      \"version\": \"%s\"\n"                                          \
+	"    },\n"                                                             \
+	"    \"payload\": %s\n"                                                \
+	"  }\n"                                                                \
+	"}"
+
+#define TPL_EVENT_REFERRER                                                     \
+	"{\n"                                                                  \
+	"  \"context\": %s,\n"                                                 \
+	"  \"event\": {\n"                                                     \
+	"    \"header\": {\n"                                                  \
+	"      \"referrerDialogRequestId\": \"%s\",\n"                         \
+	"      \"dialogRequestId\": \"%s\",\n"                                 \
+	"      \"messageId\": \"%s\",\n"                                       \
+	"      \"name\": \"%s\",\n"                                            \
+	"      \"namespace\": \"%s\",\n"                                       \
+	"      \"version\": \"%s\"\n"                                          \
+	"    },\n"                                                             \
+	"    \"payload\": %s\n"                                                \
+	"  }\n"                                                                \
+	"}"
+
 struct _nugu_event {
 	char *name_space;
 	char *name;
@@ -204,4 +235,29 @@ EXPORT_API int nugu_event_increase_seq(NuguEvent *nev)
 	nev->seq++;
 
 	return nev->seq;
+}
+
+EXPORT_API char *nugu_event_generate_payload(NuguEvent *nev)
+{
+	const char *payload;
+	gchar *buf;
+
+	g_return_val_if_fail(nev != NULL, NULL);
+
+	if (nev->json)
+		payload = nev->json;
+	else
+		payload = "{}";
+
+	if (nev->referrer_id)
+		buf = g_strdup_printf(TPL_EVENT_REFERRER, nev->context,
+				      nev->referrer_id, nev->dialog_id,
+				      nev->msg_id, nev->name, nev->name_space,
+				      nev->version, payload);
+	else
+		buf = g_strdup_printf(TPL_EVENT, nev->context, nev->dialog_id,
+				      nev->msg_id, nev->name, nev->name_space,
+				      nev->version, payload);
+
+	return buf;
 }

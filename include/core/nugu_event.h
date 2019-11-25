@@ -176,6 +176,14 @@ int nugu_event_get_seq(NuguEvent *nev);
 int nugu_event_increase_seq(NuguEvent *nev);
 
 /**
+ * @brief Generate JSON payload using nugu_event attributes
+ * @param[in] nev event object
+ * @return memory allocated JSON string. Developer must free the data manually.
+ * @retval NULL failure
+ */
+char *nugu_event_generate_payload(NuguEvent *nev);
+
+/**
  * @}
  */
 
