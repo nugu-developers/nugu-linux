@@ -42,8 +42,9 @@ extern "C" {
  */
 enum nugu_network_status {
 	NUGU_NETWORK_UNKNOWN, /**< Initial state */
-	NUGU_NETWORK_DISCONNECTED, /**< Network disconnected */
+	NUGU_NETWORK_CONNECTING, /**< Connection in progress */
 	NUGU_NETWORK_CONNECTED, /**< Network connected */
+	NUGU_NETWORK_DISCONNECTED, /**< Network disconnected */
 	NUGU_NETWORK_TOKEN_ERROR /**< Token error */
 };
 

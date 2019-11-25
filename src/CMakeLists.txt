@@ -7,15 +7,15 @@ ADD_LIBRARY(objhttp2 OBJECT
 	network/http2/v1_event_attachment.c
 	network/http2/v1_directives.cc
 	network/http2/v1_ping.c
-	network/http2/gateway_registry.cc
-	network/http2/http2_manage.c)
+	network/http2/v1_policies.cc)
 TARGET_INCLUDE_DIRECTORIES(objhttp2 PRIVATE
+	network
 	${CMAKE_BINARY_DIR}/nghttp2/include
 	${CMAKE_BINARY_DIR}/curl/include)
 ADD_DEPENDENCIES(objhttp2 CURL)
 
 # nugu library
-FILE(GLOB SRCS *.c)
+FILE(GLOB SRCS *.c network/*.c)
 
 ADD_LIBRARY(libnugu SHARED
 	$<TARGET_OBJECTS:objservice>
@@ -28,7 +28,7 @@ TARGET_LINK_LIBRARIES(libnugu PUBLIC
 	${CMAKE_BINARY_DIR}/nghttp2/lib/libnghttp2.a
 	${pkgs_LDFLAGS} -ldl)
 TARGET_INCLUDE_DIRECTORIES(libnugu PRIVATE
-	network/http2
+	network
 	${CMAKE_BINARY_DIR}/curl/include)
 
 TARGET_COMPILE_DEFINITIONS(libnugu PRIVATE

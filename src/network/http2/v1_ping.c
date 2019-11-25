@@ -18,22 +18,24 @@
 #include <stdlib.h>
 
 #include "nugu_log.h"
+#include "nugu_equeue.h"
+
 #include "http2_request.h"
 #include "v1_ping.h"
 
 struct _v1_ping {
-	H2Manager *mgr;
 	HTTP2Network *network;
-	GatewayHealthPolicy policy;
+	struct dg_health_check_policy policy;
 	guint timer_src;
-	char *host;
+	char *url;
 };
 
-V1Ping *v1_ping_new(H2Manager *mgr, const GatewayHealthPolicy *policy)
+V1Ping *v1_ping_new(const char *host,
+		    const struct dg_health_check_policy *policy)
 {
 	struct _v1_ping *ping;
 
-	g_return_val_if_fail(mgr != NULL, NULL);
+	g_return_val_if_fail(host != NULL, NULL);
 	g_return_val_if_fail(policy != NULL, NULL);
 
 	ping = calloc(1, sizeof(struct _v1_ping));
@@ -42,9 +44,8 @@ V1Ping *v1_ping_new(H2Manager *mgr, const GatewayHealthPolicy *policy)
 		return NULL;
 	}
 
-	ping->mgr = mgr;
-	ping->host = g_strdup_printf("%s/v1/ping", h2manager_peek_host(mgr));
-	memcpy(&ping->policy, policy, sizeof(GatewayHealthPolicy));
+	ping->url = g_strdup_printf("%s/v1/ping", host);
+	memcpy(&ping->policy, policy, sizeof(struct dg_health_check_policy));
 
 	return ping;
 }
@@ -56,8 +57,8 @@ void v1_ping_free(V1Ping *ping)
 	if (ping->timer_src)
 		g_source_remove(ping->timer_src);
 
-	if (ping->host)
-		g_free(ping->host);
+	if (ping->url)
+		g_free(ping->url);
 
 	memset(ping, 0, sizeof(V1Ping));
 	free(ping);
@@ -68,11 +69,11 @@ static int _get_next_timeout(V1Ping *ping)
 	int timeout;
 
 	/**
-	 * max(ttl_max * (0 < random() <= 1), ttl)
+	 * max(ttl_max_ms * (0 < random() <= 1), retry_delay_ms)
 	 */
-	timeout = ping->policy.ttl_max  * (random() / (float)RAND_MAX * 1.0f);
-	if (timeout < ping->policy.ttl)
-		timeout = ping->policy.ttl;
+	timeout = ping->policy.ttl_max_ms * (random() / (float)RAND_MAX * 1.0f);
+	if (timeout < ping->policy.retry_delay_ms)
+		timeout = ping->policy.retry_delay_ms;
 
 	/* Convert miliseconds to seconds (minimum 60 seconds) */
 	timeout = timeout / 1000;
@@ -88,7 +89,6 @@ static int _get_next_timeout(V1Ping *ping)
 static void _on_finish(HTTP2Request *req, void *userdata)
 {
 	int code;
-	H2Manager *mgr = userdata;
 
 	code = http2_request_get_response_code(req);
 	if (code == HTTP2_RESPONSE_OK)
@@ -97,9 +97,9 @@ static void _on_finish(HTTP2Request *req, void *userdata)
 	nugu_error("ping send failed: %d", code);
 
 	if (code == HTTP2_RESPONSE_AUTHFAIL || code == HTTP2_RESPONSE_FORBIDDEN)
-		h2manager_set_status(mgr, H2_STATUS_TOKEN_FAILED);
+		nugu_equeue_push(NUGU_EQUEUE_TYPE_INVALID_TOKEN, NULL);
 	else
-		h2manager_set_status(mgr, H2_STATUS_DISCONNECTED);
+		nugu_equeue_push(NUGU_EQUEUE_TYPE_SEND_PING_FAILED, NULL);
 }
 
 static gboolean _on_timeout(gpointer userdata)
@@ -111,14 +111,15 @@ static gboolean _on_timeout(gpointer userdata)
 	nugu_dbg("Ping !");
 
 	req = http2_request_new();
-	http2_request_set_url(req, ping->host);
+	http2_request_set_url(req, ping->url);
 	http2_request_set_method(req, HTTP2_REQUEST_METHOD_GET);
 	http2_request_set_content_type(req, HTTP2_REQUEST_CONTENT_TYPE_JSON);
-	http2_request_set_finish_callback(req, _on_finish, ping->mgr);
+	http2_request_set_finish_callback(req, _on_finish, ping);
 	http2_request_enable_curl_log(req);
 
-	/* Set maximum timeout to 5 seconds */
-	http2_request_set_timeout(req, 5);
+	/* Set maximum timeout */
+	http2_request_set_timeout(req,
+				  ping->policy.health_check_timeout_ms / 1000);
 
 	ret = http2_network_add_request(ping->network, req);
 	if (ret < 0)

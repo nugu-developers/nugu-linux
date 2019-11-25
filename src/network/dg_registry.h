@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 
-#ifndef __HTTP2_V1_DIRECTIVES_H__
-#define __HTTP2_V1_DIRECTIVES_H__
-
-#include "http2_network.h"
+#ifndef __NETWORK_DEVICE_GATEWAY_REGISTRY_H__
+#define __NETWORK_DEVICE_GATEWAY_REGISTRY_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct _v1_directives V1Directives;
+#include "dg_types.h"
 
-V1Directives *v1_directives_new(const char *host);
-void v1_directives_free(V1Directives *dir);
+typedef struct _dg_registry DGRegistry;
 
-int v1_directives_establish(V1Directives *dir, HTTP2Network *net);
-int v1_directives_establish_sync(V1Directives *dir, HTTP2Network *net);
+DGRegistry *dg_registry_new(void);
+void dg_registry_free(DGRegistry *registry);
+
+int dg_registry_request(DGRegistry *registry);
 
 #ifdef __cplusplus
 }

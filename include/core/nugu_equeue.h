@@ -42,6 +42,22 @@ extern "C" {
 enum nugu_equeue_type {
 	NUGU_EQUEUE_TYPE_NEW_DIRECTIVE = 0, /**< received new directive */
 	NUGU_EQUEUE_TYPE_NEW_ATTACHMENT, /**< received new attachment */
+
+	NUGU_EQUEUE_TYPE_INVALID_TOKEN, /**< received invalid token response */
+
+	NUGU_EQUEUE_TYPE_SEND_PING_FAILED, /**< failed to send ping request */
+	NUGU_EQUEUE_TYPE_SEND_EVENT_FAILED, /**< failed to send event */
+	NUGU_EQUEUE_TYPE_SEND_ATTACHMENT_FAILED,
+	/**< failed to send attachment */
+
+	NUGU_EQUEUE_TYPE_REGISTRY_HEALTH, /**< received health check policy */
+	NUGU_EQUEUE_TYPE_REGISTRY_SERVERS, /**< received server list */
+	NUGU_EQUEUE_TYPE_REGISTRY_FAILED,
+	/**< failed to connect device-gateway-registry */
+
+	NUGU_EQUEUE_TYPE_SERVER_CONNECTED, /**< connected to server */
+	NUGU_EQUEUE_TYPE_SERVER_DISCONNECTED, /**< disconnected from server */
+
 	NUGU_EQUEUE_TYPE_MAX = 255 /**< maximum value for type id */
 };
 
