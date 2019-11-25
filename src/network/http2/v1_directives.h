@@ -29,7 +29,6 @@ typedef struct _v1_directives V1Directives;
 V1Directives *v1_directives_new(H2Manager *mgr);
 void v1_directives_free(V1Directives *dir);
 
-int v1_directives_set_header(V1Directives *dir, const char *header);
 int v1_directives_establish(V1Directives *dir, HTTP2Network *net);
 int v1_directives_establish_sync(V1Directives *dir, HTTP2Network *net);
 

@@ -28,8 +28,8 @@
 #include "http2_network.h"
 
 enum request_type {
-	REQUEST_ADD,
-	REQUEST_REMOVE
+	REQUEST_ADD, /**< http2_network_add_request */
+	REQUEST_REMOVE /**< http2_network_remove_request_sync */
 };
 
 struct request_item {
@@ -61,6 +61,9 @@ struct _http2_network {
 	/* handled only thread loop */
 	CURLM *handle;
 	GList *hlist;
+
+	/* authorization header */
+	gchar *token;
 
 	/* thread creation check */
 	pthread_cond_t cond;
@@ -120,7 +123,7 @@ static void *_loop(void *data)
 	int i;
 	struct curl_waitfd extra_fds[1];
 
-	nugu_info("thread started");
+	nugu_dbg("thread started");
 
 	pthread_mutex_lock(&net->init_lock);
 	net->running = 1;
@@ -235,7 +238,7 @@ static void *_loop(void *data)
 	curl_multi_cleanup(net->handle);
 	net->handle = NULL;
 
-	nugu_info("thread finished");
+	nugu_dbg("thread finished");
 
 	return NULL;
 }
@@ -322,6 +325,8 @@ void http2_network_free(HTTP2Network *net)
 
 	close(net->wakeup_fd);
 
+	g_free(net->token);
+
 	memset(net, 0, sizeof(HTTP2Network));
 	free(net);
 }
@@ -346,6 +351,20 @@ static struct request_item *_request_item_new(enum request_type type,
 	return item;
 }
 
+int http2_network_set_token(HTTP2Network *net, const char *token)
+{
+	g_return_val_if_fail(net != NULL, -1);
+
+	g_free(net->token);
+
+	if (token)
+		net->token = g_strdup_printf("authorization: Bearer %s", token);
+	else
+		net->token = NULL;
+
+	return 0;
+}
+
 int http2_network_add_request(HTTP2Network *net, HTTP2Request *req)
 {
 	uint64_t ev = 1;
@@ -365,6 +384,9 @@ int http2_network_add_request(HTTP2Network *net, HTTP2Request *req)
 
 	if (net->log)
 		http2_request_enable_curl_log(req);
+
+	if (net->token)
+		http2_request_add_header(req, net->token);
 
 	http2_request_set_useragent(req, net->useragent);
 

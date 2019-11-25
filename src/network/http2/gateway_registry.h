@@ -54,8 +54,6 @@ typedef void (*GatewayRegistryCallback)(GatewayRegistry *registry,
 GatewayRegistry *gateway_registry_new();
 void gateway_registry_free(GatewayRegistry *registry);
 
-int gateway_registry_set_header(GatewayRegistry *registry, const char *header);
-
 int gateway_registry_set_callback(GatewayRegistry *registry,
 				  GatewayRegistryCallback callback,
 				  void *userdata);

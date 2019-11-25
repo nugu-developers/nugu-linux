@@ -27,7 +27,6 @@ struct _v1_ping {
 	GatewayHealthPolicy policy;
 	guint timer_src;
 	char *host;
-	char *header;
 };
 
 V1Ping *v1_ping_new(H2Manager *mgr, const GatewayHealthPolicy *policy)
@@ -57,27 +56,11 @@ void v1_ping_free(V1Ping *ping)
 	if (ping->timer_src)
 		g_source_remove(ping->timer_src);
 
-	if (ping->header)
-		free(ping->header);
-
 	if (ping->host)
 		g_free(ping->host);
 
 	memset(ping, 0, sizeof(V1Ping));
 	free(ping);
-}
-
-int v1_ping_set_header(V1Ping *ping, const char *header)
-{
-	g_return_val_if_fail(ping != NULL, -1);
-	g_return_val_if_fail(header != NULL, -1);
-
-	if (ping->header)
-		free(ping->header);
-
-	ping->header = strdup(header);
-
-	return 0;
 }
 
 static int _get_next_timeout(V1Ping *ping)
@@ -129,7 +112,6 @@ static gboolean _on_timeout(gpointer userdata)
 
 	req = http2_request_new();
 	http2_request_set_url(req, ping->host);
-	http2_request_add_header(req, ping->header);
 	http2_request_set_method(req, HTTP2_REQUEST_METHOD_GET);
 	http2_request_set_content_type(req, HTTP2_REQUEST_CONTENT_TYPE_JSON);
 	http2_request_set_finish_callback(req, _on_finish, ping->mgr);

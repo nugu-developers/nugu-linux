@@ -112,15 +112,6 @@ int v1_event_attachment_set_data(V1EventAttachment *attach,
 	return http2_request_add_send_data(attach->req, data, length);
 }
 
-int v1_event_attachment_add_header(V1EventAttachment *attach,
-				   const char *header)
-{
-	g_return_val_if_fail(attach != NULL, -1);
-	g_return_val_if_fail(header != NULL, -1);
-
-	return http2_request_add_header(attach->req, header);
-}
-
 int v1_event_attachment_send_with_free(V1EventAttachment *attach,
 				       HTTP2Network *net)
 {

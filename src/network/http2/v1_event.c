@@ -74,14 +74,6 @@ int v1_event_set_json(V1Event *event, const char *data, size_t length)
 					   (const unsigned char *)data, length);
 }
 
-int v1_event_add_header(V1Event *event, const char *header)
-{
-	g_return_val_if_fail(event != NULL, -1);
-	g_return_val_if_fail(header != NULL, -1);
-
-	return http2_request_add_header(event->req, header);
-}
-
 /* invoked in a thread loop */
 static void _on_finish(HTTP2Request *req, void *userdata)
 {
