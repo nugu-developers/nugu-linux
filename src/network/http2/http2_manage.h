@@ -53,11 +53,7 @@ int h2manager_set_status_callback(H2Manager *manager,
 int h2manager_set_status(H2Manager *manager, enum h2manager_status status);
 enum h2manager_status h2manager_get_status(H2Manager *manager);
 
-int h2manager_send_event(H2Manager *manager, const char *name_space,
-			 const char *name, const char *version,
-			 const char *context, const char *msg_id,
-			 const char *dialog_id, const char *referrer_id,
-			 const char *json);
+int h2manager_send_event(H2Manager *manager, const char *json);
 
 int h2manager_send_event_attachment(H2Manager *manager, const char *name_space,
 				    const char *name, const char *version,

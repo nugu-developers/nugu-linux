@@ -47,6 +47,9 @@ static NetworkManager *_network;
 
 EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
 {
+	char *payload;
+	int ret;
+
 	if (!_network) {
 		nugu_error("network manager not initialized");
 		return -1;
@@ -57,12 +60,14 @@ EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
 		return -1;
 	}
 
-	return h2manager_send_event(
-		_network->h2, nugu_event_peek_namespace(nev),
-		nugu_event_peek_name(nev), nugu_event_peek_version(nev),
-		nugu_event_peek_context(nev), nugu_event_peek_msg_id(nev),
-		nugu_event_peek_dialog_id(nev),
-		nugu_event_peek_referrer_id(nev), nugu_event_peek_json(nev));
+	payload = nugu_event_generate_payload(nev);
+	if (!payload)
+		return -1;
+
+	ret = h2manager_send_event(_network->h2, payload);
+	free(payload);
+
+	return ret;
 }
 
 EXPORT_API int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
