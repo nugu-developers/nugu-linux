@@ -71,7 +71,7 @@ int http2_request_set_url(HTTP2Request *req, const char *url);
 int http2_request_set_content_type(HTTP2Request *req,
 				   enum http2_request_content_type type);
 int http2_request_set_connection_timeout(HTTP2Request *req, int timeout);
-int http2_request_set_timeout(HTTP2Request *req, int timeout);
+int http2_request_set_timeout(HTTP2Request *req, int timeout_secs);
 int http2_request_set_useragent(HTTP2Request *req, const char *useragent);
 
 CURL *http2_request_get_handle(HTTP2Request *req);

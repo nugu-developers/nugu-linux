@@ -249,7 +249,6 @@ int http2_request_ref(HTTP2Request *req)
 
 	pthread_mutex_lock(&req->lock_ref);
 	req->ref_count++;
-	nugu_dbg("req(%p) count=%d", req, req->ref_count);
 	pthread_mutex_unlock(&req->lock_ref);
 
 	return 0;
@@ -261,7 +260,6 @@ int http2_request_unref(HTTP2Request *req)
 
 	pthread_mutex_lock(&req->lock_ref);
 	req->ref_count--;
-	nugu_dbg("req(%p) count=%d", req, req->ref_count);
 	if (req->ref_count > 0) {
 		pthread_mutex_unlock(&req->lock_ref);
 		return 0;
@@ -373,11 +371,11 @@ int http2_request_set_connection_timeout(HTTP2Request *req, int timeout)
 	return 0;
 }
 
-int http2_request_set_timeout(HTTP2Request *req, int timeout)
+int http2_request_set_timeout(HTTP2Request *req, int timeout_secs)
 {
 	g_return_val_if_fail(req != NULL, -1);
 
-	curl_easy_setopt(req->easy, CURLOPT_TIMEOUT, timeout);
+	curl_easy_setopt(req->easy, CURLOPT_TIMEOUT, timeout_secs);
 
 	return 0;
 }
