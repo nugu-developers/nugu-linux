@@ -18,20 +18,21 @@
 #include <stdlib.h>
 
 #include "nugu_log.h"
+#include "nugu_equeue.h"
+
 #include "http2_request.h"
 #include "v1_event.h"
 
 struct _v1_event {
-	H2Manager *mgr;
 	HTTP2Request *req;
 };
 
-V1Event *v1_event_new(H2Manager *mgr)
+V1Event *v1_event_new(const char *host)
 {
 	char *tmp;
 	struct _v1_event *event;
 
-	g_return_val_if_fail(mgr != NULL, NULL);
+	g_return_val_if_fail(host != NULL, NULL);
 
 	event = calloc(1, sizeof(struct _v1_event));
 	if (!event) {
@@ -39,7 +40,6 @@ V1Event *v1_event_new(H2Manager *mgr)
 		return NULL;
 	}
 
-	event->mgr = mgr;
 	event->req = http2_request_new();
 	http2_request_set_method(event->req, HTTP2_REQUEST_METHOD_POST);
 	http2_request_set_content_type(event->req,
@@ -48,7 +48,7 @@ V1Event *v1_event_new(H2Manager *mgr)
 	/* Set maximum timeout to 5 seconds */
 	http2_request_set_timeout(event->req, 5);
 
-	tmp = g_strdup_printf("%s/v1/event", h2manager_peek_host(mgr));
+	tmp = g_strdup_printf("%s/v1/event", host);
 	http2_request_set_url(event->req, tmp);
 	g_free(tmp);
 
@@ -78,7 +78,6 @@ int v1_event_set_json(V1Event *event, const char *data, size_t length)
 static void _on_finish(HTTP2Request *req, void *userdata)
 {
 	int code;
-	H2Manager *mgr = userdata;
 
 	code = http2_request_get_response_code(req);
 	if (code == HTTP2_RESPONSE_OK)
@@ -87,9 +86,9 @@ static void _on_finish(HTTP2Request *req, void *userdata)
 	nugu_error("event send failed: %d", code);
 
 	if (code == HTTP2_RESPONSE_AUTHFAIL || code == HTTP2_RESPONSE_FORBIDDEN)
-		h2manager_set_status(mgr, H2_STATUS_TOKEN_FAILED);
+		nugu_equeue_push(NUGU_EQUEUE_TYPE_INVALID_TOKEN, NULL);
 	else
-		h2manager_set_status(mgr, H2_STATUS_DISCONNECTED);
+		nugu_equeue_push(NUGU_EQUEUE_TYPE_SEND_EVENT_FAILED, NULL);
 }
 
 int v1_event_send_with_free(V1Event *event, HTTP2Network *net)
@@ -99,7 +98,7 @@ int v1_event_send_with_free(V1Event *event, HTTP2Network *net)
 	g_return_val_if_fail(event != NULL, -1);
 	g_return_val_if_fail(net != NULL, -1);
 
-	http2_request_set_finish_callback(event->req, _on_finish, event->mgr);
+	http2_request_set_finish_callback(event->req, _on_finish, NULL);
 
 	ret = http2_network_add_request(net, event->req);
 	if (ret < 0)

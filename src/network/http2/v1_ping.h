@@ -17,9 +17,8 @@
 #ifndef __HTTP2_V1_PING_H__
 #define __HTTP2_V1_PING_H__
 
-#include "http2_manage.h"
 #include "http2_network.h"
-#include "gateway_registry.h"
+#include "dg_types.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,7 +26,8 @@ extern "C" {
 
 typedef struct _v1_ping V1Ping;
 
-V1Ping *v1_ping_new(H2Manager *mgr, const GatewayHealthPolicy *policy);
+V1Ping *v1_ping_new(const char *host,
+		    const struct dg_health_check_policy *policy);
 void v1_ping_free(V1Ping *ping);
 
 int v1_ping_establish(V1Ping *ping, HTTP2Network *net);

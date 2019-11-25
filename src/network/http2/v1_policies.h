@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef __HTTP2_V1_DIRECTIVES_H__
-#define __HTTP2_V1_DIRECTIVES_H__
+#ifndef __HTTP2_V1_POLICIES_H__
+#define __HTTP2_V1_POLICIES_H__
+
+#include <glib.h>
 
 #include "http2_network.h"
 
@@ -23,13 +25,7 @@
 extern "C" {
 #endif
 
-typedef struct _v1_directives V1Directives;
-
-V1Directives *v1_directives_new(const char *host);
-void v1_directives_free(V1Directives *dir);
-
-int v1_directives_establish(V1Directives *dir, HTTP2Network *net);
-int v1_directives_establish_sync(V1Directives *dir, HTTP2Network *net);
+int v1_policies_get(HTTP2Network *net, const char *host);
 
 #ifdef __cplusplus
 }

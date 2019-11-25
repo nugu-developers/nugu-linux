@@ -17,7 +17,6 @@
 #ifndef __HTTP2_V1_EVENT_H__
 #define __HTTP2_V1_EVENT_H__
 
-#include "http2_manage.h"
 #include "http2_network.h"
 
 #ifdef __cplusplus
@@ -26,7 +25,7 @@ extern "C" {
 
 typedef struct _v1_event V1Event;
 
-V1Event *v1_event_new(H2Manager *mgr);
+V1Event *v1_event_new(const char *host);
 void v1_event_free(V1Event *event);
 
 int v1_event_set_json(V1Event *event, const char *data, size_t length);

@@ -27,78 +27,61 @@
 #include "nugu_network_manager.h"
 #include "nugu_directive_sequencer.h"
 
-#include "http2_manage.h"
+#include "dg_registry.h"
+#include "dg_server.h"
+#include "dg_types.h"
+
+enum connection_step {
+	STEP_IDLE, /**< Idle */
+	STEP_INVALID_TOKEN,
+	STEP_DISCONNECTING,
+	STEP_REGISTRY_FAILED,
+	STEP_REGISTRY_DONE,
+	STEP_SERVER_CONNECTING,
+	STEP_SERVER_FAILED,
+	STEP_SERVER_CONNECTTED,
+	STEP_MAX
+};
+
+static const char * const _debug_connection_step[] = {
+	[STEP_IDLE] = "STEP_IDLE", /**< IDLE */
+	[STEP_INVALID_TOKEN] = "STEP_INVALID_TOKEN",
+	[STEP_DISCONNECTING] = "STEP_DISCONNECTING",
+	[STEP_REGISTRY_FAILED] = "STEP_REGISTRY_FAILED",
+	[STEP_REGISTRY_DONE] = "STEP_REGISTRY_DONE",
+	[STEP_SERVER_CONNECTING] = "STEP_SERVER_CONNECTING",
+	[STEP_SERVER_FAILED] = "STEP_SERVER_FAILED",
+	[STEP_SERVER_CONNECTTED] = "STEP_SERVER_CONNECTTED"
+};
+
+static const char * const _debug_status_strmap[] = {
+	[NUGU_NETWORK_UNKNOWN] = "NUGU_NETWORK_UNKNOWN", /**< Unknown */
+	[NUGU_NETWORK_CONNECTING] = "NUGU_NETWORK_CONNECTING",
+	[NUGU_NETWORK_DISCONNECTED] = "NUGU_NETWORK_DISCONNECTED",
+	[NUGU_NETWORK_CONNECTED] = "NUGU_NETWORK_CONNECTED",
+	[NUGU_NETWORK_TOKEN_ERROR] = "NUGU_NETWORK_TOKEN_ERROR",
+};
 
 struct _nugu_network {
+	enum connection_step step;
+
+	/* Registry */
+	DGRegistry *registry;
+	struct dg_health_check_policy policy;
+	GList *server_list;
+	const GList *serverinfo;
+
+	/* Server */
+	DGServer *server;
+	int retry_count;
+
+	/* Status & Callback */
 	NuguNetworkStatus cur_status;
 	NetworkManagerCallback callback;
 	void *callback_userdata;
-
-	guint idle_source;
-
-	H2Manager *h2;
-
-	pthread_mutex_t lock;
 };
 
 typedef struct _nugu_network NetworkManager;
-
-static NetworkManager *_network;
-
-EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
-{
-	char *payload;
-	int ret;
-
-	if (!_network) {
-		nugu_error("network manager not initialized");
-		return -1;
-	}
-
-	if (nugu_event_peek_context(nev) == NULL) {
-		nugu_error("context must not null");
-		return -1;
-	}
-
-	payload = nugu_event_generate_payload(nev);
-	if (!payload)
-		return -1;
-
-	ret = h2manager_send_event(_network->h2, payload);
-	free(payload);
-
-	return ret;
-}
-
-EXPORT_API int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
-						    size_t length,
-						    unsigned char *data)
-{
-	int ret = -1;
-	char *msg_id;
-
-	if (!_network) {
-		nugu_error("network manager not initialized");
-		return -1;
-	}
-
-	msg_id = nugu_uuid_generate_short();
-
-	ret = h2manager_send_event_attachment(
-		_network->h2, nugu_event_peek_namespace(nev),
-		nugu_event_peek_name(nev), nugu_event_peek_version(nev),
-		nugu_event_peek_msg_id(nev), msg_id,
-		nugu_event_peek_dialog_id(nev), nugu_event_get_seq(nev), is_end,
-		length, data);
-
-	free(msg_id);
-	if (ret < 0)
-		return ret;
-
-	nugu_event_increase_seq(nev);
-
-	return 0;
-}
 
 static void on_directive(enum nugu_equeue_type type, void *data, void *userdata)
 {
@@ -136,6 +119,230 @@ static void on_destroy_attachment(void *data)
 	free(item);
 }
 
+static void _update_status(NetworkManager *nm, NuguNetworkStatus new_status)
+{
+	if (nm->cur_status == new_status) {
+		nugu_dbg("ignore same status: %s (%d)",
+			 _debug_status_strmap[new_status], new_status);
+		return;
+	}
+
+	nugu_info("Network status: %s (%d) -> %s (%d)",
+		  _debug_status_strmap[nm->cur_status], nm->cur_status,
+		  _debug_status_strmap[new_status], new_status);
+
+	nm->cur_status = new_status;
+
+	if (nm->callback)
+		nm->callback(nm->callback_userdata);
+}
+
+static int _update_step(NetworkManager *nm, enum connection_step new_step)
+{
+	if (new_step == nm->step) {
+		nugu_dbg("ignore same step: %s (%d)",
+			 _debug_connection_step[new_step], new_step);
+		return -1;
+	}
+
+	nugu_dbg("Network connection step: %s (%d) -> %s (%d)",
+		 _debug_connection_step[nm->step], nm->step,
+		 _debug_connection_step[new_step], new_step);
+
+	nm->step = new_step;
+
+	return 0;
+}
+
+static void _log_server_info(NetworkManager *nm, int retry_count_limit)
+{
+	int pos = 0;
+	int length = 0;
+	GList *cur;
+
+	cur = nm->server_list;
+	for (; cur; cur = cur->next, length++) {
+		if (cur == nm->serverinfo)
+			pos = length + 1;
+	}
+
+	if (nm->retry_count == 0)
+		nugu_info("Try connect to [%d/%d] server", pos, length);
+	else {
+		nugu_info("Retry[%d/%d] connect to [%d/%d] server",
+			  nm->retry_count, retry_count_limit, pos, length);
+	}
+}
+
+static void _try_connect_to_servers(NetworkManager *nm)
+{
+	/* server already assigned. retry to connect */
+	if (nm->server) {
+		const struct dg_server_policy *policy = nm->serverinfo->data;
+
+		/* Retry to connect to current server */
+		if (nm->retry_count < policy->retry_count_limit) {
+			nm->retry_count++;
+			_log_server_info(nm, policy->retry_count_limit);
+
+			if (dg_server_connect_async(nm->server) == 0)
+				return;
+		} else {
+			nugu_error("retry count over");
+		}
+
+		/* forgot current server */
+		nugu_dbg("forgot current server");
+		dg_server_free(nm->server);
+		nm->server = NULL;
+		nm->retry_count = 0;
+	}
+
+	/* Determine which server candidates to connect to */
+	if (nm->serverinfo == NULL)
+		nm->serverinfo = nm->server_list;
+	else
+		nm->serverinfo = nm->serverinfo->next;
+
+	for (; nm->serverinfo; nm->serverinfo = nm->serverinfo->next) {
+		_log_server_info(nm, 0);
+
+		nm->retry_count = 0;
+
+		nm->server = dg_server_new(nm->serverinfo->data);
+		if (!nm->server) {
+			nugu_error("dg_server_new() failed. try next server");
+			continue;
+		}
+
+		if (dg_server_connect_async(nm->server) < 0) {
+			dg_server_free(nm->server);
+			nm->server = NULL;
+			nugu_error("Server is unavailable. try next server");
+			continue;
+		}
+
+		return;
+	}
+
+	nugu_error("fail to connect all servers");
+	nm->serverinfo = NULL;
+	_update_status(nm, NUGU_NETWORK_DISCONNECTED);
+}
+
+static void _process_connecting(NetworkManager *nm,
+				enum connection_step new_step)
+{
+	g_return_if_fail(nm != NULL);
+
+	if (_update_step(nm, new_step) < 0)
+		return;
+
+	switch (new_step) {
+	case STEP_INVALID_TOKEN:
+		_update_status(nm, NUGU_NETWORK_TOKEN_ERROR);
+		break;
+
+	case STEP_REGISTRY_FAILED:
+		if (nm->registry) {
+			dg_registry_free(nm->registry);
+			nm->registry = NULL;
+		}
+
+		/* No cached server-list */
+		if (nm->server_list == NULL) {
+			nugu_error("registry failed. no cached server-list");
+			_update_status(nm, NUGU_NETWORK_DISCONNECTED);
+			break;
+		}
+
+		nugu_warn("registry failed. use cached server-list");
+		_process_connecting(nm, STEP_SERVER_CONNECTING);
+		break;
+
+	case STEP_REGISTRY_DONE:
+		if (nm->registry) {
+			dg_registry_free(nm->registry);
+			nm->registry = NULL;
+		}
+		_process_connecting(nm, STEP_SERVER_CONNECTING);
+		break;
+
+	case STEP_SERVER_CONNECTING:
+		_update_status(nm, NUGU_NETWORK_CONNECTING);
+		_try_connect_to_servers(nm);
+		break;
+
+	case STEP_SERVER_CONNECTTED:
+		dg_server_start_health_check(nm->server, &(nm->policy));
+		nm->retry_count = 0;
+		_update_status(nm, NUGU_NETWORK_CONNECTED);
+		break;
+
+	case STEP_SERVER_FAILED:
+		nugu_dbg("retry connection");
+		_process_connecting(nm, STEP_SERVER_CONNECTING);
+		break;
+
+	default:
+		break;
+	}
+}
+
+static void on_receive_registry_health(enum nugu_equeue_type type, void *data,
+				       void *userdata)
+{
+	NetworkManager *nm = userdata;
+	struct dg_health_check_policy *policy = data;
+
+	g_return_if_fail(policy != NULL);
+
+	memcpy(&(nm->policy), policy, sizeof(struct dg_health_check_policy));
+}
+
+static void on_receive_registry_servers(enum nugu_equeue_type type, void *data,
+					void *userdata)
+{
+	NetworkManager *nm = userdata;
+
+	if (nm->server_list)
+		g_list_free_full(nm->server_list, free);
+
+	nm->server_list = data;
+	nm->serverinfo = NULL;
+
+	_process_connecting(userdata, STEP_REGISTRY_DONE);
+}
+
+static void on_event(enum nugu_equeue_type type, void *data, void *userdata)
+{
+	switch (type) {
+	case NUGU_EQUEUE_TYPE_INVALID_TOKEN:
+		nugu_dbg("received invalid token event");
+		_process_connecting(userdata, STEP_INVALID_TOKEN);
+		break;
+	case NUGU_EQUEUE_TYPE_REGISTRY_FAILED:
+		nugu_dbg("received registry failed event");
+		_process_connecting(userdata, STEP_REGISTRY_FAILED);
+		break;
+	case NUGU_EQUEUE_TYPE_SEND_PING_FAILED:
+		nugu_dbg("received send ping failed event");
+		_process_connecting(userdata, STEP_SERVER_FAILED);
+		break;
+	case NUGU_EQUEUE_TYPE_SERVER_DISCONNECTED:
+		nugu_dbg("received server disconnected event");
+		_process_connecting(userdata, STEP_SERVER_FAILED);
+		break;
+	case NUGU_EQUEUE_TYPE_SERVER_CONNECTED:
+		nugu_dbg("received server connected event");
+		_process_connecting(userdata, STEP_SERVER_CONNECTTED);
+		break;
+	default:
+		nugu_error("unhandled event: %d", type);
+		break;
+	}
+}
+
 static NetworkManager *nugu_network_manager_new(void)
 {
 	NetworkManager *nm;
@@ -146,13 +353,32 @@ static NetworkManager *nugu_network_manager_new(void)
 		return NULL;
 	}
 
+	/* Received message from server */
 	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_NEW_DIRECTIVE, on_directive,
 				NULL, nm);
-
 	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_NEW_ATTACHMENT, on_attachment,
 				on_destroy_attachment, nm);
 
+	/* Received registry policy */
+	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_REGISTRY_HEALTH,
+				on_receive_registry_health, free, nm);
+	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_REGISTRY_SERVERS,
+				on_receive_registry_servers, NULL, nm);
+
+	/* Handler for simple event */
+	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_REGISTRY_FAILED, on_event,
+				NULL, nm);
+	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_INVALID_TOKEN, on_event, NULL,
+				nm);
+	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_SEND_PING_FAILED, on_event,
+				NULL, nm);
+	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_SERVER_DISCONNECTED, on_event,
+				NULL, nm);
+	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_SERVER_CONNECTED, on_event,
+				NULL, nm);
+
 	nm->cur_status = NUGU_NETWORK_UNKNOWN;
+	nm->step = STEP_IDLE;
 
 	return nm;
 }
@@ -161,12 +387,14 @@ static void nugu_network_manager_free(NetworkManager *nm)
 {
 	g_return_if_fail(nm != NULL);
 
-	if (nm->idle_source > 0)
-		g_source_remove(nm->idle_source);
+	if (nm->server_list)
+		g_list_free_full(nm->server_list, free);
 
 	memset(nm, 0, sizeof(NetworkManager));
 	free(nm);
 }
+
+static NetworkManager *_network;
 
 EXPORT_API int nugu_network_manager_initialize(void)
 {
@@ -199,119 +427,54 @@ EXPORT_API void nugu_network_manager_deinitialize(void)
 	nugu_dirseq_deinitialize();
 }
 
-static void _emit_event(NuguNetworkStatus status)
-{
-	if (_network->cur_status == status) {
-		nugu_dbg("ignore same status event(%d)", status);
-		return;
-	}
-
-	nugu_dbg("propagate event(%d)", status);
-
-	_network->cur_status = status;
-
-	if (_network->callback)
-		_network->callback(_network->callback_userdata);
-
-	nugu_dbg("propagate event - done");
-}
-
-static gboolean _disconnect_network_in_idle(gpointer userdata)
-{
-	NuguNetworkStatus status;
-
-	if (!_network) {
-		nugu_dbg("already disconnected");
-		return FALSE;
-	}
-
-	status = nugu_network_manager_get_status();
-
-	nugu_dbg("disconnect current network at idle (status=%d)", status);
-	nugu_network_manager_disconnect();
-
-	_network->idle_source = 0;
-
-	return FALSE;
-}
-
-static void _status_callback(void *userdata)
-{
-	enum h2manager_status h2_status;
-	NuguNetworkStatus status;
-
-	h2_status = h2manager_get_status(_network->h2);
-	if (h2_status == H2_STATUS_CONNECTING)
-		return;
-	else if (h2_status == H2_STATUS_READY)
-		return;
-
-	status = nugu_network_manager_get_status();
-	switch (status) {
-	case NUGU_NETWORK_DISCONNECTED:
-		nugu_dbg("disconnect current network (status=%d)", status);
-		nugu_network_manager_disconnect();
-		break;
-	case NUGU_NETWORK_TOKEN_ERROR:
-		nugu_dbg("request to disconnect the network at idle");
-		_network->idle_source =
-			g_idle_add(_disconnect_network_in_idle, NULL);
-		break;
-	default:
-		nugu_dbg("status = %d", status);
-		break;
-	}
-
-	_emit_event(status);
-}
-
 EXPORT_API int nugu_network_manager_connect(void)
 {
-	if (!_network)
-		return -1;
+	g_return_val_if_fail(_network != NULL, -1);
 
-	if (_network->h2) {
+	if (_network->cur_status == NUGU_NETWORK_CONNECTING) {
+		nugu_dbg("connection in progress");
+		return 0;
+	}
+
+	if (_network->cur_status == NUGU_NETWORK_CONNECTED) {
 		nugu_dbg("already connected");
 		return 0;
 	}
 
-	_network->cur_status = NUGU_NETWORK_UNKNOWN;
-	_network->h2 = h2manager_new();
-	if (!_network->h2)
+	_network->step = STEP_IDLE;
+	_network->registry = dg_registry_new();
+
+	if (dg_registry_request(_network->registry) < 0) {
+		dg_registry_free(_network->registry);
+		_network->registry = NULL;
+		_update_status(_network, NUGU_NETWORK_DISCONNECTED);
 		return -1;
+	};
 
-	h2manager_set_status_callback(_network->h2, _status_callback, _network);
+	_update_status(_network, NUGU_NETWORK_CONNECTING);
 
-	return h2manager_connect(_network->h2);
+	return 0;
 }
 
 EXPORT_API int nugu_network_manager_disconnect(void)
 {
-	int event_emit = 0;
+	g_return_val_if_fail(_network != NULL, -1);
 
-	if (!_network)
-		return -1;
-
-	if (!_network->h2) {
+	if (_network->cur_status == NUGU_NETWORK_DISCONNECTED) {
 		nugu_dbg("already disconnected");
 		return 0;
 	}
 
-	if (_network->cur_status != NUGU_NETWORK_DISCONNECTED) {
-		nugu_dbg("current network status = %d", _network->cur_status);
-		_network->cur_status = NUGU_NETWORK_DISCONNECTED;
-		event_emit = 1;
+	nugu_info("disconnecting: current step is %d", _network->step);
+
+	if (_network->server) {
+		dg_server_free(_network->server);
+		_network->server = NULL;
 	}
 
-	h2manager_set_status_callback(_network->h2, NULL, NULL);
-	h2manager_disconnect(_network->h2);
-	h2manager_free(_network->h2);
-	_network->h2 = NULL;
-
-	if (event_emit && _network->callback) {
-		nugu_dbg("propagate event");
-		_network->callback(_network->callback_userdata);
-		nugu_dbg("propagate event - done");
+	if (_network->registry) {
+		dg_registry_free(_network->registry);
+		_network->registry = NULL;
 	}
 
 	return 0;
@@ -332,32 +495,38 @@ nugu_network_manager_set_callback(NetworkManagerCallback callback,
 
 EXPORT_API NuguNetworkStatus nugu_network_manager_get_status(void)
 {
-	enum h2manager_status status;
+	return _network->cur_status;
+}
 
-	if (!_network)
-		return NUGU_NETWORK_DISCONNECTED;
-
-	if (!_network->h2)
-		return NUGU_NETWORK_DISCONNECTED;
-
-	status = h2manager_get_status(_network->h2);
-
-	switch (status) {
-	case H2_STATUS_ERROR:
-		return NUGU_NETWORK_DISCONNECTED;
-	case H2_STATUS_READY:
-		return NUGU_NETWORK_DISCONNECTED;
-	case H2_STATUS_CONNECTING:
-		return NUGU_NETWORK_DISCONNECTED;
-	case H2_STATUS_DISCONNECTED:
-		return NUGU_NETWORK_DISCONNECTED;
-	case H2_STATUS_CONNECTED:
-		return NUGU_NETWORK_CONNECTED;
-	case H2_STATUS_TOKEN_FAILED:
-		return NUGU_NETWORK_TOKEN_ERROR;
-	default:
-		break;
+EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
+{
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return -1;
 	}
 
-	return NUGU_NETWORK_DISCONNECTED;
+	if (!_network->server) {
+		nugu_error("not connected");
+		return -1;
+	}
+
+	if (nugu_event_peek_context(nev) == NULL) {
+		nugu_error("context must not null");
+		return -1;
+	}
+
+	return dg_server_send_event(_network->server, nev);
+}
+
+EXPORT_API int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
+						    size_t length,
+						    unsigned char *data)
+{
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return -1;
+	}
+
+	return dg_server_send_attachment(_network->server, nev, is_end, length,
+					 data);
 }

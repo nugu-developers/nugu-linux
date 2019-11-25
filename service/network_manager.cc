@@ -50,6 +50,8 @@ static void _status(void* userdata)
         for (auto listener : listeners) {
             listener->onError(NetworkError::TOKEN_ERROR);
         }
+    } else if (status == NUGU_NETWORK_CONNECTING) {
+        nugu_info("Network connecting");
     } else {
         nugu_error("Network unknown error");
 

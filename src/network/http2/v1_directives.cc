@@ -22,6 +22,7 @@
 #include "nugu_network_manager.h"
 #include "json/json.h"
 
+#include "dg_types.h"
 #include "http2_request.h"
 #include "multipart_parser.h"
 #include "v1_directives.h"
@@ -44,11 +45,10 @@ enum kvstatus {
 };
 
 struct _v1_directives {
-    char* host;
+    char* url;
 
     MultipartParser* parser;
     HTTP2Network* network;
-    H2Manager* mgr;
 
     enum content_type ctype;
     char* parent_msg_id;
@@ -270,9 +270,9 @@ static size_t _on_header(HTTP2Request* req, char* buffer, size_t size, size_t ni
             return buffer_len;
 
         if (code == HTTP2_RESPONSE_AUTHFAIL || code == HTTP2_RESPONSE_FORBIDDEN)
-            h2manager_set_status(dir->mgr, H2_STATUS_TOKEN_FAILED);
+            nugu_equeue_push(NUGU_EQUEUE_TYPE_INVALID_TOKEN, NULL);
         else
-            h2manager_set_status(dir->mgr, H2_STATUS_DISCONNECTED);
+            nugu_equeue_push(NUGU_EQUEUE_TYPE_SERVER_DISCONNECTED, NULL);
 
         return buffer_len;
     }
@@ -289,7 +289,7 @@ static size_t _on_header(HTTP2Request* req, char* buffer, size_t size, size_t ni
 
     multipart_parser_set_boundary(dir->parser, pos, len);
 
-    h2manager_set_status(dir->mgr, H2_STATUS_CONNECTED);
+    nugu_equeue_push(NUGU_EQUEUE_TYPE_SERVER_CONNECTED, NULL);
 
     return buffer_len;
 }
@@ -314,10 +314,9 @@ static void _on_finish(HTTP2Request* req, void* userdata)
     V1Directives* dir = (V1Directives*)userdata;
     int code;
 
-    nugu_info("directive stream finished");
-
     code = http2_request_get_response_code(req);
     if (code == HTTP2_RESPONSE_OK) {
+        nugu_info("directive stream finished by server.");
         dir->is_sync = 0;
         dir->idle_src = g_idle_add(_re_establish, dir);
         return;
@@ -330,19 +329,19 @@ static void _on_finish(HTTP2Request* req, void* userdata)
         http2_request_emit_response(req, HTTP2_REQUEST_SYNC_ITEM_HEADER);
     else {
         if (code == HTTP2_RESPONSE_AUTHFAIL || code == HTTP2_RESPONSE_FORBIDDEN)
-            h2manager_set_status(dir->mgr, H2_STATUS_TOKEN_FAILED);
+            nugu_equeue_push(NUGU_EQUEUE_TYPE_INVALID_TOKEN, NULL);
         else
-            h2manager_set_status(dir->mgr, H2_STATUS_DISCONNECTED);
+            nugu_equeue_push(NUGU_EQUEUE_TYPE_SERVER_DISCONNECTED, NULL);
     }
 
     return;
 }
 
-V1Directives* v1_directives_new(H2Manager* mgr)
+V1Directives* v1_directives_new(const char* host)
 {
     struct _v1_directives* dir;
 
-    g_return_val_if_fail(mgr != NULL, NULL);
+    g_return_val_if_fail(host != NULL, NULL);
 
     dir = (V1Directives*)calloc(1, sizeof(struct _v1_directives));
     if (!dir) {
@@ -350,8 +349,7 @@ V1Directives* v1_directives_new(H2Manager* mgr)
         return NULL;
     }
 
-    dir->mgr = mgr;
-    dir->host = g_strdup_printf("%s/v1/directives", h2manager_peek_host(mgr));
+    dir->url = g_strdup_printf("%s/v1/directives", host);
 
     return dir;
 }
@@ -366,8 +364,8 @@ void v1_directives_free(V1Directives* dir)
     if (dir->idle_src)
         g_source_remove(dir->idle_src);
 
-    if (dir->host)
-        g_free(dir->host);
+    if (dir->url)
+        g_free(dir->url);
 
     if (dir->parser)
         multipart_parser_free(dir->parser);
@@ -393,7 +391,7 @@ int v1_directives_establish(V1Directives* dir, HTTP2Network* net)
     dir->ctype = CONTENT_TYPE_UNKNOWN;
 
     req = http2_request_new();
-    http2_request_set_url(req, dir->host);
+    http2_request_set_url(req, dir->url);
     http2_request_set_method(req, HTTP2_REQUEST_METHOD_GET);
     http2_request_set_header_callback(req, _on_header, dir);
     http2_request_set_body_callback(req, _on_body, dir);

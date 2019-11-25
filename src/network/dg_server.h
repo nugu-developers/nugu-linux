@@ -14,22 +14,27 @@
  * limitations under the License.
  */
 
-#ifndef __HTTP2_V1_DIRECTIVES_H__
-#define __HTTP2_V1_DIRECTIVES_H__
-
-#include "http2_network.h"
+#ifndef __NETWORK_DEVICE_GATEWAY_SERVER_H__
+#define __NETWORK_DEVICE_GATEWAY_SERVER_H__
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct _v1_directives V1Directives;
+#include "dg_types.h"
 
-V1Directives *v1_directives_new(const char *host);
-void v1_directives_free(V1Directives *dir);
+typedef struct _dg_server DGServer;
 
-int v1_directives_establish(V1Directives *dir, HTTP2Network *net);
-int v1_directives_establish_sync(V1Directives *dir, HTTP2Network *net);
+DGServer *dg_server_new(const struct dg_server_policy *policy);
+void dg_server_free(DGServer *server);
+
+int dg_server_connect_async(DGServer *server);
+int dg_server_start_health_check(DGServer *server,
+				 const struct dg_health_check_policy *policy);
+
+int dg_server_send_event(DGServer *server, NuguEvent *nev);
+int dg_server_send_attachment(DGServer *server, NuguEvent *nev, int is_end,
+			      size_t length, unsigned char *data);
 
 #ifdef __cplusplus
 }
