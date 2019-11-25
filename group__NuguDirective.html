@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.3.1</span>
+   &#160;<span id="projectnumber">0.4.0</span>
    </div>
   </td>
  </tr>
@@ -154,11 +154,11 @@ Functions</h2></td></tr>
 <tr class="memitem:ga2cf2d7ec9d5ed9b7c7eb36ef48ccc2db"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguDirective.html#ga2cf2d7ec9d5ed9b7c7eb36ef48ccc2db">nugu_directive_is_data_end</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)</td></tr>
 <tr class="memdesc:ga2cf2d7ec9d5ed9b7c7eb36ef48ccc2db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the attachment data status.  <a href="#ga2cf2d7ec9d5ed9b7c7eb36ef48ccc2db">More...</a><br /></td></tr>
 <tr class="separator:ga2cf2d7ec9d5ed9b7c7eb36ef48ccc2db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0a40e8239c04896377ebe98a65963e8f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguDirective.html#ga0a40e8239c04896377ebe98a65963e8f">nugu_directive_new</a> (const char *name_space, const char *name, const char *version, const char *msg_id, const char *dialog_id, const char *json)</td></tr>
-<tr class="memdesc:ga0a40e8239c04896377ebe98a65963e8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new directive object.  <a href="#ga0a40e8239c04896377ebe98a65963e8f">More...</a><br /></td></tr>
-<tr class="separator:ga0a40e8239c04896377ebe98a65963e8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga76d6ba975fc3532ccd31bacc90379556"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguDirective.html#ga76d6ba975fc3532ccd31bacc90379556">nugu_directive_new</a> (const char *name_space, const char *name, const char *version, const char *msg_id, const char *dialog_id, const char *referrer_id, const char *json)</td></tr>
+<tr class="memdesc:ga76d6ba975fc3532ccd31bacc90379556"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new directive object.  <a href="#ga76d6ba975fc3532ccd31bacc90379556">More...</a><br /></td></tr>
+<tr class="separator:ga76d6ba975fc3532ccd31bacc90379556"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafa496e6f3d54bde4d13145b816f100b7"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguDirective.html#gafa496e6f3d54bde4d13145b816f100b7">nugu_directive_peek_dialog_id</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)</td></tr>
-<tr class="memdesc:gafa496e6f3d54bde4d13145b816f100b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dialog-message-id of directive.  <a href="#gafa496e6f3d54bde4d13145b816f100b7">More...</a><br /></td></tr>
+<tr class="memdesc:gafa496e6f3d54bde4d13145b816f100b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dialog-request-id of directive.  <a href="#gafa496e6f3d54bde4d13145b816f100b7">More...</a><br /></td></tr>
 <tr class="separator:gafa496e6f3d54bde4d13145b816f100b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8bec3442ca9b12e8f5e3a162195237a3"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguDirective.html#ga8bec3442ca9b12e8f5e3a162195237a3">nugu_directive_peek_json</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)</td></tr>
 <tr class="memdesc:ga8bec3442ca9b12e8f5e3a162195237a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the payload of directive.  <a href="#ga8bec3442ca9b12e8f5e3a162195237a3">More...</a><br /></td></tr>
@@ -175,6 +175,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gadae6cbe3d5e251951946f5c81936cef0"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguDirective.html#gadae6cbe3d5e251951946f5c81936cef0">nugu_directive_peek_namespace</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)</td></tr>
 <tr class="memdesc:gadae6cbe3d5e251951946f5c81936cef0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the namespace of directive.  <a href="#gadae6cbe3d5e251951946f5c81936cef0">More...</a><br /></td></tr>
 <tr class="separator:gadae6cbe3d5e251951946f5c81936cef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga505674a1b8980fa8fa1849963674ca07"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguDirective.html#ga505674a1b8980fa8fa1849963674ca07">nugu_directive_peek_referrer_id</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)</td></tr>
+<tr class="memdesc:ga505674a1b8980fa8fa1849963674ca07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the referer-dialog-request-id of directive.  <a href="#ga505674a1b8980fa8fa1849963674ca07">More...</a><br /></td></tr>
+<tr class="separator:ga505674a1b8980fa8fa1849963674ca07"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3c47cee7d491756581879a06dc4f2100"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguDirective.html#ga3c47cee7d491756581879a06dc4f2100">nugu_directive_peek_version</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)</td></tr>
 <tr class="memdesc:ga3c47cee7d491756581879a06dc4f2100"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the version of directive.  <a href="#ga3c47cee7d491756581879a06dc4f2100">More...</a><br /></td></tr>
 <tr class="separator:ga3c47cee7d491756581879a06dc4f2100"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,11 +201,11 @@ Functions</h2></td></tr>
 <li>name</li>
 <li>version</li>
 <li>message-id</li>
-<li>dialog-message-id</li>
+<li>dialog-request-id</li>
 <li>payload (json) </li>
 </ul>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="ga0a40e8239c04896377ebe98a65963e8f"></a>
+<a class="anchor" id="ga76d6ba975fc3532ccd31bacc90379556"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -240,6 +243,12 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>referrer_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>json</em>&#160;</td>
         </tr>
         <tr>
@@ -257,7 +266,8 @@ Functions</h2></td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>capability name (e.g. "Speak") </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">version</td><td>version string (e.g. "1.0") </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">msg_id</td><td>unique message-id </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>unique dialog-message-id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>unique dialog-request-id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">referrer_id</td><td>referrer-dialog-request-id </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">json</td><td>payload </td></tr>
   </table>
   </dd>
@@ -288,7 +298,7 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__NuguDirective.html#ga0a40e8239c04896377ebe98a65963e8f" title="Create new directive object. ">nugu_directive_new()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__NuguDirective.html#ga76d6ba975fc3532ccd31bacc90379556" title="Create new directive object. ">nugu_directive_new()</a> </dd></dl>
 
 </div>
 </div>
@@ -406,14 +416,39 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get the dialog-message-id of directive. </p>
+<p>Get the dialog-request-id of directive. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">ndir</td><td>directive object </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>dialog-message-id. Please don't free the data manually. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>dialog-request-id. Please don't free the data manually. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ga505674a1b8980fa8fa1849963674ca07"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* nugu_directive_peek_referrer_id </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *&#160;</td>
+          <td class="paramname"><em>ndir</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the referer-dialog-request-id of directive. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ndir</td><td>directive object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>referrer-dialog-request-id. Please don't free the data manually. </dd></dl>
 
 </div>
 </div>
@@ -866,7 +901,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Nov 7 2019 16:17:57 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Nov 25 2019 15:45:56 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

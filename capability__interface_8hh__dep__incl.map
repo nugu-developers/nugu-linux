@@ -1,11 +1,13 @@
 <map id="capability_interface.hh" name="capability_interface.hh">
-<area shape="rect" id="node2" href="$asr__interface_8hh.html" title="asr_interface.hh" alt="" coords="5,80,120,107"/>
-<area shape="rect" id="node3" href="$nugu__client_8hh.html" title="nugu_client.hh" alt="" coords="587,155,693,181"/>
-<area shape="rect" id="node4" href="$audio__player__interface_8hh.html" title="audio_player_interface.hh" alt="" coords="195,80,365,107"/>
-<area shape="rect" id="node5" href="$delegation__interface_8hh.html" title="delegation_interface.hh" alt="" coords="390,80,546,107"/>
-<area shape="rect" id="node6" href="$display__interface_8hh.html" title="display_interface.hh" alt="" coords="571,80,709,107"/>
-<area shape="rect" id="node7" href="$extension__interface_8hh.html" title="extension_interface.hh" alt="" coords="734,80,887,107"/>
-<area shape="rect" id="node8" href="$system__interface_8hh.html" title="system_interface.hh" alt="" coords="911,80,1051,107"/>
-<area shape="rect" id="node9" href="$text__interface_8hh.html" title="text_interface.hh" alt="" coords="1075,80,1194,107"/>
-<area shape="rect" id="node10" href="$tts__interface_8hh.html" title="tts_interface.hh" alt="" coords="1217,80,1329,107"/>
+<area shape="rect" id="node2" href="$asr__interface_8hh.html" title="asr_interface.hh" alt="" coords="5,155,120,181"/>
+<area shape="rect" id="node3" href="$nugu__client_8hh.html" title="nugu_client.hh" alt="" coords="531,229,637,256"/>
+<area shape="rect" id="node4" href="$audio__player__interface_8hh.html" title="audio_player_interface.hh" alt="" coords="376,155,547,181"/>
+<area shape="rect" id="node5" href="$delegation__interface_8hh.html" title="delegation_interface.hh" alt="" coords="195,155,351,181"/>
+<area shape="rect" id="node6" href="$display__interface_8hh.html" title="display_interface.hh" alt="" coords="353,80,492,107"/>
+<area shape="rect" id="node7" href="$extension__interface_8hh.html" title="extension_interface.hh" alt="" coords="622,155,775,181"/>
+<area shape="rect" id="node8" href="$location__interface_8hh.html" title="location_interface.hh" alt="" coords="567,80,710,107"/>
+<area shape="rect" id="node9" href="$permission__interface_8hh.html" title="permission_interface.hh" alt="" coords="735,80,895,107"/>
+<area shape="rect" id="node10" href="$system__interface_8hh.html" title="system_interface.hh" alt="" coords="814,155,954,181"/>
+<area shape="rect" id="node11" href="$text__interface_8hh.html" title="text_interface.hh" alt="" coords="970,80,1089,107"/>
+<area shape="rect" id="node12" href="$tts__interface_8hh.html" title="tts_interface.hh" alt="" coords="1112,80,1224,107"/>
 </map>

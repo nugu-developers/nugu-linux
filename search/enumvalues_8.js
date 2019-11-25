@@ -1,5 +1,8 @@
 var searchData=
 [
+  ['nugu_5fequeue_5ftype_5fmax',['NUGU_EQUEUE_TYPE_MAX',['../group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba71a2740adf555abd8fd757d93cd19ffc',1,'nugu_equeue.h']]],
+  ['nugu_5fequeue_5ftype_5fnew_5fattachment',['NUGU_EQUEUE_TYPE_NEW_ATTACHMENT',['../group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcbac3a6d44b53f694a6214184b2f2c174b3',1,'nugu_equeue.h']]],
+  ['nugu_5fequeue_5ftype_5fnew_5fdirective',['NUGU_EQUEUE_TYPE_NEW_DIRECTIVE',['../group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcbafd2b4ab04be437583df1d5a52c959864',1,'nugu_equeue.h']]],
   ['nugu_5ffocus_5ffail',['NUGU_FOCUS_FAIL',['../group__NuguFocus.html#ggacd588728ba5e2fb00553891d177776aaa22a671a826824eea1a6f97a3e34751dd',1,'nugu_focus.h']]],
   ['nugu_5ffocus_5fok',['NUGU_FOCUS_OK',['../group__NuguFocus.html#ggacd588728ba5e2fb00553891d177776aaa23505cd3a48e12b21a122e002b06f8be',1,'nugu_focus.h']]],
   ['nugu_5ffocus_5fpause',['NUGU_FOCUS_PAUSE',['../group__NuguFocus.html#ggacd588728ba5e2fb00553891d177776aaa1d131a414310d7a6a6568e46c2f1ee35',1,'nugu_focus.h']]],

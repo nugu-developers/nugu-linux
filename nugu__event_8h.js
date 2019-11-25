@@ -13,6 +13,9 @@ var nugu__event_8h =
     [ "nugu_event_peek_json", "group__NuguEvent.html#ga6575da326b4337ab0aeb9cb8ed5ef3ae", null ],
     [ "nugu_event_set_dialog_id", "group__NuguEvent.html#ga81cf63b82c1fece1dc60b99592d41e56", null ],
     [ "nugu_event_peek_dialog_id", "group__NuguEvent.html#ga8946ce562c23a585f38d52672182515b", null ],
+    [ "nugu_event_set_referrer_id", "group__NuguEvent.html#gab0cb6124cb6c5175ae189779f5485306", null ],
+    [ "nugu_event_peek_referrer_id", "group__NuguEvent.html#gac018efd714cbd7da7db50de99da99fad", null ],
     [ "nugu_event_get_seq", "group__NuguEvent.html#ga1c284181f7d1472f56453c8e9c621cda", null ],
-    [ "nugu_event_increase_seq", "group__NuguEvent.html#ga4f031cf810f97b43a1105ad1db706b45", null ]
+    [ "nugu_event_increase_seq", "group__NuguEvent.html#ga4f031cf810f97b43a1105ad1db706b45", null ],
+    [ "nugu_event_generate_payload", "group__NuguEvent.html#gaf2795300241b02cb2013cc4e997fd83a", null ]
 ];

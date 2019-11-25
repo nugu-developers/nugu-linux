@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.3.1</span>
+   &#160;<span id="projectnumber">0.4.0</span>
    </div>
   </td>
  </tr>
@@ -125,7 +125,8 @@ $(document).ready(function(){initNavTree('classNuguInterface_1_1IAudioPlayerList
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classNuguInterface_1_1IAudioPlayerListener__inherit__graph.png" border="0" usemap="#NuguInterface_1_1IAudioPlayerListener_inherit__map" alt="Inheritance graph"/></div>
 <map name="NuguInterface_1_1IAudioPlayerListener_inherit__map" id="NuguInterface_1_1IAudioPlayerListener_inherit__map">
-<area shape="rect" id="node2" href="classNuguInterface_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="11,5,186,47"/>
+<area shape="rect" id="node2" href="classNuguInterface_1_1IDisplayListener.html" title="display listener interface " alt="" coords="5,95,212,121"/>
+<area shape="rect" id="node3" href="classNuguInterface_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="21,5,196,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -135,16 +136,14 @@ $(document).ready(function(){initNavTree('classNuguInterface_1_1IAudioPlayerList
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classNuguInterface_1_1IAudioPlayerListener__coll__graph.png" border="0" usemap="#NuguInterface_1_1IAudioPlayerListener_coll__map" alt="Collaboration graph"/></div>
 <map name="NuguInterface_1_1IAudioPlayerListener_coll__map" id="NuguInterface_1_1IAudioPlayerListener_coll__map">
-<area shape="rect" id="node2" href="classNuguInterface_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="11,109,186,151"/>
-<area shape="rect" id="node3" href="classNuguInterface_1_1ICapabilityHandler.html" title="capability handler interface " alt="" coords="11,5,186,47"/>
+<area shape="rect" id="node2" href="classNuguInterface_1_1IDisplayListener.html" title="display listener interface " alt="" coords="5,200,212,227"/>
+<area shape="rect" id="node3" href="classNuguInterface_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="21,109,196,151"/>
+<area shape="rect" id="node4" href="classNuguInterface_1_1ICapabilityHandler.html" title="capability handler interface " alt="" coords="21,5,196,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a98de70da9aa1fdc5d7ed9afb9816034c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IAudioPlayerListener.html#a98de70da9aa1fdc5d7ed9afb9816034c">clearDisplay</a> ()=0</td></tr>
-<tr class="memdesc:a98de70da9aa1fdc5d7ed9afb9816034c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The SDK will ask you to delete the rendered display on the display according to the service context maintenance policy.  <a href="#a98de70da9aa1fdc5d7ed9afb9816034c">More...</a><br /></td></tr>
-<tr class="separator:a98de70da9aa1fdc5d7ed9afb9816034c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a333d127da180ebef8ec6434882fbbd14"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IAudioPlayerListener.html#a333d127da180ebef8ec6434882fbbd14">durationChanged</a> (int duration)=0</td></tr>
 <tr class="memdesc:a333d127da180ebef8ec6434882fbbd14"><td class="mdescLeft">&#160;</td><td class="mdescRight">The audio player reports the total duration of the content being played to the user.  <a href="#a333d127da180ebef8ec6434882fbbd14">More...</a><br /></td></tr>
 <tr class="separator:a333d127da180ebef8ec6434882fbbd14"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,9 +153,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4fc435a9bc6389334cfce381200b85c2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IAudioPlayerListener.html#a4fc435a9bc6389334cfce381200b85c2">positionChanged</a> (int position)=0</td></tr>
 <tr class="memdesc:a4fc435a9bc6389334cfce381200b85c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The audio player reports to the user the current playing time of the content being played.  <a href="#a4fc435a9bc6389334cfce381200b85c2">More...</a><br /></td></tr>
 <tr class="separator:a4fc435a9bc6389334cfce381200b85c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7a1783bcb021ecd2121b80e6c3ad5f7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IAudioPlayerListener.html#af7a1783bcb021ecd2121b80e6c3ad5f7">renderDisplay</a> (const std::string &amp;type, const std::string &amp;json)=0</td></tr>
-<tr class="memdesc:af7a1783bcb021ecd2121b80e6c3ad5f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request rendering by passing metadata so that the device with the display can draw on the screen.  <a href="#af7a1783bcb021ecd2121b80e6c3ad5f7">More...</a><br /></td></tr>
-<tr class="separator:af7a1783bcb021ecd2121b80e6c3ad5f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classNuguInterface_1_1IDisplayListener"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classNuguInterface_1_1IDisplayListener')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classNuguInterface_1_1IDisplayListener.html">NuguInterface::IDisplayListener</a></td></tr>
+<tr class="memitem:aed46a6119393339bc4890722b1bc8cf4 inherit pub_methods_classNuguInterface_1_1IDisplayListener"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayListener.html#aed46a6119393339bc4890722b1bc8cf4">clearDisplay</a> (const std::string &amp;id, bool unconditionally)=0</td></tr>
+<tr class="memdesc:aed46a6119393339bc4890722b1bc8cf4 inherit pub_methods_classNuguInterface_1_1IDisplayListener"><td class="mdescLeft">&#160;</td><td class="mdescRight">The SDK will ask you to delete the rendered display on the display according to the service context maintenance policy.  <a href="#aed46a6119393339bc4890722b1bc8cf4">More...</a><br /></td></tr>
+<tr class="separator:aed46a6119393339bc4890722b1bc8cf4 inherit pub_methods_classNuguInterface_1_1IDisplayListener"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17f4e8c7ff0109dafed2f69290b2ce77 inherit pub_methods_classNuguInterface_1_1IDisplayListener"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayListener.html#a17f4e8c7ff0109dafed2f69290b2ce77">renderDisplay</a> (const std::string &amp;id, const std::string &amp;type, const std::string &amp;json, const std::string &amp;dialog_id)=0</td></tr>
+<tr class="memdesc:a17f4e8c7ff0109dafed2f69290b2ce77 inherit pub_methods_classNuguInterface_1_1IDisplayListener"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request rendering by passing metadata so that the device with the display can draw on the screen.  <a href="#a17f4e8c7ff0109dafed2f69290b2ce77">More...</a><br /></td></tr>
+<tr class="separator:a17f4e8c7ff0109dafed2f69290b2ce77 inherit pub_methods_classNuguInterface_1_1IDisplayListener"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classNuguInterface_1_1ICapabilityListener"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classNuguInterface_1_1ICapabilityListener')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classNuguInterface_1_1ICapabilityListener.html">NuguInterface::ICapabilityListener</a></td></tr>
 <tr class="memitem:a856f8dd4f20d90ac92b5beb1114bad15 inherit pub_methods_classNuguInterface_1_1ICapabilityListener"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityListener.html#a856f8dd4f20d90ac92b5beb1114bad15">registerCapabilityHandler</a> (<a class="el" href="classNuguInterface_1_1ICapabilityHandler.html">ICapabilityHandler</a> *capa_handler)</td></tr>
 <tr class="memdesc:a856f8dd4f20d90ac92b5beb1114bad15 inherit pub_methods_classNuguInterface_1_1ICapabilityListener"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the handler object.  <a href="#a856f8dd4f20d90ac92b5beb1114bad15">More...</a><br /></td></tr>
@@ -173,76 +176,6 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>audioplayer listener interface </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguInterface_1_1IAudioPlayerHandler.html" title="audioplayer handler interface ">IAudioPlayerHandler</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="af7a1783bcb021ecd2121b80e6c3ad5f7"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void NuguInterface::IAudioPlayerListener::renderDisplay </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>type</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>json</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Request rendering by passing metadata so that the device with the display can draw on the screen. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>display template type </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">json</td><td>template in json format for display </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguInterface_1_1IDisplayListener.html#a717525fbd9aa3c26b723920ff12e4a11" title="Request rendering by passing metadata so that the device with the display can draw on the screen...">IDisplayListener::renderDisplay()</a> </dd></dl>
-
-</div>
-</div>
-<a class="anchor" id="a98de70da9aa1fdc5d7ed9afb9816034c"></a>
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void NuguInterface::IAudioPlayerListener::clearDisplay </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The SDK will ask you to delete the rendered display on the display according to the service context maintenance policy. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguInterface_1_1IDisplayListener.html#acd7e0c3f5cf7d71fdd4adbccd0e895e3" title="The SDK will ask you to delete the rendered display on the display according to the service context m...">IDisplayListener::clearDisplay()</a> </dd></dl>
-
-</div>
-</div>
 <a class="anchor" id="ae50b9a446b8d84c428c5be71ce0228ee"></a>
 <div class="memitem">
 <div class="memproto">
@@ -348,7 +281,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguInterface</b></li><li class="navelem"><a class="el" href="classNuguInterface_1_1IAudioPlayerListener.html">IAudioPlayerListener</a></li>
-    <li class="footer">Generated on Thu Nov 7 2019 16:17:58 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Nov 25 2019 15:45:56 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

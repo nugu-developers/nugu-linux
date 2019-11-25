@@ -5,6 +5,7 @@ var group__SDKCore =
     [ "Decoder", "group__NuguDecoder.html", "group__NuguDecoder" ],
     [ "NUGU Directive", "group__NuguDirective.html", "group__NuguDirective" ],
     [ "Directive Sequencer", "group__nugu__dirseq.html", "group__nugu__dirseq" ],
+    [ "Event Queue", "group__NuguEventQueue.html", "group__NuguEventQueue" ],
     [ "NUGU Event", "group__NuguEvent.html", "group__NuguEvent" ],
     [ "Focus", "group__NuguFocus.html", "group__NuguFocus" ],
     [ "Log", "group__Log.html", "group__Log" ],

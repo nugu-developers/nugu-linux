@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.3.1</span>
+   &#160;<span id="projectnumber">0.4.0</span>
    </div>
   </td>
  </tr>
@@ -132,6 +132,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gae6a8910c1375f0b5912189cedf53f6af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEvent.html#gae6a8910c1375f0b5912189cedf53f6af">nugu_event_free</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev)</td></tr>
 <tr class="memdesc:gae6a8910c1375f0b5912189cedf53f6af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the event object.  <a href="#gae6a8910c1375f0b5912189cedf53f6af">More...</a><br /></td></tr>
 <tr class="separator:gae6a8910c1375f0b5912189cedf53f6af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf2795300241b02cb2013cc4e997fd83a"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEvent.html#gaf2795300241b02cb2013cc4e997fd83a">nugu_event_generate_payload</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev)</td></tr>
+<tr class="memdesc:gaf2795300241b02cb2013cc4e997fd83a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate JSON payload using nugu_event attributes.  <a href="#gaf2795300241b02cb2013cc4e997fd83a">More...</a><br /></td></tr>
+<tr class="separator:gaf2795300241b02cb2013cc4e997fd83a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1c284181f7d1472f56453c8e9c621cda"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEvent.html#ga1c284181f7d1472f56453c8e9c621cda">nugu_event_get_seq</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev)</td></tr>
 <tr class="memdesc:ga1c284181f7d1472f56453c8e9c621cda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current sequence number of attachment data.  <a href="#ga1c284181f7d1472f56453c8e9c621cda">More...</a><br /></td></tr>
 <tr class="separator:ga1c284181f7d1472f56453c8e9c621cda"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,7 +148,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga71645e87045bedf9fad914951c040b8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the context of event.  <a href="#ga71645e87045bedf9fad914951c040b8b">More...</a><br /></td></tr>
 <tr class="separator:ga71645e87045bedf9fad914951c040b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8946ce562c23a585f38d52672182515b"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEvent.html#ga8946ce562c23a585f38d52672182515b">nugu_event_peek_dialog_id</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev)</td></tr>
-<tr class="memdesc:ga8946ce562c23a585f38d52672182515b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dialog-message-id of event.  <a href="#ga8946ce562c23a585f38d52672182515b">More...</a><br /></td></tr>
+<tr class="memdesc:ga8946ce562c23a585f38d52672182515b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the dialog-request-id of event.  <a href="#ga8946ce562c23a585f38d52672182515b">More...</a><br /></td></tr>
 <tr class="separator:ga8946ce562c23a585f38d52672182515b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6575da326b4337ab0aeb9cb8ed5ef3ae"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEvent.html#ga6575da326b4337ab0aeb9cb8ed5ef3ae">nugu_event_peek_json</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev)</td></tr>
 <tr class="memdesc:ga6575da326b4337ab0aeb9cb8ed5ef3ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the payload of event.  <a href="#ga6575da326b4337ab0aeb9cb8ed5ef3ae">More...</a><br /></td></tr>
@@ -159,6 +162,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gabfe0ceb0c8e44cd5354f669335aeb793"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEvent.html#gabfe0ceb0c8e44cd5354f669335aeb793">nugu_event_peek_namespace</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev)</td></tr>
 <tr class="memdesc:gabfe0ceb0c8e44cd5354f669335aeb793"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the namespace of event.  <a href="#gabfe0ceb0c8e44cd5354f669335aeb793">More...</a><br /></td></tr>
 <tr class="separator:gabfe0ceb0c8e44cd5354f669335aeb793"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac018efd714cbd7da7db50de99da99fad"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEvent.html#gac018efd714cbd7da7db50de99da99fad">nugu_event_peek_referrer_id</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev)</td></tr>
+<tr class="memdesc:gac018efd714cbd7da7db50de99da99fad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the referer-dialog-request-id of event.  <a href="#gac018efd714cbd7da7db50de99da99fad">More...</a><br /></td></tr>
+<tr class="separator:gac018efd714cbd7da7db50de99da99fad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad07d7133f9c49f9b7fe41bc97ad337ed"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEvent.html#gad07d7133f9c49f9b7fe41bc97ad337ed">nugu_event_peek_version</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev)</td></tr>
 <tr class="memdesc:gad07d7133f9c49f9b7fe41bc97ad337ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the version of event.  <a href="#gad07d7133f9c49f9b7fe41bc97ad337ed">More...</a><br /></td></tr>
 <tr class="separator:gad07d7133f9c49f9b7fe41bc97ad337ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,11 +172,14 @@ Functions</h2></td></tr>
 <tr class="memdesc:ga2ab0024c7e5c8f45475cfe9dd95daaa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set text context of event.  <a href="#ga2ab0024c7e5c8f45475cfe9dd95daaa3">More...</a><br /></td></tr>
 <tr class="separator:ga2ab0024c7e5c8f45475cfe9dd95daaa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga81cf63b82c1fece1dc60b99592d41e56"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEvent.html#ga81cf63b82c1fece1dc60b99592d41e56">nugu_event_set_dialog_id</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev, const char *dialog_id)</td></tr>
-<tr class="memdesc:ga81cf63b82c1fece1dc60b99592d41e56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the dialog-message-id of event.  <a href="#ga81cf63b82c1fece1dc60b99592d41e56">More...</a><br /></td></tr>
+<tr class="memdesc:ga81cf63b82c1fece1dc60b99592d41e56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the dialog-request-id of event.  <a href="#ga81cf63b82c1fece1dc60b99592d41e56">More...</a><br /></td></tr>
 <tr class="separator:ga81cf63b82c1fece1dc60b99592d41e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0d95a5a072187a0db65f1c4a0a0ef9c0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEvent.html#ga0d95a5a072187a0db65f1c4a0a0ef9c0">nugu_event_set_json</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev, const char *json)</td></tr>
 <tr class="memdesc:ga0d95a5a072187a0db65f1c4a0a0ef9c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the payload of event.  <a href="#ga0d95a5a072187a0db65f1c4a0a0ef9c0">More...</a><br /></td></tr>
 <tr class="separator:ga0d95a5a072187a0db65f1c4a0a0ef9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab0cb6124cb6c5175ae189779f5485306"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEvent.html#gab0cb6124cb6c5175ae189779f5485306">nugu_event_set_referrer_id</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev, const char *referrer_id)</td></tr>
+<tr class="memdesc:gab0cb6124cb6c5175ae189779f5485306"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the referer-dialog-request-id of event.  <a href="#gab0cb6124cb6c5175ae189779f5485306">More...</a><br /></td></tr>
+<tr class="separator:gab0cb6124cb6c5175ae189779f5485306"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>The message object sent to the server. </p>
@@ -179,7 +188,7 @@ Functions</h2></td></tr>
 <li>name</li>
 <li>version</li>
 <li>message-id</li>
-<li>dialog-message-id</li>
+<li>dialog-request-id</li>
 <li>context</li>
 <li>payload </li>
 </ul>
@@ -513,11 +522,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Set the dialog-message-id of event. </p>
+<p>Set the dialog-request-id of event. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">nev</td><td>event object </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>dialog-message-id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>dialog-request-id </td></tr>
   </table>
   </dd>
 </dl>
@@ -546,14 +555,82 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get the dialog-message-id of event. </p>
+<p>Get the dialog-request-id of event. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">nev</td><td>event object </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>dialog-message-id. Please don't free the data manually. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>dialog-request-id. Please don't free the data manually. </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="gab0cb6124cb6c5175ae189779f5485306"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int nugu_event_set_referrer_id </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *&#160;</td>
+          <td class="paramname"><em>nev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>referrer_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set the referer-dialog-request-id of event. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">nev</td><td>event object </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">referrer_id</td><td>referrer-dialog-request-id </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>result </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>success </td></tr>
+    <tr><td class="paramname">-1</td><td>failure </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="gac018efd714cbd7da7db50de99da99fad"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* nugu_event_peek_referrer_id </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *&#160;</td>
+          <td class="paramname"><em>nev</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get the referer-dialog-request-id of event. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">nev</td><td>event object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>referrer-dialog-request-id. Please don't free the data manually. </dd></dl>
 
 </div>
 </div>
@@ -614,12 +691,43 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="gaf2795300241b02cb2013cc4e997fd83a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* nugu_event_generate_payload </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *&#160;</td>
+          <td class="paramname"><em>nev</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Generate JSON payload using nugu_event attributes. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">nev</td><td>event object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>memory allocated JSON string. Developer must free the data manually. </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">NULL</td><td>failure </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Nov 7 2019 16:17:57 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Nov 25 2019 15:45:56 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

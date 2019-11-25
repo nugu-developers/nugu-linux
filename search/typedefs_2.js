@@ -7,6 +7,8 @@ var searchData=
   ['nugudecoder',['NuguDecoder',['../group__NuguDecoder.html#gaa101bbd1ddf7d88171d3493aaf340ac3',1,'nugu_decoder.h']]],
   ['nugudecoderdriver',['NuguDecoderDriver',['../group__NuguDecoderDriver.html#ga87c50cd9f7f6d1f089282232bbfb71b6',1,'nugu_decoder.h']]],
   ['nugudirective',['NuguDirective',['../group__NuguDirective.html#ga0e689d212db128a33b2869181169e216',1,'nugu_directive.h']]],
+  ['nuguequeuecallback',['NuguEqueueCallback',['../group__NuguEventQueue.html#ga0ddf1bb79e2848d865e0222a7444bf38',1,'nugu_equeue.h']]],
+  ['nuguequeuedestroycallback',['NuguEqueueDestroyCallback',['../group__NuguEventQueue.html#ga4b6c1e599fbc010ded827b39f3e15a75',1,'nugu_equeue.h']]],
   ['nuguevent',['NuguEvent',['../group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2',1,'nugu_event.h']]],
   ['nugufocus',['NuguFocus',['../group__NuguFocus.html#ga0d2320b3577905f9b9d61e140c604a34',1,'nugu_focus.h']]],
   ['nugufocuscallback',['NuguFocusCallback',['../group__NuguFocus.html#gac290c2ffcb3b3b8e1f11e04675b62d38',1,'nugu_focus.h']]],

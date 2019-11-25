@@ -20,10 +20,12 @@ var annotated_dup =
       [ "IDisplayListener", "classNuguInterface_1_1IDisplayListener.html", "classNuguInterface_1_1IDisplayListener" ],
       [ "IExtensionHandler", "classNuguInterface_1_1IExtensionHandler.html", "classNuguInterface_1_1IExtensionHandler" ],
       [ "IExtensionListener", "classNuguInterface_1_1IExtensionListener.html", "classNuguInterface_1_1IExtensionListener" ],
+      [ "ILocationListener", "classNuguInterface_1_1ILocationListener.html", "classNuguInterface_1_1ILocationListener" ],
       [ "IMediaPlayer", "classNuguInterface_1_1IMediaPlayer.html", "classNuguInterface_1_1IMediaPlayer" ],
       [ "IMediaPlayerListener", "classNuguInterface_1_1IMediaPlayerListener.html", "classNuguInterface_1_1IMediaPlayerListener" ],
       [ "INetworkManager", "classNuguInterface_1_1INetworkManager.html", "classNuguInterface_1_1INetworkManager" ],
       [ "INetworkManagerListener", "classNuguInterface_1_1INetworkManagerListener.html", "classNuguInterface_1_1INetworkManagerListener" ],
+      [ "IPermissionListener", "classNuguInterface_1_1IPermissionListener.html", "classNuguInterface_1_1IPermissionListener" ],
       [ "ISystemHandler", "classNuguInterface_1_1ISystemHandler.html", "classNuguInterface_1_1ISystemHandler" ],
       [ "ISystemListener", "classNuguInterface_1_1ISystemListener.html", "classNuguInterface_1_1ISystemListener" ],
       [ "ITextHandler", "classNuguInterface_1_1ITextHandler.html", "classNuguInterface_1_1ITextHandler" ],
@@ -31,7 +33,9 @@ var annotated_dup =
       [ "ITTSHandler", "classNuguInterface_1_1ITTSHandler.html", "classNuguInterface_1_1ITTSHandler" ],
       [ "ITTSListener", "classNuguInterface_1_1ITTSListener.html", "classNuguInterface_1_1ITTSListener" ],
       [ "IWakeupHandler", "classNuguInterface_1_1IWakeupHandler.html", "classNuguInterface_1_1IWakeupHandler" ],
-      [ "IWakeupListener", "classNuguInterface_1_1IWakeupListener.html", "classNuguInterface_1_1IWakeupListener" ]
+      [ "IWakeupListener", "classNuguInterface_1_1IWakeupListener.html", "classNuguInterface_1_1IWakeupListener" ],
+      [ "LocationInfo", "structNuguInterface_1_1LocationInfo.html", "structNuguInterface_1_1LocationInfo" ],
+      [ "PermissionState", "structNuguInterface_1_1PermissionState.html", "structNuguInterface_1_1PermissionState" ]
     ] ],
     [ "nugu_audio_property", "structnugu__audio__property.html", "structnugu__audio__property" ],
     [ "nugu_decoder_driver_ops", "structnugu__decoder__driver__ops.html", "structnugu__decoder__driver__ops" ],

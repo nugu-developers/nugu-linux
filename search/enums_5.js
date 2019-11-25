@@ -3,6 +3,7 @@ var searchData=
   ['networkerror',['NetworkError',['../group__NetworkManagerInterface.html#gad0580e49356d3bffd1cd854202fd15dc',1,'NuguInterface']]],
   ['nugu_5faudio_5fformat',['nugu_audio_format',['../nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4ee',1,'nugu_audio.h']]],
   ['nugu_5faudio_5fsample_5frate',['nugu_audio_sample_rate',['../nugu__audio_8h.html#a45142699425266966bf2e0eed6dad69c',1,'nugu_audio.h']]],
+  ['nugu_5fequeue_5ftype',['nugu_equeue_type',['../group__NuguEventQueue.html#ga54d0f533b2309e92861df75daaa6efcb',1,'nugu_equeue.h']]],
   ['nugu_5ffocus_5fresource',['nugu_focus_resource',['../group__NuguFocus.html#ga272ff61594b7b7d1c4b1f19461196f8a',1,'nugu_focus.h']]],
   ['nugu_5ffocus_5fresult',['nugu_focus_result',['../group__NuguFocus.html#gacd588728ba5e2fb00553891d177776aa',1,'nugu_focus.h']]],
   ['nugu_5ffocus_5fsteal_5fresult',['nugu_focus_steal_result',['../group__NuguFocus.html#ga2b5b589097406fffaf94514485ba8129',1,'nugu_focus.h']]],

@@ -5,7 +5,7 @@ var searchData=
   ['setconfig',['setConfig',['../classNuguClientKit_1_1NuguClient.html#a993b0c65a793586ec792c6d57ddbf1eb',1,'NuguClientKit::NuguClient']]],
   ['setconfigs',['setConfigs',['../classNuguClientKit_1_1NuguClient.html#a0107158669353dcd50af068b45c2c46f',1,'NuguClientKit::NuguClient']]],
   ['setduration',['setDuration',['../classNuguInterface_1_1IMediaPlayer.html#a2d3e94f18ee4bc005794ea3bef994d86',1,'NuguInterface::IMediaPlayer']]],
-  ['setlistener',['setListener',['../classNuguClientKit_1_1NuguClient.html#a338da30822046808076f3f8e728e87d4',1,'NuguClientKit::NuguClient::setListener()'],['../classNuguInterface_1_1IWakeupHandler.html#a2cee1a951e35190c54272b9fbbe22bdf',1,'NuguInterface::IWakeupHandler::setListener()']]],
+  ['setlistener',['setListener',['../classNuguInterface_1_1IDisplayHandler.html#a0f9c3a7268f8fadd6cd00879b72a74f0',1,'NuguInterface::IDisplayHandler::setListener()'],['../classNuguClientKit_1_1NuguClient.html#a338da30822046808076f3f8e728e87d4',1,'NuguClientKit::NuguClient::setListener()'],['../classNuguInterface_1_1IWakeupHandler.html#a2cee1a951e35190c54272b9fbbe22bdf',1,'NuguInterface::IWakeupHandler::setListener()']]],
   ['setmute',['setMute',['../classNuguInterface_1_1IMediaPlayer.html#a6300a64fca9f9d351b926c09ba461527',1,'NuguInterface::IMediaPlayer']]],
   ['setposition',['setPosition',['../classNuguInterface_1_1IMediaPlayer.html#acdad54e8afc8cf16da1a96758396749d',1,'NuguInterface::IMediaPlayer']]],
   ['setsource',['setSource',['../classNuguInterface_1_1IMediaPlayer.html#aea82c2afad01fe8b591289372985adb8',1,'NuguInterface::IMediaPlayer']]],
@@ -17,6 +17,7 @@ var searchData=
   ['statestring',['stateString',['../classNuguInterface_1_1IMediaPlayer.html#abbd088636c5be4e83d2e611be5678009',1,'NuguInterface::IMediaPlayer']]],
   ['stop',['stop',['../classNuguInterface_1_1IAudioPlayerHandler.html#a6f0ae7b30c39f12c7da90f3fa09eb4f7',1,'NuguInterface::IAudioPlayerHandler::stop()'],['../classNuguInterface_1_1IMediaPlayer.html#ab6cfbd7fc1669122a49c61e85093227a',1,'NuguInterface::IMediaPlayer::stop()']]],
   ['stoprecognition',['stopRecognition',['../classNuguInterface_1_1IASRHandler.html#a688cdc7ac7b659d3576bc7c68ee35405',1,'NuguInterface::IASRHandler']]],
+  ['stoprenderingtimer',['stopRenderingTimer',['../classNuguInterface_1_1IDisplayHandler.html#ab5ff104e76b0aec7cbf650139d9987cf',1,'NuguInterface::IDisplayHandler']]],
   ['stoptts',['stopTTS',['../classNuguInterface_1_1ITTSHandler.html#abe7686d2362fe6157642767b6d65a995',1,'NuguInterface::ITTSHandler']]],
   ['synchronizestate',['synchronizeState',['../classNuguInterface_1_1ISystemHandler.html#a902947797b4da99cb5d9999b72edc99e',1,'NuguInterface::ISystemHandler']]]
 ];

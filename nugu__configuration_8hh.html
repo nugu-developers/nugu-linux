@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.3.1</span>
+   &#160;<span id="projectnumber">0.4.0</span>
    </div>
   </td>
  </tr>
@@ -139,9 +139,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a0d258ef07ddcd0fe260ad141ddd6d84f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0d258ef07ddcd0fe260ad141ddd6d84f"></a>
 const NuguConfigType&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::getDefaultValues</b> ()</td></tr>
 <tr class="separator:a0d258ef07ddcd0fe260ad141ddd6d84f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57e8a66a1887b4f7f25f304a9fde2b9f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a57e8a66a1887b4f7f25f304a9fde2b9f"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::getGatewayRegistryDns</b> (std::string &amp;server_type)</td></tr>
-<tr class="separator:a57e8a66a1887b4f7f25f304a9fde2b9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -151,12 +148,21 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInte
 <tr class="memitem:a9b7d74084be4d53c6c4a24ceb1cec759"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9b7d74084be4d53c6c4a24ceb1cec759"></a>
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::ASR_ENCODING</b> = &quot;asr_encoding&quot;</td></tr>
 <tr class="separator:a9b7d74084be4d53c6c4a24ceb1cec759"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ddaec5e92f8f9acb14596a07d389f4f"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a9ddaec5e92f8f9acb14596a07d389f4f"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::ASR_EPD_CHANNEL</b> = &quot;asr_epd_channel&quot;</td></tr>
+<tr class="separator:a9ddaec5e92f8f9acb14596a07d389f4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbaa63e59f97b5a547029a55841c5773"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="adbaa63e59f97b5a547029a55841c5773"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::ASR_EPD_FORMAT</b> = &quot;asr_epd_format&quot;</td></tr>
+<tr class="separator:adbaa63e59f97b5a547029a55841c5773"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4435d56de14523d74daddebe8f3fc913"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a4435d56de14523d74daddebe8f3fc913"></a>
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::ASR_EPD_MAX_DURATION_SEC</b> = &quot;asr_epd_max_duration_sec&quot;</td></tr>
 <tr class="separator:a4435d56de14523d74daddebe8f3fc913"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a84d8dc066179061e8785ddb3cc6bcd99"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a84d8dc066179061e8785ddb3cc6bcd99"></a>
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::ASR_EPD_PAUSE_LENGTH_MSEC</b> = &quot;asr_epd_pause_length_msec&quot;</td></tr>
 <tr class="separator:a84d8dc066179061e8785ddb3cc6bcd99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63a95939d3b35bb1a097c6f815432c6b"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a63a95939d3b35bb1a097c6f815432c6b"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::ASR_EPD_SAMPLERATE</b> = &quot;asr_epd_samplerate&quot;</td></tr>
+<tr class="separator:a63a95939d3b35bb1a097c6f815432c6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acbd1c419c2f7ad0f4db69b9634141ed2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="acbd1c419c2f7ad0f4db69b9634141ed2"></a>
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::ASR_EPD_TIMEOUT_SEC</b> = &quot;asr_epd_timeout_sec&quot;</td></tr>
 <tr class="separator:acbd1c419c2f7ad0f4db69b9634141ed2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,15 +172,21 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInte
 <tr class="memitem:aeb7cae27066e9e2ca6fb657e9dd05797"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="aeb7cae27066e9e2ca6fb657e9dd05797"></a>
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::GATEWAY_REGISTRY_DNS</b> = <a class="el" href="group__nugu__config.html#gac9058595654590ec6c3115a8ea9445f1">NUGU_CONFIG_KEY_GATEWAY_REGISTRY_DNS</a></td></tr>
 <tr class="separator:aeb7cae27066e9e2ca6fb657e9dd05797"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8388fb4aa300977d134394733423660d"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8388fb4aa300977d134394733423660d"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::KWD_CHANNEL</b> = &quot;kwd_channel&quot;</td></tr>
+<tr class="separator:a8388fb4aa300977d134394733423660d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d9196753cd373d6d43b3edcdb4ded3e"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7d9196753cd373d6d43b3edcdb4ded3e"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::KWD_FORMAT</b> = &quot;kwd_format&quot;</td></tr>
+<tr class="separator:a7d9196753cd373d6d43b3edcdb4ded3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb81687e0ae704f319ea87341f53d5a9"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afb81687e0ae704f319ea87341f53d5a9"></a>
+const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::KWD_SAMPLERATE</b> = &quot;kwd_samplerate&quot;</td></tr>
+<tr class="separator:afb81687e0ae704f319ea87341f53d5a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab33d8851c6b1f8ed22771a79e1e7bdc2"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ab33d8851c6b1f8ed22771a79e1e7bdc2"></a>
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::MODEL_PATH</b> = &quot;model_path&quot;</td></tr>
 <tr class="separator:ab33d8851c6b1f8ed22771a79e1e7bdc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afedd1470c5ea72b548912db68d60f439"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="afedd1470c5ea72b548912db68d60f439"></a>
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::SERVER_RESPONSE_TIMEOUT_MSEC</b> = &quot;server_response_timeout_msec&quot;</td></tr>
 <tr class="separator:afedd1470c5ea72b548912db68d60f439"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3778775f1079417339f59d8262d786e4"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a3778775f1079417339f59d8262d786e4"></a>
-const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::SERVER_TYPE</b> = &quot;server_type&quot;</td></tr>
-<tr class="separator:a3778775f1079417339f59d8262d786e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7323a57fab9091fa2ed1926d51e6eb88"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7323a57fab9091fa2ed1926d51e6eb88"></a>
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInterface::NuguConfig::Key::TTS_ENGINE</b> = &quot;tts_engine&quot;</td></tr>
 <tr class="separator:a7323a57fab9091fa2ed1926d51e6eb88"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -194,7 +206,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>NuguInte
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fac9ef7fc20ac12aaae6ba4aa5a86afc.html">interface</a></li><li class="navelem"><a class="el" href="nugu__configuration_8hh.html">nugu_configuration.hh</a></li>
-    <li class="footer">Generated on Thu Nov 7 2019 16:17:57 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Nov 25 2019 15:45:55 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

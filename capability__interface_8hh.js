@@ -8,6 +8,8 @@ var capability__interface_8hh =
       [ "ASR", "capability__interface_8hh.html#ggacf07cae71da4a8dcafc46ed5459bec7aa1a3cf7bfb644cba9516cc28e2cb360ca", null ],
       [ "Text", "capability__interface_8hh.html#ggacf07cae71da4a8dcafc46ed5459bec7aa9dffbf69ffba8bc38bc4e01abf4b1675", null ],
       [ "Extension", "capability__interface_8hh.html#ggacf07cae71da4a8dcafc46ed5459bec7aa63e4e92bb7d207ca577b11c07f827279", null ],
-      [ "Delegation", "capability__interface_8hh.html#ggacf07cae71da4a8dcafc46ed5459bec7aa57b11d3816e9f83adb4dd2ecb2a311b5", null ]
+      [ "Delegation", "capability__interface_8hh.html#ggacf07cae71da4a8dcafc46ed5459bec7aa57b11d3816e9f83adb4dd2ecb2a311b5", null ],
+      [ "Permission", "capability__interface_8hh.html#ggacf07cae71da4a8dcafc46ed5459bec7aaed5dea09095f671b801bee34ea28a319", null ],
+      [ "Location", "capability__interface_8hh.html#ggacf07cae71da4a8dcafc46ed5459bec7aace5bf551379459c1c61d2a204061c455", null ]
     ] ]
 ];

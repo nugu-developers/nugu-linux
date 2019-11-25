@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.3.1</span>
+   &#160;<span id="projectnumber">0.4.0</span>
    </div>
   </td>
  </tr>
@@ -125,6 +125,7 @@ $(document).ready(function(){initNavTree('classNuguInterface_1_1IDisplayHandler.
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classNuguInterface_1_1IDisplayHandler__inherit__graph.png" border="0" usemap="#NuguInterface_1_1IDisplayHandler_inherit__map" alt="Inheritance graph"/></div>
 <map name="NuguInterface_1_1IDisplayHandler_inherit__map" id="NuguInterface_1_1IDisplayHandler_inherit__map">
+<area shape="rect" id="node3" href="classNuguInterface_1_1IAudioPlayerHandler.html" title="audioplayer handler interface " alt="" coords="15,169,201,211"/>
 <area shape="rect" id="node2" href="classNuguInterface_1_1ICapabilityHandler.html" title="capability handler interface " alt="" coords="21,5,195,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
@@ -141,22 +142,30 @@ $(document).ready(function(){initNavTree('classNuguInterface_1_1IDisplayHandler.
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a8d7a5a54398172019894dda4a44033a8"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a8d7a5a54398172019894dda4a44033a8"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#a8d7a5a54398172019894dda4a44033a8">displayCleared</a> ()=0</td></tr>
-<tr class="memdesc:a8d7a5a54398172019894dda4a44033a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user reports that the display is cleared. <br /></td></tr>
-<tr class="separator:a8d7a5a54398172019894dda4a44033a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e749c59e51e06a12edbe00f22d72b5b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#a1e749c59e51e06a12edbe00f22d72b5b">displayRendered</a> (const std::string &amp;token)=0</td></tr>
-<tr class="memdesc:a1e749c59e51e06a12edbe00f22d72b5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user reports that the display was rendered with the parsed token.  <a href="#a1e749c59e51e06a12edbe00f22d72b5b">More...</a><br /></td></tr>
-<tr class="separator:a1e749c59e51e06a12edbe00f22d72b5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03916f9841507934d2fbc5409a46bafd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#a03916f9841507934d2fbc5409a46bafd">elementSelected</a> (const std::string &amp;item_token)=0</td></tr>
-<tr class="memdesc:a03916f9841507934d2fbc5409a46bafd"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user informs the selected item of the list and reports the token information of the item.  <a href="#a03916f9841507934d2fbc5409a46bafd">More...</a><br /></td></tr>
-<tr class="separator:a03916f9841507934d2fbc5409a46bafd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7de6a792fa76c1d2228d5ecbd4de126"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#ac7de6a792fa76c1d2228d5ecbd4de126">displayCleared</a> (const std::string &amp;id)=0</td></tr>
+<tr class="memdesc:ac7de6a792fa76c1d2228d5ecbd4de126"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user reports that the display is cleared.  <a href="#ac7de6a792fa76c1d2228d5ecbd4de126">More...</a><br /></td></tr>
+<tr class="separator:ac7de6a792fa76c1d2228d5ecbd4de126"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab53168dc664ed3de3be4115522a2f4f3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#ab53168dc664ed3de3be4115522a2f4f3">displayRendered</a> (const std::string &amp;id)=0</td></tr>
+<tr class="memdesc:ab53168dc664ed3de3be4115522a2f4f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user reports that the display was rendered.  <a href="#ab53168dc664ed3de3be4115522a2f4f3">More...</a><br /></td></tr>
+<tr class="separator:ab53168dc664ed3de3be4115522a2f4f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3addd665ec28e0a4ee892c150a8eafaa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#a3addd665ec28e0a4ee892c150a8eafaa">elementSelected</a> (const std::string &amp;id, const std::string &amp;item_token)=0</td></tr>
+<tr class="memdesc:a3addd665ec28e0a4ee892c150a8eafaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user informs the selected item of the list and reports the token information of the item.  <a href="#a3addd665ec28e0a4ee892c150a8eafaa">More...</a><br /></td></tr>
+<tr class="separator:a3addd665ec28e0a4ee892c150a8eafaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf24fe2c2d6b745ef96d9e6048182fa1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#abf24fe2c2d6b745ef96d9e6048182fa1">removeListener</a> (<a class="el" href="classNuguInterface_1_1IDisplayListener.html">IDisplayListener</a> *listener)=0</td></tr>
+<tr class="memdesc:abf24fe2c2d6b745ef96d9e6048182fa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the Listener object.  <a href="#abf24fe2c2d6b745ef96d9e6048182fa1">More...</a><br /></td></tr>
+<tr class="separator:abf24fe2c2d6b745ef96d9e6048182fa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f9c3a7268f8fadd6cd00879b72a74f0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#a0f9c3a7268f8fadd6cd00879b72a74f0">setListener</a> (<a class="el" href="classNuguInterface_1_1IDisplayListener.html">IDisplayListener</a> *listener)=0</td></tr>
+<tr class="memdesc:a0f9c3a7268f8fadd6cd00879b72a74f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Listener object.  <a href="#a0f9c3a7268f8fadd6cd00879b72a74f0">More...</a><br /></td></tr>
+<tr class="separator:a0f9c3a7268f8fadd6cd00879b72a74f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5ff104e76b0aec7cbf650139d9987cf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html#ab5ff104e76b0aec7cbf650139d9987cf">stopRenderingTimer</a> (const std::string &amp;id)=0</td></tr>
+<tr class="memdesc:ab5ff104e76b0aec7cbf650139d9987cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">stop display rendering hold timer.  <a href="#ab5ff104e76b0aec7cbf650139d9987cf">More...</a><br /></td></tr>
+<tr class="separator:ab5ff104e76b0aec7cbf650139d9987cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>display handler interface </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguInterface_1_1IDisplayListener.html" title="display listener interface ">IDisplayListener</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a1e749c59e51e06a12edbe00f22d72b5b"></a>
+<a class="anchor" id="ab53168dc664ed3de3be4115522a2f4f3"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -167,7 +176,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
           <td class="memname">virtual void NuguInterface::IDisplayHandler::displayRendered </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>token</em></td><td>)</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -178,17 +187,49 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </table>
 </div><div class="memdoc">
 
-<p>The user reports that the display was rendered with the parsed token. </p>
+<p>The user reports that the display was rendered. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">token</td><td>parsed token from metadata </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>display template id </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a class="anchor" id="a03916f9841507934d2fbc5409a46bafd"></a>
+<a class="anchor" id="ac7de6a792fa76c1d2228d5ecbd4de126"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguInterface::IDisplayHandler::displayCleared </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The user reports that the display is cleared. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>display template id </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a3addd665ec28e0a4ee892c150a8eafaa"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -199,8 +240,18 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
           <td class="memname">virtual void NuguInterface::IDisplayHandler::elementSelected </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>item_token</em></td><td>)</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>item_token</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -213,7 +264,104 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <p>The user informs the selected item of the list and reports the token information of the item. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>display template id </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">item_token</td><td>parsed token from metadata </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="a0f9c3a7268f8fadd6cd00879b72a74f0"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguInterface::IDisplayHandler::setListener </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classNuguInterface_1_1IDisplayListener.html">IDisplayListener</a> *&#160;</td>
+          <td class="paramname"><em>listener</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the Listener object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">listener</td><td>listener object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="abf24fe2c2d6b745ef96d9e6048182fa1"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguInterface::IDisplayHandler::removeListener </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classNuguInterface_1_1IDisplayListener.html">IDisplayListener</a> *&#160;</td>
+          <td class="paramname"><em>listener</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Remove the Listener object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">listener</td><td>listener object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a class="anchor" id="ab5ff104e76b0aec7cbf650139d9987cf"></a>
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguInterface::IDisplayHandler::stopRenderingTimer </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>stop display rendering hold timer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>display template id </td></tr>
   </table>
   </dd>
 </dl>
@@ -229,7 +377,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguInterface</b></li><li class="navelem"><a class="el" href="classNuguInterface_1_1IDisplayHandler.html">IDisplayHandler</a></li>
-    <li class="footer">Generated on Thu Nov 7 2019 16:17:58 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Nov 25 2019 15:45:57 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

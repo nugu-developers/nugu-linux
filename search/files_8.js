@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wakeup_5finterface_2ehh',['wakeup_interface.hh',['../wakeup__interface_8hh.html',1,'']]]
+  ['system_5finterface_2ehh',['system_interface.hh',['../system__interface_8hh.html',1,'']]]
 ];
