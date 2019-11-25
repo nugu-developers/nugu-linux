@@ -38,8 +38,6 @@ void v1_event_attachment_set_query(V1EventAttachment *attach,
 int v1_event_attachment_set_data(V1EventAttachment *attach,
 				 const unsigned char *data, size_t length);
 
-int v1_event_attachment_add_header(V1EventAttachment *attach,
-				   const char *header);
 int v1_event_attachment_send_with_free(V1EventAttachment *attach,
 				       HTTP2Network *net);
 

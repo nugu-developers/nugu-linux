@@ -33,6 +33,8 @@ int http2_network_remove_request_sync(HTTP2Network *net, HTTP2Request *req);
 
 int http2_network_start(HTTP2Network *net);
 
+int http2_network_set_token(HTTP2Network *net, const char *token);
+
 void http2_network_enable_curl_log(HTTP2Network *net);
 void http2_network_disable_curl_log(HTTP2Network *net);
 

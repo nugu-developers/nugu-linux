@@ -31,7 +31,6 @@
 struct _gateway_registry {
     char* body;
     char* host;
-    char* header;
     GatewayRegistryCallback callback;
     void* callback_userdata;
     HTTP2Request* req;
@@ -92,27 +91,11 @@ void gateway_registry_free(GatewayRegistry* registry)
     if (registry->host)
         free(registry->host);
 
-    if (registry->header)
-        free(registry->header);
-
     if (registry->req)
         http2_request_unref(registry->req);
 
     memset(registry, 0, sizeof(GatewayRegistry));
     free(registry);
-}
-
-int gateway_registry_set_header(GatewayRegistry* registry, const char* header)
-{
-    g_return_val_if_fail(registry != NULL, -1);
-    g_return_val_if_fail(header != NULL, -1);
-
-    if (registry->header)
-        free(registry->header);
-
-    registry->header = strdup(header);
-
-    return 0;
 }
 
 int gateway_registry_set_callback(GatewayRegistry* registry,
@@ -165,7 +148,6 @@ int gateway_registry_policy(GatewayRegistry* registry, HTTP2Network* net)
 
     registry->req = http2_request_new();
     http2_request_set_url(registry->req, registry->host);
-    http2_request_add_header(registry->req, registry->header);
     http2_request_set_method(registry->req, HTTP2_REQUEST_METHOD_GET);
     http2_request_set_finish_callback(registry->req, _on_finish, registry);
 

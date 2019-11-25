@@ -30,7 +30,6 @@ typedef struct _v1_ping V1Ping;
 V1Ping *v1_ping_new(H2Manager *mgr, const GatewayHealthPolicy *policy);
 void v1_ping_free(V1Ping *ping);
 
-int v1_ping_set_header(V1Ping *ping, const char *header);
 int v1_ping_establish(V1Ping *ping, HTTP2Network *net);
 
 #ifdef __cplusplus

@@ -105,6 +105,7 @@ static int _h2manager_network_start(H2Manager *manager)
 	if (!manager->network)
 		return -1;
 
+	http2_network_set_token(manager->network, manager->token);
 	http2_network_enable_curl_log(manager->network);
 	http2_network_start(manager->network);
 
@@ -137,7 +138,6 @@ static int _h2manager_establish_directive(H2Manager *manager)
 		v1_directives_free(manager->directives);
 
 	manager->directives = v1_directives_new(manager);
-	v1_directives_set_header(manager->directives, manager->token);
 
 	ret = v1_directives_establish_sync(manager->directives,
 					   manager->network);
@@ -155,7 +155,6 @@ static void _h2manager_establish_ping(H2Manager *manager)
 		v1_ping_free(manager->ping);
 
 	manager->ping = v1_ping_new(manager, &(manager->policy));
-	v1_ping_set_header(manager->ping, manager->token);
 	v1_ping_establish(manager->ping, manager->network);
 }
 
@@ -332,11 +331,8 @@ H2Manager *h2manager_new(void)
 	manager->tid = (pid_t)syscall(SYS_gettid);
 
 	token_value = nugu_config_get(NUGU_CONFIG_KEY_TOKEN);
-
-	if (token_value) {
-		manager->token = g_strdup_printf("authorization: Bearer %s",
-						 token_value);
-	}
+	if (token_value)
+		manager->token = g_strdup(token_value);
 
 	nugu_info("created");
 
@@ -513,7 +509,6 @@ int h2manager_connect(H2Manager *manager)
 		return -1;
 	}
 
-	gateway_registry_set_header(registry, manager->token);
 	gateway_registry_set_callback(registry, on_policy, manager);
 
 	nugu_info("Try connect to Registry server");
@@ -590,7 +585,6 @@ int h2manager_send_event(H2Manager *manager, const char *name_space,
 	v1_event_set_json(e, buf, strlen(buf));
 	g_free(buf);
 
-	v1_event_add_header(e, manager->token);
 	v1_event_send_with_free(e, manager->network);
 
 	return 0;
@@ -620,7 +614,6 @@ int h2manager_send_event_attachment(H2Manager *manager, const char *name_space,
 	v1_event_attachment_set_query(ea, name_space, name, version,
 				      parent_msg_id, msg_id, dialog_id, seq,
 				      is_end);
-	v1_event_attachment_add_header(ea, manager->token);
 	v1_event_attachment_send_with_free(ea, manager->network);
 
 	return 0;

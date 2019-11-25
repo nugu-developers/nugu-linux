@@ -45,7 +45,6 @@ enum kvstatus {
 
 struct _v1_directives {
     char* host;
-    char* header;
 
     MultipartParser* parser;
     HTTP2Network* network;
@@ -367,9 +366,6 @@ void v1_directives_free(V1Directives* dir)
     if (dir->idle_src)
         g_source_remove(dir->idle_src);
 
-    if (dir->header)
-        free(dir->header);
-
     if (dir->host)
         g_free(dir->host);
 
@@ -378,19 +374,6 @@ void v1_directives_free(V1Directives* dir)
 
     memset(dir, 0, sizeof(V1Directives));
     free(dir);
-}
-
-int v1_directives_set_header(V1Directives* dir, const char* header)
-{
-    g_return_val_if_fail(dir != NULL, -1);
-    g_return_val_if_fail(header != NULL, -1);
-
-    if (dir->header)
-        free(dir->header);
-
-    dir->header = strdup(header);
-
-    return 0;
 }
 
 int v1_directives_establish(V1Directives* dir, HTTP2Network* net)
@@ -411,7 +394,6 @@ int v1_directives_establish(V1Directives* dir, HTTP2Network* net)
 
     req = http2_request_new();
     http2_request_set_url(req, dir->host);
-    http2_request_add_header(req, dir->header);
     http2_request_set_method(req, HTTP2_REQUEST_METHOD_GET);
     http2_request_set_header_callback(req, _on_header, dir);
     http2_request_set_body_callback(req, _on_body, dir);
