@@ -84,18 +84,24 @@ public:
 
 class NetworkManagerListener : public INetworkManagerListener {
 public:
-    void onConnected()
+    void onStatusChanged(NetworkStatus status)
     {
-        msg_info("Network connected.");
-
-        nugu_sample_manager->handleNetworkResult(true);
-    }
-
-    void onDisconnected()
-    {
-        msg_info("Network disconnected.");
-
-        nugu_sample_manager->handleNetworkResult(false);
+        switch (status) {
+        case NetworkStatus::DISCONNECTED:
+            msg_info("Network disconnected.");
+            nugu_sample_manager->handleNetworkResult(false);
+            break;
+        case NetworkStatus::CONNECTED:
+            msg_info("Network connected.");
+            nugu_sample_manager->handleNetworkResult(true);
+            break;
+        case NetworkStatus::CONNECTING:
+            msg_info("Network connection in progress.");
+            nugu_sample_manager->handleNetworkResult(false);
+            break;
+        default:
+            break;
+        }
     }
 
     void onError(NetworkError error)

@@ -17,8 +17,7 @@
 
 namespace NuguInterface {
 
-void INetworkManagerListener::onConnected() {}
-void INetworkManagerListener::onDisconnected() {}
+void INetworkManagerListener::onStatusChanged(NetworkStatus status) {}
 void INetworkManagerListener::onError(NetworkError error) {}
 
 } //NuguInterface

@@ -36,13 +36,19 @@ static void _status(void* userdata)
         nugu_info("Network disconnected");
 
         for (auto listener : listeners) {
-            listener->onDisconnected();
+            listener->onStatusChanged(NetworkStatus::DISCONNECTED);
         }
     } else if (status == NUGU_NETWORK_CONNECTED) {
         nugu_info("Network connected");
 
         for (auto listener : listeners) {
-            listener->onConnected();
+            listener->onStatusChanged(NetworkStatus::CONNECTED);
+        }
+    } else if (status == NUGU_NETWORK_CONNECTING) {
+        nugu_info("Network connecting");
+
+        for (auto listener : listeners) {
+            listener->onStatusChanged(NetworkStatus::CONNECTING);
         }
     } else if (status == NUGU_NETWORK_TOKEN_ERROR) {
         nugu_error("Network token error");
@@ -50,11 +56,8 @@ static void _status(void* userdata)
         for (auto listener : listeners) {
             listener->onError(NetworkError::TOKEN_ERROR);
         }
-    } else if (status == NUGU_NETWORK_CONNECTING) {
-        nugu_info("Network connecting");
     } else {
         nugu_error("Network unknown error");
-
         for (auto listener : listeners) {
             listener->onError(NetworkError::UNKNOWN);
         }
