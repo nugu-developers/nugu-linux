@@ -31,9 +31,12 @@ namespace NuguInterface {
  * @{
  */
 
-/**
- * @brief NetworkError
- */
+enum class NetworkStatus {
+    DISCONNECTED, /**< Network disconnected */
+    CONNECTED, /**< Network connected */
+    CONNECTING /**< Connection in progress */
+};
+
 enum class NetworkError {
     TOKEN_ERROR, /**< Occurs when the issued token expires */
     UNKNOWN /**< UNKNOWN */
@@ -48,14 +51,9 @@ public:
     virtual ~INetworkManagerListener() = default;
 
     /**
-     * @brief Report a connection success to the NUGU server.
+     * @brief Report the connection status with the NUGU server.
      */
-    virtual void onConnected();
-
-    /**
-     * @brief Report a connection failure to the NUGU server.
-     */
-    virtual void onDisconnected();
+    virtual void onStatusChanged(NetworkStatus status);
 
     /**
      * @brief Report an error while communicating with the NUGU server.

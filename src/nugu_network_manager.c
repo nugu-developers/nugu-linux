@@ -55,9 +55,8 @@ static const char * const _debug_connection_step[] = {
 };
 
 static const char * const _debug_status_strmap[] = {
-	[NUGU_NETWORK_UNKNOWN] = "NUGU_NETWORK_UNKNOWN", /**< Unknown */
-	[NUGU_NETWORK_CONNECTING] = "NUGU_NETWORK_CONNECTING",
 	[NUGU_NETWORK_DISCONNECTED] = "NUGU_NETWORK_DISCONNECTED",
+	[NUGU_NETWORK_CONNECTING] = "NUGU_NETWORK_CONNECTING",
 	[NUGU_NETWORK_CONNECTED] = "NUGU_NETWORK_CONNECTED",
 	[NUGU_NETWORK_TOKEN_ERROR] = "NUGU_NETWORK_TOKEN_ERROR",
 };
@@ -241,6 +240,7 @@ static void _process_connecting(NetworkManager *nm,
 	switch (new_step) {
 	case STEP_INVALID_TOKEN:
 		_update_status(nm, NUGU_NETWORK_TOKEN_ERROR);
+		nugu_network_manager_disconnect();
 		break;
 
 	case STEP_REGISTRY_FAILED:
@@ -377,7 +377,7 @@ static NetworkManager *nugu_network_manager_new(void)
 	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_SERVER_CONNECTED, on_event,
 				NULL, nm);
 
-	nm->cur_status = NUGU_NETWORK_UNKNOWN;
+	nm->cur_status = NUGU_NETWORK_DISCONNECTED;
 	nm->step = STEP_IDLE;
 
 	return nm;
@@ -476,6 +476,8 @@ EXPORT_API int nugu_network_manager_disconnect(void)
 		dg_registry_free(_network->registry);
 		_network->registry = NULL;
 	}
+
+	_update_status(_network, NUGU_NETWORK_DISCONNECTED);
 
 	return 0;
 }

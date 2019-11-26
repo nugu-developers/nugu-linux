@@ -52,7 +52,7 @@ public:
     INetworkManager* getNetworkManager();
 
     // overriding INetworkManagerListener
-    void onConnected() override;
+    void onStatusChanged(NetworkStatus status) override;
 
 private:
     int createCapabilities(void);

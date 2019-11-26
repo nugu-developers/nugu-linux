@@ -235,8 +235,11 @@ void NuguClientImpl::deInitialize(void)
     initialized = false;
 }
 
-void NuguClientImpl::onConnected()
+void NuguClientImpl::onStatusChanged(NetworkStatus status)
 {
+    if (status != NetworkStatus::CONNECTED)
+        return;
+
     ISystemHandler* sys_handler = dynamic_cast<ISystemHandler*>(getCapabilityHandler(CapabilityType::System));
 
     if (sys_handler)

@@ -39,12 +39,21 @@ extern "C" {
 
 /**
  * @brief network status
+ *
+ * Basic connection status flow
+ *   - Normal connection: DISCONNECTED -> CONNECTING -> CONNECTED
+ *   - Connection failed: DISCONNECTED -> CONNECTING -> DISCONNECTED
+ *   - Token error: DISCONNECTED -> CONNECTING -> TOKEN_ERROR -> DISCONNECTED
+ *
+ * Connection recovery flow
+ *   - Connection recovered: CONNECTED -> CONNECTING -> CONNECTED
+ *   - Recovery failed: CONNECTED -> CONNECTING -> DISCONNECTED
+ *   - Token error: CONNECTED -> CONNECTING -> TOKEN_ERROR -> DISCONNECTED
  */
 enum nugu_network_status {
-	NUGU_NETWORK_UNKNOWN, /**< Initial state */
+	NUGU_NETWORK_DISCONNECTED, /**< Network disconnected */
 	NUGU_NETWORK_CONNECTING, /**< Connection in progress */
 	NUGU_NETWORK_CONNECTED, /**< Network connected */
-	NUGU_NETWORK_DISCONNECTED, /**< Network disconnected */
 	NUGU_NETWORK_TOKEN_ERROR /**< Token error */
 };
 
