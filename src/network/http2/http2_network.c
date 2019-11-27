@@ -223,10 +223,12 @@ static void *_loop(void *data)
 		cur = net->hlist;
 		while (cur) {
 			CURL *easy = cur->data;
+			char *url = NULL;
 
 			curl_easy_getinfo(easy, CURLINFO_PRIVATE, &fake_p);
+			curl_easy_getinfo(easy, CURLINFO_EFFECTIVE_URL, &url);
 
-			nugu_dbg("remove incomplete req=%p", easy, fake_p);
+			nugu_dbg("remove incomplete req=%p (%s)", fake_p, url);
 			http2_request_unref((HTTP2Request *)fake_p);
 			cur = cur->next;
 		}
