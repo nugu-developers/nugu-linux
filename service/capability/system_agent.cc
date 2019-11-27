@@ -36,6 +36,17 @@ SystemAgent::SystemAgent()
     , battery(0)
     , timer(nullptr)
 {
+    nugu_network_manager_set_handoff_status_callback(
+        [](NuguNetworkHandoffStatus status, void* userdata) {
+            if (status != NUGU_NETWORK_HANDOFF_SUCCESS)
+                return;
+
+            SystemAgent* sa = static_cast<SystemAgent*>(userdata);
+
+            nugu_info("handoff ok. send synchronizeState() event");
+            sa->synchronizeState();
+        },
+        this);
 }
 
 SystemAgent::~SystemAgent()
@@ -44,6 +55,8 @@ SystemAgent::~SystemAgent()
         nugu_timer_delete(timer);
         timer = nullptr;
     }
+
+    nugu_network_manager_set_handoff_status_callback(NULL, NULL);
 }
 
 void SystemAgent::parsingDirective(const char* dname, const char* message)
@@ -252,6 +265,8 @@ void SystemAgent::parsingHandoffConnection(const char* message)
         policy.address, policy.port, policy.protocol);
     nugu_dbg(" - retryCountLimit: %d, connectionTimeout: %d, charge: %d",
         policy.retry_count_limit, policy.connection_timeout_ms, policy.is_charge);
+
+    nugu_network_manager_handoff(&policy);
 }
 
 void SystemAgent::parsingTurnOff(const char* message)

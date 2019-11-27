@@ -22,12 +22,8 @@
 
 namespace NuguCore {
 
-static void _status(void* userdata)
+static void _status(NuguNetworkStatus status, void* userdata)
 {
-    NuguNetworkStatus status;
-
-    status = nugu_network_manager_get_status();
-
     NetworkManager* instance = static_cast<NetworkManager*>(userdata);
     auto listeners = instance->getListener();
 
@@ -67,12 +63,12 @@ static void _status(void* userdata)
 NetworkManager::NetworkManager()
 {
     nugu_network_manager_initialize();
-    nugu_network_manager_set_callback(_status, this);
+    nugu_network_manager_set_status_callback(_status, this);
 }
 
 NetworkManager::~NetworkManager()
 {
-    nugu_network_manager_set_callback(NULL, NULL);
+    nugu_network_manager_set_status_callback(NULL, NULL);
     nugu_network_manager_deinitialize();
 
     listeners.clear();
