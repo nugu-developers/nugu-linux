@@ -40,6 +40,7 @@ enum connection_step {
 	STEP_SERVER_CONNECTING,
 	STEP_SERVER_FAILED,
 	STEP_SERVER_CONNECTTED,
+	STEP_SERVER_HANDOFF,
 	STEP_MAX
 };
 
@@ -51,7 +52,8 @@ static const char * const _debug_connection_step[] = {
 	[STEP_REGISTRY_DONE] = "STEP_REGISTRY_DONE",
 	[STEP_SERVER_CONNECTING] = "STEP_SERVER_CONNECTING",
 	[STEP_SERVER_FAILED] = "STEP_SERVER_FAILED",
-	[STEP_SERVER_CONNECTTED] = "STEP_SERVER_CONNECTTED"
+	[STEP_SERVER_CONNECTTED] = "STEP_SERVER_CONNECTTED",
+	[STEP_SERVER_HANDOFF] = "STEP_SERVER_HANDOFF"
 };
 
 static const char * const _debug_status_strmap[] = {
@@ -73,10 +75,15 @@ struct _nugu_network {
 	/* Server */
 	DGServer *server;
 
+	/* Handoff */
+	DGServer *handoff;
+	NetworkManagerHandoffStatusCallback handoff_callback;
+	void *handoff_callback_userdata;
+
 	/* Status & Callback */
 	NuguNetworkStatus cur_status;
-	NetworkManagerCallback callback;
-	void *callback_userdata;
+	NetworkManagerStatusCallback status_callback;
+	void *status_callback_userdata;
 };
 
 typedef struct _nugu_network NetworkManager;
@@ -131,8 +138,9 @@ static void _update_status(NetworkManager *nm, NuguNetworkStatus new_status)
 
 	nm->cur_status = new_status;
 
-	if (nm->callback)
-		nm->callback(nm->callback_userdata);
+	if (nm->status_callback)
+		nm->status_callback(nm->cur_status,
+				    nm->status_callback_userdata);
 }
 
 static int _update_step(NetworkManager *nm, enum connection_step new_step)
@@ -152,53 +160,146 @@ static int _update_step(NetworkManager *nm, enum connection_step new_step)
 	return 0;
 }
 
+static int _start_registry(NetworkManager *nm)
+{
+	nugu_info("start registry");
+
+	nm->step = STEP_IDLE;
+	nm->registry = dg_registry_new();
+
+	if (dg_registry_request(nm->registry) < 0) {
+		dg_registry_free(nm->registry);
+		nm->registry = NULL;
+
+		_update_status(nm, NUGU_NETWORK_DISCONNECTED);
+		return -1;
+	};
+
+	_update_status(nm, NUGU_NETWORK_CONNECTING);
+	return 0;
+}
+
 static void _log_server_info(NetworkManager *nm, DGServer *server)
 {
-	int pos = 0;
+	int pos = -1;
 	int length = 0;
-	GList *cur;
 
-	cur = nm->server_list;
-	for (; cur; cur = cur->next, length++) {
-		if (cur == nm->serverinfo)
-			pos = length + 1;
+	if (server == nm->server) {
+		GList *cur;
+
+		cur = nm->server_list;
+		for (; cur; cur = cur->next, length++) {
+			if (cur == nm->serverinfo)
+				pos = length + 1;
+		}
 	}
 
-	if (dg_server_get_retry_count(server) == 0)
-		nugu_info("Try connect to [%d/%d] server", pos, length);
-	else {
-		nugu_info("Retry[%d/%d] connect to [%d/%d] server",
-			  dg_server_get_retry_count(server),
-			  dg_server_get_retry_count_limit(server), pos, length);
+	if (dg_server_get_retry_count(server) == 0) {
+		if (pos != -1)
+			nugu_info("Try connect to [%d/%d] server", pos, length);
+		else
+			nugu_info("Try connect to handoff server");
+	} else {
+		if (pos != -1)
+			nugu_info("Retry[%d/%d] connect to [%d/%d] server",
+				  dg_server_get_retry_count(server),
+				  dg_server_get_retry_count_limit(server), pos,
+				  length);
+		else
+			nugu_info("Retry[%d/%d] connect to handoff server",
+				  dg_server_get_retry_count(server),
+				  dg_server_get_retry_count_limit(server));
 	}
+}
+
+static void _try_connect_to_handoff(NetworkManager *nm)
+{
+	int success = 0;
+
+	if (!nm->handoff)
+		return;
+
+	/* Retry to connect to handoff server */
+	if (dg_server_is_retry_over(nm->handoff) == 0) {
+		dg_server_increse_retry_count(nm->handoff);
+		_log_server_info(nm, nm->handoff);
+
+		if (dg_server_connect_async(nm->handoff) == 0) {
+			nugu_dbg("request success");
+			success = 1;
+		} else {
+			nugu_error("Server is unavailable.");
+		}
+	} else {
+		nugu_error("retry count over");
+	}
+
+	if (success)
+		return;
+
+	dg_server_free(nm->handoff);
+	nm->handoff = NULL;
+
+	/* disconnect current server */
+	dg_server_free(nm->server);
+	nm->server = NULL;
+	nm->serverinfo = NULL;
+
+	if (nm->handoff_callback)
+		nm->handoff_callback(NUGU_NETWORK_HANDOFF_FAILED,
+				     nm->handoff_callback_userdata);
+
+	/* restart from registry */
+	_start_registry(nm);
 }
 
 static void _try_connect_to_servers(NetworkManager *nm)
 {
 	/* server already assigned. retry to connect */
 	if (nm->server) {
+		enum dg_server_type type;
+		int success = 0;
+
 		/* Retry to connect to current server */
 		if (dg_server_is_retry_over(nm->server) == 0) {
 			dg_server_increse_retry_count(nm->server);
 			_log_server_info(nm, nm->server);
 
-			if (dg_server_connect_async(nm->server) == 0)
-				return;
+			if (dg_server_connect_async(nm->server) == 0) {
+				nugu_dbg("request success");
+				success = 1;
+			} else {
+				nugu_error("Server is unavailable.");
+			}
 		} else {
 			nugu_error("retry count over");
 		}
+
+		if (success)
+			return;
+
+		type = dg_server_get_type(nm->server);
 
 		/* forgot current server */
 		nugu_dbg("forgot current server");
 		dg_server_free(nm->server);
 		nm->server = NULL;
+
+		/* if disconnected from handoff server, start from registry */
+		if (type == DG_SERVER_TYPE_HANDOFF) {
+			_start_registry(nm);
+			return;
+		}
 	}
 
 	/* Determine which server candidates to connect to */
-	if (nm->serverinfo == NULL)
+	if (nm->serverinfo == NULL) {
+		nugu_dbg("start with first server in the list");
 		nm->serverinfo = nm->server_list;
-	else
+	} else {
+		nugu_dbg("start with next server");
 		nm->serverinfo = nm->serverinfo->next;
+	}
 
 	for (; nm->serverinfo; nm->serverinfo = nm->serverinfo->next) {
 		nm->server = dg_server_new(nm->serverinfo->data);
@@ -264,11 +365,27 @@ static void _process_connecting(NetworkManager *nm,
 		break;
 
 	case STEP_SERVER_CONNECTING:
-		_update_status(nm, NUGU_NETWORK_CONNECTING);
-		_try_connect_to_servers(nm);
+		if (nm->handoff)
+			_try_connect_to_handoff(nm);
+		else {
+			_update_status(nm, NUGU_NETWORK_CONNECTING);
+			_try_connect_to_servers(nm);
+		}
 		break;
 
 	case STEP_SERVER_CONNECTTED:
+		if (nm->handoff) {
+			nugu_info("handoff success. replace the server");
+			dg_server_free(nm->server);
+			nm->serverinfo = NULL;
+			nm->server = nm->handoff;
+			nm->handoff = NULL;
+
+			if (nm->handoff_callback)
+				nm->handoff_callback(
+					NUGU_NETWORK_HANDOFF_SUCCESS,
+					nm->handoff_callback_userdata);
+		}
 		dg_server_start_health_check(nm->server, &(nm->policy));
 		dg_server_reset_retry_count(nm->server);
 		_update_status(nm, NUGU_NETWORK_CONNECTED);
@@ -279,7 +396,21 @@ static void _process_connecting(NetworkManager *nm,
 		_process_connecting(nm, STEP_SERVER_CONNECTING);
 		break;
 
+	case STEP_SERVER_HANDOFF:
+		/*
+		 * In case of handoff failure, it is necessary to start from
+		 * the registry instead of the next server in the existing
+		 * server list, so release all registry information.
+		 */
+		if (nm->server_list) {
+			g_list_free_full(nm->server_list, free);
+			nm->server_list = NULL;
+		}
+		nm->serverinfo = NULL;
+		break;
+
 	default:
+		nugu_warn("unhandled step: %d", new_step);
 		break;
 	}
 }
@@ -436,19 +567,7 @@ EXPORT_API int nugu_network_manager_connect(void)
 		return 0;
 	}
 
-	_network->step = STEP_IDLE;
-	_network->registry = dg_registry_new();
-
-	if (dg_registry_request(_network->registry) < 0) {
-		dg_registry_free(_network->registry);
-		_network->registry = NULL;
-		_update_status(_network, NUGU_NETWORK_DISCONNECTED);
-		return -1;
-	};
-
-	_update_status(_network, NUGU_NETWORK_CONNECTING);
-
-	return 0;
+	return _start_registry(_network);
 }
 
 EXPORT_API int nugu_network_manager_disconnect(void)
@@ -462,9 +581,16 @@ EXPORT_API int nugu_network_manager_disconnect(void)
 
 	nugu_info("disconnecting: current step is %d", _network->step);
 
+	_network->serverinfo = NULL;
+
 	if (_network->server) {
 		dg_server_free(_network->server);
 		_network->server = NULL;
+	}
+
+	if (_network->handoff) {
+		dg_server_free(_network->handoff);
+		_network->handoff = NULL;
 	}
 
 	if (_network->registry) {
@@ -478,14 +604,26 @@ EXPORT_API int nugu_network_manager_disconnect(void)
 }
 
 EXPORT_API int
-nugu_network_manager_set_callback(NetworkManagerCallback callback,
-				  void *userdata)
+nugu_network_manager_set_status_callback(NetworkManagerStatusCallback callback,
+					 void *userdata)
 {
 	if (!_network)
 		return -1;
 
-	_network->callback = callback;
-	_network->callback_userdata = userdata;
+	_network->status_callback = callback;
+	_network->status_callback_userdata = userdata;
+
+	return 0;
+}
+
+EXPORT_API int nugu_network_manager_set_handoff_status_callback(
+	NetworkManagerHandoffStatusCallback callback, void *userdata)
+{
+	if (!_network)
+		return -1;
+
+	_network->handoff_callback = callback;
+	_network->handoff_callback_userdata = userdata;
 
 	return 0;
 }
@@ -497,6 +635,8 @@ EXPORT_API NuguNetworkStatus nugu_network_manager_get_status(void)
 
 EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
 {
+	g_return_val_if_fail(nev != NULL, -1);
+
 	if (!_network) {
 		nugu_error("network manager not initialized");
 		return -1;
@@ -519,11 +659,53 @@ EXPORT_API int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
 						    size_t length,
 						    unsigned char *data)
 {
+	g_return_val_if_fail(nev != NULL, -1);
+
 	if (!_network) {
 		nugu_error("network manager not initialized");
 		return -1;
 	}
 
+	if (!_network->server) {
+		nugu_error("not connected");
+		return -1;
+	}
+
 	return dg_server_send_attachment(_network->server, nev, is_end, length,
 					 data);
+}
+
+EXPORT_API int
+nugu_network_manager_handoff(const NuguNetworkServerPolicy *policy)
+{
+	g_return_val_if_fail(policy != NULL, -1);
+
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return -1;
+	}
+
+	if (_network->handoff)
+		dg_server_free(_network->handoff);
+
+	_network->handoff = dg_server_new(policy);
+	if (!_network->handoff) {
+		nugu_error("dg_server_new() failed.");
+		return -1;
+	}
+
+	dg_server_set_type(_network->handoff, DG_SERVER_TYPE_HANDOFF);
+
+	_log_server_info(_network, _network->handoff);
+
+	if (dg_server_connect_async(_network->handoff) < 0) {
+		dg_server_free(_network->handoff);
+		_network->handoff = NULL;
+		nugu_error("Server is unavailable.");
+		return -1;
+	}
+
+	_update_step(_network, STEP_SERVER_HANDOFF);
+
+	return 0;
 }

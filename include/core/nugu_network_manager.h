@@ -63,6 +63,31 @@ enum nugu_network_status {
 typedef enum nugu_network_status NuguNetworkStatus;
 
 /**
+ * @brief Callback prototype for receiving network status events
+ */
+typedef void (*NetworkManagerStatusCallback)(NuguNetworkStatus status,
+					     void *userdata);
+
+/**
+ * @brief network handoff status
+ */
+enum nugu_network_handoff_status {
+	NUGU_NETWORK_HANDOFF_FAILED,
+	NUGU_NETWORK_HANDOFF_SUCCESS
+};
+
+/**
+ * @see enum nugu_network_status
+ */
+typedef enum nugu_network_handoff_status NuguNetworkHandoffStatus;
+
+/**
+ * @brief Callback prototype for handoff status events
+ */
+typedef void (*NetworkManagerHandoffStatusCallback)(
+	NuguNetworkHandoffStatus status, void *userdata);
+
+/**
  * @brief network protocols
  */
 enum nugu_network_protocol {
@@ -95,11 +120,6 @@ struct nugu_network_server_policy {
 typedef struct nugu_network_server_policy NuguNetworkServerPolicy;
 
 /**
- * @brief Callback prototype for receiving network status events
- */
-typedef void (*NetworkManagerCallback)(void *userdata);
-
-/**
  * @brief Set network status callback
  * @param[in] callback callback function
  * @param[in] userdata data to pass to the user callback
@@ -107,8 +127,19 @@ typedef void (*NetworkManagerCallback)(void *userdata);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_network_manager_set_callback(NetworkManagerCallback callback,
-				      void *userdata);
+int nugu_network_manager_set_status_callback(
+	NetworkManagerStatusCallback callback, void *userdata);
+
+/**
+ * @brief Set handoff status callback
+ * @param[in] callback callback function
+ * @param[in] userdata data to pass to the user callback
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_network_manager_set_handoff_status_callback(
+	NetworkManagerHandoffStatusCallback callback, void *userdata);
 
 /**
  * @brief Set the current network status
@@ -182,6 +213,24 @@ int nugu_network_manager_connect(void);
  * @see nugu_network_manager_connect()
  */
 int nugu_network_manager_disconnect(void);
+
+/**
+ * @brief Handoff the current connection to new server
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ *
+ * When a handoff request is received, the client tries to connect to another
+ * server while maintaining the current connection.
+ *
+ *   - If the handoff connection is successful, change the current connection
+ *     to the new server.
+ *   - If the handoff connection fails, disconnect all connections and start
+ *     over from the Registry step.
+ *   - If the handoff connection is lost, start again from the Registry step.
+ *
+ */
+int nugu_network_manager_handoff(const NuguNetworkServerPolicy *policy);
 
 /**
  * @}
