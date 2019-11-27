@@ -21,6 +21,7 @@
 extern "C" {
 #endif
 
+#include "nugu_network_manager.h"
 #include "dg_types.h"
 
 enum dg_server_type {
@@ -30,7 +31,7 @@ enum dg_server_type {
 
 typedef struct _dg_server DGServer;
 
-DGServer *dg_server_new(const struct dg_server_policy *policy);
+DGServer *dg_server_new(const NuguNetworkServerPolicy *policy);
 void dg_server_free(DGServer *server);
 
 int dg_server_set_type(DGServer *server, enum dg_server_type type);

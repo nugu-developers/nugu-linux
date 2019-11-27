@@ -172,30 +172,86 @@ void SystemAgent::parsingHandoffConnection(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
-    const char* protocol;
-    const char* domain;
-    const char* hostname;
-    const char* charge;
-    int port;
-    int retryCountLimit;
-    int connectionTimeout;
+    NuguNetworkServerPolicy policy;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
         return;
     }
 
-    protocol = root["protocol"].asCString();
-    domain = root["domain"].asCString();
-    hostname = root["hostname"].asCString();
-    charge = root["charge"].asCString();
-    port = root["port"].asInt();
-    retryCountLimit = root["retryCountLimit"].asInt();
-    connectionTimeout = root["connectionTimeout"].asInt();
+    memset(&policy, 0, sizeof(NuguNetworkServerPolicy));
 
-    nugu_dbg("%s:%d (%s:%d, protocol=%s)", domain, port, hostname, port, protocol);
-    nugu_dbg(" - retryCountLimit: %d, connectionTimeout: %d, charge: %s",
-        retryCountLimit, connectionTimeout, charge);
+    if (root["protocol"].isString()) {
+        const char* tmp = root["protocol"].asCString();
+        if (g_ascii_strcasecmp(tmp, "H2C") == 0)
+            policy.protocol = NUGU_NETWORK_PROTOCOL_H2C;
+        else if (g_ascii_strcasecmp(tmp, "H2") == 0)
+            policy.protocol = NUGU_NETWORK_PROTOCOL_H2;
+        else {
+            nugu_error("unknown protocol: '%s'", tmp);
+            policy.protocol = NUGU_NETWORK_PROTOCOL_UNKNOWN;
+        }
+    } else {
+        nugu_error("can't find 'protocol' string attribute");
+        return;
+    }
+
+    if (root["domain"].isString()) {
+        const char* tmp = root["domain"].asCString();
+        if (tmp) {
+            int len = strlen(tmp);
+            memcpy(policy.hostname, tmp, (len > NUGU_NETWORK_MAX_ADDRESS) ? NUGU_NETWORK_MAX_ADDRESS : len);
+        }
+    } else {
+        nugu_error("can't find 'domain' string attribute");
+        return;
+    }
+
+    if (root["hostname"].isString()) {
+        const char* tmp = root["hostname"].asCString();
+        if (tmp) {
+            int len = strlen(tmp);
+            memcpy(policy.address, tmp, (len > NUGU_NETWORK_MAX_ADDRESS) ? NUGU_NETWORK_MAX_ADDRESS : len);
+        }
+    } else {
+        nugu_error("can't find 'hostname' string attribute");
+        return;
+    }
+
+    if (root["port"].isNumeric()) {
+        policy.port = root["port"].asInt();
+    } else {
+        nugu_error("can't find 'port' number attribute");
+        return;
+    }
+
+    if (root["retryCountLimit"].isNumeric()) {
+        policy.retry_count_limit = root["retryCountLimit"].asInt();
+    } else {
+        nugu_error("can't find 'retryCountLimit' number attribute");
+        return;
+    }
+
+    if (root["connectionTimeout"].isNumeric()) {
+        policy.connection_timeout_ms = root["connectionTimeout"].asInt();
+    } else {
+        nugu_error("can't find 'connectionTimeout' number attribute");
+        return;
+    }
+
+    if (root["charge"].isString()) {
+        if (g_ascii_strcasecmp(root["charge"].asCString(), "FREE") == 0)
+            policy.is_charge = 0;
+        else
+            policy.is_charge = 1;
+    } else {
+        nugu_error("can't find 'charge' attribute");
+    }
+
+    nugu_dbg("%s:%d (%s:%d, protocol=%d)", policy.hostname, policy.port,
+        policy.address, policy.port, policy.protocol);
+    nugu_dbg(" - retryCountLimit: %d, connectionTimeout: %d, charge: %d",
+        policy.retry_count_limit, policy.connection_timeout_ms, policy.is_charge);
 }
 
 void SystemAgent::parsingTurnOff(const char* message)

@@ -21,24 +21,6 @@
 extern "C" {
 #endif
 
-#define MAX_ADDRESS 255
-
-enum dg_protocol {
-	DG_PROTOCOL_H2, /**< HTTP/2 with TLS */
-	DG_PROTOCOL_H2C, /**< HTTP/2 over clean TCP */
-	DG_PROTOCOL_UNKNOWN
-};
-
-struct dg_server_policy {
-	enum dg_protocol protocol;
-	char address[MAX_ADDRESS + 1];
-	char hostname[MAX_ADDRESS + 1];
-	int port;
-	int retry_count_limit;
-	int connection_timeout_ms;
-	int is_charge;
-};
-
 struct dg_health_check_policy {
 	int ttl_ms;
 	int ttl_max_ms;

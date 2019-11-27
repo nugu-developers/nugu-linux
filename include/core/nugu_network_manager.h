@@ -63,6 +63,38 @@ enum nugu_network_status {
 typedef enum nugu_network_status NuguNetworkStatus;
 
 /**
+ * @brief network protocols
+ */
+enum nugu_network_protocol {
+	NUGU_NETWORK_PROTOCOL_H2, /**< HTTP/2 with TLS */
+	NUGU_NETWORK_PROTOCOL_H2C, /**< HTTP/2 over clean TCP */
+	NUGU_NETWORK_PROTOCOL_UNKNOWN /**< Unknown protocol */
+};
+
+/**
+ * @brief maximum size of address
+ */
+#define NUGU_NETWORK_MAX_ADDRESS 255
+
+/**
+ * @brief Server policy information used for network connections
+ */
+struct nugu_network_server_policy {
+	enum nugu_network_protocol protocol; /**< protocol */
+	char address[NUGU_NETWORK_MAX_ADDRESS + 1]; /**< IP address */
+	char hostname[NUGU_NETWORK_MAX_ADDRESS + 1]; /**< dns name */
+	int port; /**< port number */
+	int retry_count_limit; /**< maximum number of connection retries */
+	int connection_timeout_ms; /**< timeout value used when connecting */
+	int is_charge; /**< 0: free, 1: normal */
+};
+
+/**
+ * @see struct nugu_network_server_policy
+ */
+typedef struct nugu_network_server_policy NuguNetworkServerPolicy;
+
+/**
  * @brief Callback prototype for receiving network status events
  */
 typedef void (*NetworkManagerCallback)(void *userdata);
