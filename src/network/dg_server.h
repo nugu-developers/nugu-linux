@@ -40,6 +40,12 @@ int dg_server_connect_async(DGServer *server);
 int dg_server_start_health_check(DGServer *server,
 				 const struct dg_health_check_policy *policy);
 
+unsigned int dg_server_get_retry_count(DGServer *server);
+unsigned int dg_server_get_retry_count_limit(DGServer *server);
+int dg_server_is_retry_over(DGServer *server);
+void dg_server_increse_retry_count(DGServer *server);
+void dg_server_reset_retry_count(DGServer *server);
+
 int dg_server_send_event(DGServer *server, NuguEvent *nev);
 int dg_server_send_attachment(DGServer *server, NuguEvent *nev, int is_end,
 			      size_t length, unsigned char *data);

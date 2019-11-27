@@ -36,6 +36,7 @@ struct _dg_server {
 	V1Directives *directives;
 	V1Ping *ping;
 
+	int retry_count;
 	gchar *host;
 	struct dg_server_policy policy;
 	enum dg_server_type type;
@@ -81,6 +82,7 @@ DGServer *dg_server_new(const struct dg_server_policy *policy)
 	memcpy(&(server->policy), policy, sizeof(struct dg_server_policy));
 	server->host = host;
 	server->type = DG_SERVER_TYPE_NORMAL;
+	server->retry_count = 0;
 
 	http2_network_set_token(server->net,
 				nugu_config_get(NUGU_CONFIG_KEY_TOKEN));
@@ -157,6 +159,44 @@ int dg_server_start_health_check(DGServer *server,
 	v1_ping_establish(server->ping, server->net);
 
 	return 0;
+}
+
+unsigned int dg_server_get_retry_count(DGServer *server)
+{
+	g_return_val_if_fail(server != NULL, -1);
+
+	return server->retry_count;
+}
+
+unsigned int dg_server_get_retry_count_limit(DGServer *server)
+{
+	g_return_val_if_fail(server != NULL, -1);
+
+	return server->policy.retry_count_limit;
+}
+
+int dg_server_is_retry_over(DGServer *server)
+{
+	g_return_val_if_fail(server != NULL, -1);
+
+	if (server->retry_count >= server->policy.retry_count_limit)
+		return 1;
+
+	return 0;
+}
+
+void dg_server_increse_retry_count(DGServer *server)
+{
+	g_return_if_fail(server != NULL);
+
+	server->retry_count++;
+}
+
+void dg_server_reset_retry_count(DGServer *server)
+{
+	g_return_if_fail(server != NULL);
+
+	server->retry_count = 0;
 }
 
 int dg_server_send_event(DGServer *server, NuguEvent *nev)

@@ -72,7 +72,6 @@ struct _nugu_network {
 
 	/* Server */
 	DGServer *server;
-	int retry_count;
 
 	/* Status & Callback */
 	NuguNetworkStatus cur_status;
@@ -153,7 +152,7 @@ static int _update_step(NetworkManager *nm, enum connection_step new_step)
 	return 0;
 }
 
-static void _log_server_info(NetworkManager *nm, int retry_count_limit)
+static void _log_server_info(NetworkManager *nm, DGServer *server)
 {
 	int pos = 0;
 	int length = 0;
@@ -165,11 +164,12 @@ static void _log_server_info(NetworkManager *nm, int retry_count_limit)
 			pos = length + 1;
 	}
 
-	if (nm->retry_count == 0)
+	if (dg_server_get_retry_count(server) == 0)
 		nugu_info("Try connect to [%d/%d] server", pos, length);
 	else {
 		nugu_info("Retry[%d/%d] connect to [%d/%d] server",
-			  nm->retry_count, retry_count_limit, pos, length);
+			  dg_server_get_retry_count(server),
+			  dg_server_get_retry_count_limit(server), pos, length);
 	}
 }
 
@@ -177,12 +177,10 @@ static void _try_connect_to_servers(NetworkManager *nm)
 {
 	/* server already assigned. retry to connect */
 	if (nm->server) {
-		const struct dg_server_policy *policy = nm->serverinfo->data;
-
 		/* Retry to connect to current server */
-		if (nm->retry_count < policy->retry_count_limit) {
-			nm->retry_count++;
-			_log_server_info(nm, policy->retry_count_limit);
+		if (dg_server_is_retry_over(nm->server) == 0) {
+			dg_server_increse_retry_count(nm->server);
+			_log_server_info(nm, nm->server);
 
 			if (dg_server_connect_async(nm->server) == 0)
 				return;
@@ -194,7 +192,6 @@ static void _try_connect_to_servers(NetworkManager *nm)
 		nugu_dbg("forgot current server");
 		dg_server_free(nm->server);
 		nm->server = NULL;
-		nm->retry_count = 0;
 	}
 
 	/* Determine which server candidates to connect to */
@@ -204,15 +201,13 @@ static void _try_connect_to_servers(NetworkManager *nm)
 		nm->serverinfo = nm->serverinfo->next;
 
 	for (; nm->serverinfo; nm->serverinfo = nm->serverinfo->next) {
-		_log_server_info(nm, 0);
-
-		nm->retry_count = 0;
-
 		nm->server = dg_server_new(nm->serverinfo->data);
 		if (!nm->server) {
 			nugu_error("dg_server_new() failed. try next server");
 			continue;
 		}
+
+		_log_server_info(nm, nm->server);
 
 		if (dg_server_connect_async(nm->server) < 0) {
 			dg_server_free(nm->server);
@@ -275,7 +270,7 @@ static void _process_connecting(NetworkManager *nm,
 
 	case STEP_SERVER_CONNECTTED:
 		dg_server_start_health_check(nm->server, &(nm->policy));
-		nm->retry_count = 0;
+		dg_server_reset_retry_count(nm->server);
 		_update_status(nm, NUGU_NETWORK_CONNECTED);
 		break;
 
