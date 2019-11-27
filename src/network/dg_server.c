@@ -38,6 +38,7 @@ struct _dg_server {
 
 	gchar *host;
 	struct dg_server_policy policy;
+	enum dg_server_type type;
 };
 
 DGServer *dg_server_new(const struct dg_server_policy *policy)
@@ -79,6 +80,7 @@ DGServer *dg_server_new(const struct dg_server_policy *policy)
 
 	memcpy(&(server->policy), policy, sizeof(struct dg_server_policy));
 	server->host = host;
+	server->type = DG_SERVER_TYPE_NORMAL;
 
 	http2_network_set_token(server->net,
 				nugu_config_get(NUGU_CONFIG_KEY_TOKEN));
@@ -104,6 +106,22 @@ void dg_server_free(DGServer *server)
 
 	memset(server, 0, sizeof(struct _dg_server));
 	free(server);
+}
+
+int dg_server_set_type(DGServer *server, enum dg_server_type type)
+{
+	g_return_val_if_fail(server != NULL, -1);
+
+	server->type = type;
+
+	return 0;
+}
+
+enum dg_server_type dg_server_get_type(DGServer *server)
+{
+	g_return_val_if_fail(server != NULL, DG_SERVER_TYPE_NORMAL);
+
+	return server->type;
 }
 
 int dg_server_connect_async(DGServer *server)
