@@ -38,11 +38,11 @@ struct _dg_server {
 
 	int retry_count;
 	gchar *host;
-	struct dg_server_policy policy;
+	NuguNetworkServerPolicy policy;
 	enum dg_server_type type;
 };
 
-DGServer *dg_server_new(const struct dg_server_policy *policy)
+DGServer *dg_server_new(const NuguNetworkServerPolicy *policy)
 {
 	struct _dg_server *server;
 	gchar *host;
@@ -50,11 +50,11 @@ DGServer *dg_server_new(const struct dg_server_policy *policy)
 	g_return_val_if_fail(policy != NULL, NULL);
 
 	switch (policy->protocol) {
-	case DG_PROTOCOL_H2:
+	case NUGU_NETWORK_PROTOCOL_H2:
 		host = g_strdup_printf("https://%s:%d", policy->hostname,
 				       policy->port);
 		break;
-	case DG_PROTOCOL_H2C:
+	case NUGU_NETWORK_PROTOCOL_H2C:
 		host = g_strdup_printf("http://%s:%d", policy->hostname,
 				       policy->port);
 		break;
@@ -79,7 +79,7 @@ DGServer *dg_server_new(const struct dg_server_policy *policy)
 		return NULL;
 	}
 
-	memcpy(&(server->policy), policy, sizeof(struct dg_server_policy));
+	memcpy(&(server->policy), policy, sizeof(NuguNetworkServerPolicy));
 	server->host = host;
 	server->type = DG_SERVER_TYPE_NORMAL;
 	server->retry_count = 0;

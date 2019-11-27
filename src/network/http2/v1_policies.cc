@@ -22,6 +22,7 @@
 #include "nugu_config.h"
 #include "nugu_equeue.h"
 #include "nugu_log.h"
+#include "nugu_network_manager.h"
 #include "json/json.h"
 
 #include "http2_request.h"
@@ -47,10 +48,10 @@ static void _parse_servers(const Json::Value& root)
     }
 
     for (Json::ArrayIndex i = 0; i < server_list.size(); ++i) {
-        struct dg_server_policy* server_item;
+        NuguNetworkServerPolicy* server_item;
         Json::Value server = server_list[i];
 
-        server_item = (struct dg_server_policy*)calloc(1, sizeof(struct dg_server_policy));
+        server_item = (NuguNetworkServerPolicy*)calloc(1, sizeof(NuguNetworkServerPolicy));
         if (!server_item) {
             error_nomem();
             break;
@@ -59,12 +60,12 @@ static void _parse_servers(const Json::Value& root)
         if (server["protocol"].isString()) {
             const char* tmp = server["protocol"].asCString();
             if (g_ascii_strcasecmp(tmp, "H2C") == 0)
-                server_item->protocol = DG_PROTOCOL_H2C;
+                server_item->protocol = NUGU_NETWORK_PROTOCOL_H2C;
             else if (g_ascii_strcasecmp(tmp, "H2") == 0)
-                server_item->protocol = DG_PROTOCOL_H2;
+                server_item->protocol = NUGU_NETWORK_PROTOCOL_H2;
             else {
                 nugu_error("unknown protocol: '%s' in item-%d", tmp, i);
-                server_item->protocol = DG_PROTOCOL_UNKNOWN;
+                server_item->protocol = NUGU_NETWORK_PROTOCOL_UNKNOWN;
             }
         } else {
             nugu_error("can't find 'protocol' string attribute in item-%d", i);
@@ -76,7 +77,7 @@ static void _parse_servers(const Json::Value& root)
             const char* tmp = server["hostname"].asCString();
             if (tmp) {
                 int len = strlen(tmp);
-                memcpy(server_item->hostname, tmp, (len > MAX_ADDRESS) ? MAX_ADDRESS : len);
+                memcpy(server_item->hostname, tmp, (len > NUGU_NETWORK_MAX_ADDRESS) ? NUGU_NETWORK_MAX_ADDRESS : len);
             }
         } else {
             nugu_error("can't find 'hostname' string attribute in item-%d", i);
@@ -88,7 +89,7 @@ static void _parse_servers(const Json::Value& root)
             const char* tmp = server["address"].asCString();
             if (tmp) {
                 int len = strlen(tmp);
-                memcpy(server_item->address, tmp, (len > MAX_ADDRESS) ? MAX_ADDRESS : len);
+                memcpy(server_item->address, tmp, (len > NUGU_NETWORK_MAX_ADDRESS) ? NUGU_NETWORK_MAX_ADDRESS : len);
             }
         } else {
             nugu_error("can't find 'address' string attribute in item-%d", i);
