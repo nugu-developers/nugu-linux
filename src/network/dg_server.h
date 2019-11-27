@@ -23,10 +23,18 @@ extern "C" {
 
 #include "dg_types.h"
 
+enum dg_server_type {
+	DG_SERVER_TYPE_NORMAL,
+	DG_SERVER_TYPE_HANDOFF,
+};
+
 typedef struct _dg_server DGServer;
 
 DGServer *dg_server_new(const struct dg_server_policy *policy);
 void dg_server_free(DGServer *server);
+
+int dg_server_set_type(DGServer *server, enum dg_server_type type);
+enum dg_server_type dg_server_get_type(DGServer *server);
 
 int dg_server_connect_async(DGServer *server);
 int dg_server_start_health_check(DGServer *server,
