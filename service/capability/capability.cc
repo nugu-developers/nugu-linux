@@ -51,7 +51,7 @@ bool CapabilityEvent::isUserAction(const std::string& name)
     if ((type == CapabilityType::ASR && name == "Recognize")
         || (type == CapabilityType::TTS && name == "SpeechPlay")
         || (type == CapabilityType::AudioPlayer
-               && (name.find("CommandIssued") != std::string::npos))
+            && (name.find("CommandIssued") != std::string::npos))
         || (type == CapabilityType::Text && name == "TextInput")
         || (type == CapabilityType::Display && name == "ElementSelected")
         || (type == CapabilityType::Permission && name == "RequestAccessCompleted"))
@@ -149,42 +149,7 @@ CapabilityType Capability::getType()
 
 std::string Capability::getTypeName(CapabilityType type)
 {
-    std::string _name;
-
-    switch (type) {
-    case CapabilityType::AudioPlayer:
-        _name = "AudioPlayer";
-        break;
-    case CapabilityType::Display:
-        _name = "Display";
-        break;
-    case CapabilityType::System:
-        _name = "System";
-        break;
-    case CapabilityType::TTS:
-        _name = "TTS";
-        break;
-    case CapabilityType::ASR:
-        _name = "ASR";
-        break;
-    case CapabilityType::Text:
-        _name = "Text";
-        break;
-    case CapabilityType::Extension:
-        _name = "Extension";
-        break;
-    case CapabilityType::Delegation:
-        _name = "Delegation";
-        break;
-    case CapabilityType::Permission:
-        _name = "Permission";
-        break;
-    case CapabilityType::Location:
-        _name = "Location";
-        break;
-    }
-
-    return _name;
+    return CAPABILITY_TYPE_MAP.at(type);
 }
 
 void Capability::setVersion(const std::string& ver)

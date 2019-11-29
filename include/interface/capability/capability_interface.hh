@@ -53,6 +53,19 @@ enum class CapabilityType {
     Location /**< the type of Location agent */
 };
 
+static const std::map<CapabilityType, std::string> CAPABILITY_TYPE_MAP {
+    { CapabilityType::AudioPlayer, "AudioPlayer" },
+    { CapabilityType::Display, "Display" },
+    { CapabilityType::System, "System" },
+    { CapabilityType::TTS, "TTS" },
+    { CapabilityType::ASR, "ASR" },
+    { CapabilityType::Text, "Text" },
+    { CapabilityType::Extension, "Extension" },
+    { CapabilityType::Delegation, "Delegation" },
+    { CapabilityType::Permission, "Permission" },
+    { CapabilityType::Location, "Location" }
+};
+
 /**
  * @brief capability handler interface
  * @see ICapabilityListener

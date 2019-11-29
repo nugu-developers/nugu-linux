@@ -17,6 +17,7 @@
 #ifndef __CAPABILITY_CREATOR_H__
 #define __CAPABILITY_CREATOR_H__
 
+#include <functional>
 #include <list>
 
 #include <interface/capability/capability_interface.hh>
@@ -30,10 +31,17 @@ using namespace NuguInterface;
 class CapabilityCreator {
 public:
     virtual ~CapabilityCreator() = default;
-    static const std::list<std::pair<CapabilityType, bool>> CAPABILITY_LIST;
-    static ICapabilityInterface* createCapability(CapabilityType ctype);
+
     static IWakeupHandler* createWakeupHandler();
     static INetworkManager* createNetworkManager();
+
+    struct Element {
+        CapabilityType type;
+        bool is_default;
+        std::function<ICapabilityInterface*()> creator;
+    };
+
+    static const std::list<Element> CAPABILITY_LIST;
 };
 
 } // NuguCore

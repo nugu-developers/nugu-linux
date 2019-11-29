@@ -23,9 +23,9 @@
 #include "capability_manager_helper.hh"
 #include "nugu_client_impl.hh"
 #include "nugu_config.h"
+#include "nugu_equeue.h"
 #include "nugu_log.h"
 #include "nugu_plugin.h"
-#include "nugu_equeue.h"
 
 namespace NuguClientKit {
 
@@ -136,38 +136,36 @@ int NuguClientImpl::createCapabilities(void)
 {
     /*
      * [description]
-     *  - CAPBILITY.first : CapabilityType
-     *  - CAPBILITY.second : whether agent is required
-     *  - icapability_map[CAPBILITY.first].first : ICapabilityInterface instance
-     *  - icapability_map[CAPBILITY.first].second : ICapabilityListener instance
+     *  - icapability_map[CAPBILITY.type].first : ICapabilityInterface instance
+     *  - icapability_map[CAPBILITY.type].second : ICapabilityListener instance
      */
     for (auto const& CAPBILITY : CapabilityCreator::CAPABILITY_LIST) {
         // if user didn't add and it's not a required agent, skip to create
-        if (icapability_map.find(CAPBILITY.first) == icapability_map.end() && !CAPBILITY.second)
+        if (icapability_map.find(CAPBILITY.type) == icapability_map.end() && !CAPBILITY.is_default)
             continue;
 
-        if (!icapability_map[CAPBILITY.first].first)
+        if (!icapability_map[CAPBILITY.type].first)
             try {
-                icapability_map[CAPBILITY.first].first = CapabilityCreator::createCapability(CAPBILITY.first);
+                icapability_map[CAPBILITY.type].first = CAPBILITY.creator();
             } catch (std::exception& exp) {
                 nugu_error(exp.what());
             }
 
-        if (icapability_map[CAPBILITY.first].first) {
+        if (icapability_map[CAPBILITY.type].first) {
             // add general observer
             if (listener)
-                icapability_map[CAPBILITY.first].first->registerObserver(listener);
+                icapability_map[CAPBILITY.type].first->registerObserver(listener);
 
             // set capability listener & handler each other
-            if (icapability_map[CAPBILITY.first].second) {
-                icapability_map[CAPBILITY.first].first->setCapabilityListener(icapability_map[CAPBILITY.first].second);
-                icapability_map[CAPBILITY.first].second->registerCapabilityHandler(dynamic_cast<ICapabilityHandler*>(icapability_map[CAPBILITY.first].first));
+            if (icapability_map[CAPBILITY.type].second) {
+                icapability_map[CAPBILITY.type].first->setCapabilityListener(icapability_map[CAPBILITY.type].second);
+                icapability_map[CAPBILITY.type].second->registerCapabilityHandler(dynamic_cast<ICapabilityHandler*>(icapability_map[CAPBILITY.type].first));
             }
 
-            std::string cname = icapability_map[CAPBILITY.first].first->getTypeName(CAPBILITY.first);
+            std::string cname = icapability_map[CAPBILITY.type].first->getTypeName(CAPBILITY.type);
 
             if (!cname.empty())
-                CapabilityManagerHelper::addCapability(cname, icapability_map[CAPBILITY.first].first);
+                CapabilityManagerHelper::addCapability(cname, icapability_map[CAPBILITY.type].first);
         }
     }
 
