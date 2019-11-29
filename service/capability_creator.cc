@@ -32,46 +32,29 @@
 
 namespace NuguCore {
 
-const std::list<std::pair<CapabilityType, bool>> CapabilityCreator::CAPABILITY_LIST {
-    std::make_pair(CapabilityType::ASR, true),
-    std::make_pair(CapabilityType::TTS, true),
-    std::make_pair(CapabilityType::AudioPlayer, true),
-    std::make_pair(CapabilityType::System, true),
-    std::make_pair(CapabilityType::Display, false),
-    std::make_pair(CapabilityType::Extension, false),
-    std::make_pair(CapabilityType::Text, false),
-    std::make_pair(CapabilityType::Delegation, false),
-    std::make_pair(CapabilityType::Permission, false),
-    std::make_pair(CapabilityType::Location, false),
-};
-
-ICapabilityInterface* CapabilityCreator::createCapability(CapabilityType ctype)
-{
-    switch (ctype) {
-    case CapabilityType::ASR:
-        return new ASRAgent();
-    case CapabilityType::TTS:
-        return new TTSAgent();
-    case CapabilityType::AudioPlayer:
-        return new AudioPlayerAgent();
-    case CapabilityType::System:
-        return new SystemAgent();
-    case CapabilityType::Display:
-        return new DisplayAgent();
-    case CapabilityType::Extension:
-        return new ExtensionAgent();
-    case CapabilityType::Text:
-        return new TextAgent();
-    case CapabilityType::Delegation:
-        return new DelegationAgent();
-    case CapabilityType::Permission:
-        return new PermissionAgent();
-    case CapabilityType::Location:
-        return new LocationAgent();
-    default:
-        return nullptr;
+// for restricting access to only this file
+namespace {
+    template <class T>
+    ICapabilityInterface* create()
+    {
+        return new T;
     }
 }
+
+using CapabilityElement = CapabilityCreator::Element;
+
+const std::list<CapabilityElement> CapabilityCreator::CAPABILITY_LIST {
+    CapabilityElement { CapabilityType::ASR, true, &create<ASRAgent> },
+    CapabilityElement { CapabilityType::TTS, true, &create<TTSAgent> },
+    CapabilityElement { CapabilityType::AudioPlayer, true, &create<AudioPlayerAgent> },
+    CapabilityElement { CapabilityType::System, true, &create<SystemAgent> },
+    CapabilityElement { CapabilityType::Display, false, &create<DisplayAgent> },
+    CapabilityElement { CapabilityType::Extension, false, &create<ExtensionAgent> },
+    CapabilityElement { CapabilityType::Text, false, &create<TextAgent> },
+    CapabilityElement { CapabilityType::Delegation, false, &create<DelegationAgent> },
+    CapabilityElement { CapabilityType::Permission, false, &create<PermissionAgent> },
+    CapabilityElement { CapabilityType::Location, false, &create<LocationAgent> }
+};
 
 IWakeupHandler* CapabilityCreator::createWakeupHandler()
 {
