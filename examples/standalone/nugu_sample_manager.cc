@@ -30,6 +30,7 @@ const std::string NuguSampleManager::C_RESET = "\033[0m";
 
 NuguSampleManager::Commander NuguSampleManager::commander = { false, 0, { nullptr, nullptr }, nullptr, nullptr };
 GMainLoop* NuguSampleManager::loop = nullptr;
+bool NuguSampleManager::is_show_prompt = true;
 
 void NuguSampleManager::error(const std::string& message)
 {
@@ -132,9 +133,10 @@ NuguSampleManager* NuguSampleManager::setSpeechOperator(SpeechOperator* speech_o
     return this;
 }
 
-void NuguSampleManager::handleNetworkResult(bool is_connected)
+void NuguSampleManager::handleNetworkResult(bool is_connected, bool is_show_cmd)
 {
     commander.is_connected = is_connected;
+    is_show_prompt = is_show_cmd;
 
     showPrompt();
 }
@@ -147,6 +149,9 @@ void NuguSampleManager::quit(int signal)
 
 void NuguSampleManager::showPrompt(void)
 {
+    if (!is_show_prompt)
+        return;
+
     if (commander.text_input)
         std::cout << C_WHITE
                   << "\nEnter Service > "
@@ -155,7 +160,7 @@ void NuguSampleManager::showPrompt(void)
         std::cout << C_YELLOW
                   << "=======================================================\n"
                   << C_RED
-                  << "NUGU SDK Command (" << (commander.is_connected ? "Connected" : "Dis_connected") << ")\n"
+                  << "NUGU SDK Command (" << (commander.is_connected ? "Connected" : "Disconnected") << ")\n"
                   << C_YELLOW
                   << "=======================================================\n"
                   << C_BLUE;
@@ -196,7 +201,7 @@ gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpoint
         return TRUE;
     }
 
-    // handle case when NuguClient is dis_connected
+    // handle case when NuguClient is disconnected
     if (!commander.is_connected) {
         if (g_strcmp0(keybuf, "q") != 0 && g_strcmp0(keybuf, "c") != 0 && g_strcmp0(keybuf, "d") != 0) {
             error("invalid input");

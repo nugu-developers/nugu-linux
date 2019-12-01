@@ -15,7 +15,6 @@
  */
 
 #include <interface/nugu_configuration.hh>
-#include <interface/wakeup_interface.hh>
 
 #include "audio_player_listener.hh"
 #include "delegation_listener.hh"
@@ -97,7 +96,7 @@ public:
             break;
         case NetworkStatus::CONNECTING:
             msg_info("Network connection in progress.");
-            nugu_sample_manager->handleNetworkResult(false);
+            nugu_sample_manager->handleNetworkResult(false, false);
             break;
         default:
             break;
@@ -135,7 +134,7 @@ void registerCapabilities()
         ->add(CapabilityType::Extension, extension_listener.get())
         ->add(CapabilityType::Delegation, delegation_listener.get())
         ->add(CapabilityType::Permission, permission_manager->getPermissionListener())
-        ->add(CapabilityType::Location, permission_manager->getPermissionListener())
+        ->add(CapabilityType::Location, permission_manager->getLocationListener())
         ->construct();
 }
 

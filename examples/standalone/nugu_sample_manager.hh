@@ -53,7 +53,7 @@ public:
     NuguSampleManager* setNetworkCallback(NetworkCallback callback);
     NuguSampleManager* setTextHandler(ITextHandler* text_handler);
     NuguSampleManager* setSpeechOperator(SpeechOperator* speech_operator);
-    void handleNetworkResult(bool is_connected);
+    void handleNetworkResult(bool is_connected, bool is_show_cmd = true);
 
 private:
     static void quit(int signal);
@@ -68,6 +68,7 @@ private:
     static const std::string C_RESET;
     static Commander commander;
     static GMainLoop* loop;
+    static bool is_show_prompt;
 
     GMainContext* context = nullptr;
     std::string model_path = "./";
