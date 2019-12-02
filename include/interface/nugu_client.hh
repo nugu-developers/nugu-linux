@@ -31,6 +31,7 @@
 #include <interface/capability/system_interface.hh>
 #include <interface/capability/text_interface.hh>
 #include <interface/capability/tts_interface.hh>
+#include <interface/media_player_interface.hh>
 #include <interface/network_manager_interface.hh>
 #include <interface/nugu_client_listener.hh>
 #include <interface/wakeup_interface.hh>
@@ -185,6 +186,12 @@ public:
      * @return INetworkManager if a feature agent has been created with the feature builder, otherwise NULL
      */
     INetworkManager* getNetworkManager();
+
+    /**
+     * @brief Get new media player object
+     * @return IMediaPlayer if media player is created, otherwise nullptr
+     */
+    IMediaPlayer* createMediaPlayer();
 
 private:
     std::unique_ptr<NuguClientImpl> impl;

@@ -306,7 +306,7 @@ struct nugu_player_driver_ops {
 	int (*seek)(void *device, NuguPlayer *player, int sec);
 
 	/**
-	 * @brief Called whtn volume is changed
+	 * @brief Called when volume is changed
 	 * @see nugu_player_set_volume()
 	 */
 	int (*set_volume)(void *device, NuguPlayer *player, int vol);

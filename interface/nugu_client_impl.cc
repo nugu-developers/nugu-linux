@@ -26,6 +26,7 @@
 #include "nugu_equeue.h"
 #include "nugu_log.h"
 #include "nugu_plugin.h"
+#include "media_player.hh"
 
 namespace NuguClientKit {
 
@@ -258,6 +259,15 @@ void NuguClientImpl::readEnviromentVariables()
         return;
 
     config_env_map[NuguConfig::Key::GATEWAY_REGISTRY_DNS] = registry_override;
+}
+
+IMediaPlayer* NuguClientImpl::createMediaPlayer()
+{
+    if (!initialized) {
+        nugu_info("NUGU media player could use after initialize");
+        return nullptr;
+    }
+    return new MediaPlayer();
 }
 
 } // NuguClientKit

@@ -44,6 +44,7 @@ public:
         , duration(0)
         , volume(vol)
         , mute(false)
+        , loop(false)
     {
         pthread_mutex_lock(&mtx);
 
@@ -67,6 +68,7 @@ public:
     int volume;
     bool mute;
     gint timeout;
+    bool loop;
 };
 std::map<MediaPlayer*, MediaPlayerPrivate*> MediaPlayerPrivate::mp_map;
 
@@ -141,6 +143,11 @@ MediaPlayer::MediaPlayer(int volume)
         case MEDIA_EVENT_END_OF_STREAM:
             // ignore STOP event after EOF
             d->state = MediaPlayerState::STOPPED;
+
+            if (d->loop) {
+                mplayer->play();
+                break;
+            }
 
             for (auto l : d->llist)
                 l->mediaEventReport(MediaPlayerEvent::PLAYING_MEDIA_FINISHED);
@@ -217,6 +224,7 @@ bool MediaPlayer::setSource(std::string url)
 
     // clear content's information
     d->position = d->duration = 0;
+    d->loop = false;
     d->state = MediaPlayerState::STOPPED;
 
     d->playurl = url;
@@ -386,6 +394,16 @@ bool MediaPlayer::setMute(bool mute)
         nugu_player_set_volume(d->player, d->volume);
 
     return true;
+}
+
+bool MediaPlayer::loop()
+{
+    return d->loop;
+}
+
+void MediaPlayer::setLoop(bool loop)
+{
+    d->loop = loop;
 }
 
 bool MediaPlayer::isPlaying()

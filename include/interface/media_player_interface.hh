@@ -161,11 +161,24 @@ public:
      * @return media content's current position
      */
     virtual int position() = 0;
+
     /**
      * @brief Set current position of the media content to the media player.
      * @param[in] position media content's position.
      */
     virtual bool setPosition(int position) = 0;
+
+    /**
+     * @brief Get loop information of the media content from the media player.
+     * @return media content's loop
+     */
+    virtual bool loop() = 0;
+
+    /**
+     * @brief Set loop of the media content to the media player.
+     * @param[in] loop media content's loop
+     */
+    virtual void setLoop(bool loop) = 0;
 
     /**
      * @brief Get duration information of the media content from the media player.

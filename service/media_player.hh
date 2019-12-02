@@ -53,6 +53,9 @@ public:
     bool mute() override;
     bool setMute(bool mute) override;
 
+    bool loop() override;
+    void setLoop(bool loop) override;
+
     bool isPlaying() override;
 
     MediaPlayerState state() override;
