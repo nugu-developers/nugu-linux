@@ -33,10 +33,14 @@ namespace NuguInterface {
  */
 
 /**
- * @brief ExtensionResult
+ * @brief SystemException
  */
-enum class SystemMessage {
-    ROUTE_ERROR_NOT_FOUND_PLAY /**< This message is sent from the server router if play is not found.  */
+enum class SystemException {
+    UNAUTHORIZED_REQUEST_EXCEPTION, /**< Occurs when the oauth token is invalid  */
+    PLAY_ROUTER_PROCESSING_EXCEPTION, /**< Occurs when play router cannot find play  */
+    ASR_RECOGNIZING_EXCEPTION, /**< Occurs when error is recognized in ASR  */
+    TTS_SPEAKING_EXCEPTION, /**< Occurs when error is speaking in TTS  */
+    INTERNAL_SERVICE_EXCEPTION /**< Occurs on Internal Error on Server  */
 };
 
 /**
@@ -55,10 +59,10 @@ public:
     virtual ~ISystemListener() = default;
 
     /**
-     * @brief Deliver the message received from the server to the user.
-     * @param[in] message server message
+     * @brief Deliver the exception received from the server to the user.
+     * @param[in] exception server exception
      */
-    virtual void onSystemMessageReport(SystemMessage message) = 0;
+    virtual void onException(SystemException exception) = 0;
 
     /**
      * @brief Received a device turn off request from the server.

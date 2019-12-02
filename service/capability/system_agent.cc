@@ -286,7 +286,6 @@ void SystemAgent::parsingException(const char* message)
     Json::Reader reader;
     std::string code;
     std::string description;
-    size_t pos_response;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -298,30 +297,25 @@ void SystemAgent::parsingException(const char* message)
 
     nugu_error("Exception: code='%s', description='%s'", code.c_str(), description.c_str());
 
-    /**
-     * FIXME: Force release ASR SPK resource on error case
-     */
-    pos_response = description.find("response:");
-    if (code == "PLAY_ROUTER_PROCESSING_EXCEPTION" && pos_response > 0) {
-        Json::Value resp_root;
-        std::string response = description.substr(pos_response + strlen("response:"));
+    SystemException exception = SystemException::INTERNAL_SERVICE_EXCEPTION;
+    if (code == "UNAUTHORIZED_REQUEST_EXCEPTION")
+        exception = SystemException::UNAUTHORIZED_REQUEST_EXCEPTION;
+    else if (code == "PLAY_ROUTER_PROCESSING_EXCEPTION")
+        exception = SystemException::PLAY_ROUTER_PROCESSING_EXCEPTION;
+    else if (code == "ASR_RECOGNIZING_EXCEPTION")
+        exception = SystemException::ASR_RECOGNIZING_EXCEPTION;
+    else if (code == "TTS_SPEAKING_EXCEPTION")
+        exception = SystemException::TTS_SPEAKING_EXCEPTION;
 
-        if (reader.parse(response, resp_root)) {
-            int state;
-
-            state = resp_root["state"].asInt();
-            if (state == 1003) {
-                nugu_info("Release ASR focus due to 'not found play' state");
-                CapabilityManager* cmanager = CapabilityManager::getInstance();
-                cmanager->releaseFocus("asr", NUGU_FOCUS_RESOURCE_SPK);
-                cmanager->releaseFocus("asr", NUGU_FOCUS_RESOURCE_MIC);
-
-                if (system_listener)
-                    system_listener->onSystemMessageReport(SystemMessage::ROUTE_ERROR_NOT_FOUND_PLAY);
-            }
-        }
+    if (exception == SystemException::PLAY_ROUTER_PROCESSING_EXCEPTION) {
+        nugu_info("Release ASR focus due to 'not found play' state");
+        CapabilityManager* cmanager = CapabilityManager::getInstance();
+        cmanager->releaseFocus("asr", NUGU_FOCUS_RESOURCE_SPK);
+        cmanager->releaseFocus("asr", NUGU_FOCUS_RESOURCE_MIC);
     }
-    notifyObservers(SYSTEM_INTERNAL_SERVICE_EXCEPTION, nullptr);
+
+    if (system_listener)
+        system_listener->onException(exception);
 }
 
 void SystemAgent::parsingNoDirectives(const char* message)
