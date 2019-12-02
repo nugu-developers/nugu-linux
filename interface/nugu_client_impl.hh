@@ -26,6 +26,7 @@
 #include <interface/capability/capability_interface.hh>
 #include <interface/network_manager_interface.hh>
 #include <interface/wakeup_interface.hh>
+#include <interface/media_player_interface.hh>
 
 #include "nugu_client_listener.hh"
 
@@ -50,6 +51,7 @@ public:
     ICapabilityHandler* getCapabilityHandler(const CapabilityType ctype);
     IWakeupHandler* getWakeupHandler();
     INetworkManager* getNetworkManager();
+    IMediaPlayer* createMediaPlayer();
 
     // overriding INetworkManagerListener
     void onStatusChanged(NetworkStatus status) override;

@@ -130,4 +130,9 @@ INetworkManager* NuguClient::getNetworkManager()
     return impl->getNetworkManager();
 }
 
+IMediaPlayer* NuguClient::createMediaPlayer()
+{
+    return impl->createMediaPlayer();
+}
+
 } // NuguClientKit
