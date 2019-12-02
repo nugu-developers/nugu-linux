@@ -35,7 +35,6 @@ namespace NuguInterface {
  * @brief CapabilitySignal
  */
 typedef enum {
-    SYSTEM_INTERNAL_SERVICE_EXCEPTION, /**< The server internal exception error */
     DIALOG_REQUEST_ID /**< Dialog request id generated when event is forwarded to server */
 } CapabilitySignal;
 

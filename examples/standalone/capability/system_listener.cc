@@ -17,16 +17,28 @@
 
 #include "system_listener.hh"
 
-void SystemListener::onSystemMessageReport(SystemMessage message)
+void SystemListener::onException(SystemException exception)
 {
     std::cout << "[SYSTEM] ";
 
-    switch (message) {
-    case SystemMessage::ROUTE_ERROR_NOT_FOUND_PLAY:
-        std::cout << "ROUTE_ERROR_NOT_FOUND_PLAY" << std::endl;
+    switch (exception) {
+    case SystemException::UNAUTHORIZED_REQUEST_EXCEPTION:
+        std::cout << "UNAUTHORIZED_REQUEST_EXCEPTION" << std::endl;
+        break;
+    case SystemException::PLAY_ROUTER_PROCESSING_EXCEPTION:
+        std::cout << "PLAY_ROUTER_PROCESSING_EXCEPTION" << std::endl;
+        break;
+    case SystemException::ASR_RECOGNIZING_EXCEPTION:
+        std::cout << "ASR_RECOGNIZING_EXCEPTION" << std::endl;
+        break;
+    case SystemException::TTS_SPEAKING_EXCEPTION:
+        std::cout << "TTS_SPEAKING_EXCEPTION" << std::endl;
+        break;
+    case SystemException::INTERNAL_SERVICE_EXCEPTION:
+        std::cout << "INTERNAL_SERVICE_EXCEPTION" << std::endl;
         break;
     default:
-        std::cout << "invalid message" << std::endl;
+        std::cout << "UNKNOWN_EXCEPTION" << std::endl;
         break;
     }
 }

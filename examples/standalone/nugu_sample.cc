@@ -69,10 +69,7 @@ public:
 
     void notify(std::string c_name, CapabilitySignal signal, void* data)
     {
-        switch (signal) {
-        case SYSTEM_INTERNAL_SERVICE_EXCEPTION:
-            nugu_error("[%s] server exception", c_name.c_str());
-            break;
+        switch(signal) {
         case DIALOG_REQUEST_ID:
             if (data)
                 nugu_info("DIALOG_REQUEST_ID = %s", data);

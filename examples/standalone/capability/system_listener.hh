@@ -27,7 +27,7 @@ class SystemListener : public ISystemListener {
 public:
     virtual ~SystemListener() = default;
 
-    void onSystemMessageReport(SystemMessage message) override;
+    void onException(SystemException exception) override;
     void onTurnOff(void) override;
     void onRevoke(RevokeReason reason) override;
 };
