@@ -67,30 +67,12 @@ static const std::map<CapabilityType, std::string> CAPABILITY_TYPE_MAP {
 };
 
 /**
- * @brief capability handler interface
- * @see ICapabilityListener
- */
-class ICapabilityHandler {
-public:
-    virtual ~ICapabilityHandler() = default;
-};
-
-/**
  * @brief capability listener interface
  * @see ICapabilityHandler
  */
 class ICapabilityListener {
 public:
     virtual ~ICapabilityListener() = default;
-
-    /**
-     * @brief Set the handler object
-     * @param[in] capa_handler capability object
-     */
-    virtual void registerCapabilityHandler(ICapabilityHandler* capa_handler);
-
-protected:
-    ICapabilityHandler* handler = nullptr;
 };
 
 /**

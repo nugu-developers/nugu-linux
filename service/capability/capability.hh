@@ -54,7 +54,7 @@ private:
     std::string dialog_id;
 };
 
-class Capability : public ICapabilityInterface {
+class Capability : virtual public ICapabilityInterface {
 public:
     Capability(CapabilityType type, const std::string& ver = "1.0");
     virtual ~Capability();

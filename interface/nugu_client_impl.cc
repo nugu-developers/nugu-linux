@@ -88,7 +88,7 @@ void NuguClientImpl::registerCapability(const CapabilityType ctype, std::pair<IC
     icapability_map[ctype] = capability;
 }
 
-ICapabilityHandler* NuguClientImpl::getCapabilityHandler(const CapabilityType ctype)
+ICapabilityInterface* NuguClientImpl::getCapabilityHandler(const CapabilityType ctype)
 {
     if (icapability_map.empty()) {
         nugu_error("No Capability exist");
@@ -96,7 +96,7 @@ ICapabilityHandler* NuguClientImpl::getCapabilityHandler(const CapabilityType ct
     }
 
     if (icapability_map.find(ctype) != icapability_map.end())
-        return dynamic_cast<ICapabilityHandler*>(icapability_map[ctype].first);
+        return icapability_map[ctype].first;
 
     return nullptr;
 }
@@ -158,10 +158,8 @@ int NuguClientImpl::createCapabilities(void)
                 icapability_map[CAPBILITY.type].first->registerObserver(listener);
 
             // set capability listener & handler each other
-            if (icapability_map[CAPBILITY.type].second) {
+            if (icapability_map[CAPBILITY.type].second)
                 icapability_map[CAPBILITY.type].first->setCapabilityListener(icapability_map[CAPBILITY.type].second);
-                icapability_map[CAPBILITY.type].second->registerCapabilityHandler(dynamic_cast<ICapabilityHandler*>(icapability_map[CAPBILITY.type].first));
-            }
 
             std::string cname = icapability_map[CAPBILITY.type].first->getTypeName(CAPBILITY.type);
 

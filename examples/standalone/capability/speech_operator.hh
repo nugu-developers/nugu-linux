@@ -36,13 +36,12 @@ public:
 
     IASRListener* getASRListener();
     void setWakeupHandler(IWakeupHandler* wakeup_handler);
+    void setASRHandler(IASRHandler* asr_handler);
     void startWakeup();
     void startListening();
     void stopListening();
 
 private:
-    bool existASRHandler();
-
     IWakeupHandler* wakeup_handler = nullptr;
     IASRHandler* asr_handler = nullptr;
 };

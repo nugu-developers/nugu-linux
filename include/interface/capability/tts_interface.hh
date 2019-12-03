@@ -68,7 +68,7 @@ public:
  * @brief tts handler interface
  * @see ITTSListener
  */
-class ITTSHandler : public ICapabilityHandler {
+class ITTSHandler : virtual public ICapabilityInterface {
 public:
     virtual ~ITTSHandler() = default;
 

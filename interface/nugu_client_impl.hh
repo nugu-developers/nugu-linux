@@ -48,7 +48,7 @@ public:
     bool initialize(void);
     void deInitialize(void);
 
-    ICapabilityHandler* getCapabilityHandler(const CapabilityType ctype);
+    ICapabilityInterface* getCapabilityHandler(const CapabilityType ctype);
     IWakeupHandler* getWakeupHandler();
     INetworkManager* getNetworkManager();
     IMediaPlayer* createMediaPlayer();
