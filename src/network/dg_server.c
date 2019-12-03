@@ -231,8 +231,6 @@ int dg_server_send_attachment(DGServer *server, NuguEvent *nev, int is_end,
 
 	g_return_val_if_fail(server != NULL, -1);
 	g_return_val_if_fail(nev != NULL, -1);
-	g_return_val_if_fail(data != NULL, -1);
-	g_return_val_if_fail(length > 0, -1);
 
 	ea = v1_event_attachment_new(server->host);
 	if (!ea)
@@ -240,7 +238,9 @@ int dg_server_send_attachment(DGServer *server, NuguEvent *nev, int is_end,
 
 	msg_id = nugu_uuid_generate_short();
 
-	v1_event_attachment_set_data(ea, data, length);
+	if (data != NULL && length > 0)
+		v1_event_attachment_set_data(ea, data, length);
+
 	v1_event_attachment_set_query(ea, nugu_event_peek_namespace(nev),
 				      nugu_event_peek_name(nev),
 				      nugu_event_peek_version(nev),
