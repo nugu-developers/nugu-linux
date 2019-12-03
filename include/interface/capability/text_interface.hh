@@ -79,7 +79,7 @@ public:
  * @brief text handler interface
  * @see ITextListener
  */
-class ITextHandler : public ICapabilityHandler {
+class ITextHandler : virtual public ICapabilityInterface {
 public:
     virtual ~ITextHandler() = default;
 

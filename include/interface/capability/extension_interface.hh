@@ -67,7 +67,7 @@ public:
  * @brief extension handler interface
  * @see IExtensionListener
  */
-class IExtensionHandler : public ICapabilityHandler {
+class IExtensionHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IExtensionHandler() = default;
 };

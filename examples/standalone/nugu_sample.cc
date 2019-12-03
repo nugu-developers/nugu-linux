@@ -172,6 +172,7 @@ int main(int argc, char** argv)
         msg_error("< It failed to initialize NUGU SDK. Please Check authorization.");
     } else {
         speech_operator->setWakeupHandler(nugu_client->getWakeupHandler());
+        speech_operator->setASRHandler(nugu_client->getASRHandler());
 
         nugu_sample_manager->setTextHandler(nugu_client->getTextHandler())
             ->setSpeechOperator(speech_operator.get())

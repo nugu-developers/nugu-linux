@@ -68,7 +68,7 @@ public:
  * @brief display handler interface
  * @see IDisplayListener
  */
-class IDisplayHandler : public ICapabilityHandler {
+class IDisplayHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IDisplayHandler() = default;
 

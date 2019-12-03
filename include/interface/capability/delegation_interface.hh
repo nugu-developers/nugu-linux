@@ -63,7 +63,7 @@ public:
  * @brief delegation handler interface
  * @see IDelegationListener
  */
-class IDelegationHandler : public ICapabilityHandler {
+class IDelegationHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IDelegationHandler() = default;
 

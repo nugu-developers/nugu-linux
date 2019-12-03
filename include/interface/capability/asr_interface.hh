@@ -106,7 +106,7 @@ public:
  * @brief ASR handler interface
  * @see IASRListener
  */
-class IASRHandler : public ICapabilityHandler {
+class IASRHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IASRHandler() = default;
 

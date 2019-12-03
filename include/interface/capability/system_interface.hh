@@ -76,7 +76,7 @@ public:
  * @brief system handler interface
  * @see ISystemListener
  */
-class ISystemHandler : public ICapabilityHandler {
+class ISystemHandler : virtual public ICapabilityInterface {
 public:
     virtual ~ISystemHandler() = default;
 
