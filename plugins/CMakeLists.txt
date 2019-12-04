@@ -22,7 +22,7 @@ INSTALL(TARGETS opus LIBRARY DESTINATION ${plugindir})
 ADD_DEPENDENCIES(opus libnugu)
 
 # portaudio plugin
-pkg_check_modules(portaudio REQUIRED portaudio-2.0)
+pkg_check_modules(portaudio REQUIRED portaudio-2.0 alsa)
 ADD_LIBRARY(portaudio SHARED portaudio.c)
 TARGET_COMPILE_OPTIONS(portaudio PRIVATE ${portaudio_CFLAGS})
 TARGET_LINK_LIBRARIES(portaudio ${pkgs_LDFLAGS} ${portaudio_LDFLAGS}

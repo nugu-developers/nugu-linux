@@ -74,7 +74,7 @@ ADD_COMPILE_OPTIONS(
 	-Wno-missing-field-initializers
 	-Wno-unused-parameter)
 
-IF (${CMAKE_BUILD_TYPE} STREQUAL "Debug" AND ${CMAKE_LIBRARY_ARCHITECTURE} MATCHES "x86")
+IF ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" AND "${CMAKE_LIBRARY_ARCHITECTURE}" MATCHES "x86")
 	MESSAGE("Enable AddressSanitizer")
 	# Apply AddressSanitizer
 	# - https://github.com/google/sanitizers/wiki/AddressSanitizer
