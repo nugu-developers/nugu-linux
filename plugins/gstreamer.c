@@ -333,14 +333,49 @@ void *_create(NuguPlayer *player)
 	g_snprintf(pipeline, 128, "pipeline#%d", _uniq_id);
 
 	gh = (GstreamerHandle *)g_malloc0(sizeof(GstreamerHandle));
+	if (!gh) {
+		error_nomem();
+		return NULL;
+	}
+
 	gh->pipeline = gst_pipeline_new(pipeline);
+	if (!gh->pipeline) {
+		nugu_error("create pipeline failed");
+		goto error_out;
+	}
+
 	gh->audio_src = gst_element_factory_make("uridecodebin", audio_source);
+	if (!gh->audio_src) {
+		nugu_error("create gst_element for 'uridecodebin' failed");
+		goto error_out;
+	}
+
 	gh->audio_convert =
 		gst_element_factory_make("audioconvert", audio_convert);
+	if (!gh->audio_convert) {
+		nugu_error("create gst_element for 'audioconvert' failed");
+		goto error_out;
+	}
+
 	gh->audio_sink = gst_element_factory_make("autoaudiosink", audio_sink);
+	if (!gh->audio_sink) {
+		nugu_error("create gst_element for 'autoaudiosink' failed");
+		goto error_out;
+	}
+
 	gh->volume = gst_element_factory_make("volume", volume);
+	if (!gh->volume) {
+		nugu_error("create gst_element for 'volume' failed");
+		goto error_out;
+	}
+
 	gh->discoverer =
 		gst_discoverer_new(NUGU_SET_LOADING_TIMEOUT * GST_SECOND, &err);
+	if (!gh->discoverer) {
+		nugu_error("create gst_discoverer failed");
+		goto error_out;
+	}
+
 	gh->is_live = FALSE;
 	gh->seekable = FALSE;
 	gh->seek_done = FALSE;
@@ -350,13 +385,6 @@ void *_create(NuguPlayer *player)
 	gh->status = MEDIA_STATUS_STOPPED;
 	gh->player = player;
 
-	if (!gh->pipeline || !gh->audio_src || !gh->audio_convert ||
-	    !gh->audio_sink || !gh->volume || !gh->discoverer) {
-		nugu_error("create gst elements failed");
-		memset(gh, 0, sizeof(GstreamerHandle));
-		g_free(gh);
-		return NULL;
-	}
 	gst_bin_add_many(GST_BIN(gh->pipeline), gh->audio_src,
 			 gh->audio_convert, gh->volume, gh->audio_sink, NULL);
 	gst_element_link_many(gh->audio_convert, gh->volume, gh->audio_sink,
@@ -373,6 +401,28 @@ void *_create(NuguPlayer *player)
 
 	_uniq_id++;
 	return gh;
+
+error_out:
+	if (!gh)
+		return NULL;
+
+	if (gh->audio_src)
+		g_object_unref(gh->audio_src);
+	if (gh->audio_convert)
+		g_object_unref(gh->audio_convert);
+	if (gh->audio_sink)
+		g_object_unref(gh->audio_sink);
+	if (gh->volume)
+		g_object_unref(gh->volume);
+
+	if (gh->discoverer)
+		g_object_unref(gh->discoverer);
+	if (gh->pipeline)
+		g_object_unref(gh->pipeline);
+
+	memset(gh, 0, sizeof(GstreamerHandle));
+	g_free(gh);
+	return NULL;
 }
 
 void _destroy(void *device, NuguPlayer *player)

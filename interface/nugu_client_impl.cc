@@ -190,7 +190,10 @@ bool NuguClientImpl::initialize(void)
 
     // initialize capability
     for (auto const& icapability : icapability_map) {
+        std::string cname = icapability.second.first->getTypeName(icapability.second.first->getType());
+        nugu_dbg("'%s' capability initializing...", cname.c_str());
         icapability.second.first->initialize();
+        nugu_dbg("'%s' capability initialized", cname.c_str());
     }
 
     if (listener)
