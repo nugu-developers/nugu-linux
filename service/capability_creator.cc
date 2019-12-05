@@ -23,7 +23,6 @@
 #include "extension_agent.hh"
 #include "location_agent.hh"
 #include "network_manager.hh"
-#include "permission_agent.hh"
 #include "speech_recognizer.hh"
 #include "system_agent.hh"
 #include "text_agent.hh"
@@ -52,7 +51,6 @@ const std::list<CapabilityElement> CapabilityCreator::CAPABILITY_LIST {
     CapabilityElement { CapabilityType::Extension, false, &create<ExtensionAgent> },
     CapabilityElement { CapabilityType::Text, false, &create<TextAgent> },
     CapabilityElement { CapabilityType::Delegation, false, &create<DelegationAgent> },
-    CapabilityElement { CapabilityType::Permission, false, &create<PermissionAgent> },
     CapabilityElement { CapabilityType::Location, false, &create<LocationAgent> }
 };
 

@@ -53,8 +53,7 @@ bool CapabilityEvent::isUserAction(const std::string& name)
         || (type == CapabilityType::AudioPlayer
             && (name.find("CommandIssued") != std::string::npos))
         || (type == CapabilityType::Text && name == "TextInput")
-        || (type == CapabilityType::Display && name == "ElementSelected")
-        || (type == CapabilityType::Permission && name == "RequestAccessCompleted"))
+        || (type == CapabilityType::Display && name == "ElementSelected"))
         return true;
     else
         return false;
