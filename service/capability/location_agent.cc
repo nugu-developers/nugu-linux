@@ -39,26 +39,16 @@ void LocationAgent::setCapabilityListener(ICapabilityListener* clistener)
 void LocationAgent::updateInfoForContext(Json::Value& ctx)
 {
     Json::Value location;
-    LocationInfo location_info { Location::State::UNAVAILABLE, false, "", "" };
-    std::string state = Location::StateMap.at(location_info.state);
+    LocationInfo location_info { "", "" };
 
     location["version"] = getVersion();
 
     if (location_listener) {
         location_listener->requestContext(location_info);
-
-        try {
-            state = Location::StateMap.at(location_info.state);
-        } catch (std::out_of_range& exception) {
-            nugu_warn("Such location state is not exist.");
-        }
     }
 
-    location["state"] = state;
-
-    // set current if required conditions are satisfied
-    if (location_info.state == Location::State::AVAILABLE && location_info.permission_granted
-        && !location_info.latitude.empty() && !location_info.longitude.empty()) {
+    // set current if latitude and longitude conditions are satisfied
+    if (!location_info.latitude.empty() && !location_info.longitude.empty()) {
         Json::Value current;
 
         current["latitude"] = location_info.latitude;

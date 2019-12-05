@@ -35,28 +35,7 @@ namespace NuguInterface {
  * @{
  */
 
-namespace Location {
-    /**
-    * @brief Location State
-    */
-    enum class State {
-        AVAILABLE, /**< possible to use location information */
-        UNAVAILABLE, /**< impossible to use location information */
-        TIMEOUT, /**< fail to get location information after some time */
-        UNKNOWN /**< fail to get location information by extra reason */
-    };
-
-    const std::map<State, std::string> StateMap {
-        { State::AVAILABLE, "AVAILABLE" },
-        { State::UNAVAILABLE, "UNAVAILABLE" },
-        { State::TIMEOUT, "TIMEOUT" },
-        { State::UNKNOWN, "UNKNOWN" }
-    };
-}
-
 typedef struct {
-    Location::State state;
-    bool permission_granted;
     std::string latitude;
     std::string longitude;
 } LocationInfo;

@@ -20,10 +20,10 @@
 #include "delegation_listener.hh"
 #include "display_listener.hh"
 #include "extension_listener.hh"
+#include "location_listener.hh"
 #include "nugu_client.hh"
 #include "nugu_log.h"
 #include "nugu_sample_manager.hh"
-#include "permission_manager.hh"
 #include "speech_operator.hh"
 #include "system_listener.hh"
 #include "text_listener.hh"
@@ -49,7 +49,7 @@ auto system_listener(make_unique<SystemListener>());
 auto text_listener(make_unique<TextListener>());
 auto extension_listener(make_unique<ExtensionListener>());
 auto delegation_listener(make_unique<DelegationListener>());
-auto permission_manager(make_unique<PermissionManager>());
+auto location_listener(make_unique<LocationListener>());
 
 void msg_error(const std::string& message)
 {
@@ -69,7 +69,7 @@ public:
 
     void notify(std::string c_name, CapabilitySignal signal, void* data)
     {
-        switch(signal) {
+        switch (signal) {
         case DIALOG_REQUEST_ID:
             if (data)
                 nugu_info("DIALOG_REQUEST_ID = %s", data);
@@ -130,8 +130,7 @@ void registerCapabilities()
         ->add(CapabilityType::Text, text_listener.get())
         ->add(CapabilityType::Extension, extension_listener.get())
         ->add(CapabilityType::Delegation, delegation_listener.get())
-        ->add(CapabilityType::Permission, permission_manager->getPermissionListener())
-        ->add(CapabilityType::Location, permission_manager->getLocationListener())
+        ->add(CapabilityType::Location, location_listener.get())
         ->construct();
 }
 
