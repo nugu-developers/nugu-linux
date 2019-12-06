@@ -16,6 +16,7 @@
 
 #include <glib.h>
 #include <list>
+#include <algorithm>
 #include <map>
 #include <stdlib.h>
 #include <string.h>
@@ -58,7 +59,7 @@ public:
 
 public:
     static std::map<MediaPlayer*, MediaPlayerPrivate*> mp_map;
-    std::list<IMediaPlayerListener*> llist;
+    std::list<IMediaPlayerListener*> listeners;
     MediaPlayerState state;
     std::string playurl;
     std::string player_name;
@@ -121,15 +122,15 @@ MediaPlayer::MediaPlayer(int volume)
 
         switch (event) {
         case MEDIA_EVENT_MEDIA_SOURCE_CHANGED:
-            for (auto l : d->llist)
+            for (auto l : d->listeners)
                 l->mediaChanged(mplayer->url());
             break;
         case MEDIA_EVENT_MEDIA_INVALID:
-            for (auto l : d->llist)
+            for (auto l : d->listeners)
                 l->mediaEventReport(MediaPlayerEvent::INVALID_MEDIA_URL);
             break;
         case MEDIA_EVENT_MEDIA_LOAD_FAILED:
-            for (auto l : d->llist)
+            for (auto l : d->listeners)
                 l->mediaEventReport(MediaPlayerEvent::LOADING_MEDIA_FAILED);
             break;
         case MEDIA_EVENT_MEDIA_LOADED: {
@@ -137,7 +138,7 @@ MediaPlayer::MediaPlayer(int volume)
             if (duration > 0)
                 mplayer->setDuration(duration);
 
-            for (auto l : d->llist)
+            for (auto l : d->listeners)
                 l->mediaEventReport(MediaPlayerEvent::LOADING_MEDIA_SUCCESS);
         } break;
         case MEDIA_EVENT_END_OF_STREAM:
@@ -149,7 +150,7 @@ MediaPlayer::MediaPlayer(int volume)
                 break;
             }
 
-            for (auto l : d->llist)
+            for (auto l : d->listeners)
                 l->mediaEventReport(MediaPlayerEvent::PLAYING_MEDIA_FINISHED);
             break;
         default:
@@ -182,7 +183,7 @@ MediaPlayer::MediaPlayer(int volume)
 
 MediaPlayer::~MediaPlayer()
 {
-    d->llist.clear();
+    d->listeners.clear();
 
     if (d->player) {
         nugu_player_remove(d->player);
@@ -201,16 +202,14 @@ MediaPlayer::~MediaPlayer()
 
 void MediaPlayer::addListener(IMediaPlayerListener* listener)
 {
-    g_return_if_fail(listener != NULL);
-
-    d->llist.push_back(listener);
+    auto iter = std::find(d->listeners.begin(), d->listeners.end(), listener);
+    if (iter == d->listeners.end())
+        d->listeners.push_back(listener);
 }
 
 void MediaPlayer::removeListener(IMediaPlayerListener* listener)
 {
-    g_return_if_fail(listener != NULL);
-
-    d->llist.remove(listener);
+    d->listeners.remove(listener);
 }
 
 bool MediaPlayer::setSource(std::string url)
@@ -311,7 +310,7 @@ bool MediaPlayer::setPosition(int position)
         return true;
     }
     d->position = position;
-    for (auto l : d->llist)
+    for (auto l : d->listeners)
         l->positionChanged(d->position);
     return true;
 }
@@ -333,7 +332,7 @@ bool MediaPlayer::setDuration(int duration)
         return true;
     }
     d->duration = duration;
-    for (auto l : d->llist)
+    for (auto l : d->listeners)
         l->durationChanged(d->duration);
     return true;
 }
@@ -368,7 +367,7 @@ bool MediaPlayer::setVolume(int volume)
         nugu_player_set_volume(d->player, d->volume);
 
     if (prev_volume != d->volume)
-        for (auto l : d->llist)
+        for (auto l : d->listeners)
             l->volumeChanged(d->volume);
 
     return true;
@@ -385,7 +384,7 @@ bool MediaPlayer::setMute(bool mute)
         return true;
 
     d->mute = mute;
-    for (auto l : d->llist)
+    for (auto l : d->listeners)
         l->muteChanged(d->mute);
 
     if (d->mute)
@@ -426,7 +425,7 @@ bool MediaPlayer::setState(MediaPlayerState state)
     }
 
     d->state = state;
-    for (auto l : d->llist)
+    for (auto l : d->listeners)
         l->mediaStateChanged(d->state);
     return true;
 }
