@@ -56,12 +56,7 @@ struct _http2_request {
 static int _debug_callback(CURL *handle, curl_infotype type, char *data,
 			   size_t size, void *userptr)
 {
-	enum nugu_log_prefix back;
 	int flag = 0;
-
-	back = nugu_log_get_prefix_fields();
-	nugu_log_set_prefix_fields((enum nugu_log_prefix)(
-		back & ~(NUGU_LOG_PREFIX_FILENAME | NUGU_LOG_PREFIX_LINE)));
 
 	if (size > 0 && data[size - 1] == '\n') {
 		data[size - 1] = '\0';
@@ -70,21 +65,28 @@ static int _debug_callback(CURL *handle, curl_infotype type, char *data,
 
 	switch (type) {
 	case CURLINFO_TEXT:
-		nugu_dbg("[CURL] %s", data);
+		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
+			       NULL, NULL, -1, "[CURL] %s", data);
 		break;
 	case CURLINFO_HEADER_OUT:
-		nugu_dbg("[CURL] Send header: %s", data);
+		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
+			       NULL, NULL, -1, "[CURL] Send header: %s", data);
 		break;
 	case CURLINFO_DATA_OUT:
-		nugu_dbg("[CURL] Send data: %d bytes", size);
+		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
+			       NULL, NULL, -1, "[CURL] Send data: %d bytes",
+			       size);
 		break;
 	case CURLINFO_SSL_DATA_OUT:
 		break;
 	case CURLINFO_HEADER_IN:
-		nugu_dbg("[CURL] Recv header: %s", data);
+		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
+			       NULL, NULL, -1, "[CURL] Recv header: %s", data);
 		break;
 	case CURLINFO_DATA_IN:
-		nugu_dbg("[CURL] Recv data: %d bytes", size);
+		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
+			       NULL, NULL, -1, "[CURL] Recv data: %d bytes",
+			       size);
 		break;
 	case CURLINFO_SSL_DATA_IN:
 		break;
@@ -94,8 +96,6 @@ static int _debug_callback(CURL *handle, curl_infotype type, char *data,
 
 	if (flag)
 		data[size - 1] = '\n';
-
-	nugu_log_set_prefix_fields(back);
 
 	return 0;
 }
@@ -116,23 +116,18 @@ static size_t _request_body_cb(char *buffer, size_t size, size_t nitems,
 		return 0;
 
 	memcpy(buffer, nugu_buffer_peek(req->send_body), length);
-	if ((nugu_log_get_modules() & NUGU_LOG_MODULE_NETWORK_TRACE) != 0) {
-		enum nugu_log_prefix back;
+	if (req->type == HTTP2_REQUEST_CONTENT_TYPE_JSON) {
+		if (length < size * nitems)
+			buffer[length] = '\0';
 
-		back = nugu_log_get_prefix_fields();
-		nugu_log_set_prefix_fields(back & ~(NUGU_LOG_PREFIX_FILENAME |
-						    NUGU_LOG_PREFIX_LINE));
-
-		if (req->type == HTTP2_REQUEST_CONTENT_TYPE_JSON) {
-			if (length < size * nitems)
-				buffer[length] = '\0';
-			nugu_info("--> Sent req(%p) %d bytes (json)\n%s", req,
-				  length, buffer);
-		} else {
-			nugu_info("--> Sent req(%p) %d bytes", req, length);
-		}
-
-		nugu_log_set_prefix_fields(back);
+		nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE,
+			       NUGU_LOG_LEVEL_INFO, NULL, NULL, -1,
+			       "--> Sent req(%p) %d bytes (json)\n%s", req,
+			       length, buffer);
+	} else {
+		nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE,
+			       NUGU_LOG_LEVEL_INFO, NULL, NULL, -1,
+			       "--> Sent req(%p) %d bytes", req, length);
 	}
 
 	nugu_buffer_shift_left(req->send_body, length);

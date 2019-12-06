@@ -70,7 +70,8 @@ static void on_parsing_header(MultipartParser* parser, const char* data, size_t 
     std::string value;
     bool found = false;
 
-    nugu_dbg("body header: %s", data);
+    nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE, NUGU_LOG_LEVEL_INFO, NULL, NULL, -1,
+        "body header: %s", data);
 
     for (pos = data; pos < end; pos++) {
         switch (status) {
@@ -107,7 +108,7 @@ static void on_parsing_header(MultipartParser* parser, const char* data, size_t 
                     dir->ctype = CONTENT_TYPE_OPUS;
                 } else {
                     dir->ctype = CONTENT_TYPE_UNKNOWN;
-                    nugu_error("unknown");
+                    nugu_error("unknown Content-Type");
                 }
             } else if (key.compare("Content-Length") == 0) {
                 sscanf(value.c_str(), "%zu", &dir->body_size);
@@ -162,16 +163,8 @@ static void _body_json(const char* data, size_t length)
     }
     group.append("] }");
 
-    if ((nugu_log_get_modules() & NUGU_LOG_MODULE_NETWORK_TRACE) != 0) {
-        enum nugu_log_prefix back;
-
-        back = nugu_log_get_prefix_fields();
-        nugu_log_set_prefix_fields((nugu_log_prefix)(back & ~(NUGU_LOG_PREFIX_FILENAME | NUGU_LOG_PREFIX_LINE)));
-
-        nugu_info("<-- Directives: group=%s\n%s", group.c_str(), dump.c_str());
-
-        nugu_log_set_prefix_fields(back);
-    }
+    nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE, NUGU_LOG_LEVEL_INFO, NULL, NULL, -1,
+        "<-- Directives: group=%s\n%s", group.c_str(), dump.c_str());
 
     for (Json::ArrayIndex i = 0; i < dir_list.size(); ++i) {
         Json::Value dir = dir_list[i];
@@ -215,16 +208,8 @@ static void _body_opus(const char* parent_msg_id, int is_end, const char* data, 
     item->data = (unsigned char*)malloc(length);
     memcpy(item->data, data, length);
 
-    if ((nugu_log_get_modules() & NUGU_LOG_MODULE_NETWORK_TRACE) != 0) {
-        enum nugu_log_prefix back;
-
-        back = nugu_log_get_prefix_fields();
-        nugu_log_set_prefix_fields((nugu_log_prefix)(back & ~(NUGU_LOG_PREFIX_FILENAME | NUGU_LOG_PREFIX_LINE)));
-
-        nugu_info("<-- Attachment: parent=%s (%zd bytes, is_end=%d)", parent_msg_id, length, is_end);
-
-        nugu_log_set_prefix_fields(back);
-    }
+    nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE, NUGU_LOG_LEVEL_INFO, NULL, NULL, -1,
+        "<-- Attachment: parent=%s (%zd bytes, is_end=%d)", parent_msg_id, length, is_end);
 
     nugu_equeue_push(NUGU_EQUEUE_TYPE_NEW_ATTACHMENT, item);
 }

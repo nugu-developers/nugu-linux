@@ -131,6 +131,8 @@ static void _log_check_override_module(void)
 			bitset = bitset | NUGU_LOG_MODULE_NETWORK;
 		if (!strncasecmp(modules[i], "network_trace", 14))
 			bitset = bitset | NUGU_LOG_MODULE_NETWORK_TRACE;
+		if (!strncasecmp(modules[i], "audio", 6))
+			bitset = bitset | NUGU_LOG_MODULE_AUDIO;
 	}
 
 	nugu_log_set_modules(bitset);
@@ -209,7 +211,7 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 		prefix[len++] = ' ';
 	}
 
-	if (_log_prefix_fields & NUGU_LOG_PREFIX_FILENAME) {
+	if ((_log_prefix_fields & NUGU_LOG_PREFIX_FILENAME) && filename) {
 		pretty_filename = strrchr(filename, '/');
 		if (!pretty_filename)
 			pretty_filename = filename;
@@ -217,7 +219,7 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 			pretty_filename++;
 	}
 
-	if (_log_prefix_fields & NUGU_LOG_PREFIX_FILEPATH)
+	if ((_log_prefix_fields & NUGU_LOG_PREFIX_FILEPATH) && filename)
 		pretty_filename = filename;
 
 	if (pretty_filename) {
@@ -234,7 +236,7 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 					pretty_filename);
 
 		/* Filename with line number */
-		if (_log_prefix_fields & NUGU_LOG_PREFIX_LINE) {
+		if ((_log_prefix_fields & NUGU_LOG_PREFIX_LINE) && line >= 0) {
 			len--;
 			len--;
 			len += snprintf(prefix + len, 9, ":%d> ", line);
@@ -242,7 +244,7 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 		}
 	} else {
 		/* Standalone line number */
-		if (_log_prefix_fields & NUGU_LOG_PREFIX_LINE) {
+		if ((_log_prefix_fields & NUGU_LOG_PREFIX_LINE) && line >= 0) {
 			len += snprintf(prefix + len, 9, "<%d> ", line);
 			*(prefix + len - 1) = ' ';
 		}

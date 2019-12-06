@@ -442,19 +442,13 @@ static void snd_error_log(const char *file, int line, const char *function,
 {
 	char msg[4096];
 	va_list arg;
-	enum nugu_log_prefix back;
-
-	back = nugu_log_get_prefix_fields();
-	nugu_log_set_prefix_fields((enum nugu_log_prefix)(
-		back & ~(NUGU_LOG_PREFIX_FILENAME | NUGU_LOG_PREFIX_LINE)));
 
 	va_start(arg, fmt);
 	vsnprintf(msg, 4096, fmt, arg);
 	va_end(arg);
 
-	nugu_dbg("[ALSA] <%s:%d> err=%d, %s", file, line, err, msg);
-
-	nugu_log_set_prefix_fields(back);
+	nugu_log_print(NUGU_LOG_MODULE_AUDIO, NUGU_LOG_LEVEL_DEBUG, NULL, NULL,
+		       -1, "[ALSA] <%s:%d> err=%d, %s", file, line, err, msg);
 }
 
 static struct nugu_recorder_driver_ops rec_ops = { .start = _rec_start,
