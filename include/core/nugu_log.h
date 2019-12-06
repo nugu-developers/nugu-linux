@@ -104,6 +104,7 @@ enum nugu_log_module {
 	NUGU_LOG_MODULE_DEFAULT = 0x01, /**< Default module */
 	NUGU_LOG_MODULE_NETWORK = 0x02, /**< Network module */
 	NUGU_LOG_MODULE_NETWORK_TRACE = 0x04, /**< Network trace module */
+	NUGU_LOG_MODULE_AUDIO = 0x08, /**< Audio module */
 	NUGU_LOG_MODULE_ALL = 0xFF /**< All modules */
 };
 
@@ -200,6 +201,10 @@ void nugu_hexdump(const uint8_t *data, size_t data_size);
 
 #ifdef __cplusplus
 }
+#endif
+
+#ifndef __FILENAME__
+#define __FILENAME__ __FILE__
 #endif
 
 /**
