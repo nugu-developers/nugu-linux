@@ -27,8 +27,12 @@ template <typename T>
 class DisplayRenderAssembly : virtual public IDisplayHandler,
                               public IPlaySyncManagerListener {
 public:
+    using RenderInfoParam = std::tuple<std::string, std::string, std::string, std::string, std::string>;
+
     DisplayRenderAssembly();
     virtual ~DisplayRenderAssembly();
+
+    std::string composeRenderInfo(const RenderInfoParam& param);
 
     // implement IDisplayHandler
     void displayRendered(const std::string& id);
@@ -48,6 +52,8 @@ protected:
     IDisplayListener* display_listener = nullptr;
     std::string disp_cur_ps_id = "";
     std::string disp_cur_token = "";
+
+private:
     std::map<std::string, PlaySyncManager::DisplayRenderInfo*> render_info;
 };
 }

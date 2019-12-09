@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <sys/time.h>
+
 #include "capability_manager.hh"
 #include "nugu_log.h"
 
@@ -35,6 +37,21 @@ DisplayRenderAssembly<T>::~DisplayRenderAssembly()
     }
 
     render_info.clear();
+}
+
+template <typename T>
+std::string DisplayRenderAssembly<T>::composeRenderInfo(const RenderInfoParam& param)
+{
+    PlaySyncManager::DisplayRenderInfo* info = new PlaySyncManager::DisplayRenderInfo;
+    struct timeval tv;
+
+    gettimeofday(&tv, NULL);
+    info->id = std::to_string(tv.tv_sec) + std::to_string(tv.tv_usec);
+
+    std::tie(info->ps_id, info->type, info->payload, info->dialog_id, info->token) = param;
+    render_info[info->id] = info;
+
+    return info->id;
 }
 
 template <typename T>

@@ -17,7 +17,6 @@
 #include <glib.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/time.h>
 #include <unistd.h>
 
 #include "capability_manager.hh"
@@ -57,19 +56,12 @@ void DisplayAgent::parsingDirective(const char* dname, const char* message)
     std::string playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
     if (!playstackctl_ps_id.empty()) {
-        struct timeval tv;
-
-        gettimeofday(&tv, NULL);
-        std::string id = std::to_string(tv.tv_sec) + std::to_string(tv.tv_usec);
-
-        PlaySyncManager::DisplayRenderInfo* info = new PlaySyncManager::DisplayRenderInfo;
-        info->id = id;
-        info->ps_id = root["playServiceId"].asString();
-        info->type = type;
-        info->payload = message;
-        info->dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
-        info->token = root["token"].asString();
-        render_info[id] = info;
+        std::string id = composeRenderInfo(std::make_tuple(
+            root["playServiceId"].asString(),
+            type,
+            message,
+            nugu_directive_peek_dialog_id(getNuguDirective()),
+            root["token"].asString()));
 
         // sync display rendering with context
         PlaySyncManager::DisplayRenderer renderer;

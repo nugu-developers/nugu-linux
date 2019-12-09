@@ -17,7 +17,6 @@
 #include <glib.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/time.h>
 #include <unistd.h>
 
 #include "audio_player_agent.hh"
@@ -354,22 +353,14 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         Json::Value meta = audio_item["metadata"];
 
         if (!meta.empty() && !meta["template"].empty()) {
-            PlaySyncManager::DisplayRenderInfo* info;
             Json::StyledWriter writer;
-            struct timeval tv;
-            std::string id;
 
-            gettimeofday(&tv, NULL);
-            id = std::to_string(tv.tv_sec) + std::to_string(tv.tv_usec);
-
-            info = new PlaySyncManager::DisplayRenderInfo;
-            info->id = id;
-            info->ps_id = ps_id;
-            info->type = meta["template"]["type"].asString();
-            info->payload = writer.write(meta["template"]);
-            info->dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
-            info->token = root["token"].asString();
-            render_info[id] = info;
+            std::string id = composeRenderInfo(std::make_tuple(
+                ps_id,
+                meta["template"]["type"].asString(),
+                writer.write(meta["template"]),
+                nugu_directive_peek_dialog_id(getNuguDirective()),
+                root["token"].asString()));
 
             renderer.cap_type = getType();
             renderer.listener = this;
