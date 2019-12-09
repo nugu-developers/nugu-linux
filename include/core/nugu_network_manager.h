@@ -233,6 +233,21 @@ int nugu_network_manager_disconnect(void);
 int nugu_network_manager_handoff(const NuguNetworkServerPolicy *policy);
 
 /**
+ * @brief Set the access token value.
+ * @param[in] token access token
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_network_manager_set_token(const char *token);
+
+/**
+ * @brief Get the access token value.
+ * @return access token value. Please do not modify the data manually.
+ */
+const char *nugu_network_manager_peek_token(void);
+
+/**
  * @}
  */
 

@@ -84,8 +84,7 @@ DGServer *dg_server_new(const NuguNetworkServerPolicy *policy)
 	server->type = DG_SERVER_TYPE_NORMAL;
 	server->retry_count = 0;
 
-	http2_network_set_token(server->net,
-				nugu_config_get(NUGU_CONFIG_KEY_TOKEN));
+	http2_network_set_token(server->net, nugu_network_manager_peek_token());
 	http2_network_enable_curl_log(server->net);
 	http2_network_start(server->net);
 
