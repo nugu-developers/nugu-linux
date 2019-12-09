@@ -61,8 +61,8 @@ public:
 
     void addContext(const std::string& ps_id, CapabilityType cap_type);
     void addContext(const std::string& ps_id, CapabilityType cap_type, DisplayRenderer renderer);
-    void removeContext(std::string ps_id, CapabilityType cap_type, bool immediately = true);
-    void clearPendingContext(std::string ps_id);
+    void removeContext(const std::string& ps_id, CapabilityType cap_type, bool immediately = true);
+    void clearPendingContext(const std::string& ps_id);
     std::vector<std::string> getAllPlayStackItems();
     std::string getPlayStackItem(CapabilityType cap_type);
 
@@ -72,10 +72,10 @@ public:
     void onASRError();
 
 private:
-    void addStackElement(std::string ps_id, CapabilityType cap_type);
-    bool removeStackElement(std::string ps_id, CapabilityType cap_type);
-    void addRenderer(std::string ps_id, DisplayRenderer& renderer);
-    bool removeRenderer(std::string ps_id, bool unconditionally = true);
+    void addStackElement(const std::string& ps_id, CapabilityType cap_type);
+    bool removeStackElement(const std::string& ps_id, CapabilityType cap_type);
+    void addRenderer(const std::string& ps_id, DisplayRenderer& renderer);
+    bool removeRenderer(const std::string& ps_id, bool unconditionally = true);
     void setTimerInterval(const std::string& ps_id);
 
     static const std::map<std::string, long> DURATION_MAP;

@@ -128,7 +128,7 @@ void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_ty
     Test::showAllContents(context_map);
 }
 
-void PlaySyncManager::removeContext(std::string ps_id, CapabilityType cap_type, bool immediately)
+void PlaySyncManager::removeContext(const std::string& ps_id, CapabilityType cap_type, bool immediately)
 {
     if (ps_id.empty()) {
         nugu_error("Invalid PlayServiceId.");
@@ -173,7 +173,7 @@ void PlaySyncManager::removeContext(std::string ps_id, CapabilityType cap_type, 
     is_expect_speech = false;
 }
 
-void PlaySyncManager::clearPendingContext(std::string ps_id)
+void PlaySyncManager::clearPendingContext(const std::string& ps_id)
 {
     renderer_map.erase(ps_id);
     removeContext(ps_id, CapabilityType::Display);
@@ -198,7 +198,7 @@ std::string PlaySyncManager::getPlayStackItem(CapabilityType cap_type)
     return "";
 }
 
-void PlaySyncManager::addStackElement(std::string ps_id, CapabilityType cap_type)
+void PlaySyncManager::addStackElement(const std::string& ps_id, CapabilityType cap_type)
 {
     auto& stack_elements = context_map[ps_id];
 
@@ -206,7 +206,7 @@ void PlaySyncManager::addStackElement(std::string ps_id, CapabilityType cap_type
         stack_elements.push_back(cap_type);
 }
 
-bool PlaySyncManager::removeStackElement(std::string ps_id, CapabilityType cap_type)
+bool PlaySyncManager::removeStackElement(const std::string& ps_id, CapabilityType cap_type)
 {
     auto& stack_elements = context_map[ps_id];
     stack_elements.erase(remove(stack_elements.begin(), stack_elements.end(), cap_type), stack_elements.end());
@@ -214,7 +214,7 @@ bool PlaySyncManager::removeStackElement(std::string ps_id, CapabilityType cap_t
     return stack_elements.empty();
 }
 
-void PlaySyncManager::addRenderer(std::string ps_id, DisplayRenderer& renderer)
+void PlaySyncManager::addRenderer(const std::string& ps_id, DisplayRenderer& renderer)
 {
     // remove previous renderers firstly
     auto renderer_keys = getKeyOfMap(renderer_map);
@@ -227,7 +227,7 @@ void PlaySyncManager::addRenderer(std::string ps_id, DisplayRenderer& renderer)
     renderer.listener->onSyncDisplayContext(renderer.display_id);
 }
 
-bool PlaySyncManager::removeRenderer(std::string ps_id, bool unconditionally)
+bool PlaySyncManager::removeRenderer(const std::string& ps_id, bool unconditionally)
 {
     if (renderer_map.find(ps_id) == renderer_map.end())
         return true;
