@@ -24,6 +24,7 @@
 
 #include "capability.hh"
 #include "capability_manager.hh"
+#include "display_render_assembly.hh"
 
 namespace NuguCore {
 
@@ -33,7 +34,7 @@ class AudioPlayerAgent : public Capability,
                          public IMediaPlayerListener,
                          public IFocusListener,
                          public IAudioPlayerHandler,
-                         public IPlaySyncManagerListener {
+                         public DisplayRenderAssembly<AudioPlayerAgent> {
 public:
     enum PlaybackError {
         MEDIA_ERROR_UNKNOWN,
@@ -52,14 +53,6 @@ public:
     void updateInfoForContext(Json::Value& ctx) override;
     void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
-
-    // implement handler
-    void displayRendered(const std::string& id) override;
-    void displayCleared(const std::string& id) override;
-    void elementSelected(const std::string& id, const std::string& item_token) override;
-    void setListener(IDisplayListener* listener) override;
-    void removeListener(IDisplayListener* listener) override;
-    void stopRenderingTimer(const std::string& id) override;
 
     void addListener(IAudioPlayerListener* listener) override;
     void removeListener(IAudioPlayerListener* listener) override;
@@ -92,9 +85,8 @@ public:
     void volumeChanged(int volume);
     void muteChanged(int mute);
 
-    // implement IContextManagerListener
-    void onSyncDisplayContext(const std::string& id) override;
-    bool onReleaseDisplayContext(const std::string& id, bool unconditionally) override;
+    // implement DisplayRenderAssembly
+    void onElementSelected(const std::string& item_token);
 
 private:
     void sendEventCommon(std::string ename);
@@ -123,8 +115,6 @@ private:
     std::string pre_ref_dialog_id;
     bool is_finished;
     std::vector<IAudioPlayerListener*> aplayer_listeners;
-    IDisplayListener* display_listener;
-    std::map<std::string, PlaySyncManager::DisplayRenderInfo*> render_info;
 };
 
 } // NuguCore
