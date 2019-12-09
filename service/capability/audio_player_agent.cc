@@ -40,19 +40,12 @@ AudioPlayerAgent::AudioPlayerAgent()
     , cur_token("")
     , pre_ref_dialog_id("")
     , is_finished(false)
-    , display_listener(nullptr)
 {
 }
 
 AudioPlayerAgent::~AudioPlayerAgent()
 {
-    display_listener = nullptr;
     aplayer_listeners.clear();
-
-    for (auto info : render_info) {
-        delete info.second;
-    }
-    render_info.clear();
 
     CapabilityManager::getInstance()->removeFocus("cap_audio");
 
@@ -203,41 +196,6 @@ void AudioPlayerAgent::setCapabilityListener(ICapabilityListener* listener)
     }
 }
 
-void AudioPlayerAgent::displayRendered(const std::string& id)
-{
-}
-
-void AudioPlayerAgent::displayCleared(const std::string& id)
-{
-    std::string ps_id = "";
-
-    if (render_info.find(id) != render_info.end()) {
-        auto info = render_info[id];
-        ps_id = info->ps_id;
-        render_info.erase(id);
-        delete info;
-    }
-    playsync_manager->clearPendingContext(ps_id);
-}
-
-void AudioPlayerAgent::elementSelected(const std::string& id, const std::string& item_token)
-{
-}
-
-void AudioPlayerAgent::setListener(IDisplayListener* listener)
-{
-    if (!listener)
-        return;
-
-    display_listener = listener;
-}
-
-void AudioPlayerAgent::removeListener(IDisplayListener* listener)
-{
-    if (display_listener == listener)
-        display_listener = nullptr;
-}
-
 void AudioPlayerAgent::addListener(IAudioPlayerListener* listener)
 {
     auto iterator = std::find(aplayer_listeners.begin(), aplayer_listeners.end(), listener);
@@ -252,11 +210,6 @@ void AudioPlayerAgent::removeListener(IAudioPlayerListener* listener)
 
     if (iterator != aplayer_listeners.end())
         aplayer_listeners.erase(iterator);
-}
-
-void AudioPlayerAgent::stopRenderingTimer(const std::string& id)
-{
-    playsync_manager->clearContextHold();
 }
 
 void AudioPlayerAgent::sendEventPlaybackStarted()
@@ -673,34 +626,6 @@ void AudioPlayerAgent::muteChanged(int mute)
 {
 }
 
-void AudioPlayerAgent::onSyncDisplayContext(const std::string& id)
-{
-    nugu_dbg("AudioPlayer sync context");
-
-    if (render_info.find(id) == render_info.end())
-        return;
-
-    display_listener->renderDisplay(id, render_info[id]->type, render_info[id]->payload, render_info[id]->dialog_id);
-}
-
-bool AudioPlayerAgent::onReleaseDisplayContext(const std::string& id, bool unconditionally)
-{
-    nugu_dbg("AudioPlayer release context");
-
-    if (render_info.find(id) == render_info.end())
-        return true;
-
-    bool ret = display_listener->clearDisplay(id, unconditionally);
-    if (ret || unconditionally) {
-        auto info = render_info[id];
-        render_info.erase(id);
-        delete info;
-    }
-
-    if (unconditionally && !ret)
-        nugu_warn("should clear display if unconditionally is true!!");
-
-    return ret;
-}
+void AudioPlayerAgent::onElementSelected(const std::string& item_token) {}
 
 } // NuguCore

@@ -81,7 +81,7 @@ public:
  * @brief audioplayer handler interface
  * @see IAudioPlayerListener
  */
-class IAudioPlayerHandler : public IDisplayHandler {
+class IAudioPlayerHandler : virtual public IDisplayHandler {
 public:
     virtual ~IAudioPlayerHandler() = default;
 
