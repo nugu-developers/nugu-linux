@@ -17,6 +17,8 @@
 #ifndef __NUGU_INETWORK_MANAGER_INTERFACE_H__
 #define __NUGU_INETWORK_MANAGER_INTERFACE_H__
 
+#include <string>
+
 namespace NuguInterface {
 
 /**
@@ -90,6 +92,11 @@ public:
      * @brief Request a disconnection with the NUGU server.
      */
     virtual bool disconnect() = 0;
+
+    /**
+     * @brief Set the access token value.
+     */
+    virtual bool setToken(std::string token) = 0;
 };
 
 /**

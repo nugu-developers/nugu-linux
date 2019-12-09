@@ -150,7 +150,6 @@ int main(int argc, char** argv)
     auto network_manager_listener(make_unique<NetworkManagerListener>());
 
     nugu_client = make_unique<NuguClient>();
-    nugu_client->setConfig(NuguConfig::Key::ACCESS_TOKEN, getenv("NUGU_TOKEN"));
     nugu_client->setConfig(NuguConfig::Key::MODEL_PATH, nugu_sample_manager->getModelPath());
     nugu_client->setListener(nugu_client_listener.get());
 
@@ -158,6 +157,7 @@ int main(int argc, char** argv)
 
     network_manager = nugu_client->getNetworkManager();
     network_manager->addListener(network_manager_listener.get());
+    network_manager->setToken(getenv("NUGU_TOKEN"));
 
     if (!network_manager->connect()) {
         msg_error("< Cannot connect to NUGU Platform.");

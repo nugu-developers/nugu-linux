@@ -22,7 +22,7 @@
 
 #include "nugu_uuid.h"
 #include "nugu_log.h"
-#include "nugu_config.h"
+#include "nugu_network_manager.h"
 
 #define BASE_TIMESTAMP 1546300800 /* GMT: 2019/1/1 00:00:00 */
 
@@ -109,7 +109,7 @@ EXPORT_API char *nugu_uuid_generate_time(void)
 	RAND_status();
 	RAND_bytes(buf + 5, 3);
 
-	seed = nugu_config_get(NUGU_CONFIG_KEY_TOKEN);
+	seed = nugu_network_manager_peek_token();
 	if (seed) {
 		unsigned char mdbuf[SHA_DIGEST_LENGTH];
 

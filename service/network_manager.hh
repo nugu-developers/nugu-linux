@@ -35,6 +35,7 @@ public:
     std::vector<INetworkManagerListener*> getListener();
     bool connect() override;
     bool disconnect() override;
+    bool setToken(std::string token) override;
 
 private:
     std::vector<INetworkManagerListener*> listeners;

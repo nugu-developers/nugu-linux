@@ -19,6 +19,7 @@
 
 #include "nugu_config.h"
 #include "nugu_log.h"
+#include "nugu_network_manager.h"
 
 #include "dg_registry.h"
 #include "http2/v1_policies.h"
@@ -44,7 +45,7 @@ DGRegistry *dg_registry_new(void)
 	}
 
 	http2_network_set_token(registry->net,
-				nugu_config_get(NUGU_CONFIG_KEY_TOKEN));
+				nugu_network_manager_peek_token());
 	http2_network_enable_curl_log(registry->net);
 	http2_network_start(registry->net);
 

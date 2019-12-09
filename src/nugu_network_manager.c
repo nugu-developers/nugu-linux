@@ -65,6 +65,7 @@ static const char * const _debug_status_strmap[] = {
 
 struct _nugu_network {
 	enum connection_step step;
+	char *token;
 
 	/* Registry */
 	DGRegistry *registry;
@@ -516,6 +517,9 @@ static void nugu_network_manager_free(NetworkManager *nm)
 	if (nm->server_list)
 		g_list_free_full(nm->server_list, free);
 
+	if (nm->token)
+		free(nm->token);
+
 	memset(nm, 0, sizeof(NetworkManager));
 	free(nm);
 }
@@ -708,4 +712,34 @@ nugu_network_manager_handoff(const NuguNetworkServerPolicy *policy)
 	_update_step(_network, STEP_SERVER_HANDOFF);
 
 	return 0;
+}
+
+int nugu_network_manager_set_token(const char *token)
+{
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return -1;
+	}
+
+	if (!token) {
+		nugu_error("token is NULL");
+		return -1;
+	}
+
+	if (_network->token)
+		free(_network->token);
+
+	_network->token = strdup(token);
+
+	return 0;
+}
+
+const char *nugu_network_manager_peek_token(void)
+{
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return NULL;
+	}
+
+	return _network->token;
 }

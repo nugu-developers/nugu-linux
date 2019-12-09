@@ -93,6 +93,16 @@ std::vector<INetworkManagerListener*> NetworkManager::getListener()
     return listeners;
 }
 
+bool NetworkManager::setToken(std::string token)
+{
+    if (nugu_network_manager_set_token(token.c_str()) < 0) {
+        nugu_error("network set token failed");
+        return false;
+    }
+
+    return true;
+}
+
 bool NetworkManager::connect()
 {
     if (nugu_network_manager_connect() < 0) {
