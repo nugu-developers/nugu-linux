@@ -29,3 +29,7 @@ doc/latex
 
 # Etc
 .DS_Store
+
+# Auto-generated file
+include/nugu.h
+

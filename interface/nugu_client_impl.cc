@@ -19,6 +19,7 @@
 #include <interface/capability/system_interface.hh>
 #include <interface/nugu_configuration.hh>
 
+#include "nugu.h"
 #include "capability_creator.hh"
 #include "capability_manager_helper.hh"
 #include "nugu_client_impl.hh"
@@ -177,7 +178,7 @@ bool NuguClientImpl::initialize(void)
         return true;
     }
 
-    if (nugu_plugin_load_directory(CONFIG_PLUGIN_PATH) < 0) {
+    if (nugu_plugin_load_directory(NUGU_PLUGIN_DIR) < 0) {
         nugu_error("Fail to load nugu_plugin ");
         return false;
     }
