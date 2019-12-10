@@ -133,7 +133,8 @@ int dg_server_connect_async(DGServer *server)
 	if (server->directives)
 		v1_directives_free(server->directives);
 
-	server->directives = v1_directives_new(server->host);
+	server->directives = v1_directives_new(
+		server->host, server->policy.connection_timeout_ms / 1000);
 
 	ret = v1_directives_establish(server->directives, server->net);
 	if (ret < 0) {

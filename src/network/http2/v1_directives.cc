@@ -50,6 +50,8 @@ struct _v1_directives {
     MultipartParser* parser;
     HTTP2Network* network;
 
+    int connection_timeout_secs;
+
     enum content_type ctype;
     char* parent_msg_id;
     int is_end;
@@ -322,7 +324,7 @@ static void _on_finish(HTTP2Request* req, void* userdata)
     return;
 }
 
-V1Directives* v1_directives_new(const char* host)
+V1Directives* v1_directives_new(const char* host, int connection_timeout_secs)
 {
     struct _v1_directives* dir;
 
@@ -335,6 +337,7 @@ V1Directives* v1_directives_new(const char* host)
     }
 
     dir->url = g_strdup_printf("%s/v1/directives", host);
+    dir->connection_timeout_secs = connection_timeout_secs;
 
     return dir;
 }
@@ -381,7 +384,7 @@ int v1_directives_establish(V1Directives* dir, HTTP2Network* net)
     http2_request_set_header_callback(req, _on_header, dir);
     http2_request_set_body_callback(req, _on_body, dir);
     http2_request_set_finish_callback(req, _on_finish, dir);
-    http2_request_set_connection_timeout(req, 0);
+    http2_request_set_connection_timeout(req, dir->connection_timeout_secs);
     http2_request_enable_curl_log(req);
 
     ret = http2_network_add_request(net, req);
