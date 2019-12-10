@@ -209,25 +209,25 @@ void SystemAgent::parsingHandoffConnection(const char* message)
         return;
     }
 
-    if (root["domain"].isString()) {
-        const char* tmp = root["domain"].asCString();
+    if (root["hostname"].isString()) {
+        const char* tmp = root["hostname"].asCString();
         if (tmp) {
             int len = strlen(tmp);
             memcpy(policy.hostname, tmp, (len > NUGU_NETWORK_MAX_ADDRESS) ? NUGU_NETWORK_MAX_ADDRESS : len);
         }
     } else {
-        nugu_error("can't find 'domain' string attribute");
+        nugu_error("can't find 'hostname' string attribute");
         return;
     }
 
-    if (root["hostname"].isString()) {
-        const char* tmp = root["hostname"].asCString();
+    if (root["address"].isString()) {
+        const char* tmp = root["address"].asCString();
         if (tmp) {
             int len = strlen(tmp);
             memcpy(policy.address, tmp, (len > NUGU_NETWORK_MAX_ADDRESS) ? NUGU_NETWORK_MAX_ADDRESS : len);
         }
     } else {
-        nugu_error("can't find 'hostname' string attribute");
+        nugu_error("can't find 'address' string attribute");
         return;
     }
 
