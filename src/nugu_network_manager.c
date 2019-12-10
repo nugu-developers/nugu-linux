@@ -66,8 +66,10 @@ static const char * const _debug_status_strmap[] = {
 struct _nugu_network {
 	enum connection_step step;
 	char *token;
+	char *useragent;
 
 	/* Registry */
+	char *registry_url;
 	DGRegistry *registry;
 	struct dg_health_check_policy policy;
 	GList *server_list;
@@ -520,6 +522,12 @@ static void nugu_network_manager_free(NetworkManager *nm)
 	if (nm->token)
 		free(nm->token);
 
+	if (nm->registry_url)
+		free(nm->registry_url);
+
+	if (nm->useragent)
+		free(nm->useragent);
+
 	memset(nm, 0, sizeof(NetworkManager));
 	free(nm);
 }
@@ -541,6 +549,9 @@ EXPORT_API int nugu_network_manager_initialize(void)
 	_network = nugu_network_manager_new();
 	if (!_network)
 		return -1;
+
+	nugu_network_manager_set_registry_url(NUGU_REGISTRY_URL);
+	nugu_network_manager_set_useragent(NUGU_USERAGENT);
 
 	return 0;
 }
@@ -742,4 +753,76 @@ const char *nugu_network_manager_peek_token(void)
 	}
 
 	return _network->token;
+}
+
+int nugu_network_manager_set_registry_url(const char *urlname)
+{
+	char *override_value;
+
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return -1;
+	}
+
+	if (!urlname) {
+		nugu_error("urlname is NULL");
+		return -1;
+	}
+
+	if (_network->registry_url)
+		free(_network->registry_url);
+
+	override_value = getenv("NUGU_REGISTRY_SERVER");
+	if (override_value)
+		_network->registry_url = strdup(override_value);
+	else
+		_network->registry_url = strdup(urlname);
+
+	return 0;
+}
+
+const char *nugu_network_manager_peek_registry_url(void)
+{
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return NULL;
+	}
+
+	return _network->registry_url;
+}
+
+int nugu_network_manager_set_useragent(const char *uagent)
+{
+	char *override_value;
+
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return -1;
+	}
+
+	if (!uagent) {
+		nugu_error("urlname is NULL");
+		return -1;
+	}
+
+	if (_network->useragent)
+		free(_network->useragent);
+
+	override_value = getenv("NUGU_USERAGENT");
+	if (override_value)
+		_network->useragent = strdup(override_value);
+	else
+		_network->useragent = strdup(uagent);
+
+	return 0;
+}
+
+const char *nugu_network_manager_peek_useragent(void)
+{
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return NULL;
+	}
+
+	return _network->useragent;
 }

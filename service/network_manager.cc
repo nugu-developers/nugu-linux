@@ -103,6 +103,26 @@ bool NetworkManager::setToken(std::string token)
     return true;
 }
 
+bool NetworkManager::setRegistryUrl(std::string url)
+{
+    if (nugu_network_manager_set_registry_url(url.c_str()) < 0) {
+        nugu_error("network set registry url failed");
+        return false;
+    }
+
+    return true;
+}
+
+bool NetworkManager::setUserAgent(std::string uagent)
+{
+    if (nugu_network_manager_set_useragent(uagent.c_str()) < 0) {
+        nugu_error("network set useragent failed");
+        return false;
+    }
+
+    return true;
+}
+
 bool NetworkManager::connect()
 {
     if (nugu_network_manager_connect() < 0) {

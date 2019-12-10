@@ -36,6 +36,8 @@ public:
     bool connect() override;
     bool disconnect() override;
     bool setToken(std::string token) override;
+    bool setRegistryUrl(std::string url) override;
+    bool setUserAgent(std::string uagent) override;
 
 private:
     std::vector<INetworkManagerListener*> listeners;

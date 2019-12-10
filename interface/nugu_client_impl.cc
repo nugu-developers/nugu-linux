@@ -36,7 +36,6 @@ NuguClientImpl::NuguClientImpl()
 {
     nugu_config_initialize();
     nugu_equeue_initialize();
-    readEnviromentVariables();
     setDefaultConfigs();
 
     network_manager = std::unique_ptr<INetworkManager>(CapabilityCreator::createNetworkManager());
@@ -249,17 +248,6 @@ void NuguClientImpl::onStatusChanged(NetworkStatus status)
 INetworkManager* NuguClientImpl::getNetworkManager()
 {
     return network_manager.get();
-}
-
-void NuguClientImpl::readEnviromentVariables()
-{
-    char* registry_override;
-
-    registry_override = getenv("NUGU_REGISTRY_SERVER");
-    if (!registry_override)
-        return;
-
-    config_env_map[NuguConfig::Key::GATEWAY_REGISTRY_DNS] = registry_override;
 }
 
 IMediaPlayer* NuguClientImpl::createMediaPlayer()

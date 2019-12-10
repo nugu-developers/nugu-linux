@@ -10,6 +10,7 @@ SET(VERSION_PATCH 0)
 SET(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 SET(NUGU_USERAGENT "OpenSDK/1.0.0 (Linux) Client/${VERSION}")
+SET(NUGU_REGISTRY_URL "https://reg-http.sktnugu.com")
 
 SET(version ${VERSION})
 SET(prefix ${CMAKE_INSTALL_PREFIX})
@@ -123,6 +124,9 @@ ADD_DEFINITIONS(
 
 	# UserAgent information for network request
 	-DNUGU_USERAGENT=\"${NUGU_USERAGENT}\"
+
+	# Device gateway registry default url
+	-DNUGU_REGISTRY_URL=\"${NUGU_REGISTRY_URL}\"
 )
 
 # Global include directories

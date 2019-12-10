@@ -19,7 +19,6 @@
 #include <string.h>
 
 #include "nugu_buffer.h"
-#include "nugu_config.h"
 #include "nugu_equeue.h"
 #include "nugu_log.h"
 #include "nugu_network_manager.h"

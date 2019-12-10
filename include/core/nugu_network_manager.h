@@ -248,6 +248,36 @@ int nugu_network_manager_set_token(const char *token);
 const char *nugu_network_manager_peek_token(void);
 
 /**
+ * @brief Set the device gateway registry url.
+ * @param[in] urlname gateway registry url
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_network_manager_set_registry_url(const char *urlname);
+
+/**
+ * @brief Get the device gateway registry url.
+ * @return gateway registry url. Please do not modify the data manually.
+ */
+const char *nugu_network_manager_peek_registry_url(void);
+
+/**
+ * @brief Set the HTTP header UserAgent information.
+ * @param[in] uagent UserAgent information
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_network_manager_set_useragent(const char *uagent);
+
+/**
+ * @brief Get the UserAgent information.
+ * @return UserAgent information. Please do not modify the data manually.
+ */
+const char *nugu_network_manager_peek_useragent(void);
+
+/**
  * @}
  */
 

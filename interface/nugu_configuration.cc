@@ -38,9 +38,7 @@ namespace NuguConfig {
             { Key::KWD_CHANNEL, "1"},
             { Key::SERVER_RESPONSE_TIMEOUT_MSEC, "10000" },
             { Key::MODEL_PATH, "./" },
-            { Key::TTS_ENGINE, "skt" },
-            { Key::USER_AGENT, NUGU_USERAGENT },
-            { Key::GATEWAY_REGISTRY_DNS, "https://reg-http.sktnugu.com" }
+            { Key::TTS_ENGINE, "skt" }
         };
     }
 
