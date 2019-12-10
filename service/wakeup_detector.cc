@@ -52,7 +52,6 @@ void WakeupDetector::setListener(IWakeupDetectorListener* listener)
 void WakeupDetector::loop(void)
 {
     int pcm_size;
-    int length;
     std::string model_net_file;
     std::string model_search_file;
     std::string model_path;
@@ -90,17 +89,17 @@ void WakeupDetector::loop(void)
             break;
         }
 
-        if (nugu_recorder_start(rec) < 0) {
-            nugu_error("nugu_recorder_start() failed.");
+        if (!recorder->start()) {
+            nugu_error("recorder->start() failed.");
             break;
         }
 
-        nugu_recorder_get_frame_size(rec, &pcm_size, &length);
+        pcm_size = recorder->getAudioFrameSize();
 
         while (is_running) {
             char pcm_buf[pcm_size];
 
-            if (nugu_recorder_is_recording(rec) == 0) {
+            if (!recorder->isRecording()) {
                 struct timespec ts;
 
                 ts.tv_sec = 0;
@@ -111,8 +110,8 @@ void WakeupDetector::loop(void)
                 continue;
             }
 
-            if (nugu_recorder_get_frame_timeout(rec, pcm_buf, &pcm_size, 0) < 0) {
-                nugu_error("nugu_recorder_get_frame_timeout() failed");
+            if (!recorder->getAudioFrame(pcm_buf, &pcm_size, 0)) {
+                nugu_error("recorder->getAudioFrame() failed");
                 sendSyncWakeupEvent(WakeupState::FAIL);
                 break;
             }
@@ -130,7 +129,7 @@ void WakeupDetector::loop(void)
             }
         }
 
-        nugu_recorder_stop(rec);
+        recorder->stop();
         kwd_deinitialize();
 
         if (g_atomic_int_get(&destroy) == 0)

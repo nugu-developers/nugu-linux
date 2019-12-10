@@ -22,6 +22,7 @@
 #include <glib.h>
 #include <mutex>
 #include <thread>
+#include "audio_recorder_manager.hh"
 
 #include <core/nugu_recorder.h>
 
@@ -37,8 +38,6 @@ protected:
     void start(std::function<void()> extra_func = nullptr);
     void stop(void);
     void sendSyncEvent(std::function<void()> action = nullptr);
-    void setProperty(std::string& sample, std::string& format, std::string& channel);
-    const NuguAudioProperty& getProperty();
 
     virtual void loop(void) = 0;
 
@@ -49,8 +48,7 @@ protected:
     std::thread thread;
     std::condition_variable cond;
     std::mutex mutex;
-    NuguAudioProperty prop;
-    NuguRecorder* rec = nullptr;
+    IAudioRecorder* recorder = nullptr;
 };
 
 } // NuguCore
