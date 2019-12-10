@@ -21,6 +21,7 @@
 #include <unistd.h>
 #include <string.h>
 
+#include "nugu.h"
 #include "nugu_log.h"
 #include "nugu_uuid.h"
 #include "nugu_equeue.h"

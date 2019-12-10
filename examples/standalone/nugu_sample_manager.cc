@@ -18,6 +18,7 @@
 #include <string.h>
 #include <unistd.h>
 
+#include "nugu.h"
 #include "nugu_log.h"
 #include "nugu_sample_manager.hh"
 
@@ -81,7 +82,7 @@ void NuguSampleManager::prepare()
     }
 
     std::cout << "=======================================================\n";
-    std::cout << "User Application\n";
+    std::cout << "User Application (SDK Version: " << NUGU_VERSION << ")\n";
     std::cout << " - Model path: " << model_path << std::endl;
     std::cout << "=======================================================\n";
 

@@ -118,15 +118,6 @@ ADD_DEFINITIONS(
 
 	# Turn on the colorful log message
 	-DCONFIG_LOG_ANSICOLOR
-
-	# Version: "Major.Minor.Patchlevel"
-	-DVERSION=\"${VERSION}\"
-
-	# UserAgent information for network request
-	-DNUGU_USERAGENT=\"${NUGU_USERAGENT}\"
-
-	# Device gateway registry default url
-	-DNUGU_REGISTRY_URL=\"${NUGU_REGISTRY_URL}\"
 )
 
 # Global include directories
@@ -138,6 +129,7 @@ INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/include/interface)
 
 # Install header files
+CONFIGURE_FILE(nugu.h.in ${CMAKE_SOURCE_DIR}/include/nugu.h @ONLY)
 INSTALL(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
 
 # Install pkgconfig
