@@ -68,28 +68,17 @@ void SpeechRecognizer::loop(void)
     max_duration = nugu_config_get(NuguConfig::Key::ASR_EPD_MAX_DURATION_SEC.c_str());
     pause_length = nugu_config_get(NuguConfig::Key::ASR_EPD_PAUSE_LENGTH_MSEC.c_str());
 
-    NuguAudioProperty prop = AudioInputProcessor::getProperty();
-    switch(prop.samplerate) {
-        case AUDIO_SAMPLE_RATE_8K:
-            epd_param.sample_rate = 8000;
-        break;
-        case AUDIO_SAMPLE_RATE_16K:
-            epd_param.sample_rate = 16000;
-        break;
-        case AUDIO_SAMPLE_RATE_32K:
-            epd_param.sample_rate = 32000;
-        break;
-        case AUDIO_SAMPLE_RATE_22K:
-            epd_param.sample_rate = 22050;
-        break;
-        case AUDIO_SAMPLE_RATE_44K:
-            epd_param.sample_rate = 44100;
-        break;
-        default:
-            // set default value: 16K
-            epd_param.sample_rate = 16000;
-        break;
-    }
+    std::string samplerate = recorder->getSamplerate();
+    if (samplerate == "8k")
+        epd_param.sample_rate = 8000;
+    else if (samplerate == "22k")
+        epd_param.sample_rate = 22050;
+    else if (samplerate == "32k")
+        epd_param.sample_rate = 32000;
+    else if (samplerate == "44k")
+        epd_param.sample_rate = 44100;
+    else
+        epd_param.sample_rate = 16000;
 
     epd_param.max_speech_duration = std::stoi(max_duration);
     epd_param.time_out = std::stoi(timeout);
@@ -125,22 +114,21 @@ void SpeechRecognizer::loop(void)
             break;
         };
 
-        if (nugu_recorder_start(rec) < 0) {
-            nugu_error("nugu_recorder_start() failed.");
+        if (!recorder->start()) {
+            nugu_error("recorder->start() failed.");
             break;
         }
-
-        nugu_recorder_get_frame_size(rec, &pcm_size, &length);
 
         sendSyncListeningEvent(ListeningState::LISTENING);
 
         prev_epd_ret = 0;
         is_epd_end = false;
+        pcm_size = recorder->getAudioFrameSize();
 
         while (is_running) {
             char pcm_buf[pcm_size];
 
-            if (nugu_recorder_is_recording(rec) == 0) {
+            if (!recorder->isRecording()) {
                 struct timespec ts;
 
                 ts.tv_sec = 0;
@@ -151,7 +139,7 @@ void SpeechRecognizer::loop(void)
                 continue;
             }
 
-            if (nugu_recorder_get_frame_timeout(rec, pcm_buf, &pcm_size, 0) < 0) {
+            if (!recorder->getAudioFrame(pcm_buf, &pcm_size, 0)) {
                 nugu_error("nugu_recorder_get_frame_timeout() failed");
                 sendSyncListeningEvent(ListeningState::FAILED);
                 break;
@@ -206,7 +194,7 @@ void SpeechRecognizer::loop(void)
             prev_epd_ret = epd_ret;
         }
 
-        nugu_recorder_stop(rec);
+        recorder->stop();
         epd_client_release();
 
         if (g_atomic_int_get(&destroy) == 0)
@@ -233,14 +221,14 @@ void SpeechRecognizer::stopListening(void)
 
 void SpeechRecognizer::startRecorder(void)
 {
-    if (is_running && nugu_recorder_is_recording(rec) == 1)
-        nugu_recorder_start(rec);
+    if (is_running && !recorder->isRecording())
+        recorder->start();
 }
 
 void SpeechRecognizer::stopRecorder(void)
 {
-    if (is_running && nugu_recorder_is_recording(rec) == 1)
-        nugu_recorder_stop(rec);
+    if (is_running && recorder->isRecording())
+        recorder->stop();
 }
 
 } // NuguCore

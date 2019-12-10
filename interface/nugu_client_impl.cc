@@ -27,6 +27,7 @@
 #include "nugu_log.h"
 #include "nugu_plugin.h"
 #include "media_player.hh"
+#include "audio_recorder_manager.hh"
 
 namespace NuguClientKit {
 
@@ -184,6 +185,8 @@ bool NuguClientImpl::initialize(void)
 
     nugu_plugin_initialize();
 
+    AudioRecorderManager::getInstance();
+
     if (icapability_map.empty())
         create();
 
@@ -226,6 +229,8 @@ void NuguClientImpl::deInitialize(void)
         delete wakeup_handler;
         wakeup_handler = nullptr;
     }
+
+    AudioRecorderManager::destroyInstance();
 
     // deinitialize core component
     nugu_plugin_deinitialize();
