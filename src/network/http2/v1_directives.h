@@ -25,7 +25,7 @@ extern "C" {
 
 typedef struct _v1_directives V1Directives;
 
-V1Directives *v1_directives_new(const char *host);
+V1Directives *v1_directives_new(const char *host, int connection_timeout_secs);
 void v1_directives_free(V1Directives *dir);
 
 int v1_directives_establish(V1Directives *dir, HTTP2Network *net);
