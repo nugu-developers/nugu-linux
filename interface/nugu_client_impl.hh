@@ -59,7 +59,6 @@ public:
 private:
     int createCapabilities(void);
     void setDefaultConfigs();
-    void readEnviromentVariables();
 
     std::map<CapabilityType, std::pair<ICapabilityInterface*, ICapabilityListener*>> icapability_map;
     std::map<std::string, std::string> config_map;

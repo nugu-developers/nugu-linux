@@ -17,7 +17,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "nugu_config.h"
 #include "nugu_log.h"
 #include "nugu_event.h"
 #include "nugu_uuid.h"

@@ -97,6 +97,16 @@ public:
      * @brief Set the access token value.
      */
     virtual bool setToken(std::string token) = 0;
+
+    /**
+     * @brief Set the device gateway registry url.
+     */
+    virtual bool setRegistryUrl(std::string url) = 0;
+
+    /**
+     * @brief Set the HTTP header UserAgent information.
+     */
+    virtual bool setUserAgent(std::string uagent) = 0;
 };
 
 /**

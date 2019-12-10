@@ -24,7 +24,8 @@
 #include <errno.h>
 
 #include "nugu_log.h"
-#include "nugu_config.h"
+#include "nugu_network_manager.h"
+
 #include "http2_network.h"
 
 enum request_type {
@@ -288,7 +289,7 @@ HTTP2Network *http2_network_new()
 
 	net->wakeup_fd = eventfd(0, EFD_CLOEXEC);
 	net->requests = g_async_queue_new_full(g_free);
-	net->useragent = nugu_config_get(NUGU_CONFIG_KEY_USER_AGENT);
+	net->useragent = nugu_network_manager_peek_useragent();
 
 	return net;
 }

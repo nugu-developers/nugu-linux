@@ -31,21 +31,6 @@ extern "C" {
  */
 
 /**
- * @brief Predefined key name for token
- */
-#define NUGU_CONFIG_KEY_TOKEN "token"
-
-/**
- * @brief Predefined key name for user_agent
- */
-#define NUGU_CONFIG_KEY_USER_AGENT "user_agent"
-
-/**
- * @brief Predefined key name for gateway_registry_dns
- */
-#define NUGU_CONFIG_KEY_GATEWAY_REGISTRY_DNS "gateway_registry_dns"
-
-/**
  * @brief Initialize configuration hash table
  */
 void nugu_config_initialize(void);

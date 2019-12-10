@@ -17,7 +17,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "nugu_config.h"
 #include "nugu_log.h"
 #include "nugu_network_manager.h"
 
@@ -70,7 +69,7 @@ int dg_registry_request(DGRegistry *registry)
 	g_return_val_if_fail(registry != NULL, -1);
 	g_return_val_if_fail(registry->net != NULL, -1);
 
-	host = nugu_config_get(NUGU_CONFIG_KEY_GATEWAY_REGISTRY_DNS);
+	host = nugu_network_manager_peek_registry_url();
 	if (!host) {
 		nugu_error("Gateway registry host is not set.");
 		return -1;
