@@ -19,7 +19,6 @@
 #include <interface/nugu_configuration.hh>
 #include <keyword_detector.h>
 
-#include "nugu_config.h"
 #include "nugu_log.h"
 #include "wakeup_detector.hh"
 
@@ -29,9 +28,9 @@ using namespace NuguInterface;
 
 WakeupDetector::WakeupDetector()
 {
-    std::string sample = nugu_config_get(NuguConfig::Key::KWD_SAMPLERATE.c_str());
-    std::string format = nugu_config_get(NuguConfig::Key::KWD_FORMAT.c_str());
-    std::string channel = nugu_config_get(NuguConfig::Key::KWD_CHANNEL.c_str());
+    std::string sample = NuguConfig::getValue(NuguConfig::Key::KWD_SAMPLERATE);
+    std::string format = NuguConfig::getValue(NuguConfig::Key::KWD_FORMAT);
+    std::string channel = NuguConfig::getValue(NuguConfig::Key::KWD_CHANNEL);
 
     AudioInputProcessor::init("kwd", sample, format, channel);
 }
@@ -58,7 +57,7 @@ void WakeupDetector::loop(void)
 
     nugu_dbg("Wakeup Thread: started");
 
-    model_path = nugu_config_get(NuguConfig::Key::MODEL_PATH.c_str());
+    model_path = NuguConfig::getValue(NuguConfig::Key::MODEL_PATH);
     if (model_path.size()) {
         nugu_dbg("model path: %s", model_path.c_str());
 

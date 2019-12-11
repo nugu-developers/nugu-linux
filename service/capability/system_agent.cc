@@ -19,7 +19,6 @@
 #include <string.h>
 
 #include "capability_manager.hh"
-#include "nugu_config.h"
 #include "nugu_log.h"
 #include "nugu_network_manager.h"
 #include "system_agent.hh"

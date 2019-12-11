@@ -24,9 +24,10 @@
 #include <set>
 
 #include <interface/capability/capability_interface.hh>
-#include <interface/network_manager_interface.hh>
-#include <interface/wakeup_interface.hh>
 #include <interface/media_player_interface.hh>
+#include <interface/network_manager_interface.hh>
+#include <interface/nugu_configuration.hh>
+#include <interface/wakeup_interface.hh>
 
 #include "nugu_client_listener.hh"
 
@@ -39,8 +40,7 @@ public:
     NuguClientImpl();
     virtual ~NuguClientImpl();
 
-    void setConfig(const std::string& key, const std::string& value);
-    void setConfigs(std::map<std::string, std::string>& cfgs);
+    void setConfig(NuguConfig::Key key, const std::string& value);
     void setListener(INuguClientListener* listener);
     INuguClientListener* getListener();
     void registerCapability(const CapabilityType ctype, std::pair<ICapabilityInterface*, ICapabilityListener*> capability);
@@ -58,11 +58,8 @@ public:
 
 private:
     int createCapabilities(void);
-    void setDefaultConfigs();
 
     std::map<CapabilityType, std::pair<ICapabilityInterface*, ICapabilityListener*>> icapability_map;
-    std::map<std::string, std::string> config_map;
-    std::map<std::string, std::string> config_env_map;
     INuguClientListener* listener = nullptr;
     IWakeupHandler* wakeup_handler = nullptr;
     std::unique_ptr<INetworkManager> network_manager = nullptr;

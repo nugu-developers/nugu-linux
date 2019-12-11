@@ -50,7 +50,7 @@ void TextAgent::initialize()
         return;
     }
 
-    std::string timeout = nugu_config_get(NuguConfig::Key::SERVER_RESPONSE_TIMEOUT_MSEC.c_str());
+    std::string timeout = NuguConfig::getValue(NuguConfig::Key::SERVER_RESPONSE_TIMEOUT_MSEC);
     timer = nugu_timer_new(std::stoi(timeout), 1);
     nugu_timer_set_callback(
         timer, [](void* userdata) {

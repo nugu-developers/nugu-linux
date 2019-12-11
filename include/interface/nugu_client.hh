@@ -34,6 +34,7 @@
 #include <interface/media_player_interface.hh>
 #include <interface/network_manager_interface.hh>
 #include <interface/nugu_client_listener.hh>
+#include <interface/nugu_configuration.hh>
 #include <interface/wakeup_interface.hh>
 
 namespace NuguClientKit {
@@ -97,13 +98,7 @@ public:
      * @param[in] key config key
      * @param[in] value config value
      */
-    void setConfig(std::string key, std::string value);
-
-    /**
-     * @brief Set configs to change nugu sdk internal behavior
-     * @param[in] cfgs map of config key and value
-     */
-    void setConfigs(std::map<std::string, std::string> cfgs);
+    void setConfig(NuguConfig::Key key, std::string value);
 
     /**
      * @brief Set the listener object
