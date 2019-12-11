@@ -17,8 +17,6 @@
 #ifndef __NUGU_LOCATION_INTERFACE_H__
 #define __NUGU_LOCATION_INTERFACE_H__
 
-#include <map>
-
 #include <interface/capability/capability_interface.hh>
 
 namespace NuguInterface {

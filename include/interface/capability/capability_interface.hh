@@ -20,7 +20,7 @@
 #include <list>
 #include <string>
 
-#include <core/nugu_directive.h>
+#include <base/nugu_directive.h>
 #include <interface/capability/capability_observer.hh>
 #include <json/json.h>
 

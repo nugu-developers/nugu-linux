@@ -100,9 +100,7 @@ IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 		# RPATH is useful only for testing without installation. Please use the
 		# '-DNO-RPATH' option for debian packaging.
 		IF (NOT NO-RPATH)
-			LINK_LIBRARIES(
-				-Wl,--rpath=${CMAKE_BINARY_DIR}
-				-Wl,--rpath=${CMAKE_BINARY_DIR}/src)
+			LINK_LIBRARIES(-Wl,--rpath=${CMAKE_BINARY_DIR})
 		ENDIF()
 	ENDIF()
 ENDIF()
@@ -124,8 +122,8 @@ ADD_DEFINITIONS(
 INCLUDE_DIRECTORIES(
 	${CMAKE_SOURCE_DIR}/externals/jsoncpp/include
 	${CMAKE_SOURCE_DIR}/include
-	${CMAKE_SOURCE_DIR}/include/core
-	${CMAKE_SOURCE_DIR}/include/service
+	${CMAKE_SOURCE_DIR}/include/base
+	${CMAKE_SOURCE_DIR}/include/clientkit
 	${CMAKE_SOURCE_DIR}/include/interface)
 
 # Install header files
@@ -138,10 +136,37 @@ INSTALL(FILES ${CMAKE_BINARY_DIR}/nugu.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pk
 
 ENABLE_TESTING()
 
+# External dependency modules - nghttp2, curl, jsoncpp
 ADD_SUBDIRECTORY(externals)
-ADD_SUBDIRECTORY(service)
-ADD_SUBDIRECTORY(interface)
+
+# NUGU SDK
 ADD_SUBDIRECTORY(src)
+ADD_SUBDIRECTORY(core)
+ADD_SUBDIRECTORY(interface)
+ADD_SUBDIRECTORY(clientkit)
+
+ADD_LIBRARY(libnugu SHARED
+	$<TARGET_OBJECTS:objhttp2>
+	$<TARGET_OBJECTS:objjsoncpp>
+	$<TARGET_OBJECTS:objbase>
+	$<TARGET_OBJECTS:objcore>
+	$<TARGET_OBJECTS:objinterface>
+	$<TARGET_OBJECTS:objclientkit>)
+TARGET_LINK_LIBRARIES(libnugu PUBLIC
+	${CMAKE_BINARY_DIR}/curl/lib/libcurl.a
+	${CMAKE_BINARY_DIR}/nghttp2/lib/libnghttp2.a
+	${pkgs_LDFLAGS} -ldl)
+
+SET_TARGET_PROPERTIES(libnugu
+	PROPERTIES VERSION ${VERSION} SOVERSION ${VERSION_MAJOR} OUTPUT_NAME nugu)
+
+INSTALL(TARGETS libnugu LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+
+# Unit tests
 ADD_SUBDIRECTORY(tests)
+
+# HAL Plugins
 ADD_SUBDIRECTORY(plugins)
+
+# Examples
 ADD_SUBDIRECTORY(examples)

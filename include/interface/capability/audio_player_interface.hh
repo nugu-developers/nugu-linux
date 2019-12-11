@@ -17,8 +17,6 @@
 #ifndef __NUGU_AUDIO_PLAYER_INTERFACE_H__
 #define __NUGU_AUDIO_PLAYER_INTERFACE_H__
 
-#include <iostream>
-#include <list>
 #include <string>
 
 #include <interface/capability/capability_interface.hh>
