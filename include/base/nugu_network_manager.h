@@ -71,7 +71,13 @@ typedef void (*NetworkManagerStatusCallback)(NuguNetworkStatus status,
  */
 enum nugu_network_handoff_status {
 	NUGU_NETWORK_HANDOFF_FAILED,
-	NUGU_NETWORK_HANDOFF_SUCCESS
+	/**< Handoff failed */
+
+	NUGU_NETWORK_HANDOFF_READY,
+	/**< The handoff connection is ready but not yet switched. */
+
+	NUGU_NETWORK_HANDOFF_COMPLETED
+	/**< The transition to the handoff connection is complete. */
 };
 
 /**

@@ -36,13 +36,24 @@ SystemAgent::SystemAgent()
 {
     nugu_network_manager_set_handoff_status_callback(
         [](NuguNetworkHandoffStatus status, void* userdata) {
-            if (status != NUGU_NETWORK_HANDOFF_SUCCESS)
-                return;
-
             SystemAgent* sa = static_cast<SystemAgent*>(userdata);
 
-            nugu_info("handoff ok. send synchronizeState() event");
-            sa->synchronizeState();
+            switch (status) {
+            case NUGU_NETWORK_HANDOFF_FAILED:
+                nugu_error("handoff failed");
+                break;
+            case NUGU_NETWORK_HANDOFF_READY:
+                nugu_dbg("handoff ready. send 'Disconnect' event");
+                sa->sendEventDisconnect();
+                break;
+            case NUGU_NETWORK_HANDOFF_COMPLETED:
+                nugu_dbg("handoff completed. send 'SynchronizeState' event");
+                sa->synchronizeState();
+                break;
+            default:
+                nugu_error("invalid status: %d", status);
+                break;
+            }
         },
         this);
 }

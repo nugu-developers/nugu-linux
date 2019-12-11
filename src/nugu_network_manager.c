@@ -40,7 +40,7 @@ enum connection_step {
 	STEP_REGISTRY_DONE,
 	STEP_SERVER_CONNECTING,
 	STEP_SERVER_FAILED,
-	STEP_SERVER_CONNECTTED,
+	STEP_SERVER_CONNECTED,
 	STEP_SERVER_HANDOFF,
 	STEP_MAX
 };
@@ -53,7 +53,7 @@ static const char * const _debug_connection_step[] = {
 	[STEP_REGISTRY_DONE] = "STEP_REGISTRY_DONE",
 	[STEP_SERVER_CONNECTING] = "STEP_SERVER_CONNECTING",
 	[STEP_SERVER_FAILED] = "STEP_SERVER_FAILED",
-	[STEP_SERVER_CONNECTTED] = "STEP_SERVER_CONNECTTED",
+	[STEP_SERVER_CONNECTED] = "STEP_SERVER_CONNECTED",
 	[STEP_SERVER_HANDOFF] = "STEP_SERVER_HANDOFF"
 };
 
@@ -377,17 +377,25 @@ static void _process_connecting(NetworkManager *nm,
 		}
 		break;
 
-	case STEP_SERVER_CONNECTTED:
+	case STEP_SERVER_CONNECTED:
 		if (nm->handoff) {
-			nugu_info("handoff success. replace the server");
+			nugu_info("connected to handoff server");
+			if (nm->handoff_callback)
+				nm->handoff_callback(
+					NUGU_NETWORK_HANDOFF_READY,
+					nm->handoff_callback_userdata);
+
+			nugu_info("remove current server");
 			dg_server_free(nm->server);
+
+			nugu_info("change to handoff server");
 			nm->serverinfo = NULL;
 			nm->server = nm->handoff;
 			nm->handoff = NULL;
 
 			if (nm->handoff_callback)
 				nm->handoff_callback(
-					NUGU_NETWORK_HANDOFF_SUCCESS,
+					NUGU_NETWORK_HANDOFF_COMPLETED,
 					nm->handoff_callback_userdata);
 		}
 		dg_server_start_health_check(nm->server, &(nm->policy));
@@ -465,7 +473,7 @@ static void on_event(enum nugu_equeue_type type, void *data, void *userdata)
 		break;
 	case NUGU_EQUEUE_TYPE_SERVER_CONNECTED:
 		nugu_dbg("received server connected event");
-		_process_connecting(userdata, STEP_SERVER_CONNECTTED);
+		_process_connecting(userdata, STEP_SERVER_CONNECTED);
 		break;
 	default:
 		nugu_error("unhandled event: %d", type);
