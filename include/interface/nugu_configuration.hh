@@ -20,38 +20,42 @@
 #include <map>
 #include <string>
 
-#include <core/nugu_config.h>
-
 namespace NuguInterface {
 
 /**
  * @file nugu_configuration.hh
  */
+class NuguConfig {
+public:
+    enum class Key {
+        WAKEUP_WITH_LISTENING,
+        WAKEUP_WORD,
+        ASR_EPD_TYPE,
+        ASR_EPD_MAX_DURATION_SEC,
+        ASR_EPD_PAUSE_LENGTH_MSEC,
+        ASR_EPD_TIMEOUT_SEC,
+        ASR_ENCODING,
+        ASR_EPD_SAMPLERATE,
+        ASR_EPD_FORMAT,
+        ASR_EPD_CHANNEL,
+        KWD_SAMPLERATE,
+        KWD_FORMAT,
+        KWD_CHANNEL,
+        SERVER_RESPONSE_TIMEOUT_MSEC,
+        MODEL_PATH,
+        TTS_ENGINE
+    };
 
-namespace NuguConfig {
-    using NuguConfigType = std::map<std::string, std::string>;
+public:
+    NuguConfig() = delete;
 
-    namespace Key {
-        const std::string WAKEUP_WITH_LISTENING = "wakeup_with_listening";
-        const std::string WAKEUP_WORD = "wakeup_word";
-        const std::string ASR_EPD_TYPE = "asr_epd_type";
-        const std::string ASR_EPD_MAX_DURATION_SEC = "asr_epd_max_duration_sec";
-        const std::string ASR_EPD_PAUSE_LENGTH_MSEC = "asr_epd_pause_length_msec";
-        const std::string ASR_EPD_TIMEOUT_SEC = "asr_epd_timeout_sec";
-        const std::string ASR_ENCODING = "asr_encoding";
-        const std::string ASR_EPD_SAMPLERATE = "asr_epd_samplerate";
-        const std::string ASR_EPD_FORMAT = "asr_epd_format";
-        const std::string ASR_EPD_CHANNEL = "asr_epd_channel";
-        const std::string KWD_SAMPLERATE = "kwd_samplerate";
-        const std::string KWD_FORMAT = "kwd_format";
-        const std::string KWD_CHANNEL = "kwd_channel";
-        const std::string SERVER_RESPONSE_TIMEOUT_MSEC = "server_response_timeout_msec";
-        const std::string MODEL_PATH = "model_path";
-        const std::string TTS_ENGINE = "tts_engine";
-    }
+    static void loadDefaultValue();
+    static const std::string getValue(Key key);
+    static void setValue(Key key, const std::string& value);
 
-    const NuguConfigType getDefaultValues();
-}
+private:
+    static std::map<Key, std::string> configs;
+};
 
 } // NuguInterface
 

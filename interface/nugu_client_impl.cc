@@ -17,18 +17,16 @@
 #include <string>
 
 #include <interface/capability/system_interface.hh>
-#include <interface/nugu_configuration.hh>
 
-#include "nugu.h"
+#include "audio_recorder_manager.hh"
 #include "capability_creator.hh"
 #include "capability_manager_helper.hh"
+#include "media_player.hh"
+#include "nugu.h"
 #include "nugu_client_impl.hh"
-#include "nugu_config.h"
 #include "nugu_equeue.h"
 #include "nugu_log.h"
 #include "nugu_plugin.h"
-#include "media_player.hh"
-#include "audio_recorder_manager.hh"
 
 namespace NuguClientKit {
 
@@ -36,9 +34,8 @@ using namespace NuguCore;
 
 NuguClientImpl::NuguClientImpl()
 {
-    nugu_config_initialize();
     nugu_equeue_initialize();
-    setDefaultConfigs();
+    NuguConfig::loadDefaultValue();
 
     network_manager = std::unique_ptr<INetworkManager>(CapabilityCreator::createNetworkManager());
     network_manager->addListener(this);
@@ -48,30 +45,11 @@ NuguClientImpl::~NuguClientImpl()
 {
     CapabilityManagerHelper::destroyInstance();
     nugu_equeue_deinitialize();
-    nugu_config_deinitialize();
 }
 
-void NuguClientImpl::setConfig(const std::string& key, const std::string& value)
+void NuguClientImpl::setConfig(NuguConfig::Key key, const std::string& value)
 {
-    if (config_env_map.find(key) == config_env_map.end()) {
-        config_map[key] = value;
-        nugu_config_set(key.c_str(), value.c_str());
-    }
-}
-
-void NuguClientImpl::setConfigs(std::map<std::string, std::string>& cfgs)
-{
-    if (cfgs.empty())
-        return;
-
-    for (auto config : cfgs)
-        config_map[config.first] = config.second;
-
-    for (auto config : config_env_map)
-        config_map[config.first] = config.second;
-
-    for (auto config : config_map)
-        nugu_config_set(config.first.c_str(), config.second.c_str());
+    NuguConfig::setValue(key, value);
 }
 
 void NuguClientImpl::setListener(INuguClientListener* listener)
@@ -108,20 +86,6 @@ IWakeupHandler* NuguClientImpl::getWakeupHandler()
         wakeup_handler = CapabilityCreator::createWakeupHandler();
 
     return wakeup_handler;
-}
-
-void NuguClientImpl::setDefaultConfigs(void)
-{
-    const std::map<std::string, std::string> default_config_map = NuguConfig::getDefaultValues();
-
-    for (auto config : default_config_map)
-        config_map[config.first] = config.second;
-
-    for (auto config : config_env_map)
-        config_map[config.first] = config.second;
-
-    for (auto config : config_map)
-        nugu_config_set(config.first.c_str(), config.second.c_str());
 }
 
 int NuguClientImpl::create(void)

@@ -23,7 +23,6 @@
 #include <interface/nugu_configuration.hh>
 
 #include "asr_agent.hh"
-#include "nugu_config.h"
 #include "nugu_log.h"
 
 namespace NuguCore {
@@ -174,13 +173,13 @@ void ASRAgent::initialize()
         return;
     }
 
-    epd_type = nugu_config_get(NuguConfig::Key::ASR_EPD_TYPE.c_str());
-    asr_encoding = nugu_config_get(NuguConfig::Key::ASR_ENCODING.c_str());
+    epd_type = NuguConfig::getValue(NuguConfig::Key::ASR_EPD_TYPE);
+    asr_encoding = NuguConfig::getValue(NuguConfig::Key::ASR_ENCODING);
 
     speech_recognizer = std::unique_ptr<SpeechRecognizer>(new SpeechRecognizer());
     speech_recognizer->setListener(this);
 
-    std::string timeout = nugu_config_get(NuguConfig::Key::SERVER_RESPONSE_TIMEOUT_MSEC.c_str());
+    std::string timeout = NuguConfig::getValue(NuguConfig::Key::SERVER_RESPONSE_TIMEOUT_MSEC);
     timer = nugu_timer_new(std::stoi(timeout), 1);
     nugu_timer_set_callback(
         timer, [](void* userdata) {

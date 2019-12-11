@@ -50,14 +50,9 @@ NuguClient::~NuguClient()
 {
 }
 
-void NuguClient::setConfig(std::string key, std::string value)
+void NuguClient::setConfig(NuguConfig::Key key, std::string value)
 {
     impl->setConfig(key, value);
-}
-
-void NuguClient::setConfigs(std::map<std::string, std::string> cfgs)
-{
-    impl->setConfigs(cfgs);
 }
 
 void NuguClient::setListener(INuguClientListener* listener)

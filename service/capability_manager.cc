@@ -57,7 +57,7 @@ CapabilityManager::CapabilityManager()
 {
     nugu_dirseq_add_callback(dirseqCallback, this);
 
-    wword = nugu_config_get(NuguConfig::Key::WAKEUP_WORD.c_str());
+    wword = NuguConfig::getValue(NuguConfig::Key::WAKEUP_WORD);
     playsync_manager = std::unique_ptr<PlaySyncManager>(new PlaySyncManager());
 }
 

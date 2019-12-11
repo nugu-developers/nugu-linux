@@ -20,7 +20,6 @@
 #include <interface/nugu_configuration.hh>
 
 #include "endpoint_detector.h"
-#include "nugu_config.h"
 #include "nugu_log.h"
 #include "speech_recognizer.hh"
 
@@ -30,9 +29,9 @@ using namespace NuguInterface;
 
 SpeechRecognizer::SpeechRecognizer()
 {
-    std::string sample = nugu_config_get(NuguConfig::Key::ASR_EPD_SAMPLERATE.c_str());
-    std::string format = nugu_config_get(NuguConfig::Key::ASR_EPD_FORMAT.c_str());
-    std::string channel = nugu_config_get(NuguConfig::Key::ASR_EPD_CHANNEL.c_str());
+    std::string sample = NuguConfig::getValue(NuguConfig::Key::ASR_EPD_SAMPLERATE);
+    std::string format = NuguConfig::getValue(NuguConfig::Key::ASR_EPD_FORMAT);
+    std::string channel = NuguConfig::getValue(NuguConfig::Key::ASR_EPD_CHANNEL);
 
     AudioInputProcessor::init("asr", sample, format, channel);
 }
@@ -64,9 +63,9 @@ void SpeechRecognizer::loop(void)
     std::string max_duration;
     std::string pause_length;
 
-    timeout = nugu_config_get(NuguConfig::Key::ASR_EPD_TIMEOUT_SEC.c_str());
-    max_duration = nugu_config_get(NuguConfig::Key::ASR_EPD_MAX_DURATION_SEC.c_str());
-    pause_length = nugu_config_get(NuguConfig::Key::ASR_EPD_PAUSE_LENGTH_MSEC.c_str());
+    timeout = NuguConfig::getValue(NuguConfig::Key::ASR_EPD_TIMEOUT_SEC);
+    max_duration = NuguConfig::getValue(NuguConfig::Key::ASR_EPD_MAX_DURATION_SEC);
+    pause_length = NuguConfig::getValue(NuguConfig::Key::ASR_EPD_PAUSE_LENGTH_MSEC);
 
     std::string samplerate = recorder->getSamplerate();
     if (samplerate == "8k")
@@ -86,7 +85,7 @@ void SpeechRecognizer::loop(void)
 
     nugu_dbg("Listening Thread: started");
 
-    model_path = nugu_config_get(NuguConfig::Key::MODEL_PATH.c_str());
+    model_path = NuguConfig::getValue(NuguConfig::Key::MODEL_PATH);
     if (model_path.size()) {
         nugu_dbg("model path: %s", model_path.c_str());
 

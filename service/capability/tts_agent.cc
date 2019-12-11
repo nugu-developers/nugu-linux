@@ -19,7 +19,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "nugu_config.h"
 #include "nugu_log.h"
 #include "nugu_uuid.h"
 #include "tts_agent.hh"
@@ -86,7 +85,7 @@ void TTSAgent::initialize()
     nugu_pcm_set_status_callback(pcm, pcmStatusCallback, this);
     nugu_pcm_set_event_callback(pcm, pcmEventCallback, this);
 
-    nugu_pcm_set_property(pcm, (NuguAudioProperty) { AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
+    nugu_pcm_set_property(pcm, (NuguAudioProperty){ AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
 
     CapabilityManager::getInstance()->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
@@ -251,7 +250,7 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
 {
     Json::Value tts;
 
-    tts["engine"] = nugu_config_get(NuguConfig::Key::TTS_ENGINE.c_str());
+    tts["engine"] = NuguConfig::getValue(NuguConfig::Key::TTS_ENGINE);
     tts["version"] = getVersion();
     switch (speak_status) {
     case -1:
