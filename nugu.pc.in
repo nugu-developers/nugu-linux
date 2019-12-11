@@ -7,4 +7,4 @@ Description: An AI platform
 Version: ${version}
 Requires: glib-2.0
 Libs: -L${libdir} -lnugu
-Cflags: -I${includedir} -I${includedir}/core
+Cflags: -I${includedir} -I${includedir}/base -I${includedir}/interface -I${includedir}/clientkit

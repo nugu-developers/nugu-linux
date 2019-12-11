@@ -24,7 +24,7 @@ extern "C" {
 /**
  * @file nugu.h
  * @defgroup nugu NUGU SDK information
- * @ingroup SDKCore
+ * @ingroup SDKBase
  * @brief NUGU SDK information
  *
  * @{

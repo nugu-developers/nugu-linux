@@ -1,6 +1,0 @@
-INCLUDE_DIRECTORIES(
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_SOURCE_DIR}/capability
-)
-FILE(GLOB_RECURSE src *.cc capability/*.cc)
-ADD_LIBRARY(objservice OBJECT ${src})

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <iostream>
+
 #include "audio_player_listener.hh"
 #include "nugu_log.h"
 

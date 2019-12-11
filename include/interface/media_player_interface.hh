@@ -17,7 +17,7 @@
 #ifndef __NUGU_MEDIA_PLAYER_INTERFACE_H__
 #define __NUGU_MEDIA_PLAYER_INTERFACE_H__
 
-#include <core/nugu_media.h>
+#include <base/nugu_media.h>
 #include <string>
 
 namespace NuguInterface {

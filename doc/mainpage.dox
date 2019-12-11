@@ -19,7 +19,7 @@
  *   - @ref SDKAPI\n
  *     C++ API for application developer
  *
- *   - @ref SDKCore\n
+ *   - @ref SDKBase\n
  *     C API for internal developer or plugin developer
  *
  *   - @ref SDKDriver\n
@@ -32,7 +32,7 @@
  * Copyright (c) 2019 SK Telecom Co., Ltd. All rights reserved.
  *
  * @defgroup SDKAPI High-level public API
- * @defgroup SDKCore Low-level public API
+ * @defgroup SDKBase Low-level public API
  * @defgroup SDKDriver Driver API
  *
  * @defgroup SDKNuguClientKit NuguClientKit
