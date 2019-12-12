@@ -15,15 +15,11 @@
  *
  * @section overview Overview
  *
- * The NUGU SDK Linux API consists of three parts:
- *   - @ref SDKAPI\n
- *     C++ API for application developer
- *
+ * The NUGU SDK Linux API consists of the following parts:
+ *   - @ref SDKNuguClientKit\n
+ *   - @ref SDKNuguInterface\n
  *   - @ref SDKBase\n
- *     C API for internal developer or plugin developer
- *
  *   - @ref SDKDriver\n
- *     C API for HAL(hardware abstraction layer) developer
  *
  * @section license License
  *
@@ -31,14 +27,14 @@
  *
  * Copyright (c) 2019 SK Telecom Co., Ltd. All rights reserved.
  *
- * @defgroup SDKAPI High-level public API
- * @defgroup SDKBase Low-level public API
- * @defgroup SDKDriver Driver API
- *
  * @defgroup SDKNuguClientKit NuguClientKit
- * @ingroup SDKAPI
  *
  * @defgroup SDKNuguInterface NuguInterface
- * @ingroup SDKAPI
+ *
+ * @defgroup SDKBase SDK Base
+ * @breif Base infrastructure API
+ *
+ * @defgroup SDKDriver Driver API
+ * @breif Driver API for HAL(hardware abstraction layer) Support.
  *
  */
