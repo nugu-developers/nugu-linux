@@ -1,3 +1,16 @@
+nugu (0.5.0ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed Network Module
+  * Fixed Location Interface
+  * Fixed NuguConfig
+  * Fixed SystemAgent
+  * Added DisplayRenderAssembly
+  * Added AudioRecorderManager
+  * Optimized Capability Interface
+  * Changed SourceTree Structure
+
+ -- nugulinux <nugulinux@gmail.com>  Mon, 16 Dec 2019 17:30:00 +0900
+
 nugu (0.4.0ubuntu1~bionic) bionic; urgency=medium
 
   * Added Location Agent
