@@ -84,7 +84,7 @@ typedef enum nugu_focus_result NuguFocusResult;
  * @brief Return type of focus steal callback
  */
 enum nugu_focus_steal_result {
-	NUGU_FOCUS_STEAL_ALLOW, /**< Steal allow (focus giveup) */
+	NUGU_FOCUS_STEAL_ALLOW, /**< Steal allow (focus give up) */
 	NUGU_FOCUS_STEAL_REJECT /**< Reject the steal by other focus */
 };
 

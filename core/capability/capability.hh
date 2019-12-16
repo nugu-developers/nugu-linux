@@ -57,8 +57,8 @@ public:
     virtual ~Capability();
     virtual void initialize();
 
-    std::string getReferrerDialoRequestId();
-    void setReferrerDialoRequestId(const std::string& id);
+    std::string getReferrerDialogRequestId();
+    void setReferrerDialogRequestId(const std::string& id);
     std::string getTypeName(CapabilityType type) override;
     CapabilityType getType() override;
     void setName(CapabilityType type);

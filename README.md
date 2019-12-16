@@ -43,7 +43,7 @@ Before building NUGU SDK, you need to check whether your device and os are satis
 
 ## Run
 
-NUGU SDK provides sample application which is possible to test simple NUGU service by CLI. Before executing sample application, you have to get access token which is needed to use NUGU Service. You can get access token and authorization info by OAuth. Also, for using wakeup detection and speech recognizion, you have to get required asset files. (*It needs business partership.*)
+NUGU SDK provides sample application which is possible to test simple NUGU service by CLI. Before executing sample application, you have to get access token which is needed to use NUGU Service. You can get access token and authorization info by OAuth. Also, for using wakeup detection and speech recognition, you have to get required asset files. (*It needs business partnership.*)
 
 - [Sample Guide](https://github.com/nugu-developers/nugu-linux/wiki/Samples)
 

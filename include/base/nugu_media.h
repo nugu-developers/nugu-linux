@@ -69,7 +69,7 @@ enum nugu_media_event {
 	MEDIA_EVENT_MEDIA_LOAD_FAILED, /**< media load failed */
 	MEDIA_EVENT_MEDIA_LOADED, /**< media loaded */
 	MEDIA_EVENT_MEDIA_UNDERRUN, /**< media buffer underrun */
-	MEDIA_EVENT_MEDIA_BUFFER_FULL, /**< media buffer rull */
+	MEDIA_EVENT_MEDIA_BUFFER_FULL, /**< media buffer full */
 	MEDIA_EVENT_END_OF_STREAM, /**< end of stream */
 	MEDIA_EVENT_MAX
 };

@@ -307,7 +307,7 @@ EXPORT_API int nugu_focus_release(NuguFocus *focus, NuguFocusResource rsrc)
 
 	item = l->data;
 	if (item->focus != focus) {
-		/* foscus is reserved item */
+		/* focus is reserved item */
 		_remove_items_by_focus(focus, rsrc);
 
 		dump_list();

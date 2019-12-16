@@ -131,22 +131,22 @@ public:
     virtual bool setSource(std::string url) = 0;
 
     /**
-     * @brief Requset media player to play the media content.
+     * @brief Request media player to play the media content.
      */
     virtual bool play() = 0;
 
     /**
-     * @brief Requset media player to stop the media content.
+     * @brief Request media player to stop the media content.
      */
     virtual bool stop() = 0;
 
     /**
-     * @brief Requset media player to pause the media content.
+     * @brief Request media player to pause the media content.
      */
     virtual bool pause() = 0;
 
     /**
-     * @brief Requset media player to resume the media content.
+     * @brief Request media player to resume the media content.
      */
     virtual bool resume() = 0;
 
