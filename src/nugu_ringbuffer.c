@@ -16,12 +16,12 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <glib.h>
-#include <dlfcn.h>
 #include <pthread.h>
 
-#include "nugu_log.h"
-#include "nugu_ringbuffer.h"
+#include <glib.h>
+
+#include "base/nugu_log.h"
+#include "base/nugu_ringbuffer.h"
 
 //#define DEBUG_RINGBUFFER
 

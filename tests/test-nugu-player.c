@@ -17,9 +17,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <glib.h>
 
-#include "nugu_player.h"
+#include "base/nugu_player.h"
 
 static enum nugu_media_status _status;
 static enum nugu_media_event _event;

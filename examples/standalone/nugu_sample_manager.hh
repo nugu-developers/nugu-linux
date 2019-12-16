@@ -15,8 +15,9 @@
  */
 
 #include <functional>
-#include <glib.h>
 #include <string>
+
+#include <glib.h>
 
 #include <interface/capability/text_interface.hh>
 

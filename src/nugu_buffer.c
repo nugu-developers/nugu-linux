@@ -16,10 +16,11 @@
 
 #include <stdlib.h>
 #include <string.h>
+
 #include <glib.h>
 
-#include "nugu_log.h"
-#include "nugu_buffer.h"
+#include "base/nugu_log.h"
+#include "base/nugu_buffer.h"
 
 #ifndef CONFIG_DEFAULT_BUFFER_SIZE
 #define CONFIG_DEFAULT_BUFFER_SIZE 1024
@@ -57,11 +58,11 @@ EXPORT_API NuguBuffer *nugu_buffer_new(size_t default_size)
 	return buf;
 }
 
-EXPORT_API void *nugu_buffer_free(NuguBuffer *buf, gboolean data_free)
+EXPORT_API void *nugu_buffer_free(NuguBuffer *buf, int is_data_free)
 {
 	g_return_val_if_fail(buf != NULL, NULL);
 
-	if (data_free == FALSE) {
+	if (is_data_free == 0) {
 		void *return_data = buf->data;
 
 		memset(buf, 0, sizeof(struct _nugu_buffer));

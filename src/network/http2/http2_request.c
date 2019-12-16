@@ -19,7 +19,10 @@
 #include <time.h>
 #include <errno.h>
 
-#include "nugu_log.h"
+#include <glib.h>
+
+#include "base/nugu_log.h"
+
 #include "http2_request.h"
 
 #define SHOW_VERBOSE 0
@@ -215,13 +218,13 @@ void http2_request_free(HTTP2Request *req)
 		nugu_error("CURL ERROR: %s", req->curl_errbuf);
 
 	if (req->send_body)
-		nugu_buffer_free(req->send_body, TRUE);
+		nugu_buffer_free(req->send_body, 1);
 
 	if (req->response_header)
-		nugu_buffer_free(req->response_header, TRUE);
+		nugu_buffer_free(req->response_header, 1);
 
 	if (req->response_body)
-		nugu_buffer_free(req->response_body, TRUE);
+		nugu_buffer_free(req->response_body, 1);
 
 	if (req->headers)
 		curl_slist_free_all(req->headers);

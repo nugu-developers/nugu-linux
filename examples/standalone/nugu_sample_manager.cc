@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-#include <iostream>
 #include <string.h>
 #include <unistd.h>
 
+#include <iostream>
+
 #include "nugu.h"
-#include "nugu_log.h"
+#include "base/nugu_log.h"
+
 #include "nugu_sample_manager.hh"
 
 const std::string NuguSampleManager::C_RED = "\033[1;91m";

@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-#include "nugu_client.hh"
+#include "clientkit/nugu_client.hh"
+
 #include "nugu_client_impl.hh"
 
 namespace NuguClientKit {

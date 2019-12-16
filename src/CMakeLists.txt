@@ -7,7 +7,9 @@ ADD_LIBRARY(objhttp2 OBJECT
 	network/http2/v1_event_attachment.c
 	network/http2/v1_directives.cc
 	network/http2/v1_ping.c
-	network/http2/v1_policies.cc)
+	network/http2/v1_policies.cc
+	network/dg_registry.c
+	network/dg_server.c)
 TARGET_INCLUDE_DIRECTORIES(objhttp2 PRIVATE
 	network
 	${CMAKE_BINARY_DIR}/nghttp2/include
@@ -15,11 +17,10 @@ TARGET_INCLUDE_DIRECTORIES(objhttp2 PRIVATE
 ADD_DEPENDENCIES(objhttp2 CURL)
 
 # NUGU Base
-FILE(GLOB SRCS *.c network/*.c)
+FILE(GLOB SRCS *.c)
 
 ADD_LIBRARY(objbase OBJECT ${SRCS})
 TARGET_INCLUDE_DIRECTORIES(objbase PRIVATE
-	network
 	${CMAKE_BINARY_DIR}/curl/include)
 TARGET_COMPILE_DEFINITIONS(objbase PRIVATE
 	# Only symbols that use EXPORT_API are visible, and all other symbols are hidden.

@@ -17,8 +17,6 @@
 #ifndef __NUGU_ASR_INTERFACE_H__
 #define __NUGU_ASR_INTERFACE_H__
 
-#include <string>
-
 #include <interface/capability/capability_interface.hh>
 
 namespace NuguInterface {

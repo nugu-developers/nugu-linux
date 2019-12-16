@@ -17,8 +17,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "nugu_log.h"
-#include "nugu_buffer.h"
+#include <glib.h>
+
+#include "base/nugu_log.h"
+#include "base/nugu_buffer.h"
+
 #include "multipart_parser.h"
 
 #define MARK_CR '\r'
@@ -89,8 +92,8 @@ void multipart_parser_free(MultipartParser *parser)
 		nugu_dbg("\n%s", (char *)nugu_buffer_peek(parser->body));
 	}
 
-	nugu_buffer_free(parser->header, TRUE);
-	nugu_buffer_free(parser->body, TRUE);
+	nugu_buffer_free(parser->header, 1);
+	nugu_buffer_free(parser->body, 1);
 
 	memset(parser, 0, sizeof(MultipartParser));
 	free(parser);

@@ -26,7 +26,7 @@
 #include "interface/nugu_configuration.hh"
 #include "interface/wakeup_interface.hh"
 
-#include "nugu_client_listener.hh"
+#include "clientkit/nugu_client_listener.hh"
 
 namespace NuguClientKit {
 

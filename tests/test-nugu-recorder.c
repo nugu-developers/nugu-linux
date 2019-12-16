@@ -17,10 +17,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <glib.h>
 #include <unistd.h>
 
-#include "nugu_recorder.h"
+#include <glib.h>
+
+#include "base/nugu_recorder.h"
 
 #define SET_DEFAULT_AUDIO_PROPERTY(property)                                   \
 	property.samplerate = AUDIO_SAMPLE_RATE_16K;                           \

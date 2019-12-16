@@ -16,15 +16,16 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <glib.h>
 #include <string.h>
+
+#include <glib.h>
 #include <alsa/error.h>
 #include <portaudio.h>
 
-#include "nugu_log.h"
-#include "nugu_plugin.h"
-#include "nugu_recorder.h"
-#include "nugu_pcm.h"
+#include "base/nugu_log.h"
+#include "base/nugu_plugin.h"
+#include "base/nugu_recorder.h"
+#include "base/nugu_pcm.h"
 
 #define PLUGIN_DRIVER_NAME "portaudio"
 #define SAMPLE_SILENCE (0.0f)
@@ -451,13 +452,17 @@ static void snd_error_log(const char *file, int line, const char *function,
 		       -1, "[ALSA] <%s:%d> err=%d, %s", file, line, err, msg);
 }
 
-static struct nugu_recorder_driver_ops rec_ops = { .start = _rec_start,
-						   .stop = _rec_stop };
+static struct nugu_recorder_driver_ops rec_ops = {
+	.start = _rec_start,
+	.stop = _rec_stop
+};
 
-static struct nugu_pcm_driver_ops pcm_ops = { .start = _pcm_start,
-					      .stop = _pcm_stop,
-					      .pause = _pcm_pause,
-					      .resume = _pcm_resume };
+static struct nugu_pcm_driver_ops pcm_ops = {
+	.start = _pcm_start,
+	.stop = _pcm_stop,
+	.pause = _pcm_pause,
+	.resume = _pcm_resume
+};
 
 static int init(NuguPlugin *p)
 {

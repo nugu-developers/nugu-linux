@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-#include <openssl/rand.h>
-#include <openssl/sha.h>
 #include <string.h>
 #include <time.h>
 #include <math.h>
 
-#include "nugu_uuid.h"
-#include "nugu_log.h"
-#include "nugu_network_manager.h"
+#include <openssl/rand.h>
+#include <openssl/sha.h>
+
+#include "base/nugu_log.h"
+#include "base/nugu_network_manager.h"
+#include "base/nugu_uuid.h"
 
 #define BASE_TIMESTAMP 1546300800 /* GMT: 2019/1/1 00:00:00 */
 

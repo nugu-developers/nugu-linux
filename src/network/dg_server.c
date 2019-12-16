@@ -17,11 +17,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "nugu_log.h"
-#include "nugu_event.h"
-#include "nugu_uuid.h"
+#include <glib.h>
 
-#include "dg_server.h"
+#include "base/nugu_log.h"
+#include "base/nugu_event.h"
+#include "base/nugu_uuid.h"
 
 #include "http2/http2_network.h"
 #include "http2/v1_directives.h"
@@ -29,6 +29,8 @@
 #include "http2/v1_event_attachment.h"
 #include "http2/v1_ping.h"
 #include "http2/v1_policies.h"
+
+#include "dg_server.h"
 
 struct _dg_server {
 	HTTP2Network *net;

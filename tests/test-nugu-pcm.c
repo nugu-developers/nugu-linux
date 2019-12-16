@@ -17,9 +17,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <glib.h>
 
-#include "nugu_pcm.h"
+#include "base/nugu_pcm.h"
 
 static enum nugu_media_status _status;
 static enum nugu_media_event _event;

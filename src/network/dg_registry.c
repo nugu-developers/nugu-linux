@@ -17,11 +17,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "nugu_log.h"
-#include "nugu_network_manager.h"
+#include <glib.h>
+
+#include "base/nugu_log.h"
+#include "base/nugu_network_manager.h"
+
+#include "http2/v1_policies.h"
 
 #include "dg_registry.h"
-#include "http2/v1_policies.h"
 
 struct _dg_registry {
 	HTTP2Network *net;

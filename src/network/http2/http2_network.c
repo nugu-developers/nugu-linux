@@ -23,8 +23,10 @@
 #include <unistd.h>
 #include <errno.h>
 
-#include "nugu_log.h"
-#include "nugu_network_manager.h"
+#include <glib.h>
+
+#include "base/nugu_log.h"
+#include "base/nugu_network_manager.h"
 
 #include "http2_network.h"
 

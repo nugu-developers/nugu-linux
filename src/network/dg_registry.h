@@ -17,11 +17,11 @@
 #ifndef __NETWORK_DEVICE_GATEWAY_REGISTRY_H__
 #define __NETWORK_DEVICE_GATEWAY_REGISTRY_H__
 
+#include "dg_types.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "dg_types.h"
 
 typedef struct _dg_registry DGRegistry;
 

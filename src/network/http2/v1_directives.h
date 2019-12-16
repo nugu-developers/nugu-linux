@@ -17,7 +17,7 @@
 #ifndef __HTTP2_V1_DIRECTIVES_H__
 #define __HTTP2_V1_DIRECTIVES_H__
 
-#include "http2_network.h"
+#include "http2/http2_network.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -17,10 +17,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+
 #include <glib.h>
 
-#include "nugu_log.h"
-#include "nugu_directive_sequencer.h"
+#include "base/nugu_log.h"
+#include "base/nugu_directive_sequencer.h"
 
 struct _dirseq_callback {
 	DirseqCallback callback;

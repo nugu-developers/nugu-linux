@@ -30,7 +30,7 @@
 
 #include <glib.h>
 
-#include "nugu_log.h"
+#include "base/nugu_log.h"
 
 #define MAX_FIELDSIZE_FILENAME 30
 #define MAX_FIELDSIZE_FUNCNAME 30

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "nugu_log.h"
-#include "nugu_plugin.h"
+#include "base/nugu_log.h"
+#include "base/nugu_plugin.h"
 
 static int init(NuguPlugin *p)
 {

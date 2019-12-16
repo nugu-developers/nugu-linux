@@ -17,9 +17,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <glib.h>
 
-#include "nugu_plugin.h"
+#include "base/nugu_plugin.h"
 
 static struct nugu_plugin_desc test_plugin_desc = {
 	.name = "test",

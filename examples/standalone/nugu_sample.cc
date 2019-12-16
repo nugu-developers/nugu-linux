@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
+#include <iostream>
+
 #include <interface/nugu_configuration.hh>
+#include <clientkit/nugu_client.hh>
 
 #include "audio_player_listener.hh"
 #include "delegation_listener.hh"
 #include "display_listener.hh"
 #include "extension_listener.hh"
 #include "location_listener.hh"
-#include "nugu_client.hh"
-#include "nugu_log.h"
-#include "nugu_sample_manager.hh"
-#include "speech_operator.hh"
 #include "system_listener.hh"
 #include "text_listener.hh"
 #include "tts_listener.hh"
+#include "speech_operator.hh"
+
+#include "nugu_sample_manager.hh"
 
 using namespace NuguClientKit;
 
@@ -72,7 +74,7 @@ public:
         switch (signal) {
         case DIALOG_REQUEST_ID:
             if (data)
-                nugu_info("DIALOG_REQUEST_ID = %s", data);
+                std::cout << "[NuguClient] DIALOG_REQUEST_ID = " << data << std::endl;
             break;
         }
     }

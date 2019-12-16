@@ -17,9 +17,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <glib.h>
 
-#include "nugu_ringbuffer.h"
+#include "base/nugu_ringbuffer.h"
 
 static void test_ringbuffer_default(void)
 {

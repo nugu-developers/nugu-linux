@@ -18,7 +18,8 @@
 #define __HTTP2_REQUEST_H__
 
 #include "curl/curl.h"
-#include "nugu_buffer.h"
+
+#include "base/nugu_buffer.h"
 
 #ifdef __cplusplus
 extern "C" {

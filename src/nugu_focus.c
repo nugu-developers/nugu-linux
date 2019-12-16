@@ -16,10 +16,11 @@
 
 #include <string.h>
 #include <stdlib.h>
+
 #include <glib.h>
 
-#include "nugu_log.h"
-#include "nugu_focus.h"
+#include "base/nugu_log.h"
+#include "base/nugu_focus.h"
 
 static const char *const _type_str[] = { "WAKEWORD",   "ASR",   "ALERT", "TTS",
 					 "ASR_EXPECT", "MEDIA", "CUSTOM" };

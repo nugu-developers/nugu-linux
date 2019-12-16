@@ -18,10 +18,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/eventfd.h>
+
 #include <glib.h>
 
-#include "nugu_log.h"
-#include "nugu_equeue.h"
+#include "base/nugu_log.h"
+#include "base/nugu_equeue.h"
 
 struct _equeue_typemap {
 	NuguEqueueCallback callback;

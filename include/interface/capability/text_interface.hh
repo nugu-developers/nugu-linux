@@ -18,7 +18,6 @@
 #define __NUGU_TEXT_INTERFACE_H__
 
 #include <interface/capability/capability_interface.hh>
-#include <string>
 
 namespace NuguInterface {
 
