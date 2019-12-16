@@ -16,6 +16,9 @@
 
 #include <string.h>
 #include <stdio.h>
+
+#include <glib.h>
+
 #include "nugu_timer.h"
 
 struct _nugu_timer {

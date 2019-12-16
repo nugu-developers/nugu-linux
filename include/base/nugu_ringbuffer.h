@@ -56,7 +56,7 @@ void nugu_ring_buffer_free(NuguRingBuffer *buf);
  * @brief Resize the ringbuffer
  * @param[in] buf ringbuffer object
  * @param[in] item_size default item size
- * @param[in] max_items count of itmes
+ * @param[in] max_items count of items
  * @return result
  * @retval 0 success
  * @retval -1 failure

@@ -102,7 +102,7 @@ void DelegationAgent::parsingDelegate(const char* message)
     Json::Value data = root["data"];
 
     if (app_id.size() == 0 || ps_id.size() == 0 || data.isNull()) {
-        nugu_error("The Manatory datas are insufficient to process");
+        nugu_error("The Manatory data are insufficient to process");
         return;
     }
 

@@ -62,7 +62,7 @@ public:
     void prev() override;
     void pause() override;
     void resume() override;
-    void seek(int mesc) override;
+    void seek(int msec) override;
 
     void sendEventPlaybackStarted();
     void sendEventPlaybackFinished();

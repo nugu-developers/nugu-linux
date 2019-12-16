@@ -105,34 +105,34 @@ int NuguClientImpl::createCapabilities(void)
 {
     /*
      * [description]
-     *  - icapability_map[CAPBILITY.type].first : ICapabilityInterface instance
-     *  - icapability_map[CAPBILITY.type].second : ICapabilityListener instance
+     *  - icapability_map[CAPABILITY.type].first : ICapabilityInterface instance
+     *  - icapability_map[CAPABILITY.type].second : ICapabilityListener instance
      */
-    for (auto const& CAPBILITY : CapabilityCreator::CAPABILITY_LIST) {
+    for (auto const& CAPABILITY : CapabilityCreator::CAPABILITY_LIST) {
         // if user didn't add and it's not a required agent, skip to create
-        if (icapability_map.find(CAPBILITY.type) == icapability_map.end() && !CAPBILITY.is_default)
+        if (icapability_map.find(CAPABILITY.type) == icapability_map.end() && !CAPABILITY.is_default)
             continue;
 
-        if (!icapability_map[CAPBILITY.type].first)
+        if (!icapability_map[CAPABILITY.type].first)
             try {
-                icapability_map[CAPBILITY.type].first = CAPBILITY.creator();
+                icapability_map[CAPABILITY.type].first = CAPABILITY.creator();
             } catch (std::exception& exp) {
                 nugu_error(exp.what());
             }
 
-        if (icapability_map[CAPBILITY.type].first) {
+        if (icapability_map[CAPABILITY.type].first) {
             // add general observer
             if (listener)
-                icapability_map[CAPBILITY.type].first->registerObserver(listener);
+                icapability_map[CAPABILITY.type].first->registerObserver(listener);
 
             // set capability listener & handler each other
-            if (icapability_map[CAPBILITY.type].second)
-                icapability_map[CAPBILITY.type].first->setCapabilityListener(icapability_map[CAPBILITY.type].second);
+            if (icapability_map[CAPABILITY.type].second)
+                icapability_map[CAPABILITY.type].first->setCapabilityListener(icapability_map[CAPABILITY.type].second);
 
-            std::string cname = icapability_map[CAPBILITY.type].first->getTypeName(CAPBILITY.type);
+            std::string cname = icapability_map[CAPABILITY.type].first->getTypeName(CAPABILITY.type);
 
             if (!cname.empty())
-                CapabilityManagerHelper::addCapability(cname, icapability_map[CAPBILITY.type].first);
+                CapabilityManagerHelper::addCapability(cname, icapability_map[CAPABILITY.type].first);
         }
     }
 
@@ -203,7 +203,7 @@ void NuguClientImpl::deInitialize(void)
     // deinitialize core component
     nugu_plugin_deinitialize();
 
-    nugu_dbg("NuguClientImpl deInitialize succeess.");
+    nugu_dbg("NuguClientImpl deInitialize success.");
     initialized = false;
 }
 

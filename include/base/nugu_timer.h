@@ -17,8 +17,6 @@
 #ifndef __NUGU_TIMER_H__
 #define __NUGU_TIMER_H__
 
-#include <glib.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif

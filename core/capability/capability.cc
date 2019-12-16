@@ -32,7 +32,7 @@ CapabilityEvent::CapabilityEvent(const std::string& name, Capability* cap)
     dialog_id = nugu_event_peek_dialog_id(event);
 
     if (isUserAction(name))
-        cap->setReferrerDialoRequestId(dialog_id);
+        cap->setReferrerDialogRequestId(dialog_id);
 }
 
 CapabilityEvent::~CapabilityEvent()
@@ -71,7 +71,10 @@ void CapabilityEvent::setDialogMessageId(const std::string& id)
 
 void CapabilityEvent::sendEvent(const std::string& context, const std::string& payload)
 {
-    g_return_if_fail(event != NULL);
+    if (event == NULL) {
+        nugu_error("event is NULL");
+        return;
+    }
 
     if (context.size())
         nugu_event_set_context(event, context.c_str());
@@ -79,7 +82,7 @@ void CapabilityEvent::sendEvent(const std::string& context, const std::string& p
     if (payload.size())
         nugu_event_set_json(event, payload.c_str());
 
-    std::string ref_dialog_id = capability->getReferrerDialoRequestId();
+    std::string ref_dialog_id = capability->getReferrerDialogRequestId();
     if (ref_dialog_id.size())
         nugu_event_set_referrer_id(event, ref_dialog_id.c_str());
 
@@ -93,7 +96,10 @@ void CapabilityEvent::sendEvent(const std::string& context, const std::string& p
 
 void CapabilityEvent::sendAttachmentEvent(bool is_end, size_t size, unsigned char* data)
 {
-    g_return_if_fail(event != NULL);
+    if (event == NULL) {
+        nugu_error("event is NULL");
+        return;
+    }
 
     if ((size && data) || is_end)
         nugu_network_manager_send_event_data(event, is_end, size, data);
@@ -119,12 +125,12 @@ void Capability::initialize()
 {
 }
 
-std::string Capability::getReferrerDialoRequestId()
+std::string Capability::getReferrerDialogRequestId()
 {
     return ref_dialog_id;
 }
 
-void Capability::setReferrerDialoRequestId(const std::string& id)
+void Capability::setReferrerDialogRequestId(const std::string& id)
 {
     if (id.size())
         ref_dialog_id = id;
@@ -192,7 +198,7 @@ void Capability::processDirective(NuguDirective* ndir)
             return;
         }
 
-        setReferrerDialoRequestId(nugu_directive_peek_referrer_id(ndir));
+        setReferrerDialogRequestId(nugu_directive_peek_referrer_id(ndir));
 
         parsingDirective(dname, message);
 

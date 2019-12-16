@@ -377,18 +377,18 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     nugu_dbg("= report_delay_time: %d", report_delay_time);
     nugu_dbg("= report_interval_time: %d", report_interval_time);
 
-    std::string id = getReferrerDialoRequestId();
+    std::string id = getReferrerDialogRequestId();
     // stop previous play for handling prev, next media play
     if (token != prev_token) {
         if (pre_ref_dialog_id.size())
-            setReferrerDialoRequestId(pre_ref_dialog_id);
+            setReferrerDialogRequestId(pre_ref_dialog_id);
 
         if (!player->stop()) {
             nugu_error("stop media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
         }
     }
-    setReferrerDialoRequestId(id);
+    setReferrerDialogRequestId(id);
     pre_ref_dialog_id = id;
     cur_token = token;
 
