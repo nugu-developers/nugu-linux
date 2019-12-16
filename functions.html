@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.4.0</span>
+   &#160;<span id="projectnumber">0.5.0</span>
    </div>
   </td>
  </tr>
@@ -90,6 +90,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_d"><span>d</span></a></li>
       <li><a href="#index_e"><span>e</span></a></li>
       <li><a href="#index_g"><span>g</span></a></li>
+      <li><a href="#index_h"><span>h</span></a></li>
       <li><a href="#index_i"><span>i</span></a></li>
       <li><a href="#index_l"><span>l</span></a></li>
       <li><a href="#index_m"><span>m</span></a></li>
@@ -144,6 +145,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 , <a class="el" href="classNuguInterface_1_1IMediaPlayer.html#a61b88f8611cad2cf95f06b34ccdbbf33">NuguInterface::IMediaPlayer</a>
 , <a class="el" href="classNuguInterface_1_1INetworkManager.html#a28f9fb5b0c6881727bfcd51cd0d92962">NuguInterface::INetworkManager</a>
 </li>
+<li>address
+: <a class="el" href="structnugu__network__server__policy.html#a3fc72ddfec1bf137e5f1deda21a417d7">nugu_network_server_policy</a>
+</li>
 </ul>
 
 
@@ -154,12 +158,18 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>connect()
 : <a class="el" href="classNuguInterface_1_1INetworkManager.html#a375eeacea960ed1ae934bdd5ae8b749c">NuguInterface::INetworkManager</a>
 </li>
+<li>connection_timeout_ms
+: <a class="el" href="structnugu__network__server__policy.html#aa8408b99e91d094c64638eb4d1fc30b6">nugu_network_server_policy</a>
+</li>
 <li>construct()
 : <a class="el" href="classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#a5fa03281804df2c704003347666b84bc">NuguClientKit::NuguClient::CapabilityBuilder</a>
 </li>
 <li>create
 : <a class="el" href="structnugu__decoder__driver__ops.html#a8a3fab1c370e9c776f896c9e8e585006">nugu_decoder_driver_ops</a>
 , <a class="el" href="structnugu__player__driver__ops.html#a1cfb23b5bf0d0d38eca95bf9a9cd44e9">nugu_player_driver_ops</a>
+</li>
+<li>createMediaPlayer()
+: <a class="el" href="classNuguClientKit_1_1NuguClient.html#aa0dffacab482dd69ee66e79b88297d47">NuguClientKit::NuguClient</a>
 </li>
 </ul>
 
@@ -266,6 +276,13 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </ul>
 
 
+<h3><a class="anchor" id="index_h"></a>- h -</h3><ul>
+<li>hostname
+: <a class="el" href="structnugu__network__server__policy.html#ac85cb3c6450e66de87ac51e0e94b8dec">nugu_network_server_policy</a>
+</li>
+</ul>
+
+
 <h3><a class="anchor" id="index_i"></a>- i -</h3><ul>
 <li>init
 : <a class="el" href="structnugu__plugin__desc.html#a6974e1009410fd2e79c433c49a21cea8">nugu_plugin_desc</a>
@@ -273,6 +290,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>initialize()
 : <a class="el" href="classNuguClientKit_1_1NuguClient.html#aae1f4508ab77758bec29c5ef54f2736a">NuguClientKit::NuguClient</a>
 , <a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a0f861d606d2ffb92621f01f041cf5e76">NuguInterface::ICapabilityInterface</a>
+</li>
+<li>is_charge
+: <a class="el" href="structnugu__network__server__policy.html#a291b38fe1ccf3735965b8fbaedb3f816">nugu_network_server_policy</a>
 </li>
 <li>isPlaying()
 : <a class="el" href="classNuguInterface_1_1IMediaPlayer.html#a86c66d0e47538e36c944912aff782196">NuguInterface::IMediaPlayer</a>
@@ -283,6 +303,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
 <li>load
 : <a class="el" href="structnugu__plugin__desc.html#afef3d74c5f09b6dbc1d82c43640d3093">nugu_plugin_desc</a>
+</li>
+<li>loop()
+: <a class="el" href="classNuguInterface_1_1IMediaPlayer.html#a10b4355905ff5f1b1631866bcd20a33d">NuguInterface::IMediaPlayer</a>
 </li>
 </ul>
 
@@ -331,16 +354,13 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="classNuguInterface_1_1IASRListener.html#a176a117a1a9f4eedd360d33259ccb3fb">NuguInterface::IASRListener</a>
 , <a class="el" href="classNuguInterface_1_1ITextListener.html#abb897e89a744c8b6b26af691496e3041">NuguInterface::ITextListener</a>
 </li>
-<li>onConnected()
-: <a class="el" href="classNuguInterface_1_1INetworkManagerListener.html#a2a5650660461a046b41f7b062e1f32d0">NuguInterface::INetworkManagerListener</a>
-</li>
-<li>onDisconnected()
-: <a class="el" href="classNuguInterface_1_1INetworkManagerListener.html#a4df66000f306744984788c5c993785af">NuguInterface::INetworkManagerListener</a>
-</li>
 <li>onError()
 : <a class="el" href="classNuguInterface_1_1IASRListener.html#a8214907ea9349f4242bbb2fd51097e21">NuguInterface::IASRListener</a>
 , <a class="el" href="classNuguInterface_1_1INetworkManagerListener.html#a48ee2989a27dfe4b97859a8fa69d1875">NuguInterface::INetworkManagerListener</a>
 , <a class="el" href="classNuguInterface_1_1ITextListener.html#a465fa5425c46c017d581c30c7bde7622">NuguInterface::ITextListener</a>
+</li>
+<li>onException()
+: <a class="el" href="classNuguInterface_1_1ISystemListener.html#a0df3cd4c1d14470a3eeb885e0ca68890">NuguInterface::ISystemListener</a>
 </li>
 <li>onInitialized()
 : <a class="el" href="classNuguClientKit_1_1INuguClientListener.html#ad8dd386b0d84e4d4919f4f2e9f8b46df">NuguClientKit::INuguClientListener</a>
@@ -358,8 +378,8 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="classNuguInterface_1_1IASRListener.html#af29e93e9831e7f061502c3c7c4d8b155">NuguInterface::IASRListener</a>
 , <a class="el" href="classNuguInterface_1_1ITextListener.html#ab335154ff9aff74a4b4a59b532db3289">NuguInterface::ITextListener</a>
 </li>
-<li>onSystemMessageReport()
-: <a class="el" href="classNuguInterface_1_1ISystemListener.html#a3bd8b7df6aa86d81925624c37488a5d2">NuguInterface::ISystemListener</a>
+<li>onStatusChanged()
+: <a class="el" href="classNuguInterface_1_1INetworkManagerListener.html#ab8d40ab8ff694f5ff926829d5503c685">NuguInterface::INetworkManagerListener</a>
 </li>
 <li>onTTSState()
 : <a class="el" href="classNuguInterface_1_1ITTSListener.html#a987dfc2d6f3ff4120353f5d54bbec03e">NuguInterface::ITTSListener</a>
@@ -387,6 +407,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="classNuguInterface_1_1IAudioPlayerHandler.html#a1cb05edc648a314a99b001e9bfb2dbbc">NuguInterface::IAudioPlayerHandler</a>
 , <a class="el" href="classNuguInterface_1_1IMediaPlayer.html#a1a527e9b81a2e31fe301f97c1d2201d8">NuguInterface::IMediaPlayer</a>
 </li>
+<li>port
+: <a class="el" href="structnugu__network__server__policy.html#a838743d6849a7f9449870ae029f34ba0">nugu_network_server_policy</a>
+</li>
 <li>position()
 : <a class="el" href="classNuguInterface_1_1IMediaPlayer.html#aef2450198812f1584a377e79d400f133">NuguInterface::IMediaPlayer</a>
 </li>
@@ -403,6 +426,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <li>processDirective()
 : <a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#ad220031d06942255cf012b6c10e6fcf7">NuguInterface::ICapabilityInterface</a>
 </li>
+<li>protocol
+: <a class="el" href="structnugu__network__server__policy.html#a6cbf2c9a865fad38b2b55e1d5987f1df">nugu_network_server_policy</a>
+</li>
 <li>push_data
 : <a class="el" href="structnugu__pcm__driver__ops.html#a99c00028f3927573503c989c11eb7b76">nugu_pcm_driver_ops</a>
 </li>
@@ -418,9 +444,6 @@ $(document).ready(function(){initNavTree('functions.html','');});
 </li>
 <li>receiveCommandAll()
 : <a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a74e16481867af0c22ed2012397236fef">NuguInterface::ICapabilityInterface</a>
-</li>
-<li>registerCapabilityHandler()
-: <a class="el" href="classNuguInterface_1_1ICapabilityListener.html#a856f8dd4f20d90ac92b5beb1114bad15">NuguInterface::ICapabilityListener</a>
 </li>
 <li>registerObserver()
 : <a class="el" href="classNuguInterface_1_1ICapabilityObservable.html#a8272ccd2c8b1e7e8433229559d49b95e">NuguInterface::ICapabilityObservable</a>
@@ -445,10 +468,6 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="classNuguInterface_1_1IDelegationListener.html#ab926c62f0cc61c64d0ab326544b3bd33">NuguInterface::IDelegationListener</a>
 , <a class="el" href="classNuguInterface_1_1IExtensionListener.html#a3e9d01766ca4a09d942c6394a2ad9ac7">NuguInterface::IExtensionListener</a>
 , <a class="el" href="classNuguInterface_1_1ILocationListener.html#a765dc893ecb4ffb125e2f74b63258cbb">NuguInterface::ILocationListener</a>
-, <a class="el" href="classNuguInterface_1_1IPermissionListener.html#afc3dce20f977a605eddd07d486ef132b">NuguInterface::IPermissionListener</a>
-</li>
-<li>requestPermission()
-: <a class="el" href="classNuguInterface_1_1IPermissionListener.html#ae4a46f4dec5fc7cb17cfc6e39d3ac323">NuguInterface::IPermissionListener</a>
 </li>
 <li>requestTextInput()
 : <a class="el" href="classNuguInterface_1_1ITextHandler.html#af545f1474340edd680901c519184aabb">NuguInterface::ITextHandler</a>
@@ -461,6 +480,9 @@ $(document).ready(function(){initNavTree('functions.html','');});
 , <a class="el" href="structnugu__player__driver__ops.html#a6d8f3dd94c52ad6ad77373dd1afb0d75">nugu_player_driver_ops</a>
 , <a class="el" href="classNuguInterface_1_1IAudioPlayerHandler.html#aea1f02ef692f92dc0cc960915585f1cc">NuguInterface::IAudioPlayerHandler</a>
 , <a class="el" href="classNuguInterface_1_1IMediaPlayer.html#a7a114a802d75e998ba55cf001eb990e7">NuguInterface::IMediaPlayer</a>
+</li>
+<li>retry_count_limit
+: <a class="el" href="structnugu__network__server__policy.html#a2c61d7d5efd9f7ef0586ea3301c3008a">nugu_network_server_policy</a>
 </li>
 </ul>
 
@@ -481,10 +503,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 : <a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a44f7d0d72ae9f06044fa1a3068cbe416">NuguInterface::ICapabilityInterface</a>
 </li>
 <li>setConfig()
-: <a class="el" href="classNuguClientKit_1_1NuguClient.html#a993b0c65a793586ec792c6d57ddbf1eb">NuguClientKit::NuguClient</a>
-</li>
-<li>setConfigs()
-: <a class="el" href="classNuguClientKit_1_1NuguClient.html#a0107158669353dcd50af068b45c2c46f">NuguClientKit::NuguClient</a>
+: <a class="el" href="classNuguClientKit_1_1NuguClient.html#a5a43eacb752a197bb1d047b254cf008f">NuguClientKit::NuguClient</a>
 </li>
 <li>setDuration()
 : <a class="el" href="classNuguInterface_1_1IMediaPlayer.html#a2d3e94f18ee4bc005794ea3bef994d86">NuguInterface::IMediaPlayer</a>
@@ -494,17 +513,29 @@ $(document).ready(function(){initNavTree('functions.html','');});
 , <a class="el" href="classNuguInterface_1_1IDisplayHandler.html#a0f9c3a7268f8fadd6cd00879b72a74f0">NuguInterface::IDisplayHandler</a>
 , <a class="el" href="classNuguInterface_1_1IWakeupHandler.html#a2cee1a951e35190c54272b9fbbe22bdf">NuguInterface::IWakeupHandler</a>
 </li>
+<li>setLoop()
+: <a class="el" href="classNuguInterface_1_1IMediaPlayer.html#a873a002bcbfa4fee4f490f1cfb4733ad">NuguInterface::IMediaPlayer</a>
+</li>
 <li>setMute()
 : <a class="el" href="classNuguInterface_1_1IMediaPlayer.html#a6300a64fca9f9d351b926c09ba461527">NuguInterface::IMediaPlayer</a>
 </li>
 <li>setPosition()
 : <a class="el" href="classNuguInterface_1_1IMediaPlayer.html#acdad54e8afc8cf16da1a96758396749d">NuguInterface::IMediaPlayer</a>
 </li>
+<li>setRegistryUrl()
+: <a class="el" href="classNuguInterface_1_1INetworkManager.html#a4d8a417d7b82abaa7fc764e1220abf66">NuguInterface::INetworkManager</a>
+</li>
 <li>setSource()
 : <a class="el" href="classNuguInterface_1_1IMediaPlayer.html#aea82c2afad01fe8b591289372985adb8">NuguInterface::IMediaPlayer</a>
 </li>
 <li>setState()
 : <a class="el" href="classNuguInterface_1_1IMediaPlayer.html#a7742333b7d93c99ebe58a903b46ef988">NuguInterface::IMediaPlayer</a>
+</li>
+<li>setToken()
+: <a class="el" href="classNuguInterface_1_1INetworkManager.html#aa49e47018bcd242118681bdeed68d462">NuguInterface::INetworkManager</a>
+</li>
+<li>setUserAgent()
+: <a class="el" href="classNuguInterface_1_1INetworkManager.html#a8f8982e44e97a78801a618fb7513a826">NuguInterface::INetworkManager</a>
 </li>
 <li>setVolume()
 : <a class="el" href="classNuguInterface_1_1IMediaPlayer.html#ae05e36746c6417d1965ab12344ee7f33">NuguInterface::IMediaPlayer</a>
@@ -580,7 +611,7 @@ $(document).ready(function(){initNavTree('functions.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 25 2019 15:45:57 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Dec 16 2019 19:21:34 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

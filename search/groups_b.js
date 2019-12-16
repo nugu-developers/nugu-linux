@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['ringbuffer',['RingBuffer',['../group__NuguRingBuffer.html',1,'']]]
+  ['sdk_20base',['SDK Base',['../group__SDKBase.html',1,'']]],
+  ['systeminterface',['SystemInterface',['../group__SystemInterface.html',1,'']]]
 ];

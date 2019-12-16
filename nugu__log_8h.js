@@ -1,6 +1,7 @@
 var nugu__log_8h =
 [
     [ "NUGU_LOG_MODULE", "group__Log.html#gaed05c0a3180d2066694482e90719724c", null ],
+    [ "__FILENAME__", "group__Log.html#ga5fccb4fc71e44089a1b1a77fc76c0b68", null ],
     [ "nugu_log", "group__Log.html#gab4c65ebc9213bf184f51a33141292cb1", null ],
     [ "nugu_dbg", "group__Log.html#ga580acb78e69cd3ffc765928ce6c3ca79", null ],
     [ "nugu_info", "group__Log.html#gaeb03d038a3c3fe4b9d118565dc071267", null ],
@@ -37,6 +38,7 @@ var nugu__log_8h =
       [ "NUGU_LOG_MODULE_DEFAULT", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a1f0adc296d7281462df6849a20e31e25", null ],
       [ "NUGU_LOG_MODULE_NETWORK", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a1348ecae72b488b9659302edb664a335", null ],
       [ "NUGU_LOG_MODULE_NETWORK_TRACE", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a0e100a30d830e34705f7fce584c5fd9b", null ],
+      [ "NUGU_LOG_MODULE_AUDIO", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1add078a62fcecb6824fffe689fc4c99ab", null ],
       [ "NUGU_LOG_MODULE_ALL", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1ac434ac7176e2d04c33b39173efc56df9", null ]
     ] ],
     [ "nugu_log_print", "group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc", null ],

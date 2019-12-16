@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['high_2dlevel_20public_20api',['High-level public API',['../group__SDKAPI.html',1,'']]]
+  ['hostname',['hostname',['../structnugu__network__server__policy.html#ac85cb3c6450e66de87ac51e0e94b8dec',1,'nugu_network_server_policy']]]
 ];

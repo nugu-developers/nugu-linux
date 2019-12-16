@@ -9,7 +9,6 @@ var annotated_dup =
       [ "IASRListener", "classNuguInterface_1_1IASRListener.html", "classNuguInterface_1_1IASRListener" ],
       [ "IAudioPlayerHandler", "classNuguInterface_1_1IAudioPlayerHandler.html", "classNuguInterface_1_1IAudioPlayerHandler" ],
       [ "IAudioPlayerListener", "classNuguInterface_1_1IAudioPlayerListener.html", "classNuguInterface_1_1IAudioPlayerListener" ],
-      [ "ICapabilityHandler", "classNuguInterface_1_1ICapabilityHandler.html", "classNuguInterface_1_1ICapabilityHandler" ],
       [ "ICapabilityInterface", "classNuguInterface_1_1ICapabilityInterface.html", "classNuguInterface_1_1ICapabilityInterface" ],
       [ "ICapabilityListener", "classNuguInterface_1_1ICapabilityListener.html", "classNuguInterface_1_1ICapabilityListener" ],
       [ "ICapabilityObservable", "classNuguInterface_1_1ICapabilityObservable.html", "classNuguInterface_1_1ICapabilityObservable" ],
@@ -25,7 +24,6 @@ var annotated_dup =
       [ "IMediaPlayerListener", "classNuguInterface_1_1IMediaPlayerListener.html", "classNuguInterface_1_1IMediaPlayerListener" ],
       [ "INetworkManager", "classNuguInterface_1_1INetworkManager.html", "classNuguInterface_1_1INetworkManager" ],
       [ "INetworkManagerListener", "classNuguInterface_1_1INetworkManagerListener.html", "classNuguInterface_1_1INetworkManagerListener" ],
-      [ "IPermissionListener", "classNuguInterface_1_1IPermissionListener.html", "classNuguInterface_1_1IPermissionListener" ],
       [ "ISystemHandler", "classNuguInterface_1_1ISystemHandler.html", "classNuguInterface_1_1ISystemHandler" ],
       [ "ISystemListener", "classNuguInterface_1_1ISystemListener.html", "classNuguInterface_1_1ISystemListener" ],
       [ "ITextHandler", "classNuguInterface_1_1ITextHandler.html", "classNuguInterface_1_1ITextHandler" ],
@@ -35,10 +33,11 @@ var annotated_dup =
       [ "IWakeupHandler", "classNuguInterface_1_1IWakeupHandler.html", "classNuguInterface_1_1IWakeupHandler" ],
       [ "IWakeupListener", "classNuguInterface_1_1IWakeupListener.html", "classNuguInterface_1_1IWakeupListener" ],
       [ "LocationInfo", "structNuguInterface_1_1LocationInfo.html", "structNuguInterface_1_1LocationInfo" ],
-      [ "PermissionState", "structNuguInterface_1_1PermissionState.html", "structNuguInterface_1_1PermissionState" ]
+      [ "NuguConfig", "classNuguInterface_1_1NuguConfig.html", "classNuguInterface_1_1NuguConfig" ]
     ] ],
     [ "nugu_audio_property", "structnugu__audio__property.html", "structnugu__audio__property" ],
     [ "nugu_decoder_driver_ops", "structnugu__decoder__driver__ops.html", "structnugu__decoder__driver__ops" ],
+    [ "nugu_network_server_policy", "structnugu__network__server__policy.html", "structnugu__network__server__policy" ],
     [ "nugu_pcm_driver_ops", "structnugu__pcm__driver__ops.html", "structnugu__pcm__driver__ops" ],
     [ "nugu_player_driver_ops", "structnugu__player__driver__ops.html", "structnugu__player__driver__ops" ],
     [ "nugu_plugin_desc", "structnugu__plugin__desc.html", "structnugu__plugin__desc" ],

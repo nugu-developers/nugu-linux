@@ -1,4 +1,5 @@
 <map id="NuguInterface::IDisplayHandler" name="NuguInterface::IDisplayHandler">
-<area shape="rect" id="node3" href="$classNuguInterface_1_1IAudioPlayerHandler.html" title="audioplayer handler interface " alt="" coords="15,169,201,211"/>
-<area shape="rect" id="node2" href="$classNuguInterface_1_1ICapabilityHandler.html" title="capability handler interface " alt="" coords="21,5,195,47"/>
+<area shape="rect" id="node4" href="$classNuguInterface_1_1IAudioPlayerHandler.html" title="audioplayer handler interface " alt="" coords="15,259,201,300"/>
+<area shape="rect" id="node2" href="$classNuguInterface_1_1ICapabilityInterface.html" title="capability interface " alt="" coords="21,95,195,136"/>
+<area shape="rect" id="node3" href="$classNuguInterface_1_1ICapabilityObservable.html" title="capability observer interface " alt="" coords="21,5,195,47"/>
 </map>

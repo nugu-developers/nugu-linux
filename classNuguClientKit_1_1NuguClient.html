@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.4.0</span>
+   &#160;<span id="projectnumber">0.5.0</span>
    </div>
   </td>
  </tr>
@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1NuguClient.html'
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classNuguClientKit_1_1NuguClient-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">NuguClientKit::NuguClient Class Reference<div class="ingroups"><a class="el" href="group__SDKAPI.html">High-level public API</a> &raquo; <a class="el" href="group__SDKNuguClientKit.html">NuguClientKit</a> &raquo; <a class="el" href="group__NuguClient.html">NuguClient</a></div></div>  </div>
+<div class="title">NuguClientKit::NuguClient Class Reference<div class="ingroups"><a class="el" href="group__SDKNuguClientKit.html">NuguClientKit</a> &raquo; <a class="el" href="group__NuguClient.html">NuguClient</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -128,6 +128,9 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:aa0dffacab482dd69ee66e79b88297d47"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classNuguInterface_1_1IMediaPlayer.html">IMediaPlayer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguClient.html#aa0dffacab482dd69ee66e79b88297d47">createMediaPlayer</a> ()</td></tr>
+<tr class="memdesc:aa0dffacab482dd69ee66e79b88297d47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get new media player object.  <a href="#aa0dffacab482dd69ee66e79b88297d47">More...</a><br /></td></tr>
+<tr class="separator:aa0dffacab482dd69ee66e79b88297d47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32def4bda93b3a706d6e7757c5e41220"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a32def4bda93b3a706d6e7757c5e41220"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguClient.html#a32def4bda93b3a706d6e7757c5e41220">deInitialize</a> (void)</td></tr>
 <tr class="memdesc:a32def4bda93b3a706d6e7757c5e41220"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request nugu sdk deinitialization. <br /></td></tr>
@@ -169,12 +172,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguClient.html#aae1f4508ab77758bec29c5ef54f2736a">initialize</a> (void)</td></tr>
 <tr class="memdesc:aae1f4508ab77758bec29c5ef54f2736a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request nugu sdk initialization. <br /></td></tr>
 <tr class="separator:aae1f4508ab77758bec29c5ef54f2736a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a993b0c65a793586ec792c6d57ddbf1eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguClient.html#a993b0c65a793586ec792c6d57ddbf1eb">setConfig</a> (std::string key, std::string value)</td></tr>
-<tr class="memdesc:a993b0c65a793586ec792c6d57ddbf1eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set config to change nugu sdk internal behavior.  <a href="#a993b0c65a793586ec792c6d57ddbf1eb">More...</a><br /></td></tr>
-<tr class="separator:a993b0c65a793586ec792c6d57ddbf1eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0107158669353dcd50af068b45c2c46f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguClient.html#a0107158669353dcd50af068b45c2c46f">setConfigs</a> (std::map&lt; std::string, std::string &gt; cfgs)</td></tr>
-<tr class="memdesc:a0107158669353dcd50af068b45c2c46f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set configs to change nugu sdk internal behavior.  <a href="#a0107158669353dcd50af068b45c2c46f">More...</a><br /></td></tr>
-<tr class="separator:a0107158669353dcd50af068b45c2c46f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a43eacb752a197bb1d047b254cf008f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguClient.html#a5a43eacb752a197bb1d047b254cf008f">setConfig</a> (NuguConfig::Key key, std::string value)</td></tr>
+<tr class="memdesc:a5a43eacb752a197bb1d047b254cf008f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set config to change nugu sdk internal behavior.  <a href="#a5a43eacb752a197bb1d047b254cf008f">More...</a><br /></td></tr>
+<tr class="separator:a5a43eacb752a197bb1d047b254cf008f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a338da30822046808076f3f8e728e87d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguClient.html#a338da30822046808076f3f8e728e87d4">setListener</a> (<a class="el" href="classNuguClientKit_1_1INuguClientListener.html">INuguClientListener</a> *listener)</td></tr>
 <tr class="memdesc:a338da30822046808076f3f8e728e87d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the listener object.  <a href="#a338da30822046808076f3f8e728e87d4">More...</a><br /></td></tr>
 <tr class="separator:a338da30822046808076f3f8e728e87d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -183,14 +183,14 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <div class="textblock"><p>NUGU Client. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguClientKit_1_1INuguClientListener.html" title="nugu client listener interface ">INuguClientListener</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a class="anchor" id="a993b0c65a793586ec792c6d57ddbf1eb"></a>
+<a class="anchor" id="a5a43eacb752a197bb1d047b254cf008f"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">void NuguClientKit::NuguClient::setConfig </td>
           <td>(</td>
-          <td class="paramtype">std::string&#160;</td>
+          <td class="paramtype">NuguConfig::Key&#160;</td>
           <td class="paramname"><em>key</em>, </td>
         </tr>
         <tr>
@@ -212,30 +212,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">key</td><td>config key </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">value</td><td>config value </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a class="anchor" id="a0107158669353dcd50af068b45c2c46f"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void NuguClientKit::NuguClient::setConfigs </td>
-          <td>(</td>
-          <td class="paramtype">std::map&lt; std::string, std::string &gt;&#160;</td>
-          <td class="paramname"><em>cfgs</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set configs to change nugu sdk internal behavior. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">cfgs</td><td>map of config key and value </td></tr>
   </table>
   </dd>
 </dl>
@@ -464,6 +440,24 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
+<a class="anchor" id="aa0dffacab482dd69ee66e79b88297d47"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classNuguInterface_1_1IMediaPlayer.html">IMediaPlayer</a>* NuguClientKit::NuguClient::createMediaPlayer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get new media player object. </p>
+<dl class="section return"><dt>Returns</dt><dd>IMediaPlayer if media player is created, otherwise nullptr </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="nugu__client_8hh_source.html">nugu_client.hh</a></li>
 </ul>
@@ -473,7 +467,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1NuguClient.html">NuguClient</a></li>
-    <li class="footer">Generated on Mon Nov 25 2019 15:45:56 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Dec 16 2019 19:21:33 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

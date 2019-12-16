@@ -5,7 +5,6 @@ var searchData=
   ['nugu_5fbuffer_2eh',['nugu_buffer.h',['../nugu__buffer_8h.html',1,'']]],
   ['nugu_5fclient_2ehh',['nugu_client.hh',['../nugu__client_8hh.html',1,'']]],
   ['nugu_5fclient_5flistener_2ehh',['nugu_client_listener.hh',['../nugu__client__listener_8hh.html',1,'']]],
-  ['nugu_5fconfig_2eh',['nugu_config.h',['../nugu__config_8h.html',1,'']]],
   ['nugu_5fconfiguration_2ehh',['nugu_configuration.hh',['../nugu__configuration_8hh.html',1,'']]],
   ['nugu_5fdecoder_2eh',['nugu_decoder.h',['../nugu__decoder_8h.html',1,'']]],
   ['nugu_5fdirective_2eh',['nugu_directive.h',['../nugu__directive_8h.html',1,'']]],

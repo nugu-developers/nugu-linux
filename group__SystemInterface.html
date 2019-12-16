@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.4.0</span>
+   &#160;<span id="projectnumber">0.5.0</span>
    </div>
   </td>
  </tr>
@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('group__SystemInterface.html','');});
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
-<div class="title">SystemInterface<div class="ingroups"><a class="el" href="group__SDKAPI.html">High-level public API</a> &raquo; <a class="el" href="group__SDKNuguInterface.html">NuguInterface</a></div></div>  </div>
+<div class="title">SystemInterface<div class="ingroups"><a class="el" href="group__SDKNuguInterface.html">NuguInterface</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -135,16 +135,23 @@ Enumerations</h2></td></tr>
  }<tr class="memdesc:gaa87a31f522637900c9ae0315e5e97a92"><td class="mdescLeft">&#160;</td><td class="mdescRight">RevokeReason. <br /></td></tr>
 </td></tr>
 <tr class="separator:gaa87a31f522637900c9ae0315e5e97a92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaace286aef98f9d3c21e77ebe9f45c732"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SystemInterface.html#gaace286aef98f9d3c21e77ebe9f45c732">NuguInterface::SystemMessage</a> { <a class="el" href="group__SystemInterface.html#ggaace286aef98f9d3c21e77ebe9f45c732a0b8ba36b47269d8ed965f33faefd8f4f">NuguInterface::SystemMessage::ROUTE_ERROR_NOT_FOUND_PLAY</a>
- }<tr class="memdesc:gaace286aef98f9d3c21e77ebe9f45c732"><td class="mdescLeft">&#160;</td><td class="mdescRight">ExtensionResult.  <a href="group__SystemInterface.html#gaace286aef98f9d3c21e77ebe9f45c732">More...</a><br /></td></tr>
+<tr class="memitem:ga5e3c9cb6b18bd06e4393333e922c0282"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SystemInterface.html#ga5e3c9cb6b18bd06e4393333e922c0282">NuguInterface::SystemException</a> { <br />
+&#160;&#160;<a class="el" href="group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282a073b62332ae9f9b319a9d1867ccdcf90">NuguInterface::SystemException::UNAUTHORIZED_REQUEST_EXCEPTION</a>, 
+<a class="el" href="group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282ae868122b754c03f37fef7f17455997a5">NuguInterface::SystemException::PLAY_ROUTER_PROCESSING_EXCEPTION</a>, 
+<a class="el" href="group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282ac980b55619ee70eb68682784c0a9e34e">NuguInterface::SystemException::ASR_RECOGNIZING_EXCEPTION</a>, 
+<a class="el" href="group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282a4728a21f19c4b81a354edbcd5a1ad9c1">NuguInterface::SystemException::TTS_SPEAKING_EXCEPTION</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282aaf828269166d62d6a53b6ee2d0851cf1">NuguInterface::SystemException::INTERNAL_SERVICE_EXCEPTION</a>
+<br />
+ }<tr class="memdesc:ga5e3c9cb6b18bd06e4393333e922c0282"><td class="mdescLeft">&#160;</td><td class="mdescRight">SystemException.  <a href="group__SystemInterface.html#ga5e3c9cb6b18bd06e4393333e922c0282">More...</a><br /></td></tr>
 </td></tr>
-<tr class="separator:gaace286aef98f9d3c21e77ebe9f45c732"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ga5e3c9cb6b18bd06e4393333e922c0282"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>System capability interface. </p>
 <p>It is responsible for system related functions of device such as network handoff processing and context sync. </p>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a class="anchor" id="gaace286aef98f9d3c21e77ebe9f45c732"></a>
+<a class="anchor" id="ga5e3c9cb6b18bd06e4393333e922c0282"></a>
 <div class="memitem">
 <div class="memproto">
 <table class="mlabels">
@@ -152,7 +159,7 @@ Enumerations</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="group__SystemInterface.html#gaace286aef98f9d3c21e77ebe9f45c732">NuguInterface::SystemMessage</a></td>
+          <td class="memname">enum <a class="el" href="group__SystemInterface.html#ga5e3c9cb6b18bd06e4393333e922c0282">NuguInterface::SystemException</a></td>
         </tr>
       </table>
   </td>
@@ -162,10 +169,22 @@ Enumerations</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>ExtensionResult. </p>
+<p>SystemException. </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="ggaace286aef98f9d3c21e77ebe9f45c732a0b8ba36b47269d8ed965f33faefd8f4f"></a>ROUTE_ERROR_NOT_FOUND_PLAY&#160;</td><td class="fielddoc">
-<p>This message is sent from the server router if play is not found. </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a class="anchor" id="gga5e3c9cb6b18bd06e4393333e922c0282a073b62332ae9f9b319a9d1867ccdcf90"></a>UNAUTHORIZED_REQUEST_EXCEPTION&#160;</td><td class="fielddoc">
+<p>Occurs when the oauth token is invalid </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga5e3c9cb6b18bd06e4393333e922c0282ae868122b754c03f37fef7f17455997a5"></a>PLAY_ROUTER_PROCESSING_EXCEPTION&#160;</td><td class="fielddoc">
+<p>Occurs when play router cannot find play </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga5e3c9cb6b18bd06e4393333e922c0282ac980b55619ee70eb68682784c0a9e34e"></a>ASR_RECOGNIZING_EXCEPTION&#160;</td><td class="fielddoc">
+<p>Occurs when error is recognized in ASR </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga5e3c9cb6b18bd06e4393333e922c0282a4728a21f19c4b81a354edbcd5a1ad9c1"></a>TTS_SPEAKING_EXCEPTION&#160;</td><td class="fielddoc">
+<p>Occurs when error is speaking in TTS </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga5e3c9cb6b18bd06e4393333e922c0282aaf828269166d62d6a53b6ee2d0851cf1"></a>INTERNAL_SERVICE_EXCEPTION&#160;</td><td class="fielddoc">
+<p>Occurs on Internal Error on Server </p>
 </td></tr>
 </table>
 
@@ -176,7 +195,7 @@ Enumerations</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 25 2019 15:45:56 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Dec 16 2019 19:21:33 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

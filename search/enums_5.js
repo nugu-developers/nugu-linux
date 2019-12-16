@@ -1,6 +1,7 @@
 var searchData=
 [
   ['networkerror',['NetworkError',['../group__NetworkManagerInterface.html#gad0580e49356d3bffd1cd854202fd15dc',1,'NuguInterface']]],
+  ['networkstatus',['NetworkStatus',['../group__NetworkManagerInterface.html#ga67e8a5210dda4b52d9454634868c2a0c',1,'NuguInterface']]],
   ['nugu_5faudio_5fformat',['nugu_audio_format',['../nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4ee',1,'nugu_audio.h']]],
   ['nugu_5faudio_5fsample_5frate',['nugu_audio_sample_rate',['../nugu__audio_8h.html#a45142699425266966bf2e0eed6dad69c',1,'nugu_audio.h']]],
   ['nugu_5fequeue_5ftype',['nugu_equeue_type',['../group__NuguEventQueue.html#ga54d0f533b2309e92861df75daaa6efcb',1,'nugu_equeue.h']]],
@@ -14,5 +15,7 @@ var searchData=
   ['nugu_5flog_5fsystem',['nugu_log_system',['../group__Log.html#gab1725c99430be936620a19b430c3b402',1,'nugu_log.h']]],
   ['nugu_5fmedia_5fevent',['nugu_media_event',['../group__Media.html#ga19236934de86d6a021f96f8b671f52b4',1,'nugu_media.h']]],
   ['nugu_5fmedia_5fstatus',['nugu_media_status',['../group__Media.html#gacaf0df5b33fcaf300816d0b7549576c1',1,'nugu_media.h']]],
+  ['nugu_5fnetwork_5fhandoff_5fstatus',['nugu_network_handoff_status',['../group__nugu__network.html#ga054a32d8fa42531f9768a32499142c93',1,'nugu_network_manager.h']]],
+  ['nugu_5fnetwork_5fprotocol',['nugu_network_protocol',['../group__nugu__network.html#ga0e9ac38f106f154eb4d0eb556b7f0921',1,'nugu_network_manager.h']]],
   ['nugu_5fnetwork_5fstatus',['nugu_network_status',['../group__nugu__network.html#gab3b96f22ffa5e42cc058222a04a129c4',1,'nugu_network_manager.h']]]
 ];

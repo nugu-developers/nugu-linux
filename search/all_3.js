@@ -19,6 +19,7 @@ var searchData=
   ['dirseqcallback',['DirseqCallback',['../group__nugu__dirseq.html#gab6e39a7f61f5787712e15bd07507cc9c',1,'nugu_directive_sequencer.h']]],
   ['dirseqreturn',['DirseqReturn',['../group__nugu__dirseq.html#ga47f50161d557ebe3a6ccecd78f452585',1,'nugu_directive_sequencer.h']]],
   ['disconnect',['disconnect',['../classNuguInterface_1_1ISystemHandler.html#a4694ad015ff69bc8d95233bb00725f4d',1,'NuguInterface::ISystemHandler::disconnect()'],['../classNuguInterface_1_1INetworkManager.html#a1357f32b4f7c059f1a0f06cebff950a6',1,'NuguInterface::INetworkManager::disconnect()']]],
+  ['disconnected',['DISCONNECTED',['../group__NetworkManagerInterface.html#gga67e8a5210dda4b52d9454634868c2a0ca99c8ce56e7ab246445d3b134724428f3',1,'NuguInterface']]],
   ['display',['Display',['../group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aab9987a246a537f4fe86f1f2e3d10dbdb',1,'NuguInterface']]],
   ['display_5finterface_2ehh',['display_interface.hh',['../display__interface_8hh.html',1,'']]],
   ['displaycleared',['displayCleared',['../classNuguInterface_1_1IDisplayHandler.html#ac7de6a792fa76c1d2228d5ecbd4de126',1,'NuguInterface::IDisplayHandler']]],

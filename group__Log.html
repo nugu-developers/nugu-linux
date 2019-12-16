@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.4.0</span>
+   &#160;<span id="projectnumber">0.5.0</span>
    </div>
   </td>
  </tr>
@@ -104,7 +104,7 @@ $(document).ready(function(){initNavTree('group__Log.html','');});
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">Log<div class="ingroups"><a class="el" href="group__SDKCore.html">Low-level public API</a></div></div>  </div>
+<div class="title">Log<div class="ingroups"><a class="el" href="group__SDKBase.html">SDK Base</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -117,13 +117,16 @@ $(document).ready(function(){initNavTree('group__Log.html','');});
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <center><table><tr><td><img src="group__Log.png" border="0" alt="" usemap="#group____Log"/>
 <map name="group____Log" id="group____Log">
-<area shape="rect" id="node2" href="group__SDKCore.html" title="Low&#45;level public API" alt="" coords="5,5,147,32"/>
+<area shape="rect" id="node2" href="group__SDKBase.html" title="SDK Base" alt="" coords="5,5,89,32"/>
 </map>
 </td></tr></table></center>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:ga5fccb4fc71e44089a1b1a77fc76c0b68"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ga5fccb4fc71e44089a1b1a77fc76c0b68"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>__FILENAME__</b>&#160;&#160;&#160;__FILE__</td></tr>
+<tr class="separator:ga5fccb4fc71e44089a1b1a77fc76c0b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga18ee435e167d835f0e14fdd47aa2a498"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#ga18ee435e167d835f0e14fdd47aa2a498">error_nomem</a>()&#160;&#160;&#160;<a class="el" href="group__Log.html#ga18753f0675200fa2ceba7a7934211da1">nugu_error</a>(&quot;Not enough memory&quot;)</td></tr>
 <tr class="memdesc:ga18ee435e167d835f0e14fdd47aa2a498"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default error message for 'Not enough memory'.  <a href="#ga18ee435e167d835f0e14fdd47aa2a498">More...</a><br /></td></tr>
 <tr class="separator:ga18ee435e167d835f0e14fdd47aa2a498"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -161,10 +164,14 @@ Enumerations</h2></td></tr>
  }<tr class="memdesc:gaa713331b2690e589ff6a29ea655d1e97"><td class="mdescLeft">&#160;</td><td class="mdescRight">log levels.  <a href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:gaa713331b2690e589ff6a29ea655d1e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf9fb527f66475b5f832571fe90940bd1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#gaf9fb527f66475b5f832571fe90940bd1">nugu_log_module</a> { <a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a1f0adc296d7281462df6849a20e31e25">NUGU_LOG_MODULE_DEFAULT</a> = 0x01, 
+<tr class="memitem:gaf9fb527f66475b5f832571fe90940bd1"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#gaf9fb527f66475b5f832571fe90940bd1">nugu_log_module</a> { <br />
+&#160;&#160;<a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a1f0adc296d7281462df6849a20e31e25">NUGU_LOG_MODULE_DEFAULT</a> = 0x01, 
 <a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a1348ecae72b488b9659302edb664a335">NUGU_LOG_MODULE_NETWORK</a> = 0x02, 
 <a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a0e100a30d830e34705f7fce584c5fd9b">NUGU_LOG_MODULE_NETWORK_TRACE</a> = 0x04, 
-<a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1ac434ac7176e2d04c33b39173efc56df9">NUGU_LOG_MODULE_ALL</a> = 0xFF
+<a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1add078a62fcecb6824fffe689fc4c99ab">NUGU_LOG_MODULE_AUDIO</a> = 0x08, 
+<br />
+&#160;&#160;<a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1ac434ac7176e2d04c33b39173efc56df9">NUGU_LOG_MODULE_ALL</a> = 0xFF
+<br />
  }<tr class="memdesc:gaf9fb527f66475b5f832571fe90940bd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">logging modules  <a href="group__Log.html#gaf9fb527f66475b5f832571fe90940bd1">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:gaf9fb527f66475b5f832571fe90940bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -625,6 +632,9 @@ enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" tit
 <tr><td class="fieldname"><a class="anchor" id="ggaf9fb527f66475b5f832571fe90940bd1a0e100a30d830e34705f7fce584c5fd9b"></a>NUGU_LOG_MODULE_NETWORK_TRACE&#160;</td><td class="fielddoc">
 <p>Network trace module </p>
 </td></tr>
+<tr><td class="fieldname"><a class="anchor" id="ggaf9fb527f66475b5f832571fe90940bd1add078a62fcecb6824fffe689fc4c99ab"></a>NUGU_LOG_MODULE_AUDIO&#160;</td><td class="fielddoc">
+<p>Audio module </p>
+</td></tr>
 <tr><td class="fieldname"><a class="anchor" id="ggaf9fb527f66475b5f832571fe90940bd1ac434ac7176e2d04c33b39173efc56df9"></a>NUGU_LOG_MODULE_ALL&#160;</td><td class="fielddoc">
 <p>All modules </p>
 </td></tr>
@@ -894,7 +904,7 @@ enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" tit
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 25 2019 15:45:56 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Dec 16 2019 19:21:33 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

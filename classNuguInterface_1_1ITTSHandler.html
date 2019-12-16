@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.4.0</span>
+   &#160;<span id="projectnumber">0.5.0</span>
    </div>
   </td>
  </tr>
@@ -110,7 +110,7 @@ $(document).ready(function(){initNavTree('classNuguInterface_1_1ITTSHandler.html
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classNuguInterface_1_1ITTSHandler-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">NuguInterface::ITTSHandler Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__SDKAPI.html">High-level public API</a> &raquo; <a class="el" href="group__SDKNuguInterface.html">NuguInterface</a> &raquo; <a class="el" href="group__TTSInterface.html">TTSInterface</a></div></div>  </div>
+<div class="title">NuguInterface::ITTSHandler Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group__SDKNuguInterface.html">NuguInterface</a> &raquo; <a class="el" href="group__TTSInterface.html">TTSInterface</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -125,7 +125,8 @@ $(document).ready(function(){initNavTree('classNuguInterface_1_1ITTSHandler.html
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classNuguInterface_1_1ITTSHandler__inherit__graph.png" border="0" usemap="#NuguInterface_1_1ITTSHandler_inherit__map" alt="Inheritance graph"/></div>
 <map name="NuguInterface_1_1ITTSHandler_inherit__map" id="NuguInterface_1_1ITTSHandler_inherit__map">
-<area shape="rect" id="node2" href="classNuguInterface_1_1ICapabilityHandler.html" title="capability handler interface " alt="" coords="11,5,186,47"/>
+<area shape="rect" id="node2" href="classNuguInterface_1_1ICapabilityInterface.html" title="capability interface " alt="" coords="11,95,186,136"/>
+<area shape="rect" id="node3" href="classNuguInterface_1_1ICapabilityObservable.html" title="capability observer interface " alt="" coords="11,5,186,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -135,7 +136,8 @@ $(document).ready(function(){initNavTree('classNuguInterface_1_1ITTSHandler.html
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classNuguInterface_1_1ITTSHandler__coll__graph.png" border="0" usemap="#NuguInterface_1_1ITTSHandler_coll__map" alt="Collaboration graph"/></div>
 <map name="NuguInterface_1_1ITTSHandler_coll__map" id="NuguInterface_1_1ITTSHandler_coll__map">
-<area shape="rect" id="node2" href="classNuguInterface_1_1ICapabilityHandler.html" title="capability handler interface " alt="" coords="11,5,186,47"/>
+<area shape="rect" id="node2" href="classNuguInterface_1_1ICapabilityInterface.html" title="capability interface " alt="" coords="11,95,186,136"/>
+<area shape="rect" id="node3" href="classNuguInterface_1_1ICapabilityObservable.html" title="capability observer interface " alt="" coords="11,5,186,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -148,6 +150,54 @@ Public Member Functions</h2></td></tr>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ITTSHandler.html#abe7686d2362fe6157642767b6d65a995">stopTTS</a> ()=0</td></tr>
 <tr class="memdesc:abe7686d2362fe6157642767b6d65a995"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop currently speech. <br /></td></tr>
 <tr class="separator:abe7686d2362fe6157642767b6d65a995"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classNuguInterface_1_1ICapabilityInterface"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classNuguInterface_1_1ICapabilityInterface')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classNuguInterface_1_1ICapabilityInterface.html">NuguInterface::ICapabilityInterface</a></td></tr>
+<tr class="memitem:a11624e64e5c2988f9bbebe184b9456e3 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a11624e64e5c2988f9bbebe184b9456e3">getName</a> ()=0</td></tr>
+<tr class="memdesc:a11624e64e5c2988f9bbebe184b9456e3 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the capability name of the current object.  <a href="#a11624e64e5c2988f9bbebe184b9456e3">More...</a><br /></td></tr>
+<tr class="separator:a11624e64e5c2988f9bbebe184b9456e3 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5730dfc9748e47d55d9b48aba2f2aa3f inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a5730dfc9748e47d55d9b48aba2f2aa3f">getProperties</a> (const std::string &amp;property, std::list&lt; std::string &gt; &amp;values)=0</td></tr>
+<tr class="memdesc:a5730dfc9748e47d55d9b48aba2f2aa3f inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">It is possible to share own property values among objects.  <a href="#a5730dfc9748e47d55d9b48aba2f2aa3f">More...</a><br /></td></tr>
+<tr class="separator:a5730dfc9748e47d55d9b48aba2f2aa3f inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a2b2437ed312becca6cf00072367e4e inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a9a2b2437ed312becca6cf00072367e4e">getProperty</a> (const std::string &amp;property, std::string &amp;value)=0</td></tr>
+<tr class="memdesc:a9a2b2437ed312becca6cf00072367e4e inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">It is possible to share own property value among objects.  <a href="#a9a2b2437ed312becca6cf00072367e4e">More...</a><br /></td></tr>
+<tr class="separator:a9a2b2437ed312becca6cf00072367e4e inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ac3902e86dd64d16c70d6d2fbe726c5 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__CapabilityInterface.html#gacf07cae71da4a8dcafc46ed5459bec7a">CapabilityType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a5ac3902e86dd64d16c70d6d2fbe726c5">getType</a> ()=0</td></tr>
+<tr class="memdesc:a5ac3902e86dd64d16c70d6d2fbe726c5 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the capability type of the current object.  <a href="#a5ac3902e86dd64d16c70d6d2fbe726c5">More...</a><br /></td></tr>
+<tr class="separator:a5ac3902e86dd64d16c70d6d2fbe726c5 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e36b9961743f5a61702a05504c596f8 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a1e36b9961743f5a61702a05504c596f8">getTypeName</a> (<a class="el" href="group__CapabilityInterface.html#gacf07cae71da4a8dcafc46ed5459bec7a">CapabilityType</a> type)=0</td></tr>
+<tr class="memdesc:a1e36b9961743f5a61702a05504c596f8 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the capability type name of the current object.  <a href="#a1e36b9961743f5a61702a05504c596f8">More...</a><br /></td></tr>
+<tr class="separator:a1e36b9961743f5a61702a05504c596f8 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5987bc6485133e8c4eb9fc4da1e2d895 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a5987bc6485133e8c4eb9fc4da1e2d895">getVersion</a> ()=0</td></tr>
+<tr class="memdesc:a5987bc6485133e8c4eb9fc4da1e2d895 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the capability version of the current object.  <a href="#a5987bc6485133e8c4eb9fc4da1e2d895">More...</a><br /></td></tr>
+<tr class="separator:a5987bc6485133e8c4eb9fc4da1e2d895 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f861d606d2ffb92621f01f041cf5e76 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a0f861d606d2ffb92621f01f041cf5e76"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a0f861d606d2ffb92621f01f041cf5e76">initialize</a> ()=0</td></tr>
+<tr class="memdesc:a0f861d606d2ffb92621f01f041cf5e76 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the current object. <br /></td></tr>
+<tr class="separator:a0f861d606d2ffb92621f01f041cf5e76 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad220031d06942255cf012b6c10e6fcf7 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#ad220031d06942255cf012b6c10e6fcf7">processDirective</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)=0</td></tr>
+<tr class="memdesc:ad220031d06942255cf012b6c10e6fcf7 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process directive received from Directive Sequencer.  <a href="#ad220031d06942255cf012b6c10e6fcf7">More...</a><br /></td></tr>
+<tr class="separator:ad220031d06942255cf012b6c10e6fcf7 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acca53b279b80e9fbc9057157a0f6d79a inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#acca53b279b80e9fbc9057157a0f6d79a">receiveCommand</a> (<a class="el" href="group__CapabilityInterface.html#gacf07cae71da4a8dcafc46ed5459bec7a">CapabilityType</a> from, std::string command, const std::string &amp;param)=0</td></tr>
+<tr class="memdesc:acca53b279b80e9fbc9057157a0f6d79a inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process commands from other objects.  <a href="#acca53b279b80e9fbc9057157a0f6d79a">More...</a><br /></td></tr>
+<tr class="separator:acca53b279b80e9fbc9057157a0f6d79a inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74e16481867af0c22ed2012397236fef inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a74e16481867af0c22ed2012397236fef">receiveCommandAll</a> (std::string command, const std::string &amp;param)=0</td></tr>
+<tr class="memdesc:a74e16481867af0c22ed2012397236fef inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes command received from capability manager.  <a href="#a74e16481867af0c22ed2012397236fef">More...</a><br /></td></tr>
+<tr class="separator:a74e16481867af0c22ed2012397236fef inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44f7d0d72ae9f06044fa1a3068cbe416 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a44f7d0d72ae9f06044fa1a3068cbe416">setCapabilityListener</a> (<a class="el" href="classNuguInterface_1_1ICapabilityListener.html">ICapabilityListener</a> *clistener)=0</td></tr>
+<tr class="memdesc:a44f7d0d72ae9f06044fa1a3068cbe416 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the listener object.  <a href="#a44f7d0d72ae9f06044fa1a3068cbe416">More...</a><br /></td></tr>
+<tr class="separator:a44f7d0d72ae9f06044fa1a3068cbe416 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dd597efa67e1448324ef4a876770f22 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityInterface.html#a1dd597efa67e1448324ef4a876770f22">updateInfoForContext</a> (Json::Value &amp;ctx)=0</td></tr>
+<tr class="memdesc:a1dd597efa67e1448324ef4a876770f22 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the current context information of the capability agent.  <a href="#a1dd597efa67e1448324ef4a876770f22">More...</a><br /></td></tr>
+<tr class="separator:a1dd597efa67e1448324ef4a876770f22 inherit pub_methods_classNuguInterface_1_1ICapabilityInterface"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classNuguInterface_1_1ICapabilityObservable"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classNuguInterface_1_1ICapabilityObservable')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classNuguInterface_1_1ICapabilityObservable.html">NuguInterface::ICapabilityObservable</a></td></tr>
+<tr class="memitem:ae9a32e7d0c1640f319412d7263e00385 inherit pub_methods_classNuguInterface_1_1ICapabilityObservable"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityObservable.html#ae9a32e7d0c1640f319412d7263e00385">notifyObservers</a> (<a class="el" href="group__CapabilityInterface.html#ga7969bc4408d26d7cb1ad72c1950cd5c0">CapabilitySignal</a> signal, void *data)=0</td></tr>
+<tr class="memdesc:ae9a32e7d0c1640f319412d7263e00385 inherit pub_methods_classNuguInterface_1_1ICapabilityObservable"><td class="mdescLeft">&#160;</td><td class="mdescRight">notify signal to the observer  <a href="#ae9a32e7d0c1640f319412d7263e00385">More...</a><br /></td></tr>
+<tr class="separator:ae9a32e7d0c1640f319412d7263e00385 inherit pub_methods_classNuguInterface_1_1ICapabilityObservable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8272ccd2c8b1e7e8433229559d49b95e inherit pub_methods_classNuguInterface_1_1ICapabilityObservable"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityObservable.html#a8272ccd2c8b1e7e8433229559d49b95e">registerObserver</a> (<a class="el" href="classNuguInterface_1_1ICapabilityObserver.html">ICapabilityObserver</a> *observer)=0</td></tr>
+<tr class="memdesc:a8272ccd2c8b1e7e8433229559d49b95e inherit pub_methods_classNuguInterface_1_1ICapabilityObservable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the observer.  <a href="#a8272ccd2c8b1e7e8433229559d49b95e">More...</a><br /></td></tr>
+<tr class="separator:a8272ccd2c8b1e7e8433229559d49b95e inherit pub_methods_classNuguInterface_1_1ICapabilityObservable"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a615f4aa493f02199b256977ad46da1da inherit pub_methods_classNuguInterface_1_1ICapabilityObservable"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguInterface_1_1ICapabilityObservable.html#a615f4aa493f02199b256977ad46da1da">removeObserver</a> (<a class="el" href="classNuguInterface_1_1ICapabilityObserver.html">ICapabilityObserver</a> *observer)=0</td></tr>
+<tr class="memdesc:a615f4aa493f02199b256977ad46da1da inherit pub_methods_classNuguInterface_1_1ICapabilityObservable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the observer.  <a href="#a615f4aa493f02199b256977ad46da1da">More...</a><br /></td></tr>
+<tr class="separator:a615f4aa493f02199b256977ad46da1da inherit pub_methods_classNuguInterface_1_1ICapabilityObservable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>tts handler interface </p>
@@ -205,7 +255,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguInterface</b></li><li class="navelem"><a class="el" href="classNuguInterface_1_1ITTSHandler.html">ITTSHandler</a></li>
-    <li class="footer">Generated on Mon Nov 25 2019 15:45:57 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Dec 16 2019 19:21:34 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

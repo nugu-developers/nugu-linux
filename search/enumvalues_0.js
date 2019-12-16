@@ -1,6 +1,7 @@
 var searchData=
 [
   ['asr',['ASR',['../group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa1a3cf7bfb644cba9516cc28e2cb360ca',1,'NuguInterface']]],
+  ['asr_5frecognizing_5fexception',['ASR_RECOGNIZING_EXCEPTION',['../group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282ac980b55619ee70eb68682784c0a9e34e',1,'NuguInterface']]],
   ['audio_5fformat_5fs16_5fbe',['AUDIO_FORMAT_S16_BE',['../nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4eea752dc98cd2211cf660b800f8410da83d',1,'nugu_audio.h']]],
   ['audio_5fformat_5fs16_5fle',['AUDIO_FORMAT_S16_LE',['../nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4eea094a940c199a6534a1719ec99aadcd9f',1,'nugu_audio.h']]],
   ['audio_5fformat_5fs24_5fbe',['AUDIO_FORMAT_S24_BE',['../nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4eeacb7eff5deafb162d1cf29d4e80d0f70f',1,'nugu_audio.h']]],

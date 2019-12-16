@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.4.0</span>
+   &#160;<span id="projectnumber">0.5.0</span>
    </div>
   </td>
  </tr>
@@ -103,7 +103,7 @@ $(document).ready(function(){initNavTree('group__NuguEventQueue.html','');});
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">Event Queue<div class="ingroups"><a class="el" href="group__SDKCore.html">Low-level public API</a></div></div>  </div>
+<div class="title">Event Queue<div class="ingroups"><a class="el" href="group__SDKBase.html">SDK Base</a></div></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -116,7 +116,7 @@ $(document).ready(function(){initNavTree('group__NuguEventQueue.html','');});
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <center><table><tr><td><img src="group__NuguEventQueue.png" border="0" alt="" usemap="#group____NuguEventQueue"/>
 <map name="group____NuguEventQueue" id="group____NuguEventQueue">
-<area shape="rect" id="node2" href="group__SDKCore.html" title="Low&#45;level public API" alt="" coords="5,5,147,32"/>
+<area shape="rect" id="node2" href="group__SDKBase.html" title="SDK Base" alt="" coords="5,5,89,32"/>
 </map>
 </td></tr></table></center>
 </div>
@@ -134,9 +134,22 @@ typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ga54d0f533b2309e92861df75daaa6efcb"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEventQueue.html#ga54d0f533b2309e92861df75daaa6efcb">nugu_equeue_type</a> { <a class="el" href="group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcbafd2b4ab04be437583df1d5a52c959864">NUGU_EQUEUE_TYPE_NEW_DIRECTIVE</a> = 0, 
+<tr class="memitem:ga54d0f533b2309e92861df75daaa6efcb"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEventQueue.html#ga54d0f533b2309e92861df75daaa6efcb">nugu_equeue_type</a> { <br />
+&#160;&#160;<a class="el" href="group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcbafd2b4ab04be437583df1d5a52c959864">NUGU_EQUEUE_TYPE_NEW_DIRECTIVE</a> = 0, 
 <a class="el" href="group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcbac3a6d44b53f694a6214184b2f2c174b3">NUGU_EQUEUE_TYPE_NEW_ATTACHMENT</a>, 
+<a class="el" href="group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcbad50174ba6d9eeccabab08ac56b37dcf9">NUGU_EQUEUE_TYPE_INVALID_TOKEN</a>, 
+<a class="el" href="group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba86a0c2f40668ba374df582f3c5141326">NUGU_EQUEUE_TYPE_SEND_PING_FAILED</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcbab06d44170d3ed44e5e22339a7270879b">NUGU_EQUEUE_TYPE_SEND_EVENT_FAILED</a>, 
+<a class="el" href="group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcbac0a08b8d04a6216273ea7114759c81f5">NUGU_EQUEUE_TYPE_SEND_ATTACHMENT_FAILED</a>, 
+<a class="el" href="group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba432350132f6a6425576023f2eea86d30">NUGU_EQUEUE_TYPE_REGISTRY_HEALTH</a>, 
+<a class="el" href="group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba79024514c24389bdcf849a85a2b4abfb">NUGU_EQUEUE_TYPE_REGISTRY_SERVERS</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba0ec8c080c037163a8ded594ab2982a9d">NUGU_EQUEUE_TYPE_REGISTRY_FAILED</a>, 
+<a class="el" href="group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba4453728f9adddcd2661ad84873a99e38">NUGU_EQUEUE_TYPE_SERVER_CONNECTED</a>, 
+<a class="el" href="group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba5b66d7f6cdb5a343533e2625c15d55b6">NUGU_EQUEUE_TYPE_SERVER_DISCONNECTED</a>, 
 <a class="el" href="group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba71a2740adf555abd8fd757d93cd19ffc">NUGU_EQUEUE_TYPE_MAX</a> = 255
+<br />
  }<tr class="memdesc:ga54d0f533b2309e92861df75daaa6efcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">event types  <a href="group__NuguEventQueue.html#ga54d0f533b2309e92861df75daaa6efcb">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:ga54d0f533b2309e92861df75daaa6efcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,6 +195,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="gga54d0f533b2309e92861df75daaa6efcbac3a6d44b53f694a6214184b2f2c174b3"></a>NUGU_EQUEUE_TYPE_NEW_ATTACHMENT&#160;</td><td class="fielddoc">
 <p>received new attachment </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga54d0f533b2309e92861df75daaa6efcbad50174ba6d9eeccabab08ac56b37dcf9"></a>NUGU_EQUEUE_TYPE_INVALID_TOKEN&#160;</td><td class="fielddoc">
+<p>received invalid token response </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga54d0f533b2309e92861df75daaa6efcba86a0c2f40668ba374df582f3c5141326"></a>NUGU_EQUEUE_TYPE_SEND_PING_FAILED&#160;</td><td class="fielddoc">
+<p>failed to send ping request </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga54d0f533b2309e92861df75daaa6efcbab06d44170d3ed44e5e22339a7270879b"></a>NUGU_EQUEUE_TYPE_SEND_EVENT_FAILED&#160;</td><td class="fielddoc">
+<p>failed to send event </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga54d0f533b2309e92861df75daaa6efcbac0a08b8d04a6216273ea7114759c81f5"></a>NUGU_EQUEUE_TYPE_SEND_ATTACHMENT_FAILED&#160;</td><td class="fielddoc">
+<p>failed to send attachment </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga54d0f533b2309e92861df75daaa6efcba432350132f6a6425576023f2eea86d30"></a>NUGU_EQUEUE_TYPE_REGISTRY_HEALTH&#160;</td><td class="fielddoc">
+<p>received health check policy </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga54d0f533b2309e92861df75daaa6efcba79024514c24389bdcf849a85a2b4abfb"></a>NUGU_EQUEUE_TYPE_REGISTRY_SERVERS&#160;</td><td class="fielddoc">
+<p>received server list </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga54d0f533b2309e92861df75daaa6efcba0ec8c080c037163a8ded594ab2982a9d"></a>NUGU_EQUEUE_TYPE_REGISTRY_FAILED&#160;</td><td class="fielddoc">
+<p>failed to connect device-gateway-registry </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga54d0f533b2309e92861df75daaa6efcba4453728f9adddcd2661ad84873a99e38"></a>NUGU_EQUEUE_TYPE_SERVER_CONNECTED&#160;</td><td class="fielddoc">
+<p>connected to server </p>
+</td></tr>
+<tr><td class="fieldname"><a class="anchor" id="gga54d0f533b2309e92861df75daaa6efcba5b66d7f6cdb5a343533e2625c15d55b6"></a>NUGU_EQUEUE_TYPE_SERVER_DISCONNECTED&#160;</td><td class="fielddoc">
+<p>disconnected from server </p>
 </td></tr>
 <tr><td class="fieldname"><a class="anchor" id="gga54d0f533b2309e92861df75daaa6efcba71a2740adf555abd8fd757d93cd19ffc"></a>NUGU_EQUEUE_TYPE_MAX&#160;</td><td class="fielddoc">
 <p>maximum value for type id </p>
@@ -354,7 +394,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 25 2019 15:45:56 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Dec 16 2019 19:21:33 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

@@ -7,7 +7,7 @@ var files =
     [ "delegation_interface.hh", "delegation__interface_8hh.html", null ],
     [ "display_interface.hh", "display__interface_8hh.html", null ],
     [ "extension_interface.hh", "extension__interface_8hh.html", "extension__interface_8hh" ],
-    [ "location_interface.hh", "location__interface_8hh.html", "location__interface_8hh" ],
+    [ "location_interface.hh", "location__interface_8hh.html", null ],
     [ "media_player_interface.hh", "media__player__interface_8hh.html", "media__player__interface_8hh" ],
     [ "network_manager_interface.hh", "network__manager__interface_8hh.html", "network__manager__interface_8hh" ],
     [ "nugu_audio.h", "nugu__audio_8h.html", "nugu__audio_8h" ],
@@ -16,8 +16,9 @@ var files =
       [ "CapabilityBuilder", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder" ]
     ] ],
     [ "nugu_client_listener.hh", "nugu__client__listener_8hh.html", null ],
-    [ "nugu_config.h", "nugu__config_8h.html", "nugu__config_8h" ],
-    [ "nugu_configuration.hh", "nugu__configuration_8hh.html", "nugu__configuration_8hh" ],
+    [ "nugu_configuration.hh", "nugu__configuration_8hh.html", [
+      [ "NuguConfig", "classNuguInterface_1_1NuguConfig.html", "classNuguInterface_1_1NuguConfig" ]
+    ] ],
     [ "nugu_decoder.h", "nugu__decoder_8h.html", "nugu__decoder_8h" ],
     [ "nugu_directive.h", "nugu__directive_8h.html", "nugu__directive_8h" ],
     [ "nugu_directive_sequencer.h", "nugu__directive__sequencer_8h.html", "nugu__directive__sequencer_8h" ],
@@ -34,7 +35,6 @@ var files =
     [ "nugu_ringbuffer.h", "nugu__ringbuffer_8h.html", "nugu__ringbuffer_8h" ],
     [ "nugu_timer.h", "nugu__timer_8h.html", "nugu__timer_8h" ],
     [ "nugu_uuid.h", "nugu__uuid_8h.html", "nugu__uuid_8h" ],
-    [ "permission_interface.hh", "permission__interface_8hh.html", "permission__interface_8hh" ],
     [ "system_interface.hh", "system__interface_8hh.html", "system__interface_8hh" ],
     [ "text_interface.hh", "text__interface_8hh.html", "text__interface_8hh" ],
     [ "tts_interface.hh", "tts__interface_8hh.html", "tts__interface_8hh" ],

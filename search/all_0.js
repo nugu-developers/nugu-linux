@@ -2,8 +2,10 @@ var searchData=
 [
   ['add',['add',['../classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#aec8d0f34c7653906fe20c94c18d0494a',1,'NuguClientKit::NuguClient::CapabilityBuilder']]],
   ['addlistener',['addListener',['../classNuguInterface_1_1IASRHandler.html#abd704c015c62878d35ac568a4b212d3f',1,'NuguInterface::IASRHandler::addListener()'],['../classNuguInterface_1_1IAudioPlayerHandler.html#ab3573f07fe965d0945248d5f7bcf8d7c',1,'NuguInterface::IAudioPlayerHandler::addListener()'],['../classNuguInterface_1_1IMediaPlayer.html#a61b88f8611cad2cf95f06b34ccdbbf33',1,'NuguInterface::IMediaPlayer::addListener()'],['../classNuguInterface_1_1INetworkManager.html#a28f9fb5b0c6881727bfcd51cd0d92962',1,'NuguInterface::INetworkManager::addListener()']]],
+  ['address',['address',['../structnugu__network__server__policy.html#a3fc72ddfec1bf137e5f1deda21a417d7',1,'nugu_network_server_policy']]],
   ['asr',['ASR',['../group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa1a3cf7bfb644cba9516cc28e2cb360ca',1,'NuguInterface']]],
   ['asr_5finterface_2ehh',['asr_interface.hh',['../asr__interface_8hh.html',1,'']]],
+  ['asr_5frecognizing_5fexception',['ASR_RECOGNIZING_EXCEPTION',['../group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282ac980b55619ee70eb68682784c0a9e34e',1,'NuguInterface']]],
   ['asrerror',['ASRError',['../group__ASRInterface.html#ga59be01188e40c88cbd9f96123238e2c2',1,'NuguInterface']]],
   ['asrinterface',['ASRInterface',['../group__ASRInterface.html',1,'']]],
   ['asrstate',['ASRState',['../group__ASRInterface.html#ga4f4c5d25fa386588271ef29f65e26b6e',1,'NuguInterface']]],

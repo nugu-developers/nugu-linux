@@ -1,3 +1,11 @@
 <map id="NuguInterface::ICapabilityInterface" name="NuguInterface::ICapabilityInterface">
-<area shape="rect" id="node2" href="$classNuguInterface_1_1ICapabilityObservable.html" title="capability observer interface " alt="" coords="5,5,180,47"/>
+<area shape="rect" id="node3" href="$classNuguInterface_1_1IASRHandler.html" title="ASR handler interface. " alt="" coords="459,5,649,32"/>
+<area shape="rect" id="node4" href="$classNuguInterface_1_1IDelegationHandler.html" title="delegation handler interface " alt="" coords="465,57,643,98"/>
+<area shape="rect" id="node5" href="$classNuguInterface_1_1IDisplayHandler.html" title="display handler interface " alt="" coords="451,123,657,149"/>
+<area shape="rect" id="node7" href="$classNuguInterface_1_1IExtensionHandler.html" title="extension handler interface " alt="" coords="467,174,641,215"/>
+<area shape="rect" id="node8" href="$classNuguInterface_1_1ISystemHandler.html" title="system handler interface " alt="" coords="451,240,657,267"/>
+<area shape="rect" id="node9" href="$classNuguInterface_1_1ITextHandler.html" title="text handler interface " alt="" coords="461,291,647,317"/>
+<area shape="rect" id="node10" href="$classNuguInterface_1_1ITTSHandler.html" title="tts handler interface " alt="" coords="461,341,647,368"/>
+<area shape="rect" id="node2" href="$classNuguInterface_1_1ICapabilityObservable.html" title="capability observer interface " alt="" coords="5,174,180,215"/>
+<area shape="rect" id="node6" href="$classNuguInterface_1_1IAudioPlayerHandler.html" title="audioplayer handler interface " alt="" coords="705,115,892,157"/>
 </map>

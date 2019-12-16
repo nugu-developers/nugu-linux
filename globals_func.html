@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.4.0</span>
+   &#160;<span id="projectnumber">0.5.0</span>
    </div>
   </td>
  </tr>
@@ -157,18 +157,6 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 </li>
 <li>nugu_buffer_shift_left()
 : <a class="el" href="group__Buffer.html#ga294cfae33d6510cf9b6a59b9f2056493">nugu_buffer.h</a>
-</li>
-<li>nugu_config_deinitialize()
-: <a class="el" href="group__nugu__config.html#gae64b684973e5409215b3da845f811971">nugu_config.h</a>
-</li>
-<li>nugu_config_get()
-: <a class="el" href="group__nugu__config.html#gaaba119987252d015acbf1500810e1c52">nugu_config.h</a>
-</li>
-<li>nugu_config_initialize()
-: <a class="el" href="group__nugu__config.html#ga5a1ec7bb249eb61a177463049034da09">nugu_config.h</a>
-</li>
-<li>nugu_config_set()
-: <a class="el" href="group__nugu__config.html#gafb6df63bd64d973c2d85813daf7192e4">nugu_config.h</a>
 </li>
 <li>nugu_decoder_decode()
 : <a class="el" href="group__NuguDecoder.html#gaa9ae0c9d5d8a6da2671869b67227d277">nugu_decoder.h</a>
@@ -410,8 +398,20 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 <li>nugu_network_manager_get_status()
 : <a class="el" href="group__nugu__network.html#gae092f03eddf78dbc7b4138fdfccf67ae">nugu_network_manager.h</a>
 </li>
+<li>nugu_network_manager_handoff()
+: <a class="el" href="group__nugu__network.html#ga3c13ec023269a014e3855e0e88f28c14">nugu_network_manager.h</a>
+</li>
 <li>nugu_network_manager_initialize()
 : <a class="el" href="group__nugu__network.html#ga78d3264b36e057e7ffc70eefa77b0260">nugu_network_manager.h</a>
+</li>
+<li>nugu_network_manager_peek_registry_url()
+: <a class="el" href="group__nugu__network.html#ga72a662214e4e9a073e6911295599d5a1">nugu_network_manager.h</a>
+</li>
+<li>nugu_network_manager_peek_token()
+: <a class="el" href="group__nugu__network.html#gac0813acb55cf09115cbe20655c4ad04a">nugu_network_manager.h</a>
+</li>
+<li>nugu_network_manager_peek_useragent()
+: <a class="el" href="group__nugu__network.html#ga146c04f3badde8f76fcdd0469e1ac329">nugu_network_manager.h</a>
 </li>
 <li>nugu_network_manager_send_event()
 : <a class="el" href="group__nugu__network.html#ga93d037f96f08bd7de3b8e32c637319e7">nugu_network_manager.h</a>
@@ -419,11 +419,23 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 <li>nugu_network_manager_send_event_data()
 : <a class="el" href="group__nugu__network.html#gac8a5a41821ad77b0e964dd79a218ac41">nugu_network_manager.h</a>
 </li>
-<li>nugu_network_manager_set_callback()
-: <a class="el" href="group__nugu__network.html#ga7f6d096132112ca54c61cbd69364b272">nugu_network_manager.h</a>
+<li>nugu_network_manager_set_handoff_status_callback()
+: <a class="el" href="group__nugu__network.html#gaec898854506f84a0d44157ac92ee340c">nugu_network_manager.h</a>
+</li>
+<li>nugu_network_manager_set_registry_url()
+: <a class="el" href="group__nugu__network.html#ga14fd663ca182334cf98f916b6e2ce2e8">nugu_network_manager.h</a>
 </li>
 <li>nugu_network_manager_set_status()
 : <a class="el" href="group__nugu__network.html#ga43e79f0c044fd2848987f0953cfcb930">nugu_network_manager.h</a>
+</li>
+<li>nugu_network_manager_set_status_callback()
+: <a class="el" href="group__nugu__network.html#gaf9728e928ce2d66536b371b93e4affc7">nugu_network_manager.h</a>
+</li>
+<li>nugu_network_manager_set_token()
+: <a class="el" href="group__nugu__network.html#gafa7ede456c6ef64cc2e20916aebc101e">nugu_network_manager.h</a>
+</li>
+<li>nugu_network_manager_set_useragent()
+: <a class="el" href="group__nugu__network.html#ga9ffc10af4f0430841706d6d8b80dc996">nugu_network_manager.h</a>
 </li>
 <li>nugu_pcm_add()
 : <a class="el" href="group__NuguPcm.html#ga9915e8bdc21996bc344df7019d66c03a">nugu_pcm.h</a>
@@ -776,7 +788,7 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Nov 25 2019 15:45:57 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Dec 16 2019 19:21:34 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

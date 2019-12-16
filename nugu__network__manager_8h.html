@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.4.0</span>
+   &#160;<span id="projectnumber">0.5.0</span>
    </div>
   </td>
  </tr>
@@ -105,6 +105,8 @@ $(document).ready(function(){initNavTree('nugu__network__manager_8h.html','');})
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -112,9 +114,7 @@ $(document).ready(function(){initNavTree('nugu__network__manager_8h.html','');})
 <div class="title">nugu_network_manager.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;stdio.h&gt;</code><br />
-<code>#include &lt;<a class="el" href="nugu__event_8h_source.html">core/nugu_event.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="nugu__directive_8h_source.html">core/nugu_directive.h</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="nugu__event_8h_source.html">base/nugu_event.h</a>&gt;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for nugu_network_manager.h:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -122,26 +122,58 @@ $(document).ready(function(){initNavTree('nugu__network__manager_8h.html','');})
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="nugu__network__manager_8h__incl.png" border="0" usemap="#nugu__network__manager_8h" alt=""/></div>
 <map name="nugu__network__manager_8h" id="nugu__network__manager_8h">
-<area shape="rect" id="node3" href="nugu__event_8h.html" title="core/nugu_event.h" alt="" coords="91,80,221,107"/>
-<area shape="rect" id="node4" href="nugu__directive_8h.html" title="core/nugu_directive.h" alt="" coords="245,80,392,107"/>
+<area shape="rect" id="node2" href="nugu__event_8h.html" title="base/nugu_event.h" alt="" coords="25,80,157,107"/>
 </map>
 </div>
 </div>
 <p><a href="nugu__network__manager_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnugu__network__server__policy.html">nugu_network_server_policy</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Server policy information used for network connections.  <a href="structnugu__network__server__policy.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:gac814994ac3d63c81b6c7d2ec6eac6e19"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gac814994ac3d63c81b6c7d2ec6eac6e19">NUGU_NETWORK_MAX_ADDRESS</a>&#160;&#160;&#160;255</td></tr>
+<tr class="memdesc:gac814994ac3d63c81b6c7d2ec6eac6e19"><td class="mdescLeft">&#160;</td><td class="mdescRight">maximum size of address <br /></td></tr>
+<tr class="separator:gac814994ac3d63c81b6c7d2ec6eac6e19"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga11a55faf231eeedea1409f4db076eeda"><td class="memItemLeft" align="right" valign="top">
-typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga11a55faf231eeedea1409f4db076eeda">NetworkManagerCallback</a>) (void *userdata)</td></tr>
-<tr class="memdesc:ga11a55faf231eeedea1409f4db076eeda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback prototype for receiving network status events. <br /></td></tr>
-<tr class="separator:ga11a55faf231eeedea1409f4db076eeda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga31fd81c3e6ba2b74d6e8859eef0df054"><td class="memItemLeft" align="right" valign="top">
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga31fd81c3e6ba2b74d6e8859eef0df054">NetworkManagerHandoffStatusCallback</a>) (<a class="el" href="group__nugu__network.html#gaf3009eba6e203b17f69ffabd0555dae2">NuguNetworkHandoffStatus</a> status, void *userdata)</td></tr>
+<tr class="memdesc:ga31fd81c3e6ba2b74d6e8859eef0df054"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback prototype for handoff status events. <br /></td></tr>
+<tr class="separator:ga31fd81c3e6ba2b74d6e8859eef0df054"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa10740755e63071f21de38d580ca4df6"><td class="memItemLeft" align="right" valign="top">
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gaa10740755e63071f21de38d580ca4df6">NetworkManagerStatusCallback</a>) (<a class="el" href="group__nugu__network.html#gadfe4221b82d456908c2fdc21a62a526b">NuguNetworkStatus</a> status, void *userdata)</td></tr>
+<tr class="memdesc:gaa10740755e63071f21de38d580ca4df6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback prototype for receiving network status events. <br /></td></tr>
+<tr class="separator:gaa10740755e63071f21de38d580ca4df6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf3009eba6e203b17f69ffabd0555dae2"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="group__nugu__network.html#ga054a32d8fa42531f9768a32499142c93">nugu_network_handoff_status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gaf3009eba6e203b17f69ffabd0555dae2">NuguNetworkHandoffStatus</a></td></tr>
+<tr class="separator:gaf3009eba6e203b17f69ffabd0555dae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga43408e1e143f09f083464fe30d2d7b54"><td class="memItemLeft" align="right" valign="top">typedef struct <a class="el" href="structnugu__network__server__policy.html">nugu_network_server_policy</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga43408e1e143f09f083464fe30d2d7b54">NuguNetworkServerPolicy</a></td></tr>
+<tr class="separator:ga43408e1e143f09f083464fe30d2d7b54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gadfe4221b82d456908c2fdc21a62a526b"><td class="memItemLeft" align="right" valign="top">typedef enum <a class="el" href="group__nugu__network.html#gab3b96f22ffa5e42cc058222a04a129c4">nugu_network_status</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gadfe4221b82d456908c2fdc21a62a526b">NuguNetworkStatus</a></td></tr>
 <tr class="separator:gadfe4221b82d456908c2fdc21a62a526b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:gab3b96f22ffa5e42cc058222a04a129c4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gab3b96f22ffa5e42cc058222a04a129c4">nugu_network_status</a> { <a class="el" href="group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a9ac2b72a5498859a8ee11752926fc706">NUGU_NETWORK_UNKNOWN</a>, 
-<a class="el" href="group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4ab0ae183c7eb1cbe7496b59f796f11d08">NUGU_NETWORK_DISCONNECTED</a>, 
+<tr class="memitem:ga054a32d8fa42531f9768a32499142c93"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga054a32d8fa42531f9768a32499142c93">nugu_network_handoff_status</a> { <a class="el" href="group__nugu__network.html#gga054a32d8fa42531f9768a32499142c93ae0e7e412946a8c19ed2f534e3145b2eb">NUGU_NETWORK_HANDOFF_FAILED</a>, 
+<a class="el" href="group__nugu__network.html#gga054a32d8fa42531f9768a32499142c93a72f24de0b8d0636b47b855f998df2c45">NUGU_NETWORK_HANDOFF_READY</a>, 
+<a class="el" href="group__nugu__network.html#gga054a32d8fa42531f9768a32499142c93aafee20f54fd1c6cc1849c572b20e09d6">NUGU_NETWORK_HANDOFF_COMPLETED</a>
+ }<tr class="memdesc:ga054a32d8fa42531f9768a32499142c93"><td class="mdescLeft">&#160;</td><td class="mdescRight">network handoff status  <a href="group__nugu__network.html#ga054a32d8fa42531f9768a32499142c93">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:ga054a32d8fa42531f9768a32499142c93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0e9ac38f106f154eb4d0eb556b7f0921"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga0e9ac38f106f154eb4d0eb556b7f0921">nugu_network_protocol</a> { <a class="el" href="group__nugu__network.html#gga0e9ac38f106f154eb4d0eb556b7f0921a05ce81d5d17ca05f4de2e7df1eb9c241">NUGU_NETWORK_PROTOCOL_H2</a>, 
+<a class="el" href="group__nugu__network.html#gga0e9ac38f106f154eb4d0eb556b7f0921a65011a1be3385a3a17c4703996b2affc">NUGU_NETWORK_PROTOCOL_H2C</a>, 
+<a class="el" href="group__nugu__network.html#gga0e9ac38f106f154eb4d0eb556b7f0921a1cadc76343bcc077a9ea6b2aad458826">NUGU_NETWORK_PROTOCOL_UNKNOWN</a>
+ }<tr class="memdesc:ga0e9ac38f106f154eb4d0eb556b7f0921"><td class="mdescLeft">&#160;</td><td class="mdescRight">network protocols  <a href="group__nugu__network.html#ga0e9ac38f106f154eb4d0eb556b7f0921">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:ga0e9ac38f106f154eb4d0eb556b7f0921"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab3b96f22ffa5e42cc058222a04a129c4"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gab3b96f22ffa5e42cc058222a04a129c4">nugu_network_status</a> { <a class="el" href="group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4ab0ae183c7eb1cbe7496b59f796f11d08">NUGU_NETWORK_DISCONNECTED</a>, 
+<a class="el" href="group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a8a1871ebd99b8eb45a62e720c3d0e260">NUGU_NETWORK_CONNECTING</a>, 
 <a class="el" href="group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a9b9a320a23cfa4c1882c18f3ad153e1f">NUGU_NETWORK_CONNECTED</a>, 
 <a class="el" href="group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a6daa9efc152da3f99d19f913c7dda2ce">NUGU_NETWORK_TOKEN_ERROR</a>
  }<tr class="memdesc:gab3b96f22ffa5e42cc058222a04a129c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">network status  <a href="group__nugu__network.html#gab3b96f22ffa5e42cc058222a04a129c4">More...</a><br /></td></tr>
@@ -163,29 +195,53 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <tr class="memitem:gae092f03eddf78dbc7b4138fdfccf67ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__nugu__network.html#gadfe4221b82d456908c2fdc21a62a526b">NuguNetworkStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gae092f03eddf78dbc7b4138fdfccf67ae">nugu_network_manager_get_status</a> (void)</td></tr>
 <tr class="memdesc:gae092f03eddf78dbc7b4138fdfccf67ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the current network status.  <a href="group__nugu__network.html#gae092f03eddf78dbc7b4138fdfccf67ae">More...</a><br /></td></tr>
 <tr class="separator:gae092f03eddf78dbc7b4138fdfccf67ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3c13ec023269a014e3855e0e88f28c14"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga3c13ec023269a014e3855e0e88f28c14">nugu_network_manager_handoff</a> (const <a class="el" href="group__nugu__network.html#ga43408e1e143f09f083464fe30d2d7b54">NuguNetworkServerPolicy</a> *policy)</td></tr>
+<tr class="memdesc:ga3c13ec023269a014e3855e0e88f28c14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handoff the current connection to new server.  <a href="group__nugu__network.html#ga3c13ec023269a014e3855e0e88f28c14">More...</a><br /></td></tr>
+<tr class="separator:ga3c13ec023269a014e3855e0e88f28c14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga78d3264b36e057e7ffc70eefa77b0260"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga78d3264b36e057e7ffc70eefa77b0260">nugu_network_manager_initialize</a> (void)</td></tr>
 <tr class="memdesc:ga78d3264b36e057e7ffc70eefa77b0260"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the network manager.  <a href="group__nugu__network.html#ga78d3264b36e057e7ffc70eefa77b0260">More...</a><br /></td></tr>
 <tr class="separator:ga78d3264b36e057e7ffc70eefa77b0260"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga72a662214e4e9a073e6911295599d5a1"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga72a662214e4e9a073e6911295599d5a1">nugu_network_manager_peek_registry_url</a> (void)</td></tr>
+<tr class="memdesc:ga72a662214e4e9a073e6911295599d5a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the device gateway registry url.  <a href="group__nugu__network.html#ga72a662214e4e9a073e6911295599d5a1">More...</a><br /></td></tr>
+<tr class="separator:ga72a662214e4e9a073e6911295599d5a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac0813acb55cf09115cbe20655c4ad04a"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gac0813acb55cf09115cbe20655c4ad04a">nugu_network_manager_peek_token</a> (void)</td></tr>
+<tr class="memdesc:gac0813acb55cf09115cbe20655c4ad04a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the access token value.  <a href="group__nugu__network.html#gac0813acb55cf09115cbe20655c4ad04a">More...</a><br /></td></tr>
+<tr class="separator:gac0813acb55cf09115cbe20655c4ad04a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga146c04f3badde8f76fcdd0469e1ac329"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga146c04f3badde8f76fcdd0469e1ac329">nugu_network_manager_peek_useragent</a> (void)</td></tr>
+<tr class="memdesc:ga146c04f3badde8f76fcdd0469e1ac329"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the UserAgent information.  <a href="group__nugu__network.html#ga146c04f3badde8f76fcdd0469e1ac329">More...</a><br /></td></tr>
+<tr class="separator:ga146c04f3badde8f76fcdd0469e1ac329"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga93d037f96f08bd7de3b8e32c637319e7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga93d037f96f08bd7de3b8e32c637319e7">nugu_network_manager_send_event</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev)</td></tr>
 <tr class="memdesc:ga93d037f96f08bd7de3b8e32c637319e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send the event to server.  <a href="group__nugu__network.html#ga93d037f96f08bd7de3b8e32c637319e7">More...</a><br /></td></tr>
 <tr class="separator:ga93d037f96f08bd7de3b8e32c637319e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac8a5a41821ad77b0e964dd79a218ac41"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gac8a5a41821ad77b0e964dd79a218ac41">nugu_network_manager_send_event_data</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev, int is_end, size_t length, unsigned char *data)</td></tr>
 <tr class="memdesc:gac8a5a41821ad77b0e964dd79a218ac41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send the attachment data of event to server.  <a href="group__nugu__network.html#gac8a5a41821ad77b0e964dd79a218ac41">More...</a><br /></td></tr>
 <tr class="separator:gac8a5a41821ad77b0e964dd79a218ac41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7f6d096132112ca54c61cbd69364b272"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga7f6d096132112ca54c61cbd69364b272">nugu_network_manager_set_callback</a> (<a class="el" href="group__nugu__network.html#ga11a55faf231eeedea1409f4db076eeda">NetworkManagerCallback</a> callback, void *userdata)</td></tr>
-<tr class="memdesc:ga7f6d096132112ca54c61cbd69364b272"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set network status callback.  <a href="group__nugu__network.html#ga7f6d096132112ca54c61cbd69364b272">More...</a><br /></td></tr>
-<tr class="separator:ga7f6d096132112ca54c61cbd69364b272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaec898854506f84a0d44157ac92ee340c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gaec898854506f84a0d44157ac92ee340c">nugu_network_manager_set_handoff_status_callback</a> (<a class="el" href="group__nugu__network.html#ga31fd81c3e6ba2b74d6e8859eef0df054">NetworkManagerHandoffStatusCallback</a> callback, void *userdata)</td></tr>
+<tr class="memdesc:gaec898854506f84a0d44157ac92ee340c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set handoff status callback.  <a href="group__nugu__network.html#gaec898854506f84a0d44157ac92ee340c">More...</a><br /></td></tr>
+<tr class="separator:gaec898854506f84a0d44157ac92ee340c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga14fd663ca182334cf98f916b6e2ce2e8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga14fd663ca182334cf98f916b6e2ce2e8">nugu_network_manager_set_registry_url</a> (const char *urlname)</td></tr>
+<tr class="memdesc:ga14fd663ca182334cf98f916b6e2ce2e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the device gateway registry url.  <a href="group__nugu__network.html#ga14fd663ca182334cf98f916b6e2ce2e8">More...</a><br /></td></tr>
+<tr class="separator:ga14fd663ca182334cf98f916b6e2ce2e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga43e79f0c044fd2848987f0953cfcb930"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga43e79f0c044fd2848987f0953cfcb930">nugu_network_manager_set_status</a> (<a class="el" href="group__nugu__network.html#gadfe4221b82d456908c2fdc21a62a526b">NuguNetworkStatus</a> network_status)</td></tr>
 <tr class="memdesc:ga43e79f0c044fd2848987f0953cfcb930"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the current network status.  <a href="group__nugu__network.html#ga43e79f0c044fd2848987f0953cfcb930">More...</a><br /></td></tr>
 <tr class="separator:ga43e79f0c044fd2848987f0953cfcb930"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf9728e928ce2d66536b371b93e4affc7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gaf9728e928ce2d66536b371b93e4affc7">nugu_network_manager_set_status_callback</a> (<a class="el" href="group__nugu__network.html#gaa10740755e63071f21de38d580ca4df6">NetworkManagerStatusCallback</a> callback, void *userdata)</td></tr>
+<tr class="memdesc:gaf9728e928ce2d66536b371b93e4affc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set network status callback.  <a href="group__nugu__network.html#gaf9728e928ce2d66536b371b93e4affc7">More...</a><br /></td></tr>
+<tr class="separator:gaf9728e928ce2d66536b371b93e4affc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafa7ede456c6ef64cc2e20916aebc101e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gafa7ede456c6ef64cc2e20916aebc101e">nugu_network_manager_set_token</a> (const char *token)</td></tr>
+<tr class="memdesc:gafa7ede456c6ef64cc2e20916aebc101e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the access token value.  <a href="group__nugu__network.html#gafa7ede456c6ef64cc2e20916aebc101e">More...</a><br /></td></tr>
+<tr class="separator:gafa7ede456c6ef64cc2e20916aebc101e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9ffc10af4f0430841706d6d8b80dc996"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga9ffc10af4f0430841706d6d8b80dc996">nugu_network_manager_set_useragent</a> (const char *uagent)</td></tr>
+<tr class="memdesc:ga9ffc10af4f0430841706d6d8b80dc996"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the HTTP header UserAgent information.  <a href="group__nugu__network.html#ga9ffc10af4f0430841706d6d8b80dc996">More...</a><br /></td></tr>
+<tr class="separator:ga9ffc10af4f0430841706d6d8b80dc996"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_3d69f64eaf81436fe2b22361382717e5.html">core</a></li><li class="navelem"><a class="el" href="nugu__network__manager_8h.html">nugu_network_manager.h</a></li>
-    <li class="footer">Generated on Mon Nov 25 2019 15:45:55 for NUGU SDK Linux by
+    <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_ab1c81409f0df724f17c9ef30afee877.html">base</a></li><li class="navelem"><a class="el" href="nugu__network__manager_8h.html">nugu_network_manager.h</a></li>
+    <li class="footer">Generated on Mon Dec 16 2019 19:21:33 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['load',['load',['../structnugu__plugin__desc.html#afef3d74c5f09b6dbc1d82c43640d3093',1,'nugu_plugin_desc']]]
+  ['hostname',['hostname',['../structnugu__network__server__policy.html#ac85cb3c6450e66de87ac51e0e94b8dec',1,'nugu_network_server_policy']]]
 ];

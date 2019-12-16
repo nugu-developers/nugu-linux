@@ -32,7 +32,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.4.0</span>
+   &#160;<span id="projectnumber">0.5.0</span>
    </div>
   </td>
  </tr>
@@ -119,9 +119,9 @@ $(document).ready(function(){initNavTree('system__interface_8hh.html','');});
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="system__interface_8hh__incl.png" border="0" usemap="#system__interface_8hh" alt=""/></div>
 <map name="system__interface_8hh" id="system__interface_8hh">
-<area shape="rect" id="node2" href="capability__interface_8hh.html" title="interface/capability\l/capability_interface.hh" alt="" coords="115,80,271,121"/>
-<area shape="rect" id="node5" href="nugu__directive_8h.html" title="core/nugu_directive.h" alt="" coords="119,177,266,203"/>
-<area shape="rect" id="node6" href="capability__observer_8hh.html" title="interface/capability\l/capability_observer.hh" alt="" coords="291,169,447,211"/>
+<area shape="rect" id="node2" href="capability__interface_8hh.html" title="interface/capability\l/capability_interface.hh" alt="" coords="116,80,272,121"/>
+<area shape="rect" id="node5" href="nugu__directive_8h.html" title="base/nugu_directive.h" alt="" coords="119,177,269,203"/>
+<area shape="rect" id="node6" href="capability__observer_8hh.html" title="interface/capability\l/capability_observer.hh" alt="" coords="293,169,449,211"/>
 </map>
 </div>
 </div><div class="textblock"><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -152,10 +152,17 @@ Enumerations</h2></td></tr>
  }<tr class="memdesc:gaa87a31f522637900c9ae0315e5e97a92"><td class="mdescLeft">&#160;</td><td class="mdescRight">RevokeReason. <br /></td></tr>
 </td></tr>
 <tr class="separator:gaa87a31f522637900c9ae0315e5e97a92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaace286aef98f9d3c21e77ebe9f45c732"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SystemInterface.html#gaace286aef98f9d3c21e77ebe9f45c732">NuguInterface::SystemMessage</a> { <a class="el" href="group__SystemInterface.html#ggaace286aef98f9d3c21e77ebe9f45c732a0b8ba36b47269d8ed965f33faefd8f4f">NuguInterface::SystemMessage::ROUTE_ERROR_NOT_FOUND_PLAY</a>
- }<tr class="memdesc:gaace286aef98f9d3c21e77ebe9f45c732"><td class="mdescLeft">&#160;</td><td class="mdescRight">ExtensionResult.  <a href="group__SystemInterface.html#gaace286aef98f9d3c21e77ebe9f45c732">More...</a><br /></td></tr>
+<tr class="memitem:ga5e3c9cb6b18bd06e4393333e922c0282"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SystemInterface.html#ga5e3c9cb6b18bd06e4393333e922c0282">NuguInterface::SystemException</a> { <br />
+&#160;&#160;<a class="el" href="group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282a073b62332ae9f9b319a9d1867ccdcf90">NuguInterface::SystemException::UNAUTHORIZED_REQUEST_EXCEPTION</a>, 
+<a class="el" href="group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282ae868122b754c03f37fef7f17455997a5">NuguInterface::SystemException::PLAY_ROUTER_PROCESSING_EXCEPTION</a>, 
+<a class="el" href="group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282ac980b55619ee70eb68682784c0a9e34e">NuguInterface::SystemException::ASR_RECOGNIZING_EXCEPTION</a>, 
+<a class="el" href="group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282a4728a21f19c4b81a354edbcd5a1ad9c1">NuguInterface::SystemException::TTS_SPEAKING_EXCEPTION</a>, 
+<br />
+&#160;&#160;<a class="el" href="group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282aaf828269166d62d6a53b6ee2d0851cf1">NuguInterface::SystemException::INTERNAL_SERVICE_EXCEPTION</a>
+<br />
+ }<tr class="memdesc:ga5e3c9cb6b18bd06e4393333e922c0282"><td class="mdescLeft">&#160;</td><td class="mdescRight">SystemException.  <a href="group__SystemInterface.html#ga5e3c9cb6b18bd06e4393333e922c0282">More...</a><br /></td></tr>
 </td></tr>
-<tr class="separator:gaace286aef98f9d3c21e77ebe9f45c732"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ga5e3c9cb6b18bd06e4393333e922c0282"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -163,7 +170,7 @@ Enumerations</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fac9ef7fc20ac12aaae6ba4aa5a86afc.html">interface</a></li><li class="navelem"><a class="el" href="dir_36fc0b564ea705bd6f3197d5d5d1087e.html">capability</a></li><li class="navelem"><a class="el" href="system__interface_8hh.html">system_interface.hh</a></li>
-    <li class="footer">Generated on Mon Nov 25 2019 15:45:56 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Dec 16 2019 19:21:33 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.11 </li>
   </ul>

@@ -11,5 +11,5 @@ var searchData=
   ['locationinfo',['LocationInfo',['../structNuguInterface_1_1LocationInfo.html',1,'NuguInterface']]],
   ['locationinterface',['LocationInterface',['../group__LocationInterface.html',1,'']]],
   ['log',['Log',['../group__Log.html',1,'']]],
-  ['low_2dlevel_20public_20api',['Low-level public API',['../group__SDKCore.html',1,'']]]
+  ['loop',['loop',['../classNuguInterface_1_1IMediaPlayer.html#a10b4355905ff5f1b1631866bcd20a33d',1,'NuguInterface::IMediaPlayer']]]
 ];

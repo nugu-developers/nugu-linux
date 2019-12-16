@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['ready',['READY',['../group__MediaPlayerInterface.html#ggad0ce90f562db76975afd0fb74f6713c8a2baa69eafc7204f3bd8648eba580c489',1,'NuguInterface']]],
-  ['recognize_5ferror',['RECOGNIZE_ERROR',['../group__ASRInterface.html#gga59be01188e40c88cbd9f96123238e2c2ab7bc01e941b272a54a236e1303aed2a1',1,'NuguInterface']]],
-  ['recognizing',['RECOGNIZING',['../group__ASRInterface.html#gga4f4c5d25fa386588271ef29f65e26b6ea437f3cbaf966fe37c60ee219ecb23576',1,'NuguInterface']]],
-  ['response_5ftimeout',['RESPONSE_TIMEOUT',['../group__ASRInterface.html#gga59be01188e40c88cbd9f96123238e2c2a0bc1f3f491e9717b6ff83103a014d496',1,'NuguInterface::RESPONSE_TIMEOUT()'],['../group__TextInterface.html#gga4e4420cc479af8da8b5c7d528132571ca0bc1f3f491e9717b6ff83103a014d496',1,'NuguInterface::RESPONSE_TIMEOUT()']]],
-  ['route_5ferror_5fnot_5ffound_5fplay',['ROUTE_ERROR_NOT_FOUND_PLAY',['../group__SystemInterface.html#ggaace286aef98f9d3c21e77ebe9f45c732a0b8ba36b47269d8ed965f33faefd8f4f',1,'NuguInterface']]]
+  ['paused',['PAUSED',['../group__AudioPlayerInterface.html#gga8b50e602c4c6f1f89f716d913240cf0aa99b2439e63f73ad515f7ab2447a80673',1,'NuguInterface::PAUSED()'],['../group__MediaPlayerInterface.html#ggad0ce90f562db76975afd0fb74f6713c8a99b2439e63f73ad515f7ab2447a80673',1,'NuguInterface::PAUSED()']]],
+  ['play_5frouter_5fprocessing_5fexception',['PLAY_ROUTER_PROCESSING_EXCEPTION',['../group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282ae868122b754c03f37fef7f17455997a5',1,'NuguInterface']]],
+  ['playing',['PLAYING',['../group__AudioPlayerInterface.html#gga8b50e602c4c6f1f89f716d913240cf0aa50366a49630a416ab3ccaa004196027e',1,'NuguInterface::PLAYING()'],['../group__MediaPlayerInterface.html#ggad0ce90f562db76975afd0fb74f6713c8a50366a49630a416ab3ccaa004196027e',1,'NuguInterface::PLAYING()']]],
+  ['playing_5fmedia_5ffinished',['PLAYING_MEDIA_FINISHED',['../group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa8aa89e3b945415649b8fa48f74865763',1,'NuguInterface']]],
+  ['prepare',['PREPARE',['../group__MediaPlayerInterface.html#ggad0ce90f562db76975afd0fb74f6713c8ab205205bc58adbefd02d8ba357b9c57f',1,'NuguInterface']]]
 ];

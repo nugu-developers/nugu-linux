@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['uuid',['UUID',['../group__uuid.html',1,'']]]
+  ['voice_20recorder',['Voice recorder',['../group__NuguRecorder.html',1,'']]]
 ];

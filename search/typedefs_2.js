@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['networkmanagercallback',['NetworkManagerCallback',['../group__nugu__network.html#ga11a55faf231eeedea1409f4db076eeda',1,'nugu_network_manager.h']]],
+  ['networkmanagerhandoffstatuscallback',['NetworkManagerHandoffStatusCallback',['../group__nugu__network.html#ga31fd81c3e6ba2b74d6e8859eef0df054',1,'nugu_network_manager.h']]],
+  ['networkmanagerstatuscallback',['NetworkManagerStatusCallback',['../group__nugu__network.html#gaa10740755e63071f21de38d580ca4df6',1,'nugu_network_manager.h']]],
   ['nugu_5flog_5fhandler',['nugu_log_handler',['../group__Log.html#gac958ae194a6eb619130b557c4f9a02e3',1,'nugu_log.h']]],
   ['nuguaudioproperty',['NuguAudioProperty',['../nugu__audio_8h.html#a9a3bd436c48f57a8e6b424533e1b3c85',1,'nugu_audio.h']]],
   ['nugubuffer',['NuguBuffer',['../group__Buffer.html#ga065b515fc87d13912c156adb17456129',1,'nugu_buffer.h']]],
@@ -16,6 +17,8 @@ var searchData=
   ['nugufocusresult',['NuguFocusResult',['../group__NuguFocus.html#gaea04eb137abffebd10b8841d4c32fc6c',1,'nugu_focus.h']]],
   ['nugufocusstealresult',['NuguFocusStealResult',['../group__NuguFocus.html#ga28216c01af6a630441c14b398c5dfc1f',1,'nugu_focus.h']]],
   ['nugufocustype',['NuguFocusType',['../group__NuguFocus.html#ga20d9fdec3e35bbfdcc3e30cd7cccdb54',1,'nugu_focus.h']]],
+  ['nugunetworkhandoffstatus',['NuguNetworkHandoffStatus',['../group__nugu__network.html#gaf3009eba6e203b17f69ffabd0555dae2',1,'nugu_network_manager.h']]],
+  ['nugunetworkserverpolicy',['NuguNetworkServerPolicy',['../group__nugu__network.html#ga43408e1e143f09f083464fe30d2d7b54',1,'nugu_network_manager.h']]],
   ['nugunetworkstatus',['NuguNetworkStatus',['../group__nugu__network.html#gadfe4221b82d456908c2fdc21a62a526b',1,'nugu_network_manager.h']]],
   ['nugupcm',['NuguPcm',['../group__NuguPcm.html#gaa77fd22dd7949fff235b29b7c98d5c27',1,'nugu_pcm.h']]],
   ['nugupcmdriver',['NuguPcmDriver',['../group__NuguPcmDriver.html#gac12e878b75b09a46af6435d993a9f1db',1,'nugu_pcm.h']]],

@@ -1,5 +1,5 @@
 <map id="location_interface.hh" name="location_interface.hh">
-<area shape="rect" id="node3" href="$capability__interface_8hh.html" title="interface/capability\l/capability_interface.hh" alt="" coords="115,80,271,121"/>
-<area shape="rect" id="node6" href="$nugu__directive_8h.html" title="core/nugu_directive.h" alt="" coords="119,177,266,203"/>
-<area shape="rect" id="node7" href="$capability__observer_8hh.html" title="interface/capability\l/capability_observer.hh" alt="" coords="291,169,447,211"/>
+<area shape="rect" id="node2" href="$capability__interface_8hh.html" title="interface/capability\l/capability_interface.hh" alt="" coords="116,80,272,121"/>
+<area shape="rect" id="node5" href="$nugu__directive_8h.html" title="base/nugu_directive.h" alt="" coords="119,177,269,203"/>
+<area shape="rect" id="node6" href="$capability__observer_8hh.html" title="interface/capability\l/capability_observer.hh" alt="" coords="293,169,449,211"/>
 </map>

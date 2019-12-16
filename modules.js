@@ -1,6 +1,7 @@
 var modules =
 [
-    [ "High-level public API", "group__SDKAPI.html", "group__SDKAPI" ],
-    [ "Low-level public API", "group__SDKCore.html", "group__SDKCore" ],
+    [ "NuguClientKit", "group__SDKNuguClientKit.html", "group__SDKNuguClientKit" ],
+    [ "NuguInterface", "group__SDKNuguInterface.html", "group__SDKNuguInterface" ],
+    [ "SDK Base", "group__SDKBase.html", "group__SDKBase" ],
     [ "Driver API", "group__SDKDriver.html", "group__SDKDriver" ]
 ];

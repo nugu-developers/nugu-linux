@@ -12,6 +12,8 @@ var group__MediaPlayerInterface =
       [ "seek", "classNuguInterface_1_1IMediaPlayer.html#a598351814277302487852529a2a2d12b", null ],
       [ "position", "classNuguInterface_1_1IMediaPlayer.html#aef2450198812f1584a377e79d400f133", null ],
       [ "setPosition", "classNuguInterface_1_1IMediaPlayer.html#acdad54e8afc8cf16da1a96758396749d", null ],
+      [ "loop", "classNuguInterface_1_1IMediaPlayer.html#a10b4355905ff5f1b1631866bcd20a33d", null ],
+      [ "setLoop", "classNuguInterface_1_1IMediaPlayer.html#a873a002bcbfa4fee4f490f1cfb4733ad", null ],
       [ "duration", "classNuguInterface_1_1IMediaPlayer.html#a051f13f0af366fe6d3a092ee7b5d3727", null ],
       [ "setDuration", "classNuguInterface_1_1IMediaPlayer.html#a2d3e94f18ee4bc005794ea3bef994d86", null ],
       [ "volume", "classNuguInterface_1_1IMediaPlayer.html#abc6f11f2c5c344f61aa2a7c431b99eed", null ],

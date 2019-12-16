@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['get_5fduration',['get_duration',['../structnugu__player__driver__ops.html#a0323114e63d8f8e9dc990553c1b41385',1,'nugu_player_driver_ops']]],
-  ['get_5fposition',['get_position',['../structnugu__player__driver__ops.html#ae1db694c938c0a1dd52031fae4416c16',1,'nugu_player_driver_ops']]]
+  ['decode',['decode',['../structnugu__decoder__driver__ops.html#a5bd3be120948e3175035215e6022b108',1,'nugu_decoder_driver_ops']]],
+  ['destroy',['destroy',['../structnugu__decoder__driver__ops.html#a48bc82d59e17e36c6d694e96a9b51467',1,'nugu_decoder_driver_ops::destroy()'],['../structnugu__player__driver__ops.html#a7f9eb9522080d53fbe35bfa61bd1aee5',1,'nugu_player_driver_ops::destroy()']]]
 ];

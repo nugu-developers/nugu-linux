@@ -1,8 +1,5 @@
 var group__CapabilityInterface =
 [
-    [ "ICapabilityHandler", "classNuguInterface_1_1ICapabilityHandler.html", [
-      [ "~ICapabilityHandler", "classNuguInterface_1_1ICapabilityHandler.html#a4dff75de253a2dda14c63d6515bb1188", null ]
-    ] ],
     [ "ICapabilityInterface", "classNuguInterface_1_1ICapabilityInterface.html", [
       [ "~ICapabilityInterface", "classNuguInterface_1_1ICapabilityInterface.html#a17a4bdc380921cb8e27a1124724ff07a", null ],
       [ "initialize", "classNuguInterface_1_1ICapabilityInterface.html#a0f861d606d2ffb92621f01f041cf5e76", null ],
@@ -19,9 +16,7 @@ var group__CapabilityInterface =
       [ "setCapabilityListener", "classNuguInterface_1_1ICapabilityInterface.html#a44f7d0d72ae9f06044fa1a3068cbe416", null ]
     ] ],
     [ "ICapabilityListener", "classNuguInterface_1_1ICapabilityListener.html", [
-      [ "~ICapabilityListener", "classNuguInterface_1_1ICapabilityListener.html#a7e4ab9280987df9804d3bc97a6406724", null ],
-      [ "registerCapabilityHandler", "classNuguInterface_1_1ICapabilityListener.html#a856f8dd4f20d90ac92b5beb1114bad15", null ],
-      [ "handler", "classNuguInterface_1_1ICapabilityListener.html#a542548bb5e24966602f7d62c8f9b9fad", null ]
+      [ "~ICapabilityListener", "classNuguInterface_1_1ICapabilityListener.html#a7e4ab9280987df9804d3bc97a6406724", null ]
     ] ],
     [ "ICapabilityObservable", "classNuguInterface_1_1ICapabilityObservable.html", [
       [ "~ICapabilityObservable", "classNuguInterface_1_1ICapabilityObservable.html#a4169f8b33ee484639ae482ea7b044e71", null ],
@@ -42,11 +37,9 @@ var group__CapabilityInterface =
       [ "Text", "group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa9dffbf69ffba8bc38bc4e01abf4b1675", null ],
       [ "Extension", "group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa63e4e92bb7d207ca577b11c07f827279", null ],
       [ "Delegation", "group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa57b11d3816e9f83adb4dd2ecb2a311b5", null ],
-      [ "Permission", "group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aaed5dea09095f671b801bee34ea28a319", null ],
       [ "Location", "group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aace5bf551379459c1c61d2a204061c455", null ]
     ] ],
     [ "CapabilitySignal", "group__CapabilityInterface.html#ga7969bc4408d26d7cb1ad72c1950cd5c0", [
-      [ "SYSTEM_INTERNAL_SERVICE_EXCEPTION", "group__CapabilityInterface.html#gga7969bc4408d26d7cb1ad72c1950cd5c0a3626aebe4ad7f576c962eb8ba0a9e429", null ],
       [ "DIALOG_REQUEST_ID", "group__CapabilityInterface.html#gga7969bc4408d26d7cb1ad72c1950cd5c0a830a4b1d78810ee385788f525f8310c5", null ]
     ] ]
 ];

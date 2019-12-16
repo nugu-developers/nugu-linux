@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['locationinterface',['LocationInterface',['../group__LocationInterface.html',1,'']]],
-  ['log',['Log',['../group__Log.html',1,'']]],
-  ['low_2dlevel_20public_20api',['Low-level public API',['../group__SDKCore.html',1,'']]]
+  ['media',['Media',['../group__Media.html',1,'']]],
+  ['mediaplayerinterface',['MediaPlayerInterface',['../group__MediaPlayerInterface.html',1,'']]],
+  ['media_20player',['Media player',['../group__NuguPlayer.html',1,'']]],
+  ['media_20player_20driver',['Media player driver',['../group__NuguPlayerDriver.html',1,'']]]
 ];

@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['text',['Text',['../group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa9dffbf69ffba8bc38bc4e01abf4b1675',1,'NuguInterface']]],
-  ['token_5ferror',['TOKEN_ERROR',['../group__NetworkManagerInterface.html#ggad0580e49356d3bffd1cd854202fd15dcade5fb169ea8d8790ec07c79a01246313',1,'NuguInterface']]],
-  ['tts',['TTS',['../group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa4616606d5a8590d8c1d305d50dce2f73',1,'NuguInterface']]],
-  ['tts_5fspeech_5ffinish',['TTS_SPEECH_FINISH',['../group__TTSInterface.html#ggadb4be6f76ca207a1d78a1731c3de3842a334b1664f6e8ae94f40877279035593b',1,'NuguInterface']]],
-  ['tts_5fspeech_5fstart',['TTS_SPEECH_START',['../group__TTSInterface.html#ggadb4be6f76ca207a1d78a1731c3de3842a6bd04d658b5dee0510833fa07ead4543',1,'NuguInterface']]]
+  ['stopped',['STOPPED',['../group__AudioPlayerInterface.html#gga8b50e602c4c6f1f89f716d913240cf0aa09d4d696b4e935115b9313e3c412509a',1,'NuguInterface::STOPPED()'],['../group__MediaPlayerInterface.html#ggad0ce90f562db76975afd0fb74f6713c8a09d4d696b4e935115b9313e3c412509a',1,'NuguInterface::STOPPED()']]],
+  ['succeeded',['SUCCEEDED',['../group__ExtensionInterface.html#gga9a0f5226a32aa7629e7e2444c4009478afd9f6519d3f45276829fe74eb2c4bb85',1,'NuguInterface']]],
+  ['system',['System',['../group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aaa45da96d0bf6575970f2d27af22be28a',1,'NuguInterface']]]
 ];
