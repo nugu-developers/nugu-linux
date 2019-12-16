@@ -17,8 +17,6 @@
 #ifndef __SYSTEM_LISTENER_H__
 #define __SYSTEM_LISTENER_H__
 
-#include <string>
-
 #include <interface/capability/system_interface.hh>
 
 using namespace NuguInterface;

@@ -22,12 +22,12 @@
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
 
-#include "audio_recorder_manager.hh"
-#include "capability_creator.hh"
-#include "capability_manager_helper.hh"
-#include "media_player.hh"
-
 #include "interface/capability/system_interface.hh"
+
+#include "core/audio_recorder_manager.hh"
+#include "core/capability_creator.hh"
+#include "core/capability_manager_helper.hh"
+#include "core/media_player.hh"
 
 #include "nugu_client_impl.hh"
 

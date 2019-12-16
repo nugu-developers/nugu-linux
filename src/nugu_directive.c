@@ -17,11 +17,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <glib.h>
 
-#include "nugu_log.h"
-#include "nugu_directive.h"
-#include "nugu_buffer.h"
+#include "base/nugu_log.h"
+#include "base/nugu_buffer.h"
+#include "base/nugu_directive.h"
 
 struct _nugu_directive {
 	char *name_space;
@@ -100,7 +101,7 @@ EXPORT_API void nugu_directive_free(NuguDirective *ndir)
 	free(ndir->json);
 	ndir->json = NULL;
 
-	nugu_buffer_free(ndir->buf, TRUE);
+	nugu_buffer_free(ndir->buf, 1);
 	ndir->buf = NULL;
 
 	if (ndir->media_type)

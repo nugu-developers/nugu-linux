@@ -17,10 +17,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <glib.h>
 
-#include "nugu_log.h"
-#include "nugu_decoder.h"
+#include "base/nugu_log.h"
+#include "base/nugu_decoder.h"
 
 #define DEFAULT_DECODE_BUFFER_SIZE 65536
 
@@ -172,7 +173,7 @@ EXPORT_API int nugu_decoder_free(NuguDecoder *dec)
 	dec->driver->ref_count--;
 
 	if (dec->buf)
-		nugu_buffer_free(dec->buf, TRUE);
+		nugu_buffer_free(dec->buf, 1);
 
 	memset(dec, 0, sizeof(struct _nugu_decoder));
 	free(dec);

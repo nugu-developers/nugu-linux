@@ -17,8 +17,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "nugu_log.h"
-#include "nugu_equeue.h"
+#include <glib.h>
+
+#include "base/nugu_log.h"
+#include "base/nugu_equeue.h"
 
 #include "http2_request.h"
 #include "v1_event.h"

@@ -18,7 +18,6 @@
 #include <iostream>
 
 #include "display_listener.hh"
-#include "nugu_log.h"
 
 DisplayListener::DisplayListener()
     : listener_name("[Display]")

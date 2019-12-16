@@ -15,6 +15,7 @@
  */
 
 #include <string.h>
+
 #include <glib.h>
 
 #include "base/nugu_log.h"

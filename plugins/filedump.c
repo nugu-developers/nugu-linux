@@ -15,12 +15,13 @@
  */
 
 #include <unistd.h>
+
 #include <glib.h>
 
-#include "nugu_log.h"
-#include "nugu_plugin.h"
-#include "nugu_decoder.h"
-#include "nugu_pcm.h"
+#include "base/nugu_log.h"
+#include "base/nugu_plugin.h"
+#include "base/nugu_decoder.h"
+#include "base/nugu_pcm.h"
 
 #define DECODER_FILENAME_TPL "/tmp/filedump_decoder_XXXXXX"
 #define PCM_FILENAME_TPL "/tmp/filedumpXXXXXX"
@@ -115,9 +116,11 @@ static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 	return 0;
 }
 
-static struct nugu_pcm_driver_ops pcm_ops = { .start = _pcm_start,
-					      .push_data = _pcm_push_data,
-					      .stop = _pcm_stop };
+static struct nugu_pcm_driver_ops pcm_ops = {
+	.start = _pcm_start,
+	.push_data = _pcm_push_data,
+	.stop = _pcm_stop
+};
 
 static int init(NuguPlugin *p)
 {

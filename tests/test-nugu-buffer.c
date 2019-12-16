@@ -17,9 +17,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <glib.h>
 
-#include "nugu_buffer.h"
+#include "base/nugu_buffer.h"
 
 static void test_buffer_default(void)
 {
@@ -33,12 +34,12 @@ static void test_buffer_default(void)
 	/* buffer alloc & free */
 	buf = nugu_buffer_new(10);
 	g_assert(buf != NULL);
-	g_assert(nugu_buffer_free(buf, TRUE) == NULL);
+	g_assert(nugu_buffer_free(buf, 1) == NULL);
 
 	/* buffer free without data */
 	buf = nugu_buffer_new(10);
 	g_assert(buf != NULL);
-	test = nugu_buffer_free(buf, FALSE);
+	test = nugu_buffer_free(buf, 0);
 	g_assert(test != NULL);
 
 	free(test);
@@ -76,7 +77,7 @@ static void test_buffer_default(void)
 	peek_test = nugu_buffer_peek(buf);
 	g_assert(peek_test[44] == 'x');
 
-	g_assert(nugu_buffer_free(buf, TRUE) == NULL);
+	g_assert(nugu_buffer_free(buf, 1) == NULL);
 }
 
 static void test_buffer_byte(void)
@@ -106,7 +107,7 @@ static void test_buffer_byte(void)
 	g_assert(nugu_buffer_peek_byte(buf, 4) == 'e');
 	g_assert(nugu_buffer_peek_byte(buf, 5) == 0);
 
-	g_assert(nugu_buffer_free(buf, TRUE) == NULL);
+	g_assert(nugu_buffer_free(buf, 1) == NULL);
 
 	buf = nugu_buffer_new(0);
 	g_assert(buf != NULL);
@@ -121,7 +122,7 @@ static void test_buffer_byte(void)
 	g_assert(nugu_buffer_get_size(buf) == 0);
 	g_assert(nugu_buffer_find_byte(buf, '\r') == NOT_FOUND);
 
-	g_assert(nugu_buffer_free(buf, TRUE) == NULL);
+	g_assert(nugu_buffer_free(buf, 1) == NULL);
 }
 
 static void test_buffer_shift(void)
@@ -164,7 +165,7 @@ static void test_buffer_shift(void)
 	g_assert(nugu_buffer_shift_left(buf, (pos + 1) + 1) == 0);
 	g_assert_cmpstr(nugu_buffer_peek(buf), ==, "");
 
-	g_assert(nugu_buffer_free(buf, TRUE) == NULL);
+	g_assert(nugu_buffer_free(buf, 1) == NULL);
 }
 
 static void test_buffer_pop(void)
@@ -190,7 +191,7 @@ static void test_buffer_pop(void)
 	g_assert_cmpstr(tmp, ==, "1234");
 	free(tmp);
 
-	g_assert(nugu_buffer_free(buf, TRUE) == NULL);
+	g_assert(nugu_buffer_free(buf, 1) == NULL);
 }
 
 static void test_buffer_clear_from(void)
@@ -217,7 +218,7 @@ static void test_buffer_clear_from(void)
 	g_assert(nugu_buffer_clear_from(buf, 0) == 0);
 	g_assert_cmpstr(nugu_buffer_peek(buf), ==, "");
 
-	g_assert(nugu_buffer_free(buf, TRUE) == NULL);
+	g_assert(nugu_buffer_free(buf, 1) == NULL);
 }
 
 int main(int argc, char *argv[])

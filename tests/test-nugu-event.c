@@ -17,9 +17,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <glib.h>
 
-#include "nugu_event.h"
+#include "base/nugu_event.h"
 
 #define TEST_UUID "7fc07dec-9734-4b64-a649-02ced9d341fb"
 

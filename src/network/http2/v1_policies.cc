@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-#include <glib.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "nugu_buffer.h"
-#include "nugu_equeue.h"
-#include "nugu_log.h"
-#include "nugu_network_manager.h"
+#include <glib.h>
+
 #include "json/json.h"
 
-#include "http2_request.h"
-#include "v1_policies.h"
+#include "base/nugu_buffer.h"
+#include "base/nugu_equeue.h"
+#include "base/nugu_log.h"
+#include "base/nugu_network_manager.h"
 
 #include "dg_types.h"
+#include "http2/http2_request.h"
+#include "http2/v1_policies.h"
 
 static void _parse_servers(const Json::Value& root)
 {

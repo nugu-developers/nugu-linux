@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <glib.h>
-
 #include <algorithm>
 #include <list>
 #include <map>
+
+#include <glib.h>
 
 #include "base/nugu_log.h"
 #include "base/nugu_player.h"

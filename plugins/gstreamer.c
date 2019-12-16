@@ -16,13 +16,15 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+
 #include <glib.h>
 #include <gst/gst.h>
 #include <gst/pbutils/pbutils.h>
-#include <string.h>
-#include "nugu_log.h"
-#include "nugu_plugin.h"
-#include "nugu_player.h"
+
+#include "base/nugu_log.h"
+#include "base/nugu_plugin.h"
+#include "base/nugu_player.h"
 
 #define PLUGIN_DRIVER_NAME "gstreamer"
 #define GST_SET_VOLUME_MIN 0
@@ -696,19 +698,19 @@ int _get_position(void *device, NuguPlayer *player)
 	return GST_TIME_AS_SECONDS(current);
 }
 
-static struct nugu_player_driver_ops player_ops = { .create = _create,
-						    .destroy = _destroy,
-						    .set_source = _set_source,
-						    .start = _start,
-						    .stop = _stop,
-						    .pause = _pause,
-						    .resume = _resume,
-						    .seek = _seek,
-						    .set_volume = _set_volume,
-						    .get_duration =
-							    _get_duration,
-						    .get_position =
-							    _get_position };
+static struct nugu_player_driver_ops player_ops = {
+	.create = _create,
+	.destroy = _destroy,
+	.set_source = _set_source,
+	.start = _start,
+	.stop = _stop,
+	.pause = _pause,
+	.resume = _resume,
+	.seek = _seek,
+	.set_volume = _set_volume,
+	.get_duration = _get_duration,
+	.get_position = _get_position
+};
 
 static int init(NuguPlugin *p)
 {

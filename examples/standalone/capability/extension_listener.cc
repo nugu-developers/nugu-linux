@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-#include "extension_listener.hh"
-#include "nugu_log.h"
 #include <iostream>
-#include <string.h>
+
+#include "extension_listener.hh"
 
 ExtensionResult ExtensionListener::receiveAction(std::string& data)
 {
@@ -30,6 +29,6 @@ ExtensionResult ExtensionListener::receiveAction(std::string& data)
 
 void ExtensionListener::requestContext(std::string& data)
 {
-    nugu_info("[Extension] request context");
+    std::cout << "[Extension] request context" << std::endl;
     data = "";
 }

@@ -16,13 +16,14 @@
 
 #include <unistd.h>
 #include <stdlib.h>
+
 #include <glib.h>
 #include <opus.h>
 
-#include "nugu_log.h"
-#include "nugu_plugin.h"
-#include "nugu_decoder.h"
-#include "nugu_pcm.h"
+#include "base/nugu_log.h"
+#include "base/nugu_plugin.h"
+#include "base/nugu_decoder.h"
+#include "base/nugu_pcm.h"
 
 #define SAMPLING_RATES 24000
 #define CHANNELS 1

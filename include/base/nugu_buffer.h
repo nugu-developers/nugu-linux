@@ -17,8 +17,6 @@
 #ifndef __NUGU_BUFFER_H__
 #define __NUGU_BUFFER_H__
 
-#include <glib.h>
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -62,13 +60,13 @@ NuguBuffer *nugu_buffer_new(size_t default_size);
 /**
  * @brief Destroy the buffer object
  * @param[in] buf buffer object
- * @param[in] data_free If true, the internal buffer is also freed. If false,
+ * @param[in] data_free If 1, the internal buffer is also freed. If 0,
  * only the buffer object is freed, not the internal buffer.
  * @return If data_free is false, developer must free the internal buffer
  * manually. If false, always return NULL.
  * @see nugu_buffer_new()
  */
-void *nugu_buffer_free(NuguBuffer *buf, gboolean data_free);
+void *nugu_buffer_free(NuguBuffer *buf, int is_data_free);
 
 /**
  * @brief Append the data to buffer object

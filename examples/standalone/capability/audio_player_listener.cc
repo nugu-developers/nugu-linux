@@ -17,7 +17,6 @@
 #include <iostream>
 
 #include "audio_player_listener.hh"
-#include "nugu_log.h"
 
 AudioPlayerListener::AudioPlayerListener()
 {
@@ -48,10 +47,10 @@ void AudioPlayerListener::mediaStateChanged(AudioPlayerState state)
 
 void AudioPlayerListener::durationChanged(int duration)
 {
-    nugu_info("[AudioPlayer] - %d", duration);
+    std::cout << "[AudioPlayer] - duration: " << duration << std::endl;
 }
 
 void AudioPlayerListener::positionChanged(int position)
 {
-    nugu_info("[AudioPlayer] - %d", position);
+    std::cout << "[AudioPlayer] - position: " << position << std::endl;
 }

@@ -17,11 +17,8 @@
 #ifndef __NUGU_AUDIO_PLAYER_INTERFACE_H__
 #define __NUGU_AUDIO_PLAYER_INTERFACE_H__
 
-#include <string>
-
 #include <interface/capability/capability_interface.hh>
 #include <interface/capability/display_interface.hh>
-#include <interface/media_player_interface.hh>
 
 namespace NuguInterface {
 

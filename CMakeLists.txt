@@ -120,11 +120,9 @@ ADD_DEFINITIONS(
 
 # Global include directories
 INCLUDE_DIRECTORIES(
+	${CMAKE_SOURCE_DIR}
 	${CMAKE_SOURCE_DIR}/externals/jsoncpp/include
-	${CMAKE_SOURCE_DIR}/include
-	${CMAKE_SOURCE_DIR}/include/base
-	${CMAKE_SOURCE_DIR}/include/clientkit
-	${CMAKE_SOURCE_DIR}/include/interface)
+	${CMAKE_SOURCE_DIR}/include)
 
 # Install header files
 CONFIGURE_FILE(nugu.h.in ${CMAKE_SOURCE_DIR}/include/nugu.h @ONLY)

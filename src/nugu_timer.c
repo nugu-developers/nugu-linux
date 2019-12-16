@@ -19,7 +19,7 @@
 
 #include <glib.h>
 
-#include "nugu_timer.h"
+#include "base/nugu_timer.h"
 
 struct _nugu_timer {
 	GSource *source;

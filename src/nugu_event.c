@@ -17,10 +17,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <glib.h>
 
-#include "nugu_uuid.h"
-#include "nugu_event.h"
+#include "base/nugu_uuid.h"
+#include "base/nugu_event.h"
 
 #define TPL_EVENT                                                              \
 	"{\n"                                                                  \

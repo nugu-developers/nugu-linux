@@ -16,13 +16,13 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <glib.h>
-#include <dlfcn.h>
 #include <pthread.h>
 
-#include "nugu_log.h"
-#include "nugu_pcm.h"
-#include "nugu_buffer.h"
+#include <glib.h>
+
+#include "base/nugu_log.h"
+#include "base/nugu_buffer.h"
+#include "base/nugu_pcm.h"
 
 struct _nugu_pcm_driver {
 	char *name;
@@ -196,7 +196,7 @@ EXPORT_API void nugu_pcm_free(NuguPcm *pcm)
 	pcm->driver->ref_count--;
 
 	g_free(pcm->name);
-	nugu_buffer_free(pcm->buf, TRUE);
+	nugu_buffer_free(pcm->buf, 1);
 
 	pthread_mutex_destroy(&pcm->mutex);
 

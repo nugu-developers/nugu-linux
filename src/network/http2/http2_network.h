@@ -17,7 +17,7 @@
 #ifndef __HTTP2_NETWORK_H__
 #define __HTTP2_NETWORK_H__
 
-#include "http2_request.h"
+#include "http2/http2_request.h"
 
 #ifdef __cplusplus
 extern "C" {

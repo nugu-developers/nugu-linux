@@ -14,21 +14,42 @@
  * limitations under the License.
  */
 
+#include <iostream>
+
 #include "text_listener.hh"
-#include "nugu_log.h"
 
 void TextListener::onState(TextState state)
 {
-    nugu_info("onState: %d", (int)state);
+    std::cout << "[Text] onState: ";
+
+    switch (state) {
+    case TextState::BUSY:
+        std::cout << "BUSY" << std::endl;
+        break;
+    case TextState::IDLE:
+        std::cout << "IDLE" << std::endl;
+        break;
+    default:
+        std::cout << "UNKNOWN STATE" << std::endl;
+        break;
+    }
 }
 
 void TextListener::onComplete()
 {
-    nugu_info("onComplete");
+    std::cout << "[Text] onComplete" << std::endl;
 }
 
 void TextListener::onError(TextError error)
 {
-    nugu_info("onError: %d", (int)error);
-}
+    std::cout << "[Text] onError: ";
 
+    switch (error) {
+    case TextError::RESPONSE_TIMEOUT:
+        std::cout << "Response Timeout" << std::endl;
+        break;
+    default:
+        std::cout << "UNKNOWN ERROR" << std::endl;
+        break;
+    }
+}

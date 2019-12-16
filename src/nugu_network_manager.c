@@ -17,20 +17,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <glib.h>
 #include <unistd.h>
 #include <string.h>
 
-#include "nugu.h"
-#include "nugu_log.h"
-#include "nugu_uuid.h"
-#include "nugu_equeue.h"
-#include "nugu_network_manager.h"
-#include "nugu_directive_sequencer.h"
+#include <glib.h>
 
-#include "dg_registry.h"
-#include "dg_server.h"
-#include "dg_types.h"
+#include "nugu.h"
+
+#include "base/nugu_log.h"
+#include "base/nugu_uuid.h"
+#include "base/nugu_equeue.h"
+#include "base/nugu_directive_sequencer.h"
+#include "base/nugu_network_manager.h"
+
+#include "network/dg_registry.h"
+#include "network/dg_server.h"
+#include "network/dg_types.h"
 
 enum connection_step {
 	STEP_IDLE, /**< Idle */

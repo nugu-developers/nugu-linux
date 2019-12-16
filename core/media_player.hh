@@ -19,6 +19,8 @@
 
 #include <string>
 
+#include "base/nugu_media.h"
+
 #include "interface/media_player_interface.hh"
 
 namespace NuguCore {

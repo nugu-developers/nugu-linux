@@ -17,9 +17,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <glib.h>
 
-#include "nugu_directive.h"
+#include "base/nugu_directive.h"
 
 #define TEST_UUID_1 "7fc07dec-9734-4b64-a649-02ced9d341fb"
 #define TEST_UUID_2 "7fc07dec-9734-4b64-a649-02ced9d341fc"

@@ -17,9 +17,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <glib.h>
 
-#include "nugu_decoder.h"
+#include "base/nugu_decoder.h"
 
 static int _check_put_data;
 

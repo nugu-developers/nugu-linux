@@ -17,8 +17,6 @@
 #ifndef __TTS_LISTENER_H__
 #define __TTS_LISTENER_H__
 
-#include <string>
-
 #include <interface/capability/tts_interface.hh>
 
 using namespace NuguInterface;

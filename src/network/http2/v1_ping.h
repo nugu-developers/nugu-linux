@@ -17,8 +17,9 @@
 #ifndef __HTTP2_V1_PING_H__
 #define __HTTP2_V1_PING_H__
 
-#include "http2_network.h"
 #include "dg_types.h"
+
+#include "http2/http2_network.h"
 
 #ifdef __cplusplus
 extern "C" {

@@ -17,14 +17,17 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib.h>
+
 #include "json/json.h"
 
-#include "nugu_log.h"
-#include "nugu_equeue.h"
-#include "nugu_network_manager.h"
-#include "nugu_directive.h"
+#include "base/nugu_log.h"
+#include "base/nugu_equeue.h"
+#include "base/nugu_network_manager.h"
+#include "base/nugu_directive.h"
 
 #include "dg_types.h"
+
 #include "http2_request.h"
 #include "multipart_parser.h"
 #include "v1_directives.h"

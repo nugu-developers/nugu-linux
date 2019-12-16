@@ -17,12 +17,13 @@
 #ifndef __NETWORK_DEVICE_GATEWAY_SERVER_H__
 #define __NETWORK_DEVICE_GATEWAY_SERVER_H__
 
+#include "base/nugu_network_manager.h"
+
+#include "dg_types.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-#include "nugu_network_manager.h"
-#include "dg_types.h"
 
 enum dg_server_type {
 	DG_SERVER_TYPE_NORMAL,

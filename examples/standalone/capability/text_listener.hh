@@ -17,8 +17,6 @@
 #ifndef __TEXT_LISTENER_H__
 #define __TEXT_LISTENER_H__
 
-#include <string>
-
 #include <interface/capability/text_interface.hh>
 
 using namespace NuguInterface;
