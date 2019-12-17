@@ -198,7 +198,7 @@ void AudioPlayerAgent::addListener(IAudioPlayerListener* listener)
     auto iterator = std::find(aplayer_listeners.begin(), aplayer_listeners.end(), listener);
 
     if (iterator == aplayer_listeners.end())
-        aplayer_listeners.push_back(listener);
+        aplayer_listeners.emplace_back(listener);
 }
 
 void AudioPlayerAgent::removeListener(IAudioPlayerListener* listener)

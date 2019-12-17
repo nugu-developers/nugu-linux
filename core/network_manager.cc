@@ -78,7 +78,7 @@ NetworkManager::~NetworkManager()
 void NetworkManager::addListener(INetworkManagerListener* listener)
 {
     if (listener && std::find(listeners.begin(), listeners.end(), listener) == listeners.end())
-        listeners.push_back(listener);
+        listeners.emplace_back(listener);
 }
 
 void NetworkManager::removeListener(INetworkManagerListener* listener)

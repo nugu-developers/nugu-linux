@@ -30,7 +30,7 @@ using namespace NuguInterface;
 
 class CapabilityCreator {
 public:
-    virtual ~CapabilityCreator() = default;
+    CapabilityCreator() = delete;
 
     static IWakeupHandler* createWakeupHandler();
     static INetworkManager* createNetworkManager();
