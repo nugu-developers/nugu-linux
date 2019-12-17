@@ -262,7 +262,7 @@ void ASRAgent::getProperties(const std::string& property, std::list<std::string>
 {
     if (property == "es.domainTypes") {
         for (int i = 0; i < (int)es_attr.domain_types.size(); i++) {
-            values.push_back(es_attr.domain_types[i].asString());
+            values.emplace_back(es_attr.domain_types[i].asString());
         }
     } else {
         values.clear();
@@ -386,7 +386,7 @@ void ASRAgent::setCapabilityListener(ICapabilityListener* clistener)
 void ASRAgent::addListener(IASRListener* listener)
 {
     if (listener && std::find(asr_listeners.begin(), asr_listeners.end(), listener) == asr_listeners.end()) {
-        asr_listeners.push_back(listener);
+        asr_listeners.emplace_back(listener);
     }
 }
 

@@ -16,8 +16,8 @@
 
 #include <glib.h>
 
-#include <list>
 #include <algorithm>
+#include <list>
 #include <map>
 
 #include "base/nugu_log.h"
@@ -204,7 +204,7 @@ void MediaPlayer::addListener(IMediaPlayerListener* listener)
 {
     auto iter = std::find(d->listeners.begin(), d->listeners.end(), listener);
     if (iter == d->listeners.end())
-        d->listeners.push_back(listener);
+        d->listeners.emplace_back(listener);
 }
 
 void MediaPlayer::removeListener(IMediaPlayerListener* listener)

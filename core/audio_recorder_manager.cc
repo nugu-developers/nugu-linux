@@ -136,7 +136,7 @@ bool AudioRecorderManager::start(IAudioRecorder* recorder)
     std::list<IAudioRecorder*> recorder_list = recorders[nugu_recorder];
     auto iter = std::find(recorder_list.begin(), recorder_list.end(), recorder);
     if (iter == recorder_list.end()) {
-        recorder_list.push_back(recorder);
+        recorder_list.emplace_back(recorder);
         recorders[nugu_recorder] = recorder_list;
     }
 

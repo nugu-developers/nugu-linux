@@ -120,9 +120,9 @@ void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_ty
         nugu_dbg("[context] add context");
 
         std::vector<CapabilityType> stack_elements;
-        stack_elements.push_back(cap_type);
+        stack_elements.emplace_back(cap_type);
         context_map[ps_id] = stack_elements;
-        context_stack.push_back(ps_id);
+        context_stack.emplace_back(ps_id);
     }
 
     // temp: Just debugging & test. Please, maintain in some period.
@@ -204,7 +204,7 @@ void PlaySyncManager::addStackElement(const std::string& ps_id, CapabilityType c
     auto& stack_elements = context_map[ps_id];
 
     if (std::find(stack_elements.begin(), stack_elements.end(), cap_type) == stack_elements.end())
-        stack_elements.push_back(cap_type);
+        stack_elements.emplace_back(cap_type);
 }
 
 bool PlaySyncManager::removeStackElement(const std::string& ps_id, CapabilityType cap_type)

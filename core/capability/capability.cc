@@ -16,8 +16,8 @@
 
 #include <string.h>
 
-#include "base/nugu_log.h"
 #include "base/nugu_directive_sequencer.h"
+#include "base/nugu_log.h"
 
 #include "capability.hh"
 #include "capability_manager.hh"
@@ -296,7 +296,7 @@ void Capability::registerObserver(ICapabilityObserver* observer)
     auto iterator = std::find(observers.begin(), observers.end(), observer);
 
     if (iterator == observers.end())
-        observers.push_back(observer);
+        observers.emplace_back(observer);
 }
 
 void Capability::removeObserver(ICapabilityObserver* observer)
