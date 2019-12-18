@@ -35,19 +35,6 @@ extern "C" {
  */
 
 /**
- * @brief Supported resource types
- */
-enum nugu_focus_resource {
-	NUGU_FOCUS_RESOURCE_MIC = 0, /**< Microphone */
-	NUGU_FOCUS_RESOURCE_SPK = 1 /**< Speaker */
-};
-
-/**
- * @see enum nugu_focus_resource
- */
-typedef enum nugu_focus_resource NuguFocusResource;
-
-/**
  * @brief Predefined focus types by priority
  */
 enum nugu_focus_type {
@@ -102,20 +89,17 @@ typedef struct _nugu_focus NuguFocus;
  * @brief Callback prototype for got focus
  */
 typedef NuguFocusResult (*NuguFocusCallback)(NuguFocus *focus,
-					     NuguFocusResource rsrc,
 					     void *event, void *userdata);
 
 /**
  * @brief Callback prototype for lost focus
  */
 typedef NuguFocusResult (*NuguUnfocusCallback)(NuguFocus *focus,
-					       NuguFocusResource rsrc,
 					       void *event, void *userdata);
 /**
  * @brief Callback prototype for steal focus
  */
 typedef NuguFocusStealResult (*NuguStealfocusCallback)(NuguFocus *self,
-						       NuguFocusResource rsrc,
 						       void *event,
 						       NuguFocus *target,
 						       void *userdata);
@@ -162,7 +146,7 @@ NuguFocusType nugu_focus_get_type(NuguFocus *focus);
  * @param[in] focus focus object
  * @return focus object
  */
-NuguFocus *nugu_focus_peek_top(NuguFocusResource rsrc);
+NuguFocus *nugu_focus_peek_top(void);
 
 /**
  * @brief Request to get focus.
@@ -174,7 +158,7 @@ NuguFocus *nugu_focus_peek_top(NuguFocusResource rsrc);
  * @retval -1 failure
  * @see nugu_focus_release()
  */
-int nugu_focus_request(NuguFocus *focus, NuguFocusResource rsrc, void *event);
+int nugu_focus_request(NuguFocus *focus, void *event);
 
 /**
  * @brief Request to release focus.
@@ -185,7 +169,7 @@ int nugu_focus_request(NuguFocus *focus, NuguFocusResource rsrc, void *event);
  * @retval -1 failure
  * @see nugu_focus_request()
  */
-int nugu_focus_release(NuguFocus *focus, NuguFocusResource rsrc);
+int nugu_focus_release(NuguFocus *focus);
 
 /**
  * @}

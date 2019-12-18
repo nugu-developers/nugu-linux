@@ -121,7 +121,7 @@ void TTSAgent::pcmEventCallback(enum nugu_media_event event, void* userdata)
         tts->sendEventSpeechFinished(tts->cur_token);
         tts->finish = true;
         tts->speak_status = MEDIA_STATUS_STOPPED;
-        CapabilityManager::getInstance()->releaseFocus("cap_tts", NUGU_FOCUS_RESOURCE_SPK);
+        CapabilityManager::getInstance()->releaseFocus("cap_tts");
         break;
     default:
         break;
@@ -159,7 +159,7 @@ void TTSAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
     }
 }
 
-NuguFocusResult TTSAgent::onFocus(NuguFocusResource rsrc, void* event)
+NuguFocusResult TTSAgent::onFocus(void* event)
 {
     nugu_info("speak_status: %d", speak_status);
 
@@ -179,7 +179,7 @@ NuguFocusResult TTSAgent::onFocus(NuguFocusResource rsrc, void* event)
     return NUGU_FOCUS_OK;
 }
 
-NuguFocusResult TTSAgent::onUnfocus(NuguFocusResource rsrc, void* event)
+NuguFocusResult TTSAgent::onUnfocus(void* event)
 {
     nugu_pcm_stop(pcm);
 
@@ -188,7 +188,7 @@ NuguFocusResult TTSAgent::onUnfocus(NuguFocusResource rsrc, void* event)
     return NUGU_FOCUS_REMOVE;
 }
 
-NuguFocusStealResult TTSAgent::onStealRequest(NuguFocusResource rsrc, void* event, NuguFocusType target_type)
+NuguFocusStealResult TTSAgent::onStealRequest(void* event, NuguFocusType target_type)
 {
     if (target_type == NUGU_FOCUS_TYPE_ASR)
         return NUGU_FOCUS_STEAL_ALLOW;
@@ -369,7 +369,7 @@ void TTSAgent::parsingSpeak(const char* message)
 
     startTTS(getNuguDirective());
 
-    CapabilityManager::getInstance()->requestFocus("cap_tts", NUGU_FOCUS_RESOURCE_SPK, NULL);
+    CapabilityManager::getInstance()->requestFocus("cap_tts", NULL);
 
     if (tts_listener)
         tts_listener->onTTSText(text, dialog_id);

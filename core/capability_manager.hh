@@ -31,9 +31,9 @@ namespace NuguCore {
 class IFocusListener {
 public:
     virtual ~IFocusListener() = default;
-    virtual NuguFocusResult onFocus(NuguFocusResource rsrc, void* event) = 0;
-    virtual NuguFocusResult onUnfocus(NuguFocusResource rsrc, void* event) = 0;
-    virtual NuguFocusStealResult onStealRequest(NuguFocusResource rsrc, void* event, NuguFocusType target_type) = 0;
+    virtual NuguFocusResult onFocus(void* event) = 0;
+    virtual NuguFocusResult onUnfocus(void* event) = 0;
+    virtual NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) = 0;
 };
 
 class CapabilityManager {
@@ -65,11 +65,11 @@ public:
     void getCapabilityProperty(CapabilityType cap, std::string property, std::string& value);
     void getCapabilityProperties(CapabilityType cap, std::string property, std::list<std::string>& values);
 
-    bool isFocusOn(NuguFocusResource rsrc);
+    bool isFocusOn();
     int addFocus(std::string fname, NuguFocusType type, IFocusListener* listener);
     int removeFocus(std::string fname);
-    int requestFocus(std::string fname, NuguFocusResource rsrc, void* event);
-    int releaseFocus(std::string fname, NuguFocusResource rsrc);
+    int requestFocus(std::string fname, void* event);
+    int releaseFocus(std::string fname);
 
 private:
     ICapabilityInterface* findCapability(std::string cname);

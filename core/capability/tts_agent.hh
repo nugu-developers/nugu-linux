@@ -65,9 +65,9 @@ private:
     void parsingStop(const char* message);
 
     void startTTS(NuguDirective* ndir);
-    NuguFocusResult onFocus(NuguFocusResource rsrc, void* event);
-    NuguFocusResult onUnfocus(NuguFocusResource rsrc, void* event);
-    NuguFocusStealResult onStealRequest(NuguFocusResource rsrc, void* event, NuguFocusType target_type);
+    NuguFocusResult onFocus(void* event);
+    NuguFocusResult onUnfocus(void* event);
+    NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type);
 
     NuguDirective* speak_dir;
     NuguPcm* pcm;

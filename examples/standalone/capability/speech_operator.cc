@@ -80,6 +80,9 @@ void SpeechOperator::onWakeupState(WakeupDetectState state)
     case WakeupDetectState::WAKEUP_DETECTED:
         msg::wakeup::state("wakeup detected");
 
+        if (wakeup_handler)
+            wakeup_handler->stopWakeup();
+
         if (asr_handler)
             asr_handler->startRecognition();
 
@@ -150,7 +153,12 @@ void SpeechOperator::onState(ASRState state)
         break;
     }
     case ASRState::EXPECTING_SPEECH: {
+        msg::wakeup::state("stop wakeup");
+        if (wakeup_handler)
+            wakeup_handler->stopWakeup();
+
         msg::asr::state("EXPECTING_SPEECH");
+
         break;
     }
     case ASRState::LISTENING: {
