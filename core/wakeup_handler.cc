@@ -25,13 +25,10 @@ WakeupHandler::WakeupHandler()
     : wakeup_detector(std::unique_ptr<WakeupDetector>(new WakeupDetector()))
 {
     wakeup_detector->setListener(this);
-
-    CapabilityManager::getInstance()->addFocus("kwd", NUGU_FOCUS_TYPE_WAKEWORD, this);
 }
 
 WakeupHandler::~WakeupHandler()
 {
-    CapabilityManager::getInstance()->removeFocus("kwd");
 }
 
 void WakeupHandler::setListener(IWakeupListener* listener)
@@ -41,7 +38,12 @@ void WakeupHandler::setListener(IWakeupListener* listener)
 
 void WakeupHandler::startWakeup(void)
 {
-    CapabilityManager::getInstance()->requestFocus("kwd", NUGU_FOCUS_RESOURCE_MIC, NULL);
+    wakeup_detector->startWakeup();
+}
+
+void WakeupHandler::stopWakeup(void)
+{
+    wakeup_detector->stopWakeup();
 }
 
 void WakeupHandler::onWakeupState(WakeupState state)
@@ -64,7 +66,6 @@ void WakeupHandler::onWakeupState(WakeupState state)
         nugu_dbg("WakeupState::DETECTED");
 
         CapabilityManager::getInstance()->sendCommand(CapabilityType::ASR, CapabilityType::ASR, "wakeup_detected", "");
-        CapabilityManager::getInstance()->releaseFocus("kwd", NUGU_FOCUS_RESOURCE_MIC);
 
         if (listener)
             listener->onWakeupState(WakeupDetectState::WAKEUP_DETECTED);
@@ -73,29 +74,6 @@ void WakeupHandler::onWakeupState(WakeupState state)
         nugu_dbg("WakeupState::DONE");
         break;
     }
-}
-
-NuguFocusResult WakeupHandler::onFocus(NuguFocusResource rsrc, void* event)
-{
-    wakeup_detector->startWakeup();
-
-    return NUGU_FOCUS_OK;
-}
-
-NuguFocusResult WakeupHandler::onUnfocus(NuguFocusResource rsrc, void* event)
-{
-    wakeup_detector->stopWakeup();
-
-    return NUGU_FOCUS_REMOVE;
-}
-
-NuguFocusStealResult WakeupHandler::onStealRequest(NuguFocusResource rsrc, void* event, NuguFocusType target_type)
-{
-    /* Reject the focus request with same type (reject self steal) */
-    if (target_type == NUGU_FOCUS_TYPE_WAKEWORD)
-        return NUGU_FOCUS_STEAL_REJECT;
-
-    return NUGU_FOCUS_STEAL_ALLOW;
 }
 
 } // NuguCore

@@ -29,8 +29,7 @@ namespace NuguCore {
 using namespace NuguInterface;
 
 class WakeupHandler : public IWakeupHandler,
-                      public IWakeupDetectorListener,
-                      public IFocusListener {
+                      public IWakeupDetectorListener {
 
 public:
     WakeupHandler();
@@ -38,13 +37,10 @@ public:
 
     void setListener(IWakeupListener* listener) override;
     void startWakeup(void) override;
+    void stopWakeup(void) override;
     void onWakeupState(WakeupState state) override;
 
 private:
-    NuguFocusResult onFocus(NuguFocusResource rsrc, void* event) override;
-    NuguFocusResult onUnfocus(NuguFocusResource rsrc, void* event) override;
-    NuguFocusStealResult onStealRequest(NuguFocusResource rsrc, void* event, NuguFocusType target_type) override;
-
     IWakeupListener* listener = nullptr;
     std::unique_ptr<WakeupDetector> wakeup_detector;
 };

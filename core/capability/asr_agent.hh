@@ -86,7 +86,7 @@ private:
     void parsingExpectSpeech(const char* message);
     void parsingNotifyResult(const char* message);
 
-    void releaseASRSpeakFocus(bool is_cancel, ASRError error);
+    void releaseASRFocus(bool is_cancel, ASRError error);
 
     ExpectSpeechAttr es_attr;
     CapabilityEvent* rec_event;

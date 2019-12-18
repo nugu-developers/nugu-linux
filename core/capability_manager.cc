@@ -27,28 +27,28 @@ using namespace NuguInterface;
 
 CapabilityManager* CapabilityManager::instance = NULL;
 
-static NuguFocusResult on_focus(NuguFocus* focus, NuguFocusResource rsrc,
+static NuguFocusResult on_focus(NuguFocus* focus,
     void* event, void* userdata)
 {
     IFocusListener* listener = static_cast<IFocusListener*>(userdata);
 
-    return listener->onFocus(rsrc, event);
+    return listener->onFocus(event);
 }
 
-static NuguFocusResult on_unfocus(NuguFocus* focus, NuguFocusResource rsrc,
+static NuguFocusResult on_unfocus(NuguFocus* focus,
     void* event, void* userdata)
 {
     IFocusListener* listener = static_cast<IFocusListener*>(userdata);
 
-    return listener->onUnfocus(rsrc, event);
+    return listener->onUnfocus(event);
 }
 
-static NuguFocusStealResult on_steal_request(NuguFocus* focus, NuguFocusResource rsrc,
+static NuguFocusStealResult on_steal_request(NuguFocus* focus,
     void* event, NuguFocus* target, void* userdata)
 {
     IFocusListener* listener = static_cast<IFocusListener*>(userdata);
 
-    return listener->onStealRequest(rsrc, event, nugu_focus_get_type(target));
+    return listener->onStealRequest(event, nugu_focus_get_type(target));
 }
 
 CapabilityManager::CapabilityManager()
@@ -243,9 +243,9 @@ void CapabilityManager::getCapabilityProperties(CapabilityType cap, std::string 
     }
 }
 
-bool CapabilityManager::isFocusOn(NuguFocusResource rsrc)
+bool CapabilityManager::isFocusOn()
 {
-    NuguFocus* focus = nugu_focus_peek_top(rsrc);
+    NuguFocus* focus = nugu_focus_peek_top();
 
     if (focus)
         return true;
@@ -280,7 +280,7 @@ int CapabilityManager::removeFocus(std::string fname)
     return 0;
 }
 
-int CapabilityManager::requestFocus(std::string fname, NuguFocusResource rsrc, void* event)
+int CapabilityManager::requestFocus(std::string fname, void* event)
 {
     NuguFocus* focus;
 
@@ -288,10 +288,10 @@ int CapabilityManager::requestFocus(std::string fname, NuguFocusResource rsrc, v
     if (!focus)
         return -1;
 
-    return nugu_focus_request(focus, rsrc, event);
+    return nugu_focus_request(focus, event);
 }
 
-int CapabilityManager::releaseFocus(std::string fname, NuguFocusResource rsrc)
+int CapabilityManager::releaseFocus(std::string fname)
 {
     NuguFocus* focus;
 
@@ -299,7 +299,7 @@ int CapabilityManager::releaseFocus(std::string fname, NuguFocusResource rsrc)
     if (!focus)
         return -1;
 
-    return nugu_focus_release(focus, rsrc);
+    return nugu_focus_release(focus);
 }
 
 PlaySyncManager* CapabilityManager::getPlaySyncManager()

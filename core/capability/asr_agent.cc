@@ -32,9 +32,9 @@ public:
     explicit ASRFocusListener(ASRAgent* agent, SpeechRecognizer* speech_recognizer);
     virtual ~ASRFocusListener();
 
-    NuguFocusResult onFocus(NuguFocusResource rsrc, void* event) override;
-    NuguFocusResult onUnfocus(NuguFocusResource rsrc, void* event) override;
-    NuguFocusStealResult onStealRequest(NuguFocusResource rsrc, void* event, NuguFocusType target_type) override;
+    NuguFocusResult onFocus(void* event) override;
+    NuguFocusResult onUnfocus(void* event) override;
+    NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
 
 private:
     ASRAgent* agent;
@@ -54,45 +54,38 @@ ASRFocusListener::~ASRFocusListener()
     CapabilityManager::getInstance()->removeFocus("asr");
 }
 
-NuguFocusResult ASRFocusListener::onFocus(NuguFocusResource rsrc, void* event)
+NuguFocusResult ASRFocusListener::onFocus(void* event)
 {
+    nugu_dbg("ASRFocusListener::onFocus");
+    agent->saveAllContextInfo();
 
-    if (rsrc == NUGU_FOCUS_RESOURCE_MIC) {
-        agent->saveAllContextInfo();
-        CapabilityManager::getInstance()->requestFocus("asr", NUGU_FOCUS_RESOURCE_SPK, NULL);
+    speech_recognizer->startListening();
 
-        if (agent->isExpectSpeechState()) {
-            agent->resetExpectSpeechState();
-            CapabilityManager::getInstance()->releaseFocus("expect", NUGU_FOCUS_RESOURCE_SPK);
-        }
-    } else if (rsrc == NUGU_FOCUS_RESOURCE_SPK) {
-        speech_recognizer->startListening();
+    if (agent->isExpectSpeechState()) {
+        agent->resetExpectSpeechState();
+        CapabilityManager::getInstance()->releaseFocus("expect");
     }
 
     return NUGU_FOCUS_OK;
 }
 
-NuguFocusResult ASRFocusListener::onUnfocus(NuguFocusResource rsrc, void* event)
+NuguFocusResult ASRFocusListener::onUnfocus(void* event)
 {
-    if (rsrc == NUGU_FOCUS_RESOURCE_MIC) {
-        speech_recognizer->stopListening();
-    } else if (rsrc == NUGU_FOCUS_RESOURCE_SPK) {
-        auto agent_listeners = agent->getListener();
+    nugu_dbg("ASRFocusListener::onUnfocus");
+    speech_recognizer->stopListening();
 
-        for (auto asr_listener : agent_listeners) {
-            asr_listener->onState(ASRState::IDLE);
-            agent->resetExpectSpeechState();
-        }
+    auto agent_listeners = agent->getListener();
+
+    for (auto asr_listener : agent_listeners) {
+        asr_listener->onState(ASRState::IDLE);
+        agent->resetExpectSpeechState();
     }
 
     return NUGU_FOCUS_REMOVE;
 }
 
-NuguFocusStealResult ASRFocusListener::onStealRequest(NuguFocusResource rsrc, void* event, NuguFocusType target_type)
+NuguFocusStealResult ASRFocusListener::onStealRequest(void* event, NuguFocusType target_type)
 {
-    if (rsrc == NUGU_FOCUS_RESOURCE_MIC)
-        return NUGU_FOCUS_STEAL_REJECT;
-
     return NUGU_FOCUS_STEAL_ALLOW;
 }
 
@@ -101,9 +94,9 @@ public:
     explicit ExpectFocusListener(ASRAgent* agent);
     virtual ~ExpectFocusListener();
 
-    NuguFocusResult onFocus(NuguFocusResource rsrc, void* event) override;
-    NuguFocusResult onUnfocus(NuguFocusResource rsrc, void* event) override;
-    NuguFocusStealResult onStealRequest(NuguFocusResource rsrc, void* event, NuguFocusType target_type) override;
+    NuguFocusResult onFocus(void* event) override;
+    NuguFocusResult onUnfocus(void* event) override;
+    NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
 
 private:
     ASRAgent* agent;
@@ -120,20 +113,25 @@ ExpectFocusListener::~ExpectFocusListener()
     CapabilityManager::getInstance()->removeFocus("expect");
 }
 
-NuguFocusResult ExpectFocusListener::onFocus(NuguFocusResource rsrc, void* event)
+NuguFocusResult ExpectFocusListener::onFocus(void* event)
 {
+    nugu_dbg("ExpectFocusListener::onFocus");
     agent->startRecognition();
 
     return NUGU_FOCUS_OK;
 }
 
-NuguFocusResult ExpectFocusListener::onUnfocus(NuguFocusResource rsrc, void* event)
+NuguFocusResult ExpectFocusListener::onUnfocus(void* event)
 {
+    nugu_dbg("ExpectFocusListener::onUnfocus");
+
     return NUGU_FOCUS_REMOVE;
 }
 
-NuguFocusStealResult ExpectFocusListener::onStealRequest(NuguFocusResource rsrc, void* event, NuguFocusType target_type)
+NuguFocusStealResult ExpectFocusListener::onStealRequest(void* event, NuguFocusType target_type)
 {
+    nugu_dbg("ExpectFocusListener::onStealRequest");
+
     return NUGU_FOCUS_STEAL_ALLOW;
 }
 
@@ -183,7 +181,7 @@ void ASRAgent::initialize()
         timer, [](void* userdata) {
             ASRAgent* asr = static_cast<ASRAgent*>(userdata);
             asr->sendEventResponseTimeout();
-            asr->releaseASRSpeakFocus(false, ASRError::RESPONSE_TIMEOUT);
+            asr->releaseASRFocus(false, ASRError::RESPONSE_TIMEOUT);
         },
         this);
 
@@ -195,12 +193,14 @@ void ASRAgent::initialize()
 
 void ASRAgent::startRecognition()
 {
-    CapabilityManager::getInstance()->requestFocus("asr", NUGU_FOCUS_RESOURCE_MIC, NULL);
+    nugu_dbg("startRecognition()");
+    CapabilityManager::getInstance()->requestFocus("asr", NULL);
 }
 
 void ASRAgent::stopRecognition()
 {
-    CapabilityManager::getInstance()->releaseFocus("asr", NUGU_FOCUS_RESOURCE_MIC);
+    nugu_dbg("stopRecognition()");
+    CapabilityManager::getInstance()->releaseFocus("asr");
 }
 
 void ASRAgent::parsingDirective(const char* dname, const char* message)
@@ -232,15 +232,15 @@ void ASRAgent::receiveCommand(CapabilityType from, std::string command, const st
 
     if (!command.compare("wakeup_detected")) {
         if (es_attr.is_handle) {
-            CapabilityManager::getInstance()->releaseFocus("expect", NUGU_FOCUS_RESOURCE_SPK);
+            CapabilityManager::getInstance()->releaseFocus("expect");
             es_attr = {};
         }
     } else if (!command.compare("releasefocus")) {
         if (from == CapabilityType::System) {
             if (dialog_id == param)
-                CapabilityManager::getInstance()->releaseFocus("asr", NUGU_FOCUS_RESOURCE_SPK);
+                CapabilityManager::getInstance()->releaseFocus("asr");
         } else {
-            CapabilityManager::getInstance()->releaseFocus("asr", NUGU_FOCUS_RESOURCE_SPK);
+            CapabilityManager::getInstance()->releaseFocus("asr");
         }
     }
 }
@@ -425,13 +425,15 @@ void ASRAgent::parsingExpectSpeech(const char* message)
     es_attr.property = root["property"].asString();
     es_attr.domain_types = root["domainTypes"];
 
+    nugu_dbg("Parsing ExpectSpeech directive");
+
     for (auto asr_listener : asr_listeners) {
         asr_listener->onState(ASRState::EXPECTING_SPEECH);
     }
 
     playsync_manager->setExpectSpeech(true);
 
-    CapabilityManager::getInstance()->requestFocus("expect", NUGU_FOCUS_RESOURCE_SPK, NULL);
+    CapabilityManager::getInstance()->requestFocus("expect", NULL);
 }
 
 void ASRAgent::parsingNotifyResult(const char* message)
@@ -507,7 +509,8 @@ void ASRAgent::onListeningState(ListeningState state)
         nugu_dbg("ListeningState::SPEECH_END");
         nugu_info("speech end detected");
 
-        stopRecognition();
+        speech_recognizer->stopListening();
+
         sendEventRecognize(NULL, 0, true);
         checkResponseTimeout();
 
@@ -522,14 +525,14 @@ void ASRAgent::onListeningState(ListeningState state)
 
         stopRecognition();
         sendEventListenTimeout();
-        releaseASRSpeakFocus(false, ASRError::LISTEN_TIMEOUT);
+        releaseASRFocus(false, ASRError::LISTEN_TIMEOUT);
 
         break;
     case ListeningState::FAILED:
         nugu_dbg("ListeningState::FAILED");
 
         stopRecognition();
-        releaseASRSpeakFocus(false, ASRError::LISTEN_FAILED);
+        releaseASRFocus(false, ASRError::LISTEN_FAILED);
 
         break;
     case ListeningState::DONE:
@@ -545,7 +548,7 @@ void ASRAgent::onListeningState(ListeningState state)
             || prev_listening_state == ListeningState::LISTENING
             || prev_listening_state == ListeningState::SPEECH_START) {
 
-            releaseASRSpeakFocus(true, ASRError::UNKNOWN);
+            releaseASRFocus(true, ASRError::UNKNOWN);
         }
 
         break;
@@ -554,7 +557,7 @@ void ASRAgent::onListeningState(ListeningState state)
     prev_listening_state = state;
 }
 
-void ASRAgent::releaseASRSpeakFocus(bool is_cancel, ASRError error)
+void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error)
 {
     for (auto asr_listener : asr_listeners) {
         if (is_cancel)
@@ -563,7 +566,7 @@ void ASRAgent::releaseASRSpeakFocus(bool is_cancel, ASRError error)
             asr_listener->onError(error);
     }
 
-    CapabilityManager::getInstance()->releaseFocus("asr", NUGU_FOCUS_RESOURCE_SPK);
+    CapabilityManager::getInstance()->releaseFocus("asr");
     playsync_manager->onASRError();
 }
 

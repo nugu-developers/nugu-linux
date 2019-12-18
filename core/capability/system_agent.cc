@@ -321,8 +321,7 @@ void SystemAgent::parsingException(const char* message)
     if (exception == SystemException::PLAY_ROUTER_PROCESSING_EXCEPTION) {
         nugu_info("Release ASR focus due to 'not found play' state");
         CapabilityManager* cmanager = CapabilityManager::getInstance();
-        cmanager->releaseFocus("asr", NUGU_FOCUS_RESOURCE_SPK);
-        cmanager->releaseFocus("asr", NUGU_FOCUS_RESOURCE_MIC);
+        cmanager->releaseFocus("asr");
     }
 
     if (system_listener)

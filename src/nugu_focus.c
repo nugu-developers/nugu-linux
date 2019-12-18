@@ -25,8 +25,6 @@
 static const char *const _type_str[] = { "WAKEWORD",   "ASR",   "ALERT", "TTS",
 					 "ASR_EXPECT", "MEDIA", "CUSTOM" };
 
-static const char *const _rsrc_str[] = { "MIC", "SPK" };
-
 struct _nugu_focus {
 	char *name;
 	NuguFocusType type;
@@ -41,7 +39,7 @@ struct _focus_item {
 	void *event;
 };
 
-static GList *_focus_stack[2];
+static GList *_focus_stack;
 
 #define APPEND(list, x) (list = g_list_insert_sorted(list, (x), _compare_func))
 #define PREPEND(list, x) (list = g_list_prepend(list, (x)))
@@ -50,37 +48,29 @@ static GList *_focus_stack[2];
 
 static void dump_list(void)
 {
-	int rsrc;
+	GList *l;
+	int i;
 
-	for (rsrc = 0; rsrc < 2; rsrc++) {
-		GList *l;
-		int i;
+	if (g_list_length(_focus_stack) == 0) {
+		nugu_dbg("Focus length = 0 (empty)");
+		return;
+	}
 
-		if (g_list_length(_focus_stack[rsrc]) == 0) {
-			nugu_dbg("Resource: %s, length = %d (empty)",
-				 _rsrc_str[rsrc],
-				 g_list_length(_focus_stack[rsrc]));
-			continue;
-		}
+	nugu_dbg("Focus length = %d", g_list_length(_focus_stack));
 
-		nugu_dbg("Resource: %s, length = %d", _rsrc_str[rsrc],
-			 g_list_length(_focus_stack[rsrc]));
+	for (l = _focus_stack, i = 0; l; l = l->next, i++) {
+		struct _focus_item *item = l->data;
 
-		for (l = _focus_stack[rsrc], i = 0; l; l = l->next, i++) {
-			struct _focus_item *item = l->data;
-
-			nugu_dbg("\t[%d] %-10s (%d:%-10s)", i,
-				 item->focus->name, item->focus->type,
-				 _type_str[item->focus->type]);
-		}
+		nugu_dbg("\t[%d] %-10s (%d:%-10s)", i, item->focus->name,
+			 item->focus->type, _type_str[item->focus->type]);
 	}
 }
 
-static struct _focus_item *_find_item(NuguFocus *focus, NuguFocusResource rsrc)
+static struct _focus_item *_find_item(NuguFocus *focus)
 {
 	GList *l;
 
-	for (l = _focus_stack[rsrc]; l; l = l->next) {
+	for (l = _focus_stack; l; l = l->next) {
 		struct _focus_item *item = l->data;
 
 		if (item->focus == focus)
@@ -90,16 +80,16 @@ static struct _focus_item *_find_item(NuguFocus *focus, NuguFocusResource rsrc)
 	return NULL;
 }
 
-static void _remove_items_by_focus(NuguFocus *focus, NuguFocusResource rsrc)
+static void _remove_items_by_focus(NuguFocus *focus)
 {
 	struct _focus_item *item;
 
 	do {
-		item = _find_item(focus, rsrc);
+		item = _find_item(focus);
 		if (!item)
 			break;
 
-		REMOVE(_focus_stack[rsrc], item);
+		REMOVE(_focus_stack, item);
 		free(item);
 	} while (item);
 }
@@ -125,8 +115,7 @@ EXPORT_API NuguFocus *nugu_focus_new(const char *name, NuguFocusType type,
 
 EXPORT_API void nugu_focus_free(NuguFocus *focus)
 {
-	_remove_items_by_focus(focus, NUGU_FOCUS_RESOURCE_MIC);
-	_remove_items_by_focus(focus, NUGU_FOCUS_RESOURCE_SPK);
+	_remove_items_by_focus(focus);
 
 	g_free(focus->name);
 	memset(focus, 0, sizeof(NuguFocus));
@@ -138,18 +127,19 @@ EXPORT_API NuguFocusType nugu_focus_get_type(NuguFocus *focus)
 	return focus->type;
 }
 
-EXPORT_API NuguFocus *nugu_focus_peek_top(NuguFocusResource rsrc)
+EXPORT_API NuguFocus *nugu_focus_peek_top(void)
 {
 	struct _focus_item *item;
-	GList *l = _focus_stack[rsrc];
+	GList *l = _focus_stack;
 
 	if (l == NULL) {
-		nugu_dbg("FOCUS-TOP[%s] => empty", _rsrc_str[rsrc]);
+		nugu_dbg("FOCUS-TOP => empty");
 		return NULL;
 	}
 
 	item = l->data;
-	nugu_dbg("FOCUS-TOP[%s] => %s", _rsrc_str[rsrc], item->focus->name);
+	nugu_dbg("FOCUS-TOP => %s", item->focus->name);
+
 	return item->focus;
 }
 
@@ -158,48 +148,43 @@ EXPORT_API const char *nugu_focus_peek_name(NuguFocus *focus)
 	return focus->name;
 }
 
-static NuguFocusResult _invoke_focus(struct _focus_item *item,
-				     NuguFocusResource rsrc)
+static NuguFocusResult _invoke_focus(struct _focus_item *item)
 {
-	nugu_info("FOCUS-GET[%s]: owner_type=%s, owner=%s", _rsrc_str[rsrc],
-		  _type_str[item->focus->type], item->focus->name);
+	nugu_info("ON-FOCUS: name=%s (type=%s)", item->focus->name,
+		  _type_str[item->focus->type]);
 
-	return item->focus->focus_cb(item->focus, rsrc, item->event,
+	return item->focus->focus_cb(item->focus, item->event,
 				     item->focus->userdata);
 }
 
-static NuguFocusResult _invoke_unfocus(struct _focus_item *item,
-				       NuguFocusResource rsrc)
+static NuguFocusResult _invoke_unfocus(struct _focus_item *item)
 {
-	nugu_info("FOCUS-LOST[%s]: owner_type=%s, owner=%s", _rsrc_str[rsrc],
-		  _type_str[item->focus->type], item->focus->name);
+	nugu_info("ON-UN-FOCUS: name=%s (type=%s)", item->focus->name,
+		  _type_str[item->focus->type]);
 
-	return item->focus->unfocus_cb(item->focus, rsrc, item->event,
+	return item->focus->unfocus_cb(item->focus, item->event,
 				       item->focus->userdata);
 }
 
 static NuguFocusStealResult _invoke_stealfocus(struct _focus_item *item,
-					       NuguFocusResource rsrc,
 					       NuguFocus *target)
 {
 	NuguFocusStealResult ret;
 
-	ret = item->focus->steal_cb(item->focus, rsrc, item->event, target,
+	nugu_info("ON-STEAL-FOCUS: name=%s (type=%s)", item->focus->name,
+		  _type_str[item->focus->type]);
+
+	ret = item->focus->steal_cb(item->focus, item->event, target,
 				    item->focus->userdata);
 	if (ret == NUGU_FOCUS_STEAL_ALLOW)
-		nugu_info("FOCUS-STEAL-ALLOW[%s]: owner_type=%s, owner=%s",
-			  _rsrc_str[rsrc], _type_str[item->focus->type],
-			  item->focus->name);
+		nugu_info(" - ALLOW");
 	else
-		nugu_info("FOCUS-STEAL-REJECT[%s]: owner_type=%s, owner=%s",
-			  _rsrc_str[rsrc], _type_str[item->focus->type],
-			  item->focus->name);
+		nugu_info(" - REJECT");
 
 	return ret;
 }
 
-static struct _focus_item *_item_new(NuguFocus *focus, NuguFocusResource rsrc,
-				     void *event)
+static struct _focus_item *_item_new(NuguFocus *focus, void *event)
 {
 	struct _focus_item *item;
 
@@ -218,8 +203,7 @@ static int _compare_func(gconstpointer a, gconstpointer b)
 	return item_a->focus->type - item_b->focus->type;
 }
 
-EXPORT_API int nugu_focus_request(NuguFocus *focus, NuguFocusResource rsrc,
-				  void *event)
+EXPORT_API int nugu_focus_request(NuguFocus *focus, void *event)
 {
 	GList *l;
 	struct _focus_item *item;
@@ -227,69 +211,72 @@ EXPORT_API int nugu_focus_request(NuguFocus *focus, NuguFocusResource rsrc,
 
 	g_return_val_if_fail(focus != NULL, -1);
 
-	nugu_info("FOCUS-REQUEST[%s]: owner_type=%s, owner=%s", _rsrc_str[rsrc],
-		  _type_str[focus->type], focus->name);
+	nugu_info("FOCUS-REQUEST: name=%s (type=%s)", focus->name,
+		  _type_str[focus->type]);
 
-	dump_list();
-
-	l = _focus_stack[rsrc];
+	l = _focus_stack;
 	if (l == NULL) {
 		/* empty focus */
-		item = _item_new(focus, rsrc, event);
-		APPEND(_focus_stack[rsrc], item);
-		if (_invoke_focus(item, rsrc) != NUGU_FOCUS_OK) {
-			REMOVE(_focus_stack[rsrc], item);
+		item = _item_new(focus, event);
+		APPEND(_focus_stack, item);
+		if (_invoke_focus(item) != NUGU_FOCUS_OK) {
+			REMOVE(_focus_stack, item);
 			free(item);
 		}
 
 		dump_list();
 
+		nugu_dbg("nugu_focus_request() done");
 		return 0;
 	}
+
+	dump_list();
 
 	item = l->data;
 
 	/* focus intercept */
-	if (_invoke_stealfocus(item, rsrc, focus) == NUGU_FOCUS_STEAL_ALLOW) {
+	if (_invoke_stealfocus(item, focus) == NUGU_FOCUS_STEAL_ALLOW) {
 		/* unfocus current focused item */
-		ret = _invoke_unfocus(item, rsrc);
-		REMOVE_LINK(_focus_stack[rsrc], l);
+		ret = _invoke_unfocus(item);
+		REMOVE_LINK(_focus_stack, l);
 		if (ret == NUGU_FOCUS_REMOVE) {
 			nugu_dbg("return REMOVE: remove focus item");
 			free(item);
 		} else if (ret == NUGU_FOCUS_PAUSE) {
 			nugu_dbg("return PAUSE: insert by priority");
-			APPEND(_focus_stack[rsrc], item);
+			APPEND(_focus_stack, item);
 		}
 
 		/* remove duplicated focus */
-		_remove_items_by_focus(focus, rsrc);
+		_remove_items_by_focus(focus);
 
 		/* set new item to focus */
-		item = _item_new(focus, rsrc, event);
-		PREPEND(_focus_stack[rsrc], item);
-		if (_invoke_focus(item, rsrc) != NUGU_FOCUS_OK) {
-			REMOVE(_focus_stack[rsrc], item);
+		item = _item_new(focus, event);
+		PREPEND(_focus_stack, item);
+		if (_invoke_focus(item) != NUGU_FOCUS_OK) {
+			REMOVE(_focus_stack, item);
 			free(item);
 		}
 
 		dump_list();
+		nugu_dbg("nugu_focus_request() done");
 		return 0;
 	}
 
 	/* remove duplicated focus */
-	_remove_items_by_focus(focus, rsrc);
+	_remove_items_by_focus(focus);
 
 	/* add new item to reserved list */
 	nugu_dbg("insert by priority");
-	item = _item_new(focus, rsrc, event);
-	APPEND(_focus_stack[rsrc], item);
+	item = _item_new(focus, event);
+	APPEND(_focus_stack, item);
 
 	dump_list();
+	nugu_dbg("nugu_focus_request() done");
 	return 0;
 }
 
-EXPORT_API int nugu_focus_release(NuguFocus *focus, NuguFocusResource rsrc)
+EXPORT_API int nugu_focus_release(NuguFocus *focus)
 {
 	GList *l;
 	struct _focus_item *item;
@@ -297,46 +284,51 @@ EXPORT_API int nugu_focus_release(NuguFocus *focus, NuguFocusResource rsrc)
 
 	g_return_val_if_fail(focus != NULL, -1);
 
-	nugu_info("FOCUS-RELEASE[%s]: owner_type=%s, owner=%s", _rsrc_str[rsrc],
-		  _type_str[focus->type], focus->name);
+	nugu_info("FOCUS-RELEASE: name=%s (type=%s)", focus->name,
+		  _type_str[focus->type]);
 
-	dump_list();
-
-	l = _focus_stack[rsrc];
-	if (l == NULL)
+	l = _focus_stack;
+	if (l == NULL) {
+		nugu_dbg("empty");
 		return 0;
+	}
 
 	item = l->data;
 	if (item->focus != focus) {
 		/* focus is reserved item */
-		_remove_items_by_focus(focus, rsrc);
+		_remove_items_by_focus(focus);
 
 		dump_list();
+		nugu_dbg("nugu_focus_release() done");
 		return 0;
 	}
 
-	REMOVE(_focus_stack[rsrc], item);
+	REMOVE(_focus_stack, item);
 
-	ret = _invoke_unfocus(item, rsrc);
+	ret = _invoke_unfocus(item);
 	if (ret == NUGU_FOCUS_REMOVE) {
-		nugu_info("return REMOVE: remove focus item");
+		nugu_info(" - return REMOVE: remove focus item");
 		free(item);
 	} else if (ret == NUGU_FOCUS_PAUSE) {
-		nugu_dbg("return PAUSE: insert by priority");
-		APPEND(_focus_stack[rsrc], item);
+		nugu_info(" - return PAUSE: insert by priority");
+		APPEND(_focus_stack, item);
 	}
 
 	dump_list();
 
 	/* no more reserved focus */
-	l = _focus_stack[rsrc];
-	if (l == NULL)
+	l = _focus_stack;
+	if (l == NULL) {
+		nugu_dbg("nugu_focus_release() done");
 		return 0;
+	}
 
 	/* set focus to next item */
 	item = l->data;
 	if (item->focus != focus)
-		_invoke_focus(item, rsrc);
+		_invoke_focus(item);
+
+	nugu_dbg("nugu_focus_release() done");
 
 	return 0;
 }

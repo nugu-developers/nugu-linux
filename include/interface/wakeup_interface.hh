@@ -74,6 +74,11 @@ public:
      * @see IWakeupListener::onWakeupState()
      */
     virtual void startWakeup(void) = 0;
+
+    /**
+     * @brief Stop the wakeup detection
+     */
+    virtual void stopWakeup(void) = 0;
 };
 
 /**

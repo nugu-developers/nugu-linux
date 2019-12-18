@@ -68,7 +68,7 @@ void AudioPlayerAgent::initialize()
     initialized = true;
 }
 
-NuguFocusResult AudioPlayerAgent::onFocus(NuguFocusResource rsrc, void* event)
+NuguFocusResult AudioPlayerAgent::onFocus(void* event)
 {
     if (is_paused)
         return NUGU_FOCUS_OK;
@@ -83,7 +83,7 @@ NuguFocusResult AudioPlayerAgent::onFocus(NuguFocusResource rsrc, void* event)
     return NUGU_FOCUS_OK;
 }
 
-NuguFocusResult AudioPlayerAgent::onUnfocus(NuguFocusResource rsrc, void* event)
+NuguFocusResult AudioPlayerAgent::onUnfocus(void* event)
 {
     if (is_finished)
         return NUGU_FOCUS_REMOVE;
@@ -101,7 +101,7 @@ NuguFocusResult AudioPlayerAgent::onUnfocus(NuguFocusResource rsrc, void* event)
     return NUGU_FOCUS_PAUSE;
 }
 
-NuguFocusStealResult AudioPlayerAgent::onStealRequest(NuguFocusResource rsrc, void* event, NuguFocusType target_type)
+NuguFocusStealResult AudioPlayerAgent::onStealRequest(void* event, NuguFocusType target_type)
 {
     return NUGU_FOCUS_STEAL_ALLOW;
 }
@@ -404,7 +404,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         return;
     }
 
-    CapabilityManager::getInstance()->requestFocus("cap_audio", NUGU_FOCUS_RESOURCE_SPK, NULL);
+    CapabilityManager::getInstance()->requestFocus("cap_audio", NULL);
 }
 
 void AudioPlayerAgent::parsingPause(const char* message)
@@ -430,7 +430,7 @@ void AudioPlayerAgent::parsingPause(const char* message)
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't pause");
         }
 
-        CapabilityManager::getInstance()->releaseFocus("cap_audio", NUGU_FOCUS_RESOURCE_SPK);
+        CapabilityManager::getInstance()->releaseFocus("cap_audio");
     }
 }
 
@@ -457,7 +457,7 @@ void AudioPlayerAgent::parsingStop(const char* message)
         if (!stacked_ps_id.empty() && playstackctl_ps_id != stacked_ps_id)
             return;
         else if (stacked_ps_id.empty())
-            CapabilityManager::getInstance()->releaseFocus("cap_audio", NUGU_FOCUS_RESOURCE_SPK);
+            CapabilityManager::getInstance()->releaseFocus("cap_audio");
 
         if (!player->stop()) {
             nugu_error("stop media failed");
@@ -538,7 +538,7 @@ void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
         cur_aplayer_state = AudioPlayerState::PAUSED;
         break;
     case MediaPlayerState::STOPPED:
-        CapabilityManager::getInstance()->releaseFocus("cap_audio", NUGU_FOCUS_RESOURCE_SPK);
+        CapabilityManager::getInstance()->releaseFocus("cap_audio");
         if (is_finished) {
             sendEventPlaybackFinished();
             cur_aplayer_state = AudioPlayerState::FINISHED;
