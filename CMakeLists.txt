@@ -152,7 +152,7 @@ ADD_LIBRARY(libnugu SHARED
 	$<TARGET_OBJECTS:objclientkit>)
 TARGET_LINK_LIBRARIES(libnugu PUBLIC
 	${CMAKE_BINARY_DIR}/curl/lib/libcurl.a
-	${CMAKE_BINARY_DIR}/nghttp2/lib/libnghttp2.a
+	${CMAKE_BINARY_DIR}/nghttp2/lib/libnghttp2_static.a
 	${pkgs_LDFLAGS} -ldl)
 
 SET_TARGET_PROPERTIES(libnugu
