@@ -54,6 +54,7 @@ struct _multipart_parser {
 	char *boundary;
 	size_t boundary_length;
 	enum bodyparser_step step;
+	void *data;
 };
 
 MultipartParser *multipart_parser_new()
@@ -69,6 +70,7 @@ MultipartParser *multipart_parser_new()
 	parser->header = nugu_buffer_new(0);
 	parser->body = nugu_buffer_new(0);
 	parser->step = STEP_READY;
+	parser->data = NULL;
 
 	return parser;
 }
@@ -97,6 +99,20 @@ void multipart_parser_free(MultipartParser *parser)
 
 	memset(parser, 0, sizeof(MultipartParser));
 	free(parser);
+}
+
+void multipart_parser_set_data(MultipartParser *parser, void *data)
+{
+	g_return_if_fail(parser != NULL);
+
+	parser->data = data;
+}
+
+void *multipart_parser_get_data(MultipartParser *parser)
+{
+	g_return_val_if_fail(parser != NULL, NULL);
+
+	return parser->data;
 }
 
 void multipart_parser_set_boundary(MultipartParser *parser, const char *src,
