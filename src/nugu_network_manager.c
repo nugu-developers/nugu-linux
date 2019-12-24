@@ -80,6 +80,7 @@ struct _nugu_network {
 
 	/* Server */
 	DGServer *server;
+	struct timespec ts_connected;
 
 	/* Handoff */
 	DGServer *handoff;
@@ -460,8 +461,40 @@ static void on_receive_registry_servers(enum nugu_equeue_type type, void *data,
 	_process_connecting(userdata, STEP_REGISTRY_DONE);
 }
 
+static void on_directives_closed(enum nugu_equeue_type type, void *data,
+					void *userdata)
+{
+	NetworkManager *nm = userdata;
+	struct timespec spec;
+
+	if (nm->server == NULL) {
+		nugu_info("no connected servers");
+		return;
+	}
+
+	clock_gettime(CLOCK_REALTIME, &spec);
+
+	if (spec.tv_sec - nm->ts_connected.tv_sec == 0) {
+		nugu_error(
+			"Connection was finished immediately on the server.");
+
+		/* forgot current server */
+		nugu_dbg("forgot current server");
+		dg_server_free(nm->server);
+		nm->server = NULL;
+
+		_process_connecting(nm, STEP_SERVER_CONNECTING);
+		return;
+	}
+
+	nugu_info("re-establish directives connection");
+	dg_server_connect_async(nm->server);
+}
+
 static void on_event(enum nugu_equeue_type type, void *data, void *userdata)
 {
+	NetworkManager *nm = userdata;
+
 	switch (type) {
 	case NUGU_EQUEUE_TYPE_INVALID_TOKEN:
 		nugu_dbg("received invalid token event");
@@ -481,6 +514,7 @@ static void on_event(enum nugu_equeue_type type, void *data, void *userdata)
 		break;
 	case NUGU_EQUEUE_TYPE_SERVER_CONNECTED:
 		nugu_dbg("received server connected event");
+		clock_gettime(CLOCK_REALTIME, &nm->ts_connected);
 		_process_connecting(userdata, STEP_SERVER_CONNECTED);
 		break;
 	default:
@@ -522,6 +556,9 @@ static NetworkManager *nugu_network_manager_new(void)
 				NULL, nm);
 	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_SERVER_CONNECTED, on_event,
 				NULL, nm);
+
+	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_DIRECTIVES_CLOSED,
+				on_directives_closed, NULL, nm);
 
 	nm->cur_status = NUGU_NETWORK_DISCONNECTED;
 	nm->step = STEP_IDLE;

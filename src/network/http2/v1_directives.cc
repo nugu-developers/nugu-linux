@@ -49,26 +49,48 @@ enum kvstatus {
     VALUE
 };
 
-struct _v1_directives {
-    char* url;
-
-    MultipartParser* parser;
-    HTTP2Network* network;
-
-    int connection_timeout_secs;
-
+struct _parser_data {
     enum content_type ctype;
     char* parent_msg_id;
     int is_end;
     size_t body_size;
-    guint idle_src;
-    int is_sync;
 };
 
+struct _v1_directives {
+    char* url;
+
+    HTTP2Network* network;
+
+    int connection_timeout_secs;
+};
+
+static struct _parser_data* parser_data_new(void)
+{
+    struct _parser_data* pdata;
+
+    pdata = (struct _parser_data*)calloc(1, sizeof(struct _parser_data));
+    if (!pdata) {
+        error_nomem();
+        return NULL;
+    }
+
+    return pdata;
+}
+
+static void parser_data_free(struct _parser_data* pdata)
+{
+    g_return_if_fail(pdata != NULL);
+
+    if (pdata->parent_msg_id)
+        free(pdata->parent_msg_id);
+
+    free(pdata);
+}
+
+/* invoked in a thread loop */
 static void on_parsing_header(MultipartParser* parser, const char* data, size_t length, void* userdata)
 {
-    V1Directives* dir = (V1Directives*)userdata;
-
+    struct _parser_data* pdata = (struct _parser_data*)multipart_parser_get_data(parser);
     const char* pos;
     const char* start = data;
     const char* end = data + length;
@@ -110,24 +132,24 @@ static void on_parsing_header(MultipartParser* parser, const char* data, size_t 
         if (found) {
             if (key.compare("Content-Type") == 0) {
                 if (value.compare(0, strlen(FILTER_JSON_TYPE), FILTER_JSON_TYPE) == 0) {
-                    dir->ctype = CONTENT_TYPE_JSON;
+                    pdata->ctype = CONTENT_TYPE_JSON;
                 } else if (value.compare(0, strlen(FILTER_OPUS_TYPE), FILTER_OPUS_TYPE) == 0) {
-                    dir->ctype = CONTENT_TYPE_OPUS;
+                    pdata->ctype = CONTENT_TYPE_OPUS;
                 } else {
-                    dir->ctype = CONTENT_TYPE_UNKNOWN;
+                    pdata->ctype = CONTENT_TYPE_UNKNOWN;
                     nugu_error("unknown Content-Type");
                 }
             } else if (key.compare("Content-Length") == 0) {
-                sscanf(value.c_str(), "%zu", &dir->body_size);
+                sscanf(value.c_str(), "%zu", &pdata->body_size);
             } else if (key.compare("Parent-Message-Id") == 0) {
-                if (dir->parent_msg_id)
-                    free(dir->parent_msg_id);
-                dir->parent_msg_id = strdup(value.c_str());
+                if (pdata->parent_msg_id)
+                    free(pdata->parent_msg_id);
+                pdata->parent_msg_id = strdup(value.c_str());
             } else if (key.compare("Filename") == 0) {
                 if (value.find("end") != std::string::npos)
-                    dir->is_end = 1;
+                    pdata->is_end = 1;
                 else
-                    dir->is_end = 0;
+                    pdata->is_end = 0;
             }
             found = false;
             key.clear();
@@ -136,6 +158,7 @@ static void on_parsing_header(MultipartParser* parser, const char* data, size_t 
     }
 }
 
+/* invoked in a thread loop */
 static void _body_json(const char* data, size_t length)
 {
     Json::Value root;
@@ -194,10 +217,14 @@ static void _body_json(const char* data, size_t length)
         if (!ndir)
             continue;
 
-        nugu_equeue_push(NUGU_EQUEUE_TYPE_NEW_DIRECTIVE, ndir);
+        if (nugu_equeue_push(NUGU_EQUEUE_TYPE_NEW_DIRECTIVE, ndir) < 0) {
+            nugu_error("nugu_equeue_push() failed.");
+            nugu_directive_unref(ndir);
+        }
     }
 }
 
+/* invoked in a thread loop */
 static void _body_opus(const char* parent_msg_id, int is_end, const char* data, size_t length)
 {
     struct equeue_data_attachment* item;
@@ -221,22 +248,21 @@ static void _body_opus(const char* parent_msg_id, int is_end, const char* data, 
     nugu_equeue_push(NUGU_EQUEUE_TYPE_NEW_ATTACHMENT, item);
 }
 
+/* invoked in a thread loop */
 static void _on_parsing_body(MultipartParser* parser, const char* data, size_t length, void* userdata)
 {
-    V1Directives* dir = (V1Directives*)userdata;
+    struct _parser_data* pdata = (struct _parser_data*)multipart_parser_get_data(parser);
 
-    if (dir->ctype == CONTENT_TYPE_JSON)
+    if (pdata->ctype == CONTENT_TYPE_JSON)
         _body_json(data, length);
-    else if (dir->ctype == CONTENT_TYPE_OPUS)
-        _body_opus(dir->parent_msg_id, dir->is_end, data, length);
+    else if (pdata->ctype == CONTENT_TYPE_OPUS)
+        _body_opus(pdata->parent_msg_id, pdata->is_end, data, length);
 }
 
 /* invoked in a thread loop */
 static size_t _on_body(HTTP2Request* req, char* buffer, size_t size, size_t nitems, void* userdata)
 {
-    V1Directives* dir = (V1Directives*)userdata;
-
-    multipart_parser_parse(dir->parser, buffer, size * nitems, on_parsing_header, _on_parsing_body, userdata);
+    multipart_parser_parse((MultipartParser*)userdata, buffer, size * nitems, on_parsing_header, _on_parsing_body, NULL);
 
     return size * nitems;
 }
@@ -244,7 +270,8 @@ static size_t _on_body(HTTP2Request* req, char* buffer, size_t size, size_t nite
 /* invoked in a thread loop */
 static size_t _on_header(HTTP2Request* req, char* buffer, size_t size, size_t nitems, void* userdata)
 {
-    V1Directives* dir = (V1Directives*)userdata;
+    MultipartParser* parser = (MultipartParser*)userdata;
+
     char* pos;
     int len;
     int buffer_len = size * nitems;
@@ -256,10 +283,6 @@ static size_t _on_header(HTTP2Request* req, char* buffer, size_t size, size_t ni
         http2_request_set_header_callback(req, NULL, NULL);
         http2_request_set_body_callback(req, NULL, NULL);
         http2_request_set_finish_callback(req, NULL, NULL);
-
-        /* don't propagate the status event on sync call */
-        if (dir->is_sync == 1)
-            return buffer_len;
 
         if (code == HTTP2_RESPONSE_AUTHFAIL || code == HTTP2_RESPONSE_FORBIDDEN)
             nugu_equeue_push(NUGU_EQUEUE_TYPE_INVALID_TOKEN, NULL);
@@ -279,54 +302,49 @@ static size_t _on_header(HTTP2Request* req, char* buffer, size_t size, size_t ni
     pos++;
     len = (buffer_len - 2) - (pos - buffer);
 
-    multipart_parser_set_boundary(dir->parser, pos, len);
+    multipart_parser_set_boundary(parser, pos, len);
 
     nugu_equeue_push(NUGU_EQUEUE_TYPE_SERVER_CONNECTED, NULL);
 
     return buffer_len;
 }
 
-static gboolean _re_establish(gpointer userdata)
-{
-    V1Directives* dir = (V1Directives*)userdata;
-
-    nugu_dbg("re-establish");
-
-    dir->idle_src = 0;
-
-    /* Re-establish long-polling */
-    v1_directives_establish(dir, dir->network);
-
-    return FALSE;
-}
-
 /* invoked in a thread loop */
 static void _on_finish(HTTP2Request* req, void* userdata)
 {
-    V1Directives* dir = (V1Directives*)userdata;
     int code;
 
     code = http2_request_get_response_code(req);
     if (code == HTTP2_RESPONSE_OK) {
         nugu_info("directive stream finished by server.");
-        dir->is_sync = 0;
-        dir->idle_src = g_idle_add(_re_establish, dir);
+        nugu_equeue_push(NUGU_EQUEUE_TYPE_DIRECTIVES_CLOSED, NULL);
         return;
     }
 
     nugu_error("directive response code = %d", code);
 
-    /* release cond_wait */
-    if (dir->is_sync)
-        http2_request_emit_response(req, HTTP2_REQUEST_SYNC_ITEM_HEADER);
-    else {
-        if (code == HTTP2_RESPONSE_AUTHFAIL || code == HTTP2_RESPONSE_FORBIDDEN)
-            nugu_equeue_push(NUGU_EQUEUE_TYPE_INVALID_TOKEN, NULL);
-        else
-            nugu_equeue_push(NUGU_EQUEUE_TYPE_SERVER_DISCONNECTED, NULL);
-    }
+    if (code == HTTP2_RESPONSE_AUTHFAIL || code == HTTP2_RESPONSE_FORBIDDEN)
+        nugu_equeue_push(NUGU_EQUEUE_TYPE_INVALID_TOKEN, NULL);
+    else
+        nugu_equeue_push(NUGU_EQUEUE_TYPE_SERVER_DISCONNECTED, NULL);
 
     return;
+}
+
+/* invoked in a thread loop */
+static void _on_destroy(HTTP2Request* req, void* userdata)
+{
+    MultipartParser* parser = (MultipartParser*)userdata;
+    struct _parser_data* pdata;
+
+    if (!parser)
+        return;
+
+    pdata = (struct _parser_data*)multipart_parser_get_data(parser);
+    if (pdata)
+        parser_data_free(pdata);
+
+    multipart_parser_free(parser);
 }
 
 V1Directives* v1_directives_new(const char* host, int connection_timeout_secs)
@@ -351,17 +369,8 @@ void v1_directives_free(V1Directives* dir)
 {
     g_return_if_fail(dir != NULL);
 
-    if (dir->parent_msg_id)
-        free(dir->parent_msg_id);
-
-    if (dir->idle_src)
-        g_source_remove(dir->idle_src);
-
     if (dir->url)
         g_free(dir->url);
-
-    if (dir->parser)
-        multipart_parser_free(dir->parser);
 
     memset(dir, 0, sizeof(V1Directives));
     free(dir);
@@ -370,71 +379,52 @@ void v1_directives_free(V1Directives* dir)
 int v1_directives_establish(V1Directives* dir, HTTP2Network* net)
 {
     HTTP2Request* req;
+    MultipartParser* parser;
+    struct _parser_data* pdata;
     int ret;
-    int code;
 
     g_return_val_if_fail(dir != NULL, -1);
     g_return_val_if_fail(net != NULL, -1);
 
-    if (dir->parser)
-        multipart_parser_free(dir->parser);
-
     dir->network = net;
-    dir->parser = multipart_parser_new();
-    dir->ctype = CONTENT_TYPE_UNKNOWN;
+
+    parser = multipart_parser_new();
+    if (!parser) {
+        error_nomem();
+        return -1;
+    }
+
+    pdata = parser_data_new();
+    if (!pdata) {
+        error_nomem();
+        multipart_parser_free(parser);
+        return -1;
+    }
+
+    pdata->ctype = CONTENT_TYPE_UNKNOWN;
+
+    multipart_parser_set_data(parser, pdata);
 
     req = http2_request_new();
     http2_request_set_url(req, dir->url);
     http2_request_set_method(req, HTTP2_REQUEST_METHOD_GET);
-    http2_request_set_header_callback(req, _on_header, dir);
-    http2_request_set_body_callback(req, _on_body, dir);
-    http2_request_set_finish_callback(req, _on_finish, dir);
+    http2_request_set_header_callback(req, _on_header, parser);
+    http2_request_set_body_callback(req, _on_body, parser);
+    http2_request_set_finish_callback(req, _on_finish, NULL);
+    http2_request_set_destroy_callback(req, _on_destroy, parser);
     http2_request_set_connection_timeout(req, dir->connection_timeout_secs);
     http2_request_enable_curl_log(req);
 
     ret = http2_network_add_request(net, req);
-    if (ret < 0)
-        return ret;
-
-    if (dir->is_sync == 0) {
+    if (ret < 0) {
+        nugu_error("http2_network_add_request() failed: %d", ret);
         http2_request_unref(req);
+        parser_data_free(pdata);
+        multipart_parser_free(parser);
         return ret;
-    }
-
-    /* blocking request */
-    nugu_info("wait for directive response (%p)", req);
-    http2_request_wait_response(req, HTTP2_REQUEST_SYNC_ITEM_HEADER);
-
-    code = http2_request_get_response_code(req);
-    if (code < 0) {
-        nugu_error("failed(%d)", code);
-        http2_request_unref(req);
-        return code;
     }
 
     http2_request_unref(req);
 
-    if (code != HTTP2_RESPONSE_OK) {
-        nugu_error("error response(%d)", -code);
-        return -code;
-    }
-
     return ret;
-}
-
-int v1_directives_establish_sync(V1Directives* dir, HTTP2Network* net)
-{
-    int ret;
-
-    dir->is_sync = 1;
-
-    ret = v1_directives_establish(dir, net);
-    if (ret < 0) {
-        dir->is_sync = 0;
-        return ret;
-    }
-
-    dir->is_sync = 0;
-
-    return 0;
 }

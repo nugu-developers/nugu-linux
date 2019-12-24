@@ -114,6 +114,8 @@ static int _process_remove(HTTP2Network *net, struct request_item *item)
 
 	net->hlist = g_list_remove(net->hlist, req);
 
+	http2_request_unref(item->req);
+
 	return 0;
 }
 
@@ -261,8 +263,9 @@ static void _init_once(void)
 
 	cinfo = curl_version_info(CURLVERSION_NOW);
 	if (cinfo) {
-		nugu_dbg("curl %s (%s), ssl_version=%s", cinfo->version,
-			 cinfo->host, cinfo->ssl_version);
+		nugu_dbg("curl %s (%s), nghttp2_version=%s, ssl_version=%s",
+			 cinfo->version, cinfo->host, cinfo->nghttp2_version,
+			 cinfo->ssl_version);
 
 		if (cinfo->protocols) {
 			const char *const *proto;
@@ -461,7 +464,6 @@ int http2_network_remove_request_sync(HTTP2Network *net, HTTP2Request *req)
 		}
 	}
 
-	http2_request_unref(req);
 	free(item);
 
 	return 0;
