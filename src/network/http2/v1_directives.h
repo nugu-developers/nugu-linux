@@ -29,7 +29,6 @@ V1Directives *v1_directives_new(const char *host, int connection_timeout_secs);
 void v1_directives_free(V1Directives *dir);
 
 int v1_directives_establish(V1Directives *dir, HTTP2Network *net);
-int v1_directives_establish_sync(V1Directives *dir, HTTP2Network *net);
 
 #ifdef __cplusplus
 }

@@ -58,6 +58,9 @@ enum nugu_equeue_type {
 	NUGU_EQUEUE_TYPE_SERVER_CONNECTED, /**< connected to server */
 	NUGU_EQUEUE_TYPE_SERVER_DISCONNECTED, /**< disconnected from server */
 
+	NUGU_EQUEUE_TYPE_DIRECTIVES_CLOSED,
+	/**< directives stream closed by server */
+
 	NUGU_EQUEUE_TYPE_MAX = 255 /**< maximum value for type id */
 };
 
