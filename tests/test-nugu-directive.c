@@ -69,7 +69,7 @@ static void test_nugu_directive_callback(void)
 	g_assert(nugu_directive_add_data(ndir, sizeof(dummy), dummy) == 0);
 	g_assert(flag == 1);
 
-	nugu_directive_free(ndir);
+	nugu_directive_unref(ndir);
 }
 
 static void test_nugu_directive_default(void)
@@ -115,7 +115,7 @@ static void test_nugu_directive_default(void)
 	g_assert(nugu_directive_close_data(ndir) == 0);
 	g_assert(nugu_directive_is_data_end(ndir) == 1);
 
-	nugu_directive_free(ndir);
+	nugu_directive_unref(ndir);
 }
 
 int main(int argc, char *argv[])

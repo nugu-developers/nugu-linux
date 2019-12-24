@@ -67,11 +67,18 @@ NuguDirective *nugu_directive_new(const char *name_space, const char *name,
 				  const char *referrer_id, const char *json);
 
 /**
- * @brief Destroy the directive object
+ * @brief Increment the reference count of the directive object.
  * @param[in] ndir directive object
  * @see nugu_directive_new()
  */
-void nugu_directive_free(NuguDirective *ndir);
+void nugu_directive_ref(NuguDirective *ndir);
+
+/**
+ * @brief Decrement the reference count of the directive object.
+ * @param[in] ndir directive object
+ * @see nugu_directive_new()
+ */
+void nugu_directive_unref(NuguDirective *ndir);
 
 /**
  * @brief Get the namespace of directive

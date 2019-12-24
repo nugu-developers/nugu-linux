@@ -40,6 +40,8 @@ struct _nugu_directive {
 	NuguBuffer *buf;
 	DirectiveDataCallback callback;
 	void *callback_userdata;
+
+	int ref_count;
 };
 
 EXPORT_API NuguDirective *
@@ -69,11 +71,12 @@ nugu_directive_new(const char *name_space, const char *name,
 	ndir->is_active = 0;
 	ndir->buf = nugu_buffer_new(0);
 	ndir->media_type = NULL;
+	ndir->ref_count = 1;
 
 	return ndir;
 }
 
-EXPORT_API void nugu_directive_free(NuguDirective *ndir)
+static void nugu_directive_free(NuguDirective *ndir)
 {
 	g_return_if_fail(ndir != NULL);
 
@@ -109,6 +112,24 @@ EXPORT_API void nugu_directive_free(NuguDirective *ndir)
 
 	memset(ndir, 0, sizeof(NuguDirective));
 	free(ndir);
+}
+
+EXPORT_API void nugu_directive_ref(NuguDirective *ndir)
+{
+	g_return_if_fail(ndir != NULL);
+
+	ndir->ref_count++;
+}
+
+EXPORT_API void nugu_directive_unref(NuguDirective *ndir)
+{
+	g_return_if_fail(ndir != NULL);
+
+	ndir->ref_count--;
+	if (ndir->ref_count > 0)
+		return;
+
+	nugu_directive_free(ndir);
 }
 
 EXPORT_API int nugu_directive_is_active(NuguDirective *ndir)
