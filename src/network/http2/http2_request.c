@@ -21,6 +21,8 @@
 
 #include <glib.h>
 
+#include "curl/curl.h"
+
 #include "base/nugu_log.h"
 
 #include "http2_request.h"
@@ -45,6 +47,9 @@ struct _http2_request {
 
 	ResponseFinishCallback finish_cb;
 	void *finish_cb_userdata;
+
+	HTTP2DestroyCallback destroy_cb;
+	void *destroy_cb_userdata;
 
 	int header_received;
 	pthread_cond_t cond_header, cond_finish;
@@ -214,6 +219,9 @@ void http2_request_free(HTTP2Request *req)
 
 	nugu_dbg("req(%p) destroy", req);
 
+	if (req->destroy_cb)
+		req->destroy_cb(req, req->destroy_cb_userdata);
+
 	if (strlen(req->curl_errbuf) > 0)
 		nugu_error("CURL ERROR: %s", req->curl_errbuf);
 
@@ -378,7 +386,7 @@ int http2_request_set_timeout(HTTP2Request *req, int timeout_secs)
 	return 0;
 }
 
-CURL *http2_request_get_handle(HTTP2Request *req)
+void *http2_request_get_handle(HTTP2Request *req)
 {
 	g_return_val_if_fail(req != NULL, NULL);
 
@@ -414,6 +422,17 @@ int http2_request_set_finish_callback(HTTP2Request *req,
 
 	req->finish_cb = cb;
 	req->finish_cb_userdata = userdata;
+
+	return 0;
+}
+
+int http2_request_set_destroy_callback(HTTP2Request *req,
+				       HTTP2DestroyCallback cb, void *userdata)
+{
+	g_return_val_if_fail(req != NULL, -1);
+
+	req->destroy_cb = cb;
+	req->destroy_cb_userdata = userdata;
 
 	return 0;
 }
