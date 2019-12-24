@@ -25,6 +25,8 @@
 
 #include <glib.h>
 
+#include "curl/curl.h"
+
 #include "base/nugu_log.h"
 #include "base/nugu_network_manager.h"
 

@@ -17,8 +17,6 @@
 #ifndef __HTTP2_REQUEST_H__
 #define __HTTP2_REQUEST_H__
 
-#include "curl/curl.h"
-
 #include "base/nugu_buffer.h"
 
 #ifdef __cplusplus
@@ -56,6 +54,8 @@ typedef size_t (*ResponseBodyCallback)(HTTP2Request *req, char *buffer,
 				       void *userdata);
 typedef void (*ResponseFinishCallback)(HTTP2Request *req, void *userdata);
 
+typedef void (*HTTP2DestroyCallback)(HTTP2Request *req, void *userdata);
+
 HTTP2Request *http2_request_new();
 void http2_request_free(HTTP2Request *req);
 
@@ -75,7 +75,7 @@ int http2_request_set_connection_timeout(HTTP2Request *req, int timeout);
 int http2_request_set_timeout(HTTP2Request *req, int timeout_secs);
 int http2_request_set_useragent(HTTP2Request *req, const char *useragent);
 
-CURL *http2_request_get_handle(HTTP2Request *req);
+void *http2_request_get_handle(HTTP2Request *req);
 
 int http2_request_set_header_callback(HTTP2Request *req,
 				      ResponseHeaderCallback cb,
@@ -85,6 +85,8 @@ int http2_request_set_body_callback(HTTP2Request *req, ResponseBodyCallback cb,
 int http2_request_set_finish_callback(HTTP2Request *req,
 				      ResponseFinishCallback cb,
 				      void *userdata);
+int http2_request_set_destroy_callback(HTTP2Request *req,
+				       HTTP2DestroyCallback cb, void *userdata);
 
 NuguBuffer *http2_request_peek_response_body(HTTP2Request *req);
 NuguBuffer *http2_request_peek_response_header(HTTP2Request *req);
