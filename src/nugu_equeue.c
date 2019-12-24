@@ -42,7 +42,8 @@ struct _econtainer {
 	void *data;
 };
 
-struct _equeue *_equeue;
+static struct _equeue *_equeue;
+static pthread_mutex_t _lock;
 
 static void on_item_destroy(gpointer data)
 {
@@ -100,11 +101,18 @@ int nugu_equeue_initialize(void)
 {
 	GIOChannel *channel;
 
-	g_return_val_if_fail(_equeue == NULL, -1);
+	pthread_mutex_lock(&_lock);
+
+	if (_equeue != NULL) {
+		nugu_dbg("equeue already initialized");
+		pthread_mutex_unlock(&_lock);
+		return 0;
+	}
 
 	_equeue = calloc(1, sizeof(struct _equeue));
 	if (!_equeue) {
 		error_nomem();
+		pthread_mutex_unlock(&_lock);
 		return -1;
 	}
 
@@ -112,6 +120,8 @@ int nugu_equeue_initialize(void)
 	if (_equeue->efd < 0) {
 		nugu_error("eventfd() failed");
 		free(_equeue);
+		_equeue = NULL;
+		pthread_mutex_unlock(&_lock);
 		return -1;
 	}
 
@@ -121,12 +131,20 @@ int nugu_equeue_initialize(void)
 
 	_equeue->pendings = g_async_queue_new_full(on_item_destroy);
 
+	pthread_mutex_unlock(&_lock);
+
 	return 0;
 }
 
 void nugu_equeue_deinitialize(void)
 {
-	g_return_if_fail(_equeue != NULL);
+	pthread_mutex_lock(&_lock);
+
+	if (_equeue == NULL) {
+		nugu_error("equeue not initialized");
+		pthread_mutex_unlock(&_lock);
+		return;
+	}
 
 	if (_equeue->efd != -1)
 		close(_equeue->efd);
@@ -136,6 +154,9 @@ void nugu_equeue_deinitialize(void)
 
 	if (_equeue->pendings) {
 		/* Remove pendings */
+		nugu_info("remove pending equeue items: %d",
+			  g_async_queue_length(_equeue->pendings));
+
 		while (g_async_queue_length(_equeue->pendings) > 0) {
 			struct _econtainer *item;
 			struct _equeue_typemap *handler;
@@ -156,6 +177,8 @@ void nugu_equeue_deinitialize(void)
 
 	free(_equeue);
 	_equeue = NULL;
+
+	pthread_mutex_unlock(&_lock);
 }
 
 int nugu_equeue_set_handler(enum nugu_equeue_type type,
@@ -163,25 +186,43 @@ int nugu_equeue_set_handler(enum nugu_equeue_type type,
 			    NuguEqueueDestroyCallback destroy_callback,
 			    void *userdata)
 {
-	g_return_val_if_fail(_equeue != NULL, -1);
 	g_return_val_if_fail(type < NUGU_EQUEUE_TYPE_MAX, -1);
 	g_return_val_if_fail(callback != NULL, -1);
+
+	pthread_mutex_lock(&_lock);
+
+	if (_equeue == NULL) {
+		nugu_error("equeue not initialized");
+		pthread_mutex_unlock(&_lock);
+		return -1;
+	}
 
 	_equeue->typemap[type].callback = callback;
 	_equeue->typemap[type].destroy_callback = destroy_callback;
 	_equeue->typemap[type].userdata = userdata;
+
+	pthread_mutex_unlock(&_lock);
 
 	return 0;
 }
 
 int nugu_equeue_unset_handler(enum nugu_equeue_type type)
 {
-	g_return_val_if_fail(_equeue != NULL, -1);
 	g_return_val_if_fail(type < NUGU_EQUEUE_TYPE_MAX, -1);
+
+	pthread_mutex_lock(&_lock);
+
+	if (_equeue == NULL) {
+		nugu_error("equeue not initialized");
+		pthread_mutex_unlock(&_lock);
+		return -1;
+	}
 
 	_equeue->typemap[type].callback = NULL;
 	_equeue->typemap[type].destroy_callback = NULL;
 	_equeue->typemap[type].userdata = NULL;
+
+	pthread_mutex_unlock(&_lock);
 
 	return 0;
 }
@@ -192,17 +233,26 @@ int nugu_equeue_push(enum nugu_equeue_type type, void *data)
 	uint64_t ev = 1;
 	ssize_t written;
 
-	g_return_val_if_fail(_equeue != NULL, -1);
 	g_return_val_if_fail(type < NUGU_EQUEUE_TYPE_MAX, -1);
+
+	pthread_mutex_lock(&_lock);
+
+	if (_equeue == NULL) {
+		nugu_error("equeue not initialized");
+		pthread_mutex_unlock(&_lock);
+		return -1;
+	}
 
 	if (!_equeue->typemap[type].callback) {
 		nugu_error("Please add handler for %d type first", type);
+		pthread_mutex_unlock(&_lock);
 		return -1;
 	}
 
 	item = malloc(sizeof(struct _econtainer));
 	if (!item) {
 		error_nomem();
+		pthread_mutex_unlock(&_lock);
 		return -1;
 	}
 
@@ -214,8 +264,11 @@ int nugu_equeue_push(enum nugu_equeue_type type, void *data)
 	written = write(_equeue->efd, &ev, sizeof(uint64_t));
 	if (written != sizeof(uint64_t)) {
 		nugu_error("write failed");
+		pthread_mutex_unlock(&_lock);
 		return -1;
 	}
+
+	pthread_mutex_unlock(&_lock);
 
 	return 0;
 }
