@@ -36,6 +36,9 @@ int multipart_parser_parse(MultipartParser *parser, const char *src,
 			   ParserCallback onFoundBody, void *userdata);
 void multipart_parser_reset(MultipartParser *parser);
 
+void multipart_parser_set_data(MultipartParser *parser, void *data);
+void *multipart_parser_get_data(MultipartParser *parser);
+
 #ifdef __cplusplus
 }
 #endif
