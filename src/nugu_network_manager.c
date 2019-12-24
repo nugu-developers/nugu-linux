@@ -96,7 +96,13 @@ typedef struct _nugu_network NetworkManager;
 
 static void on_directive(enum nugu_equeue_type type, void *data, void *userdata)
 {
+	nugu_directive_ref(data);
 	nugu_dirseq_push(data);
+}
+
+static void on_destroy_directive(void *data)
+{
+	nugu_directive_unref(data);
 }
 
 static void on_attachment(enum nugu_equeue_type type, void *data,
@@ -495,7 +501,7 @@ static NetworkManager *nugu_network_manager_new(void)
 
 	/* Received message from server */
 	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_NEW_DIRECTIVE, on_directive,
-				NULL, nm);
+				on_destroy_directive, nm);
 	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_NEW_ATTACHMENT, on_attachment,
 				on_destroy_attachment, nm);
 
@@ -577,6 +583,8 @@ EXPORT_API void nugu_network_manager_deinitialize(void)
 	_network = NULL;
 
 	nugu_dirseq_deinitialize();
+
+	nugu_info("network manager de-initialized");
 }
 
 EXPORT_API int nugu_network_manager_connect(void)

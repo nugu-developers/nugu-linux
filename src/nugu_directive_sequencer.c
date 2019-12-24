@@ -137,7 +137,7 @@ EXPORT_API int nugu_dirseq_complete(NuguDirective *ndir)
 
 	list_dir = g_list_delete_link(list_dir, l);
 
-	nugu_directive_free(ndir);
+	nugu_directive_unref(ndir);
 
 	nugu_dbg("remain directives: %d", g_list_length(list_dir));
 
