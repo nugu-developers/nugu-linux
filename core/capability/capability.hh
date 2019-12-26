@@ -77,11 +77,11 @@ public:
     void sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload);
     void sendAttachmentEvent(CapabilityEvent* event, bool is_end, size_t size, unsigned char* data);
 
-    virtual void getProperty(const std::string& property, std::string& value) override;
-    virtual void getProperties(const std::string& property, std::list<std::string>& values) override;
-    virtual void setCapabilityListener(ICapabilityListener* clistener) override;
-    virtual void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;
-    virtual void receiveCommandAll(std::string command, const std::string& param) override;
+    void getProperty(const std::string& property, std::string& value) override;
+    void getProperties(const std::string& property, std::list<std::string>& values) override;
+    void setCapabilityListener(ICapabilityListener* clistener) override;
+    void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;
+    void receiveCommandAll(std::string command, const std::string& param) override;
     virtual void parsingDirective(const char* dname, const char* message);
     virtual std::string getContextInfo();
 
