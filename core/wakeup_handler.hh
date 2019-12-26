@@ -30,7 +30,6 @@ using namespace NuguInterface;
 
 class WakeupHandler : public IWakeupHandler,
                       public IWakeupDetectorListener {
-
 public:
     WakeupHandler();
     ~WakeupHandler();

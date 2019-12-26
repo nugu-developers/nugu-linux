@@ -24,7 +24,6 @@ using namespace NuguInterface;
 
 class SpeechOperator : public IWakeupListener,
                        public IASRListener {
-
 public:
     void onWakeupState(WakeupDetectState state) override;
     void onState(ASRState state) override;

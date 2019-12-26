@@ -24,9 +24,9 @@ using namespace NuguInterface;
 class TextListener : public ITextListener {
 public:
     virtual ~TextListener() = default;
-    virtual void onState(TextState state) override;
-    virtual void onComplete() override;
-    virtual void onError(TextError error) override;
+    void onState(TextState state) override;
+    void onComplete() override;
+    void onError(TextError error) override;
 };
 
 #endif /* __TEXT_LISTENER_H__ */

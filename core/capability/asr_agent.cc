@@ -547,7 +547,6 @@ void ASRAgent::onListeningState(ListeningState state)
         if (prev_listening_state == ListeningState::READY
             || prev_listening_state == ListeningState::LISTENING
             || prev_listening_state == ListeningState::SPEECH_START) {
-
             releaseASRFocus(true, ASRError::UNKNOWN);
         }
 
