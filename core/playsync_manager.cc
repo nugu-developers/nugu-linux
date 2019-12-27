@@ -90,7 +90,7 @@ void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_ty
     addContext(ps_id, cap_type, {});
 }
 
-void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_type, DisplayRenderer renderer)
+void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_type, DisplayRenderer&& renderer)
 {
     if (ps_id.empty()) {
         nugu_error("Invalid PlayServiceId.");
@@ -224,7 +224,8 @@ void PlaySyncManager::addRenderer(const std::string& ps_id, DisplayRenderer& ren
         removeRenderer(renderer_key);
     }
 
-    renderer_map[ps_id] = renderer;
+    renderer_map.emplace(ps_id, renderer);
+
     renderer.listener->onSyncDisplayContext(renderer.display_id);
 }
 
@@ -259,7 +260,7 @@ void PlaySyncManager::setTimerInterval(const std::string& ps_id)
 }
 
 template <typename T, typename V>
-std::vector<std::string> PlaySyncManager::getKeyOfMap(std::map<T, V>& map)
+std::vector<std::string> PlaySyncManager::getKeyOfMap(const std::map<T, V>& map)
 {
     std::vector<std::string> keys;
     keys.reserve(map.size());

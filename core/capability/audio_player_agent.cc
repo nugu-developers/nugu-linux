@@ -366,7 +366,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         }
 
         // sync display rendering with context
-        playsync_manager->addContext(playstackctl_ps_id, getType(), renderer);
+        playsync_manager->addContext(playstackctl_ps_id, getType(), std::move(renderer));
     }
 
     is_finished = false;

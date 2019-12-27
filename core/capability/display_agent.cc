@@ -67,7 +67,7 @@ void DisplayAgent::parsingDirective(const char* dname, const char* message)
         renderer.duration = root["duration"].asString();
         renderer.display_id = id;
 
-        playsync_manager->addContext(playstackctl_ps_id, getType(), renderer);
+        playsync_manager->addContext(playstackctl_ps_id, getType(), std::move(renderer));
     }
 }
 

@@ -59,7 +59,7 @@ public:
     virtual ~PlaySyncManager();
 
     void addContext(const std::string& ps_id, CapabilityType cap_type);
-    void addContext(const std::string& ps_id, CapabilityType cap_type, DisplayRenderer renderer);
+    void addContext(const std::string& ps_id, CapabilityType cap_type, DisplayRenderer&& renderer);
     void removeContext(const std::string& ps_id, CapabilityType cap_type, bool immediately = true);
     void clearPendingContext(const std::string& ps_id);
     std::vector<std::string> getAllPlayStackItems();
@@ -80,7 +80,7 @@ private:
     static const std::map<std::string, long> DURATION_MAP;
 
     template <typename T, typename V>
-    std::vector<std::string> getKeyOfMap(std::map<T, V>& map);
+    std::vector<std::string> getKeyOfMap(const std::map<T, V>& map);
 
     using TimerCallbackParam = struct {
         PlaySyncManager* instance;
