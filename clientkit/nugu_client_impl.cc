@@ -108,7 +108,7 @@ int NuguClientImpl::createCapabilities(void)
      *  - icapability_map[CAPABILITY.type].first : ICapabilityInterface instance
      *  - icapability_map[CAPABILITY.type].second : ICapabilityListener instance
      */
-    for (auto const& CAPABILITY : CapabilityCreator::CAPABILITY_LIST) {
+    for (auto const& CAPABILITY : CapabilityCreator::getCapabilityList()) {
         // if user didn't add and it's not a required agent, skip to create
         if (icapability_map.find(CAPABILITY.type) == icapability_map.end() && !CAPABILITY.is_default)
             continue;

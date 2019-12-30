@@ -89,7 +89,7 @@ public:
     void onElementSelected(const std::string& item_token);
 
 private:
-    void sendEventCommon(std::string ename);
+    void sendEventCommon(const std::string& ename);
 
     AudioPlayerState audioPlayerState();
 

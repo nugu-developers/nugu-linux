@@ -19,15 +19,15 @@
 #include "speech_operator.hh"
 
 namespace msg {
-const std::string C_RED = "\033[1;91m";
-const std::string C_YELLOW = "\033[1;93m";
-const std::string C_BLUE = "\033[1;94m";
-const std::string C_CYAN = "\033[1;96m";
-const std::string C_WHITE = "\033[1;97m";
-const std::string C_RESET = "\033[0m";
+const char* C_RED = "\033[1;91m";
+const char* C_YELLOW = "\033[1;93m";
+const char* C_BLUE = "\033[1;94m";
+const char* C_CYAN = "\033[1;96m";
+const char* C_WHITE = "\033[1;97m";
+const char* C_RESET = "\033[0m";
 
 namespace asr {
-    const std::string TAG = "[ASR] ";
+    const char* TAG = "[ASR] ";
 
     void state(const std::string& message)
     {
@@ -50,7 +50,7 @@ namespace asr {
 }
 
 namespace wakeup {
-    const std::string TAG = "[Wakeup] ";
+    const char* TAG = "[Wakeup] ";
 
     void state(const std::string& message)
     {

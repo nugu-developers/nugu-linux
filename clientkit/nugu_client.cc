@@ -51,7 +51,7 @@ NuguClient::~NuguClient()
 {
 }
 
-void NuguClient::setConfig(NuguConfig::Key key, std::string value)
+void NuguClient::setConfig(NuguConfig::Key key, const std::string& value)
 {
     impl->setConfig(key, value);
 }

@@ -97,7 +97,7 @@ public:
      * @param[in] key config key
      * @param[in] value config value
      */
-    void setConfig(NuguConfig::Key key, std::string value);
+    void setConfig(NuguConfig::Key key, const std::string& value);
 
     /**
      * @brief Set the listener object

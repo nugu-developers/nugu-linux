@@ -28,13 +28,6 @@
 
 namespace NuguCore {
 
-const std::map<std::string, long> PlaySyncManager::DURATION_MAP = {
-    { "SHORT", HOLD_TIME_SHORT },
-    { "MID", HOLD_TIME_MID },
-    { "LONG", HOLD_TIME_LONG },
-    { "LONGEST", HOLD_TIME_LONGEST }
-};
-
 /*******************************************************************************
  * >>> Temp
  ******************************************************************************/
@@ -68,6 +61,12 @@ namespace Test {
  ******************************************************************************/
 
 PlaySyncManager::PlaySyncManager()
+: DURATION_MAP({
+    { "SHORT", HOLD_TIME_SHORT },
+    { "MID", HOLD_TIME_MID },
+    { "LONG", HOLD_TIME_LONG },
+    { "LONGEST", HOLD_TIME_LONGEST }
+    })
 {
     timer = nugu_timer_new(DEFAULT_HOLD_TIME, 1);
     timer_cb_param.instance = this;
@@ -109,7 +108,7 @@ void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_ty
     // remove previous context
     auto play_stack = getAllPlayStackItems();
 
-    for (auto play_item : play_stack) {
+    for (const auto& play_item : play_stack) {
         if (ps_id != play_item)
             removeContext(play_item, cap_type);
     }
@@ -220,7 +219,7 @@ void PlaySyncManager::addRenderer(const std::string& ps_id, DisplayRenderer& ren
     // remove previous renderers firstly
     auto renderer_keys = getKeyOfMap(renderer_map);
 
-    for (auto renderer_key : renderer_keys) {
+    for (const auto& renderer_key : renderer_keys) {
         removeRenderer(renderer_key);
     }
 

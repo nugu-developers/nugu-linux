@@ -35,7 +35,7 @@ public:
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
 private:
-    void sendEventCommon(std::string ename);
+    void sendEventCommon(const std::string& ename);
     void sendEventActionSucceeded();
     void sendEventActionFailed();
 

@@ -23,7 +23,7 @@
 
 namespace NuguCore {
 
-static const std::string capability_version = "1.0";
+static const char* capability_version = "1.0";
 
 AudioPlayerAgent::AudioPlayerAgent()
     : Capability(CapabilityType::AudioPlayer, capability_version)
@@ -182,7 +182,7 @@ void AudioPlayerAgent::receiveCommand(CapabilityType from, std::string command, 
     std::transform(command.begin(), command.end(), command.begin(), ::tolower);
 
     if (!command.compare("setvolume"))
-        player->setVolume(atoi(param.c_str()));
+        player->setVolume(std::stoi(param));
 }
 
 void AudioPlayerAgent::setCapabilityListener(ICapabilityListener* listener)
@@ -277,7 +277,7 @@ void AudioPlayerAgent::sendEventByDisplayInterface(const std::string& command)
     sendEventCommon(command);
 }
 
-void AudioPlayerAgent::sendEventCommon(std::string ename)
+void AudioPlayerAgent::sendEventCommon(const std::string& ename)
 {
     std::string payload = "";
     Json::StyledWriter writer;

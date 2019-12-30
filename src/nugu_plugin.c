@@ -186,6 +186,8 @@ EXPORT_API int nugu_plugin_load_directory(const char *dirpath)
 			nugu_plugin_free(p);
 	}
 
+	// add the comment below to exclude code checking
+	// NOLINTNEXTLINE (clang-analyzer-unix.Malloc)
 	g_dir_close(dir);
 
 	return 0;

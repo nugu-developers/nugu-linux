@@ -37,9 +37,9 @@ public:
 
 protected:
     void init(std::string name, std::string& sample, std::string& format, std::string& channel);
-    void start(std::function<void()> extra_func = nullptr);
+    void start(const std::function<void()>& extra_func = nullptr);
     void stop(void);
-    void sendSyncEvent(std::function<void()> action = nullptr);
+    void sendSyncEvent(const std::function<void()>& action = nullptr);
 
     virtual void loop(void) = 0;
 

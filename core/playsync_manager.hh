@@ -77,7 +77,7 @@ private:
     bool removeRenderer(const std::string& ps_id, bool unconditionally = true);
     void setTimerInterval(const std::string& ps_id);
 
-    static const std::map<std::string, long> DURATION_MAP;
+    const std::map<std::string, long> DURATION_MAP;
 
     template <typename T, typename V>
     std::vector<std::string> getKeyOfMap(const std::map<T, V>& map);
