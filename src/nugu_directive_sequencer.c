@@ -88,7 +88,7 @@ static DirseqReturn nugu_dirseq_emit_callback(NuguDirective *ndir)
 {
 	GList *l;
 	struct _dirseq_callback *cb;
-	DirseqReturn ret;
+	DirseqReturn ret = DIRSEQ_REMOVE;
 
 	g_return_val_if_fail(ndir != NULL, -1);
 

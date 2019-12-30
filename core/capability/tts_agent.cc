@@ -24,7 +24,7 @@
 
 namespace NuguCore {
 
-static const std::string capability_version = "1.0";
+static const char* capability_version = "1.0";
 
 TTSAgent::TTSAgent()
     : Capability(CapabilityType::TTS, capability_version)

@@ -16,6 +16,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <inttypes.h>
 
 #include <glib.h>
 
@@ -140,7 +141,7 @@ static void on_parsing_header(MultipartParser* parser, const char* data, size_t 
                     nugu_error("unknown Content-Type");
                 }
             } else if (key.compare("Content-Length") == 0) {
-                sscanf(value.c_str(), "%zu", &pdata->body_size);
+                pdata->body_size = (size_t)strtoumax(value.c_str(), nullptr, 10);
             } else if (key.compare("Parent-Message-Id") == 0) {
                 if (pdata->parent_msg_id)
                     free(pdata->parent_msg_id);

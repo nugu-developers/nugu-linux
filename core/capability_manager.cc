@@ -106,23 +106,23 @@ DirseqReturn CapabilityManager::dirseqCallback(NuguDirective* ndir, void* userda
     return DIRSEQ_CONTINUE;
 }
 
-void CapabilityManager::addCapability(std::string cname, ICapabilityInterface* cap)
+void CapabilityManager::addCapability(const std::string& cname, ICapabilityInterface* cap)
 {
     caps[cname] = cap;
 }
 
-void CapabilityManager::removeCapability(std::string cname)
+void CapabilityManager::removeCapability(const std::string& cname)
 {
     caps.erase(cname);
 }
 
-void CapabilityManager::setWakeupWord(std::string word)
+void CapabilityManager::setWakeupWord(const std::string& word)
 {
     if (word.size())
         wword = word;
 }
 
-ICapabilityInterface* CapabilityManager::findCapability(std::string cname)
+ICapabilityInterface* CapabilityManager::findCapability(const std::string& cname)
 {
     if (caps.find(cname) == caps.end())
         return NULL;
@@ -175,7 +175,7 @@ std::string CapabilityManager::makeAllContextInfoStack()
 
     auto play_stack = playsync_manager->getAllPlayStackItems();
 
-    for (auto element : play_stack) {
+    for (const auto& element : play_stack) {
         client["playStack"].append(element);
     }
 
@@ -189,7 +189,7 @@ void CapabilityManager::preprocessDirective(NuguDirective* ndir)
     sendCommandAll("directive_dialog_id", nugu_directive_peek_dialog_id(ndir));
 }
 
-bool CapabilityManager::isSupportDirectiveVersion(std::string version, ICapabilityInterface* cap)
+bool CapabilityManager::isSupportDirectiveVersion(const std::string& version, ICapabilityInterface* cap)
 {
     if (!version.size() || cap == nullptr)
         return false;
@@ -203,7 +203,7 @@ bool CapabilityManager::isSupportDirectiveVersion(std::string version, ICapabili
     return true;
 }
 
-void CapabilityManager::sendCommandAll(std::string command, std::string param)
+void CapabilityManager::sendCommandAll(const std::string& command, const std::string& param)
 {
     nugu_dbg("send %s with %s", command.c_str(), param.c_str());
 
@@ -213,7 +213,7 @@ void CapabilityManager::sendCommandAll(std::string command, std::string param)
 }
 
 void CapabilityManager::sendCommand(CapabilityType from, CapabilityType to,
-    std::string command, std::string param)
+    const std::string& command, const std::string& param)
 {
     for (auto iter : caps) {
         if (iter.second->getType() == to) {
@@ -223,7 +223,7 @@ void CapabilityManager::sendCommand(CapabilityType from, CapabilityType to,
     }
 }
 
-void CapabilityManager::getCapabilityProperty(CapabilityType cap, std::string property, std::string& value)
+void CapabilityManager::getCapabilityProperty(CapabilityType cap, const std::string& property, std::string& value)
 {
     for (auto iter : caps) {
         if (iter.second->getType() == cap) {
@@ -233,7 +233,7 @@ void CapabilityManager::getCapabilityProperty(CapabilityType cap, std::string pr
     }
 }
 
-void CapabilityManager::getCapabilityProperties(CapabilityType cap, std::string property, std::list<std::string>& values)
+void CapabilityManager::getCapabilityProperties(CapabilityType cap, const std::string& property, std::list<std::string>& values)
 {
     for (auto iter : caps) {
         if (iter.second->getType() == cap) {
@@ -253,7 +253,7 @@ bool CapabilityManager::isFocusOn()
         return false;
 }
 
-int CapabilityManager::addFocus(std::string fname, NuguFocusType type, IFocusListener* listener)
+int CapabilityManager::addFocus(const std::string& fname, NuguFocusType type, IFocusListener* listener)
 {
     NuguFocus* focus;
 
@@ -266,7 +266,7 @@ int CapabilityManager::addFocus(std::string fname, NuguFocusType type, IFocusLis
     return 0;
 }
 
-int CapabilityManager::removeFocus(std::string fname)
+int CapabilityManager::removeFocus(const std::string& fname)
 {
     NuguFocus* focus;
 
@@ -280,7 +280,7 @@ int CapabilityManager::removeFocus(std::string fname)
     return 0;
 }
 
-int CapabilityManager::requestFocus(std::string fname, void* event)
+int CapabilityManager::requestFocus(const std::string& fname, void* event)
 {
     NuguFocus* focus;
 
@@ -291,7 +291,7 @@ int CapabilityManager::requestFocus(std::string fname, void* event)
     return nugu_focus_request(focus, event);
 }
 
-int CapabilityManager::releaseFocus(std::string fname)
+int CapabilityManager::releaseFocus(const std::string& fname)
 {
     NuguFocus* focus;
 

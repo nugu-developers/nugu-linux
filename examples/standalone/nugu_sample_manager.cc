@@ -24,12 +24,12 @@
 
 #include "nugu_sample_manager.hh"
 
-const std::string NuguSampleManager::C_RED = "\033[1;91m";
-const std::string NuguSampleManager::C_YELLOW = "\033[1;93m";
-const std::string NuguSampleManager::C_BLUE = "\033[1;94m";
-const std::string NuguSampleManager::C_CYAN = "\033[1;96m";
-const std::string NuguSampleManager::C_WHITE = "\033[1;97m";
-const std::string NuguSampleManager::C_RESET = "\033[0m";
+const char* NuguSampleManager::C_RED = "\033[1;91m";
+const char* NuguSampleManager::C_YELLOW = "\033[1;93m";
+const char* NuguSampleManager::C_BLUE = "\033[1;94m";
+const char* NuguSampleManager::C_CYAN = "\033[1;96m";
+const char* NuguSampleManager::C_WHITE = "\033[1;97m";
+const char* NuguSampleManager::C_RESET = "\033[0m";
 
 NuguSampleManager::Commander NuguSampleManager::commander = { false, 0, { nullptr, nullptr }, nullptr, nullptr };
 GMainLoop* NuguSampleManager::loop = nullptr;
@@ -117,7 +117,7 @@ const std::string& NuguSampleManager::getModelPath()
 
 NuguSampleManager* NuguSampleManager::setNetworkCallback(NetworkCallback callback)
 {
-    commander.network_callback = callback;
+    commander.network_callback = std::move(callback);
 
     return this;
 }

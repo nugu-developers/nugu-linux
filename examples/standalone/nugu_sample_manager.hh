@@ -61,12 +61,12 @@ private:
     static void showPrompt(void);
     static gboolean onKeyInput(GIOChannel* src, GIOCondition con, gpointer userdata);
 
-    static const std::string C_RED;
-    static const std::string C_YELLOW;
-    static const std::string C_BLUE;
-    static const std::string C_CYAN;
-    static const std::string C_WHITE;
-    static const std::string C_RESET;
+    static const char* C_RED;
+    static const char* C_YELLOW;
+    static const char* C_BLUE;
+    static const char* C_CYAN;
+    static const char* C_WHITE;
+    static const char* C_RESET;
     static Commander commander;
     static GMainLoop* loop;
     static bool is_show_prompt;

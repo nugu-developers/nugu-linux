@@ -48,31 +48,31 @@ public:
 
     static DirseqReturn dirseqCallback(NuguDirective* ndir, void* userdata);
 
-    void addCapability(std::string cname, ICapabilityInterface* cap);
-    void removeCapability(std::string cname);
+    void addCapability(const std::string& cname, ICapabilityInterface* cap);
+    void removeCapability(const std::string& cname);
 
-    void setWakeupWord(std::string word);
+    void setWakeupWord(const std::string& word);
 
     std::string makeContextInfo(Json::Value& ctx);
     std::string makeAllContextInfo();
     std::string makeAllContextInfoStack();
 
     void preprocessDirective(NuguDirective* ndir);
-    bool isSupportDirectiveVersion(std::string version, ICapabilityInterface* cap);
+    bool isSupportDirectiveVersion(const std::string& version, ICapabilityInterface* cap);
 
-    void sendCommand(CapabilityType from, CapabilityType to, std::string command, std::string param);
-    void sendCommandAll(std::string command, std::string param);
-    void getCapabilityProperty(CapabilityType cap, std::string property, std::string& value);
-    void getCapabilityProperties(CapabilityType cap, std::string property, std::list<std::string>& values);
+    void sendCommand(CapabilityType from, CapabilityType to, const std::string& command, const std::string& param);
+    void sendCommandAll(const std::string& command, const std::string& param);
+    void getCapabilityProperty(CapabilityType cap, const std::string& property, std::string& value);
+    void getCapabilityProperties(CapabilityType cap, const std::string& property, std::list<std::string>& values);
 
     bool isFocusOn();
-    int addFocus(std::string fname, NuguFocusType type, IFocusListener* listener);
-    int removeFocus(std::string fname);
-    int requestFocus(std::string fname, void* event);
-    int releaseFocus(std::string fname);
+    int addFocus(const std::string& fname, NuguFocusType type, IFocusListener* listener);
+    int removeFocus(const std::string& fname);
+    int requestFocus(const std::string& fname, void* event);
+    int releaseFocus(const std::string& fname);
 
 private:
-    ICapabilityInterface* findCapability(std::string cname);
+    ICapabilityInterface* findCapability(const std::string& cname);
 
     static CapabilityManager* instance;
     std::map<std::string, ICapabilityInterface*> caps;

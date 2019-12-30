@@ -45,12 +45,12 @@ std::string TTSListener::extractText(std::string raw_text)
     if (raw_text.empty())
         return raw_text;
 
-    size_t first_tag_pos = raw_text.find_first_of(">");
+    size_t first_tag_pos = raw_text.find_first_of('>');
 
     if (first_tag_pos == std::string::npos)
         return raw_text;
 
-    size_t last_tag_pose = raw_text.find_last_of("<");
+    size_t last_tag_pose = raw_text.find_last_of('<');
 
     if (last_tag_pose == std::string::npos)
         return raw_text;

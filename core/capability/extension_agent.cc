@@ -23,7 +23,7 @@
 
 namespace NuguCore {
 
-static const std::string capability_version = "1.0";
+static const char* capability_version = "1.0";
 
 ExtensionAgent::ExtensionAgent()
     : Capability(CapabilityType::Extension, capability_version)
@@ -88,7 +88,7 @@ void ExtensionAgent::sendEventActionFailed()
     sendEventCommon("ActionFailed");
 }
 
-void ExtensionAgent::sendEventCommon(std::string ename)
+void ExtensionAgent::sendEventCommon(const std::string& ename)
 {
     std::string payload = "";
     Json::Value root;

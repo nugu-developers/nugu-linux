@@ -21,7 +21,7 @@
 
 namespace NuguCore {
 
-static const std::string capability_version = "1.0";
+static const char* capability_version = "1.0";
 
 DisplayAgent::DisplayAgent()
     : Capability(CapabilityType::Display, capability_version)

@@ -40,18 +40,16 @@ std::unique_ptr<T> make_unique(Ts&&... params)
 }
 
 std::unique_ptr<NuguClient> nugu_client = nullptr;
-INetworkManager* network_manager = nullptr;
-
-auto nugu_sample_manager(make_unique<NuguSampleManager>());
-auto speech_operator(make_unique<SpeechOperator>());
-auto tts_listener(make_unique<TTSListener>());
-auto display_listener(make_unique<DisplayListener>());
-auto aplayer_listener(make_unique<AudioPlayerListener>());
-auto system_listener(make_unique<SystemListener>());
-auto text_listener(make_unique<TextListener>());
-auto extension_listener(make_unique<ExtensionListener>());
-auto delegation_listener(make_unique<DelegationListener>());
-auto location_listener(make_unique<LocationListener>());
+std::unique_ptr<NuguSampleManager> nugu_sample_manager = nullptr;
+std::unique_ptr<SpeechOperator> speech_operator = nullptr;
+std::unique_ptr<TTSListener> tts_listener = nullptr;
+std::unique_ptr<DisplayListener> display_listener = nullptr;
+std::unique_ptr<AudioPlayerListener> aplayer_listener = nullptr;
+std::unique_ptr<SystemListener> system_listener = nullptr;
+std::unique_ptr<TextListener> text_listener = nullptr;
+std::unique_ptr<ExtensionListener> extension_listener = nullptr;
+std::unique_ptr<DelegationListener> delegation_listener = nullptr;
+std::unique_ptr<LocationListener> location_listener = nullptr;
 
 void msg_error(const std::string& message)
 {
@@ -138,6 +136,7 @@ void registerCapabilities()
 
 int main(int argc, char** argv)
 {
+    nugu_sample_manager = make_unique<NuguSampleManager>();
     if (!nugu_sample_manager->handleArguments(argc, argv))
         return EXIT_FAILURE;
 
@@ -148,6 +147,16 @@ int main(int argc, char** argv)
 
     nugu_sample_manager->prepare();
 
+    speech_operator = make_unique<SpeechOperator>();
+    tts_listener = make_unique<TTSListener>();
+    display_listener = make_unique<DisplayListener>();
+    aplayer_listener = make_unique<AudioPlayerListener>();
+    system_listener = make_unique<SystemListener>();
+    text_listener = make_unique<TextListener>();
+    extension_listener = make_unique<ExtensionListener>();
+    delegation_listener = make_unique<DelegationListener>();
+    location_listener = make_unique<LocationListener>();
+
     auto nugu_client_listener(make_unique<NuguClientListener>());
     auto network_manager_listener(make_unique<NetworkManagerListener>());
 
@@ -157,7 +166,7 @@ int main(int argc, char** argv)
 
     registerCapabilities();
 
-    network_manager = nugu_client->getNetworkManager();
+    INetworkManager* network_manager = nugu_client->getNetworkManager();
     network_manager->addListener(network_manager_listener.get());
     network_manager->setToken(getenv("NUGU_TOKEN"));
 

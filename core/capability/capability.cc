@@ -107,11 +107,11 @@ void CapabilityEvent::sendAttachmentEvent(bool is_end, size_t size, unsigned cha
 
 Capability::Capability(CapabilityType type, const std::string& ver)
     : ctype(type)
+    , cname(CAPABILITY_TYPE_MAP.at(type))
     , version(ver)
     , ref_dialog_id("")
     , cur_ndir(NULL)
 {
-    cname = getTypeName(type);
     playsync_manager = CapabilityManager::getInstance()->getPlaySyncManager();
 }
 

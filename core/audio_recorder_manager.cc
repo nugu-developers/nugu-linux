@@ -235,8 +235,10 @@ NuguAudioProperty AudioRecorderManager::convertNuguAudioProperty(std::string& sa
         property.samplerate = AUDIO_SAMPLE_RATE_22K;
     else if (sample == "44k")
         property.samplerate = AUDIO_SAMPLE_RATE_44K;
-    else
+    else {
         nugu_error("not support the sample rate => %s", sample.c_str());
+        property.samplerate = AUDIO_SAMPLE_RATE_16K;
+    }
 
     if (format == "s8")
         property.format = AUDIO_FORMAT_S8;
@@ -266,13 +268,17 @@ NuguAudioProperty AudioRecorderManager::convertNuguAudioProperty(std::string& sa
         property.format = AUDIO_FORMAT_U32_LE;
     else if (format == "u32be")
         property.format = AUDIO_FORMAT_U32_BE;
-    else
+    else {
         nugu_error("not support the format => %s", format.c_str());
+        property.format = AUDIO_FORMAT_S16_LE;
+    }
 
-    if (atoi(channel.c_str()))
-        property.channel = std::stoi(channel);
-    else
+
+    property.channel = std::stoi(channel);
+    if(property.channel == 0) {
         nugu_error("wrong channel parameter => %s", channel.c_str());
+        property.channel = 1;
+    }
 
     return property;
 }

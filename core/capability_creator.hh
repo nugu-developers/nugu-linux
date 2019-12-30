@@ -41,7 +41,7 @@ public:
         std::function<ICapabilityInterface*()> creator;
     };
 
-    static const std::list<Element> CAPABILITY_LIST;
+    static const std::list<Element>& getCapabilityList();
 };
 
 } // NuguCore

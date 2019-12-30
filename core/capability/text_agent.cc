@@ -23,7 +23,8 @@
 #include "text_agent.hh"
 
 namespace NuguCore {
-static const std::string capability_version = "1.0";
+
+static const char* capability_version = "1.0";
 
 TextAgent::TextAgent()
     : Capability(CapabilityType::Text, capability_version)

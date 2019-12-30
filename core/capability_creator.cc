@@ -42,7 +42,9 @@ namespace {
 
 using CapabilityElement = CapabilityCreator::Element;
 
-const std::list<CapabilityElement> CapabilityCreator::CAPABILITY_LIST {
+const std::list<CapabilityElement>& CapabilityCreator::getCapabilityList()
+{
+    static std::list<CapabilityElement> CAPABILITY_LIST {
     CapabilityElement { CapabilityType::ASR, true, &create<ASRAgent> },
     CapabilityElement { CapabilityType::TTS, true, &create<TTSAgent> },
     CapabilityElement { CapabilityType::AudioPlayer, true, &create<AudioPlayerAgent> },
@@ -52,7 +54,10 @@ const std::list<CapabilityElement> CapabilityCreator::CAPABILITY_LIST {
     CapabilityElement { CapabilityType::Text, false, &create<TextAgent> },
     CapabilityElement { CapabilityType::Delegation, false, &create<DelegationAgent> },
     CapabilityElement { CapabilityType::Location, false, &create<LocationAgent> }
-};
+    };
+
+    return CAPABILITY_LIST;
+}
 
 IWakeupHandler* CapabilityCreator::createWakeupHandler()
 {

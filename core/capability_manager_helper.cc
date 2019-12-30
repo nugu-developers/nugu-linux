@@ -20,12 +20,12 @@
 
 namespace NuguCore {
 
-void CapabilityManagerHelper::addCapability(std::string cname, ICapabilityInterface* cap)
+void CapabilityManagerHelper::addCapability(const std::string& cname, ICapabilityInterface* cap)
 {
     CapabilityManager::getInstance()->addCapability(cname, cap);
 }
 
-void CapabilityManagerHelper::removeCapability(std::string cname)
+void CapabilityManagerHelper::removeCapability(const std::string& cname)
 {
     CapabilityManager::getInstance()->removeCapability(cname);
 }

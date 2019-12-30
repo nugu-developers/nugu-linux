@@ -74,7 +74,7 @@ void AudioInputProcessor::init(std::string name, std::string& sample, std::strin
     is_initialized = true;
 }
 
-void AudioInputProcessor::start(std::function<void()> extra_func)
+void AudioInputProcessor::start(const std::function<void()>& extra_func)
 {
     if (is_running) {
         nugu_dbg("Thread is already running...");
@@ -115,7 +115,7 @@ static gboolean invoke_sync_event(gpointer userdata)
     return FALSE;
 }
 
-void AudioInputProcessor::sendSyncEvent(std::function<void()> action)
+void AudioInputProcessor::sendSyncEvent(const std::function<void()>& action)
 {
     g_return_if_fail(action != nullptr);
 

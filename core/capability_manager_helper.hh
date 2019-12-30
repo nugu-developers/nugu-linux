@@ -27,8 +27,8 @@ class CapabilityManagerHelper {
 public:
     CapabilityManagerHelper() = delete;
 
-    static void addCapability(std::string cname, ICapabilityInterface* cap);
-    static void removeCapability(std::string cname);
+    static void addCapability(const std::string& cname, ICapabilityInterface* cap);
+    static void removeCapability(const std::string& cname);
     static void destroyInstance();
 };
 } // NuguCore
