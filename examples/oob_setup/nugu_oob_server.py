@@ -4,6 +4,7 @@ from flask import Flask, request, redirect, session, json, url_for, make_respons
 from flask.json import jsonify
 from requests_oauthlib import OAuth2Session
 import os
+import sys
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
@@ -13,19 +14,11 @@ if 'NUGU_CONFIG_PATH' in os.environ:
     CONFIG_PATH = os.environ['NUGU_CONFIG_PATH']
 else:
     CONFIG_PATH = '/var/lib/nugu'
-print 'Configuration path = %s' % CONFIG_PATH
 
 if 'NUGU_OAUTH2_URL' in os.environ:
     OAUTH2_URL = os.environ['NUGU_OAUTH2_URL']
 else:
     OAUTH2_URL = 'https://api.sktnugu.com/'
-print 'OAuth2 url = %s' % OAUTH2_URL
-
-if os.path.isdir(CONFIG_PATH):
-    print 'path exist'
-else:
-    print 'create directory'
-    os.makedirs(CONFIG_PATH)
 
 CONFIG_PATH_AUTH = CONFIG_PATH + '/nugu-auth.json'
 DEFAULT_JSON_AUTH = """{
@@ -36,7 +29,6 @@ DEFAULT_JSON_AUTH = """{
 }
 """
 
-# OAuth
 CONFIG_PATH_OAUTH = CONFIG_PATH + '/nugu-oauth.json'
 DEFAULT_JSON_OAUTH = """{
     "pocId": "",
@@ -51,7 +43,7 @@ token_url = OAUTH2_URL + '/v1/auth/oauth/token'
 redirect_uri = 'http://lvh.me:8080/callback'
 
 app = Flask(__name__)
-app.secret_key = "test"
+app.secret_key = 'test'
 
 
 @app.route('/auth', methods=['GET', 'PUT'])
@@ -95,6 +87,30 @@ def oauth():
         with open(CONFIG_PATH_OAUTH, 'w') as writer:
             writer.write(buf)
         return redirect(url_for('index'))
+
+
+@app.route('/refresh', methods=['GET'])
+def refresh_token():
+    print '\n\033[1mRefresh the access_token\033[0m'
+    with open(CONFIG_PATH_AUTH, 'r') as reader:
+        authinfo = json.load(reader)
+
+    with open(CONFIG_PATH_OAUTH, 'r') as reader:
+        oauthinfo = json.load(reader)
+
+    extra = {
+        'client_id': oauthinfo['clientId'],
+        'client_secret': oauthinfo['clientSecret'],
+        'refresh_token': authinfo['refresh_token']
+    }
+
+    nugu = OAuth2Session(oauthinfo['clientId'], token=authinfo['access_token'])
+    token = nugu.refresh_token(token_url, **extra)
+    token_json = json.dumps(token)
+    print token_json
+    with open(CONFIG_PATH_AUTH, 'w') as writer:
+        writer.write(token_json)
+    return redirect(url_for('index'))
 
 
 @app.route('/logout')
@@ -158,11 +174,11 @@ def index():
         <td width=100%><input style="width:100%;" type=text name=clientId value="{token_type}"/></td>
     </tr>
 </table>
-<p align="center"><a href="/logout">Logout</a></p>
+<p align="center"><a href="/logout">Logout</a> or <a href="/refresh">Refresh the token</a></p>
 """.format(access_token=token['access_token'], expires_at=token['expires_at'], expires_in=token['expires_in'], refresh_token=refresh_token, token_type=token['token_type'])
     else:
         loginForm = """
-<p align="center"><a href="/login">Get OAuth2 token</a></p>
+<p align="center"><a href="/login">Get OAuth2 token</a> or <a href="/refresh">Refresh the token</a></p>
 """
 
     return """<!DOCTYPE HTML>
@@ -245,7 +261,6 @@ def callback():
     token = nugu.fetch_token(token_url, client_secret=clientSecret,
                                 authorization_response=request.url)
 
-    print token
     token_json = json.dumps(token)
     print token_json
     with open(CONFIG_PATH_AUTH, 'w') as writer:
@@ -257,16 +272,30 @@ def callback():
 
 
 if __name__ == '__main__':
-    if not os.path.exists(CONFIG_PATH_AUTH):
-        print "Create default %s" % CONFIG_PATH_AUTH
-        with open(CONFIG_PATH_AUTH, 'w') as writer:
-            writer.write(DEFAULT_JSON_AUTH)
+    print '\033[1mNUGU Out-Of-Box sample server for authentication\033[0m'
 
+    if not os.path.isdir(CONFIG_PATH):
+        print ' - Create Configuration directory %s' % CONFIG_PATH
+        os.makedirs(CONFIG_PATH)
+
+    print ' - OAuth2 url = %s' % OAUTH2_URL
+
+    print ' - OAuth2 configuration path = %s' % CONFIG_PATH_OAUTH
     if not os.path.exists(CONFIG_PATH_OAUTH):
-        print "Create default %s" % CONFIG_PATH_OAUTH
+        print '   - Create default %s' % CONFIG_PATH_OAUTH
         with open(CONFIG_PATH_OAUTH, 'w') as writer:
             writer.write(DEFAULT_JSON_OAUTH)
 
-    print "Please connect to %d port." % PORT
+    print ' - Authentication path = %s' % CONFIG_PATH_AUTH
+    if not os.path.exists(CONFIG_PATH_AUTH):
+        print '   - Create default %s' % CONFIG_PATH_AUTH
+        with open(CONFIG_PATH_AUTH, 'w') as writer:
+            writer.write(DEFAULT_JSON_AUTH)
+
+    for arg in sys.argv:
+        if arg == '-r':
+            refresh_token()
+
+    print '\n\033[1mPlease connect to %d port.\033[0m' % PORT
 
     app.run(host='0.0.0.0', port=PORT)
