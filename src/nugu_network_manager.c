@@ -22,6 +22,8 @@
 
 #include <glib.h>
 
+#include "curl/curl.h"
+
 #include "nugu.h"
 
 #include "base/nugu_log.h"
@@ -591,10 +593,28 @@ static NetworkManager *_network;
 EXPORT_API int nugu_network_manager_initialize(void)
 {
 	struct timespec spec;
+	curl_version_info_data *cinfo;
 
 	if (_network) {
 		nugu_dbg("already initialized");
 		return 0;
+	}
+
+	curl_global_init(CURL_GLOBAL_DEFAULT);
+
+	cinfo = curl_version_info(CURLVERSION_NOW);
+	if (cinfo) {
+		nugu_dbg("curl %s (%s), nghttp2_version=%s, ssl_version=%s",
+			 cinfo->version, cinfo->host, cinfo->nghttp2_version,
+			 cinfo->ssl_version);
+
+		if (cinfo->protocols) {
+			const char *const *proto;
+
+			nugu_dbg("Supported protocols: ");
+			for (proto = cinfo->protocols; *proto; ++proto)
+				nugu_dbg("  <%s>", *proto);
+		}
 	}
 
 	clock_gettime(CLOCK_REALTIME, &spec);
@@ -620,6 +640,8 @@ EXPORT_API void nugu_network_manager_deinitialize(void)
 	_network = NULL;
 
 	nugu_dirseq_deinitialize();
+
+	curl_global_cleanup();
 
 	nugu_info("network manager de-initialized");
 }
