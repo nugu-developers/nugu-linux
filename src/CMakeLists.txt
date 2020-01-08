@@ -37,3 +37,4 @@ TARGET_COMPILE_OPTIONS(objbase PRIVATE
 	-Waggregate-return
 	-Wmissing-declarations
 	-Wswitch-default)
+ADD_DEPENDENCIES(objbase CURL)

@@ -75,8 +75,6 @@ struct _http2_network {
 	pthread_mutex_t init_lock;
 };
 
-static int _curl_init;
-
 static int _process_add(HTTP2Network *net, struct request_item *item)
 {
 	CURLMcode rc;
@@ -252,38 +250,9 @@ static void *_loop(void *data)
 	return NULL;
 }
 
-static void _init_once(void)
-{
-	curl_version_info_data *cinfo;
-
-	if (_curl_init == 1)
-		return;
-
-	curl_global_init(CURL_GLOBAL_DEFAULT);
-
-	cinfo = curl_version_info(CURLVERSION_NOW);
-	if (cinfo) {
-		nugu_dbg("curl %s (%s), nghttp2_version=%s, ssl_version=%s",
-			 cinfo->version, cinfo->host, cinfo->nghttp2_version,
-			 cinfo->ssl_version);
-
-		if (cinfo->protocols) {
-			const char *const *proto;
-
-			nugu_dbg("Supported protocols: ");
-			for (proto = cinfo->protocols; *proto; ++proto)
-				nugu_dbg("  <%s>", *proto);
-		}
-	}
-
-	_curl_init = 1;
-}
-
 HTTP2Network *http2_network_new()
 {
 	struct _http2_network *net;
-
-	_init_once();
 
 	net = calloc(1, sizeof(struct _http2_network));
 	if (!net) {
