@@ -219,6 +219,65 @@ static void test_ringbuffer_resize(void)
 	nugu_ring_buffer_free(buf);
 }
 
+static void test_ringbuffer_follow(void)
+{
+	NuguRingBuffer *buf;
+	char tmp[10] = {
+		0,
+	};
+	int item = 0;
+
+	/* item size is 1, item max is 5 */
+	buf = nugu_ring_buffer_new(1, 5);
+	g_assert(buf != NULL);
+	g_assert(nugu_ring_buffer_get_count(buf) == 0);
+	g_assert(nugu_ring_buffer_get_maxcount(buf) == 5);
+
+	/* Fill 1 bytes and check the item */
+	g_assert(nugu_ring_buffer_push_data(buf, "1", 1) == 0);
+	g_assert(nugu_ring_buffer_get_count(buf) == 1);
+	g_assert(nugu_ring_buffer_read_item(buf, tmp, &item) == 0);
+	g_assert(*tmp == '1' && item == 1);
+
+	/* Fill 1 bytes and check the item */
+	g_assert(nugu_ring_buffer_push_data(buf, "2", 1) == 0);
+	g_assert(nugu_ring_buffer_get_count(buf) == 1);
+	g_assert(nugu_ring_buffer_read_item(buf, tmp, &item) == 0);
+	g_assert(*tmp == '2' && item == 1);
+
+	/* Fill 1 bytes and check the item */
+	g_assert(nugu_ring_buffer_push_data(buf, "3", 1) == 0);
+	g_assert(nugu_ring_buffer_get_count(buf) == 1);
+	g_assert(nugu_ring_buffer_read_item(buf, tmp, &item) == 0);
+	g_assert(*tmp == '3' && item == 1);
+
+	/* Fill 1 bytes and check the item */
+	g_assert(nugu_ring_buffer_push_data(buf, "4", 1) == 0);
+	g_assert(nugu_ring_buffer_get_count(buf) == 1);
+	g_assert(nugu_ring_buffer_read_item(buf, tmp, &item) == 0);
+	g_assert(*tmp == '4' && item == 1);
+
+	/* Fill 1 bytes and check the item */
+	g_assert(nugu_ring_buffer_push_data(buf, "5", 1) == 0);
+	g_assert(nugu_ring_buffer_get_count(buf) == 1);
+	g_assert(nugu_ring_buffer_read_item(buf, tmp, &item) == 0);
+	g_assert(*tmp == '5' && item == 1);
+
+	/* Fill 1 bytes and check the item */
+	g_assert(nugu_ring_buffer_push_data(buf, "6", 1) == 0);
+	g_assert(nugu_ring_buffer_get_count(buf) == 1);
+	g_assert(nugu_ring_buffer_read_item(buf, tmp, &item) == 0);
+	g_assert(*tmp == '6' && item == 1);
+
+	/* Fill 1 bytes and check the item */
+	g_assert(nugu_ring_buffer_push_data(buf, "7", 1) == 0);
+	g_assert(nugu_ring_buffer_get_count(buf) == 1);
+	g_assert(nugu_ring_buffer_read_item(buf, tmp, &item) == 0);
+	g_assert(*tmp == '7' && item == 1);
+
+	nugu_ring_buffer_free(buf);
+}
+
 int main(int argc, char *argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -232,6 +291,7 @@ int main(int argc, char *argv[])
 	g_test_add_func("/buffer/item", test_ringbuffer_item);
 	g_test_add_func("/buffer/ring", test_ringbuffer_ring);
 	g_test_add_func("/buffer/resize", test_ringbuffer_resize);
+	g_test_add_func("/buffer/follow", test_ringbuffer_follow);
 
 	return g_test_run();
 }
