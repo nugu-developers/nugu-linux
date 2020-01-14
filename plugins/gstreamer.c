@@ -717,7 +717,8 @@ static int init(NuguPlugin *p)
 	nugu_dbg("'%s' plugin initialized",
 		 nugu_plugin_get_description(p)->name);
 
-	gst_init(NULL, NULL);
+	if (gst_is_initialized() == FALSE)
+		gst_init(NULL, NULL);
 
 	driver = nugu_player_driver_new(PLUGIN_DRIVER_NAME, &player_ops);
 	g_return_val_if_fail(driver != NULL, -1);
@@ -748,6 +749,8 @@ static void unload(NuguPlugin *p)
 		nugu_player_driver_free(driver);
 		driver = NULL;
 	}
+
+	gst_deinit();
 
 	nugu_dbg("'%s' plugin unloaded done",
 		 nugu_plugin_get_description(p)->name);
