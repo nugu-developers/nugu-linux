@@ -155,11 +155,12 @@ EXPORT_API int nugu_ring_buffer_push_data(NuguRingBuffer *buf, const char *data,
 		pthread_mutex_unlock(&buf->mutex);
 	}
 
-	if ((buf->woffset + size) > buf_size) {
+	if ((buf->woffset + size) >= buf_size) {
 		unsigned long diff;
 
 		diff = buf_size - buf->woffset;
-		memcpy(buf->buf + buf->woffset, data, diff);
+		if (diff)
+			memcpy(buf->buf + buf->woffset, data, diff);
 		memcpy(buf->buf, data + diff, size - diff);
 		buf->woffset = size - diff;
 	} else {
