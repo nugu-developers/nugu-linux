@@ -32,7 +32,7 @@ CapabilityEvent::CapabilityEvent(const std::string& name, Capability* cap)
     dialog_id = nugu_event_peek_dialog_id(event);
 
     if (isUserAction(name))
-        cap->setReferrerDialogRequestId(dialog_id);
+        cap->setReferrerDialogRequestId("");
 }
 
 CapabilityEvent::~CapabilityEvent()
@@ -50,7 +50,7 @@ bool CapabilityEvent::isUserAction(const std::string& name)
     if ((type == CapabilityType::ASR && name == "Recognize")
         || (type == CapabilityType::TTS && name == "SpeechPlay")
         || (type == CapabilityType::AudioPlayer
-            && (name.find("CommandIssued") != std::string::npos))
+               && (name.find("CommandIssued") != std::string::npos))
         || (type == CapabilityType::Text && name == "TextInput")
         || (type == CapabilityType::Display && name == "ElementSelected"))
         return true;
@@ -132,8 +132,7 @@ std::string Capability::getReferrerDialogRequestId()
 
 void Capability::setReferrerDialogRequestId(const std::string& id)
 {
-    if (id.size())
-        ref_dialog_id = id;
+    ref_dialog_id = id;
 }
 
 void Capability::setName(CapabilityType type)
@@ -186,6 +185,7 @@ void Capability::processDirective(NuguDirective* ndir)
     if (ndir) {
         const char* dname;
         const char* message;
+        const char* dref_id;
 
         message = nugu_directive_peek_json(ndir);
         dname = nugu_directive_peek_name(ndir);
@@ -198,7 +198,11 @@ void Capability::processDirective(NuguDirective* ndir)
             return;
         }
 
-        setReferrerDialogRequestId(nugu_directive_peek_referrer_id(ndir));
+        dref_id = nugu_directive_peek_referrer_id(ndir);
+        if (!dref_id || !strlen(dref_id))
+            dref_id = nugu_directive_peek_dialog_id(ndir);
+
+        setReferrerDialogRequestId(dref_id);
 
         parsingDirective(dname, message);
 
