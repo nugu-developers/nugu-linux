@@ -28,6 +28,8 @@ public:
     void onException(SystemException exception) override;
     void onTurnOff(void) override;
     void onRevoke(RevokeReason reason) override;
+    bool requestDeviceCharging(bool& charge) override;
+    bool requestDeviceBattery(int& battery) override;
 };
 
 #endif /* __TTS_LISTENER_H__ */

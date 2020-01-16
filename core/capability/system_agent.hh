@@ -57,7 +57,6 @@ private:
     void parsingRevoke(const char* message);
 
     ISystemListener* system_listener;
-    int battery;
     NuguTimer* timer;
 };
 
