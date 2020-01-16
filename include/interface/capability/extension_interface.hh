@@ -68,6 +68,12 @@ public:
 class IExtensionHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IExtensionHandler() = default;
+
+    /**
+     * @brief application send command data to Play(backend proxy)
+     * @param[in] data command data
+     */
+    virtual void sendCommandToPlay(const std::string& data) = 0;
 };
 
 /**
