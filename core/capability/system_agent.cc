@@ -28,12 +28,11 @@
 
 namespace NuguCore {
 
-static const char* capability_version = "1.0";
+static const char* capability_version = "1.1";
 
 SystemAgent::SystemAgent()
     : Capability(CapabilityType::System, capability_version)
     , system_listener(nullptr)
-    , battery(0)
     , timer(nullptr)
 {
     nugu_network_manager_set_handoff_status_callback(
@@ -95,8 +94,25 @@ void SystemAgent::updateInfoForContext(Json::Value& ctx)
     Json::Value root;
 
     root["version"] = getVersion();
-    if (battery)
-        root["battery"] = battery;
+    if (system_listener) {
+        bool charging = false;
+        int battery = -1;
+
+        if (system_listener->requestDeviceCharging(charging))
+            root["charging"] = charging;
+
+        if (system_listener->requestDeviceBattery(battery)) {
+            if (battery <= 0)
+                battery = 1;
+
+            if (battery > 100)
+                battery = 100;
+
+            root["battery"] = battery;
+        }
+
+        nugu_dbg("charging: %d, battery: %d", charging, battery);
+    }
     ctx[getName()] = root;
 }
 

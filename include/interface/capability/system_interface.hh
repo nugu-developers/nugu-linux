@@ -74,6 +74,20 @@ public:
      * @param[in] reason reason for revoke
      */
     virtual void onRevoke(RevokeReason reason) = 0;
+
+    /**
+     * @brief SDK request information about device's charging status
+     * @param[out] charge device's charging status
+     * @return return device charge status accessible
+     */
+    virtual bool requestDeviceCharging(bool& charge) = 0;
+
+    /**
+     * @brief SDK request information about device's remaining battery
+     * @param[out] battery device's battery
+     * @return return device battery measurability
+     */
+    virtual bool requestDeviceBattery(int& battery) = 0;
 };
 
 /**
