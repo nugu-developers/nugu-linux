@@ -33,11 +33,13 @@ public:
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
+    void sendCommandToPlay(const std::string& data) override;
 
 private:
-    void sendEventCommon(const std::string& ename);
+    void sendEventCommon(const std::string& ename, const std::string& data = "");
     void sendEventActionSucceeded();
     void sendEventActionFailed();
+    void sendEventCommandIssued(const std::string& data);
 
     void parsingAction(const char* message);
 

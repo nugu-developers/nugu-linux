@@ -23,7 +23,7 @@
 
 namespace NuguCore {
 
-static const char* capability_version = "1.0";
+static const char* capability_version = "1.1";
 
 ExtensionAgent::ExtensionAgent()
     : Capability(CapabilityType::Extension, capability_version)
@@ -72,6 +72,11 @@ void ExtensionAgent::updateInfoForContext(Json::Value& ctx)
     ctx[getName()] = extension;
 }
 
+void ExtensionAgent::sendCommandToPlay(const std::string& data)
+{
+    sendEventCommandIssued(data);
+}
+
 void ExtensionAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)
@@ -88,13 +93,20 @@ void ExtensionAgent::sendEventActionFailed()
     sendEventCommon("ActionFailed");
 }
 
-void ExtensionAgent::sendEventCommon(const std::string& ename)
+void ExtensionAgent::sendEventCommandIssued(const std::string& data)
+{
+    sendEventCommon("CommandIssued", data);
+}
+
+void ExtensionAgent::sendEventCommon(const std::string& ename, const std::string& data)
 {
     std::string payload = "";
     Json::Value root;
     Json::StyledWriter writer;
 
     root["playServiceId"] = ps_id;
+    if (data.length())
+        root["data"] = data;
     payload = writer.write(root);
 
     sendEvent(ename, getContextInfo(), payload);
