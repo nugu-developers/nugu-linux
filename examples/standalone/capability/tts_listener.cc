@@ -40,6 +40,11 @@ void TTSListener::onTTSText(const std::string& text, const std::string& dialog_i
     std::cout << "\033[1;36m" << extractText(text) << "\033[0m, dialog_id: " << dialog_id << std::endl;
 }
 
+void TTSListener::onTTSCancel(const std::string& dialog_id)
+{
+    std::cout << "[TTS] CANCEL... dialog_id: " << dialog_id << std::endl;
+}
+
 std::string TTSListener::extractText(std::string raw_text)
 {
     if (raw_text.empty())

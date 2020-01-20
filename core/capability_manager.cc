@@ -243,11 +243,11 @@ void CapabilityManager::getCapabilityProperties(CapabilityType cap, const std::s
     }
 }
 
-bool CapabilityManager::isFocusOn()
+bool CapabilityManager::isFocusOn(NuguFocusType type)
 {
     NuguFocus* focus = nugu_focus_peek_top();
 
-    if (focus)
+    if (focus && nugu_focus_get_type(focus) == type)
         return true;
     else
         return false;

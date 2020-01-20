@@ -65,7 +65,7 @@ public:
     void getCapabilityProperty(CapabilityType cap, const std::string& property, std::string& value);
     void getCapabilityProperties(CapabilityType cap, const std::string& property, std::list<std::string>& values);
 
-    bool isFocusOn();
+    bool isFocusOn(NuguFocusType type);
     int addFocus(const std::string& fname, NuguFocusType type, IFocusListener* listener);
     int removeFocus(const std::string& fname);
     int requestFocus(const std::string& fname, void* event);
