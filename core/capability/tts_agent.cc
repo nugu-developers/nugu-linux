@@ -181,9 +181,14 @@ NuguFocusResult TTSAgent::onFocus(void* event)
 
 NuguFocusResult TTSAgent::onUnfocus(void* event)
 {
+    int cur_status = speak_status;
+
     nugu_pcm_stop(pcm);
 
     playsync_manager->removeContext(playstackctl_ps_id, getType(), !finish);
+
+    if (tts_listener && cur_status != MEDIA_STATUS_STOPPED)
+        tts_listener->onTTSCancel(dialog_id);
 
     return NUGU_FOCUS_REMOVE;
 }
@@ -198,6 +203,8 @@ NuguFocusStealResult TTSAgent::onStealRequest(void* event, NuguFocusType target_
 
 void TTSAgent::stopTTS()
 {
+    int cur_status = speak_status;
+
     if (speak_dir) {
         nugu_directive_set_data_callback(speak_dir, NULL, NULL);
         destoryDirective(speak_dir);
@@ -206,6 +213,9 @@ void TTSAgent::stopTTS()
     if (pcm) {
         nugu_pcm_stop(pcm);
     }
+
+    if (tts_listener && cur_status != MEDIA_STATUS_STOPPED && cur_status != -1)
+        tts_listener->onTTSCancel(dialog_id);
 }
 
 void TTSAgent::startTTS(NuguDirective* ndir)
@@ -369,7 +379,12 @@ void TTSAgent::parsingSpeak(const char* message)
 
     startTTS(getNuguDirective());
 
-    CapabilityManager::getInstance()->requestFocus("cap_tts", NULL);
+    if (CapabilityManager::getInstance()->isFocusOn(NUGU_FOCUS_TYPE_TTS)) {
+        if (nugu_directive_get_data_size(speak_dir) > 0)
+            getAttachmentData(speak_dir, this);
+    } else {
+        CapabilityManager::getInstance()->requestFocus("cap_tts", NULL);
+    }
 
     if (tts_listener)
         tts_listener->onTTSText(text, dialog_id);

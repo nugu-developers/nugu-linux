@@ -62,6 +62,12 @@ public:
      * @param[in] dialog_id dialog request id
      */
     virtual void onTTSText(const std::string& text, const std::string& dialog_id) = 0;
+
+    /**
+     * @brief Report canceled the text speech to the User.
+     * @param[in] dialog_id dialog request id
+     */
+    virtual void onTTSCancel(const std::string& dialog_id) = 0;
 };
 
 /**
