@@ -26,12 +26,12 @@ DisplayListener::DisplayListener()
 
 void DisplayListener::renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id)
 {
-    std::cout << listener_name << " render display template - id: " << id << ", type: " << type << ", dialog_id: " << dialog_id << std::endl;
+    std::cout << "[Display] render display template - id: " << id << ", type: " << type << ", dialog_id: " << dialog_id << std::endl;
 }
 
 bool DisplayListener::clearDisplay(const std::string& id, bool unconditionally)
 {
-    std::cout << listener_name << " clear display template - id: " << id << ", unconditionally: " << unconditionally << std::endl;
+    std::cout << "[Display] clear display template - id: " << id << ", unconditionally: " << unconditionally << std::endl;
 
     // clear display unconditionally
     if (unconditionally) {
@@ -41,5 +41,29 @@ bool DisplayListener::clearDisplay(const std::string& id, bool unconditionally)
     // It need to decide whether clear display immediately or not.
     // If you decide to clear immediately, return true, or return false
 
+    return false;
+}
+
+bool DisplayListener::requestLyricsPageAvailable(bool& visible)
+{
+    std::cout << "[Display] requestLyricsPageAvailable" << std::endl;
+    return false;
+}
+
+bool DisplayListener::showLyrics()
+{
+    std::cout << "[Display] showLyrics" << std::endl;
+    return false;
+}
+
+bool DisplayListener::hideLyrics()
+{
+    std::cout << "[Display] hideLyrics" << std::endl;
+    return false;
+}
+
+bool DisplayListener::controlLyrics(ControlLyricsDirection direction)
+{
+    std::cout << "[Display] controlLyrics - direction: " << (int)direction << std::endl;
     return false;
 }

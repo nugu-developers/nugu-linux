@@ -204,10 +204,11 @@ void Capability::processDirective(NuguDirective* ndir)
 
         setReferrerDialogRequestId(dref_id);
 
+        has_attachment = false;
         parsingDirective(dname, message);
 
         // the directive with attachment should destroy by agent
-        if (!hasDirectiveAttachment(dname))
+        if (!has_attachment)
             destoryDirective(ndir);
     }
 }
@@ -223,14 +224,6 @@ void Capability::destoryDirective(NuguDirective* ndir)
 NuguDirective* Capability::getNuguDirective()
 {
     return cur_ndir;
-}
-
-bool Capability::hasDirectiveAttachment(const char* dname)
-{
-    if (getType() == CapabilityType::TTS && !strcmp(dname, "Speak"))
-        return true;
-    else
-        return false;
 }
 
 void Capability::parsingDirective(const char* dname, const char* message)
