@@ -33,6 +33,11 @@ namespace NuguInterface {
  * @{
  */
 
+enum class ControlLyricsDirection {
+    PREVIOUS,
+    NEXT
+};
+
 /**
  * @brief display listener interface
  * @see IDisplayHandler
@@ -52,12 +57,38 @@ public:
 
     /**
      * @brief The SDK will ask you to delete the rendered display on the display according to the service context maintenance policy.
-     * @param[in] unconditionally whether clear display unconditionally or not
      * @param[in] id display template id
+     * @param[in] unconditionally whether clear display unconditionally or not
      * @return true if display is cleared
      * @see IAudioPlayerListener::clearDisplay()
      */
     virtual bool clearDisplay(const std::string& id, bool unconditionally) = 0;
+
+    /**
+     * @brief SDK request information about device's lyrics page available
+     * @param[out] visible show lyrics page visible
+     * @return return device's lyrics page available
+     */
+    virtual bool requestLyricsPageAvailable(bool& visible) = 0;
+
+    /**
+     * @brief Request to the user to show the lyrics page. (only use AudioPlayerAgent)
+     * @return return true if show lyrics success, otherwise false.
+     */
+    virtual bool showLyrics() = 0;
+
+    /**
+     * @brief Request to the user to hide the lyrics page. (only use AudioPlayerAgent)
+     * @return return true if hide lyrics success, otherwise false.
+     */
+    virtual bool hideLyrics() = 0;
+
+    /**
+     * @brief Request to the user to control the lyrics page. (only use AudioPlayerAgent)
+     * @param[in] direction move direction in the lyrics page
+     * @return return true if control lyrics success, otherwise false.
+     */
+    virtual bool controlLyrics(ControlLyricsDirection direction) = 0;
 };
 
 /**

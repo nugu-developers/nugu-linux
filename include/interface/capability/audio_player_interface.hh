@@ -46,6 +46,15 @@ enum class AudioPlayerState {
 };
 
 /**
+ * @brief RepeatType
+ */
+enum class RepeatType {
+    NONE,
+    ONE,
+    ALL
+};
+
+/**
  * @brief audioplayer listener interface
  * @see IAudioPlayerHandler
  */
@@ -70,6 +79,39 @@ public:
      * @param[in] position media content's position
      */
     virtual void positionChanged(int position) = 0;
+
+    /**
+     * @brief The audio player reports to the user the current content's favorite setting changed.
+     * @param[in] favorite media content's favorite
+     */
+    virtual void favoriteChanged(bool favorite) = 0;
+
+    /**
+     * @brief The audio player reports to the user the current content's shuffle setting changed.
+     * @param[in] shuffle media content's shuffle
+     */
+    virtual void shuffleChanged(bool shuffle) = 0;
+
+    /**
+     * @brief The audio player reports to the user the current content's repeat setting changed.
+     * @param[in] repeat media content's repeat
+     */
+    virtual void repeatChanged(RepeatType repeat) = 0;
+
+    /**
+     * @brief The audio player request to the user to cache the content if possible
+     * @param[in] key content's unique key
+     * @param[in] playurl content's playurl
+     */
+    virtual void requestContentCache(const std::string& key, const std::string& playurl) = 0;
+
+    /**
+     * @brief The audio player request to the user to get the cached content
+     * @param[in] key content's unique key
+     * @param[out] filepath cached content's filepath
+     * @return return true if cached content, otherwise false
+     */
+    virtual bool requestToGetCachedContent(const std::string& key, std::string& filepath) = 0;
 };
 
 /**
@@ -115,6 +157,24 @@ public:
      * @param[in] sec content's position. It is moved from the current media position.
      */
     virtual void seek(int msec) = 0;
+
+    /**
+     * @brief Request the audio player to set favorite the content.
+     * @param[in] favorite favorite value
+     */
+    virtual void setFavorite(bool favorite) = 0;
+
+    /**
+     * @brief Request the audio player to set repeat the content.
+     * @param[in] repeat repeat value
+     */
+    virtual void setRepeat(RepeatType repeat) = 0;
+
+    /**
+     * @brief Request the audio player to set shuffle the content.
+     * @param[in] shuffle shuffle value
+     */
+    virtual void setShuffle(bool shuffle) = 0;
 
     /**
      * @brief Add the Listener object

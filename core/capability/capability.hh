@@ -71,7 +71,6 @@ public:
     void destoryDirective(NuguDirective* ndir);
 
     NuguDirective* getNuguDirective();
-    bool hasDirectiveAttachment(const char* dname);
 
     void sendEvent(const std::string& name, const std::string& context, const std::string& payload);
     void sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload);
@@ -92,6 +91,7 @@ public:
 
 protected:
     bool initialized = false;
+    bool has_attachment = false;
     PlaySyncManager* playsync_manager = nullptr;
 
 private:

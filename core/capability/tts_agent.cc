@@ -366,6 +366,8 @@ void TTSAgent::parsingSpeak(const char* message)
         return;
     }
 
+    has_attachment = true;
+
     cur_token = token;
     dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
 

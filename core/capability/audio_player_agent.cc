@@ -23,7 +23,7 @@
 
 namespace NuguCore {
 
-static const char* capability_version = "1.0";
+static const char* capability_version = "1.1";
 
 AudioPlayerAgent::AudioPlayerAgent()
     : Capability(CapabilityType::AudioPlayer, capability_version)
@@ -142,6 +142,82 @@ void AudioPlayerAgent::seek(int msec)
         player->seek(msec * 1000);
 }
 
+void AudioPlayerAgent::setFavorite(bool favorite)
+{
+    std::string ename = "FavoriteCommandIssued";
+    std::string payload = "";
+    Json::StyledWriter writer;
+    Json::Value root;
+    long offset = player->position() * 1000;
+
+    if (offset < 0 && cur_token.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
+        return;
+    }
+
+    root["token"] = cur_token;
+    root["playServiceId"] = ps_id;
+    root["offsetInMilliseconds"] = std::to_string(offset);
+    root["favorite"] = favorite;
+    payload = writer.write(root);
+
+    sendEvent(ename, getContextInfo(), payload);
+}
+
+void AudioPlayerAgent::setRepeat(RepeatType repeat)
+{
+    std::string ename = "RepeatCommandIssued";
+    std::string payload = "";
+    Json::StyledWriter writer;
+    Json::Value root;
+    long offset = player->position() * 1000;
+
+    if (offset < 0 && cur_token.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
+        return;
+    }
+
+    root["token"] = cur_token;
+    root["playServiceId"] = ps_id;
+    root["offsetInMilliseconds"] = std::to_string(offset);
+    switch (repeat) {
+    case RepeatType::ONE:
+        root["repeat"] = "ONE";
+        break;
+    case RepeatType::ALL:
+        root["repeat"] = "ALL";
+        break;
+    default:
+        root["repeat"] = "NONE";
+        break;
+    }
+    payload = writer.write(root);
+
+    sendEvent(ename, getContextInfo(), payload);
+}
+
+void AudioPlayerAgent::setShuffle(bool shuffle)
+{
+    std::string ename = "ShuffleCommandIssued";
+    std::string payload = "";
+    Json::StyledWriter writer;
+    Json::Value root;
+    long offset = player->position() * 1000;
+
+    if (offset < 0 && cur_token.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
+        return;
+    }
+
+    root["token"] = cur_token;
+    root["playServiceId"] = ps_id;
+    root["offsetInMilliseconds"] = std::to_string(offset);
+    root["shuffle"] = shuffle;
+    payload = writer.write(root);
+
+    sendEvent(ename, getContextInfo(), payload);
+}
+
 void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
 {
     nugu_dbg("message: %s", message);
@@ -155,6 +231,14 @@ void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
         parsingPause(message);
     else if (!strcmp(dname, "Stop"))
         parsingStop(message);
+    else if (!strcmp(dname, "UpdateMetadata"))
+        parsingUpdateMetadata(message);
+    else if (!strcmp(dname, "ShowLyrics"))
+        parsingShowLyrics(message);
+    else if (!strcmp(dname, "HideLyrics"))
+        parsingHideLyrics(message);
+    else if (!strcmp(dname, "ControlLyricsPage"))
+        parsingControlLyricsPage(message);
     else
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
 }
@@ -172,6 +256,12 @@ void AudioPlayerAgent::updateInfoForContext(Json::Value& ctx)
         aplayer["token"] = cur_token;
         if (duration)
             aplayer["durationInMilliseconds"] = duration;
+    }
+    if (display_listener) {
+        bool visible = false;
+
+        if (display_listener->requestLyricsPageAvailable(visible))
+            aplayer["lyricsVisible"] = visible;
     }
 
     ctx[getName()] = aplayer;
@@ -232,6 +322,36 @@ void AudioPlayerAgent::sendEventPlaybackPaused()
 void AudioPlayerAgent::sendEventPlaybackResumed()
 {
     sendEventCommon("PlaybackResumed");
+}
+
+void AudioPlayerAgent::sendEventShowLyricsSucceeded()
+{
+    sendEventCommon("ShowLyricsSucceeded");
+}
+
+void AudioPlayerAgent::sendEventShowLyricsFailed()
+{
+    sendEventCommon("EventShowLyricsFailed");
+}
+
+void AudioPlayerAgent::sendEventHideLyricsSucceeded()
+{
+    sendEventCommon("HideLyricsSucceeded");
+}
+
+void AudioPlayerAgent::sendEventHideLyricsFailed()
+{
+    sendEventCommon("HideLyricsFailed");
+}
+
+void AudioPlayerAgent::sendEventControlLyricsPageSucceeded()
+{
+    sendEventCommon("ControlLyricsPageSucceeded");
+}
+
+void AudioPlayerAgent::sendEventControlLyricsPageFailed()
+{
+    sendEventCommon("ControlLyricsPageFailed");
 }
 
 void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::string& reason)
@@ -297,14 +417,30 @@ void AudioPlayerAgent::sendEventCommon(const std::string& ename)
     sendEvent(ename, getContextInfo(), payload);
 }
 
+bool AudioPlayerAgent::isContentCached(const std::string& key, std::string& playurl)
+{
+    std::string filepath;
+
+    for (auto aplayer_listener : aplayer_listeners) {
+        if (aplayer_listener->requestToGetCachedContent(key, filepath)) {
+            playurl = filepath;
+            return true;
+        }
+    }
+    return false;
+}
+
 void AudioPlayerAgent::parsingPlay(const char* message)
 {
     Json::Value root;
     Json::Value audio_item;
+    Json::Value attachment;
     Json::Value stream;
     Json::Value report;
     Json::Reader reader;
+    std::string source_type;
     std::string url;
+    std::string cache_key;
     long offset;
     std::string token;
     std::string prev_token;
@@ -321,6 +457,20 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         return;
     }
     ps_id = root["playServiceId"].asString();
+    cache_key = root["cacheKey"].asString();
+
+    source_type = root["sourceType"].asString();
+    if (source_type == "ATTACHMENT") {
+        attachment = audio_item["attachment"];
+        if (attachment.empty()) {
+            nugu_error("directive message syntex error");
+            return;
+        }
+        nugu_warn("Not support to play attachment stream yet!!!");
+        // has_attachment = true;
+        // destoryDirective(ndir);
+        return;
+    }
 
     stream = audio_item["stream"];
     if (stream.empty()) {
@@ -336,6 +486,17 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     if (url.size() == 0 || token.size() == 0 || ps_id.size() == 0) {
         nugu_error("There is no mandatory data in directive message");
         return;
+    }
+
+    if (cache_key.size()) {
+        std::string filepath;
+        if (isContentCached(cache_key, filepath)) {
+            nugu_dbg("the content(key: %s) is cached in %s", cache_key.c_str(), filepath.c_str());
+            url = filepath;
+        } else {
+            for (auto aplayer_listener : aplayer_listeners)
+                aplayer_listener->requestContentCache(cache_key, url);
+        }
     }
 
     report = stream["progressReport"];
@@ -463,6 +624,157 @@ void AudioPlayerAgent::parsingStop(const char* message)
             nugu_error("stop media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
         }
+    }
+}
+
+void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
+{
+    Json::Value root;
+    Json::Value settings;
+    Json::Reader reader;
+    std::string playserviceid;
+
+    if (!reader.parse(message, root)) {
+        nugu_error("parsing error");
+        return;
+    }
+
+    playserviceid = root["playServiceId"].asString();
+    if (playserviceid.size() == 0) {
+        nugu_error("There is no mandatory data in directive message");
+        return;
+    }
+    if (playserviceid != ps_id) {
+        nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
+        return;
+    }
+
+    if (root["metadata"].empty() || root["metadata"]["template"].empty() || root["metadata"]["template"]["settings"].empty()) {
+        nugu_error("directive message syntex error");
+        return;
+    }
+
+    settings = root["metadata"]["template"]["settings"];
+    if (!settings["repeat"].empty()) {
+        std::string repeat = settings["repeat"].asString();
+
+        RepeatType type = RepeatType::NONE;
+        if (repeat == "ONE")
+            type = RepeatType::ONE;
+        else if (repeat == "ALL")
+            type = RepeatType::ALL;
+
+        for (auto aplayer_listener : aplayer_listeners)
+            aplayer_listener->repeatChanged(type);
+    }
+    if (!settings["favorite"].empty()) {
+        bool favorite = settings["favorite"].asBool();
+
+        for (auto aplayer_listener : aplayer_listeners)
+            aplayer_listener->favoriteChanged(favorite);
+    }
+    if (!settings["shuffle"].empty()) {
+        bool shuffle = settings["shuffle"].asBool();
+
+        for (auto aplayer_listener : aplayer_listeners)
+            aplayer_listener->shuffleChanged(shuffle);
+    }
+}
+
+void AudioPlayerAgent::parsingShowLyrics(const char* message)
+{
+    Json::Value root;
+    Json::Reader reader;
+    std::string playserviceid;
+
+    if (!reader.parse(message, root)) {
+        nugu_error("parsing error");
+        return;
+    }
+
+    playserviceid = root["playServiceId"].asString();
+    if (playserviceid.size() == 0) {
+        nugu_error("There is no mandatory data in directive message");
+        return;
+    }
+    if (playserviceid != ps_id) {
+        nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
+        return;
+    }
+
+    if (display_listener) {
+        bool ret = display_listener->showLyrics();
+        if (ret)
+            sendEventShowLyricsSucceeded();
+        else
+            sendEventShowLyricsFailed();
+    }
+}
+
+void AudioPlayerAgent::parsingHideLyrics(const char* message)
+{
+    Json::Value root;
+    Json::Reader reader;
+    std::string playserviceid;
+
+    if (!reader.parse(message, root)) {
+        nugu_error("parsing error");
+        return;
+    }
+
+    playserviceid = root["playServiceId"].asString();
+    if (playserviceid.size() == 0) {
+        nugu_error("There is no mandatory data in directive message");
+        return;
+    }
+    if (playserviceid != ps_id) {
+        nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
+        return;
+    }
+
+    if (display_listener) {
+        bool ret = display_listener->hideLyrics();
+        if (ret)
+            sendEventHideLyricsSucceeded();
+        else
+            sendEventHideLyricsFailed();
+    }
+}
+
+void AudioPlayerAgent::parsingControlLyricsPage(const char* message)
+{
+    Json::Value root;
+    Json::Reader reader;
+    std::string playserviceid;
+    std::string direction;
+
+    if (!reader.parse(message, root)) {
+        nugu_error("parsing error");
+        return;
+    }
+
+    playserviceid = root["playServiceId"].asString();
+    direction = root["direction"].asString();
+    if (playserviceid.size() == 0 || direction.size() == 0) {
+        nugu_error("There is no mandatory data in directive message");
+        return;
+    }
+
+    if (playserviceid != ps_id) {
+        nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
+        return;
+    }
+
+    if (display_listener) {
+        ControlLyricsDirection cdir = ControlLyricsDirection::PREVIOUS;
+        if (direction == "NEXT")
+            cdir = ControlLyricsDirection::NEXT;
+
+        bool ret = display_listener->controlLyrics(cdir);
+        if (ret)
+            sendEventControlLyricsPageSucceeded();
+        else
+            sendEventControlLyricsPageFailed();
     }
 }
 
@@ -615,6 +927,8 @@ void AudioPlayerAgent::muteChanged(int mute)
 {
 }
 
-void AudioPlayerAgent::onElementSelected(const std::string& item_token) {}
+void AudioPlayerAgent::onElementSelected(const std::string& item_token)
+{
+}
 
 } // NuguCore

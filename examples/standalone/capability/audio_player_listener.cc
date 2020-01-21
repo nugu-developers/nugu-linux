@@ -54,3 +54,29 @@ void AudioPlayerListener::positionChanged(int position)
 {
     std::cout << "[AudioPlayer] - position: " << position << std::endl;
 }
+
+void AudioPlayerListener::favoriteChanged(bool favorite)
+{
+    std::cout << "[AudioPlayer] - favorite: " << favorite << std::endl;
+}
+
+void AudioPlayerListener::shuffleChanged(bool shuffle)
+{
+    std::cout << "[AudioPlayer] - shuffle: " << shuffle << std::endl;
+}
+
+void AudioPlayerListener::repeatChanged(RepeatType repeat)
+{
+    std::cout << "[AudioPlayer] - repeat: " << (int)repeat << std::endl;
+}
+
+void AudioPlayerListener::requestContentCache(const std::string& key, const std::string& playurl)
+{
+    std::cout << "[AudioPlayer] request to cache content - key: " << key << ", playurl: " << playurl << std::endl;
+}
+
+bool AudioPlayerListener::requestToGetCachedContent(const std::string& key, std::string& filepath)
+{
+    std::cout << "[AudioPlayer] request to get cached content - key: " << key << std::endl;
+    return false;
+}

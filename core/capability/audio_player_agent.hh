@@ -63,6 +63,9 @@ public:
     void pause() override;
     void resume() override;
     void seek(int msec) override;
+    void setFavorite(bool favorite) override;
+    void setRepeat(RepeatType repeat) override;
+    void setShuffle(bool shuffle) override;
 
     void sendEventPlaybackStarted();
     void sendEventPlaybackFinished();
@@ -73,6 +76,12 @@ public:
     void sendEventProgressReportDelayElapsed();
     void sendEventProgressReportIntervalElapsed();
     void sendEventByDisplayInterface(const std::string& command);
+    void sendEventShowLyricsSucceeded();
+    void sendEventShowLyricsFailed();
+    void sendEventHideLyricsSucceeded();
+    void sendEventHideLyricsFailed();
+    void sendEventControlLyricsPageSucceeded();
+    void sendEventControlLyricsPageFailed();
 
     void mediaStateChanged(MediaPlayerState state);
     void mediaEventReport(MediaPlayerEvent event);
@@ -93,9 +102,14 @@ private:
 
     AudioPlayerState audioPlayerState();
 
+    bool isContentCached(const std::string& key, std::string& playurl);
     void parsingPlay(const char* message);
     void parsingPause(const char* message);
     void parsingStop(const char* message);
+    void parsingUpdateMetadata(const char* message);
+    void parsingShowLyrics(const char* message);
+    void parsingHideLyrics(const char* message);
+    void parsingControlLyricsPage(const char* message);
 
     std::string playbackError(PlaybackError error);
     std::string playerActivity(AudioPlayerState state);

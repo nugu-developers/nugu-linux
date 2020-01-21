@@ -31,6 +31,11 @@ public:
     void mediaStateChanged(AudioPlayerState state) override;
     void durationChanged(int duration) override;
     void positionChanged(int position) override;
+    void favoriteChanged(bool favorite) override;
+    void shuffleChanged(bool shuffle) override;
+    void repeatChanged(RepeatType repeat) override;
+    void requestContentCache(const std::string& key, const std::string& playurl) override;
+    bool requestToGetCachedContent(const std::string& key, std::string& filepath) override;
 };
 
 #endif /* __AUDIO_PLAYER_LISTENER_H__ */

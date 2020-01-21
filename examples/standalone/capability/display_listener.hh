@@ -28,6 +28,10 @@ public:
 
     void renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id) override;
     bool clearDisplay(const std::string& id, bool unconditionally) override;
+    bool requestLyricsPageAvailable(bool& visible) override;
+    bool showLyrics() override;
+    bool hideLyrics() override;
+    bool controlLyrics(ControlLyricsDirection direction) override;
 
 protected:
     std::string listener_name;
