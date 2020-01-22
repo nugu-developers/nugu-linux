@@ -17,6 +17,8 @@
 #ifndef __NUGU_UUID_H__
 #define __NUGU_UUID_H__
 
+#include <time.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -31,10 +33,21 @@ extern "C" {
  */
 
 /**
- * @brief Generate short type UUID
- * @return memory allocated UUID string. Developer must free the data manually.
+ * @brief Seconds for base timestamp: 2019/1/1 00:00:00 (GMT)
  */
-char *nugu_uuid_generate_short(void);
+#define NUGU_BASE_TIMESTAMP_SEC 1546300800
+
+/**
+ * @brief Milliseconds for base timestamp: 2019/1/1 00:00:00.000 (GMT)
+ *
+ * This value must be treated as 64 bits.
+ */
+#define NUGU_BASE_TIMESTAMP_MSEC 1546300800000
+
+/**
+ * @brief Maximum UUID size not base16 encoded.
+ */
+#define NUGU_MAX_UUID_SIZE 16
 
 /**
  * @brief Generate time based UUID
@@ -42,6 +55,57 @@ char *nugu_uuid_generate_short(void);
  */
 char *nugu_uuid_generate_time(void);
 
+/**
+ * @brief Convert base16-encoded string to byte array
+ * @param[in] base16 base16-encoded string
+ * @param[in] base16_len length
+ * @param[out] out memory allocated output buffer
+ * @param[in] out_len size of output buffer
+ * @return Result of conversion success or failure
+ * @retval 0 Success
+ * @retval -1 Failure
+ */
+int nugu_uuid_convert_bytes(const char *base16, size_t base16_len,
+			    unsigned char *out, size_t out_len);
+
+/**
+ * @brief Convert byte array to base16-encoded string
+ * @param[in] bytes byte array
+ * @param[in] bytes_len length
+ * @param[out] out memory allocated output buffer
+ * @param[in] out_len size of output buffer
+ * @return Result of conversion success or failure
+ * @retval 0 Success
+ * @retval -1 Failure
+ */
+int nugu_uuid_convert_base16(const unsigned char *bytes, size_t bytes_len,
+			     char *out, size_t out_len);
+
+/**
+ * @brief Convert byte array to base16-encoded string
+ * @param[in] bytes byte array
+ * @param[in] bytes_len length
+ * @param[out] out_time memory allocated structure
+ * @return Result of conversion success or failure
+ * @retval 0 Success
+ * @retval -1 Failure
+ */
+int nugu_uuid_convert_timespec(const unsigned char *bytes, size_t bytes_len,
+			       struct timespec *out_time);
+
+/**
+ * @brief Fill to output buffer with NUGU UUID format using parameters
+ * @param[in] time timestamp information
+ * @param[in] hash hash value(e.g. SHA1(token))
+ * @param[in] hash_len length of hash value
+ * @param[out] out memory allocated output buffer
+ * @param[in] out_len size of output buffer
+ * @return Result of conversion success or failure
+ * @retval 0 Success
+ * @retval -1 Failure
+ */
+int nugu_uuid_fill(const struct timespec *time, const unsigned char *hash,
+		   size_t hash_len, unsigned char *out, size_t out_len);
 /**
  * @}
  */

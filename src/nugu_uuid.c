@@ -15,9 +15,11 @@
  */
 
 #include <string.h>
-#include <time.h>
 #include <math.h>
+#include <stdint.h>
+#include <inttypes.h>
 
+#include <glib.h>
 #include <openssl/rand.h>
 #include <openssl/sha.h>
 
@@ -25,24 +27,25 @@
 #include "base/nugu_network_manager.h"
 #include "base/nugu_uuid.h"
 
-#define BASE_TIMESTAMP 1546300800 /* GMT: 2019/1/1 00:00:00 */
+#define MAX_HASH_SIZE 6
 
-static int _convert_base16(const unsigned char *input, size_t input_len,
-			    char *out, size_t output_len)
+static const char *_cached_seed;
+static unsigned char _cached_hash[MAX_HASH_SIZE];
+
+EXPORT_API int nugu_uuid_convert_base16(const unsigned char *bytes,
+					size_t bytes_len, char *out,
+					size_t out_len)
 {
 	size_t i;
 
-	if (output_len < input_len * 2) {
-		nugu_error("buffer size not enough");
-		return -1;
-	}
+	g_return_val_if_fail(out_len >= bytes_len * 2, -1);
 
-	for (i = 0; i < input_len; i++) {
+	for (i = 0; i < bytes_len; i++) {
 		uint8_t upper;
 		uint8_t lower;
 
-		upper = (input[i] & 0xF0) >> 4;
-		lower = input[i] & 0x0F;
+		upper = (bytes[i] & 0xF0) >> 4;
+		lower = bytes[i] & 0x0F;
 
 		if (upper > 9)
 			out[i * 2] = 'a' + (upper - 10);
@@ -55,73 +58,150 @@ static int _convert_base16(const unsigned char *input, size_t input_len,
 			out[i * 2 + 1] = '0' + lower;
 	}
 
-	out[input_len * 2] = '\0';
+	if (out_len >= bytes_len * 2 + 1)
+		out[bytes_len * 2] = '\0';
+
+	return 0;
+}
+
+EXPORT_API int nugu_uuid_convert_bytes(const char *base16, size_t base16_len,
+				       unsigned char *out, size_t out_len)
+{
+	size_t i;
+
+	g_return_val_if_fail(base16 != NULL, -1);
+	g_return_val_if_fail(base16_len > 0, -1);
+	g_return_val_if_fail(out != NULL, -1);
+	g_return_val_if_fail(out_len >= base16_len / 2, -1);
+
+	for (i = 0; i < base16_len; i += 2) {
+		uint8_t upper;
+		uint8_t lower;
+
+		upper = base16[i];
+		lower = base16[i + 1];
+
+		if (upper >= 'a')
+			upper = upper - 'a' + 10;
+		else if (upper >= 'A')
+			upper = upper - 'A' + 10;
+		else
+			upper = upper - '0';
+
+		if (lower >= 'a')
+			lower = lower - 'a' + 10;
+		else if (lower >= 'A')
+			lower = lower - 'A' + 10;
+		else
+			lower = lower - '0';
+
+		out[i / 2] = (upper << 4) | lower;
+	}
+
+	return 0;
+}
+
+EXPORT_API int nugu_uuid_convert_timespec(const unsigned char *bytes,
+					  size_t bytes_len,
+					  struct timespec *out_time)
+{
+	uint64_t t;
+
+	g_return_val_if_fail(bytes != NULL, -1);
+	g_return_val_if_fail(bytes_len > 4, -1);
+	g_return_val_if_fail(out_time != NULL, -1);
+
+	t = ((uint64_t)bytes[0] << 32) | ((uint64_t)bytes[1] << 24) |
+	    (bytes[2] << 16) | (bytes[3] << 8) | bytes[4];
+	t += NUGU_BASE_TIMESTAMP_MSEC;
+
+	out_time->tv_sec = t / 1000;
+	out_time->tv_nsec = (t % 1000) * 1e+6;
 
 	return 0;
 }
 
 /**
- * Generate base16 format 16 bytes UUID string
- * - 8 bytes: random
+ * Generate base16 encoded 32 bytes UUID string
+ *
+ *  /-------------------------------\
+ *  | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 |
+ *  |===================+===+=======|
+ *  |      time(5)      | v |       ~
+ *  |---------------+---+---+-------|
+ *  ~  hash(6)      |   random(4)   |
+ *  \---------------+---------------/
+ *
+ * - 5 bytes: time(GMT): EPOCH milliseconds - 1546300800000
+ * - 1 bytes: version: 0x1
+ * - 6 bytes: hash: cut(sha1(token) 20 bytes, 0, 6 bytes)
+ * - 4 bytes: random
  */
-EXPORT_API char *nugu_uuid_generate_short(void)
+EXPORT_API char *nugu_uuid_generate_time(void)
 {
-	unsigned char buf[8];
-	char base16[17];
+	unsigned char buf[NUGU_MAX_UUID_SIZE];
+	char base16[NUGU_MAX_UUID_SIZE * 2 + 1];
+	struct timespec spec;
+	const char *seed;
 
-	RAND_status();
-	RAND_bytes(buf, 8);
+	clock_gettime(CLOCK_REALTIME, &spec);
 
-	_convert_base16(buf, sizeof(buf), base16, sizeof(base16));
+	seed = nugu_network_manager_peek_token();
+	if (seed == NULL) {
+		_cached_seed = NULL;
+
+		RAND_status();
+		RAND_bytes(_cached_hash, sizeof(_cached_hash));
+	} else if (seed != _cached_seed) {
+		unsigned char mdbuf[SHA_DIGEST_LENGTH];
+
+		SHA1((unsigned char *)seed, strlen(seed), mdbuf);
+		memcpy(_cached_hash, mdbuf, sizeof(_cached_hash));
+
+		_cached_seed = seed;
+	}
+
+	nugu_uuid_fill(&spec, _cached_hash, sizeof(_cached_hash), buf,
+		       sizeof(buf));
+
+	nugu_uuid_convert_base16(buf, sizeof(buf), base16, sizeof(base16));
 
 	return strdup(base16);
 }
 
-/**
- * Generate base16 format 32 bytes UUID string
- * - 4 bytes: time
- * - 1 bytes: phase
- * - 3 bytes: random
- * - 8 bytes: cut(sha1(device-id) 20 bytes, 0, 8 bytes)
- */
-EXPORT_API char *nugu_uuid_generate_time(void)
+EXPORT_API int nugu_uuid_fill(const struct timespec *time,
+			      const unsigned char *hash, size_t hash_len,
+			      unsigned char *out, size_t out_len)
 {
-	unsigned char buf[16];
-	char base16[33];
-	struct timespec spec;
-	long milliseconds;
-	time_t seconds;
-	const char *seed;
+	uint64_t milliseconds;
 
-	/**
-	 * 0.1 seconds unit is used.
-	 *  : (seconds / 10) + (milliseconds / 100)
-	 */
-	clock_gettime(CLOCK_REALTIME, &spec);
-	milliseconds = round(spec.tv_nsec / 1.0e6) / 100;
-	seconds = (spec.tv_sec - BASE_TIMESTAMP) * 10 + milliseconds;
+	g_return_val_if_fail(time != NULL, -1);
+	g_return_val_if_fail(hash != NULL, -1);
+	g_return_val_if_fail(hash_len > 0, -1);
+	g_return_val_if_fail(out != NULL, -1);
+	g_return_val_if_fail(out_len >= NUGU_MAX_UUID_SIZE, -1);
 
-	buf[0] = (seconds & 0xFF000000) >> 24;
-	buf[1] = (seconds & 0x00FF0000) >> 16;
-	buf[2] = (seconds & 0x0000FF00) >> 8;
-	buf[3] = (seconds & 0x000000FF);
-	buf[4] = 0;
+	milliseconds = (uint64_t)(time->tv_sec - NUGU_BASE_TIMESTAMP_SEC) *
+		       (uint64_t)1000;
+	milliseconds += (time->tv_nsec / 1e+6);
 
+	/* time: 5 bytes */
+	out[0] = ((uint64_t)milliseconds & 0xFF00000000) >> 32;
+	out[1] = (milliseconds & 0x00FF000000) >> 24;
+	out[2] = (milliseconds & 0x0000FF0000) >> 16;
+	out[3] = (milliseconds & 0x000000FF00) >> 8;
+	out[4] = (milliseconds & 0x00000000FF);
+
+	/* version: 1 byte */
+	out[5] = 0x1;
+
+	/* hash: 6 bytes */
+	memset(out + 6, 0, 6);
+	memcpy(out + 6, hash, (hash_len > 6) ? 6 : hash_len);
+
+	/* random: 4 bytes */
 	RAND_status();
-	RAND_bytes(buf + 5, 3);
+	RAND_bytes(out + 12, 4);
 
-	seed = nugu_network_manager_peek_token();
-	if (seed) {
-		unsigned char mdbuf[SHA_DIGEST_LENGTH];
-
-		SHA1((unsigned char *)seed, strlen(seed), mdbuf);
-		memcpy(buf + 8, mdbuf, 8);
-	} else {
-		RAND_status();
-		RAND_bytes(buf + 8, 8);
-	}
-
-	_convert_base16(buf, sizeof(buf), base16, sizeof(base16));
-
-	return strdup(base16);
+	return 0;
 }

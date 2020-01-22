@@ -7,6 +7,7 @@ SET(UNIT_TESTS
 	test-nugu-player
 	test-nugu-timer
 	test-nugu-event
+	test-nugu-uuid
 	test-nugu-directive
 	test-nugu-ringbuffer)
 
