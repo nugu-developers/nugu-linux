@@ -237,7 +237,7 @@ int dg_server_send_attachment(DGServer *server, NuguEvent *nev, int is_end,
 	if (!ea)
 		return -1;
 
-	msg_id = nugu_uuid_generate_short();
+	msg_id = nugu_uuid_generate_time();
 
 	if (data != NULL && length > 0)
 		v1_event_attachment_set_data(ea, data, length);

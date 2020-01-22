@@ -234,7 +234,7 @@ void TTSAgent::requestTTS(const std::string& text, const std::string& play_servi
     std::string token;
     char* uuid;
 
-    uuid = nugu_uuid_generate_short();
+    uuid = nugu_uuid_generate_time();
     token = uuid;
     free(uuid);
 
