@@ -25,7 +25,8 @@
 
 namespace NuguCore {
 
-static const char* capability_version = "1.0";
+static const char* CAPABILITY_NAME = "ASR";
+static const char* CAPABILITY_VERSION = "1.0";
 
 class ASRFocusListener : public IFocusListener {
 public:
@@ -135,7 +136,7 @@ NuguFocusStealResult ExpectFocusListener::onStealRequest(void* event, NuguFocusT
 }
 
 ASRAgent::ASRAgent()
-    : Capability(CapabilityType::ASR, capability_version)
+    : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , es_attr({})
     , rec_event(nullptr)
     , timer(nullptr)
@@ -231,17 +232,19 @@ void ASRAgent::saveAllContextInfo()
     all_context_info = CapabilityManager::getInstance()->makeAllContextInfoStack();
 }
 
-void ASRAgent::receiveCommand(CapabilityType from, std::string command, const std::string& param)
+void ASRAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
 {
-    std::transform(command.begin(), command.end(), command.begin(), ::tolower);
+    std::string convert_command;
+    convert_command.resize(command.size());
+    std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
 
-    if (!command.compare("wakeup_detected")) {
+    if (!convert_command.compare("wakeup_detected")) {
         if (es_attr.is_handle) {
             CapabilityManager::getInstance()->releaseFocus("expect");
             es_attr = {};
         }
-    } else if (!command.compare("releasefocus")) {
-        if (from == CapabilityType::System) {
+    } else if (!convert_command.compare("releasefocus")) {
+        if (from == "System") {
             if (dialog_id == param)
                 CapabilityManager::getInstance()->releaseFocus("asr");
         } else {

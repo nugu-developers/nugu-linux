@@ -45,17 +45,17 @@ using CapabilityElement = CapabilityCreator::Element;
 
 const std::list<CapabilityElement>& CapabilityCreator::getCapabilityList()
 {
-    static std::list<CapabilityElement> CAPABILITY_LIST{
-        CapabilityElement{ CapabilityType::ASR, true, &create<ASRAgent> },
-        CapabilityElement{ CapabilityType::TTS, true, &create<TTSAgent> },
-        CapabilityElement{ CapabilityType::AudioPlayer, true, &create<AudioPlayerAgent> },
-        CapabilityElement{ CapabilityType::System, true, &create<SystemAgent> },
-        CapabilityElement{ CapabilityType::Display, false, &create<DisplayAgent> },
-        CapabilityElement{ CapabilityType::Extension, false, &create<ExtensionAgent> },
-        CapabilityElement{ CapabilityType::Text, false, &create<TextAgent> },
-        CapabilityElement{ CapabilityType::Delegation, false, &create<DelegationAgent> },
-        CapabilityElement{ CapabilityType::Location, false, &create<LocationAgent> },
-        CapabilityElement{ CapabilityType::Mic, false, &create<MicAgent> }
+    static std::list<CapabilityElement> CAPABILITY_LIST {
+        CapabilityElement { "ASR", true, &create<ASRAgent> },
+        CapabilityElement { "TTS", true, &create<TTSAgent> },
+        CapabilityElement { "AudioPlayer", true, &create<AudioPlayerAgent> },
+        CapabilityElement { "System", true, &create<SystemAgent> },
+        CapabilityElement { "Display", false, &create<DisplayAgent> },
+        CapabilityElement { "Extension", false, &create<ExtensionAgent> },
+        CapabilityElement { "Text", false, &create<TextAgent> },
+        CapabilityElement { "Delegation", false, &create<DelegationAgent> },
+        CapabilityElement { "Location", false, &create<LocationAgent> },
+        CapabilityElement { "Mic", false, &create<MicAgent> }
     };
 
     return CAPABILITY_LIST;

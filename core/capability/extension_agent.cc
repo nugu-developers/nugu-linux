@@ -23,10 +23,11 @@
 
 namespace NuguCore {
 
-static const char* capability_version = "1.1";
+static const char* CAPABILITY_NAME = "Extension";
+static const char* CAPABILITY_VERSION = "1.1";
 
 ExtensionAgent::ExtensionAgent()
-    : Capability(CapabilityType::Extension, capability_version)
+    : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , extension_listener(nullptr)
     , ps_id("")
 {

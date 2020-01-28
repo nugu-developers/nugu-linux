@@ -212,31 +212,31 @@ void CapabilityManager::sendCommandAll(const std::string& command, const std::st
     }
 }
 
-void CapabilityManager::sendCommand(CapabilityType from, CapabilityType to,
+void CapabilityManager::sendCommand(const std::string& from, const std::string& to,
     const std::string& command, const std::string& param)
 {
     for (auto iter : caps) {
-        if (iter.second->getType() == to) {
+        if (iter.second->getName() == to) {
             iter.second->receiveCommand(from, command, param);
             break;
         }
     }
 }
 
-void CapabilityManager::getCapabilityProperty(CapabilityType cap, const std::string& property, std::string& value)
+void CapabilityManager::getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value)
 {
     for (auto iter : caps) {
-        if (iter.second->getType() == cap) {
+        if (iter.second->getName() == cap) {
             iter.second->getProperty(property, value);
             break;
         }
     }
 }
 
-void CapabilityManager::getCapabilityProperties(CapabilityType cap, const std::string& property, std::list<std::string>& values)
+void CapabilityManager::getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values)
 {
     for (auto iter : caps) {
-        if (iter.second->getType() == cap) {
+        if (iter.second->getName() == cap) {
             iter.second->getProperties(property, values);
             break;
         }

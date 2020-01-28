@@ -24,10 +24,11 @@
 
 namespace NuguCore {
 
-static const char* capability_version = "1.0";
+static const char* CAPABILITY_NAME = "TTS";
+static const char* CAPABILITY_VERSION = "1.0";
 
 TTSAgent::TTSAgent()
-    : Capability(CapabilityType::TTS, capability_version)
+    : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , cur_token("")
     , speak_status(-1)
     , finish(false)
@@ -84,7 +85,7 @@ void TTSAgent::initialize()
     nugu_pcm_set_status_callback(pcm, pcmStatusCallback, this);
     nugu_pcm_set_event_callback(pcm, pcmEventCallback, this);
 
-    nugu_pcm_set_property(pcm, (NuguAudioProperty){ AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
+    nugu_pcm_set_property(pcm, (NuguAudioProperty) { AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
 
     CapabilityManager::getInstance()->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
@@ -185,7 +186,7 @@ NuguFocusResult TTSAgent::onUnfocus(void* event)
 
     nugu_pcm_stop(pcm);
 
-    playsync_manager->removeContext(playstackctl_ps_id, getType(), !finish);
+    playsync_manager->removeContext(playstackctl_ps_id, getName(), !finish);
 
     if (tts_listener && cur_status != MEDIA_STATUS_STOPPED)
         tts_listener->onTTSCancel(dialog_id);
@@ -376,7 +377,7 @@ void TTSAgent::parsingSpeak(const char* message)
     playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
     if (!playstackctl_ps_id.empty()) {
-        playsync_manager->addContext(playstackctl_ps_id, getType());
+        playsync_manager->addContext(playstackctl_ps_id, getName());
     }
 
     startTTS(getNuguDirective());

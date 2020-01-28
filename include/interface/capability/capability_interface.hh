@@ -38,35 +38,6 @@ namespace NuguInterface {
  */
 
 /**
- * @brief CapabilityType
- */
-enum class CapabilityType {
-    AudioPlayer, /**< the type of AudioPlayer agent */
-    Display, /**< the type of Display agent */
-    System, /**< the type of System agent */
-    TTS, /**< the type of TTS agent */
-    ASR, /**< the type of ASR agent */
-    Text, /**< the type of Text agent */
-    Extension, /**< the type of Extension agent */
-    Delegation, /**< the type of Delegation agent */
-    Location, /**< the type of Location agent */
-    Mic /**< the type of Mic agent */
-};
-
-static const std::map<CapabilityType, std::string> CAPABILITY_TYPE_MAP {
-    { CapabilityType::AudioPlayer, "AudioPlayer" },
-    { CapabilityType::Display, "Display" },
-    { CapabilityType::System, "System" },
-    { CapabilityType::TTS, "TTS" },
-    { CapabilityType::ASR, "ASR" },
-    { CapabilityType::Text, "Text" },
-    { CapabilityType::Extension, "Extension" },
-    { CapabilityType::Delegation, "Delegation" },
-    { CapabilityType::Location, "Location" },
-    { CapabilityType::Mic, "Mic" }
-};
-
-/**
  * @brief capability listener interface
  * @see ICapabilityHandler
  */
@@ -118,19 +89,6 @@ public:
     virtual void initialize() = 0;
 
     /**
-     * @brief Get the capability type name of the current object.
-     * @param[in] type capability type
-     * @return capability type name
-     */
-    virtual std::string getTypeName(CapabilityType type) = 0;
-
-    /**
-     * @brief Get the capability type of the current object.
-     * @return capability type of the object
-     */
-    virtual CapabilityType getType() = 0;
-
-    /**
      * @brief Get the capability name of the current object.
      * @return capability name of the object
      */
@@ -160,14 +118,14 @@ public:
      * @param[in] command command
      * @param[in] param command parameter
      */
-    virtual void receiveCommand(CapabilityType from, std::string command, const std::string& param) = 0;
+    virtual void receiveCommand(const std::string& from, const std::string& command, const std::string& param) = 0;
 
     /**
      * @brief Processes command received from capability manager.
      * @param[in] command command
      * @param[in] param command parameter
      */
-    virtual void receiveCommandAll(std::string command, const std::string& param) = 0;
+    virtual void receiveCommandAll(const std::string& command, const std::string& param) = 0;
 
     /**
      * @brief It is possible to share own property value among objects.

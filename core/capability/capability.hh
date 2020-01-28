@@ -53,15 +53,13 @@ private:
 
 class Capability : virtual public ICapabilityInterface {
 public:
-    Capability(CapabilityType type, const std::string& ver = "1.0");
+    Capability(const std::string& name, const std::string& ver = "1.0");
     virtual ~Capability();
     virtual void initialize();
 
     std::string getReferrerDialogRequestId();
     void setReferrerDialogRequestId(const std::string& id);
-    std::string getTypeName(CapabilityType type) override;
-    CapabilityType getType() override;
-    void setName(CapabilityType type);
+    void setName(const std::string& name);
     std::string getName() override;
     void setVersion(const std::string& ver);
     std::string getVersion() override;
@@ -79,8 +77,8 @@ public:
     void getProperty(const std::string& property, std::string& value) override;
     void getProperties(const std::string& property, std::list<std::string>& values) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
-    void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;
-    void receiveCommandAll(std::string command, const std::string& param) override;
+    void receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
+    void receiveCommandAll(const std::string& command, const std::string& param) override;
     virtual void parsingDirective(const char* dname, const char* message);
     virtual std::string getContextInfo();
 
@@ -95,7 +93,6 @@ protected:
     PlaySyncManager* playsync_manager = nullptr;
 
 private:
-    CapabilityType ctype;
     std::string cname;
     std::string version;
     std::string ref_dialog_id;

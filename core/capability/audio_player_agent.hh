@@ -51,7 +51,7 @@ public:
 
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
-    void receiveCommand(CapabilityType from, std::string command, const std::string& param) override;
+    void receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     void addListener(IAudioPlayerListener* listener) override;

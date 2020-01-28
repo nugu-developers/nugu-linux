@@ -40,12 +40,12 @@ public:
     void setConfig(NuguConfig::Key key, const std::string& value);
     void setListener(INuguClientListener* listener);
     INuguClientListener* getListener();
-    void registerCapability(const CapabilityType ctype, std::pair<ICapabilityInterface*, ICapabilityListener*> capability);
+    void registerCapability(const std::string& cname, std::pair<ICapabilityInterface*, ICapabilityListener*> capability);
     int create(void);
     bool initialize(void);
     void deInitialize(void);
 
-    ICapabilityInterface* getCapabilityHandler(const CapabilityType ctype);
+    ICapabilityInterface* getCapabilityHandler(const std::string& cname);
     IWakeupHandler* getWakeupHandler();
     INetworkManager* getNetworkManager();
     IMediaPlayer* createMediaPlayer();
@@ -56,7 +56,9 @@ public:
 private:
     int createCapabilities(void);
 
-    std::map<CapabilityType, std::pair<ICapabilityInterface*, ICapabilityListener*>> icapability_map;
+    using CapabilityMap = std::map<std::string, std::pair<ICapabilityInterface*, ICapabilityListener*>>;
+
+    CapabilityMap icapability_map;
     INuguClientListener* listener = nullptr;
     IWakeupHandler* wakeup_handler = nullptr;
     std::unique_ptr<INetworkManager> network_manager = nullptr;

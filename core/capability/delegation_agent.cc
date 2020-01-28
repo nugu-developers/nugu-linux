@@ -23,10 +23,11 @@
 
 namespace NuguCore {
 
-static const char* capability_version = "1.0";
+static const char* CAPABILITY_NAME = "Delegation";
+static const char* CAPABILITY_VERSION = "1.0";
 
 DelegationAgent::DelegationAgent()
-    : Capability(CapabilityType::Delegation, capability_version)
+    : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
 {
 }
 

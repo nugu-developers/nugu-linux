@@ -65,20 +65,20 @@ INuguClientListener* NuguClientImpl::getListener()
     return listener;
 }
 
-void NuguClientImpl::registerCapability(const CapabilityType ctype, std::pair<ICapabilityInterface*, ICapabilityListener*> capability)
+void NuguClientImpl::registerCapability(const std::string& cname, std::pair<ICapabilityInterface*, ICapabilityListener*> capability)
 {
-    icapability_map[ctype] = capability;
+    icapability_map[cname] = capability;
 }
 
-ICapabilityInterface* NuguClientImpl::getCapabilityHandler(const CapabilityType ctype)
+ICapabilityInterface* NuguClientImpl::getCapabilityHandler(const std::string& cname)
 {
     if (icapability_map.empty()) {
         nugu_error("No Capability exist");
         return nullptr;
     }
 
-    if (icapability_map.find(ctype) != icapability_map.end())
-        return icapability_map[ctype].first;
+    if (icapability_map.find(cname) != icapability_map.end())
+        return icapability_map[cname].first;
 
     return nullptr;
 }
@@ -110,29 +110,29 @@ int NuguClientImpl::createCapabilities(void)
      */
     for (auto const& CAPABILITY : CapabilityCreator::getCapabilityList()) {
         // if user didn't add and it's not a required agent, skip to create
-        if (icapability_map.find(CAPABILITY.type) == icapability_map.end() && !CAPABILITY.is_default)
+        if (icapability_map.find(CAPABILITY.name) == icapability_map.end() && !CAPABILITY.is_default)
             continue;
 
-        if (!icapability_map[CAPABILITY.type].first)
+        if (!icapability_map[CAPABILITY.name].first)
             try {
-                icapability_map[CAPABILITY.type].first = CAPABILITY.creator();
+                icapability_map[CAPABILITY.name].first = CAPABILITY.creator();
             } catch (std::exception& exp) {
                 nugu_error(exp.what());
             }
 
-        if (icapability_map[CAPABILITY.type].first) {
+        if (icapability_map[CAPABILITY.name].first) {
             // add general observer
             if (listener)
-                icapability_map[CAPABILITY.type].first->registerObserver(listener);
+                icapability_map[CAPABILITY.name].first->registerObserver(listener);
 
             // set capability listener & handler each other
-            if (icapability_map[CAPABILITY.type].second)
-                icapability_map[CAPABILITY.type].first->setCapabilityListener(icapability_map[CAPABILITY.type].second);
+            if (icapability_map[CAPABILITY.name].second)
+                icapability_map[CAPABILITY.name].first->setCapabilityListener(icapability_map[CAPABILITY.name].second);
 
-            std::string cname = icapability_map[CAPABILITY.type].first->getTypeName(CAPABILITY.type);
+            std::string cname = icapability_map[CAPABILITY.name].first->getName();
 
             if (!cname.empty())
-                CapabilityManagerHelper::addCapability(cname, icapability_map[CAPABILITY.type].first);
+                CapabilityManagerHelper::addCapability(cname, icapability_map[CAPABILITY.name].first);
         }
     }
 
@@ -160,7 +160,7 @@ bool NuguClientImpl::initialize(void)
 
     // initialize capability
     for (auto const& icapability : icapability_map) {
-        std::string cname = icapability.second.first->getTypeName(icapability.second.first->getType());
+        std::string cname = icapability.second.first->getName();
         nugu_dbg("'%s' capability initializing...", cname.c_str());
         icapability.second.first->initialize();
         nugu_dbg("'%s' capability initialized", cname.c_str());
@@ -175,7 +175,7 @@ bool NuguClientImpl::initialize(void)
 
 void NuguClientImpl::deInitialize(void)
 {
-    ISystemHandler* sys_handler = dynamic_cast<ISystemHandler*>(getCapabilityHandler(CapabilityType::System));
+    ISystemHandler* sys_handler = dynamic_cast<ISystemHandler*>(getCapabilityHandler("System"));
 
     // Send a disconnect event indicating normal termination
     if (sys_handler)
@@ -183,7 +183,7 @@ void NuguClientImpl::deInitialize(void)
 
     // release capabilities
     for (auto& element : icapability_map) {
-        std::string cname = element.second.first->getTypeName(element.first);
+        std::string cname = element.second.first->getName();
 
         if (!cname.empty())
             CapabilityManagerHelper::removeCapability(cname);
@@ -212,7 +212,7 @@ void NuguClientImpl::onStatusChanged(NetworkStatus status)
     if (status != NetworkStatus::CONNECTED)
         return;
 
-    ISystemHandler* sys_handler = dynamic_cast<ISystemHandler*>(getCapabilityHandler(CapabilityType::System));
+    ISystemHandler* sys_handler = dynamic_cast<ISystemHandler*>(getCapabilityHandler("System"));
 
     if (sys_handler)
         sys_handler->synchronizeState();

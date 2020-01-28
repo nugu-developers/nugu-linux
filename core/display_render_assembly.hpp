@@ -58,7 +58,7 @@ std::string DisplayRenderAssembly<T>::composeRenderInfo(const RenderInfoParam& p
 template <typename T>
 void DisplayRenderAssembly<T>::displayRendered(const std::string& id)
 {
-    if (static_cast<T*>(this)->getType() == CapabilityType::Display) {
+    if (static_cast<T*>(this)->getName() == "Display") {
         if (render_info.find(id) != render_info.end()) {
             disp_cur_token = render_info[id]->token;
             disp_cur_ps_id = render_info[id]->ps_id;
@@ -88,7 +88,7 @@ void DisplayRenderAssembly<T>::elementSelected(const std::string& id, const std:
 {
     auto derived = static_cast<T*>(this);
 
-    if (derived->getType() == CapabilityType::Display) {
+    if (derived->getName() == "Display") {
         if (render_info.find(id) == render_info.end()) {
             nugu_warn("SDK doesn't know or manage the template(%s)", id.c_str());
             return;

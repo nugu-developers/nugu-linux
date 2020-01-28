@@ -23,10 +23,11 @@
 
 namespace NuguCore {
 
-static const char* capability_version = "1.1";
+static const char* CAPABILITY_NAME = "AudioPlayer";
+static const char* CAPABILITY_VERSION = "1.1";
 
 AudioPlayerAgent::AudioPlayerAgent()
-    : Capability(CapabilityType::AudioPlayer, capability_version)
+    : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , player(nullptr)
     , cur_aplayer_state(AudioPlayerState::IDLE)
     , prev_aplayer_state(AudioPlayerState::IDLE)
@@ -267,11 +268,13 @@ void AudioPlayerAgent::updateInfoForContext(Json::Value& ctx)
     ctx[getName()] = aplayer;
 }
 
-void AudioPlayerAgent::receiveCommand(CapabilityType from, std::string command, const std::string& param)
+void AudioPlayerAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
 {
-    std::transform(command.begin(), command.end(), command.begin(), ::tolower);
+    std::string convert_command;
+    convert_command.resize(command.size());
+    std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
 
-    if (!command.compare("setvolume"))
+    if (!convert_command.compare("setvolume"))
         player->setVolume(std::stoi(param));
 }
 
@@ -521,13 +524,13 @@ void AudioPlayerAgent::parsingPlay(const char* message)
                 nugu_directive_peek_dialog_id(getNuguDirective()),
                 root["token"].asString()));
 
-            renderer.cap_type = getType();
+            renderer.cap_name = getName();
             renderer.listener = this;
             renderer.display_id = id;
         }
 
         // sync display rendering with context
-        playsync_manager->addContext(playstackctl_ps_id, getType(), std::move(renderer));
+        playsync_manager->addContext(playstackctl_ps_id, getName(), std::move(renderer));
     }
 
     is_finished = false;
@@ -584,7 +587,7 @@ void AudioPlayerAgent::parsingPause(const char* message)
     playserviceid = root["playServiceId"].asString();
 
     if (playserviceid.size()) {
-        CapabilityManager::getInstance()->sendCommand(CapabilityType::AudioPlayer, CapabilityType::ASR, "releaseFocus", "");
+        CapabilityManager::getInstance()->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
 
         if (!player->pause()) {
             nugu_error("pause media failed");
@@ -610,10 +613,10 @@ void AudioPlayerAgent::parsingStop(const char* message)
     playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
     if (!playstackctl_ps_id.empty()) {
-        playsync_manager->removeContext(playstackctl_ps_id, getType(), !is_finished);
-        std::string stacked_ps_id = playsync_manager->getPlayStackItem(getType());
+        playsync_manager->removeContext(playstackctl_ps_id, getName(), !is_finished);
+        std::string stacked_ps_id = playsync_manager->getPlayStackItem(getName());
 
-        CapabilityManager::getInstance()->sendCommand(CapabilityType::AudioPlayer, CapabilityType::ASR, "releaseFocus", "");
+        CapabilityManager::getInstance()->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
 
         if (!stacked_ps_id.empty() && playstackctl_ps_id != stacked_ps_id)
             return;

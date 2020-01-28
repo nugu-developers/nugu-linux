@@ -28,10 +28,11 @@
 
 namespace NuguCore {
 
-static const char* capability_version = "1.1";
+static const char* CAPABILITY_NAME = "System";
+static const char* CAPABILITY_VERSION = "1.1";
 
 SystemAgent::SystemAgent()
-    : Capability(CapabilityType::System, capability_version)
+    : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , system_listener(nullptr)
     , timer(nullptr)
 {
@@ -122,11 +123,13 @@ void SystemAgent::setCapabilityListener(ICapabilityListener* clistener)
         system_listener = dynamic_cast<ISystemListener*>(clistener);
 }
 
-void SystemAgent::receiveCommand(CapabilityType from, std::string command, const std::string& param)
+void SystemAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
 {
-    std::transform(command.begin(), command.end(), command.begin(), ::tolower);
+    std::string convert_command;
+    convert_command.resize(command.size());
+    std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
 
-    if (!command.compare("activity")) {
+    if (!convert_command.compare("activity")) {
         nugu_dbg("update timer");
         if (timer)
             nugu_timer_start(timer);
@@ -356,7 +359,7 @@ void SystemAgent::parsingNoDirectives(const char* message)
     }
 
     dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
-    CapabilityManager::getInstance()->sendCommand(CapabilityType::System, CapabilityType::ASR, "releasefocus", dialog_id);
+    CapabilityManager::getInstance()->sendCommand("System", "ASR", "releasefocus", dialog_id);
 }
 
 void SystemAgent::parsingRevoke(const char* message)

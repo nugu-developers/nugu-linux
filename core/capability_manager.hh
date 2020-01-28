@@ -60,10 +60,10 @@ public:
     void preprocessDirective(NuguDirective* ndir);
     bool isSupportDirectiveVersion(const std::string& version, ICapabilityInterface* cap);
 
-    void sendCommand(CapabilityType from, CapabilityType to, const std::string& command, const std::string& param);
+    void sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param);
     void sendCommandAll(const std::string& command, const std::string& param);
-    void getCapabilityProperty(CapabilityType cap, const std::string& property, std::string& value);
-    void getCapabilityProperties(CapabilityType cap, const std::string& property, std::list<std::string>& values);
+    void getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value);
+    void getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values);
 
     bool isFocusOn(NuguFocusType type);
     int addFocus(const std::string& fname, NuguFocusType type, IFocusListener* listener);

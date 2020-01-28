@@ -21,10 +21,11 @@
 
 namespace NuguCore {
 
-static const char* capability_version = "1.0";
+static const char* CAPABILITY_NAME = "Display";
+static const char* CAPABILITY_VERSION = "1.0";
 
 DisplayAgent::DisplayAgent()
-    : Capability(CapabilityType::Display, capability_version)
+    : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
 {
 }
 
@@ -61,13 +62,13 @@ void DisplayAgent::parsingDirective(const char* dname, const char* message)
 
         // sync display rendering with context
         PlaySyncManager::DisplayRenderer renderer;
-        renderer.cap_type = getType();
+        renderer.cap_name = getName();
         renderer.listener = this;
         renderer.only_rendering = true;
         renderer.duration = root["duration"].asString();
         renderer.display_id = id;
 
-        playsync_manager->addContext(playstackctl_ps_id, getType(), std::move(renderer));
+        playsync_manager->addContext(playstackctl_ps_id, getName(), std::move(renderer));
     }
 }
 
