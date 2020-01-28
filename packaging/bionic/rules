@@ -19,7 +19,7 @@ override_dh_auto_configure:
 		-DCMAKE_C_COMPILER=$(DEB_HOST_GNU_TYPE)-gcc \
 		-DCMAKE_CXX_COMPILER=$(DEB_HOST_GNU_TYPE)-g++ \
 		-DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \
-		-DNO-RPATH=1
+		-DPACKAGING=1
 
 override_dh_strip:
 	dh_strip --dbg-package=libnugu-dbg
