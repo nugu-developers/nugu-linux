@@ -64,6 +64,11 @@ bool AudioRecorder::isRecording()
     return AudioRecorderManager::getInstance()->isRecording(this);
 }
 
+bool AudioRecorder::isMute()
+{
+    return AudioRecorderManager::getInstance()->isMute();
+}
+
 int AudioRecorder::getAudioFrameSize()
 {
     return AudioRecorderManager::getInstance()->getAudioFrameSize(this);
@@ -81,6 +86,7 @@ bool AudioRecorder::getAudioFrame(char* data, int* size, int timeout)
 
 AudioRecorderManager* AudioRecorderManager::instance = nullptr;
 AudioRecorderManager::AudioRecorderManager()
+    : muted(false)
 {
 }
 
@@ -179,6 +185,32 @@ bool AudioRecorderManager::isRecording(IAudioRecorder* recorder)
     return (nugu_recorder_is_recording(nugu_recorder) >= 0);
 }
 
+bool AudioRecorderManager::isMute()
+{
+    std::lock_guard<std::mutex> lock(mutex);
+
+    return muted;
+}
+
+bool AudioRecorderManager::setMute(bool mute)
+{
+    std::lock_guard<std::mutex> lock(mutex);
+
+    if (muted == mute)
+        return true;
+
+    nugu_dbg("request to set mute %d -> %d", muted, mute);
+
+    muted = mute;
+
+    if (muted == false) {
+        for (auto container : nugu_recorders)
+            nugu_recorder_clear(container.second);
+    }
+
+    return true;
+}
+
 int AudioRecorderManager::getAudioFrameSize(IAudioRecorder* recorder)
 {
     std::lock_guard<std::mutex> lock(mutex);
@@ -200,6 +232,9 @@ int AudioRecorderManager::getAudioFrameCount(IAudioRecorder* recorder)
 {
     std::lock_guard<std::mutex> lock(mutex);
 
+    if (muted)
+        return 0;
+
     NuguRecorder* nugu_recorder = extractNuguRecorder(recorder);
     if (!nugu_recorder)
         return false;
@@ -210,6 +245,9 @@ int AudioRecorderManager::getAudioFrameCount(IAudioRecorder* recorder)
 bool AudioRecorderManager::getAudioFrame(IAudioRecorder* recorder, char* data, int* size, int timeout)
 {
     std::lock_guard<std::mutex> lock(mutex);
+
+    if (muted)
+        return false;
 
     NuguRecorder* nugu_recorder = extractNuguRecorder(recorder);
     if (!nugu_recorder)
@@ -273,9 +311,8 @@ NuguAudioProperty AudioRecorderManager::convertNuguAudioProperty(std::string& sa
         property.format = AUDIO_FORMAT_S16_LE;
     }
 
-
     property.channel = std::stoi(channel);
-    if(property.channel == 0) {
+    if (property.channel == 0) {
         nugu_error("wrong channel parameter => %s", channel.c_str());
         property.channel = 1;
     }

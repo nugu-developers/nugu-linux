@@ -40,6 +40,7 @@ public:
     bool start() override;
     bool stop() override;
     bool isRecording() override;
+    bool isMute() override;
 
     int getAudioFrameSize() override;
     int getAudioFrameCount() override;
@@ -64,6 +65,8 @@ public:
     bool start(IAudioRecorder* recorder);
     bool stop(IAudioRecorder* recorder);
     bool isRecording(IAudioRecorder* recorder);
+    bool isMute();
+    bool setMute(bool mute);
 
     int getAudioFrameSize(IAudioRecorder* recorder);
     int getAudioFrameCount(IAudioRecorder* recorder);
@@ -79,6 +82,7 @@ private:
     std::map<std::string, NuguRecorder*> nugu_recorders;
     std::map<NuguRecorder*, std::list<IAudioRecorder*>> recorders;
     std::mutex mutex;
+    bool muted;
 };
 
 } // NuguCore

@@ -141,6 +141,15 @@ int nugu_recorder_start(NuguRecorder *rec);
 int nugu_recorder_stop(NuguRecorder *rec);
 
 /**
+ * @brief Clear recording data
+ * @param[in] rec recorder object
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_recorder_clear(NuguRecorder *rec);
+
+/**
  * @brief Get the status of recording
  * @param[in] rec recorder object
  * @return result
