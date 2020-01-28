@@ -49,7 +49,8 @@ enum class CapabilityType {
     Text, /**< the type of Text agent */
     Extension, /**< the type of Extension agent */
     Delegation, /**< the type of Delegation agent */
-    Location /**< the type of Location agent */
+    Location, /**< the type of Location agent */
+    Mic /**< the type of Mic agent */
 };
 
 static const std::map<CapabilityType, std::string> CAPABILITY_TYPE_MAP {
@@ -61,7 +62,8 @@ static const std::map<CapabilityType, std::string> CAPABILITY_TYPE_MAP {
     { CapabilityType::Text, "Text" },
     { CapabilityType::Extension, "Extension" },
     { CapabilityType::Delegation, "Delegation" },
-    { CapabilityType::Location, "Location" }
+    { CapabilityType::Location, "Location" },
+    { CapabilityType::Mic, "Mic" }
 };
 
 /**
