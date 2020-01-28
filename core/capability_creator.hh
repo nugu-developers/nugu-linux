@@ -36,7 +36,7 @@ public:
     static INetworkManager* createNetworkManager();
 
     struct Element {
-        CapabilityType type;
+        std::string name;
         bool is_default;
         std::function<ICapabilityInterface*()> creator;
     };

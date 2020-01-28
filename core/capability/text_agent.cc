@@ -24,10 +24,11 @@
 
 namespace NuguCore {
 
-static const char* capability_version = "1.0";
+static const char* CAPABILITY_NAME = "Text";
+static const char* CAPABILITY_VERSION = "1.0";
 
 TextAgent::TextAgent()
-    : Capability(CapabilityType::Text, capability_version)
+    : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , text_listener(nullptr)
     , timer(nullptr)
     , cur_state(TextState::IDLE)
@@ -84,11 +85,13 @@ void TextAgent::updateInfoForContext(Json::Value& ctx)
     ctx[getName()] = text;
 }
 
-void TextAgent::receiveCommandAll(std::string command, const std::string& param)
+void TextAgent::receiveCommandAll(const std::string& command, const std::string& param)
 {
-    std::transform(command.begin(), command.end(), command.begin(), ::tolower);
+    std::string convert_command;
+    convert_command.resize(command.size());
+    std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
 
-    if (command == "directive_dialog_id" && param == cur_dialog_id) {
+    if (convert_command == "directive_dialog_id" && param == cur_dialog_id) {
         nugu_dbg("process receive command => directive_dialog_id(%s)", param.c_str());
 
         nugu_timer_stop(timer);
@@ -145,10 +148,10 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
     std::list<std::string> domainTypes;
 
     CapabilityManager* cmanager = CapabilityManager::getInstance();
-    cmanager->getCapabilityProperty(CapabilityType::ASR, "es.playServiceId", ps_id);
-    cmanager->getCapabilityProperty(CapabilityType::ASR, "es.property", property);
-    cmanager->getCapabilityProperty(CapabilityType::ASR, "es.sessionId", session_id);
-    cmanager->getCapabilityProperties(CapabilityType::ASR, "es.domainTypes", domainTypes);
+    cmanager->getCapabilityProperty("ASR", "es.playServiceId", ps_id);
+    cmanager->getCapabilityProperty("ASR", "es.property", property);
+    cmanager->getCapabilityProperty("ASR", "es.sessionId", session_id);
+    cmanager->getCapabilityProperties("ASR", "es.domainTypes", domainTypes);
 
     root["text"] = text;
     if (token.size())

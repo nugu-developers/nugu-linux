@@ -24,10 +24,11 @@
 
 namespace NuguCore {
 
-static const char* capability_version = "1.0";
+static const char* CAPABILITY_NAME = "Mic";
+static const char* CAPABILITY_VERSION = "1.0";
 
 MicAgent::MicAgent()
-    : Capability(CapabilityType::Mic, capability_version)
+    : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , mic_listener(nullptr)
     , cur_status(MicStatus::ON)
     , pre_status(MicStatus::ON)

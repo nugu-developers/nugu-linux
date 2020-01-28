@@ -29,9 +29,9 @@ NuguClient::CapabilityBuilder::~CapabilityBuilder()
 {
 }
 
-NuguClient::CapabilityBuilder* NuguClient::CapabilityBuilder::add(const CapabilityType ctype, ICapabilityListener* clistener, ICapabilityInterface* cap_instance)
+NuguClient::CapabilityBuilder* NuguClient::CapabilityBuilder::add(const std::string& cname, ICapabilityListener* clistener, ICapabilityInterface* cap_instance)
 {
-    client_impl->registerCapability(ctype, std::make_pair(cap_instance, clistener));
+    client_impl->registerCapability(cname, std::make_pair(cap_instance, clistener));
 
     return this;
 }
@@ -83,47 +83,47 @@ IWakeupHandler* NuguClient::getWakeupHandler()
 
 IASRHandler* NuguClient::getASRHandler()
 {
-    return dynamic_cast<IASRHandler*>(impl->getCapabilityHandler(CapabilityType::ASR));
+    return dynamic_cast<IASRHandler*>(impl->getCapabilityHandler("ASR"));
 }
 
 ITTSHandler* NuguClient::getTTSHandler()
 {
-    return dynamic_cast<ITTSHandler*>(impl->getCapabilityHandler(CapabilityType::TTS));
+    return dynamic_cast<ITTSHandler*>(impl->getCapabilityHandler("TTS"));
 }
 
 IAudioPlayerHandler* NuguClient::getAudioPlayerHandler()
 {
-    return dynamic_cast<IAudioPlayerHandler*>(impl->getCapabilityHandler(CapabilityType::AudioPlayer));
+    return dynamic_cast<IAudioPlayerHandler*>(impl->getCapabilityHandler("AudioPlayer"));
 }
 
 IDisplayHandler* NuguClient::getDisplayHandler()
 {
-    return dynamic_cast<IDisplayHandler*>(impl->getCapabilityHandler(CapabilityType::Display));
+    return dynamic_cast<IDisplayHandler*>(impl->getCapabilityHandler("Display"));
 }
 
 ITextHandler* NuguClient::getTextHandler()
 {
-    return dynamic_cast<ITextHandler*>(impl->getCapabilityHandler(CapabilityType::Text));
+    return dynamic_cast<ITextHandler*>(impl->getCapabilityHandler("Text"));
 }
 
 IExtensionHandler* NuguClient::getExtensionHandler()
 {
-    return dynamic_cast<IExtensionHandler*>(impl->getCapabilityHandler(CapabilityType::Extension));
+    return dynamic_cast<IExtensionHandler*>(impl->getCapabilityHandler("Extension"));
 }
 
 IDelegationHandler* NuguClient::getDelegationHandler()
 {
-    return dynamic_cast<IDelegationHandler*>(impl->getCapabilityHandler(CapabilityType::Delegation));
+    return dynamic_cast<IDelegationHandler*>(impl->getCapabilityHandler("Delegation"));
 }
 
 ISystemHandler* NuguClient::getSystemHandler()
 {
-    return dynamic_cast<ISystemHandler*>(impl->getCapabilityHandler(CapabilityType::System));
+    return dynamic_cast<ISystemHandler*>(impl->getCapabilityHandler("System"));
 }
 
 IMicHandler* NuguClient::getMicHandler()
 {
-    return dynamic_cast<IMicHandler*>(impl->getCapabilityHandler(CapabilityType::Mic));
+    return dynamic_cast<IMicHandler*>(impl->getCapabilityHandler("Mic"));
 }
 
 INetworkManager* NuguClient::getNetworkManager()

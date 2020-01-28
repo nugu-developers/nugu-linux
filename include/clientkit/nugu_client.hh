@@ -71,12 +71,12 @@ public:
 
         /**
          * @brief Add capabilities to create in the capabilitybuilder. Capabilitybuilder support to insert customized capability agents.
-         * @param[in] ctype access token
+         * @param[in] capability agent name
          * @param[in] clistener capability listener
          * @param[in] cap_instance capability interface
          * @return CapabilityBuilder object
          */
-        CapabilityBuilder* add(const CapabilityType ctype,
+        CapabilityBuilder* add(const std::string& cname,
             ICapabilityListener* clistener = nullptr,
             ICapabilityInterface* cap_instance = nullptr);
 

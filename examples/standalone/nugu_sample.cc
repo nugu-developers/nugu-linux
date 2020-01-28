@@ -124,16 +124,16 @@ void registerCapabilities()
 
     // create capability instance. It's possible to set user customized capability using below builder
     nugu_client->getCapabilityBuilder()
-        ->add(CapabilityType::ASR, speech_operator->getASRListener())
-        ->add(CapabilityType::TTS, tts_listener.get())
-        ->add(CapabilityType::AudioPlayer, aplayer_listener.get())
-        ->add(CapabilityType::System, system_listener.get())
-        ->add(CapabilityType::Display, display_listener.get())
-        ->add(CapabilityType::Text, text_listener.get())
-        ->add(CapabilityType::Extension, extension_listener.get())
-        ->add(CapabilityType::Delegation, delegation_listener.get())
-        ->add(CapabilityType::Location, location_listener.get())
-        ->add(CapabilityType::Mic, mic_listener.get())
+        ->add("ASR", speech_operator->getASRListener())
+        ->add("TTS", tts_listener.get())
+        ->add("AudioPlayer", aplayer_listener.get())
+        ->add("System", system_listener.get())
+        ->add("Display", display_listener.get())
+        ->add("Text", text_listener.get())
+        ->add("Extension", extension_listener.get())
+        ->add("Delegation", delegation_listener.get())
+        ->add("Location", location_listener.get())
+        ->add("Mic", mic_listener.get())
         ->construct();
 }
 
@@ -187,7 +187,7 @@ int main(int argc, char** argv)
 
         nugu_sample_manager->setTextHandler(nugu_client->getTextHandler())
             ->setSpeechOperator(speech_operator.get())
-            ->setNetworkCallback(NuguSampleManager::NetworkCallback{
+            ->setNetworkCallback(NuguSampleManager::NetworkCallback {
                 [&]() { return network_manager->connect(); },
                 [&]() { return network_manager->disconnect(); } })
             ->setMicHandler(nugu_client->getMicHandler())

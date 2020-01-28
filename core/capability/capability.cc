@@ -45,14 +45,13 @@ CapabilityEvent::~CapabilityEvent()
 
 bool CapabilityEvent::isUserAction(const std::string& name)
 {
-    CapabilityType type = capability->getType();
+    const std::string& cname = capability->getName();
 
-    if ((type == CapabilityType::ASR && name == "Recognize")
-        || (type == CapabilityType::TTS && name == "SpeechPlay")
-        || (type == CapabilityType::AudioPlayer
-               && (name.find("CommandIssued") != std::string::npos))
-        || (type == CapabilityType::Text && name == "TextInput")
-        || (type == CapabilityType::Display && name == "ElementSelected"))
+    if ((cname == "ASR" && name == "Recognize")
+        || (cname == "TTS" && name == "SpeechPlay")
+        || (cname == "AudioPlayer" && (name.find("CommandIssued") != std::string::npos))
+        || (cname == "Text" && name == "TextInput")
+        || (cname == "Display" && name == "ElementSelected"))
         return true;
     else
         return false;
@@ -87,7 +86,7 @@ void CapabilityEvent::sendEvent(const std::string& context, const std::string& p
         nugu_event_set_referrer_id(event, ref_dialog_id.c_str());
 
     CapabilityManager* cap_manager = CapabilityManager::getInstance();
-    cap_manager->sendCommand(capability->getType(), CapabilityType::System, "activity", "");
+    cap_manager->sendCommand(capability->getName(), "System", "activity", "");
 
     nugu_network_manager_send_event(event);
     // dialog_request_id is made every time to send event
@@ -105,9 +104,8 @@ void CapabilityEvent::sendAttachmentEvent(bool is_end, size_t size, unsigned cha
         nugu_network_manager_send_event_data(event, is_end, size, data);
 }
 
-Capability::Capability(CapabilityType type, const std::string& ver)
-    : ctype(type)
-    , cname(CAPABILITY_TYPE_MAP.at(type))
+Capability::Capability(const std::string& name, const std::string& ver)
+    : cname(name)
     , version(ver)
     , ref_dialog_id("")
     , cur_ndir(NULL)
@@ -135,24 +133,14 @@ void Capability::setReferrerDialogRequestId(const std::string& id)
     ref_dialog_id = id;
 }
 
-void Capability::setName(CapabilityType type)
+void Capability::setName(const std::string& name)
 {
-    cname = getTypeName(type);
+    cname = name;
 }
 
 std::string Capability::getName()
 {
     return cname;
-}
-
-CapabilityType Capability::getType()
-{
-    return ctype;
-}
-
-std::string Capability::getTypeName(CapabilityType type)
-{
-    return CAPABILITY_TYPE_MAP.at(type);
 }
 
 void Capability::setVersion(const std::string& ver)
@@ -269,11 +257,11 @@ void Capability::setCapabilityListener(ICapabilityListener* clistener)
 {
 }
 
-void Capability::receiveCommand(CapabilityType from, std::string command, const std::string& param)
+void Capability::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
 {
 }
 
-void Capability::receiveCommandAll(std::string command, const std::string& param)
+void Capability::receiveCommandAll(const std::string& command, const std::string& param)
 {
 }
 

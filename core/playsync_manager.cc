@@ -32,7 +32,7 @@ namespace NuguCore {
  * >>> Temp
  ******************************************************************************/
 namespace Test {
-    void showAllContents(std::map<std::string, std::vector<CapabilityType>> context_map)
+    void showAllContents(const PlaySyncManager::ContextMap& context_map)
     {
         std::string context_log("\n>>>>> (ContextStack) >>>>>\n");
 
@@ -42,10 +42,13 @@ namespace Test {
                 .append("] ");
 
             for (auto element : context.second) {
-                if (element == CapabilityType::TTS)
-                    context_log.append("TTS, ");
-                else if (element == CapabilityType::AudioPlayer)
-                    context_log.append("AudioPlayer, ");
+                context_log.append(element)
+                    .append(", ");
+
+                // if (element == "TTS")
+                //     context_log.append("TTS, ");
+                // else if (element == "AudioPlayer")
+                //     context_log.append("AudioPlayer, ");
             }
 
             context_log.append("\n");
@@ -61,12 +64,10 @@ namespace Test {
  ******************************************************************************/
 
 PlaySyncManager::PlaySyncManager()
-: DURATION_MAP({
-    { "SHORT", HOLD_TIME_SHORT },
-    { "MID", HOLD_TIME_MID },
-    { "LONG", HOLD_TIME_LONG },
-    { "LONGEST", HOLD_TIME_LONGEST }
-    })
+    : DURATION_MAP({ { "SHORT", HOLD_TIME_SHORT },
+        { "MID", HOLD_TIME_MID },
+        { "LONG", HOLD_TIME_LONG },
+        { "LONGEST", HOLD_TIME_LONGEST } })
 {
     timer = nugu_timer_new(DEFAULT_HOLD_TIME, 1);
     timer_cb_param.instance = this;
@@ -84,12 +85,12 @@ PlaySyncManager::~PlaySyncManager()
     context_stack.clear();
 }
 
-void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_type)
+void PlaySyncManager::addContext(const std::string& ps_id, const std::string& cap_name)
 {
-    addContext(ps_id, cap_type, {});
+    addContext(ps_id, cap_name, {});
 }
 
-void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_type, DisplayRenderer&& renderer)
+void PlaySyncManager::addContext(const std::string& ps_id, const std::string& cap_name, DisplayRenderer&& renderer)
 {
     if (ps_id.empty()) {
         nugu_error("Invalid PlayServiceId.");
@@ -98,7 +99,7 @@ void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_ty
 
     // add renderer if exist
     if (renderer.listener) {
-        if (renderer_map.find(ps_id) == renderer_map.end() || renderer_map[ps_id].cap_type == cap_type)
+        if (renderer_map.find(ps_id) == renderer_map.end() || renderer_map[ps_id].cap_name == cap_name)
             addRenderer(ps_id, renderer);
 
         if (renderer.only_rendering)
@@ -110,16 +111,16 @@ void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_ty
 
     for (const auto& play_item : play_stack) {
         if (ps_id != play_item)
-            removeContext(play_item, cap_type);
+            removeContext(play_item, cap_name);
     }
 
     if (context_map.find(ps_id) != context_map.end()) {
-        addStackElement(ps_id, cap_type);
+        addStackElement(ps_id, cap_name);
     } else {
         nugu_dbg("[context] add context");
 
-        std::vector<CapabilityType> stack_elements;
-        stack_elements.emplace_back(cap_type);
+        std::vector<std::string> stack_elements;
+        stack_elements.emplace_back(cap_name);
         context_map[ps_id] = stack_elements;
         context_stack.emplace_back(ps_id);
     }
@@ -128,14 +129,14 @@ void PlaySyncManager::addContext(const std::string& ps_id, CapabilityType cap_ty
     Test::showAllContents(context_map);
 }
 
-void PlaySyncManager::removeContext(const std::string& ps_id, CapabilityType cap_type, bool immediately)
+void PlaySyncManager::removeContext(const std::string& ps_id, const std::string& cap_name, bool immediately)
 {
     if (ps_id.empty()) {
         nugu_error("Invalid PlayServiceId.");
         return;
     }
 
-    if (removeStackElement(ps_id, cap_type) && !is_expect_speech) {
+    if (removeStackElement(ps_id, cap_name) && !is_expect_speech) {
         auto timerCallback = [](void* userdata) {
             nugu_dbg("[context] remove context");
 
@@ -176,7 +177,7 @@ void PlaySyncManager::removeContext(const std::string& ps_id, CapabilityType cap
 void PlaySyncManager::clearPendingContext(const std::string& ps_id)
 {
     renderer_map.erase(ps_id);
-    removeContext(ps_id, CapabilityType::Display);
+    removeContext(ps_id, "Display");
 }
 
 std::vector<std::string> PlaySyncManager::getAllPlayStackItems()
@@ -186,11 +187,11 @@ std::vector<std::string> PlaySyncManager::getAllPlayStackItems()
     return play_stack;
 }
 
-std::string PlaySyncManager::getPlayStackItem(CapabilityType cap_type)
+std::string PlaySyncManager::getPlayStackItem(const std::string& cap_name)
 {
     for (auto context : context_map) {
         for (auto element : context.second) {
-            if (element == cap_type)
+            if (element == cap_name)
                 return context.first;
         }
     }
@@ -198,18 +199,18 @@ std::string PlaySyncManager::getPlayStackItem(CapabilityType cap_type)
     return "";
 }
 
-void PlaySyncManager::addStackElement(const std::string& ps_id, CapabilityType cap_type)
+void PlaySyncManager::addStackElement(const std::string& ps_id, const std::string& cap_name)
 {
     auto& stack_elements = context_map[ps_id];
 
-    if (std::find(stack_elements.begin(), stack_elements.end(), cap_type) == stack_elements.end())
-        stack_elements.emplace_back(cap_type);
+    if (std::find(stack_elements.begin(), stack_elements.end(), cap_name) == stack_elements.end())
+        stack_elements.emplace_back(cap_name);
 }
 
-bool PlaySyncManager::removeStackElement(const std::string& ps_id, CapabilityType cap_type)
+bool PlaySyncManager::removeStackElement(const std::string& ps_id, const std::string& cap_name)
 {
     auto& stack_elements = context_map[ps_id];
-    stack_elements.erase(remove(stack_elements.begin(), stack_elements.end(), cap_type), stack_elements.end());
+    stack_elements.erase(remove(stack_elements.begin(), stack_elements.end(), cap_name), stack_elements.end());
 
     return stack_elements.empty();
 }
@@ -292,6 +293,6 @@ void PlaySyncManager::onASRError()
     is_expect_speech = false;
 
     if (!context_stack.empty())
-        removeContext(context_stack.back(), CapabilityType::TTS);
+        removeContext(context_stack.back(), "TTS");
 }
 } // NuguCore

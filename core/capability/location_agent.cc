@@ -20,10 +20,11 @@
 
 namespace NuguCore {
 
-static const char* capability_version = "1.0";
+static const char* CAPABILITY_NAME = "Location";
+static const char* CAPABILITY_VERSION = "1.0";
 
 LocationAgent::LocationAgent()
-    : Capability(CapabilityType::Location, capability_version)
+    : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
 {
 }
 

@@ -48,7 +48,7 @@ public:
     };
     using DisplayRenderer = struct {
         IPlaySyncManagerListener* listener;
-        CapabilityType cap_type;
+        std::string cap_name;
         std::string duration;
         std::string display_id;
         bool only_rendering = false;
@@ -58,21 +58,23 @@ public:
     PlaySyncManager();
     virtual ~PlaySyncManager();
 
-    void addContext(const std::string& ps_id, CapabilityType cap_type);
-    void addContext(const std::string& ps_id, CapabilityType cap_type, DisplayRenderer&& renderer);
-    void removeContext(const std::string& ps_id, CapabilityType cap_type, bool immediately = true);
+    void addContext(const std::string& ps_id, const std::string& cap_name);
+    void addContext(const std::string& ps_id, const std::string& cap_name, DisplayRenderer&& renderer);
+    void removeContext(const std::string& ps_id, const std::string& cap_name, bool immediately = true);
     void clearPendingContext(const std::string& ps_id);
     std::vector<std::string> getAllPlayStackItems();
-    std::string getPlayStackItem(CapabilityType cap_type);
+    std::string getPlayStackItem(const std::string& cap_name);
 
     void setExpectSpeech(bool expect_speech);
     void onMicOn();
     void clearContextHold();
     void onASRError();
 
+    using ContextMap = std::map<std::string, std::vector<std::string>>;
+
 private:
-    void addStackElement(const std::string& ps_id, CapabilityType cap_type);
-    bool removeStackElement(const std::string& ps_id, CapabilityType cap_type);
+    void addStackElement(const std::string& ps_id, const std::string& cap_name);
+    bool removeStackElement(const std::string& ps_id, const std::string& cap_name);
     void addRenderer(const std::string& ps_id, DisplayRenderer& renderer);
     bool removeRenderer(const std::string& ps_id, bool unconditionally = true);
     void setTimerInterval(const std::string& ps_id);
@@ -89,8 +91,8 @@ private:
         std::function<void()> callback; // temp : for holding function for stack log
     };
 
+    ContextMap context_map;
     std::vector<std::string> context_stack;
-    std::map<std::string, std::vector<CapabilityType>> context_map;
     std::map<std::string, DisplayRenderer> renderer_map;
 
     NuguTimer* timer = nullptr;
