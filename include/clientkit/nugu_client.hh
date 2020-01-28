@@ -26,6 +26,7 @@
 #include <interface/capability/delegation_interface.hh>
 #include <interface/capability/display_interface.hh>
 #include <interface/capability/extension_interface.hh>
+#include <interface/capability/mic_interface.hh>
 #include <interface/capability/system_interface.hh>
 #include <interface/capability/text_interface.hh>
 #include <interface/capability/tts_interface.hh>
@@ -180,6 +181,12 @@ public:
      * @return INetworkManager if a feature agent has been created with the feature builder, otherwise NULL
      */
     INetworkManager* getNetworkManager();
+
+    /**
+     * @brief Get MicHandler object
+     * @return IMicHandler if a feature agent has been created with the feature builder, otherwise NULL
+     */
+    IMicHandler* getMicHandler();
 
     /**
      * @brief Get new media player object
