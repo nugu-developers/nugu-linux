@@ -37,7 +37,7 @@ public:
 
 protected:
     void init(std::string name, std::string& sample, std::string& format, std::string& channel);
-    void start(const std::function<void()>& extra_func = nullptr);
+    bool start(const std::function<void()>& extra_func = nullptr);
     void stop(void);
     void sendSyncEvent(const std::function<void()>& action = nullptr);
 

@@ -57,7 +57,8 @@ ASRFocusListener::~ASRFocusListener()
 NuguFocusResult ASRFocusListener::onFocus(void* event)
 {
     nugu_dbg("ASRFocusListener::onFocus");
-    speech_recognizer->startListening();
+    if (!speech_recognizer->startListening())
+        return NUGU_FOCUS_REMOVE;
 
     if (agent->isExpectSpeechState()) {
         agent->resetExpectSpeechState();
@@ -200,6 +201,10 @@ void ASRAgent::startRecognition()
 void ASRAgent::stopRecognition()
 {
     nugu_dbg("stopRecognition()");
+
+    if (rec_event)
+        sendEventStopRecognize();
+
     CapabilityManager::getInstance()->releaseFocus("asr");
 }
 
