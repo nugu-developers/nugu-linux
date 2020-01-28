@@ -32,6 +32,7 @@ public:
     virtual bool start() = 0;
     virtual bool stop() = 0;
     virtual bool isRecording() = 0;
+    virtual bool isMute() = 0;
 
     virtual int getAudioFrameSize() = 0;
     virtual int getAudioFrameCount() = 0;

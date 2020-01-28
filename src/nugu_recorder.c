@@ -292,6 +292,14 @@ EXPORT_API int nugu_recorder_stop(NuguRecorder *rec)
 	return rec->driver->ops->stop(rec->driver, rec);
 }
 
+EXPORT_API int nugu_recorder_clear(NuguRecorder *rec)
+{
+	g_return_val_if_fail(rec != NULL, -1);
+
+	nugu_ring_buffer_clear_items(rec->buf);
+	return 0;
+}
+
 EXPORT_API int nugu_recorder_is_recording(NuguRecorder *rec)
 {
 	g_return_val_if_fail(rec != NULL, -1);
