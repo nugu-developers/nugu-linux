@@ -20,6 +20,7 @@
 #include "capability/display_agent.hh"
 #include "capability/extension_agent.hh"
 #include "capability/location_agent.hh"
+#include "capability/mic_agent.hh"
 #include "capability/system_agent.hh"
 #include "capability/text_agent.hh"
 #include "capability/tts_agent.hh"
@@ -44,16 +45,17 @@ using CapabilityElement = CapabilityCreator::Element;
 
 const std::list<CapabilityElement>& CapabilityCreator::getCapabilityList()
 {
-    static std::list<CapabilityElement> CAPABILITY_LIST {
-    CapabilityElement { CapabilityType::ASR, true, &create<ASRAgent> },
-    CapabilityElement { CapabilityType::TTS, true, &create<TTSAgent> },
-    CapabilityElement { CapabilityType::AudioPlayer, true, &create<AudioPlayerAgent> },
-    CapabilityElement { CapabilityType::System, true, &create<SystemAgent> },
-    CapabilityElement { CapabilityType::Display, false, &create<DisplayAgent> },
-    CapabilityElement { CapabilityType::Extension, false, &create<ExtensionAgent> },
-    CapabilityElement { CapabilityType::Text, false, &create<TextAgent> },
-    CapabilityElement { CapabilityType::Delegation, false, &create<DelegationAgent> },
-    CapabilityElement { CapabilityType::Location, false, &create<LocationAgent> }
+    static std::list<CapabilityElement> CAPABILITY_LIST{
+        CapabilityElement{ CapabilityType::ASR, true, &create<ASRAgent> },
+        CapabilityElement{ CapabilityType::TTS, true, &create<TTSAgent> },
+        CapabilityElement{ CapabilityType::AudioPlayer, true, &create<AudioPlayerAgent> },
+        CapabilityElement{ CapabilityType::System, true, &create<SystemAgent> },
+        CapabilityElement{ CapabilityType::Display, false, &create<DisplayAgent> },
+        CapabilityElement{ CapabilityType::Extension, false, &create<ExtensionAgent> },
+        CapabilityElement{ CapabilityType::Text, false, &create<TextAgent> },
+        CapabilityElement{ CapabilityType::Delegation, false, &create<DelegationAgent> },
+        CapabilityElement{ CapabilityType::Location, false, &create<LocationAgent> },
+        CapabilityElement{ CapabilityType::Mic, false, &create<MicAgent> }
     };
 
     return CAPABILITY_LIST;
