@@ -45,6 +45,28 @@ redirect_uri = 'http://lvh.me:8080/callback'
 app = Flask(__name__)
 app.secret_key = 'test'
 
+def refresh_token():
+    print '\n\033[1mRefresh the access_token\033[0m'
+    with open(CONFIG_PATH_AUTH, 'r') as reader:
+        authinfo = json.load(reader)
+
+    with open(CONFIG_PATH_OAUTH, 'r') as reader:
+        oauthinfo = json.load(reader)
+
+    extra = {
+        'client_id': oauthinfo['clientId'],
+        'client_secret': oauthinfo['clientSecret'],
+        'refresh_token': authinfo['refresh_token']
+    }
+
+    nugu = OAuth2Session(oauthinfo['clientId'], token=authinfo['access_token'])
+    token = nugu.refresh_token(token_url, **extra)
+
+    token_json = json.dumps(token, indent=4)
+    print token_json
+
+    with open(CONFIG_PATH_AUTH, 'w') as writer:
+        writer.write(token_json)
 
 @app.route('/auth', methods=['GET', 'PUT'])
 def auth():
@@ -90,26 +112,8 @@ def oauth():
 
 
 @app.route('/refresh', methods=['GET'])
-def refresh_token():
-    print '\n\033[1mRefresh the access_token\033[0m'
-    with open(CONFIG_PATH_AUTH, 'r') as reader:
-        authinfo = json.load(reader)
-
-    with open(CONFIG_PATH_OAUTH, 'r') as reader:
-        oauthinfo = json.load(reader)
-
-    extra = {
-        'client_id': oauthinfo['clientId'],
-        'client_secret': oauthinfo['clientSecret'],
-        'refresh_token': authinfo['refresh_token']
-    }
-
-    nugu = OAuth2Session(oauthinfo['clientId'], token=authinfo['access_token'])
-    token = nugu.refresh_token(token_url, **extra)
-    token_json = json.dumps(token)
-    print token_json
-    with open(CONFIG_PATH_AUTH, 'w') as writer:
-        writer.write(token_json)
+def refresh():
+    refresh_token()
     return redirect(url_for('index'))
 
 
@@ -261,7 +265,7 @@ def callback():
     token = nugu.fetch_token(token_url, client_secret=clientSecret,
                                 authorization_response=request.url)
 
-    token_json = json.dumps(token)
+    token_json = json.dumps(token, indent=4)
     print token_json
     with open(CONFIG_PATH_AUTH, 'w') as writer:
         writer.write(token_json)
@@ -295,6 +299,7 @@ if __name__ == '__main__':
     for arg in sys.argv:
         if arg == '-r':
             refresh_token()
+            sys.exit(0)
 
     print '\n\033[1mPlease connect to %d port.\033[0m' % PORT
 
