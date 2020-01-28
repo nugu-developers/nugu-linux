@@ -108,6 +108,12 @@ void WakeupDetector::loop(void)
                 continue;
             }
 
+            if (recorder->isMute()) {
+                nugu_error("recorder is mute");
+                sendSyncWakeupEvent(WakeupState::FAIL);
+                break;
+            }
+
             if (!recorder->getAudioFrame(pcm_buf, &pcm_size, 0)) {
                 nugu_error("recorder->getAudioFrame() failed");
                 sendSyncWakeupEvent(WakeupState::FAIL);

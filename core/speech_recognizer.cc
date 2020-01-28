@@ -136,6 +136,12 @@ void SpeechRecognizer::loop(void)
                 continue;
             }
 
+            if (recorder->isMute()) {
+                nugu_error("nugu recorder is mute");
+                sendSyncListeningEvent(ListeningState::FAILED);
+                break;
+            }
+
             if (!recorder->getAudioFrame(pcm_buf, &pcm_size, 0)) {
                 nugu_error("nugu_recorder_get_frame_timeout() failed");
                 sendSyncListeningEvent(ListeningState::FAILED);
@@ -201,9 +207,9 @@ void SpeechRecognizer::loop(void)
     nugu_dbg("Listening Thread: exited");
 }
 
-void SpeechRecognizer::startListening(void)
+bool SpeechRecognizer::startListening(void)
 {
-    AudioInputProcessor::start([&] {
+    return AudioInputProcessor::start([&] {
         if (listener)
             listener->onListeningState(ListeningState::READY);
 
@@ -214,18 +220,6 @@ void SpeechRecognizer::startListening(void)
 void SpeechRecognizer::stopListening(void)
 {
     AudioInputProcessor::stop();
-}
-
-void SpeechRecognizer::startRecorder(void)
-{
-    if (is_running && !recorder->isRecording())
-        recorder->start();
-}
-
-void SpeechRecognizer::stopRecorder(void)
-{
-    if (is_running && recorder->isRecording())
-        recorder->stop();
 }
 
 } // NuguCore

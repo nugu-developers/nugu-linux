@@ -74,11 +74,16 @@ void AudioInputProcessor::init(std::string name, std::string& sample, std::strin
     is_initialized = true;
 }
 
-void AudioInputProcessor::start(const std::function<void()>& extra_func)
+bool AudioInputProcessor::start(const std::function<void()>& extra_func)
 {
     if (is_running) {
         nugu_dbg("Thread is already running...");
-        return;
+        return true;
+    }
+
+    if (recorder->isMute()) {
+        nugu_warn("recorder is muted...");
+        return false;
     }
 
     if (extra_func)
@@ -89,6 +94,8 @@ void AudioInputProcessor::start(const std::function<void()>& extra_func)
     mutex.lock();
     cond.notify_all();
     mutex.unlock();
+
+    return true;
 }
 
 void AudioInputProcessor::stop(void)

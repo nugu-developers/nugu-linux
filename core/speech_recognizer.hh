@@ -50,10 +50,8 @@ public:
     virtual ~SpeechRecognizer() = default;
 
     void setListener(ISpeechRecognizerListener* listener);
-    void startListening(void);
+    bool startListening(void);
     void stopListening(void);
-    void startRecorder(void);
-    void stopRecorder(void);
 
 private:
     void loop(void) override;
