@@ -75,12 +75,14 @@ ADD_COMPILE_OPTIONS(
 	-Wno-missing-field-initializers
 	-Wno-unused-parameter)
 
-IF ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" AND "${CMAKE_LIBRARY_ARCHITECTURE}" MATCHES "x86")
-	MESSAGE("Enable AddressSanitizer")
-	# Apply AddressSanitizer
-	# - https://github.com/google/sanitizers/wiki/AddressSanitizer
-	ADD_COMPILE_OPTIONS(-fsanitize=address)
-	LINK_LIBRARIES(-lasan)
+IF (NOT PACKAGING)
+	IF ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" AND "${CMAKE_LIBRARY_ARCHITECTURE}" MATCHES "x86")
+		MESSAGE("Enable AddressSanitizer")
+		# Apply AddressSanitizer
+		# - https://github.com/google/sanitizers/wiki/AddressSanitizer
+		ADD_COMPILE_OPTIONS(-fsanitize=address)
+		LINK_LIBRARIES(-lasan)
+	ENDIF()
 ENDIF()
 
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
@@ -97,9 +99,9 @@ IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 		# Non-executable stack
 		LINK_LIBRARIES(-Wl,-z,noexecstack)
 
-		# RPATH is useful only for testing without installation. Please use the
-		# '-DNO-RPATH' option for debian packaging.
-		IF (NOT NO-RPATH)
+		# RPATH is useful only for testing without installation.
+		# Please use the '-DPACKAGING' option for debian packaging.
+		IF (NOT PACKAGING)
 			LINK_LIBRARIES(-Wl,--rpath=${CMAKE_BINARY_DIR})
 		ENDIF()
 	ENDIF()
