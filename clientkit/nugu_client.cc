@@ -121,6 +121,11 @@ ISystemHandler* NuguClient::getSystemHandler()
     return dynamic_cast<ISystemHandler*>(impl->getCapabilityHandler(CapabilityType::System));
 }
 
+IMicHandler* NuguClient::getMicHandler()
+{
+    return dynamic_cast<IMicHandler*>(impl->getCapabilityHandler(CapabilityType::Mic));
+}
+
 INetworkManager* NuguClient::getNetworkManager()
 {
     return impl->getNetworkManager();

@@ -20,6 +20,7 @@
 #include <glib.h>
 
 #include <interface/capability/text_interface.hh>
+#include <interface/capability/mic_interface.hh>
 
 #include "speech_operator.hh"
 
@@ -40,6 +41,7 @@ public:
         NetworkCallback network_callback;
         ITextHandler* text_handler;
         SpeechOperator* speech_operator;
+        IMicHandler* mic_handler;
     };
 
     static void error(const std::string& message);
@@ -54,6 +56,7 @@ public:
     NuguSampleManager* setNetworkCallback(NetworkCallback callback);
     NuguSampleManager* setTextHandler(ITextHandler* text_handler);
     NuguSampleManager* setSpeechOperator(SpeechOperator* speech_operator);
+    NuguSampleManager* setMicHandler(IMicHandler* mic_handler);
     void handleNetworkResult(bool is_connected, bool is_show_cmd = true);
 
 private:

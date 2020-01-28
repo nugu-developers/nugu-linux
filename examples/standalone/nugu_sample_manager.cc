@@ -136,6 +136,13 @@ NuguSampleManager* NuguSampleManager::setSpeechOperator(SpeechOperator* speech_o
     return this;
 }
 
+NuguSampleManager* NuguSampleManager::setMicHandler(IMicHandler* mic_handler)
+{
+    commander.mic_handler = mic_handler;
+
+    return this;
+}
+
 void NuguSampleManager::handleNetworkResult(bool is_connected, bool is_show_cmd)
 {
     commander.is_connected = is_connected;
@@ -172,7 +179,8 @@ void NuguSampleManager::showPrompt(void)
             std::cout << "w : start wakeup\n"
                       << "l : start listening\n"
                       << "s : stop listening\n"
-                      << "t : text input\n";
+                      << "t : text input\n"
+                      << "m : set mic mute\n";
 
         std::cout << "c : connect\n"
                   << "d : disconnect\n"
@@ -231,6 +239,14 @@ gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpoint
         showPrompt();
     } else if (g_strcmp0(keybuf, "t") == 0) {
         commander.text_input = 1;
+        showPrompt();
+    } else if (g_strcmp0(keybuf, "m") == 0) {
+        static bool mute = false;
+        mute = !mute;
+        if (!mute)
+            commander.mic_handler->enable();
+        else
+            commander.mic_handler->disable();
         showPrompt();
     } else if (g_strcmp0(keybuf, "c") == 0) {
         if (commander.is_connected) {

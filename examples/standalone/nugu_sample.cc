@@ -16,18 +16,19 @@
 
 #include <iostream>
 
-#include <interface/nugu_configuration.hh>
 #include <clientkit/nugu_client.hh>
+#include <interface/nugu_configuration.hh>
 
 #include "audio_player_listener.hh"
 #include "delegation_listener.hh"
 #include "display_listener.hh"
 #include "extension_listener.hh"
 #include "location_listener.hh"
+#include "mic_listener.hh"
+#include "speech_operator.hh"
 #include "system_listener.hh"
 #include "text_listener.hh"
 #include "tts_listener.hh"
-#include "speech_operator.hh"
 
 #include "nugu_sample_manager.hh"
 
@@ -50,6 +51,7 @@ std::unique_ptr<TextListener> text_listener = nullptr;
 std::unique_ptr<ExtensionListener> extension_listener = nullptr;
 std::unique_ptr<DelegationListener> delegation_listener = nullptr;
 std::unique_ptr<LocationListener> location_listener = nullptr;
+std::unique_ptr<MicListener> mic_listener = nullptr;
 
 void msg_error(const std::string& message)
 {
@@ -131,6 +133,7 @@ void registerCapabilities()
         ->add(CapabilityType::Extension, extension_listener.get())
         ->add(CapabilityType::Delegation, delegation_listener.get())
         ->add(CapabilityType::Location, location_listener.get())
+        ->add(CapabilityType::Mic, mic_listener.get())
         ->construct();
 }
 
@@ -156,6 +159,7 @@ int main(int argc, char** argv)
     extension_listener = make_unique<ExtensionListener>();
     delegation_listener = make_unique<DelegationListener>();
     location_listener = make_unique<LocationListener>();
+    mic_listener = make_unique<MicListener>();
 
     auto nugu_client_listener(make_unique<NuguClientListener>());
     auto network_manager_listener(make_unique<NetworkManagerListener>());
@@ -183,9 +187,10 @@ int main(int argc, char** argv)
 
         nugu_sample_manager->setTextHandler(nugu_client->getTextHandler())
             ->setSpeechOperator(speech_operator.get())
-            ->setNetworkCallback(NuguSampleManager::NetworkCallback {
+            ->setNetworkCallback(NuguSampleManager::NetworkCallback{
                 [&]() { return network_manager->connect(); },
                 [&]() { return network_manager->disconnect(); } })
+            ->setMicHandler(nugu_client->getMicHandler())
             ->runLoop();
     }
 
