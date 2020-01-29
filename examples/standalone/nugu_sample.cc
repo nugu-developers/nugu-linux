@@ -34,12 +34,6 @@
 
 using namespace NuguClientKit;
 
-template <typename T, typename... Ts>
-std::unique_ptr<T> make_unique(Ts&&... params)
-{
-    return std::unique_ptr<T>(new T(std::forward<Ts>(params)...));
-}
-
 std::unique_ptr<NuguClient> nugu_client = nullptr;
 std::unique_ptr<NuguSampleManager> nugu_sample_manager = nullptr;
 std::unique_ptr<SpeechOperator> speech_operator = nullptr;
@@ -52,6 +46,21 @@ std::unique_ptr<ExtensionListener> extension_listener = nullptr;
 std::unique_ptr<DelegationListener> delegation_listener = nullptr;
 std::unique_ptr<LocationListener> location_listener = nullptr;
 std::unique_ptr<MicListener> mic_listener = nullptr;
+
+template <typename T, typename... Ts>
+std::unique_ptr<T> make_unique(Ts&&... params)
+{
+    return std::unique_ptr<T>(new T(std::forward<Ts>(params)...));
+}
+
+template <class T>
+T getCapabilityHandler(const std::string& cname)
+{
+    if (nugu_client)
+        return dynamic_cast<T>(nugu_client->getCapabilityHandler(cname));
+
+    return nullptr;
+}
 
 void msg_error(const std::string& message)
 {
@@ -72,7 +81,7 @@ public:
     void notify(std::string c_name, CapabilitySignal signal, void* data)
     {
         switch (signal) {
-        case DIALOG_REQUEST_ID:
+        case CapabilitySignal::DIALOG_REQUEST_ID:
             if (data)
                 std::cout << "[NuguClient] DIALOG_REQUEST_ID = " << data << std::endl;
             break;
@@ -183,14 +192,14 @@ int main(int argc, char** argv)
         msg_error("< It failed to initialize NUGU SDK. Please Check authorization.");
     } else {
         speech_operator->setWakeupHandler(nugu_client->getWakeupHandler());
-        speech_operator->setASRHandler(nugu_client->getASRHandler());
+        speech_operator->setASRHandler(getCapabilityHandler<IASRHandler*>("ASR"));
 
-        nugu_sample_manager->setTextHandler(nugu_client->getTextHandler())
+        nugu_sample_manager->setTextHandler(getCapabilityHandler<ITextHandler*>("Text"))
             ->setSpeechOperator(speech_operator.get())
             ->setNetworkCallback(NuguSampleManager::NetworkCallback {
                 [&]() { return network_manager->connect(); },
                 [&]() { return network_manager->disconnect(); } })
-            ->setMicHandler(nugu_client->getMicHandler())
+            ->setMicHandler(getCapabilityHandler<IMicHandler*>("Mic"))
             ->runLoop();
     }
 
