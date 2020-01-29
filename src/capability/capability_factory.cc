@@ -21,6 +21,7 @@
 #include "extension_agent.hh"
 #include "location_agent.hh"
 #include "mic_agent.hh"
+#include "speaker_agent.hh"
 #include "system_agent.hh"
 #include "text_agent.hh"
 #include "tts_agent.hh"
@@ -42,17 +43,18 @@ using CapabilityElement = CapabilityFactory::Element;
 
 const std::list<CapabilityElement>& CapabilityFactory::getCapabilityList()
 {
-    static std::list<CapabilityElement> CAPABILITY_LIST {
-        CapabilityElement { "ASR", true, &create<ASRAgent> },
-        CapabilityElement { "TTS", true, &create<TTSAgent> },
-        CapabilityElement { "AudioPlayer", true, &create<AudioPlayerAgent> },
-        CapabilityElement { "System", true, &create<SystemAgent> },
-        CapabilityElement { "Display", false, &create<DisplayAgent> },
-        CapabilityElement { "Extension", false, &create<ExtensionAgent> },
-        CapabilityElement { "Text", false, &create<TextAgent> },
-        CapabilityElement { "Delegation", false, &create<DelegationAgent> },
-        CapabilityElement { "Location", false, &create<LocationAgent> },
-        CapabilityElement { "Mic", false, &create<MicAgent> }
+    static std::list<CapabilityElement> CAPABILITY_LIST{
+        CapabilityElement{ "ASR", true, &create<ASRAgent> },
+        CapabilityElement{ "TTS", true, &create<TTSAgent> },
+        CapabilityElement{ "AudioPlayer", true, &create<AudioPlayerAgent> },
+        CapabilityElement{ "System", true, &create<SystemAgent> },
+        CapabilityElement{ "Display", false, &create<DisplayAgent> },
+        CapabilityElement{ "Extension", false, &create<ExtensionAgent> },
+        CapabilityElement{ "Text", false, &create<TextAgent> },
+        CapabilityElement{ "Delegation", false, &create<DelegationAgent> },
+        CapabilityElement{ "Location", false, &create<LocationAgent> },
+        CapabilityElement{ "Speaker", false, &create<SpeakerAgent> },
+        CapabilityElement{ "Mic", false, &create<MicAgent> }
     };
 
     return CAPABILITY_LIST;
