@@ -70,8 +70,8 @@ public:
     void sendEventStopRecognize();
 
     void setCapabilityListener(ICapabilityListener* clistener) override;
-    void addListener(IASRListener* listener);
-    void removeListener(IASRListener* listener);
+    void addListener(IASRListener* listener) override;
+    void removeListener(IASRListener* listener) override;
     std::vector<IASRListener*> getListener();
 
     void resetExpectSpeechState();
@@ -91,7 +91,6 @@ private:
     ExpectSpeechAttr es_attr;
     CapabilityEvent* rec_event;
     NuguTimer* timer;
-    bool mic_off;
     std::unique_ptr<SpeechRecognizer> speech_recognizer;
     std::string epd_type;
     std::string asr_encoding;

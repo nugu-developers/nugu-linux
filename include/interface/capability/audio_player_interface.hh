@@ -187,6 +187,7 @@ public:
      * @param[in] listener listener object
      */
     virtual void removeListener(IAudioPlayerListener* listener) = 0;
+    using IDisplayHandler::removeListener;
 };
 
 /**

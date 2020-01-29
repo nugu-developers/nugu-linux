@@ -55,7 +55,7 @@ class Capability : virtual public ICapabilityInterface {
 public:
     Capability(const std::string& name, const std::string& ver = "1.0");
     virtual ~Capability();
-    virtual void initialize();
+    void initialize() override;
 
     std::string getReferrerDialogRequestId();
     void setReferrerDialogRequestId(const std::string& id);

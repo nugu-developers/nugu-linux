@@ -83,19 +83,21 @@ public:
     void sendEventControlLyricsPageSucceeded();
     void sendEventControlLyricsPageFailed();
 
-    void mediaStateChanged(MediaPlayerState state);
-    void mediaEventReport(MediaPlayerEvent event);
+    void mediaStateChanged(MediaPlayerState state) override;
+    void mediaEventReport(MediaPlayerEvent event) override;
     void mediaFinished();
     void mediaLoaded();
 
     void mediaChanged(const std::string& url) override;
-    void durationChanged(int duration);
-    void positionChanged(int position);
-    void volumeChanged(int volume);
-    void muteChanged(int mute);
+    void durationChanged(int duration) override;
+    void positionChanged(int position) override;
+    void volumeChanged(int volume) override;
+    void muteChanged(int mute) override;
 
     // implement DisplayRenderAssembly
-    void onElementSelected(const std::string& item_token);
+    void onElementSelected(const std::string& item_token) override;
+
+    using IDisplayHandler::removeListener;
 
 private:
     void sendEventCommon(const std::string& ename);

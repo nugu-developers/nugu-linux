@@ -35,12 +35,12 @@ public:
     std::string composeRenderInfo(const RenderInfoParam& param);
 
     // implement IDisplayHandler
-    void displayRendered(const std::string& id);
-    void displayCleared(const std::string& id);
-    void elementSelected(const std::string& id, const std::string& item_token);
-    void setListener(IDisplayListener* listener);
-    void removeListener(IDisplayListener* listener);
-    void stopRenderingTimer(const std::string& id);
+    void displayRendered(const std::string& id) override;
+    void displayCleared(const std::string& id) override;
+    void elementSelected(const std::string& id, const std::string& item_token) override;
+    void setListener(IDisplayListener* listener) override;
+    void removeListener(IDisplayListener* listener) override;
+    void stopRenderingTimer(const std::string& id) override;
 
     // implement IContextManagerListener
     void onSyncDisplayContext(const std::string& id) override;
