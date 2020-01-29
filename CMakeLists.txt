@@ -106,7 +106,7 @@ IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 		# RPATH is useful only for testing without installation.
 		# Please use the '-DPACKAGING' option for debian packaging.
 		IF (NOT PACKAGING)
-			LINK_LIBRARIES(-Wl,--rpath=${CMAKE_BINARY_DIR})
+			LINK_LIBRARIES(-Wl,--rpath=${CMAKE_BINARY_DIR}/src)
 		ENDIF()
 	ENDIF()
 ENDIF()
@@ -145,26 +145,6 @@ ADD_SUBDIRECTORY(externals)
 
 # NUGU SDK
 ADD_SUBDIRECTORY(src)
-ADD_SUBDIRECTORY(core)
-ADD_SUBDIRECTORY(interface)
-ADD_SUBDIRECTORY(clientkit)
-
-ADD_LIBRARY(libnugu SHARED
-	$<TARGET_OBJECTS:objhttp2>
-	$<TARGET_OBJECTS:objjsoncpp>
-	$<TARGET_OBJECTS:objbase>
-	$<TARGET_OBJECTS:objcore>
-	$<TARGET_OBJECTS:objinterface>
-	$<TARGET_OBJECTS:objclientkit>)
-TARGET_LINK_LIBRARIES(libnugu PUBLIC
-	${CMAKE_BINARY_DIR}/curl/lib/libcurl.a
-	${CMAKE_BINARY_DIR}/nghttp2/lib/libnghttp2_static.a
-	${pkgs_LDFLAGS} -ldl)
-
-SET_TARGET_PROPERTIES(libnugu
-	PROPERTIES VERSION ${VERSION} SOVERSION ${VERSION_MAJOR} OUTPUT_NAME nugu)
-
-INSTALL(TARGETS libnugu LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
 
 # Unit tests
 ADD_SUBDIRECTORY(tests)

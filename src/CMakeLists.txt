@@ -1,39 +1,24 @@
-# HTTP/2 module using curl and nghttp2 libraries
-ADD_LIBRARY(objhttp2 OBJECT
-	network/http2/multipart_parser.c
-	network/http2/http2_request.c
-	network/http2/http2_network.c
-	network/http2/v1_event.c
-	network/http2/v1_event_attachment.c
-	network/http2/v1_directives.cc
-	network/http2/v1_ping.c
-	network/http2/v1_policies.cc
-	network/dg_registry.c
-	network/dg_server.c)
-TARGET_INCLUDE_DIRECTORIES(objhttp2 PRIVATE
-	network
-	${CMAKE_SOURCE_DIR}/externals/curl/include)
-ADD_DEPENDENCIES(objhttp2 CURL)
 
-# NUGU Base
-FILE(GLOB SRCS *.c)
+ADD_SUBDIRECTORY(base)
+ADD_SUBDIRECTORY(core)
+ADD_SUBDIRECTORY(interface)
+ADD_SUBDIRECTORY(clientkit)
 
-ADD_LIBRARY(objbase OBJECT ${SRCS})
-TARGET_INCLUDE_DIRECTORIES(objbase PRIVATE
-	${CMAKE_SOURCE_DIR}/externals/curl/include)
-TARGET_COMPILE_DEFINITIONS(objbase PRIVATE
-	# Only symbols that use EXPORT_API are visible, and all other symbols are hidden.
-	-DEXPORT_API=__attribute__\(\(visibility\(\"default\"\)\)\)
+# NUGU SDK Library
+ADD_LIBRARY(libnugu SHARED
+	$<TARGET_OBJECTS:objhttp2>
+	$<TARGET_OBJECTS:objjsoncpp>
+	$<TARGET_OBJECTS:objbase>
+	$<TARGET_OBJECTS:objcore>
+	$<TARGET_OBJECTS:objinterface>
+	$<TARGET_OBJECTS:objclientkit>)
 
-	# Convenient macro to avoid unused parameter warnings.
-	-D__UNUSED__=__attribute\(\(unused\)\))
-TARGET_COMPILE_OPTIONS(objbase PRIVATE
-	# Set default visibility to hidden to reduce symbol count
-	-fvisibility=hidden
+TARGET_LINK_LIBRARIES(libnugu PUBLIC
+	${CMAKE_BINARY_DIR}/curl/lib/libcurl.a
+	${CMAKE_BINARY_DIR}/nghttp2/lib/libnghttp2_static.a
+	${pkgs_LDFLAGS} -ldl)
 
-	# Turn on extra warnings
-	-Wmissing-prototypes
-	-Waggregate-return
-	-Wmissing-declarations
-	-Wswitch-default)
-ADD_DEPENDENCIES(objbase CURL)
+SET_TARGET_PROPERTIES(libnugu
+	PROPERTIES VERSION ${VERSION} SOVERSION ${VERSION_MAJOR} OUTPUT_NAME nugu)
+
+INSTALL(TARGETS libnugu LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
