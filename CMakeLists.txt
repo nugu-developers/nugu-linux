@@ -17,6 +17,9 @@ SET(prefix ${CMAKE_INSTALL_PREFIX})
 SET(bindir "${prefix}/${CMAKE_INSTALL_BINDIR}")
 SET(plugindir "${CMAKE_INSTALL_FULL_LIBDIR}/nugu")
 
+# Generate compile_commands.json
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # C++ standard: c++11 (not gnu++11)
 SET(CMAKE_CXX_STANDARD 11)
 SET(CMAKE_CXX_EXTENSIONS OFF)
@@ -52,9 +55,6 @@ ADD_COMPILE_OPTIONS(
 	# Improved version of “-fstack-protector” since gcc 4.9
 	-fstack-protector-strong
 
-	# Non-executable stack
-	-Wa,--execstack
-
 	# Store the stack frame pointer in a register.
 	-fno-omit-frame-pointer
 
@@ -86,8 +86,12 @@ IF (NOT PACKAGING)
 ENDIF()
 
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	# Eliminate unused code and data (with --gc-sections link option)
-	ADD_COMPILE_OPTIONS(-Wl,--gc-sections)
+	ADD_COMPILE_OPTIONS(
+		# Non-executable stack
+		-Wa,--execstack
+
+		# Eliminate unused code and data (with --gc-sections link option)
+		-Wl,--gc-sections)
 
 	IF (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
 		# Link only needed libraries

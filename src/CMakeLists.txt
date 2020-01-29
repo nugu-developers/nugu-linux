@@ -12,8 +12,7 @@ ADD_LIBRARY(objhttp2 OBJECT
 	network/dg_server.c)
 TARGET_INCLUDE_DIRECTORIES(objhttp2 PRIVATE
 	network
-	${CMAKE_BINARY_DIR}/nghttp2/include
-	${CMAKE_BINARY_DIR}/curl/include)
+	${CMAKE_SOURCE_DIR}/externals/curl/include)
 ADD_DEPENDENCIES(objhttp2 CURL)
 
 # NUGU Base
@@ -21,7 +20,7 @@ FILE(GLOB SRCS *.c)
 
 ADD_LIBRARY(objbase OBJECT ${SRCS})
 TARGET_INCLUDE_DIRECTORIES(objbase PRIVATE
-	${CMAKE_BINARY_DIR}/curl/include)
+	${CMAKE_SOURCE_DIR}/externals/curl/include)
 TARGET_COMPILE_DEFINITIONS(objbase PRIVATE
 	# Only symbols that use EXPORT_API are visible, and all other symbols are hidden.
 	-DEXPORT_API=__attribute__\(\(visibility\(\"default\"\)\)\)
