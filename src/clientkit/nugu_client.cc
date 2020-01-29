@@ -81,49 +81,9 @@ IWakeupHandler* NuguClient::getWakeupHandler()
     return impl->getWakeupHandler();
 }
 
-IASRHandler* NuguClient::getASRHandler()
+ICapabilityInterface* NuguClient::getCapabilityHandler(const std::string& cname)
 {
-    return dynamic_cast<IASRHandler*>(impl->getCapabilityHandler("ASR"));
-}
-
-ITTSHandler* NuguClient::getTTSHandler()
-{
-    return dynamic_cast<ITTSHandler*>(impl->getCapabilityHandler("TTS"));
-}
-
-IAudioPlayerHandler* NuguClient::getAudioPlayerHandler()
-{
-    return dynamic_cast<IAudioPlayerHandler*>(impl->getCapabilityHandler("AudioPlayer"));
-}
-
-IDisplayHandler* NuguClient::getDisplayHandler()
-{
-    return dynamic_cast<IDisplayHandler*>(impl->getCapabilityHandler("Display"));
-}
-
-ITextHandler* NuguClient::getTextHandler()
-{
-    return dynamic_cast<ITextHandler*>(impl->getCapabilityHandler("Text"));
-}
-
-IExtensionHandler* NuguClient::getExtensionHandler()
-{
-    return dynamic_cast<IExtensionHandler*>(impl->getCapabilityHandler("Extension"));
-}
-
-IDelegationHandler* NuguClient::getDelegationHandler()
-{
-    return dynamic_cast<IDelegationHandler*>(impl->getCapabilityHandler("Delegation"));
-}
-
-ISystemHandler* NuguClient::getSystemHandler()
-{
-    return dynamic_cast<ISystemHandler*>(impl->getCapabilityHandler("System"));
-}
-
-IMicHandler* NuguClient::getMicHandler()
-{
-    return dynamic_cast<IMicHandler*>(impl->getCapabilityHandler("Mic"));
+    return impl->getCapabilityHandler(cname);
 }
 
 INetworkManager* NuguClient::getNetworkManager()

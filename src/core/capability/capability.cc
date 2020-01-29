@@ -90,7 +90,7 @@ void CapabilityEvent::sendEvent(const std::string& context, const std::string& p
 
     nugu_network_manager_send_event(event);
     // dialog_request_id is made every time to send event
-    capability->notifyObservers(DIALOG_REQUEST_ID, (void*)dialog_id.c_str());
+    capability->notifyObservers(CapabilitySignal::DIALOG_REQUEST_ID, (void*)dialog_id.c_str());
 }
 
 void CapabilityEvent::sendAttachmentEvent(bool is_end, size_t size, unsigned char* data)

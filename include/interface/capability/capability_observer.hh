@@ -34,9 +34,9 @@ namespace NuguInterface {
 /**
  * @brief CapabilitySignal
  */
-typedef enum {
+enum class CapabilitySignal {
     DIALOG_REQUEST_ID /**< Dialog request id generated when event is forwarded to server */
-} CapabilitySignal;
+};
 
 /**
  * @brief capability observer interface

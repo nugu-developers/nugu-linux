@@ -20,16 +20,7 @@
 #include <memory>
 #include <string>
 
-#include <interface/capability/asr_interface.hh>
-#include <interface/capability/audio_player_interface.hh>
 #include <interface/capability/capability_interface.hh>
-#include <interface/capability/delegation_interface.hh>
-#include <interface/capability/display_interface.hh>
-#include <interface/capability/extension_interface.hh>
-#include <interface/capability/mic_interface.hh>
-#include <interface/capability/system_interface.hh>
-#include <interface/capability/text_interface.hh>
-#include <interface/capability/tts_interface.hh>
 #include <interface/media_player_interface.hh>
 #include <interface/network_manager_interface.hh>
 #include <interface/nugu_configuration.hh>
@@ -129,64 +120,16 @@ public:
     IWakeupHandler* getWakeupHandler();
 
     /**
-     * @brief Get ASRHandler object
-     * @return IASRHandler if a feature agent has been created with the feature builder, otherwise NULL
+     * @brief Get CapabilityHandler object
+     * @return ICapabilityInterface if a feature agent has been created with the feature builder, otherwise NULL
      */
-    IASRHandler* getASRHandler();
-
-    /**
-     * @brief Get TTSHandler object
-     * @return ITTSHandler if a feature agent has been created with the feature builder, otherwise NULL
-     */
-    ITTSHandler* getTTSHandler();
-
-    /**
-     * @brief Get AudioPlayerHandler object
-     * @return IAudioPlayerHandler if a feature agent has been created with the feature builder, otherwise NULL
-     */
-    IAudioPlayerHandler* getAudioPlayerHandler();
-
-    /**
-     * @brief Get DisplayHandler object
-     * @return IDisplayHandler if a feature agent has been created with the feature builder, otherwise NULL
-     */
-    IDisplayHandler* getDisplayHandler();
-
-    /**
-     * @brief Get TextHandler object
-     * @return ITextHandler if a feature agent has been created with the feature builder, otherwise NULL
-     */
-    ITextHandler* getTextHandler();
-
-    /**
-     * @brief Get ExtensionHandler object
-     * @return IExtensionHandler if a feature agent has been created with the feature builder, otherwise NULL
-     */
-    IExtensionHandler* getExtensionHandler();
-
-    /**
-     * @brief Get DelegationHandler object
-     * @return IDelegationHandler if a feature agent has been created with the feature builder, otherwise NULL
-     */
-    IDelegationHandler* getDelegationHandler();
-
-    /**
-     * @brief Get SystemHandler object
-     * @return ISystemHandler if a feature agent has been created with the feature builder, otherwise NULL
-     */
-    ISystemHandler* getSystemHandler();
+    ICapabilityInterface* getCapabilityHandler(const std::string& cname);
 
     /**
      * @brief Get NetworkManager object
      * @return INetworkManager if a feature agent has been created with the feature builder, otherwise NULL
      */
     INetworkManager* getNetworkManager();
-
-    /**
-     * @brief Get MicHandler object
-     * @return IMicHandler if a feature agent has been created with the feature builder, otherwise NULL
-     */
-    IMicHandler* getMicHandler();
 
     /**
      * @brief Get new media player object
