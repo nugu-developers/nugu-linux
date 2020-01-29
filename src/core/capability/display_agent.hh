@@ -35,7 +35,7 @@ public:
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     // implement DisplayRenderAssembly
-    void onElementSelected(const std::string& item_token);
+    void onElementSelected(const std::string& item_token) override;
 
 private:
     void sendEventElementSelected(const std::string& item_token);
