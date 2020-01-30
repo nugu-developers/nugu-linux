@@ -17,9 +17,9 @@
 #ifndef __SYSTEM_LISTENER_H__
 #define __SYSTEM_LISTENER_H__
 
-#include <interface/capability/system_interface.hh>
+#include <capability/system_interface.hh>
 
-using namespace NuguInterface;
+using namespace NuguCapability;
 
 class SystemListener : public ISystemListener {
 public:

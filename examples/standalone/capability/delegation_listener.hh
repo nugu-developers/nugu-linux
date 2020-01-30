@@ -17,9 +17,9 @@
 #ifndef __DELEGATION_LISTENER_H__
 #define __DELEGATION_LISTENER_H__
 
-#include <interface/capability/delegation_interface.hh>
+#include <capability/delegation_interface.hh>
 
-using namespace NuguInterface;
+using namespace NuguCapability;
 
 class DelegationListener : public IDelegationListener {
 public:

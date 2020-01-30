@@ -17,9 +17,9 @@
 #ifndef __MIC_LISTENER_H__
 #define __MIC_LISTENER_H__
 
-#include <interface/capability/mic_interface.hh>
+#include <capability/mic_interface.hh>
 
-using namespace NuguInterface;
+using namespace NuguCapability;
 
 class MicListener : public IMicListener {
 public:

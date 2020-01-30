@@ -20,13 +20,14 @@
 #include <functional>
 #include <list>
 
-#include "interface/capability/capability_interface.hh"
+#include "capability/capability_interface.hh"
 #include "interface/network_manager_interface.hh"
 #include "interface/wakeup_interface.hh"
 
 namespace NuguCore {
 
 using namespace NuguInterface;
+using namespace NuguCapability;
 
 class CapabilityCreator {
 public:

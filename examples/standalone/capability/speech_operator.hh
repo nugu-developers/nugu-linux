@@ -17,10 +17,11 @@
 #ifndef __SPEECH_OPERATOR_H__
 #define __SPEECH_OPERATOR_H__
 
-#include <interface/capability/asr_interface.hh>
+#include <capability/asr_interface.hh>
 #include <interface/wakeup_interface.hh>
 
 using namespace NuguInterface;
+using namespace NuguCapability;
 
 class SpeechOperator : public IWakeupListener,
                        public IASRListener {

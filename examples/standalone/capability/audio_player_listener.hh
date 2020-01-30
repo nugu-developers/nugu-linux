@@ -17,11 +17,11 @@
 #ifndef __AUDIO_PLAYER_LISTENER_H__
 #define __AUDIO_PLAYER_LISTENER_H__
 
-#include <interface/capability/audio_player_interface.hh>
+#include <capability/audio_player_interface.hh>
 
 #include "display_listener.hh"
 
-using namespace NuguInterface;
+using namespace NuguCapability;
 
 class AudioPlayerListener : public IAudioPlayerListener, public DisplayListener {
 public:

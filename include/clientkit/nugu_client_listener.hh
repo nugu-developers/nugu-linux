@@ -17,11 +17,11 @@
 #ifndef __NUGU_CLIENT_LISTENER_H__
 #define __NUGU_CLIENT_LISTENER_H__
 
-#include <interface/capability/capability_observer.hh>
+#include <capability/capability_observer.hh>
 
 namespace NuguClientKit {
 
-using namespace NuguInterface;
+using namespace NuguCapability;
 
 /**
  * @file nugu_client_listener.hh
@@ -32,7 +32,6 @@ using namespace NuguInterface;
  *
  * @{
  */
-
 
 /**
  * @brief nugu client listener interface

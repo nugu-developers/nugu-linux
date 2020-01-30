@@ -17,9 +17,9 @@
 #ifndef __DISPLAY_LISTENER_H__
 #define __DISPLAY_LISTENER_H__
 
-#include <interface/capability/display_interface.hh>
+#include <capability/display_interface.hh>
 
-using namespace NuguInterface;
+using namespace NuguCapability;
 
 class DisplayListener : virtual public IDisplayListener {
 public:

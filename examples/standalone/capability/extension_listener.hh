@@ -17,9 +17,9 @@
 #ifndef __EXTENSION_LISTENER_H__
 #define __EXTENSION_LISTENER_H__
 
-#include <interface/capability/extension_interface.hh>
+#include <capability/extension_interface.hh>
 
-using namespace NuguInterface;
+using namespace NuguCapability;
 
 class ExtensionListener : public IExtensionListener {
 public:

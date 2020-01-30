@@ -17,9 +17,9 @@
 #ifndef __TTS_LISTENER_H__
 #define __TTS_LISTENER_H__
 
-#include <interface/capability/tts_interface.hh>
+#include <capability/tts_interface.hh>
 
-using namespace NuguInterface;
+using namespace NuguCapability;
 
 class TTSListener : public ITTSListener {
 public:

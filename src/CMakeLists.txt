@@ -1,6 +1,7 @@
 
 ADD_SUBDIRECTORY(base)
 ADD_SUBDIRECTORY(core)
+ADD_SUBDIRECTORY(capability)
 ADD_SUBDIRECTORY(interface)
 ADD_SUBDIRECTORY(clientkit)
 
@@ -10,6 +11,7 @@ ADD_LIBRARY(libnugu SHARED
 	$<TARGET_OBJECTS:objjsoncpp>
 	$<TARGET_OBJECTS:objbase>
 	$<TARGET_OBJECTS:objcore>
+	$<TARGET_OBJECTS:objcapability>
 	$<TARGET_OBJECTS:objinterface>
 	$<TARGET_OBJECTS:objclientkit>)
 

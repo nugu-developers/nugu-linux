@@ -17,9 +17,9 @@
 #ifndef __TEXT_LISTENER_H__
 #define __TEXT_LISTENER_H__
 
-#include <interface/capability/text_interface.hh>
+#include <capability/text_interface.hh>
 
-using namespace NuguInterface;
+using namespace NuguCapability;
 
 class TextListener : public ITextListener {
 public:

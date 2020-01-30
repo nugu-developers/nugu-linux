@@ -23,11 +23,11 @@
 #include <vector>
 
 #include "base/nugu_timer.h"
-#include "interface/capability/capability_interface.hh"
+#include "capability/capability_interface.hh"
 
 namespace NuguCore {
 
-using namespace NuguInterface;
+using namespace NuguCapability;
 
 class IPlaySyncManagerListener {
 public:
