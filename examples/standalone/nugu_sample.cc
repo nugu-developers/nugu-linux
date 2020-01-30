@@ -151,6 +151,10 @@ void registerCapabilities()
 
 void settingCapabilities()
 {
+    /* Control the mic according to the mic state stored in the device. */
+    IMicHandler* mic = getCapabilityHandler<IMicHandler*>("Mic");
+    mic->enable();
+
     /* Setting the speaker information that application can control */
     SpeakerInfo nugu_speaker;
     nugu_speaker.type = SpeakerType::NUGU;
