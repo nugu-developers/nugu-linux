@@ -65,6 +65,8 @@ public:
     void setFavorite(bool favorite) override;
     void setRepeat(RepeatType repeat) override;
     void setShuffle(bool shuffle) override;
+    bool setVolume(int volume) override;
+    bool setMute(bool mute) override;
 
     void sendEventPlaybackStarted();
     void sendEventPlaybackFinished();

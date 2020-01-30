@@ -89,6 +89,13 @@ public:
      * @param[in] play_service_id received from server
      */
     virtual void requestTTS(const std::string& text, const std::string& play_service_id) = 0;
+
+    /**
+     * @brief set pcm player's volume
+     * @param[in] volume volume level
+     * @return result of set volume
+     */
+    virtual bool setVolume(int volume) = 0;
 };
 
 /**

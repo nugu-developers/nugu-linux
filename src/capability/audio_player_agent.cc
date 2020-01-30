@@ -219,6 +219,32 @@ void AudioPlayerAgent::setShuffle(bool shuffle)
     sendEvent(ename, getContextInfo(), payload);
 }
 
+bool AudioPlayerAgent::setVolume(int volume)
+{
+    nugu_dbg("set media player's volume: %d", volume);
+    if (!player)
+        return false;
+
+    if (player->setVolume(volume))
+        return false;
+
+    nugu_dbg("media player's volume(%d) changed..", volume);
+    return true;
+}
+
+bool AudioPlayerAgent::setMute(bool mute)
+{
+    nugu_dbg("set media player's mute: %d", mute);
+    if (!player)
+        return false;
+
+    if (player->setMute(mute))
+        return false;
+
+    nugu_dbg("media player's mute(%d) changed..", mute);
+    return true;
+}
+
 void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
 {
     nugu_dbg("message: %s", message);

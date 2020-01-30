@@ -87,7 +87,7 @@ void TTSAgent::initialize()
     nugu_pcm_set_status_callback(pcm, pcmStatusCallback, this);
     nugu_pcm_set_event_callback(pcm, pcmEventCallback, this);
 
-    nugu_pcm_set_property(pcm, (NuguAudioProperty) { AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
+    nugu_pcm_set_property(pcm, (NuguAudioProperty){ AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
 
     CapabilityManager::getInstance()->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
@@ -242,6 +242,19 @@ void TTSAgent::requestTTS(const std::string& text, const std::string& play_servi
     free(uuid);
 
     sendEventSpeechPlay(token, text, play_service_id);
+}
+
+bool TTSAgent::setVolume(int volume)
+{
+    nugu_dbg("set pcm player's volume: %d", volume);
+    if (!pcm)
+        return false;
+
+    if (nugu_pcm_set_volume(pcm, volume) != 0)
+        return false;
+
+    nugu_dbg("pcm player's volume(%d) changed..", volume);
+    return true;
 }
 
 void TTSAgent::parsingDirective(const char* dname, const char* message)
