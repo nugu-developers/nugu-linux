@@ -20,7 +20,7 @@
 #include <map>
 #include <string>
 
-namespace NuguInterface {
+namespace NuguClientKit {
 
 /**
  * @file nugu_configuration.hh
@@ -57,6 +57,6 @@ private:
     static std::map<Key, std::string> configs;
 };
 
-} // NuguInterface
+} // NuguClientKit
 
 #endif /* __NUGU_CONFIGURATION__ */

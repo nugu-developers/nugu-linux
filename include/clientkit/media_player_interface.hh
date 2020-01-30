@@ -19,12 +19,12 @@
 
 #include <string>
 
-namespace NuguInterface {
+namespace NuguClientKit {
 
 /**
  * @file media_player_interface.hh
  * @defgroup MediaPlayerInterface MediaPlayerInterface
- * @ingroup SDKNuguInterface
+ * @ingroup SDKNuguClientKit
  * @brief Media Player Interface
  *
  * Playback media content and receive content information through the media player interface.
@@ -251,6 +251,6 @@ public:
  * @}
  */
 
-} // NuguInterface
+} // NuguClientKit
 
 #endif

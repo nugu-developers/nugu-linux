@@ -19,14 +19,14 @@
 
 #include <memory>
 
-#include "interface/wakeup_interface.hh"
+#include "clientkit/wakeup_interface.hh"
 
 #include "capability_manager.hh"
 #include "wakeup_detector.hh"
 
 namespace NuguCore {
 
-using namespace NuguInterface;
+using namespace NuguClientKit;
 
 class WakeupHandler : public IWakeupHandler,
                       public IWakeupDetectorListener {

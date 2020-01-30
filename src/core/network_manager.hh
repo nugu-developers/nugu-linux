@@ -19,11 +19,11 @@
 
 #include <vector>
 
-#include "interface/network_manager_interface.hh"
+#include "clientkit/network_manager_interface.hh"
 
 namespace NuguCore {
 
-using namespace NuguInterface;
+using namespace NuguClientKit;
 
 class NetworkManager : public INetworkManager {
 public:

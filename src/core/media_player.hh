@@ -21,11 +21,11 @@
 
 #include "base/nugu_media.h"
 
-#include "interface/media_player_interface.hh"
+#include "clientkit/media_player_interface.hh"
 
 namespace NuguCore {
 
-using namespace NuguInterface;
+using namespace NuguClientKit;
 
 class MediaPlayerPrivate;
 class MediaPlayer : public IMediaPlayer {

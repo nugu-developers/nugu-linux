@@ -17,12 +17,12 @@
 #ifndef __NUGU_WAKEUP_INTERFACE_H__
 #define __NUGU_WAKEUP_INTERFACE_H__
 
-namespace NuguInterface {
+namespace NuguClientKit {
 
 /**
  * @file wakeup_interface.hh
  * @defgroup WakeupInterface
- * @ingroup SDKNuguInterface
+ * @ingroup SDKNuguClientKit
  * @brief Wakeup interface
  *
  * Start the wakeup engine and receive the status of wakeup.
@@ -85,6 +85,6 @@ public:
  * @}
  */
 
-} // NuguInterface
+} // NuguClientKit
 
 #endif /* __NUGU_WAKEUP_INTERFACE_H__ */

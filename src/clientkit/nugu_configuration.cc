@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "interface/nugu_configuration.hh"
+#include "clientkit/nugu_configuration.hh"
 
-namespace NuguInterface {
+namespace NuguClientKit {
 
 std::map<NuguConfig::Key, std::string> NuguConfig::configs;
 
@@ -53,4 +53,4 @@ void NuguConfig::setValue(Key key, const std::string& value)
     configs[key] = value;
 }
 
-} // NuguInterface
+} // NuguClientKit

@@ -21,13 +21,13 @@
 #include "capability.hh"
 #include "capability/audio_player_interface.hh"
 #include "capability/display_interface.hh"
+#include "clientkit/media_player_interface.hh"
 #include "core/capability_manager.hh"
 #include "display_render_assembly.hh"
-#include "interface/media_player_interface.hh"
 
 namespace NuguCapability {
 
-using namespace NuguInterface;
+using namespace NuguClientKit;
 
 class AudioPlayerAgent : public Capability,
                          public IMediaPlayerListener,
