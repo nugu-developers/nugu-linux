@@ -14,37 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __CAPABILITY_CREATOR_H__
-#define __CAPABILITY_CREATOR_H__
+#ifndef __NUGU_CORE_CONTAINER_H__
+#define __NUGU_CORE_CONTAINER_H__
 
-#include <functional>
-#include <list>
-
-#include "capability/capability_interface.hh"
-#include "interface/network_manager_interface.hh"
-#include "interface/wakeup_interface.hh"
+#include "clientkit/network_manager_interface.hh"
+#include "clientkit/wakeup_interface.hh"
 
 namespace NuguCore {
 
-using namespace NuguInterface;
-using namespace NuguCapability;
+using namespace NuguClientKit;
 
-class CapabilityCreator {
+class NuguCoreContainer {
 public:
-    CapabilityCreator() = delete;
+    NuguCoreContainer() = delete;
 
     static IWakeupHandler* createWakeupHandler();
     static INetworkManager* createNetworkManager();
-
-    struct Element {
-        std::string name;
-        bool is_default;
-        std::function<ICapabilityInterface*()> creator;
-    };
-
-    static const std::list<Element>& getCapabilityList();
 };
 
 } // NuguCore
 
-#endif /* __CAPABILITY_CREATOR_H__ */
+#endif /* __NUGU_CORE_CONTAINER_H__ */

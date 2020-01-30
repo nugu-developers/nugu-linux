@@ -13,11 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "interface/network_manager_interface.hh"
+#include "clientkit/network_manager_interface.hh"
 
-namespace NuguInterface {
+namespace NuguClientKit {
 
 void INetworkManagerListener::onStatusChanged(NetworkStatus status) {}
 void INetworkManagerListener::onError(NetworkError error) {}
 
-} //NuguInterface
+} //NuguClientKit

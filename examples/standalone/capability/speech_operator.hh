@@ -18,9 +18,9 @@
 #define __SPEECH_OPERATOR_H__
 
 #include <capability/asr_interface.hh>
-#include <interface/wakeup_interface.hh>
+#include <clientkit/wakeup_interface.hh>
 
-using namespace NuguInterface;
+using namespace NuguClientKit;
 using namespace NuguCapability;
 
 class SpeechOperator : public IWakeupListener,

@@ -21,16 +21,13 @@
 #include <string>
 
 #include <capability/capability_interface.hh>
-#include <interface/media_player_interface.hh>
-#include <interface/network_manager_interface.hh>
-#include <interface/nugu_configuration.hh>
-#include <interface/wakeup_interface.hh>
-
+#include <clientkit/media_player_interface.hh>
+#include <clientkit/network_manager_interface.hh>
 #include <clientkit/nugu_client_listener.hh>
+#include <clientkit/nugu_configuration.hh>
+#include <clientkit/wakeup_interface.hh>
 
 namespace NuguClientKit {
-
-using namespace NuguInterface;
 
 /**
  * @file nugu_client.hh

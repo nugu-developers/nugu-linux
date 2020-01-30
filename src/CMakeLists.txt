@@ -2,7 +2,6 @@
 ADD_SUBDIRECTORY(base)
 ADD_SUBDIRECTORY(core)
 ADD_SUBDIRECTORY(capability)
-ADD_SUBDIRECTORY(interface)
 ADD_SUBDIRECTORY(clientkit)
 
 # NUGU SDK Library
@@ -12,7 +11,6 @@ ADD_LIBRARY(libnugu SHARED
 	$<TARGET_OBJECTS:objbase>
 	$<TARGET_OBJECTS:objcore>
 	$<TARGET_OBJECTS:objcapability>
-	$<TARGET_OBJECTS:objinterface>
 	$<TARGET_OBJECTS:objclientkit>)
 
 TARGET_LINK_LIBRARIES(libnugu PUBLIC

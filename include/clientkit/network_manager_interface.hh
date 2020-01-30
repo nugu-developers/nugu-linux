@@ -19,12 +19,12 @@
 
 #include <string>
 
-namespace NuguInterface {
+namespace NuguClientKit {
 
 /**
  * @file network_manager_interface.hh
  * @defgroup NetworkManagerInterface
- * @ingroup SDKNuguInterface
+ * @ingroup SDKNuguClientKit
  * @brief Network Manager interface
  *
  * The network manager controls the NUGU server connection
@@ -113,6 +113,6 @@ public:
  * @}
  */
 
-} // NuguInterface
+} // NuguClientKit
 
 #endif /* __NUGU_INETWORK_MANAGER_INTERFACE_H__ */

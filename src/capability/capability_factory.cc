@@ -14,23 +14,20 @@
  * limitations under the License.
  */
 
-#include "capability/asr_agent.hh"
-#include "capability/audio_player_agent.hh"
-#include "capability/delegation_agent.hh"
-#include "capability/display_agent.hh"
-#include "capability/extension_agent.hh"
-#include "capability/location_agent.hh"
-#include "capability/mic_agent.hh"
-#include "capability/system_agent.hh"
-#include "capability/text_agent.hh"
-#include "capability/tts_agent.hh"
+#include "asr_agent.hh"
+#include "audio_player_agent.hh"
+#include "delegation_agent.hh"
+#include "display_agent.hh"
+#include "extension_agent.hh"
+#include "location_agent.hh"
+#include "mic_agent.hh"
+#include "system_agent.hh"
+#include "text_agent.hh"
+#include "tts_agent.hh"
 
-#include "network_manager.hh"
-#include "wakeup_handler.hh"
+#include "capability/capability_factory.hh"
 
-#include "capability_creator.hh"
-
-namespace NuguCore {
+namespace NuguCapability {
 
 // for restricting access to only this file
 namespace {
@@ -41,9 +38,9 @@ namespace {
     }
 }
 
-using CapabilityElement = CapabilityCreator::Element;
+using CapabilityElement = CapabilityFactory::Element;
 
-const std::list<CapabilityElement>& CapabilityCreator::getCapabilityList()
+const std::list<CapabilityElement>& CapabilityFactory::getCapabilityList()
 {
     static std::list<CapabilityElement> CAPABILITY_LIST {
         CapabilityElement { "ASR", true, &create<ASRAgent> },
@@ -60,15 +57,4 @@ const std::list<CapabilityElement>& CapabilityCreator::getCapabilityList()
 
     return CAPABILITY_LIST;
 }
-
-IWakeupHandler* CapabilityCreator::createWakeupHandler()
-{
-    return new WakeupHandler();
-}
-
-INetworkManager* CapabilityCreator::createNetworkManager()
-{
-    return new NetworkManager();
-}
-
-} // NuguCore
+} // NuguCapability

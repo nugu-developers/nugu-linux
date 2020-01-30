@@ -17,14 +17,14 @@
 #include <string.h>
 
 #include "base/nugu_log.h"
+#include "clientkit/nugu_configuration.hh"
 #include "core/capability_manager.hh"
-#include "interface/nugu_configuration.hh"
 
 #include "text_agent.hh"
 
 namespace NuguCapability {
 
-using namespace NuguInterface;
+using namespace NuguClientKit;
 
 static const char* CAPABILITY_NAME = "Text";
 static const char* CAPABILITY_VERSION = "1.0";

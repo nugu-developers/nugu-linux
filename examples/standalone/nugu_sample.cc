@@ -17,7 +17,7 @@
 #include <iostream>
 
 #include <clientkit/nugu_client.hh>
-#include <interface/nugu_configuration.hh>
+#include <clientkit/nugu_configuration.hh>
 
 #include "audio_player_listener.hh"
 #include "delegation_listener.hh"

@@ -19,13 +19,13 @@
 #include <chrono>
 
 #include "base/nugu_log.h"
-#include "interface/nugu_configuration.hh"
+#include "clientkit/nugu_configuration.hh"
 
 #include "asr_agent.hh"
 
 namespace NuguCapability {
 
-using namespace NuguInterface;
+using namespace NuguClientKit;
 
 static const char* CAPABILITY_NAME = "ASR";
 static const char* CAPABILITY_VERSION = "1.0";

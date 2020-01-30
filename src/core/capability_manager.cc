@@ -17,13 +17,13 @@
 #include <cmath>
 
 #include "base/nugu_log.h"
-#include "interface/nugu_configuration.hh"
+#include "clientkit/nugu_configuration.hh"
 
 #include "capability_manager.hh"
 
 namespace NuguCore {
 
-using namespace NuguInterface;
+using namespace NuguClientKit;
 
 CapabilityManager* CapabilityManager::instance = NULL;
 

@@ -22,12 +22,13 @@
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
 
+#include "capability/capability_factory.hh"
 #include "capability/system_interface.hh"
 
 #include "core/audio_recorder_manager.hh"
-#include "core/capability_creator.hh"
 #include "core/capability_manager_helper.hh"
 #include "core/media_player.hh"
+#include "core/nugu_core_container.hh"
 
 #include "nugu_client_impl.hh"
 
@@ -40,7 +41,7 @@ NuguClientImpl::NuguClientImpl()
     nugu_equeue_initialize();
     NuguConfig::loadDefaultValue();
 
-    network_manager = std::unique_ptr<INetworkManager>(CapabilityCreator::createNetworkManager());
+    network_manager = std::unique_ptr<INetworkManager>(NuguCoreContainer::createNetworkManager());
     network_manager->addListener(this);
 }
 
@@ -86,7 +87,7 @@ ICapabilityInterface* NuguClientImpl::getCapabilityHandler(const std::string& cn
 IWakeupHandler* NuguClientImpl::getWakeupHandler()
 {
     if (!wakeup_handler)
-        wakeup_handler = CapabilityCreator::createWakeupHandler();
+        wakeup_handler = NuguCoreContainer::createWakeupHandler();
 
     return wakeup_handler;
 }
@@ -108,7 +109,7 @@ int NuguClientImpl::createCapabilities(void)
      *  - icapability_map[CAPABILITY.type].first : ICapabilityInterface instance
      *  - icapability_map[CAPABILITY.type].second : ICapabilityListener instance
      */
-    for (auto const& CAPABILITY : CapabilityCreator::getCapabilityList()) {
+    for (auto const& CAPABILITY : CapabilityFactory::getCapabilityList()) {
         // if user didn't add and it's not a required agent, skip to create
         if (icapability_map.find(CAPABILITY.name) == icapability_map.end() && !CAPABILITY.is_default)
             continue;

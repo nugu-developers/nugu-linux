@@ -17,13 +17,13 @@
 #include <endpoint_detector.h>
 
 #include "base/nugu_log.h"
-#include "interface/nugu_configuration.hh"
+#include "clientkit/nugu_configuration.hh"
 
 #include "speech_recognizer.hh"
 
 namespace NuguCore {
 
-using namespace NuguInterface;
+using namespace NuguClientKit;
 
 SpeechRecognizer::SpeechRecognizer()
 {
