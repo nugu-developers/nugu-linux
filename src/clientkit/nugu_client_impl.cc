@@ -22,7 +22,7 @@
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
 
-#include "interface/capability/system_interface.hh"
+#include "capability/system_interface.hh"
 
 #include "core/audio_recorder_manager.hh"
 #include "core/capability_creator.hh"

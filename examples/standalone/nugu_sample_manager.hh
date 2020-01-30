@@ -19,8 +19,8 @@
 
 #include <glib.h>
 
-#include <interface/capability/text_interface.hh>
-#include <interface/capability/mic_interface.hh>
+#include <capability/mic_interface.hh>
+#include <capability/text_interface.hh>
 
 #include "speech_operator.hh"
 

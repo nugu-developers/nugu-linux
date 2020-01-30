@@ -9,25 +9,32 @@
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or` implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 
-#ifndef __LOCATION_LISTENER_H__
-#define __LOCATION_LISTENER_H__
+#ifndef __NUGU_LOCATION_AGENT_H__
+#define __NUGU_LOCATION_AGENT_H__
 
-#include <capability/location_interface.hh>
+#include "capability/location_interface.hh"
 
-using namespace NuguCapability;
+#include "capability.hh"
 
-class LocationListener : public ILocationListener {
+namespace NuguCapability {
+
+class LocationAgent : public Capability {
 public:
-    void requestContext(LocationInfo& location_info) override;
-    void setPermissionGranted(bool is_granted);
+    LocationAgent();
+    virtual ~LocationAgent();
+
+    void setCapabilityListener(ICapabilityListener* clistener) override;
+    void updateInfoForContext(Json::Value& ctx) override;
 
 private:
-    bool is_permission_granted = false;
+    ILocationListener* location_listener = nullptr;
 };
 
-#endif /* __LOCATION_LISTENER_H__ */
+} // NuguCapability
+
+#endif /* __NUGU_LOCATION_AGENT_H__ */

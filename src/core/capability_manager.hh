@@ -22,7 +22,7 @@
 
 #include "base/nugu_directive_sequencer.h"
 #include "base/nugu_focus.h"
-#include "interface/capability/capability_interface.hh"
+#include "capability/capability_interface.hh"
 
 #include "playsync_manager.hh"
 
