@@ -25,6 +25,7 @@
 #include "extension_listener.hh"
 #include "location_listener.hh"
 #include "mic_listener.hh"
+#include "speaker_listener.hh"
 #include "speech_operator.hh"
 #include "system_listener.hh"
 #include "text_listener.hh"
@@ -45,6 +46,7 @@ std::unique_ptr<TextListener> text_listener = nullptr;
 std::unique_ptr<ExtensionListener> extension_listener = nullptr;
 std::unique_ptr<DelegationListener> delegation_listener = nullptr;
 std::unique_ptr<LocationListener> location_listener = nullptr;
+std::unique_ptr<SpeakerListener> speaker_listener = nullptr;
 std::unique_ptr<MicListener> mic_listener = nullptr;
 
 template <typename T, typename... Ts>
@@ -142,8 +144,38 @@ void registerCapabilities()
         ->add("Extension", extension_listener.get())
         ->add("Delegation", delegation_listener.get())
         ->add("Location", location_listener.get())
+        ->add("Speaker", speaker_listener.get())
         ->add("Mic", mic_listener.get())
         ->construct();
+}
+
+void settingCapabilities()
+{
+    /* Setting the speaker information that application can control */
+    SpeakerInfo nugu_speaker;
+    nugu_speaker.type = SpeakerType::NUGU;
+    nugu_speaker.can_control = true;
+
+    SpeakerInfo call_speaker;
+    call_speaker.type = SpeakerType::CALL;
+    call_speaker.can_control = false;
+
+    SpeakerInfo alarm_speaker;
+    alarm_speaker.type = SpeakerType::ALARM;
+    alarm_speaker.can_control = false;
+
+    SpeakerInfo external_speaker;
+    external_speaker.type = SpeakerType::EXTERNAL;
+    external_speaker.can_control = false;
+
+    std::map<SpeakerType, SpeakerInfo*> speakers;
+    speakers[SpeakerType::NUGU] = &nugu_speaker;
+    speakers[SpeakerType::CALL] = &call_speaker;
+    speakers[SpeakerType::ALARM] = &alarm_speaker;
+    speakers[SpeakerType::EXTERNAL] = &external_speaker;
+
+    ISpeakerHandler* speaker = getCapabilityHandler<ISpeakerHandler*>("Speaker");
+    speaker->setSpeakerInfo(speakers);
 }
 
 int main(int argc, char** argv)
@@ -168,6 +200,7 @@ int main(int argc, char** argv)
     extension_listener = make_unique<ExtensionListener>();
     delegation_listener = make_unique<DelegationListener>();
     location_listener = make_unique<LocationListener>();
+    speaker_listener = make_unique<SpeakerListener>();
     mic_listener = make_unique<MicListener>();
 
     auto nugu_client_listener(make_unique<NuguClientListener>());
@@ -178,6 +211,7 @@ int main(int argc, char** argv)
     nugu_client->setListener(nugu_client_listener.get());
 
     registerCapabilities();
+    settingCapabilities();
 
     INetworkManager* network_manager = nugu_client->getNetworkManager();
     network_manager->addListener(network_manager_listener.get());
@@ -190,18 +224,39 @@ int main(int argc, char** argv)
 
     if (!nugu_client->initialize()) {
         msg_error("< It failed to initialize NUGU SDK. Please Check authorization.");
-    } else {
-        speech_operator->setWakeupHandler(nugu_client->getWakeupHandler());
-        speech_operator->setASRHandler(getCapabilityHandler<IASRHandler*>("ASR"));
-
-        nugu_sample_manager->setTextHandler(getCapabilityHandler<ITextHandler*>("Text"))
-            ->setSpeechOperator(speech_operator.get())
-            ->setNetworkCallback(NuguSampleManager::NetworkCallback {
-                [&]() { return network_manager->connect(); },
-                [&]() { return network_manager->disconnect(); } })
-            ->setMicHandler(getCapabilityHandler<IMicHandler*>("Mic"))
-            ->runLoop();
+        return EXIT_FAILURE;
     }
+
+    speech_operator->setWakeupHandler(nugu_client->getWakeupHandler());
+    speech_operator->setASRHandler(getCapabilityHandler<IASRHandler*>("ASR"));
+    speaker_listener->setSpeakerHandler(getCapabilityHandler<ISpeakerHandler*>("Speaker"));
+    speaker_listener->setVolumeNuguSpeaker([&](int volume) {
+        ITTSHandler* tts = getCapabilityHandler<ITTSHandler*>("TTS");
+        if (tts && !tts->setVolume(volume))
+            return false;
+        IAudioPlayerHandler* aplayer = getCapabilityHandler<IAudioPlayerHandler*>("AudioPlayer");
+        if (aplayer && !aplayer->setVolume(volume))
+            return false;
+        return true;
+    });
+    speaker_listener->setMuteNuguSpeaker([&](bool mute) {
+        ITTSHandler* tts = getCapabilityHandler<ITTSHandler*>("TTS");
+        if (!tts)
+            return false;
+        tts->stopTTS();
+        IAudioPlayerHandler* aplayer = getCapabilityHandler<IAudioPlayerHandler*>("AudioPlayer");
+        if (aplayer && !aplayer->setMute(mute))
+            return false;
+        return true;
+    });
+
+    nugu_sample_manager->setTextHandler(getCapabilityHandler<ITextHandler*>("Text"))
+        ->setSpeechOperator(speech_operator.get())
+        ->setNetworkCallback(NuguSampleManager::NetworkCallback{
+            [&]() { return network_manager->connect(); },
+            [&]() { return network_manager->disconnect(); } })
+        ->setMicHandler(getCapabilityHandler<IMicHandler*>("Mic"))
+        ->runLoop();
 
     nugu_client->deInitialize();
 
