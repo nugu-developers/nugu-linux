@@ -177,6 +177,20 @@ public:
     virtual void setShuffle(bool shuffle) = 0;
 
     /**
+     * @brief set media player's volume
+     * @param[in] volume volume level
+     * @return result of set volume
+     */
+    virtual bool setVolume(int volume) = 0;
+
+    /**
+     * @brief set media player's mute
+     * @param[in] mute volume mute
+     * @return result of set mute
+     */
+    virtual bool setMute(bool mute) = 0;
+
+    /**
      * @brief Add the Listener object
      * @param[in] listener listener object
      */

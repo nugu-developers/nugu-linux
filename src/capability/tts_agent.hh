@@ -39,6 +39,7 @@ public:
 
     void stopTTS() override;
     void requestTTS(const std::string& text, const std::string& play_service_id) override;
+    bool setVolume(int volume) override;
 
     void sendEventSpeechStarted(const std::string& token);
     void sendEventSpeechFinished(const std::string& token);
