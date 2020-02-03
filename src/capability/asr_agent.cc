@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
+#include <chrono>
 #include <string.h>
 
-#include <chrono>
-
-#include "base/nugu_log.h"
-#include "clientkit/nugu_configuration.hh"
-
 #include "asr_agent.hh"
+#include "base/nugu_log.h"
 
 namespace NuguCapability {
 
-using namespace NuguClientKit;
-
 static const char* CAPABILITY_NAME = "ASR";
 static const char* CAPABILITY_VERSION = "1.0";
+
+// define default attribute values
+static const char* ASR_EPD_TYPE = "CLIENT";
+static const char* ASR_ENCODING = "COMPLETE";
+static const int SERVER_RESPONSE_TIMEOUT_MSEC = 10000;
 
 class ASRFocusListener : public IFocusListener {
 public:
@@ -144,6 +144,10 @@ ASRAgent::ASRAgent()
     , timer(nullptr)
     , asr_focus_listener(nullptr)
     , expect_focus_listener(nullptr)
+    , model_path("")
+    , epd_type(ASR_EPD_TYPE)
+    , asr_encoding(ASR_ENCODING)
+    , response_timeout(SERVER_RESPONSE_TIMEOUT_MSEC)
 {
 }
 
@@ -163,6 +167,21 @@ ASRAgent::~ASRAgent()
     delete expect_focus_listener;
 }
 
+void ASRAgent::setAttribute(ASRAttribute&& attribute)
+{
+    // It's not check validation, just bypass to SpeechRecognizer.
+    model_path = attribute.model_path;
+
+    if (!attribute.epd_type.empty())
+        epd_type = attribute.epd_type;
+
+    if (!attribute.asr_encoding.empty())
+        asr_encoding = attribute.asr_encoding;
+
+    if (attribute.response_timeout > 0)
+        response_timeout = attribute.response_timeout;
+}
+
 void ASRAgent::initialize()
 {
     if (initialized) {
@@ -170,14 +189,13 @@ void ASRAgent::initialize()
         return;
     }
 
-    epd_type = NuguConfig::getValue(NuguConfig::Key::ASR_EPD_TYPE);
-    asr_encoding = NuguConfig::getValue(NuguConfig::Key::ASR_ENCODING);
+    SpeechRecognizer::Attribute sr_attribute;
+    sr_attribute.model_path = model_path;
 
-    speech_recognizer = std::unique_ptr<SpeechRecognizer>(new SpeechRecognizer());
+    speech_recognizer = std::unique_ptr<SpeechRecognizer>(new SpeechRecognizer(std::move(sr_attribute)));
     speech_recognizer->setListener(this);
 
-    std::string timeout = NuguConfig::getValue(NuguConfig::Key::SERVER_RESPONSE_TIMEOUT_MSEC);
-    timer = nugu_timer_new(std::stoi(timeout), 1);
+    timer = nugu_timer_new(response_timeout, 1);
     nugu_timer_set_callback(
         timer, [](void* userdata) {
             ASRAgent* asr = static_cast<ASRAgent*>(userdata);

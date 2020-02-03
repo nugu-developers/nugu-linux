@@ -46,6 +46,8 @@ class ASRAgent : public Capability,
 public:
     ASRAgent();
     virtual ~ASRAgent();
+
+    void setAttribute(ASRAttribute&& attribute) override;
     void initialize() override;
 
     void startRecognition(void) override;
@@ -91,14 +93,18 @@ private:
     CapabilityEvent* rec_event;
     NuguTimer* timer;
     std::unique_ptr<SpeechRecognizer> speech_recognizer;
-    std::string epd_type;
-    std::string asr_encoding;
     std::string all_context_info;
     std::string dialog_id;
     IFocusListener* asr_focus_listener;
     IFocusListener* expect_focus_listener;
     std::vector<IASRListener*> asr_listeners;
     ListeningState prev_listening_state = ListeningState::DONE;
+
+    // attribute
+    std::string model_path;
+    std::string epd_type;
+    std::string asr_encoding;
+    int response_timeout;
 };
 
 } // NuguCapability

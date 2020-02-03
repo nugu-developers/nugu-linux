@@ -32,6 +32,8 @@ class TTSAgent : public Capability,
 public:
     TTSAgent();
     virtual ~TTSAgent();
+
+    void setAttribute(TTSAttribute&& attribute) override;
     void initialize() override;
 
     void parsingDirective(const char* dname, const char* message) override;
@@ -75,6 +77,9 @@ private:
     std::string ps_id;
     std::string playstackctl_ps_id;
     ITTSListener* tts_listener;
+
+    // attribute
+    std::string tts_engine;
 };
 
 } // NuguCapability

@@ -16,8 +16,8 @@
 
 #include <iostream>
 
+#include <capability/capability_factory.hh>
 #include <clientkit/nugu_client.hh>
-#include <clientkit/nugu_configuration.hh>
 
 #include "audio_player_listener.hh"
 #include "delegation_listener.hh"
@@ -133,9 +133,13 @@ void registerCapabilities()
     if (!nugu_client)
         return;
 
+    // It needs for setting model path to SpeechRecognizer
+    IASRHandler* asr_agent = CapabilityFactory::makeCapability<ASRAgent, IASRHandler>();
+    asr_agent->setAttribute(ASRAttribute { nugu_sample_manager->getModelPath() });
+
     // create capability instance. It's possible to set user customized capability using below builder
     nugu_client->getCapabilityBuilder()
-        ->add("ASR", speech_operator->getASRListener())
+        ->add("ASR", speech_operator->getASRListener(), asr_agent)
         ->add("TTS", tts_listener.get())
         ->add("AudioPlayer", aplayer_listener.get())
         ->add("System", system_listener.get())
@@ -211,7 +215,6 @@ int main(int argc, char** argv)
     auto network_manager_listener(make_unique<NetworkManagerListener>());
 
     nugu_client = make_unique<NuguClient>();
-    nugu_client->setConfig(NuguConfig::Key::MODEL_PATH, nugu_sample_manager->getModelPath());
     nugu_client->setListener(nugu_client_listener.get());
 
     registerCapabilities();
@@ -231,7 +234,7 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    speech_operator->setWakeupHandler(nugu_client->getWakeupHandler());
+    speech_operator->setWakeupHandler(nugu_client->getWakeupHandler(nugu_sample_manager->getModelPath()));
     speech_operator->setASRHandler(getCapabilityHandler<IASRHandler*>("ASR"));
     speaker_listener->setSpeakerHandler(getCapabilityHandler<ISpeakerHandler*>("Speaker"));
     speaker_listener->setVolumeNuguSpeaker([&](int volume) {
@@ -256,7 +259,7 @@ int main(int argc, char** argv)
 
     nugu_sample_manager->setTextHandler(getCapabilityHandler<ITextHandler*>("Text"))
         ->setSpeechOperator(speech_operator.get())
-        ->setNetworkCallback(NuguSampleManager::NetworkCallback{
+        ->setNetworkCallback(NuguSampleManager::NetworkCallback {
             [&]() { return network_manager->connect(); },
             [&]() { return network_manager->disconnect(); } })
         ->setMicHandler(getCapabilityHandler<IMicHandler*>("Mic"))

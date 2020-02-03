@@ -24,6 +24,18 @@
 
 namespace NuguCapability {
 
+class ASRAgent;
+class TTSAgent;
+class AudioPlayerAgent;
+class SystemAgent;
+class DisplayAgent;
+class ExtensionAgent;
+class TextAgent;
+class DelegationAgent;
+class LocationAgent;
+class SpeakerAgent;
+class MicAgent;
+
 class CapabilityFactory {
 public:
     CapabilityFactory() = delete;
@@ -36,7 +48,8 @@ public:
 
     static const std::list<Element>& getCapabilityList();
 
-    // TODO : compose method for creating capability agent instance
+    template <typename T, typename V, typename... Ts>
+    static V* makeCapability(Ts&&... params);
 };
 
 }

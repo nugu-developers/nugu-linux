@@ -47,6 +47,10 @@ enum class TextError {
     RESPONSE_TIMEOUT /** Server response timeout for text input request */
 };
 
+typedef struct {
+    int response_timeout;
+} TextAttribute;
+
 /**
  * @brief text listener interface
  * @see ITextHandler
@@ -87,6 +91,12 @@ public:
      * @return true if a NUGU service request succeeds with user text, otherwise false
      */
     virtual bool requestTextInput(std::string text) = 0;
+
+    /**
+     * @brief Set attribute about response
+     * @param[in] attribute attribute object
+     */
+    virtual void setAttribute(TextAttribute&& attribute) = 0;
 };
 
 /**

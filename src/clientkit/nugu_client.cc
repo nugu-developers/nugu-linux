@@ -51,11 +51,6 @@ NuguClient::~NuguClient()
 {
 }
 
-void NuguClient::setConfig(NuguConfig::Key key, const std::string& value)
-{
-    impl->setConfig(key, value);
-}
-
 void NuguClient::setListener(INuguClientListener* listener)
 {
     impl->setListener(listener);
@@ -76,9 +71,9 @@ void NuguClient::deInitialize(void)
     impl->deInitialize();
 }
 
-IWakeupHandler* NuguClient::getWakeupHandler()
+IWakeupHandler* NuguClient::getWakeupHandler(const std::string& model_path)
 {
-    return impl->getWakeupHandler();
+    return impl->getWakeupHandler(model_path);
 }
 
 ICapabilityInterface* NuguClient::getCapabilityHandler(const std::string& cname)

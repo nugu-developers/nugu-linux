@@ -17,17 +17,17 @@
 #include <string.h>
 
 #include "base/nugu_log.h"
-#include "clientkit/nugu_configuration.hh"
 #include "core/capability_manager.hh"
 
 #include "text_agent.hh"
 
 namespace NuguCapability {
 
-using namespace NuguClientKit;
-
 static const char* CAPABILITY_NAME = "Text";
 static const char* CAPABILITY_VERSION = "1.0";
+
+// define default property values
+static const int SERVER_RESPONSE_TIMEOUT_MSEC = 10000;
 
 TextAgent::TextAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -35,6 +35,7 @@ TextAgent::TextAgent()
     , timer(nullptr)
     , cur_state(TextState::IDLE)
     , cur_dialog_id("")
+    , response_timeout(SERVER_RESPONSE_TIMEOUT_MSEC)
 {
 }
 
@@ -46,6 +47,12 @@ TextAgent::~TextAgent()
     }
 }
 
+void TextAgent::setAttribute(TextAttribute&& attribute)
+{
+    if (attribute.response_timeout > 0)
+        response_timeout = attribute.response_timeout;
+}
+
 void TextAgent::initialize()
 {
     if (initialized) {
@@ -53,8 +60,7 @@ void TextAgent::initialize()
         return;
     }
 
-    std::string timeout = NuguConfig::getValue(NuguConfig::Key::SERVER_RESPONSE_TIMEOUT_MSEC);
-    timer = nugu_timer_new(std::stoi(timeout), 1);
+    timer = nugu_timer_new(response_timeout, 1);
     nugu_timer_set_callback(
         timer, [](void* userdata) {
             TextAgent* text = static_cast<TextAgent*>(userdata);

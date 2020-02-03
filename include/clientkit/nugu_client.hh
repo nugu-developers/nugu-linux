@@ -24,7 +24,6 @@
 #include <clientkit/media_player_interface.hh>
 #include <clientkit/network_manager_interface.hh>
 #include <clientkit/nugu_client_listener.hh>
-#include <clientkit/nugu_configuration.hh>
 #include <clientkit/wakeup_interface.hh>
 
 namespace NuguClientKit {
@@ -82,13 +81,6 @@ public:
     ~NuguClient();
 
     /**
-     * @brief Set config to change nugu sdk internal behavior
-     * @param[in] key config key
-     * @param[in] value config value
-     */
-    void setConfig(NuguConfig::Key key, const std::string& value);
-
-    /**
      * @brief Set the listener object
      * @param[in] clistener listener
      */
@@ -112,12 +104,14 @@ public:
 
     /**
      * @brief Get WakeupHandler object
+     * @param[in] model_path path which model file is located
      * @return IWakeupHandler if a feature agent has been created with the feature builder, otherwise NULL
      */
-    IWakeupHandler* getWakeupHandler();
+    IWakeupHandler* getWakeupHandler(const std::string& model_path = "");
 
     /**
      * @brief Get CapabilityHandler object
+     * @param[in] cname capability interface name
      * @return ICapabilityInterface if a feature agent has been created with the feature builder, otherwise NULL
      */
     ICapabilityInterface* getCapabilityHandler(const std::string& cname);

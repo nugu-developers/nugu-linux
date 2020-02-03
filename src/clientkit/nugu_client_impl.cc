@@ -27,7 +27,6 @@
 
 #include "core/audio_recorder_manager.hh"
 #include "core/capability_manager_helper.hh"
-#include "core/media_player.hh"
 #include "core/nugu_core_container.hh"
 
 #include "nugu_client_impl.hh"
@@ -39,7 +38,6 @@ using namespace NuguCore;
 NuguClientImpl::NuguClientImpl()
 {
     nugu_equeue_initialize();
-    NuguConfig::loadDefaultValue();
 
     network_manager = std::unique_ptr<INetworkManager>(NuguCoreContainer::createNetworkManager());
     network_manager->addListener(this);
@@ -49,11 +47,6 @@ NuguClientImpl::~NuguClientImpl()
 {
     CapabilityManagerHelper::destroyInstance();
     nugu_equeue_deinitialize();
-}
-
-void NuguClientImpl::setConfig(NuguConfig::Key key, const std::string& value)
-{
-    NuguConfig::setValue(key, value);
 }
 
 void NuguClientImpl::setListener(INuguClientListener* listener)
@@ -84,10 +77,10 @@ ICapabilityInterface* NuguClientImpl::getCapabilityHandler(const std::string& cn
     return nullptr;
 }
 
-IWakeupHandler* NuguClientImpl::getWakeupHandler()
+IWakeupHandler* NuguClientImpl::getWakeupHandler(const std::string& model_path)
 {
     if (!wakeup_handler)
-        wakeup_handler = NuguCoreContainer::createWakeupHandler();
+        wakeup_handler = NuguCoreContainer::createWakeupHandler(model_path);
 
     return wakeup_handler;
 }
@@ -230,7 +223,7 @@ IMediaPlayer* NuguClientImpl::createMediaPlayer()
         nugu_info("NUGU media player could use after initialize");
         return nullptr;
     }
-    return new MediaPlayer();
+    return NuguCoreContainer::createMediaPlayer();
 }
 
 } // NuguClientKit

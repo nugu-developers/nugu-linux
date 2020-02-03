@@ -31,7 +31,7 @@ using namespace NuguClientKit;
 class WakeupHandler : public IWakeupHandler,
                       public IWakeupDetectorListener {
 public:
-    WakeupHandler();
+    WakeupHandler(const std::string& model_path = "");
     ~WakeupHandler();
 
     void setListener(IWakeupListener* listener) override;

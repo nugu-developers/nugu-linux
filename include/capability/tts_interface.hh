@@ -40,6 +40,10 @@ enum class TTSState {
     TTS_SPEECH_FINISH /**< Status finishing speech in TTS */
 };
 
+typedef struct {
+    std::string tts_engine;
+} TTSAttribute;
+
 /**
  * @brief tts listener interface
  * @see ITTSHandler
@@ -96,6 +100,12 @@ public:
      * @return result of set volume
      */
     virtual bool setVolume(int volume) = 0;
+
+    /**
+     * @brief Set attribute about speech synthesizer
+     * @param[in] attribute attribute object
+     */
+    virtual void setAttribute(TTSAttribute&& attribute) = 0;
 };
 
 /**

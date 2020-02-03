@@ -15,14 +15,14 @@
  */
 
 #include "base/nugu_log.h"
-
 #include "capability_manager.hh"
+
 #include "wakeup_handler.hh"
 
 namespace NuguCore {
 
-WakeupHandler::WakeupHandler()
-    : wakeup_detector(std::unique_ptr<WakeupDetector>(new WakeupDetector()))
+WakeupHandler::WakeupHandler(const std::string& model_path)
+    : wakeup_detector(std::unique_ptr<WakeupDetector>(new WakeupDetector(WakeupDetector::Attribute { "", "", "", model_path })))
 {
     wakeup_detector->setListener(this);
 }
