@@ -54,6 +54,8 @@ class Capability : virtual public ICapabilityInterface {
 public:
     Capability(const std::string& name, const std::string& ver = "1.0");
     virtual ~Capability();
+
+    void setNuguCoreContainer(INuguCoreContainer* core_container) override;
     void initialize() override;
 
     std::string getReferrerDialogRequestId();
@@ -90,6 +92,7 @@ protected:
     bool initialized = false;
     bool has_attachment = false;
     PlaySyncManager* playsync_manager = nullptr;
+    INuguCoreContainer* core_container = nullptr;
 
 private:
     std::string cname;

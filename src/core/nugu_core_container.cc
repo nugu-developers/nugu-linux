@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include "base/nugu_log.h"
 #include "media_player.hh"
 #include "network_manager.hh"
 #include "speech_recognizer.hh"
@@ -23,18 +24,32 @@
 
 namespace NuguCore {
 
-IWakeupHandler* NuguCoreContainer::createWakeupHandler(const std::string& model_path)
-{
-    return new WakeupHandler(model_path);
-}
-
 INetworkManager* NuguCoreContainer::createNetworkManager()
 {
     return new NetworkManager();
 }
 
+IWakeupHandler* NuguCoreContainer::createWakeupHandler(const std::string& model_path)
+{
+    // TODO : It needs guarantee related plugin is loaded.
+
+    return new WakeupHandler(model_path);
+}
+
+ISpeechRecognizer* NuguCoreContainer::createSpeechRecognizer(const std::string& model_path)
+{
+    // TODO : It needs guarantee related plugin is loaded.
+
+    SpeechRecognizer::Attribute sr_attribute;
+    sr_attribute.model_path = model_path;
+
+    return new SpeechRecognizer(std::move(sr_attribute));
+}
+
 IMediaPlayer* NuguCoreContainer::createMediaPlayer()
 {
+    // TODO : It needs guarantee related plugin is loaded.
+
     return new MediaPlayer();
 }
 

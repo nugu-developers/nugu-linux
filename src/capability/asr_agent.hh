@@ -92,7 +92,7 @@ private:
     ExpectSpeechAttr es_attr;
     CapabilityEvent* rec_event;
     NuguTimer* timer;
-    std::unique_ptr<SpeechRecognizer> speech_recognizer;
+    std::unique_ptr<ISpeechRecognizer> speech_recognizer;
     std::string all_context_info;
     std::string dialog_id;
     IFocusListener* asr_focus_listener;

@@ -48,6 +48,7 @@ std::unique_ptr<DelegationListener> delegation_listener = nullptr;
 std::unique_ptr<LocationListener> location_listener = nullptr;
 std::unique_ptr<SpeakerListener> speaker_listener = nullptr;
 std::unique_ptr<MicListener> mic_listener = nullptr;
+INuguCoreContainer* nugu_core_container = nullptr;
 
 template <typename T, typename... Ts>
 std::unique_ptr<T> make_unique(Ts&&... params)
@@ -216,11 +217,12 @@ int main(int argc, char** argv)
 
     nugu_client = make_unique<NuguClient>();
     nugu_client->setListener(nugu_client_listener.get());
+    nugu_core_container = nugu_client->getNuguCoreContainer();
 
     registerCapabilities();
     settingCapabilities();
 
-    INetworkManager* network_manager = nugu_client->getNetworkManager();
+    auto network_manager(nugu_client->getNetworkManager());
     network_manager->addListener(network_manager_listener.get());
     network_manager->setToken(getenv("NUGU_TOKEN"));
 
@@ -234,7 +236,9 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    speech_operator->setWakeupHandler(nugu_client->getWakeupHandler(nugu_sample_manager->getModelPath()));
+    IWakeupHandler* wakeup_handler = nugu_core_container->createWakeupHandler(nugu_sample_manager->getModelPath());
+
+    speech_operator->setWakeupHandler(wakeup_handler);
     speech_operator->setASRHandler(getCapabilityHandler<IASRHandler*>("ASR"));
     speaker_listener->setSpeakerHandler(getCapabilityHandler<ISpeakerHandler*>("Speaker"));
     speaker_listener->setVolumeNuguSpeaker([&](int volume) {
@@ -264,6 +268,9 @@ int main(int argc, char** argv)
             [&]() { return network_manager->disconnect(); } })
         ->setMicHandler(getCapabilityHandler<IMicHandler*>("Mic"))
         ->runLoop();
+
+    delete wakeup_handler;
+    wakeup_handler = nullptr;
 
     nugu_client->deInitialize();
 

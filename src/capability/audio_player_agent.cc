@@ -61,7 +61,7 @@ void AudioPlayerAgent::initialize()
         return;
     }
 
-    player = dynamic_cast<IMediaPlayer*>(new MediaPlayer());
+    player = core_container->createMediaPlayer();
     player->addListener(this);
 
     CapabilityManager::getInstance()->addFocus("cap_audio", NUGU_FOCUS_TYPE_MEDIA, this);

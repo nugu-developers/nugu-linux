@@ -27,7 +27,6 @@
 
 #include "core/audio_recorder_manager.hh"
 #include "core/capability_manager_helper.hh"
-#include "core/nugu_core_container.hh"
 
 #include "nugu_client_impl.hh"
 
@@ -39,7 +38,9 @@ NuguClientImpl::NuguClientImpl()
 {
     nugu_equeue_initialize();
 
-    network_manager = std::unique_ptr<INetworkManager>(NuguCoreContainer::createNetworkManager());
+    nugu_core_container = std::unique_ptr<NuguCoreContainer>(new NuguCoreContainer());
+
+    network_manager = std::unique_ptr<INetworkManager>(nugu_core_container->createNetworkManager());
     network_manager->addListener(this);
 }
 
@@ -77,12 +78,9 @@ ICapabilityInterface* NuguClientImpl::getCapabilityHandler(const std::string& cn
     return nullptr;
 }
 
-IWakeupHandler* NuguClientImpl::getWakeupHandler(const std::string& model_path)
+INuguCoreContainer* NuguClientImpl::getNuguCoreContainer()
 {
-    if (!wakeup_handler)
-        wakeup_handler = NuguCoreContainer::createWakeupHandler(model_path);
-
-    return wakeup_handler;
+    return nugu_core_container.get();
 }
 
 int NuguClientImpl::create(void)
@@ -122,6 +120,9 @@ int NuguClientImpl::createCapabilities(void)
             // set capability listener & handler each other
             if (icapability_map[CAPABILITY.name].second)
                 icapability_map[CAPABILITY.name].first->setCapabilityListener(icapability_map[CAPABILITY.name].second);
+
+            // set NuguCoreContainer
+            icapability_map[CAPABILITY.name].first->setNuguCoreContainer(getNuguCoreContainer());
 
             std::string cname = icapability_map[CAPABILITY.name].first->getName();
 
@@ -164,6 +165,7 @@ bool NuguClientImpl::initialize(void)
         listener->onInitialized(this);
 
     initialized = true;
+
     return true;
 }
 
@@ -186,11 +188,6 @@ void NuguClientImpl::deInitialize(void)
     }
 
     icapability_map.clear();
-
-    if (wakeup_handler) {
-        delete wakeup_handler;
-        wakeup_handler = nullptr;
-    }
 
     AudioRecorderManager::destroyInstance();
 
@@ -215,15 +212,6 @@ void NuguClientImpl::onStatusChanged(NetworkStatus status)
 INetworkManager* NuguClientImpl::getNetworkManager()
 {
     return network_manager.get();
-}
-
-IMediaPlayer* NuguClientImpl::createMediaPlayer()
-{
-    if (!initialized) {
-        nugu_info("NUGU media player could use after initialize");
-        return nullptr;
-    }
-    return NuguCoreContainer::createMediaPlayer();
 }
 
 } // NuguClientKit

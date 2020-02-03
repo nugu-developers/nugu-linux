@@ -22,9 +22,12 @@
 
 #include <base/nugu_directive.h>
 #include <capability/capability_observer.hh>
+#include <clientkit/nugu_core_container_interface.hh>
 #include <json/json.h>
 
 namespace NuguCapability {
+
+using namespace NuguClientKit;
 
 /**
  * @file capability_interface.hh
@@ -82,6 +85,12 @@ public:
 class ICapabilityInterface : public ICapabilityObservable {
 public:
     virtual ~ICapabilityInterface() = default;
+
+    /**
+     * @brief Set INuguCoreContainer for using functions in NuguCore.
+     * @param[in] core_container NuguCoreContainer instance
+     */
+    virtual void setNuguCoreContainer(INuguCoreContainer* core_container) = 0;
 
     /**
      * @brief Initialize the current object.

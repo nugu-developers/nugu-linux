@@ -21,10 +21,8 @@
 #include <string>
 
 #include <capability/capability_interface.hh>
-#include <clientkit/media_player_interface.hh>
-#include <clientkit/network_manager_interface.hh>
 #include <clientkit/nugu_client_listener.hh>
-#include <clientkit/wakeup_interface.hh>
+#include <clientkit/nugu_core_container_interface.hh>
 
 namespace NuguClientKit {
 
@@ -103,11 +101,10 @@ public:
     void deInitialize(void);
 
     /**
-     * @brief Get WakeupHandler object
-     * @param[in] model_path path which model file is located
-     * @return IWakeupHandler if a feature agent has been created with the feature builder, otherwise NULL
+     * @brief Get NuguCoreContainer object
+     * @return INuguCoreContainer abstraction object of NuguCoreContainer
      */
-    IWakeupHandler* getWakeupHandler(const std::string& model_path = "");
+    INuguCoreContainer* getNuguCoreContainer();
 
     /**
      * @brief Get CapabilityHandler object
@@ -121,12 +118,6 @@ public:
      * @return INetworkManager if a feature agent has been created with the feature builder, otherwise NULL
      */
     INetworkManager* getNetworkManager();
-
-    /**
-     * @brief Get new media player object
-     * @return IMediaPlayer if media player is created, otherwise nullptr
-     */
-    IMediaPlayer* createMediaPlayer();
 
 private:
     std::unique_ptr<NuguClientImpl> impl;
