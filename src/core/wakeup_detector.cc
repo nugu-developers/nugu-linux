@@ -17,21 +17,24 @@
 #include <keyword_detector.h>
 
 #include "base/nugu_log.h"
-#include "clientkit/nugu_configuration.hh"
-
 #include "wakeup_detector.hh"
 
 namespace NuguCore {
 
-using namespace NuguClientKit;
+// define default property values
+static const char* KWD_SAMPLERATE = "16k";
+static const char* KWD_FORMAT = "s16le";
+static const char* KWD_CHANNEL = "1";
+static const char* MODEL_PATH = "./";
 
 WakeupDetector::WakeupDetector()
 {
-    std::string sample = NuguConfig::getValue(NuguConfig::Key::KWD_SAMPLERATE);
-    std::string format = NuguConfig::getValue(NuguConfig::Key::KWD_FORMAT);
-    std::string channel = NuguConfig::getValue(NuguConfig::Key::KWD_CHANNEL);
+    initialize(Attribute {});
+}
 
-    AudioInputProcessor::init("kwd", sample, format, channel);
+WakeupDetector::WakeupDetector(Attribute&& attribute)
+{
+    initialize(std::move(attribute));
 }
 
 void WakeupDetector::sendSyncWakeupEvent(WakeupState state)
@@ -47,16 +50,25 @@ void WakeupDetector::setListener(IWakeupDetectorListener* listener)
     this->listener = listener;
 }
 
+void WakeupDetector::initialize(Attribute&& attribute)
+{
+    std::string sample = !attribute.sample.empty() ? attribute.sample : KWD_SAMPLERATE;
+    std::string format = !attribute.format.empty() ? attribute.format : KWD_FORMAT;
+    std::string channel = !attribute.channel.empty() ? attribute.channel : KWD_CHANNEL;
+
+    model_path = !attribute.model_path.empty() ? attribute.model_path : MODEL_PATH;
+
+    AudioInputProcessor::init("kwd", sample, format, channel);
+}
+
 void WakeupDetector::loop(void)
 {
     int pcm_size;
     std::string model_net_file;
     std::string model_search_file;
-    std::string model_path;
 
     nugu_dbg("Wakeup Thread: started");
 
-    model_path = NuguConfig::getValue(NuguConfig::Key::MODEL_PATH);
     if (model_path.size()) {
         nugu_dbg("model path: %s", model_path.c_str());
 

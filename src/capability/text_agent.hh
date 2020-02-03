@@ -28,6 +28,8 @@ class TextAgent : public Capability, public ITextHandler {
 public:
     TextAgent();
     virtual ~TextAgent();
+
+    void setAttribute(TextAttribute&& attribute) override;
     void initialize() override;
 
     void parsingDirective(const char* dname, const char* message) override;
@@ -47,6 +49,9 @@ private:
     NuguTimer* timer;
     TextState cur_state;
     std::string cur_dialog_id;
+
+    // attribute
+    int response_timeout;
 };
 
 } // NuguCapability

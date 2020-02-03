@@ -17,13 +17,12 @@
 #include <cmath>
 
 #include "base/nugu_log.h"
-#include "clientkit/nugu_configuration.hh"
-
 #include "capability_manager.hh"
 
 namespace NuguCore {
 
-using namespace NuguClientKit;
+// define default property values
+static const char* WAKEUP_WORD = "아리아";
 
 CapabilityManager* CapabilityManager::instance = NULL;
 
@@ -55,7 +54,7 @@ CapabilityManager::CapabilityManager()
 {
     nugu_dirseq_add_callback(dirseqCallback, this);
 
-    wword = NuguConfig::getValue(NuguConfig::Key::WAKEUP_WORD);
+    wword = WAKEUP_WORD;
     playsync_manager = std::unique_ptr<PlaySyncManager>(new PlaySyncManager());
 }
 

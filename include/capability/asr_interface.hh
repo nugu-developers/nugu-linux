@@ -55,6 +55,13 @@ enum class ASRError {
     UNKNOWN /**< UNKNOWN  */
 };
 
+typedef struct {
+    std::string model_path;
+    std::string epd_type;
+    std::string asr_encoding;
+    int response_timeout;
+} ASRAttribute;
+
 /**
  * @brief ASR listener interface
  * @see IASRHandler
@@ -129,6 +136,12 @@ public:
      * @param[in] listener listener object
      */
     virtual void removeListener(IASRListener* listener) = 0;
+
+    /**
+     * @brief Set attribute about speech recognition
+     * @param[in] attribute attribute object
+     */
+    virtual void setAttribute(ASRAttribute&& attribute) = 0;
 };
 
 /**

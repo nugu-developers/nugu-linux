@@ -18,16 +18,16 @@
 
 #include "base/nugu_log.h"
 #include "base/nugu_uuid.h"
-#include "clientkit/nugu_configuration.hh"
 
 #include "tts_agent.hh"
 
 namespace NuguCapability {
 
-using namespace NuguClientKit;
-
 static const char* CAPABILITY_NAME = "TTS";
 static const char* CAPABILITY_VERSION = "1.0";
+
+// define default property values
+static const char* TTS_ENGINE = "skt";
 
 TTSAgent::TTSAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -40,6 +40,7 @@ TTSAgent::TTSAgent()
     , dialog_id("")
     , ps_id("")
     , tts_listener(nullptr)
+    , tts_engine(TTS_ENGINE)
 {
 }
 
@@ -69,6 +70,12 @@ TTSAgent::~TTSAgent()
     CapabilityManager::getInstance()->removeFocus("cap_tts");
 }
 
+void TTSAgent::setAttribute(TTSAttribute&& attribute)
+{
+    if (!attribute.tts_engine.empty())
+        tts_engine = attribute.tts_engine;
+}
+
 void TTSAgent::initialize()
 {
     if (initialized) {
@@ -87,7 +94,7 @@ void TTSAgent::initialize()
     nugu_pcm_set_status_callback(pcm, pcmStatusCallback, this);
     nugu_pcm_set_event_callback(pcm, pcmEventCallback, this);
 
-    nugu_pcm_set_property(pcm, (NuguAudioProperty){ AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
+    nugu_pcm_set_property(pcm, (NuguAudioProperty) { AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
 
     CapabilityManager::getInstance()->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
@@ -275,7 +282,7 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
 {
     Json::Value tts;
 
-    tts["engine"] = NuguConfig::getValue(NuguConfig::Key::TTS_ENGINE);
+    tts["engine"] = tts_engine;
     tts["version"] = getVersion();
     switch (speak_status) {
     case -1:

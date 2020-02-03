@@ -41,7 +41,16 @@ public:
 
 class WakeupDetector : public AudioInputProcessor {
 public:
+    using Attribute = struct {
+        std::string sample;
+        std::string format;
+        std::string channel;
+        std::string model_path;
+    };
+
+public:
     WakeupDetector();
+    WakeupDetector(Attribute&& attribute);
     virtual ~WakeupDetector() = default;
 
     void setListener(IWakeupDetectorListener* listener);
@@ -49,10 +58,14 @@ public:
     void stopWakeup(void);
 
 private:
+    void initialize(Attribute&& attribute);
     void loop(void) override;
     void sendSyncWakeupEvent(WakeupState state);
 
     IWakeupDetectorListener* listener = nullptr;
+
+    // attribute
+    std::string model_path = "";
 };
 
 } // NuguCore

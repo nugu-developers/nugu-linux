@@ -24,7 +24,6 @@
 #include "clientkit/media_player_interface.hh"
 #include "clientkit/network_manager_interface.hh"
 #include "clientkit/nugu_client_listener.hh"
-#include "clientkit/nugu_configuration.hh"
 #include "clientkit/wakeup_interface.hh"
 
 namespace NuguClientKit {
@@ -34,7 +33,6 @@ public:
     NuguClientImpl();
     virtual ~NuguClientImpl();
 
-    void setConfig(NuguConfig::Key key, const std::string& value);
     void setListener(INuguClientListener* listener);
     INuguClientListener* getListener();
     void registerCapability(const std::string& cname, std::pair<ICapabilityInterface*, ICapabilityListener*> capability);
@@ -43,7 +41,7 @@ public:
     void deInitialize(void);
 
     ICapabilityInterface* getCapabilityHandler(const std::string& cname);
-    IWakeupHandler* getWakeupHandler();
+    IWakeupHandler* getWakeupHandler(const std::string& model_path = "");
     INetworkManager* getNetworkManager();
     IMediaPlayer* createMediaPlayer();
 

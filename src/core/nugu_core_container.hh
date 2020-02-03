@@ -17,6 +17,7 @@
 #ifndef __NUGU_CORE_CONTAINER_H__
 #define __NUGU_CORE_CONTAINER_H__
 
+#include "clientkit/media_player_interface.hh"
 #include "clientkit/network_manager_interface.hh"
 #include "clientkit/wakeup_interface.hh"
 
@@ -28,8 +29,9 @@ class NuguCoreContainer {
 public:
     NuguCoreContainer() = delete;
 
-    static IWakeupHandler* createWakeupHandler();
+    static IWakeupHandler* createWakeupHandler(const std::string& model_path = "");
     static INetworkManager* createNetworkManager();
+    static IMediaPlayer* createMediaPlayer();
 };
 
 } // NuguCore

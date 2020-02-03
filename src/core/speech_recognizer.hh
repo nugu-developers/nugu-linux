@@ -46,7 +46,19 @@ public:
 
 class SpeechRecognizer : public AudioInputProcessor {
 public:
+    using Attribute = struct {
+        std::string sample;
+        std::string format;
+        std::string channel;
+        std::string model_path;
+        int epd_timeout = 0;
+        int epd_max_duration = 0;
+        int epd_pause_length = 0;
+    };
+
+public:
     SpeechRecognizer();
+    SpeechRecognizer(Attribute&& attribute);
     virtual ~SpeechRecognizer() = default;
 
     void setListener(ISpeechRecognizerListener* listener);
@@ -54,12 +66,19 @@ public:
     void stopListening(void);
 
 private:
+    void initialize(Attribute&& attribute);
     void loop(void) override;
     void sendSyncListeningEvent(ListeningState state);
 
     const unsigned int OUT_DATA_SIZE = 1024 * 9;
     int epd_ret = -1;
     ISpeechRecognizerListener* listener = nullptr;
+
+    // attribute
+    std::string model_path = "";
+    int epd_timeout = 0;
+    int epd_max_duration = 0;
+    int epd_pause_length = 0;
 };
 
 } // NuguCore
