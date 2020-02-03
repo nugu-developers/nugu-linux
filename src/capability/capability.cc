@@ -119,6 +119,11 @@ Capability::~Capability()
         observers.clear();
 }
 
+void Capability::setNuguCoreContainer(INuguCoreContainer* core_container)
+{
+    this->core_container = core_container;
+}
+
 void Capability::initialize()
 {
 }

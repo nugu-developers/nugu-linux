@@ -18,33 +18,16 @@
 #define __NUGU_SPEECH_RECOGNIZER_H__
 
 #include "audio_input_processor.hh"
+#include "clientkit/speech_recognizer_interface.hh"
 
 #define EPD_MODEL_FILE "nugu_model_epd.raw"
 
 namespace NuguCore {
 
-enum class ListeningState {
-    READY,
-    LISTENING,
-    SPEECH_START,
-    SPEECH_END,
-    TIMEOUT,
-    FAILED,
-    DONE
-};
+using namespace NuguClientKit;
 
-class ISpeechRecognizerListener {
-public:
-    virtual ~ISpeechRecognizerListener() = default;
-
-    /* The callback is invoked in the main context. */
-    virtual void onListeningState(ListeningState state) = 0;
-
-    /* The callback is invoked in the thread context. */
-    virtual void onRecordData(unsigned char* buf, int length) = 0;
-};
-
-class SpeechRecognizer : public AudioInputProcessor {
+class SpeechRecognizer : public ISpeechRecognizer,
+                         public AudioInputProcessor {
 public:
     using Attribute = struct {
         std::string sample;
@@ -61,9 +44,10 @@ public:
     SpeechRecognizer(Attribute&& attribute);
     virtual ~SpeechRecognizer() = default;
 
-    void setListener(ISpeechRecognizerListener* listener);
-    bool startListening(void);
-    void stopListening(void);
+    // implements ISpeechRecognizer
+    void setListener(ISpeechRecognizerListener* listener) override;
+    bool startListening(void) override;
+    void stopListening(void) override;
 
 private:
     void initialize(Attribute&& attribute);

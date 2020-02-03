@@ -17,21 +17,22 @@
 #ifndef __NUGU_CORE_CONTAINER_H__
 #define __NUGU_CORE_CONTAINER_H__
 
-#include "clientkit/media_player_interface.hh"
-#include "clientkit/network_manager_interface.hh"
-#include "clientkit/wakeup_interface.hh"
+#include "clientkit/nugu_core_container_interface.hh"
 
 namespace NuguCore {
 
 using namespace NuguClientKit;
 
-class NuguCoreContainer {
+class NuguCoreContainer : public INuguCoreContainer {
 public:
-    NuguCoreContainer() = delete;
+    virtual ~NuguCoreContainer() = default;
 
-    static IWakeupHandler* createWakeupHandler(const std::string& model_path = "");
-    static INetworkManager* createNetworkManager();
-    static IMediaPlayer* createMediaPlayer();
+    INetworkManager* createNetworkManager();
+
+    // implements INuguCoreContainer
+    IWakeupHandler* createWakeupHandler(const std::string& model_path = "") override;
+    ISpeechRecognizer* createSpeechRecognizer(const std::string& model_path = "") override;
+    IMediaPlayer* createMediaPlayer() override;
 };
 
 } // NuguCore

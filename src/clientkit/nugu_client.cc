@@ -71,9 +71,9 @@ void NuguClient::deInitialize(void)
     impl->deInitialize();
 }
 
-IWakeupHandler* NuguClient::getWakeupHandler(const std::string& model_path)
+INuguCoreContainer* NuguClient::getNuguCoreContainer()
 {
-    return impl->getWakeupHandler(model_path);
+    return impl->getNuguCoreContainer();
 }
 
 ICapabilityInterface* NuguClient::getCapabilityHandler(const std::string& cname)
@@ -84,11 +84,6 @@ ICapabilityInterface* NuguClient::getCapabilityHandler(const std::string& cname)
 INetworkManager* NuguClient::getNetworkManager()
 {
     return impl->getNetworkManager();
-}
-
-IMediaPlayer* NuguClient::createMediaPlayer()
-{
-    return impl->createMediaPlayer();
 }
 
 } // NuguClientKit

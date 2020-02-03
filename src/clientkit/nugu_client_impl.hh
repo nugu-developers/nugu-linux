@@ -21,12 +21,12 @@
 #include <memory>
 
 #include "capability/capability_interface.hh"
-#include "clientkit/media_player_interface.hh"
-#include "clientkit/network_manager_interface.hh"
 #include "clientkit/nugu_client_listener.hh"
-#include "clientkit/wakeup_interface.hh"
+#include "core/nugu_core_container.hh"
 
 namespace NuguClientKit {
+
+using namespace NuguCore;
 
 class NuguClientImpl : public INetworkManagerListener {
 public:
@@ -41,9 +41,8 @@ public:
     void deInitialize(void);
 
     ICapabilityInterface* getCapabilityHandler(const std::string& cname);
-    IWakeupHandler* getWakeupHandler(const std::string& model_path = "");
+    INuguCoreContainer* getNuguCoreContainer();
     INetworkManager* getNetworkManager();
-    IMediaPlayer* createMediaPlayer();
 
     // overriding INetworkManagerListener
     void onStatusChanged(NetworkStatus status) override;
@@ -55,8 +54,8 @@ private:
 
     CapabilityMap icapability_map;
     INuguClientListener* listener = nullptr;
-    IWakeupHandler* wakeup_handler = nullptr;
     std::unique_ptr<INetworkManager> network_manager = nullptr;
+    std::unique_ptr<NuguCoreContainer> nugu_core_container = nullptr;
     bool initialized = false;
 };
 

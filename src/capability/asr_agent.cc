@@ -32,7 +32,7 @@ static const int SERVER_RESPONSE_TIMEOUT_MSEC = 10000;
 
 class ASRFocusListener : public IFocusListener {
 public:
-    explicit ASRFocusListener(ASRAgent* agent, SpeechRecognizer* speech_recognizer);
+    explicit ASRFocusListener(ASRAgent* agent, ISpeechRecognizer* speech_recognizer);
     virtual ~ASRFocusListener();
 
     NuguFocusResult onFocus(void* event) override;
@@ -41,10 +41,10 @@ public:
 
 private:
     ASRAgent* agent;
-    SpeechRecognizer* speech_recognizer;
+    ISpeechRecognizer* speech_recognizer;
 };
 
-ASRFocusListener::ASRFocusListener(ASRAgent* agent, SpeechRecognizer* speech_recognizer)
+ASRFocusListener::ASRFocusListener(ASRAgent* agent, ISpeechRecognizer* speech_recognizer)
     : agent(agent)
     , speech_recognizer(speech_recognizer)
 
@@ -189,10 +189,7 @@ void ASRAgent::initialize()
         return;
     }
 
-    SpeechRecognizer::Attribute sr_attribute;
-    sr_attribute.model_path = model_path;
-
-    speech_recognizer = std::unique_ptr<SpeechRecognizer>(new SpeechRecognizer(std::move(sr_attribute)));
+    speech_recognizer = std::unique_ptr<ISpeechRecognizer>(core_container->createSpeechRecognizer(model_path));
     speech_recognizer->setListener(this);
 
     timer = nugu_timer_new(response_timeout, 1);

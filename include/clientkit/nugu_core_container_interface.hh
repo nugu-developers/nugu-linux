@@ -1,0 +1,69 @@
+/*
+ * Copyright (c) 2019 SK Telecom Co., Ltd. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#ifndef __NUGU_CORE_CONTAINER_INTERFACE_H__
+#define __NUGU_CORE_CONTAINER_INTERFACE_H__
+
+#include "clientkit/media_player_interface.hh"
+#include "clientkit/network_manager_interface.hh"
+#include "clientkit/speech_recognizer_interface.hh"
+#include "clientkit/wakeup_interface.hh"
+
+namespace NuguClientKit {
+
+/**
+ * @file nugu_core_container_interface.hh
+ * @defgroup NuguCoreContainerInterface NuguCoreContainerInterface
+ * @ingroup SDKNuguClientKit
+ * @brief NuguCoreContainer Interface
+ *
+ * Container which have components factory and methods for manipulating NuguCore
+ *
+ * @{
+ */
+
+/**
+ * @brief NuguCoreContainer interface
+ */
+class INuguCoreContainer {
+public:
+    virtual ~INuguCoreContainer() = default;
+
+    /**
+     * @brief Create WakeupHandler instance
+     * @param[in] model_path required model file path
+     */
+    virtual IWakeupHandler* createWakeupHandler(const std::string& model_path = "") = 0;
+
+    /**
+     * @brief Create SpeechRecognizer instance
+     * @param[in] model_path required model file path
+     */
+    virtual ISpeechRecognizer* createSpeechRecognizer(const std::string& model_path = "") = 0;
+
+    /**
+     * @brief Create MediaPlayer instance
+     */
+    virtual IMediaPlayer* createMediaPlayer() = 0;
+};
+
+/**
+ * @}
+ */
+
+} // NuguClientKit
+
+#endif /* __NUGU_CORE_CONTAINER_INTERFACE_H__ */
