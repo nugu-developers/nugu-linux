@@ -28,14 +28,6 @@
 
 namespace NuguCore {
 
-class IFocusListener {
-public:
-    virtual ~IFocusListener() = default;
-    virtual NuguFocusResult onFocus(void* event) = 0;
-    virtual NuguFocusResult onUnfocus(void* event) = 0;
-    virtual NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) = 0;
-};
-
 class CapabilityManager {
 private:
     CapabilityManager();

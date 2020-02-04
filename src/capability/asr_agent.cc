@@ -49,12 +49,12 @@ ASRFocusListener::ASRFocusListener(ASRAgent* agent, ISpeechRecognizer* speech_re
     , speech_recognizer(speech_recognizer)
 
 {
-    CapabilityManager::getInstance()->addFocus("asr", NUGU_FOCUS_TYPE_ASR, this);
+    agent->getCapabilityHelper()->addFocus("asr", NUGU_FOCUS_TYPE_ASR, this);
 }
 
 ASRFocusListener::~ASRFocusListener()
 {
-    CapabilityManager::getInstance()->removeFocus("asr");
+    agent->getCapabilityHelper()->removeFocus("asr");
 }
 
 NuguFocusResult ASRFocusListener::onFocus(void* event)
@@ -65,7 +65,7 @@ NuguFocusResult ASRFocusListener::onFocus(void* event)
 
     if (agent->isExpectSpeechState()) {
         agent->resetExpectSpeechState();
-        CapabilityManager::getInstance()->releaseFocus("expect");
+        agent->getCapabilityHelper()->releaseFocus("expect");
     }
 
     return NUGU_FOCUS_OK;
@@ -107,12 +107,12 @@ private:
 ExpectFocusListener::ExpectFocusListener(ASRAgent* agent)
     : agent(agent)
 {
-    CapabilityManager::getInstance()->addFocus("expect", NUGU_FOCUS_TYPE_ASR_EXPECT, this);
+    agent->getCapabilityHelper()->addFocus("expect", NUGU_FOCUS_TYPE_ASR_EXPECT, this);
 }
 
 ExpectFocusListener::~ExpectFocusListener()
 {
-    CapabilityManager::getInstance()->removeFocus("expect");
+    agent->getCapabilityHelper()->removeFocus("expect");
 }
 
 NuguFocusResult ExpectFocusListener::onFocus(void* event)
@@ -212,7 +212,7 @@ void ASRAgent::startRecognition()
     nugu_dbg("startRecognition()");
 
     saveAllContextInfo();
-    CapabilityManager::getInstance()->requestFocus("asr", NULL);
+    capa_helper->requestFocus("asr", NULL);
 }
 
 void ASRAgent::stopRecognition()
@@ -222,7 +222,7 @@ void ASRAgent::stopRecognition()
     if (rec_event)
         sendEventStopRecognize();
 
-    CapabilityManager::getInstance()->releaseFocus("asr");
+    capa_helper->releaseFocus("asr");
 }
 
 void ASRAgent::parsingDirective(const char* dname, const char* message)
@@ -245,7 +245,7 @@ void ASRAgent::updateInfoForContext(Json::Value& ctx)
 
 void ASRAgent::saveAllContextInfo()
 {
-    all_context_info = CapabilityManager::getInstance()->makeAllContextInfoStack();
+    all_context_info = capa_helper->makeAllContextInfoStack();
 }
 
 void ASRAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
@@ -256,15 +256,15 @@ void ASRAgent::receiveCommand(const std::string& from, const std::string& comman
 
     if (!convert_command.compare("wakeup_detected")) {
         if (es_attr.is_handle) {
-            CapabilityManager::getInstance()->releaseFocus("expect");
+            capa_helper->releaseFocus("expect");
             es_attr = {};
         }
     } else if (!convert_command.compare("releasefocus")) {
         if (from == "System") {
             if (dialog_id == param)
-                CapabilityManager::getInstance()->releaseFocus("asr");
+                capa_helper->releaseFocus("asr");
         } else {
-            CapabilityManager::getInstance()->releaseFocus("asr");
+            capa_helper->releaseFocus("asr");
         }
     }
 }
@@ -457,7 +457,7 @@ void ASRAgent::parsingExpectSpeech(const char* message)
 
     playsync_manager->setExpectSpeech(true);
 
-    CapabilityManager::getInstance()->requestFocus("expect", NULL);
+    capa_helper->requestFocus("expect", NULL);
 }
 
 void ASRAgent::parsingNotifyResult(const char* message)
@@ -589,7 +589,7 @@ void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error)
             asr_listener->onError(error);
     }
 
-    CapabilityManager::getInstance()->releaseFocus("asr");
+    capa_helper->releaseFocus("asr");
     playsync_manager->onASRError();
 }
 

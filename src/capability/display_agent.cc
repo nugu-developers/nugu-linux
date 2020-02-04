@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-#include "base/nugu_log.h"
-#include "core/capability_manager.hh"
-
 #include "display_agent.hh"
+#include "base/nugu_log.h"
 
 namespace NuguCapability {
 
@@ -61,7 +59,7 @@ void DisplayAgent::parsingDirective(const char* dname, const char* message)
             root["token"].asString()));
 
         // sync display rendering with context
-        PlaySyncManager::DisplayRenderer renderer;
+        IPlaySyncManager::DisplayRenderer renderer;
         renderer.cap_name = getName();
         renderer.listener = this;
         renderer.only_rendering = true;
@@ -108,6 +106,11 @@ void DisplayAgent::sendEventElementSelected(const std::string& item_token)
 void DisplayAgent::onElementSelected(const std::string& item_token)
 {
     sendEventElementSelected(item_token);
+}
+
+IPlaySyncManager* DisplayAgent::getPlaySyncManager()
+{
+    return playsync_manager;
 }
 
 } // NuguCapability

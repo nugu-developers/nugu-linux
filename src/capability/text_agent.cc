@@ -17,8 +17,6 @@
 #include <string.h>
 
 #include "base/nugu_log.h"
-#include "core/capability_manager.hh"
-
 #include "text_agent.hh"
 
 namespace NuguCapability {
@@ -155,11 +153,10 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
     std::string session_id = "";
     std::list<std::string> domainTypes;
 
-    CapabilityManager* cmanager = CapabilityManager::getInstance();
-    cmanager->getCapabilityProperty("ASR", "es.playServiceId", ps_id);
-    cmanager->getCapabilityProperty("ASR", "es.property", property);
-    cmanager->getCapabilityProperty("ASR", "es.sessionId", session_id);
-    cmanager->getCapabilityProperties("ASR", "es.domainTypes", domainTypes);
+    capa_helper->getCapabilityProperty("ASR", "es.playServiceId", ps_id);
+    capa_helper->getCapabilityProperty("ASR", "es.property", property);
+    capa_helper->getCapabilityProperty("ASR", "es.sessionId", session_id);
+    capa_helper->getCapabilityProperties("ASR", "es.domainTypes", domainTypes);
 
     root["text"] = text;
     if (token.size())
@@ -180,7 +177,7 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
 
     cur_dialog_id = event.getDialogMessageId();
 
-    sendEvent(&event, CapabilityManager::getInstance()->makeAllContextInfoStack(), payload);
+    sendEvent(&event, capa_helper->makeAllContextInfoStack(), payload);
 }
 
 void TextAgent::sendEventTextSourceFailed(const std::string& text, const std::string& token)

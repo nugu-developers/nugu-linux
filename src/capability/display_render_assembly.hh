@@ -46,13 +46,14 @@ public:
 
 protected:
     virtual void onElementSelected(const std::string& item_token) = 0;
+    virtual IPlaySyncManager* getPlaySyncManager() = 0;
 
     IDisplayListener* display_listener = nullptr;
     std::string disp_cur_ps_id = "";
     std::string disp_cur_token = "";
 
 private:
-    std::map<std::string, PlaySyncManager::DisplayRenderInfo*> render_info;
+    std::map<std::string, IPlaySyncManager::DisplayRenderInfo*> render_info;
 };
 }
 

@@ -17,6 +17,7 @@
 #ifndef __NUGU_CORE_CONTAINER_INTERFACE_H__
 #define __NUGU_CORE_CONTAINER_INTERFACE_H__
 
+#include "clientkit/capability_helper_interface.hh"
 #include "clientkit/media_player_interface.hh"
 #include "clientkit/network_manager_interface.hh"
 #include "clientkit/speech_recognizer_interface.hh"
@@ -58,6 +59,11 @@ public:
      * @brief Create MediaPlayer instance
      */
     virtual IMediaPlayer* createMediaPlayer() = 0;
+
+    /**
+     * @brief Get CapabilityHelper instance
+     */
+    virtual ICapabilityHelper* getCapabilityHelper() = 0;
 };
 
 /**

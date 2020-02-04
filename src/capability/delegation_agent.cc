@@ -17,8 +17,6 @@
 #include <string.h>
 
 #include "base/nugu_log.h"
-#include "core/capability_manager.hh"
-
 #include "delegation_agent.hh"
 
 namespace NuguCapability {
@@ -74,7 +72,7 @@ std::string DelegationAgent::getContextInfo()
     Json::Value ctx;
     updateInfoForContext(ctx);
 
-    return !ctx.empty() ? CapabilityManager::getInstance()->makeContextInfo(ctx) : "";
+    return !ctx.empty() ? capa_helper->makeContextInfo(ctx) : "";
 }
 
 void DelegationAgent::parsingDirective(const char* dname, const char* message)

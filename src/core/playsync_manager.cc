@@ -17,7 +17,6 @@
 #include <algorithm>
 
 #include "base/nugu_log.h"
-
 #include "playsync_manager.hh"
 
 #define HOLD_TIME_SHORT (7 * 1000) // 7 sec
@@ -44,11 +43,6 @@ namespace Test {
             for (auto element : context.second) {
                 context_log.append(element)
                     .append(", ");
-
-                // if (element == "TTS")
-                //     context_log.append("TTS, ");
-                // else if (element == "AudioPlayer")
-                //     context_log.append("AudioPlayer, ");
             }
 
             context_log.append("\n");

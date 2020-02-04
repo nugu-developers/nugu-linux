@@ -17,9 +17,6 @@
 #include <string.h>
 
 #include "base/nugu_log.h"
-#include "core/audio_recorder_manager.hh"
-#include "core/capability_manager.hh"
-
 #include "mic_agent.hh"
 
 namespace NuguCapability {
@@ -139,7 +136,7 @@ void MicAgent::control(bool enable, bool send_event)
     if (cur_status == pre_status)
         return;
 
-    AudioRecorderManager::getInstance()->setMute(cur_status == MicStatus::OFF);
+    capa_helper->setMute(cur_status == MicStatus::OFF);
 
     if (send_event)
         sendEventSetMicSucceeded();

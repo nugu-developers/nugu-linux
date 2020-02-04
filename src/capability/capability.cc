@@ -18,7 +18,6 @@
 
 #include "base/nugu_directive_sequencer.h"
 #include "base/nugu_log.h"
-#include "core/capability_manager.hh"
 
 #include "capability.hh"
 
@@ -85,8 +84,7 @@ void CapabilityEvent::sendEvent(const std::string& context, const std::string& p
     if (ref_dialog_id.size())
         nugu_event_set_referrer_id(event, ref_dialog_id.c_str());
 
-    CapabilityManager* cap_manager = CapabilityManager::getInstance();
-    cap_manager->sendCommand(capability->getName(), "System", "activity", "");
+    capability->getCapabilityHelper()->sendCommand(capability->getName(), "System", "activity", "");
 
     nugu_network_manager_send_event(event);
     // dialog_request_id is made every time to send event
@@ -110,7 +108,6 @@ Capability::Capability(const std::string& name, const std::string& ver)
     , ref_dialog_id("")
     , cur_ndir(NULL)
 {
-    playsync_manager = CapabilityManager::getInstance()->getPlaySyncManager();
 }
 
 Capability::~Capability()
@@ -122,6 +119,8 @@ Capability::~Capability()
 void Capability::setNuguCoreContainer(INuguCoreContainer* core_container)
 {
     this->core_container = core_container;
+    capa_helper = core_container->getCapabilityHelper();
+    playsync_manager = capa_helper->getPlaySyncManager();
 }
 
 void Capability::initialize()
@@ -275,7 +274,12 @@ std::string Capability::getContextInfo()
     Json::Value ctx;
     updateInfoForContext(ctx);
 
-    return CapabilityManager::getInstance()->makeContextInfo(ctx);
+    return capa_helper->makeContextInfo(ctx);
+}
+
+ICapabilityHelper* Capability::getCapabilityHelper()
+{
+    return capa_helper;
 }
 
 /********************************************************************

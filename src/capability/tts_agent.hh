@@ -22,7 +22,6 @@
 #include "base/nugu_pcm.h"
 #include "capability.hh"
 #include "capability/tts_interface.hh"
-#include "core/capability_manager.hh"
 
 namespace NuguCapability {
 
