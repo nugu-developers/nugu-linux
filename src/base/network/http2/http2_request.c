@@ -51,12 +51,6 @@ struct _http2_request {
 	HTTP2DestroyCallback destroy_cb;
 	void *destroy_cb_userdata;
 
-	int header_received;
-	pthread_cond_t cond_header, cond_finish;
-
-	int finished;
-	pthread_mutex_t lock_header, lock_finish;
-
 	pthread_mutex_t lock_ref;
 	int ref_count;
 };
@@ -173,8 +167,6 @@ static size_t _response_header_cb(char *buffer, size_t size, size_t nmemb,
 	else
 		nugu_buffer_add(req->response_header, buffer, size * nmemb);
 
-	http2_request_emit_response(req, HTTP2_REQUEST_SYNC_ITEM_HEADER);
-
 	return size * nmemb;
 }
 
@@ -211,10 +203,6 @@ HTTP2Request *http2_request_new()
 	curl_easy_setopt(req->easy, CURLOPT_HEADERDATA, req);
 
 	pthread_mutex_init(&req->lock_ref, NULL);
-	pthread_mutex_init(&req->lock_header, NULL);
-	pthread_mutex_init(&req->lock_finish, NULL);
-	pthread_cond_init(&req->cond_header, NULL);
-	pthread_cond_init(&req->cond_finish, NULL);
 
 	return req;
 }
@@ -246,10 +234,6 @@ void http2_request_free(HTTP2Request *req)
 	curl_easy_cleanup(req->easy);
 
 	pthread_mutex_destroy(&req->lock_ref);
-	pthread_mutex_destroy(&req->lock_header);
-	pthread_mutex_destroy(&req->lock_finish);
-	pthread_cond_destroy(&req->cond_header);
-	pthread_cond_destroy(&req->cond_finish);
 
 	memset(req, 0, sizeof(HTTP2Request));
 	free(req);
@@ -443,58 +427,6 @@ int http2_request_set_destroy_callback(HTTP2Request *req,
 	return 0;
 }
 
-void http2_request_wait_response(HTTP2Request *req,
-				 enum http2_request_sync_item item)
-{
-	struct timespec spec;
-	int status = 0;
-
-	g_return_if_fail(req != NULL);
-
-	/* Wait maximum 5 secs */
-	clock_gettime(CLOCK_REALTIME, &spec);
-	spec.tv_sec = spec.tv_sec + 5;
-
-	if (item == HTTP2_REQUEST_SYNC_ITEM_HEADER) {
-		pthread_mutex_lock(&req->lock_header);
-		if (req->header_received == 0)
-			status = pthread_cond_timedwait(
-				&req->cond_header, &req->lock_header, &spec);
-		pthread_mutex_unlock(&req->lock_header);
-	} else if (item == HTTP2_REQUEST_SYNC_ITEM_FINISH) {
-		pthread_mutex_lock(&req->lock_finish);
-		if (req->finished == 0)
-			status = pthread_cond_timedwait(
-				&req->cond_finish, &req->lock_finish, &spec);
-		pthread_mutex_unlock(&req->lock_finish);
-	}
-
-	if (status == ETIMEDOUT) {
-		nugu_info("timeout. clear the callbacks");
-		http2_request_set_header_callback(req, NULL, NULL);
-		http2_request_set_body_callback(req, NULL, NULL);
-		http2_request_set_finish_callback(req, NULL, NULL);
-	}
-}
-
-void http2_request_emit_response(HTTP2Request *req,
-				 enum http2_request_sync_item item)
-{
-	g_return_if_fail(req != NULL);
-
-	if (item == HTTP2_REQUEST_SYNC_ITEM_HEADER) {
-		pthread_mutex_lock(&req->lock_header);
-		req->header_received = 1;
-		pthread_cond_signal(&req->cond_header);
-		pthread_mutex_unlock(&req->lock_header);
-	} else if (item == HTTP2_REQUEST_SYNC_ITEM_FINISH) {
-		pthread_mutex_lock(&req->lock_finish);
-		req->finished = 1;
-		pthread_cond_signal(&req->cond_finish);
-		pthread_mutex_unlock(&req->lock_finish);
-	}
-}
-
 /* invoked in a thread loop */
 void http2_request_emit_completed(HTTP2Request *req)
 {
@@ -502,8 +434,6 @@ void http2_request_emit_completed(HTTP2Request *req)
 
 	if (req->finish_cb)
 		req->finish_cb(req, req->finish_cb_userdata);
-
-	http2_request_emit_response(req, HTTP2_REQUEST_SYNC_ITEM_FINISH);
 }
 
 NuguBuffer *http2_request_peek_response_body(HTTP2Request *req)
