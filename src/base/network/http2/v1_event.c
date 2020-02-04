@@ -45,7 +45,7 @@ V1Event *v1_event_new(const char *host)
 	event->req = http2_request_new();
 	http2_request_set_method(event->req, HTTP2_REQUEST_METHOD_POST);
 	http2_request_set_content_type(event->req,
-				       HTTP2_REQUEST_CONTENT_TYPE_JSON);
+				       HTTP2_REQUEST_CONTENT_TYPE_JSON, NULL);
 
 	/* Set maximum timeout to 5 seconds */
 	http2_request_set_timeout(event->req, 5);

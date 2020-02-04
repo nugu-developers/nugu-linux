@@ -115,7 +115,8 @@ static gboolean _on_timeout(gpointer userdata)
 	req = http2_request_new();
 	http2_request_set_url(req, ping->url);
 	http2_request_set_method(req, HTTP2_REQUEST_METHOD_GET);
-	http2_request_set_content_type(req, HTTP2_REQUEST_CONTENT_TYPE_JSON);
+	http2_request_set_content_type(req, HTTP2_REQUEST_CONTENT_TYPE_JSON,
+				       NULL);
 	http2_request_set_finish_callback(req, _on_finish, ping);
 	http2_request_enable_curl_log(req);
 
