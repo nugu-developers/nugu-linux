@@ -548,6 +548,9 @@ void ASRAgent::onListeningState(ListeningState state)
         nugu_dbg("ListeningState::TIMEOUT");
         nugu_info("time out");
 
+        if (rec_event)
+            rec_event->forceClose();
+
         stopRecognition();
         sendEventListenTimeout();
         releaseASRFocus(false, ASRError::LISTEN_TIMEOUT);

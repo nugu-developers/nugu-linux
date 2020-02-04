@@ -134,7 +134,7 @@ static size_t _request_body_cb(char *buffer, size_t size, size_t nitems,
 		if (req->send_body_closed == 0) {
 			/* Pause the current uploading */
 			http2_request_unlock_send_data(req);
-			nugu_dbg("request paused until resume request");
+			nugu_dbg("request paused until resume (req=%x)", req);
 			return CURL_READFUNC_PAUSE;
 		}
 
@@ -153,6 +153,14 @@ static size_t _request_body_cb(char *buffer, size_t size, size_t nitems,
 		nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE,
 			       NUGU_LOG_LEVEL_INFO, NULL, NULL, -1,
 			       "--> Sent req(%p) %d bytes (json)\n%s", req,
+			       length, buffer);
+	} else if (req->type == HTTP2_REQUEST_CONTENT_TYPE_MULTIPART) {
+		if (length < size * nitems)
+			buffer[length] = '\0';
+
+		nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE,
+			       NUGU_LOG_LEVEL_INFO, NULL, NULL, -1,
+			       "--> Sent req(%p) %d bytes (multipart)\n%s", req,
 			       length, buffer);
 	} else {
 		nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE,
@@ -228,6 +236,8 @@ HTTP2Request *http2_request_new()
 
 	pthread_mutex_init(&req->lock_ref, NULL);
 	pthread_mutex_init(&req->lock_send_body, NULL);
+
+	nugu_dbg("request(%p) created", req);
 
 	return req;
 }

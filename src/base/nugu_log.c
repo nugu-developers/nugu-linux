@@ -82,11 +82,12 @@ static struct _log_level_info {
 	[NUGU_LOG_LEVEL_DEBUG] = { 'D', LOG_DEBUG }
 };
 
+#ifdef NUGU_ENV_LOG
 static void _log_check_override_system(void)
 {
 	const char *env;
 
-	env = getenv("NUGU_LOG");
+	env = getenv(NUGU_ENV_LOG);
 	if (!env)
 		return;
 
@@ -101,7 +102,9 @@ static void _log_check_override_system(void)
 		_log_system = NUGU_LOG_SYSTEM_NONE;
 	}
 }
+#endif
 
+#ifdef NUGU_ENV_LOG_MODULE
 static void _log_check_override_module(void)
 {
 	gchar **modules = NULL;
@@ -110,7 +113,7 @@ static void _log_check_override_module(void)
 	gint i;
 	unsigned int bitset = 0;
 
-	env = getenv("NUGU_LOG_MODULE");
+	env = getenv(NUGU_ENV_LOG_MODULE);
 	if (!env)
 		return;
 
@@ -138,6 +141,7 @@ static void _log_check_override_module(void)
 	nugu_log_set_modules(bitset);
 	g_strfreev(modules);
 }
+#endif
 
 static void _log_check_override(void)
 {
@@ -146,8 +150,13 @@ static void _log_check_override(void)
 
 	_log_override_checked = 1;
 
+#ifdef NUGU_ENV_LOG
 	_log_check_override_system();
+#endif
+
+#ifdef NUGU_ENV_LOG_MODULE
 	_log_check_override_module();
+#endif
 }
 
 static int _log_make_prefix(char *prefix, enum nugu_log_level level,
