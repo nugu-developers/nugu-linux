@@ -60,6 +60,12 @@ INuguClientListener* NuguClientImpl::getListener()
     return listener;
 }
 
+void NuguClientImpl::setWakeupWord(const std::string& wakeup_word)
+{
+    if (!wakeup_word.empty())
+        CapabilityManagerHelper::setWakeupWord(wakeup_word);
+}
+
 void NuguClientImpl::registerCapability(const std::string& cname, std::pair<ICapabilityInterface*, ICapabilityListener*> capability)
 {
     icapability_map[cname] = capability;

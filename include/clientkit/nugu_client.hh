@@ -85,6 +85,12 @@ public:
     void setListener(INuguClientListener* listener);
 
     /**
+     * @brief Set wakeup word
+     * @param[in] wakeup_word wakeup word text
+     */
+    void setWakeupWord(const std::string& wakeup_word);
+
+    /**
      * @brief Get CapabilityBuilder object
      * @return CapabilityBuilder object
      */

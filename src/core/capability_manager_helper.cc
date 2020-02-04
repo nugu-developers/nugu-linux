@@ -20,6 +20,12 @@
 
 namespace NuguCore {
 
+void CapabilityManagerHelper::setWakeupWord(const std::string& wakeup_word)
+{
+    if (!wakeup_word.empty())
+        CapabilityManager::getInstance()->setWakeupWord(wakeup_word);
+}
+
 void CapabilityManagerHelper::addCapability(const std::string& cname, ICapabilityInterface* cap)
 {
     CapabilityManager::getInstance()->addCapability(cname, cap);

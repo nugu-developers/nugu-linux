@@ -27,6 +27,7 @@ class CapabilityManagerHelper {
 public:
     CapabilityManagerHelper() = delete;
 
+    static void setWakeupWord(const std::string& wakeup_word);
     static void addCapability(const std::string& cname, ICapabilityInterface* cap);
     static void removeCapability(const std::string& cname);
     static void destroyInstance();
