@@ -89,6 +89,10 @@ struct _nugu_network {
 	NetworkManagerHandoffStatusCallback handoff_callback;
 	void *handoff_callback_userdata;
 
+	/* Event result */
+	NetworkManagerEventResultCallback event_result_callback;
+	void *event_result_callback_userdata;
+
 	/* Status & Callback */
 	NuguNetworkStatus cur_status;
 	NetworkManagerStatusCallback status_callback;
@@ -139,6 +143,36 @@ static void on_destroy_attachment(void *data)
 	free(item);
 }
 
+static void on_destroy_event_send_result(void *data)
+{
+	struct equeue_data_request_result *item = data;
+
+	if (item->msg_id)
+		free(item->msg_id);
+
+	if (item->dialog_id)
+		free(item->dialog_id);
+
+	free(item);
+}
+
+static void on_event_send_result(enum nugu_equeue_type type, void *data,
+				 void *userdata)
+{
+	struct equeue_data_request_result *item = data;
+	NetworkManager *nm = userdata;
+
+	nugu_info("emit event send result(%d, %s, %s, %d)", item->success,
+		  item->msg_id, item->dialog_id, item->code);
+
+	if (nm->event_result_callback == NULL)
+		return;
+
+	nm->event_result_callback(item->success, item->msg_id, item->dialog_id,
+				  item->code,
+				  nm->event_result_callback_userdata);
+}
+
 static void _update_status(NetworkManager *nm, NuguNetworkStatus new_status)
 {
 	if (nm->cur_status == new_status) {
@@ -153,9 +187,10 @@ static void _update_status(NetworkManager *nm, NuguNetworkStatus new_status)
 
 	nm->cur_status = new_status;
 
-	if (nm->status_callback)
-		nm->status_callback(nm->cur_status,
-				    nm->status_callback_userdata);
+	if (nm->status_callback == NULL)
+		return;
+
+	nm->status_callback(nm->cur_status, nm->status_callback_userdata);
 }
 
 static int _update_step(NetworkManager *nm, enum connection_step new_step)
@@ -191,6 +226,7 @@ static int _start_registry(NetworkManager *nm)
 	};
 
 	_update_status(nm, NUGU_NETWORK_CONNECTING);
+
 	return 0;
 }
 
@@ -542,6 +578,11 @@ static NetworkManager *nugu_network_manager_new(void)
 	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_NEW_ATTACHMENT, on_attachment,
 				on_destroy_attachment, nm);
 
+	/* Result of sending event request */
+	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_SEND_EVENT_RESULT,
+				on_event_send_result,
+				on_destroy_event_send_result, nm);
+
 	/* Received registry policy */
 	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_REGISTRY_HEALTH,
 				on_receive_registry_health, free, nm);
@@ -560,6 +601,7 @@ static NetworkManager *nugu_network_manager_new(void)
 	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_SERVER_CONNECTED, on_event,
 				NULL, nm);
 
+	/* Long polling stream closed by server */
 	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_DIRECTIVES_CLOSED,
 				on_directives_closed, NULL, nm);
 
@@ -718,6 +760,18 @@ EXPORT_API int nugu_network_manager_set_handoff_status_callback(
 
 	_network->handoff_callback = callback;
 	_network->handoff_callback_userdata = userdata;
+
+	return 0;
+}
+
+EXPORT_API int nugu_network_manager_set_event_result_callback(
+	NetworkManagerEventResultCallback callback, void *userdata)
+{
+	if (!_network)
+		return -1;
+
+	_network->event_result_callback = callback;
+	_network->event_result_callback_userdata = userdata;
 
 	return 0;
 }

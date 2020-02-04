@@ -47,29 +47,30 @@ extern "C" {
  *   - Connection recovered: CONNECTED -> CONNECTING -> CONNECTED
  *   - Recovery failed: CONNECTED -> CONNECTING -> DISCONNECTED
  *   - Token error: CONNECTED -> CONNECTING -> TOKEN_ERROR -> DISCONNECTED
+ * @see nugu_network_manager_set_status()
+ * @see nugu_network_manager_get_status()
+ * @see NetworkManagerStatusCallback
  */
-enum nugu_network_status {
+typedef enum nugu_network_status {
 	NUGU_NETWORK_DISCONNECTED, /**< Network disconnected */
 	NUGU_NETWORK_CONNECTING, /**< Connection in progress */
 	NUGU_NETWORK_CONNECTED, /**< Network connected */
 	NUGU_NETWORK_TOKEN_ERROR /**< Token error */
-};
-
-/**
- * @see enum nugu_network_status
- */
-typedef enum nugu_network_status NuguNetworkStatus;
+} NuguNetworkStatus;
 
 /**
  * @brief Callback prototype for receiving network status events
+ * @see nugu_network_manager_set_status_callback()
  */
 typedef void (*NetworkManagerStatusCallback)(NuguNetworkStatus status,
 					     void *userdata);
 
 /**
  * @brief network handoff status
+ * @see nugu_network_manager_set_handoff_status_callback()
+ * @see NetworkManagerHandoffStatusCallback
  */
-enum nugu_network_handoff_status {
+typedef enum nugu_network_handoff_status {
 	NUGU_NETWORK_HANDOFF_FAILED,
 	/**< Handoff failed */
 
@@ -78,18 +79,22 @@ enum nugu_network_handoff_status {
 
 	NUGU_NETWORK_HANDOFF_COMPLETED
 	/**< The transition to the handoff connection is complete. */
-};
-
-/**
- * @see enum nugu_network_status
- */
-typedef enum nugu_network_handoff_status NuguNetworkHandoffStatus;
+} NuguNetworkHandoffStatus;
 
 /**
  * @brief Callback prototype for handoff status events
  */
 typedef void (*NetworkManagerHandoffStatusCallback)(
 	NuguNetworkHandoffStatus status, void *userdata);
+
+/**
+ * @brief Callback prototype for result of event transfer request.
+ * @see nugu_network_manager_send_event()
+ */
+typedef void (*NetworkManagerEventResultCallback)(int success,
+						  const char *msg_id,
+						  const char *dialog_id,
+						  int code, void *userdata);
 
 /**
  * @brief network protocols
@@ -107,8 +112,9 @@ enum nugu_network_protocol {
 
 /**
  * @brief Server policy information used for network connections
+ * @see nugu_network_manager_handoff
  */
-struct nugu_network_server_policy {
+typedef struct nugu_network_server_policy {
 	enum nugu_network_protocol protocol; /**< protocol */
 	char address[NUGU_NETWORK_MAX_ADDRESS + 1]; /**< IP address */
 	char hostname[NUGU_NETWORK_MAX_ADDRESS + 1]; /**< dns name */
@@ -116,12 +122,7 @@ struct nugu_network_server_policy {
 	int retry_count_limit; /**< maximum number of connection retries */
 	int connection_timeout_ms; /**< timeout value used when connecting */
 	int is_charge; /**< 0: free, 1: normal */
-};
-
-/**
- * @see struct nugu_network_server_policy
- */
-typedef struct nugu_network_server_policy NuguNetworkServerPolicy;
+} NuguNetworkServerPolicy;
 
 /**
  * @brief Set network status callback
@@ -144,6 +145,17 @@ int nugu_network_manager_set_status_callback(
  */
 int nugu_network_manager_set_handoff_status_callback(
 	NetworkManagerHandoffStatusCallback callback, void *userdata);
+
+/**
+ * @brief Set event result callback
+ * @param[in] callback callback function
+ * @param[in] userdata data to pass to the user callback
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_network_manager_set_event_result_callback(
+	NetworkManagerEventResultCallback callback, void *userdata);
 
 /**
  * @brief Set the current network status
@@ -170,6 +182,7 @@ NuguNetworkStatus nugu_network_manager_get_status(void);
  * @retval -1 failure
  * @see nugu_event_new()
  * @see nugu_network_manager_send_event_data()
+ * @see nugu_network_manager_force_close_event()
  */
 int nugu_network_manager_send_event(NuguEvent *nev);
 
