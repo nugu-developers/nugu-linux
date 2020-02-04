@@ -65,6 +65,8 @@ struct _nugu_event {
 	int seq;
 	char *json;
 	char *context;
+
+	enum nugu_event_type type;
 };
 
 EXPORT_API NuguEvent *nugu_event_new(const char *name_space, const char *name,
@@ -84,6 +86,7 @@ EXPORT_API NuguEvent *nugu_event_new(const char *name_space, const char *name,
 	nev->referrer_id = NULL;
 	nev->seq = 0;
 	nev->version = strdup(version);
+	nev->type = NUGU_EVENT_TYPE_DEFAULT;
 
 	return nev;
 }
@@ -261,4 +264,20 @@ EXPORT_API char *nugu_event_generate_payload(NuguEvent *nev)
 				      nev->version, payload);
 
 	return buf;
+}
+
+int nugu_event_set_type(NuguEvent *nev, enum nugu_event_type type)
+{
+	g_return_val_if_fail(nev != NULL, -1);
+
+	nev->type = type;
+
+	return 0;
+}
+
+enum nugu_event_type nugu_event_get_type(NuguEvent *nev)
+{
+	g_return_val_if_fail(nev != NULL, NUGU_EVENT_TYPE_DEFAULT);
+
+	return nev->type;
 }
