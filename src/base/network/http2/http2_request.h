@@ -36,7 +36,8 @@ enum http2_request_method {
 enum http2_request_content_type {
 	HTTP2_REQUEST_CONTENT_TYPE_UNKNOWN,
 	HTTP2_REQUEST_CONTENT_TYPE_JSON,
-	HTTP2_REQUEST_CONTENT_TYPE_OCTET
+	HTTP2_REQUEST_CONTENT_TYPE_OCTET,
+	HTTP2_REQUEST_CONTENT_TYPE_MULTIPART
 };
 
 typedef struct _http2_request HTTP2Request;
@@ -64,7 +65,8 @@ int http2_request_set_method(HTTP2Request *req,
 			     enum http2_request_method method);
 int http2_request_set_url(HTTP2Request *req, const char *url);
 int http2_request_set_content_type(HTTP2Request *req,
-				   enum http2_request_content_type type);
+				   enum http2_request_content_type type,
+				   const char *boundary);
 int http2_request_set_connection_timeout(HTTP2Request *req, int timeout);
 int http2_request_set_timeout(HTTP2Request *req, int timeout_secs);
 int http2_request_set_useragent(HTTP2Request *req, const char *useragent);

@@ -27,6 +27,10 @@
 
 #include "http2_request.h"
 
+#define CT_JSON "Content-Type: application/json"
+#define CT_OCTET "Content-Type: application/octet-stream"
+#define CT_MULTIPART "Content-Type: multipart/form-data; boundary=%s"
+
 #define SHOW_VERBOSE 0
 
 struct _http2_request {
@@ -325,17 +329,24 @@ int http2_request_set_url(HTTP2Request *req, const char *url)
 }
 
 int http2_request_set_content_type(HTTP2Request *req,
-				   enum http2_request_content_type type)
+				   enum http2_request_content_type type,
+				   const char *boundary)
 {
+	char *tmp;
+
 	g_return_val_if_fail(req != NULL, -1);
 
 	switch (type) {
 	case HTTP2_REQUEST_CONTENT_TYPE_JSON:
-		http2_request_add_header(req, "Content-Type: application/json");
+		http2_request_add_header(req, CT_JSON);
 		break;
 	case HTTP2_REQUEST_CONTENT_TYPE_OCTET:
-		http2_request_add_header(
-			req, "Content-Type: application/octet-stream");
+		http2_request_add_header(req, CT_OCTET);
+		break;
+	case HTTP2_REQUEST_CONTENT_TYPE_MULTIPART:
+		tmp = g_strdup_printf(CT_MULTIPART, boundary);
+		http2_request_add_header(req, tmp);
+		g_free(tmp);
 		break;
 	case HTTP2_REQUEST_CONTENT_TYPE_UNKNOWN:
 		break;

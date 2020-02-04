@@ -56,7 +56,7 @@ V1EventAttachment *v1_event_attachment_new(const char *host)
 	attach->req = http2_request_new();
 	http2_request_set_method(attach->req, HTTP2_REQUEST_METHOD_POST);
 	http2_request_set_content_type(attach->req,
-				       HTTP2_REQUEST_CONTENT_TYPE_OCTET);
+				       HTTP2_REQUEST_CONTENT_TYPE_OCTET, NULL);
 
 	/* Set maximum timeout to 5 seconds */
 	http2_request_set_timeout(attach->req, 5);
