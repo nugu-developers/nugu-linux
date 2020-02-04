@@ -39,6 +39,13 @@ struct equeue_data_attachment {
 	int is_end;
 };
 
+struct equeue_data_request_result {
+	int success;
+	char *msg_id;
+	char *dialog_id;
+	int code;
+};
+
 #ifdef __cplusplus
 }
 #endif

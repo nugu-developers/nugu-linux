@@ -23,6 +23,8 @@
 #include "base/nugu_equeue.h"
 #include "base/nugu_uuid.h"
 
+#include "dg_types.h"
+
 #include "http2_request.h"
 #include "v1_events.h"
 
@@ -46,18 +48,51 @@ struct _v1_events {
 /* invoked in a thread loop */
 static void _on_finish(HTTP2Request *req, void *userdata)
 {
-	int code;
+	struct equeue_data_request_result *event;
 
-	code = http2_request_get_response_code(req);
-	if (code == HTTP2_RESPONSE_OK)
+	event = malloc(sizeof(struct equeue_data_request_result));
+	if (!event) {
+		error_nomem();
+		return;
+	}
+
+	event->code = http2_request_get_response_code(req);
+	if (event->code == HTTP2_RESPONSE_OK)
+		event->success = 1;
+	else
+		event->success = 0;
+
+	if (http2_request_peek_msgid(req))
+		event->msg_id = strdup(http2_request_peek_msgid(req));
+	else
+		event->msg_id = NULL;
+
+	if (http2_request_peek_dialogid(req))
+		event->dialog_id = strdup(http2_request_peek_dialogid(req));
+	else
+		event->dialog_id = NULL;
+
+	if (nugu_equeue_push(NUGU_EQUEUE_TYPE_SEND_EVENT_RESULT, event) < 0) {
+		nugu_error("nugu_equeue_push failed");
+
+		if (event->dialog_id)
+			free(event->dialog_id);
+		if (event->msg_id)
+			free(event->msg_id);
+		free(event);
+
+		return;
+	}
+
+	if (event->success == 1)
 		return;
 
-	nugu_error("event send failed: %d", code);
+	nugu_error("event send failed: %d (msg=%s)", event->code,
+		   event->msg_id);
 
-	if (code == HTTP2_RESPONSE_AUTHFAIL || code == HTTP2_RESPONSE_FORBIDDEN)
+	if (event->code == HTTP2_RESPONSE_AUTHFAIL ||
+	    event->code == HTTP2_RESPONSE_FORBIDDEN)
 		nugu_equeue_push(NUGU_EQUEUE_TYPE_INVALID_TOKEN, NULL);
-	else
-		nugu_equeue_push(NUGU_EQUEUE_TYPE_SEND_EVENT_FAILED, NULL);
 }
 
 V1Events *v1_events_new(const char *host, HTTP2Network *net)
@@ -121,6 +156,17 @@ void v1_events_free(V1Events *event)
 
 	memset(event, 0, sizeof(V1Events));
 	free(event);
+}
+
+int v1_events_set_info(V1Events *event, const char *msg_id,
+		       const char *dialog_id)
+{
+	g_return_val_if_fail(event != NULL, -1);
+
+	http2_request_set_msgid(event->req, msg_id);
+	http2_request_set_dialogid(event->req, dialog_id);
+
+	return 0;
 }
 
 int v1_events_send_json(V1Events *event, const char *data, size_t length)

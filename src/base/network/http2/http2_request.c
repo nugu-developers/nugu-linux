@@ -40,16 +40,15 @@ struct _http2_request {
 	enum http2_request_content_type type;
 	char curl_errbuf[CURL_ERROR_SIZE];
 
-	NuguBuffer *response_header;
-	NuguBuffer *response_body;
-
 	NuguBuffer *send_body;
 	pthread_mutex_t lock_send_body;
 	int send_body_closed;
 
+	NuguBuffer *response_header;
 	ResponseHeaderCallback header_cb;
 	void *header_cb_userdata;
 
+	NuguBuffer *response_body;
 	ResponseBodyCallback body_cb;
 	void *body_cb_userdata;
 
@@ -61,6 +60,10 @@ struct _http2_request {
 
 	pthread_mutex_t lock_ref;
 	int ref_count;
+
+	/* Optional information */
+	char *msg_id;
+	char *dialog_id;
 };
 
 static int _debug_callback(CURL *handle, curl_infotype type, char *data,
@@ -250,6 +253,12 @@ static void http2_request_free(HTTP2Request *req)
 
 	if (req->destroy_cb)
 		req->destroy_cb(req, req->destroy_cb_userdata);
+
+	if (req->msg_id)
+		free(req->msg_id);
+
+	if (req->dialog_id)
+		free(req->dialog_id);
 
 	if (strlen(req->curl_errbuf) > 0)
 		nugu_error("CURL ERROR: %s", req->curl_errbuf);
@@ -561,4 +570,48 @@ void http2_request_disable_curl_log(HTTP2Request *req)
 	g_return_if_fail(req != NULL);
 
 	curl_easy_setopt(req->easy, CURLOPT_VERBOSE, 0L);
+}
+
+int http2_request_set_msgid(HTTP2Request *req, const char *msgid)
+{
+	g_return_val_if_fail(req != NULL, -1);
+
+	if (req->msg_id)
+		free(req->msg_id);
+
+	if (msgid)
+		req->msg_id = strdup(msgid);
+	else
+		req->msg_id = NULL;
+
+	return 0;
+}
+
+const char *http2_request_peek_msgid(HTTP2Request *req)
+{
+	g_return_val_if_fail(req != NULL, NULL);
+
+	return req->msg_id;
+}
+
+int http2_request_set_dialogid(HTTP2Request *req, const char *dialogid)
+{
+	g_return_val_if_fail(req != NULL, -1);
+
+	if (req->dialog_id)
+		free(req->dialog_id);
+
+	if (dialogid)
+		req->dialog_id = strdup(dialogid);
+	else
+		req->dialog_id = NULL;
+
+	return 0;
+}
+
+const char *http2_request_peek_dialogid(HTTP2Request *req)
+{
+	g_return_val_if_fail(req != NULL, NULL);
+
+	return req->dialog_id;
 }

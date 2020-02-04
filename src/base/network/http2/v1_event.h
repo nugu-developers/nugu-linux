@@ -29,6 +29,9 @@ V1Event *v1_event_new(const char *host);
 void v1_event_free(V1Event *event);
 
 int v1_event_set_json(V1Event *event, const char *data, size_t length);
+int v1_event_set_info(V1Event *event, const char *msg_id,
+		      const char *dialog_id);
+
 int v1_event_send_with_free(V1Event *event, HTTP2Network *net);
 
 #ifdef __cplusplus

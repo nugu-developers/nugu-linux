@@ -241,6 +241,8 @@ static int _send_event(DGServer *server, NuguEvent *nev, const char *payload)
 	if (!e)
 		return -1;
 
+	v1_event_set_info(e, nugu_event_peek_msg_id(nev),
+			  nugu_event_peek_dialog_id(nev));
 	v1_event_set_json(e, payload, strlen(payload));
 	v1_event_send_with_free(e, server->net);
 
@@ -255,6 +257,8 @@ static int _send_events(DGServer *server, NuguEvent *nev, const char *payload)
 	if (!e)
 		return -1;
 
+	v1_events_set_info(e, nugu_event_peek_msg_id(nev),
+			   nugu_event_peek_dialog_id(nev));
 	v1_events_send_json(e, payload, strlen(payload));
 
 	if (nugu_event_get_type(nev) == NUGU_EVENT_TYPE_DEFAULT) {

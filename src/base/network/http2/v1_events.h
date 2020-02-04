@@ -28,6 +28,8 @@ typedef struct _v1_events V1Events;
 V1Events *v1_events_new(const char *host, HTTP2Network *net);
 void v1_events_free(V1Events *event);
 
+int v1_events_set_info(V1Events *event, const char *msg_id,
+		       const char *dialog_id);
 int v1_events_send_json(V1Events *event, const char *data, size_t length);
 int v1_events_send_binary(V1Events *event, int seq, int is_end, size_t length,
 			  unsigned char *data);
