@@ -41,6 +41,17 @@ extern "C" {
  */
 
 /**
+ * @brief event types
+ */
+enum nugu_event_type {
+	NUGU_EVENT_TYPE_DEFAULT,
+	/**< Single event with no additional data. */
+
+	NUGU_EVENT_TYPE_WITH_ATTACHMENT
+	/**< Event with additional data. */
+};
+
+/**
  * @brief Event object
  */
 typedef struct _nugu_event NuguEvent;
@@ -158,6 +169,23 @@ int nugu_event_set_referrer_id(NuguEvent *nev, const char *referrer_id);
  * @return referrer-dialog-request-id. Please don't free the data manually.
  */
 const char *nugu_event_peek_referrer_id(NuguEvent *nev);
+
+/**
+ * @brief Set the type of NuguEvent
+ * @param[in] nev event object
+ * @param[in] type event type
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_event_set_type(NuguEvent *nev, enum nugu_event_type type);
+
+/**
+ * @brief Get the type of NuguEvent
+ * @param[in] nev event object
+ * @return type of NuguEvent
+ */
+enum nugu_event_type nugu_event_get_type(NuguEvent *nev);
 
 /**
  * @brief Get the current sequence number of attachment data

@@ -506,6 +506,7 @@ void ASRAgent::onListeningState(ListeningState state)
             delete rec_event;
 
         rec_event = new CapabilityEvent("Recognize", this);
+        rec_event->setType(NUGU_EVENT_TYPE_WITH_ATTACHMENT);
 
         playsync_manager->onMicOn();
 

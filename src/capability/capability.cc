@@ -67,6 +67,11 @@ void CapabilityEvent::setDialogMessageId(const std::string& id)
     nugu_event_set_dialog_id(event, dialog_id.c_str());
 }
 
+void CapabilityEvent::setType(enum nugu_event_type type)
+{
+    nugu_event_set_type(event, type);
+}
+
 void CapabilityEvent::sendEvent(const std::string& context, const std::string& payload)
 {
     if (event == NULL) {
