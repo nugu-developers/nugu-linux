@@ -207,7 +207,7 @@ HTTP2Request *http2_request_new()
 	return req;
 }
 
-void http2_request_free(HTTP2Request *req)
+static void http2_request_free(HTTP2Request *req)
 {
 	g_return_if_fail(req != NULL);
 
