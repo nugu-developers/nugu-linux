@@ -72,8 +72,11 @@ int v1_event_set_json(V1Event *event, const char *data, size_t length)
 {
 	g_return_val_if_fail(event != NULL, -1);
 
-	return http2_request_add_send_data(event->req,
-					   (const unsigned char *)data, length);
+	if (http2_request_add_send_data(event->req, (const unsigned char *)data,
+					length) < 0)
+		return -1;
+
+	return http2_request_close_send_data(event->req);
 }
 
 /* invoked in a thread loop */

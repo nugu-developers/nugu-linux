@@ -58,8 +58,13 @@ int http2_request_ref(HTTP2Request *req);
 int http2_request_unref(HTTP2Request *req);
 
 int http2_request_add_header(HTTP2Request *req, const char *header);
+
 int http2_request_add_send_data(HTTP2Request *req, const unsigned char *data,
 				size_t length);
+int http2_request_close_send_data(HTTP2Request *req);
+void http2_request_lock_send_data(HTTP2Request *req);
+void http2_request_unlock_send_data(HTTP2Request *req);
+int http2_request_resume(HTTP2Request *req);
 
 int http2_request_set_method(HTTP2Request *req,
 			     enum http2_request_method method);

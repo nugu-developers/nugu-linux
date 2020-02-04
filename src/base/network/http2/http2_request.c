@@ -18,6 +18,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <errno.h>
+#include <unistd.h>
 
 #include <glib.h>
 
@@ -41,7 +42,10 @@ struct _http2_request {
 
 	NuguBuffer *response_header;
 	NuguBuffer *response_body;
+
 	NuguBuffer *send_body;
+	pthread_mutex_t lock_send_body;
+	int send_body_closed;
 
 	ResponseHeaderCallback header_cb;
 	void *header_cb_userdata;
@@ -121,13 +125,27 @@ static size_t _request_body_cb(char *buffer, size_t size, size_t nitems,
 	if (!req->send_body)
 		return 0;
 
+	http2_request_lock_send_data(req);
+
 	length = nugu_buffer_get_size(req->send_body);
 	if (length >= size * nitems)
 		length = size * nitems;
-	else if (length == 0)
+	else if (length == 0) {
+		if (req->send_body_closed == 0) {
+			/* Pause the current uploading */
+			http2_request_unlock_send_data(req);
+			nugu_dbg("request paused until resume request");
+			return CURL_READFUNC_PAUSE;
+		}
+
+		/* There is no more data to send. */
+		http2_request_unlock_send_data(req);
+
 		return 0;
+	}
 
 	memcpy(buffer, nugu_buffer_peek(req->send_body), length);
+
 	if (req->type == HTTP2_REQUEST_CONTENT_TYPE_JSON) {
 		if (length < size * nitems)
 			buffer[length] = '\0';
@@ -143,6 +161,8 @@ static size_t _request_body_cb(char *buffer, size_t size, size_t nitems,
 	}
 
 	nugu_buffer_shift_left(req->send_body, length);
+
+	http2_request_unlock_send_data(req);
 
 	return length;
 }
@@ -207,6 +227,7 @@ HTTP2Request *http2_request_new()
 	curl_easy_setopt(req->easy, CURLOPT_HEADERDATA, req);
 
 	pthread_mutex_init(&req->lock_ref, NULL);
+	pthread_mutex_init(&req->lock_send_body, NULL);
 
 	return req;
 }
@@ -238,6 +259,7 @@ static void http2_request_free(HTTP2Request *req)
 	curl_easy_cleanup(req->easy);
 
 	pthread_mutex_destroy(&req->lock_ref);
+	pthread_mutex_destroy(&req->lock_send_body);
 
 	memset(req, 0, sizeof(HTTP2Request));
 	free(req);
@@ -293,6 +315,39 @@ int http2_request_add_send_data(HTTP2Request *req, const unsigned char *data,
 	g_return_val_if_fail(req != NULL, -1);
 
 	nugu_buffer_add(req->send_body, data, length);
+
+	return 0;
+}
+
+int http2_request_close_send_data(HTTP2Request *req)
+{
+	g_return_val_if_fail(req != NULL, -1);
+
+	req->send_body_closed = 1;
+
+	return 0;
+}
+
+void http2_request_lock_send_data(HTTP2Request *req)
+{
+	g_return_if_fail(req != NULL);
+
+	pthread_mutex_lock(&req->lock_send_body);
+}
+
+void http2_request_unlock_send_data(HTTP2Request *req)
+{
+	g_return_if_fail(req != NULL);
+
+	pthread_mutex_unlock(&req->lock_send_body);
+}
+
+int http2_request_resume(HTTP2Request *req)
+{
+	g_return_val_if_fail(req != NULL, -1);
+
+	nugu_dbg("resume the paused request (req=%p)", req);
+	curl_easy_pause(req->easy, CURLPAUSE_CONT);
 
 	return 0;
 }
