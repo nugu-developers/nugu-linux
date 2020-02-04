@@ -33,11 +33,6 @@ enum http2_request_method {
 	HTTP2_REQUEST_METHOD_POST
 };
 
-enum http2_request_sync_item {
-	HTTP2_REQUEST_SYNC_ITEM_HEADER,
-	HTTP2_REQUEST_SYNC_ITEM_FINISH
-};
-
 enum http2_request_content_type {
 	HTTP2_REQUEST_CONTENT_TYPE_UNKNOWN,
 	HTTP2_REQUEST_CONTENT_TYPE_JSON,
@@ -88,15 +83,10 @@ int http2_request_set_finish_callback(HTTP2Request *req,
 int http2_request_set_destroy_callback(HTTP2Request *req,
 				       HTTP2DestroyCallback cb, void *userdata);
 
+void http2_request_emit_completed(HTTP2Request *req);
+
 NuguBuffer *http2_request_peek_response_body(HTTP2Request *req);
 NuguBuffer *http2_request_peek_response_header(HTTP2Request *req);
-
-void http2_request_wait_response(HTTP2Request *req,
-				 enum http2_request_sync_item item);
-void http2_request_emit_response(HTTP2Request *req,
-				 enum http2_request_sync_item item);
-
-void http2_request_emit_completed(HTTP2Request *req);
 
 int http2_request_get_response_code(HTTP2Request *req);
 
