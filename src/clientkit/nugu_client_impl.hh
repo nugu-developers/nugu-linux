@@ -35,6 +35,7 @@ public:
 
     void setListener(INuguClientListener* listener);
     INuguClientListener* getListener();
+    void setWakeupWord(const std::string& wakeup_word);
     void registerCapability(const std::string& cname, std::pair<ICapabilityInterface*, ICapabilityListener*> capability);
     int create(void);
     bool initialize(void);
