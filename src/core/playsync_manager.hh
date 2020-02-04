@@ -47,7 +47,7 @@ public:
         std::string token;
     };
     using DisplayRenderer = struct {
-        IPlaySyncManagerListener* listener;
+        IPlaySyncManagerListener* listener = nullptr;
         std::string cap_name;
         std::string duration;
         std::string display_id;
@@ -85,7 +85,7 @@ private:
     std::vector<std::string> getKeyOfMap(const std::map<T, V>& map);
 
     using TimerCallbackParam = struct {
-        PlaySyncManager* instance;
+        PlaySyncManager* instance = nullptr;
         std::string ps_id;
         bool immediately;
         std::function<void()> callback; // temp : for holding function for stack log
