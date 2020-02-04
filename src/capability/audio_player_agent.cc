@@ -16,10 +16,8 @@
 
 #include <string.h>
 
-#include "base/nugu_log.h"
-#include "core/media_player.hh"
-
 #include "audio_player_agent.hh"
+#include "base/nugu_log.h"
 
 namespace NuguCapability {
 
@@ -45,7 +43,7 @@ AudioPlayerAgent::~AudioPlayerAgent()
 {
     aplayer_listeners.clear();
 
-    CapabilityManager::getInstance()->removeFocus("cap_audio");
+    capa_helper->removeFocus("cap_audio");
 
     if (player) {
         player->removeListener(this);
@@ -64,7 +62,7 @@ void AudioPlayerAgent::initialize()
     player = core_container->createMediaPlayer();
     player->addListener(this);
 
-    CapabilityManager::getInstance()->addFocus("cap_audio", NUGU_FOCUS_TYPE_MEDIA, this);
+    capa_helper->addFocus("cap_audio", NUGU_FOCUS_TYPE_MEDIA, this);
 
     initialized = true;
 }
@@ -537,7 +535,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     std::string playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
     if (!playstackctl_ps_id.empty()) {
-        PlaySyncManager::DisplayRenderer renderer;
+        IPlaySyncManager::DisplayRenderer renderer;
         Json::Value meta = audio_item["metadata"];
 
         if (!meta.empty() && !meta["template"].empty()) {
@@ -594,7 +592,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         return;
     }
 
-    CapabilityManager::getInstance()->requestFocus("cap_audio", NULL);
+    capa_helper->requestFocus("cap_audio", NULL);
 }
 
 void AudioPlayerAgent::parsingPause(const char* message)
@@ -613,14 +611,14 @@ void AudioPlayerAgent::parsingPause(const char* message)
     playserviceid = root["playServiceId"].asString();
 
     if (playserviceid.size()) {
-        CapabilityManager::getInstance()->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
+        capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
 
         if (!player->pause()) {
             nugu_error("pause media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't pause");
         }
 
-        CapabilityManager::getInstance()->releaseFocus("cap_audio");
+        capa_helper->releaseFocus("cap_audio");
     }
 }
 
@@ -642,12 +640,12 @@ void AudioPlayerAgent::parsingStop(const char* message)
         playsync_manager->removeContext(playstackctl_ps_id, getName(), !is_finished);
         std::string stacked_ps_id = playsync_manager->getPlayStackItem(getName());
 
-        CapabilityManager::getInstance()->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
+        capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
 
         if (!stacked_ps_id.empty() && playstackctl_ps_id != stacked_ps_id)
             return;
         else if (stacked_ps_id.empty())
-            CapabilityManager::getInstance()->releaseFocus("cap_audio");
+            capa_helper->releaseFocus("cap_audio");
 
         if (!player->stop()) {
             nugu_error("stop media failed");
@@ -879,7 +877,7 @@ void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
         cur_aplayer_state = AudioPlayerState::PAUSED;
         break;
     case MediaPlayerState::STOPPED:
-        CapabilityManager::getInstance()->releaseFocus("cap_audio");
+        capa_helper->releaseFocus("cap_audio");
         if (is_finished) {
             sendEventPlaybackFinished();
             cur_aplayer_state = AudioPlayerState::FINISHED;
@@ -958,6 +956,11 @@ void AudioPlayerAgent::muteChanged(int mute)
 
 void AudioPlayerAgent::onElementSelected(const std::string& item_token)
 {
+}
+
+IPlaySyncManager* AudioPlayerAgent::getPlaySyncManager()
+{
+    return playsync_manager;
 }
 
 } // NuguCapability

@@ -67,7 +67,7 @@ TTSAgent::~TTSAgent()
     }
 
     initialized = false;
-    CapabilityManager::getInstance()->removeFocus("cap_tts");
+    capa_helper->removeFocus("cap_tts");
 }
 
 void TTSAgent::setAttribute(TTSAttribute&& attribute)
@@ -96,7 +96,7 @@ void TTSAgent::initialize()
 
     nugu_pcm_set_property(pcm, (NuguAudioProperty) { AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
 
-    CapabilityManager::getInstance()->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
+    capa_helper->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
     initialized = true;
 }
@@ -131,7 +131,7 @@ void TTSAgent::pcmEventCallback(enum nugu_media_event event, void* userdata)
         tts->sendEventSpeechFinished(tts->cur_token);
         tts->finish = true;
         tts->speak_status = MEDIA_STATUS_STOPPED;
-        CapabilityManager::getInstance()->releaseFocus("cap_tts");
+        tts->capa_helper->releaseFocus("cap_tts");
         break;
     default:
         break;
@@ -404,11 +404,11 @@ void TTSAgent::parsingSpeak(const char* message)
 
     startTTS(getNuguDirective());
 
-    if (CapabilityManager::getInstance()->isFocusOn(NUGU_FOCUS_TYPE_TTS)) {
+    if (capa_helper->isFocusOn(NUGU_FOCUS_TYPE_TTS)) {
         if (nugu_directive_get_data_size(speak_dir) > 0)
             getAttachmentData(speak_dir, this);
     } else {
-        CapabilityManager::getInstance()->requestFocus("cap_tts", NULL);
+        capa_helper->requestFocus("cap_tts", NULL);
     }
 
     if (tts_listener)

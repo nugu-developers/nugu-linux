@@ -17,8 +17,6 @@
 #include <string.h>
 
 #include "base/nugu_log.h"
-#include "core/capability_manager.hh"
-
 #include "extension_agent.hh"
 
 namespace NuguCapability {

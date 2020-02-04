@@ -19,56 +19,31 @@
 
 #include <functional>
 #include <map>
-#include <string>
-#include <vector>
 
 #include "base/nugu_timer.h"
 #include "capability/capability_interface.hh"
+#include "clientkit/playsync_manager_interface.hh"
 
 namespace NuguCore {
 
 using namespace NuguCapability;
 
-class IPlaySyncManagerListener {
-public:
-    virtual ~IPlaySyncManagerListener() = default;
-    virtual void onSyncDisplayContext(const std::string& id) = 0;
-    virtual bool onReleaseDisplayContext(const std::string& id, bool unconditionally) = 0;
-};
-
-class PlaySyncManager {
-public:
-    using DisplayRenderInfo = struct {
-        std::string id;
-        std::string type;
-        std::string payload;
-        std::string dialog_id;
-        std::string ps_id;
-        std::string token;
-    };
-    using DisplayRenderer = struct {
-        IPlaySyncManagerListener* listener = nullptr;
-        std::string cap_name;
-        std::string duration;
-        std::string display_id;
-        bool only_rendering = false;
-    };
-
+class PlaySyncManager : public IPlaySyncManager {
 public:
     PlaySyncManager();
     virtual ~PlaySyncManager();
 
-    void addContext(const std::string& ps_id, const std::string& cap_name);
-    void addContext(const std::string& ps_id, const std::string& cap_name, DisplayRenderer&& renderer);
-    void removeContext(const std::string& ps_id, const std::string& cap_name, bool immediately = true);
-    void clearPendingContext(const std::string& ps_id);
-    std::vector<std::string> getAllPlayStackItems();
-    std::string getPlayStackItem(const std::string& cap_name);
+    void addContext(const std::string& ps_id, const std::string& cap_name) override;
+    void addContext(const std::string& ps_id, const std::string& cap_name, DisplayRenderer&& renderer) override;
+    void removeContext(const std::string& ps_id, const std::string& cap_name, bool immediately = true) override;
+    void clearPendingContext(const std::string& ps_id) override;
+    std::vector<std::string> getAllPlayStackItems() override;
+    std::string getPlayStackItem(const std::string& cap_name) override;
 
-    void setExpectSpeech(bool expect_speech);
-    void onMicOn();
-    void clearContextHold();
-    void onASRError();
+    void setExpectSpeech(bool expect_speech) override;
+    void onMicOn() override;
+    void clearContextHold() override;
+    void onASRError() override;
 
     using ContextMap = std::map<std::string, std::vector<std::string>>;
 

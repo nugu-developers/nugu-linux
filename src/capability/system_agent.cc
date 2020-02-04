@@ -19,7 +19,6 @@
 
 #include "base/nugu_log.h"
 #include "base/nugu_network_manager.h"
-#include "core/capability_manager.hh"
 
 #include "system_agent.hh"
 
@@ -173,7 +172,7 @@ void SystemAgent::sendEventSynchronizeState(void)
     std::string ename = "SynchronizeState";
     std::string payload = "";
 
-    sendEvent(ename, CapabilityManager::getInstance()->makeAllContextInfo(), payload);
+    sendEvent(ename, capa_helper->makeAllContextInfo(), payload);
 }
 
 void SystemAgent::sendEventUserInactivityReport(int seconds)
@@ -338,8 +337,7 @@ void SystemAgent::parsingException(const char* message)
 
     if (exception == SystemException::PLAY_ROUTER_PROCESSING_EXCEPTION) {
         nugu_info("Release ASR focus due to 'not found play' state");
-        CapabilityManager* cmanager = CapabilityManager::getInstance();
-        cmanager->releaseFocus("asr");
+        capa_helper->releaseFocus("asr");
     }
 
     if (system_listener)
@@ -358,7 +356,7 @@ void SystemAgent::parsingNoDirectives(const char* message)
     }
 
     dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
-    CapabilityManager::getInstance()->sendCommand("System", "ASR", "releasefocus", dialog_id);
+    capa_helper->sendCommand("System", "ASR", "releasefocus", dialog_id);
 }
 
 void SystemAgent::parsingRevoke(const char* message)

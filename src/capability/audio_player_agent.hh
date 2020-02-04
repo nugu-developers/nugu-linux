@@ -22,7 +22,6 @@
 #include "capability/audio_player_interface.hh"
 #include "capability/display_interface.hh"
 #include "clientkit/media_player_interface.hh"
-#include "core/capability_manager.hh"
 #include "display_render_assembly.hh"
 
 namespace NuguCapability {
@@ -97,6 +96,7 @@ public:
 
     // implement DisplayRenderAssembly
     void onElementSelected(const std::string& item_token) override;
+    IPlaySyncManager* getPlaySyncManager() override;
 
     using IDisplayHandler::removeListener;
 

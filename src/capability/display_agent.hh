@@ -34,6 +34,7 @@ public:
 
     // implement DisplayRenderAssembly
     void onElementSelected(const std::string& item_token) override;
+    IPlaySyncManager* getPlaySyncManager() override;
 
 private:
     void sendEventElementSelected(const std::string& item_token);

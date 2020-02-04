@@ -24,11 +24,8 @@
 #include "base/nugu_event.h"
 #include "base/nugu_network_manager.h"
 #include "capability/capability_interface.hh"
-#include "core/playsync_manager.hh"
 
 namespace NuguCapability {
-
-using namespace NuguCore;
 
 class Capability;
 class CapabilityEvent {
@@ -82,6 +79,7 @@ public:
     void receiveCommandAll(const std::string& command, const std::string& param) override;
     virtual void parsingDirective(const char* dname, const char* message);
     virtual std::string getContextInfo();
+    ICapabilityHelper* getCapabilityHelper();
 
     // implements ICapabilityObservable
     void registerObserver(ICapabilityObserver* observer) override;
@@ -91,8 +89,10 @@ public:
 protected:
     bool initialized = false;
     bool has_attachment = false;
-    PlaySyncManager* playsync_manager = nullptr;
+
     INuguCoreContainer* core_container = nullptr;
+    ICapabilityHelper* capa_helper = nullptr;
+    IPlaySyncManager* playsync_manager = nullptr;
 
 private:
     std::string cname;

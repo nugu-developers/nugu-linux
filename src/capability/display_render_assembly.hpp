@@ -17,7 +17,6 @@
 #include <sys/time.h>
 
 #include "base/nugu_log.h"
-#include "core/capability_manager.hh"
 
 namespace NuguCapability {
 
@@ -42,7 +41,7 @@ DisplayRenderAssembly<T>::~DisplayRenderAssembly()
 template <typename T>
 std::string DisplayRenderAssembly<T>::composeRenderInfo(const RenderInfoParam& param)
 {
-    PlaySyncManager::DisplayRenderInfo* info = new PlaySyncManager::DisplayRenderInfo;
+    IPlaySyncManager::DisplayRenderInfo* info = new IPlaySyncManager::DisplayRenderInfo;
     struct timeval tv;
 
     gettimeofday(&tv, NULL);
@@ -79,7 +78,8 @@ void DisplayRenderAssembly<T>::displayCleared(const std::string& id)
         disp_cur_token = disp_cur_ps_id = "";
     }
 
-    CapabilityManager::getInstance()->getPlaySyncManager()->clearPendingContext(ps_id);
+    auto derived = static_cast<T*>(this);
+    derived->getPlaySyncManager()->clearPendingContext(ps_id);
 }
 
 template <typename T>
@@ -119,7 +119,8 @@ void DisplayRenderAssembly<T>::removeListener(IDisplayListener* listener)
 template <typename T>
 void DisplayRenderAssembly<T>::stopRenderingTimer(const std::string& id)
 {
-    CapabilityManager::getInstance()->getPlaySyncManager()->clearContextHold();
+    auto derived = static_cast<T*>(this);
+    derived->getPlaySyncManager()->clearContextHold();
 }
 
 template <typename T>

@@ -15,6 +15,7 @@
  */
 
 #include "base/nugu_log.h"
+#include "capability_helper.hh"
 #include "media_player.hh"
 #include "network_manager.hh"
 #include "speech_recognizer.hh"
@@ -23,6 +24,11 @@
 #include "nugu_core_container.hh"
 
 namespace NuguCore {
+
+NuguCoreContainer::~NuguCoreContainer()
+{
+    CapabilityHelper::destroyInstance();
+}
 
 INetworkManager* NuguCoreContainer::createNetworkManager()
 {
@@ -51,6 +57,11 @@ IMediaPlayer* NuguCoreContainer::createMediaPlayer()
     // TODO : It needs guarantee related plugin is loaded.
 
     return new MediaPlayer();
+}
+
+ICapabilityHelper* NuguCoreContainer::getCapabilityHelper()
+{
+    return CapabilityHelper::getInstance();
 }
 
 } // NuguCore

@@ -25,7 +25,7 @@ using namespace NuguClientKit;
 
 class NuguCoreContainer : public INuguCoreContainer {
 public:
-    virtual ~NuguCoreContainer() = default;
+    virtual ~NuguCoreContainer();
 
     INetworkManager* createNetworkManager();
 
@@ -33,6 +33,7 @@ public:
     IWakeupHandler* createWakeupHandler(const std::string& model_path = "") override;
     ISpeechRecognizer* createSpeechRecognizer(const std::string& model_path = "") override;
     IMediaPlayer* createMediaPlayer() override;
+    ICapabilityHelper* getCapabilityHelper() override;
 };
 
 } // NuguCore

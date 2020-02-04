@@ -24,12 +24,8 @@
 #include "base/nugu_timer.h"
 #include "capability/asr_interface.hh"
 #include "capability/capability.hh"
-#include "core/capability_manager.hh"
-#include "core/speech_recognizer.hh"
 
 namespace NuguCapability {
-
-using namespace NuguCore;
 
 typedef struct expect_speech_attr {
     bool is_handle;
