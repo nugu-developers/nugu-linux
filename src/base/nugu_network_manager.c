@@ -748,6 +748,28 @@ EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
 	return dg_server_send_event(_network->server, nev);
 }
 
+EXPORT_API int nugu_network_manager_force_close_event(NuguEvent *nev)
+{
+	g_return_val_if_fail(nev != NULL, -1);
+
+	if (nugu_event_get_type(nev) == NUGU_EVENT_TYPE_DEFAULT) {
+		nugu_error("not supported event type");
+		return -1;
+	}
+
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return -1;
+	}
+
+	if (!_network->server) {
+		nugu_error("not connected");
+		return -1;
+	}
+
+	return dg_server_force_close_event(_network->server, nev);
+}
+
 EXPORT_API int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
 						    size_t length,
 						    unsigned char *data)
@@ -835,7 +857,9 @@ const char *nugu_network_manager_peek_token(void)
 
 int nugu_network_manager_set_registry_url(const char *urlname)
 {
+#ifdef NUGU_ENV_NETWORK_REGISTRY_SERVER
 	char *override_value;
+#endif
 
 	if (!_network) {
 		nugu_error("network manager not initialized");
@@ -850,11 +874,15 @@ int nugu_network_manager_set_registry_url(const char *urlname)
 	if (_network->registry_url)
 		free(_network->registry_url);
 
-	override_value = getenv("NUGU_REGISTRY_SERVER");
+#ifdef NUGU_ENV_NETWORK_REGISTRY_SERVER
+	override_value = getenv(NUGU_ENV_NETWORK_REGISTRY_SERVER);
 	if (override_value)
 		_network->registry_url = strdup(override_value);
 	else
 		_network->registry_url = strdup(urlname);
+#else
+	_network->registry_url = strdup(urlname);
+#endif
 
 	return 0;
 }
@@ -871,7 +899,9 @@ const char *nugu_network_manager_peek_registry_url(void)
 
 int nugu_network_manager_set_useragent(const char *uagent)
 {
+#ifdef NUGU_ENV_NETWORK_USERAGENT
 	char *override_value;
+#endif
 
 	if (!_network) {
 		nugu_error("network manager not initialized");
@@ -886,11 +916,15 @@ int nugu_network_manager_set_useragent(const char *uagent)
 	if (_network->useragent)
 		free(_network->useragent);
 
-	override_value = getenv("NUGU_USERAGENT");
+#ifdef NUGU_ENV_NETWORK_USERAGENT
+	override_value = getenv(NUGU_ENV_NETWORK_USERAGENT);
 	if (override_value)
 		_network->useragent = strdup(override_value);
 	else
 		_network->useragent = strdup(uagent);
+#else
+	_network->useragent = strdup(uagent);
+#endif
 
 	return 0;
 }

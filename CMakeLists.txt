@@ -122,6 +122,15 @@ ADD_DEFINITIONS(
 
 	# Turn on the colorful log message
 	-DCONFIG_LOG_ANSICOLOR
+
+	# Environment variable names
+	# - Please comment out the following definition to avoid overwriting
+	#   the value by setting an environment variable. (e.g. Production)
+	-DNUGU_ENV_LOG="NUGU_LOG"
+	-DNUGU_ENV_LOG_MODULE="NUGU_LOG_MODULE"
+	-DNUGU_ENV_NETWORK_REGISTRY_SERVER="NUGU_REGISTRY_SERVER"
+	-DNUGU_ENV_NETWORK_USERAGENT="NUGU_USERAGENT"
+	-DNUGU_ENV_NETWORK_USE_EVENTS="NUGU_NETWORK_USE_EVENTS"
 )
 
 # Global include directories

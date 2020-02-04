@@ -40,6 +40,7 @@ public:
     std::string getDialogMessageId();
     void setDialogMessageId(const std::string& id);
     void setType(enum nugu_event_type type);
+    void forceClose();
     void sendEvent(const std::string& context, const std::string& payload);
     void sendAttachmentEvent(bool is_end, size_t size, unsigned char* data);
 

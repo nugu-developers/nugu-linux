@@ -188,6 +188,16 @@ int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
 					 size_t length, unsigned char *data);
 
 /**
+ * @brief Force close the NUGU_EVENT_TYPE_WITH_ATTACHMENT type event.
+ * @param[in] nev event object
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ * @see nugu_event_set_type()
+ */
+int nugu_network_manager_force_close_event(NuguEvent *nev);
+
+/**
  * @brief Initialize the network manager
  * @return result
  * @retval 0 success

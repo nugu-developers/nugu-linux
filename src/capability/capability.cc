@@ -72,6 +72,14 @@ void CapabilityEvent::setType(enum nugu_event_type type)
     nugu_event_set_type(event, type);
 }
 
+void CapabilityEvent::forceClose()
+{
+    if (nugu_event_get_type(event) == NUGU_EVENT_TYPE_DEFAULT)
+        return;
+
+    nugu_network_manager_force_close_event(event);
+}
+
 void CapabilityEvent::sendEvent(const std::string& context, const std::string& payload)
 {
     if (event == NULL) {
