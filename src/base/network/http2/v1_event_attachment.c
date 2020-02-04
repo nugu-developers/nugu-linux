@@ -112,7 +112,10 @@ int v1_event_attachment_set_data(V1EventAttachment *attach,
 {
 	g_return_val_if_fail(attach != NULL, -1);
 
-	return http2_request_add_send_data(attach->req, data, length);
+	if (http2_request_add_send_data(attach->req, data, length) < 0)
+		return -1;
+
+	return http2_request_close_send_data(attach->req);
 }
 
 int v1_event_attachment_send_with_free(V1EventAttachment *attach,
