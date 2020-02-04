@@ -84,6 +84,9 @@ static int _debug_callback(CURL *handle, curl_infotype type, char *data,
 		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
 			       NULL, NULL, -1, "[CURL] Send data: %d bytes",
 			       size);
+#ifdef FEATURE_ENABLE_HTTP2_DATA_HEXDUMP
+		nugu_hexdump((uint8_t *)data, size);
+#endif
 		break;
 	case CURLINFO_SSL_DATA_OUT:
 		break;
@@ -95,6 +98,9 @@ static int _debug_callback(CURL *handle, curl_infotype type, char *data,
 		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
 			       NULL, NULL, -1, "[CURL] Recv data: %d bytes",
 			       size);
+#ifdef FEATURE_ENABLE_HTTP2_DATA_HEXDUMP
+		nugu_hexdump((uint8_t *)data, size);
+#endif
 		break;
 	case CURLINFO_SSL_DATA_IN:
 		break;

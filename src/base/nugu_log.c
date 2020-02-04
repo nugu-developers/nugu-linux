@@ -414,6 +414,8 @@ EXPORT_API void nugu_hexdump(const uint8_t *data, size_t data_size)
 	size_t i;
 	size_t j;
 
+	pthread_mutex_lock(&_log_mutex);
+
 	for (i = 0; i < data_size; i += HEXDUMP_COLUMN_SIZE) {
 		printf("0x%04X: ", (unsigned int)i);
 
@@ -443,4 +445,6 @@ EXPORT_API void nugu_hexdump(const uint8_t *data, size_t data_size)
 
 	if (i % HEXDUMP_COLUMN_SIZE != 0)
 		printf("\n");
+
+	pthread_mutex_unlock(&_log_mutex);
 }
