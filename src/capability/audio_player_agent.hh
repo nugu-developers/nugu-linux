@@ -21,7 +21,6 @@
 #include "capability.hh"
 #include "capability/audio_player_interface.hh"
 #include "capability/display_interface.hh"
-#include "clientkit/media_player_interface.hh"
 #include "display_render_assembly.hh"
 
 namespace NuguCapability {

@@ -20,7 +20,7 @@
 #include <map>
 #include <memory>
 
-#include "capability/capability_interface.hh"
+#include "clientkit/capability_interface.hh"
 #include "clientkit/nugu_client_listener.hh"
 #include "core/nugu_core_container.hh"
 

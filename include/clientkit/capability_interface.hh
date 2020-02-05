@@ -17,22 +17,20 @@
 #ifndef __NUGU_CAPABILITY_INTERFACE_H__
 #define __NUGU_CAPABILITY_INTERFACE_H__
 
+#include <json/json.h>
 #include <list>
 #include <string>
 
 #include <base/nugu_directive.h>
-#include <capability/capability_observer.hh>
+#include <clientkit/capability_observer.hh>
 #include <clientkit/nugu_core_container_interface.hh>
-#include <json/json.h>
 
-namespace NuguCapability {
-
-using namespace NuguClientKit;
+namespace NuguClientKit {
 
 /**
  * @file capability_interface.hh
  * @defgroup CapabilityInterface CapabilityInterface
- * @ingroup SDKNuguCapability
+ * @ingroup SDKNuguClientKit
  * @brief capability interface
  *
  * An abstract object that a capability agent must perform in common.
@@ -161,6 +159,6 @@ public:
  * @}
  */
 
-} // NuguCapability
+} // NuguClientKit
 
 #endif /* __NUGU_CAPABILITY_INTERFACE_H__ */
