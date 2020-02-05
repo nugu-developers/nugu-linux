@@ -20,7 +20,6 @@
 #include <string>
 
 #include "base/nugu_media.h"
-
 #include "clientkit/media_player_interface.hh"
 
 namespace NuguCore {

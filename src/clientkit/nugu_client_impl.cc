@@ -21,10 +21,8 @@
 #include "base/nugu_equeue.h"
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
-
 #include "capability/capability_factory.hh"
 #include "capability/system_interface.hh"
-
 #include "core/audio_recorder_manager.hh"
 #include "core/capability_manager_helper.hh"
 
@@ -33,6 +31,7 @@
 namespace NuguClientKit {
 
 using namespace NuguCore;
+using namespace NuguCapability;
 
 NuguClientImpl::NuguClientImpl()
 {

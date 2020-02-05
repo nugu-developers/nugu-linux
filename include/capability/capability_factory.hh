@@ -20,9 +20,11 @@
 #include <functional>
 #include <list>
 
-#include <capability/capability_interface.hh>
+#include <clientkit/capability_interface.hh>
 
 namespace NuguCapability {
+
+using namespace NuguClientKit;
 
 class ASRAgent;
 class TTSAgent;

@@ -17,9 +17,11 @@
 #ifndef __NUGU_LOCATION_INTERFACE_H__
 #define __NUGU_LOCATION_INTERFACE_H__
 
-#include <capability/capability_interface.hh>
+#include <clientkit/capability_interface.hh>
 
 namespace NuguCapability {
+
+using namespace NuguClientKit;
 
 /**
  * @file location_interface.hh

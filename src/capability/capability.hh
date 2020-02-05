@@ -23,9 +23,11 @@
 
 #include "base/nugu_event.h"
 #include "base/nugu_network_manager.h"
-#include "capability/capability_interface.hh"
+#include "clientkit/capability_interface.hh"
 
 namespace NuguCapability {
+
+using namespace NuguClientKit;
 
 class Capability;
 class CapabilityEvent {

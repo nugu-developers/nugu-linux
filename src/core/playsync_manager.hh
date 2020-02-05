@@ -21,12 +21,11 @@
 #include <map>
 
 #include "base/nugu_timer.h"
-#include "capability/capability_interface.hh"
-#include "clientkit/playsync_manager_interface.hh"
+#include "clientkit/capability_interface.hh"
 
 namespace NuguCore {
 
-using namespace NuguCapability;
+using namespace NuguClientKit;
 
 class PlaySyncManager : public IPlaySyncManager {
 public:

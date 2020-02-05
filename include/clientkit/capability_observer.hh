@@ -19,12 +19,12 @@
 
 #include <string>
 
-namespace NuguCapability {
+namespace NuguClientKit {
 
 /**
  * @file capability_observer.hh
  * @defgroup CapabilityInterface CapabilityObserver
- * @ingroup SDKNuguCapability
+ * @ingroup SDKNuguClientKit
  * @brief Capability observer interface
  *
  *
@@ -59,6 +59,6 @@ public:
  * @}
  */
 
-} // NuguCapability
+} // NuguClientKit
 
 #endif /* __NUGU_CAPABILITY_OBSERVER_H__ */

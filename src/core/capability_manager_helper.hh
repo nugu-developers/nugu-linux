@@ -17,11 +17,11 @@
 #ifndef __NUGU_CAPABILITY_MANAGER_HELPER_H__
 #define __NUGU_CAPABILITY_MANAGER_HELPER_H__
 
-#include "capability/capability_interface.hh"
+#include "clientkit/capability_interface.hh"
 
 namespace NuguCore {
 
-using namespace NuguCapability;
+using namespace NuguClientKit;
 
 class CapabilityManagerHelper {
 public:

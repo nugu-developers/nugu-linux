@@ -20,7 +20,7 @@
 #include <memory>
 #include <string>
 
-#include <capability/capability_interface.hh>
+#include <clientkit/capability_interface.hh>
 #include <clientkit/nugu_client_listener.hh>
 #include <clientkit/nugu_core_container_interface.hh>
 
