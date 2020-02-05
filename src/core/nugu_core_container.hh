@@ -34,6 +34,16 @@ public:
     ISpeechRecognizer* createSpeechRecognizer(const std::string& model_path = "") override;
     IMediaPlayer* createMediaPlayer() override;
     ICapabilityHelper* getCapabilityHelper() override;
+
+    // wrapping CapabilityManager functions
+    void setWakeupWord(const std::string& wakeup_word);
+    void addCapability(const std::string& cname, ICapabilityInterface* cap);
+    void removeCapability(const std::string& cname);
+    void destroyInstance();
+
+    // wrapping AudioRecorderManager functions
+    void createAudioRecorderManager();
+    void destoryAudioRecorderManager();
 };
 
 } // NuguCore

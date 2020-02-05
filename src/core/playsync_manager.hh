@@ -21,7 +21,7 @@
 #include <map>
 
 #include "base/nugu_timer.h"
-#include "clientkit/capability_interface.hh"
+#include "clientkit/playsync_manager_interface.hh"
 
 namespace NuguCore {
 

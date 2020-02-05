@@ -23,8 +23,6 @@
 #include "base/nugu_plugin.h"
 #include "capability/capability_factory.hh"
 #include "capability/system_interface.hh"
-#include "core/audio_recorder_manager.hh"
-#include "core/capability_manager_helper.hh"
 
 #include "nugu_client_impl.hh"
 
@@ -45,7 +43,8 @@ NuguClientImpl::NuguClientImpl()
 
 NuguClientImpl::~NuguClientImpl()
 {
-    CapabilityManagerHelper::destroyInstance();
+    nugu_core_container->destroyInstance();
+
     nugu_equeue_deinitialize();
 }
 
@@ -62,7 +61,7 @@ INuguClientListener* NuguClientImpl::getListener()
 void NuguClientImpl::setWakeupWord(const std::string& wakeup_word)
 {
     if (!wakeup_word.empty())
-        CapabilityManagerHelper::setWakeupWord(wakeup_word);
+        nugu_core_container->setWakeupWord(wakeup_word);
 }
 
 void NuguClientImpl::registerCapability(const std::string& cname, std::pair<ICapabilityInterface*, ICapabilityListener*> capability)
@@ -132,7 +131,7 @@ int NuguClientImpl::createCapabilities(void)
             std::string cname = icapability_map[CAPABILITY.name].first->getName();
 
             if (!cname.empty())
-                CapabilityManagerHelper::addCapability(cname, icapability_map[CAPABILITY.name].first);
+                nugu_core_container->addCapability(cname, icapability_map[CAPABILITY.name].first);
         }
     }
 
@@ -153,7 +152,7 @@ bool NuguClientImpl::initialize(void)
 
     nugu_plugin_initialize();
 
-    AudioRecorderManager::getInstance();
+    nugu_core_container->createAudioRecorderManager();
 
     if (icapability_map.empty())
         create();
@@ -187,14 +186,15 @@ void NuguClientImpl::deInitialize(void)
         std::string cname = element.second.first->getName();
 
         if (!cname.empty())
-            CapabilityManagerHelper::removeCapability(cname);
+
+            nugu_core_container->removeCapability(cname);
 
         delete element.second.first;
     }
 
     icapability_map.clear();
 
-    AudioRecorderManager::destroyInstance();
+    nugu_core_container->destroyInstance();
 
     // deinitialize core component
     nugu_plugin_deinitialize();

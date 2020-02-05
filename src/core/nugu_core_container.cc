@@ -16,6 +16,7 @@
 
 #include "base/nugu_log.h"
 #include "capability_helper.hh"
+#include "capability_manager.hh"
 #include "media_player.hh"
 #include "network_manager.hh"
 #include "speech_recognizer.hh"
@@ -62,6 +63,37 @@ IMediaPlayer* NuguCoreContainer::createMediaPlayer()
 ICapabilityHelper* NuguCoreContainer::getCapabilityHelper()
 {
     return CapabilityHelper::getInstance();
+}
+
+void NuguCoreContainer::setWakeupWord(const std::string& wakeup_word)
+{
+    if (!wakeup_word.empty())
+        CapabilityManager::getInstance()->setWakeupWord(wakeup_word);
+}
+
+void NuguCoreContainer::addCapability(const std::string& cname, ICapabilityInterface* cap)
+{
+    CapabilityManager::getInstance()->addCapability(cname, cap);
+}
+
+void NuguCoreContainer::removeCapability(const std::string& cname)
+{
+    CapabilityManager::getInstance()->removeCapability(cname);
+}
+
+void NuguCoreContainer::destroyInstance()
+{
+    CapabilityManager::destroyInstance();
+}
+
+void NuguCoreContainer::createAudioRecorderManager()
+{
+    AudioRecorderManager::getInstance();
+}
+
+void NuguCoreContainer::destoryAudioRecorderManager()
+{
+    AudioRecorderManager::destroyInstance();
 }
 
 } // NuguCore
