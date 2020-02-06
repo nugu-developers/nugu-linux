@@ -94,13 +94,23 @@ int nugu_uuid_convert_timespec(const unsigned char *bytes, size_t bytes_len,
 			       struct timespec *out_time);
 
 /**
+ * @brief Generate random bytes and fill to destination buffer
+ * @param[in] dest destination buffer
+ * @param[in] dest_len length of buffer
+ * @return Result
+ * @retval 0 Success
+ * @retval -1 Failure
+ */
+int nugu_uuid_fill_random(unsigned char *dest, size_t dest_len);
+
+/**
  * @brief Fill to output buffer with NUGU UUID format using parameters
  * @param[in] time timestamp information
  * @param[in] hash hash value(e.g. SHA1(token))
  * @param[in] hash_len length of hash value
  * @param[out] out memory allocated output buffer
  * @param[in] out_len size of output buffer
- * @return Result of conversion success or failure
+ * @return Result
  * @retval 0 Success
  * @retval -1 Failure
  */

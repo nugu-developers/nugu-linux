@@ -32,6 +32,17 @@
 static const char *_cached_seed;
 static unsigned char _cached_hash[MAX_HASH_SIZE];
 
+EXPORT_API int nugu_uuid_fill_random(unsigned char *dest, size_t dest_len)
+{
+	g_return_val_if_fail(dest != NULL, -1);
+	g_return_val_if_fail(dest_len > 0, -1);
+
+	RAND_status();
+	RAND_bytes(dest, dest_len);
+
+	return 0;
+}
+
 EXPORT_API int nugu_uuid_convert_base16(const unsigned char *bytes,
 					size_t bytes_len, char *out,
 					size_t out_len)
@@ -149,9 +160,7 @@ EXPORT_API char *nugu_uuid_generate_time(void)
 	seed = nugu_network_manager_peek_token();
 	if (seed == NULL) {
 		_cached_seed = NULL;
-
-		RAND_status();
-		RAND_bytes(_cached_hash, sizeof(_cached_hash));
+		nugu_uuid_fill_random(_cached_hash, sizeof(_cached_hash));
 	} else if (seed != _cached_seed) {
 		unsigned char mdbuf[SHA_DIGEST_LENGTH];
 
