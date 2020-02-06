@@ -36,7 +36,7 @@ public:
     void setListener(INuguClientListener* listener);
     INuguClientListener* getListener();
     void setWakeupWord(const std::string& wakeup_word);
-    void registerCapability(const std::string& cname, std::pair<ICapabilityInterface*, ICapabilityListener*> capability);
+    void registerCapability(ICapabilityInterface* capability);
     int create(void);
     bool initialize(void);
     void deInitialize(void);
@@ -51,7 +51,7 @@ public:
 private:
     int createCapabilities(void);
 
-    using CapabilityMap = std::map<std::string, std::pair<ICapabilityInterface*, ICapabilityListener*>>;
+    using CapabilityMap = std::map<std::string, ICapabilityInterface*>;
 
     CapabilityMap icapability_map;
     INuguClientListener* listener = nullptr;

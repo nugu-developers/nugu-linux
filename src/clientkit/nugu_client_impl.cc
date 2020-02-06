@@ -21,7 +21,6 @@
 #include "base/nugu_equeue.h"
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
-#include "capability/capability_factory.hh"
 #include "capability/system_interface.hh"
 
 #include "nugu_client_impl.hh"
@@ -64,9 +63,21 @@ void NuguClientImpl::setWakeupWord(const std::string& wakeup_word)
         nugu_core_container->setWakeupWord(wakeup_word);
 }
 
-void NuguClientImpl::registerCapability(const std::string& cname, std::pair<ICapabilityInterface*, ICapabilityListener*> capability)
+void NuguClientImpl::registerCapability(ICapabilityInterface* capability)
 {
-    icapability_map[cname] = capability;
+    if (!capability) {
+        nugu_warn("The Capability instance is not exist.");
+        return;
+    }
+
+    std::string cname = capability->getName();
+
+    if (cname.empty()) {
+        nugu_warn("The Capability name is not set.");
+        return;
+    }
+
+    icapability_map.emplace(cname, capability);
 }
 
 ICapabilityInterface* NuguClientImpl::getCapabilityHandler(const std::string& cname)
@@ -77,7 +88,7 @@ ICapabilityInterface* NuguClientImpl::getCapabilityHandler(const std::string& cn
     }
 
     if (icapability_map.find(cname) != icapability_map.end())
-        return icapability_map[cname].first;
+        return icapability_map.at(cname);
 
     return nullptr;
 }
@@ -99,40 +110,19 @@ int NuguClientImpl::create(void)
 
 int NuguClientImpl::createCapabilities(void)
 {
-    /*
-     * [description]
-     *  - icapability_map[CAPABILITY.type].first : ICapabilityInterface instance
-     *  - icapability_map[CAPABILITY.type].second : ICapabilityListener instance
-     */
-    for (auto const& CAPABILITY : CapabilityFactory::getCapabilityList()) {
-        // if user didn't add and it's not a required agent, skip to create
-        if (icapability_map.find(CAPABILITY.name) == icapability_map.end() && !CAPABILITY.is_default)
+    for (auto const& capability : icapability_map) {
+        if (capability.first.empty() || !capability.second)
             continue;
 
-        if (!icapability_map[CAPABILITY.name].first)
-            try {
-                icapability_map[CAPABILITY.name].first = CAPABILITY.creator();
-            } catch (std::exception& exp) {
-                nugu_error(exp.what());
-            }
+        // add general observer
+        if (listener)
+            capability.second->registerObserver(listener);
 
-        if (icapability_map[CAPABILITY.name].first) {
-            // add general observer
-            if (listener)
-                icapability_map[CAPABILITY.name].first->registerObserver(listener);
+        // set NuguCoreContainer
+        capability.second->setNuguCoreContainer(getNuguCoreContainer());
 
-            // set capability listener & handler each other
-            if (icapability_map[CAPABILITY.name].second)
-                icapability_map[CAPABILITY.name].first->setCapabilityListener(icapability_map[CAPABILITY.name].second);
-
-            // set NuguCoreContainer
-            icapability_map[CAPABILITY.name].first->setNuguCoreContainer(getNuguCoreContainer());
-
-            std::string cname = icapability_map[CAPABILITY.name].first->getName();
-
-            if (!cname.empty())
-                nugu_core_container->addCapability(cname, icapability_map[CAPABILITY.name].first);
-        }
+        // add capability to CapabilityManager
+        nugu_core_container->addCapability(capability.first, capability.second);
     }
 
     return icapability_map.size();
@@ -158,10 +148,11 @@ bool NuguClientImpl::initialize(void)
         create();
 
     // initialize capability
-    for (auto const& icapability : icapability_map) {
-        std::string cname = icapability.second.first->getName();
+    for (auto const& capability : icapability_map) {
+        std::string cname = capability.second->getName();
         nugu_dbg("'%s' capability initializing...", cname.c_str());
-        icapability.second.first->initialize();
+
+        capability.second->initialize();
         nugu_dbg("'%s' capability initialized", cname.c_str());
     }
 
@@ -182,14 +173,14 @@ void NuguClientImpl::deInitialize(void)
         sys_handler->disconnect();
 
     // release capabilities
-    for (auto& element : icapability_map) {
-        std::string cname = element.second.first->getName();
+    for (auto& capability : icapability_map) {
+        std::string cname = capability.second->getName();
 
         if (!cname.empty())
-
             nugu_core_container->removeCapability(cname);
 
-        delete element.second.first;
+        // TODO:It needs to move responsibility to user application later
+        delete capability.second;
     }
 
     icapability_map.clear();

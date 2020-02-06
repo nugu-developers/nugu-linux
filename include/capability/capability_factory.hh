@@ -42,14 +42,6 @@ class CapabilityFactory {
 public:
     CapabilityFactory() = delete;
 
-    struct Element {
-        std::string name;
-        bool is_default;
-        std::function<ICapabilityInterface*()> creator;
-    };
-
-    static const std::list<Element>& getCapabilityList();
-
     template <typename T, typename V, typename... Ts>
     static V* makeCapability(Ts&&... params);
 };

@@ -55,12 +55,12 @@ void SpeakerListener::setSpeakerHandler(ISpeakerHandler* speaker)
     speaker_handler = speaker;
 }
 
-void SpeakerListener::setVolumeNuguSpeaker(nugu_volume_func vns)
+void SpeakerListener::setVolumeNuguSpeakerCallback(nugu_volume_func vns)
 {
     nugu_speaker_volume = std::move(vns);
 }
 
-void SpeakerListener::setMuteNuguSpeaker(nugu_mute_func mns)
+void SpeakerListener::setMuteNuguSpeakerCallback(nugu_mute_func mns)
 {
     nugu_speaker_mute = std::move(mns);
 }

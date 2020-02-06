@@ -29,9 +29,9 @@ NuguClient::CapabilityBuilder::~CapabilityBuilder()
 {
 }
 
-NuguClient::CapabilityBuilder* NuguClient::CapabilityBuilder::add(const std::string& cname, ICapabilityListener* clistener, ICapabilityInterface* cap_instance)
+NuguClient::CapabilityBuilder* NuguClient::CapabilityBuilder::add(ICapabilityInterface* cap_instance)
 {
-    client_impl->registerCapability(cname, std::make_pair(cap_instance, clistener));
+    client_impl->registerCapability(cap_instance);
 
     return this;
 }

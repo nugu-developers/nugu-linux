@@ -30,36 +30,6 @@
 
 namespace NuguCapability {
 
-// for restricting access to only this file
-namespace {
-    template <class T>
-    ICapabilityInterface* create()
-    {
-        return new T;
-    }
-}
-
-using CapabilityElement = CapabilityFactory::Element;
-
-const std::list<CapabilityElement>& CapabilityFactory::getCapabilityList()
-{
-    static std::list<CapabilityElement> CAPABILITY_LIST {
-        CapabilityElement { "ASR", true, &create<ASRAgent> },
-        CapabilityElement { "TTS", true, &create<TTSAgent> },
-        CapabilityElement { "AudioPlayer", true, &create<AudioPlayerAgent> },
-        CapabilityElement { "System", true, &create<SystemAgent> },
-        CapabilityElement { "Display", false, &create<DisplayAgent> },
-        CapabilityElement { "Extension", false, &create<ExtensionAgent> },
-        CapabilityElement { "Text", false, &create<TextAgent> },
-        CapabilityElement { "Delegation", false, &create<DelegationAgent> },
-        CapabilityElement { "Location", false, &create<LocationAgent> },
-        CapabilityElement { "Speaker", false, &create<SpeakerAgent> },
-        CapabilityElement { "Mic", false, &create<MicAgent> }
-    };
-
-    return CAPABILITY_LIST;
-}
-
 template <typename T, typename V, typename... Ts>
 V* CapabilityFactory::makeCapability(Ts&&... params)
 {
@@ -69,13 +39,13 @@ V* CapabilityFactory::makeCapability(Ts&&... params)
 template IASRHandler* CapabilityFactory::makeCapability<ASRAgent, IASRHandler>();
 template ITTSHandler* CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>();
 template IAudioPlayerHandler* CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>();
-template ISpeakerHandler* CapabilityFactory::makeCapability<SystemAgent, ISpeakerHandler>();
+template ISystemHandler* CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>();
 template IDisplayHandler* CapabilityFactory::makeCapability<DisplayAgent, IDisplayHandler>();
 template IExtensionHandler* CapabilityFactory::makeCapability<ExtensionAgent, IExtensionHandler>();
 template ITextHandler* CapabilityFactory::makeCapability<TextAgent, ITextHandler>();
 template IDelegationHandler* CapabilityFactory::makeCapability<DelegationAgent, IDelegationHandler>();
 template ICapabilityInterface* CapabilityFactory::makeCapability<LocationAgent, ICapabilityInterface>();
 template ISpeakerHandler* CapabilityFactory::makeCapability<SpeakerAgent, ISpeakerHandler>();
-template IMicHandler* CapabilityFactory::makeCapability<SpeakerAgent, IMicHandler>();
+template IMicHandler* CapabilityFactory::makeCapability<MicAgent, IMicHandler>();
 
 } // NuguCapability
