@@ -50,7 +50,7 @@ enum class TextError {
 };
 
 typedef struct {
-    int response_timeout;
+    int response_timeout; /**< Server response timeout about sent text */
 } TextAttribute;
 
 /**

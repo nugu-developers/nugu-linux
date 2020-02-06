@@ -36,8 +36,8 @@ using namespace NuguClientKit;
  */
 
 enum class ControlLyricsDirection {
-    PREVIOUS,
-    NEXT
+    PREVIOUS, /**< Previous direction */
+    NEXT /**< Next direction */
 };
 
 /**

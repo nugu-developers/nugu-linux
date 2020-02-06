@@ -36,8 +36,8 @@ using namespace NuguClientKit;
  */
 
 typedef struct {
-    std::string latitude;
-    std::string longitude;
+    std::string latitude; /**< Current latitude info */
+    std::string longitude; /**< Current longitute info */
 } LocationInfo;
 
 /**

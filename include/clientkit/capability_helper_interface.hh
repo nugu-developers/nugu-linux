@@ -20,8 +20,8 @@
 #include <json/json.h>
 #include <list>
 
-#include "base/nugu_focus.h"
-#include "clientkit/playsync_manager_interface.hh"
+#include <base/nugu_focus.h>
+#include <clientkit/playsync_manager_interface.hh>
 
 namespace NuguClientKit {
 /**

@@ -43,7 +43,7 @@ enum class TTSState {
 };
 
 typedef struct {
-    std::string tts_engine;
+    std::string tts_engine; /**< TTS engine type */
 } TTSAttribute;
 
 /**

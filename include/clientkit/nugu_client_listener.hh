@@ -27,7 +27,6 @@ namespace NuguClientKit {
  * @ingroup SDKNuguClientKit
  * @brief Nugu Client Interface
  *
- *
  * @{
  */
 

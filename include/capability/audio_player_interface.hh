@@ -51,9 +51,9 @@ enum class AudioPlayerState {
  * @brief RepeatType
  */
 enum class RepeatType {
-    NONE,
-    ONE,
-    ALL
+    NONE, /**< Never repeat */
+    ONE, /**< Just one time repeat */
+    ALL /**< Repeat continuously */
 };
 
 /**
