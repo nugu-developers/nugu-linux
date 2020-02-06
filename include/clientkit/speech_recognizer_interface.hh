@@ -37,7 +37,7 @@ namespace NuguClientKit {
  */
 enum class ListeningState {
     READY, /**< Ready to listen speech */
-    LISTENING, /**< Listeing speech */
+    LISTENING, /**< Listening speech */
     SPEECH_START, /**< Detect speech start point */
     SPEECH_END, /**< Detect speech end point */
     TIMEOUT, /**< Listening timeout */

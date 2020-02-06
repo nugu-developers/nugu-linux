@@ -119,7 +119,7 @@ IAudioRecorder* AudioRecorderManager::requestRecorder(std::string& samplerate, s
     std::string key = extractRecorderKey(samplerate, format, channel);
 
     if (nugu_recorders.find(key) != nugu_recorders.end()) {
-        nugu_dbg("allready created nugu recorder - key:%s", key.c_str());
+        nugu_dbg("already created nugu recorder - key:%s", key.c_str());
     } else {
         NuguRecorder* nugu_recorder = nugu_recorder_new(key.c_str(), nugu_recorder_driver_get_default());
         nugu_recorder_set_property(nugu_recorder, property);
