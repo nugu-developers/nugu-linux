@@ -21,6 +21,7 @@
 
 #include "base/nugu_log.h"
 #include "base/nugu_equeue.h"
+#include "base/nugu_uuid.h"
 
 #include "http2_request.h"
 #include "v1_events.h"
@@ -64,6 +65,8 @@ V1Events *v1_events_new(const char *host, HTTP2Network *net)
 	char *tmp;
 	struct _v1_events *event;
 	int ret;
+	unsigned char buf[8];
+	char boundary[17];
 
 	g_return_val_if_fail(host != NULL, NULL);
 	g_return_val_if_fail(net != NULL, NULL);
@@ -74,13 +77,16 @@ V1Events *v1_events_new(const char *host, HTTP2Network *net)
 		return NULL;
 	}
 
-	tmp = "this-is-a-boundary";
-	event->boundary = g_strdup_printf("%s--%s", CRLF, tmp);
+	nugu_uuid_fill_random(buf, sizeof(buf));
+	nugu_uuid_convert_base16(buf, sizeof(buf), boundary, sizeof(boundary));
+	boundary[16] = '\0';
+
+	event->boundary = g_strdup_printf("%s--%s", CRLF, boundary);
 
 	event->req = http2_request_new();
 	http2_request_set_method(event->req, HTTP2_REQUEST_METHOD_POST);
 	http2_request_set_content_type(
-		event->req, HTTP2_REQUEST_CONTENT_TYPE_MULTIPART, tmp);
+		event->req, HTTP2_REQUEST_CONTENT_TYPE_MULTIPART, boundary);
 
 	/* Set maximum timeout to 20 seconds */
 	http2_request_set_timeout(event->req, 20);
