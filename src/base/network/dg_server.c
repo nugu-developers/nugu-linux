@@ -182,6 +182,19 @@ int dg_server_start_health_check(DGServer *server,
 	return 0;
 }
 
+int dg_server_stop_health_check(DGServer *server)
+{
+	g_return_val_if_fail(server != NULL, -1);
+
+	if (server->ping == NULL)
+		return 0;
+
+	v1_ping_free(server->ping);
+	server->ping = NULL;
+
+	return 0;
+}
+
 unsigned int dg_server_get_retry_count(DGServer *server)
 {
 	g_return_val_if_fail(server != NULL, -1);

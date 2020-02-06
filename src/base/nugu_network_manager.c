@@ -508,6 +508,7 @@ static void on_event(enum nugu_equeue_type type, void *data, void *userdata)
 		break;
 	case NUGU_EQUEUE_TYPE_SEND_PING_FAILED:
 		nugu_dbg("received send ping failed event");
+		dg_server_stop_health_check(nm->server);
 		_process_connecting(userdata, STEP_SERVER_FAILED);
 		break;
 	case NUGU_EQUEUE_TYPE_SERVER_DISCONNECTED:

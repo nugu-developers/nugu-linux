@@ -39,8 +39,10 @@ int dg_server_set_type(DGServer *server, enum dg_server_type type);
 enum dg_server_type dg_server_get_type(DGServer *server);
 
 int dg_server_connect_async(DGServer *server);
+
 int dg_server_start_health_check(DGServer *server,
 				 const struct dg_health_check_policy *policy);
+int dg_server_stop_health_check(DGServer *server);
 
 unsigned int dg_server_get_retry_count(DGServer *server);
 unsigned int dg_server_get_retry_count_limit(DGServer *server);
