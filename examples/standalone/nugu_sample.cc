@@ -37,6 +37,18 @@ using namespace NuguClientKit;
 
 std::unique_ptr<NuguClient> nugu_client = nullptr;
 std::unique_ptr<NuguSampleManager> nugu_sample_manager = nullptr;
+
+// Capability instance
+ISystemHandler* system_handler = nullptr;
+IASRHandler* asr_handler = nullptr;
+ITTSHandler* tts_handler = nullptr;
+IAudioPlayerHandler* audio_player_handler = nullptr;
+ITextHandler* text_handler = nullptr;
+IDisplayHandler* display_handler = nullptr;
+ISpeakerHandler* speaker_handler = nullptr;
+IMicHandler* mic_handler = nullptr;
+
+// Capability listener
 std::unique_ptr<SpeechOperator> speech_operator = nullptr;
 std::unique_ptr<TTSListener> tts_listener = nullptr;
 std::unique_ptr<DisplayListener> display_listener = nullptr;
@@ -48,7 +60,6 @@ std::unique_ptr<DelegationListener> delegation_listener = nullptr;
 std::unique_ptr<LocationListener> location_listener = nullptr;
 std::unique_ptr<SpeakerListener> speaker_listener = nullptr;
 std::unique_ptr<MicListener> mic_listener = nullptr;
-INuguCoreContainer* nugu_core_container = nullptr;
 
 template <typename T, typename... Ts>
 std::unique_ptr<T> make_unique(Ts&&... params)
@@ -134,33 +145,36 @@ void registerCapabilities()
     if (!nugu_client)
         return;
 
-    // It needs for setting model path to SpeechRecognizer
-    IASRHandler* asr_agent = CapabilityFactory::makeCapability<ASRAgent, IASRHandler>();
-    asr_agent->setAttribute(ASRAttribute { nugu_sample_manager->getModelPath() });
+    // SystemAgent
+    system_handler = CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>();
+    system_handler->setCapabilityListener(system_listener.get());
 
-    // create capability instance. It's possible to set user customized capability using below builder
-    nugu_client->getCapabilityBuilder()
-        ->add("ASR", speech_operator->getASRListener(), asr_agent)
-        ->add("TTS", tts_listener.get())
-        ->add("AudioPlayer", aplayer_listener.get())
-        ->add("System", system_listener.get())
-        ->add("Display", display_listener.get())
-        ->add("Text", text_listener.get())
-        ->add("Extension", extension_listener.get())
-        ->add("Delegation", delegation_listener.get())
-        ->add("Location", location_listener.get())
-        ->add("Speaker", speaker_listener.get())
-        ->add("Mic", mic_listener.get())
-        ->construct();
-}
+    // ASRAgent : It needs for setting model path to SpeechRecognizer
+    asr_handler = CapabilityFactory::makeCapability<ASRAgent, IASRHandler>();
+    asr_handler->setCapabilityListener(speech_operator->getASRListener());
+    asr_handler->setAttribute(ASRAttribute { nugu_sample_manager->getModelPath() });
+    speech_operator->setASRHandler(asr_handler);
 
-void settingCapabilities()
-{
-    /* Control the mic according to the mic state stored in the device. */
-    IMicHandler* mic = getCapabilityHandler<IMicHandler*>("Mic");
-    mic->enable();
+    // TTSAgent
+    tts_handler = CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>();
+    tts_handler->setCapabilityListener(tts_listener.get());
 
-    /* Setting the speaker information that application can control */
+    // AudioPlayerAgent
+    audio_player_handler = CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>();
+    audio_player_handler->setCapabilityListener(aplayer_listener.get());
+
+    // TextAgent
+    text_handler = CapabilityFactory::makeCapability<TextAgent, ITextHandler>();
+    text_handler->setCapabilityListener(text_listener.get());
+
+    // DisplayAgent
+    display_handler = CapabilityFactory::makeCapability<DisplayAgent, IDisplayHandler>();
+    display_handler->setCapabilityListener(display_listener.get());
+
+    // SpeakerAgent
+    speaker_handler = CapabilityFactory::makeCapability<SpeakerAgent, ISpeakerHandler>();
+    speaker_handler->setCapabilityListener(speaker_listener.get());
+
     SpeakerInfo nugu_speaker;
     nugu_speaker.type = SpeakerType::NUGU;
     nugu_speaker.can_control = true;
@@ -183,8 +197,40 @@ void settingCapabilities()
     speakers[SpeakerType::ALARM] = &alarm_speaker;
     speakers[SpeakerType::EXTERNAL] = &external_speaker;
 
-    ISpeakerHandler* speaker = getCapabilityHandler<ISpeakerHandler*>("Speaker");
-    speaker->setSpeakerInfo(speakers);
+    speaker_handler->setSpeakerInfo(speakers);
+    speaker_listener->setSpeakerHandler(speaker_handler);
+    speaker_listener->setVolumeNuguSpeakerCallback([&](int volume) {
+        if (tts_handler && !tts_handler->setVolume(volume))
+            return false;
+        if (audio_player_handler && !audio_player_handler->setVolume(volume))
+            return false;
+        return true;
+    });
+    speaker_listener->setMuteNuguSpeakerCallback([&](bool mute) {
+        if (!tts_handler)
+            return false;
+        tts_handler->stopTTS();
+        if (audio_player_handler && !audio_player_handler->setMute(mute))
+            return false;
+        return true;
+    });
+
+    // MicAgent
+    mic_handler = CapabilityFactory::makeCapability<MicAgent, IMicHandler>();
+    mic_handler->setCapabilityListener(mic_listener.get());
+    mic_handler->enable();
+
+    // create capability instance
+    nugu_client->getCapabilityBuilder()
+        ->add(system_handler)
+        ->add(asr_handler)
+        ->add(tts_handler)
+        ->add(audio_player_handler)
+        ->add(text_handler)
+        ->add(display_handler)
+        ->add(speaker_handler)
+        ->add(mic_handler)
+        ->construct();
 }
 
 int main(int argc, char** argv)
@@ -217,10 +263,8 @@ int main(int argc, char** argv)
 
     nugu_client = make_unique<NuguClient>();
     nugu_client->setListener(nugu_client_listener.get());
-    nugu_core_container = nugu_client->getNuguCoreContainer();
 
     registerCapabilities();
-    settingCapabilities();
 
     auto network_manager(nugu_client->getNetworkManager());
     network_manager->addListener(network_manager_listener.get());
@@ -236,41 +280,21 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    IWakeupHandler* wakeup_handler = nugu_core_container->createWakeupHandler(nugu_sample_manager->getModelPath());
-
+    auto wakeup_handler(nugu_client->getNuguCoreContainer()->createWakeupHandler(nugu_sample_manager->getModelPath()));
     speech_operator->setWakeupHandler(wakeup_handler);
-    speech_operator->setASRHandler(getCapabilityHandler<IASRHandler*>("ASR"));
-    speaker_listener->setSpeakerHandler(getCapabilityHandler<ISpeakerHandler*>("Speaker"));
-    speaker_listener->setVolumeNuguSpeaker([&](int volume) {
-        ITTSHandler* tts = getCapabilityHandler<ITTSHandler*>("TTS");
-        if (tts && !tts->setVolume(volume))
-            return false;
-        IAudioPlayerHandler* aplayer = getCapabilityHandler<IAudioPlayerHandler*>("AudioPlayer");
-        if (aplayer && !aplayer->setVolume(volume))
-            return false;
-        return true;
-    });
-    speaker_listener->setMuteNuguSpeaker([&](bool mute) {
-        ITTSHandler* tts = getCapabilityHandler<ITTSHandler*>("TTS");
-        if (!tts)
-            return false;
-        tts->stopTTS();
-        IAudioPlayerHandler* aplayer = getCapabilityHandler<IAudioPlayerHandler*>("AudioPlayer");
-        if (aplayer && !aplayer->setMute(mute))
-            return false;
-        return true;
-    });
-
-    nugu_sample_manager->setTextHandler(getCapabilityHandler<ITextHandler*>("Text"))
-        ->setSpeechOperator(speech_operator.get())
+    nugu_sample_manager->setSpeechOperator(speech_operator.get())
         ->setNetworkCallback(NuguSampleManager::NetworkCallback {
             [&]() { return network_manager->connect(); },
             [&]() { return network_manager->disconnect(); } })
-        ->setMicHandler(getCapabilityHandler<IMicHandler*>("Mic"))
+        ->setTextHandler(text_handler)
+        ->setMicHandler(mic_handler)
         ->runLoop();
 
-    delete wakeup_handler;
-    wakeup_handler = nullptr;
+    // release resource
+    if (wakeup_handler) {
+        delete wakeup_handler;
+        wakeup_handler = nullptr;
+    }
 
     nugu_client->deInitialize();
 

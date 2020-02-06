@@ -55,15 +55,11 @@ public:
         virtual ~CapabilityBuilder();
 
         /**
-         * @brief Add capabilities to create in the capabilitybuilder. Capabilitybuilder support to insert customized capability agents.
-         * @param[in] capability agent name
-         * @param[in] clistener capability listener
+         * @brief Add capability instance. It could create from CapabilityFactory or by self as inhering ICapabilityInterface
          * @param[in] cap_instance capability interface
          * @return CapabilityBuilder object
          */
-        CapabilityBuilder* add(const std::string& cname,
-            ICapabilityListener* clistener = nullptr,
-            ICapabilityInterface* cap_instance = nullptr);
+        CapabilityBuilder* add(ICapabilityInterface* cap_instance);
 
         /**
          * @brief Construct with capabilities added to CapabilityBuilder.

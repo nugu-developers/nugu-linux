@@ -33,8 +33,8 @@ public:
     void requestSetMute(SpeakerType type, bool mute) override;
 
     void setSpeakerHandler(ISpeakerHandler* speaker);
-    void setVolumeNuguSpeaker(nugu_volume_func vns);
-    void setMuteNuguSpeaker(nugu_mute_func mns);
+    void setVolumeNuguSpeakerCallback(nugu_volume_func vns);
+    void setMuteNuguSpeakerCallback(nugu_mute_func mns);
 
 private:
     ISpeakerHandler* speaker_handler;
