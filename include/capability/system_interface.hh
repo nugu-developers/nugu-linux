@@ -49,7 +49,7 @@ enum class SystemException {
  * @brief RevokeReason
  */
 enum class RevokeReason {
-    REVOKED_DEVICE
+    REVOKED_DEVICE /**< Revoked device reason  */
 };
 
 /**

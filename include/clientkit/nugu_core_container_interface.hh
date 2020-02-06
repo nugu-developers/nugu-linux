@@ -17,11 +17,11 @@
 #ifndef __NUGU_CORE_CONTAINER_INTERFACE_H__
 #define __NUGU_CORE_CONTAINER_INTERFACE_H__
 
-#include "clientkit/capability_helper_interface.hh"
-#include "clientkit/media_player_interface.hh"
-#include "clientkit/network_manager_interface.hh"
-#include "clientkit/speech_recognizer_interface.hh"
-#include "clientkit/wakeup_interface.hh"
+#include <clientkit/capability_helper_interface.hh>
+#include <clientkit/media_player_interface.hh>
+#include <clientkit/network_manager_interface.hh>
+#include <clientkit/speech_recognizer_interface.hh>
+#include <clientkit/wakeup_interface.hh>
 
 namespace NuguClientKit {
 

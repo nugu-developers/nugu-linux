@@ -62,19 +62,19 @@ public:
 class IPlaySyncManager {
 public:
     using DisplayRenderInfo = struct {
-        std::string id;
-        std::string type;
-        std::string payload;
-        std::string dialog_id;
-        std::string ps_id;
-        std::string token;
+        std::string id; /**< Unique id for identifying render info */
+        std::string type; /**< Template Type */
+        std::string payload; /**< Info for rendering to display */
+        std::string dialog_id; /**< Dialog request id */
+        std::string ps_id; /**< Play service id */
+        std::string token; /**< Unique identifier of template */
     };
     using DisplayRenderer = struct {
-        IPlaySyncManagerListener* listener = nullptr;
-        std::string cap_name;
-        std::string duration;
-        std::string display_id;
-        bool only_rendering = false;
+        IPlaySyncManagerListener* listener = nullptr; /**< IPlaySyncManagerListener instance */
+        std::string cap_name; /**< Capability name of handling render info */
+        std::string duration; /**< Duration about showing display */
+        std::string display_id; /**< id for identifying render info */
+        bool only_rendering = false; /**< Whether handling only render info */
     };
 
 public:

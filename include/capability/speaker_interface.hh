@@ -39,10 +39,10 @@ using namespace NuguClientKit;
 #define NUGU_SPEAKER_DEFAULT_VOLUME 50
 
 enum class SpeakerType {
-    NUGU,
-    CALL,
-    ALARM,
-    EXTERNAL
+    NUGU, /**< General NUGU Speaker type */
+    CALL, /**< Call type */
+    ALARM, /**< Alarm type */
+    EXTERNAL /**< External type */
 };
 
 /**

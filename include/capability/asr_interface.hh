@@ -58,10 +58,10 @@ enum class ASRError {
 };
 
 typedef struct {
-    std::string model_path;
-    std::string epd_type;
-    std::string asr_encoding;
-    int response_timeout;
+    std::string model_path; /**< Epd model file path */
+    std::string epd_type; /**< Epd type : CLIENT, SERVER */
+    std::string asr_encoding; /**< Asr encoding type : PARTIAL, COMPLETE */
+    int response_timeout; /**< Server response timeout about speech */
 } ASRAttribute;
 
 /**
