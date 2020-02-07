@@ -14,11 +14,26 @@ using namespace NuguCapability;
 
 static std::shared_ptr<NuguClient> nugu_client;
 static ITextHandler* text_handler = nullptr;
-static ITTSHandler* tts_handler = nullptr;
-static ISystemHandler* system_handler = nullptr;
-static IAudioPlayerHandler* audio_player_handler = nullptr;
 
 static std::string text_value;
+
+class MyTTSListener : public ITTSListener {
+public:
+    virtual ~MyTTSListener() = default;
+
+    void onTTSState(TTSState state, const std::string& dialog_id) override
+    {
+    }
+
+    void onTTSText(const std::string& text, const std::string& dialog_id) override
+    {
+        std::cout << "TTS: " << text << std::endl;
+    }
+
+    void onTTSCancel(const std::string& dialog_id)
+    {
+    }
+};
 
 class MyNetwork : public INetworkManagerListener {
 public:
@@ -62,6 +77,11 @@ int main(int argc, char* argv[])
         return 0;
     }
 
+    if (getenv("NUGU_TOKEN") == NULL) {
+        std::cout << "Please set the token using the NUGU_TOKEN environment variable." << std::endl;
+        return -1;
+    }
+
     text_value = argv[1];
 
     std::cout << "Simple text command example!" << std::endl;
@@ -72,14 +92,18 @@ int main(int argc, char* argv[])
 
     nugu_client = std::make_shared<NuguClient>();
 
-    system_handler = CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>();
+    /* Create a Text capability */
     text_handler = CapabilityFactory::makeCapability<TextAgent, ITextHandler>();
-    tts_handler = CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>();
-    audio_player_handler = CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>();
+
+    /* Create a TTS capability */
+    auto tts_listener(std::make_shared<MyTTSListener>());
+    ITTSHandler* tts_handler = CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>();
+    tts_handler->setCapabilityListener(tts_listener.get());
 
     /* Register build-in capabilities */
     nugu_client->getCapabilityBuilder()
-        ->add(system_handler)
+        ->add(CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>())
+        ->add(CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>())
         ->add(tts_handler)
         ->add(text_handler)
         ->construct();
@@ -100,7 +124,7 @@ int main(int argc, char* argv[])
     /* Start GMainLoop */
     GMainLoop* loop = g_main_loop_new(NULL, FALSE);
 
-    std::cout << "Start the eventloop" << std::endl;
+    std::cout << "Start the eventloop" << std::endl << std::endl;
     g_main_loop_run(loop);
 
     /* wait until g_main_loop_quit() */

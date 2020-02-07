@@ -4,6 +4,7 @@ ADD_SUBDIRECTORY(oob_setup)
 # C/C++ based SDK examples
 ADD_SUBDIRECTORY(standalone)
 ADD_SUBDIRECTORY(simple_text)
+ADD_SUBDIRECTORY(simple_asr)
 
 # A shell script that executes a program using the token information
 # generated in the OAuth2 example.
