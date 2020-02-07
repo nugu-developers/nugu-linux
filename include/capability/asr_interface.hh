@@ -36,7 +36,8 @@ using namespace NuguClientKit;
  */
 
 /**
- * @brief ASRState
+ * @brief ASR state list
+ * @see IASRListener::onState
  */
 enum class ASRState {
     IDLE, /**< No interaction with the user */
@@ -47,16 +48,21 @@ enum class ASRState {
 };
 
 /**
- * @brief ASRError
+ * @brief ASR error list
+ * @see IASRListener::onError
  */
 enum class ASRError {
     RESPONSE_TIMEOUT, /**< This event occurs when audio streaming is sent but there is no response from the server for a certain time. */
     LISTEN_TIMEOUT, /**< This event occurs when the microphone is opened but there is no speech from the user for a certain time. */
     LISTEN_FAILED, /**< This event occurs when an error occurs inside the audio recognizer module. */
     RECOGNIZE_ERROR, /**< This event occurs when a recognition error occurs from the server. */
-    UNKNOWN /**< UNKNOWN  */
+    UNKNOWN /**< Unknown  */
 };
 
+/**
+ * @brief Attributes for setting ASR options.
+ * @see IASRHandler::setAttribute
+ */
 typedef struct {
     std::string model_path; /**< Epd model file path */
     std::string epd_type; /**< Epd type : CLIENT, SERVER */
@@ -73,7 +79,7 @@ public:
     virtual ~IASRListener() = default;
 
     /**
-     * @brief ASRState changed
+     * @brief Report to the user asr state changed.
      * @param[in] state asr state
      * @see IASRHandler::startRecognition()
      * @see IASRHandler::stopRecognition()

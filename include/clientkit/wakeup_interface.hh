@@ -48,7 +48,7 @@ public:
     virtual ~IWakeupListener() = default;
 
     /**
-     * @brief WakeupState changed
+     * @brief Report to the user wakeup detection state changed.
      * @param[in] state wakeup detection state
      * @see IWakeupHandler::startWakeup()
      */
@@ -66,12 +66,12 @@ public:
     /**
      * @brief Set the Listener object
      * @param[in] listener listener object
+     * @see IWakeupListener::onWakeupState()
      */
     virtual void setListener(IWakeupListener* listener) = 0;
 
     /**
      * @brief Start the wakeup detection
-     * @see IWakeupListener::onWakeupState()
      */
     virtual void startWakeup(void) = 0;
 

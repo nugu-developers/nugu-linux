@@ -54,7 +54,7 @@ public:
     virtual ~ISpeechRecognizerListener() = default;
 
     /**
-     * @brief Get current listening state to user.
+     * @brief Report to the user listening state changed.
      * @param[in] state listening state
      */
     virtual void onListeningState(ListeningState state) = 0;

@@ -45,12 +45,17 @@ public:
     /**
      * @brief Receive callback when request focus is acquired.
      * @param[in] event focus event
+     * @return focus result
+     * @retval NUGU_FOCUS_OK success
      */
     virtual NuguFocusResult onFocus(void* event) = 0;
 
     /**
      * @brief Receive callback when request focus is released.
      * @param[in] event focus event
+     * @return focus result
+     * @retval NUGU_FOCUS_REMOVE lost and remove focus
+     * @retval NUGU_FOCUS_PAUSE lost but add focus to queue
      */
     virtual NuguFocusResult onUnfocus(void* event) = 0;
 
@@ -58,6 +63,9 @@ public:
      * @brief Receive callback when another focus try to steal.
      * @param[in] event focus event
      * @param[in] target_type focus which request to steal
+     * @return focus steal result
+     * @retval NUGU_FOCUS_STEAL_ALLOW allow the caller's request to steal the focus
+     * @retval NUGU_FOCUS_STEAL_REJECT reject the caller's request to steal the focus
      */
     virtual NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) = 0;
 };
