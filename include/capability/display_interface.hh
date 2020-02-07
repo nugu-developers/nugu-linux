@@ -133,7 +133,7 @@ public:
     virtual void removeListener(IDisplayListener* listener) = 0;
 
     /**
-     * @brief stop display rendering hold timer.
+     * @brief Stop display rendering hold timer.
      * @param[in] id display template id
      */
     virtual void stopRenderingTimer(const std::string& id) = 0;

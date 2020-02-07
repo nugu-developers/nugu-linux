@@ -38,6 +38,9 @@ using namespace NuguClientKit;
 #define NUGU_SPEAKER_MAX_VOLUME 100
 #define NUGU_SPEAKER_DEFAULT_VOLUME 50
 
+/**
+ * @brief SpeakerType
+ */
 enum class SpeakerType {
     NUGU, /**< General NUGU Speaker type */
     CALL, /**< Call type */
@@ -53,12 +56,12 @@ public:
     SpeakerInfo() = default;
     ~SpeakerInfo() = default;
 
-    SpeakerType type = SpeakerType::NUGU;
-    int min = NUGU_SPEAKER_MIN_VOLUME;
-    int max = NUGU_SPEAKER_MAX_VOLUME;
-    int volume = NUGU_SPEAKER_DEFAULT_VOLUME;
-    bool mute = false;
-    bool can_control = false;
+    SpeakerType type = SpeakerType::NUGU; /**< Speaker type  */
+    int min = NUGU_SPEAKER_MIN_VOLUME; /**< Speaker min volume  */
+    int max = NUGU_SPEAKER_MAX_VOLUME; /**< Speaker max volume  */
+    int volume = NUGU_SPEAKER_DEFAULT_VOLUME; /**< Speaker current volume  */
+    bool mute = false; /**< Speaker mute state  */
+    bool can_control = false; /**< Speaker controllability */
 };
 
 /**

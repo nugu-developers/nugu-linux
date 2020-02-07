@@ -69,7 +69,7 @@ public:
     /**
      * @brief Received a device turn off request from the server.
      */
-    virtual void onTurnOff(void) = 0;
+    virtual void onTurnOff() = 0;
 
     /**
      * @brief Received a revoke request from the server.
@@ -103,17 +103,17 @@ public:
     /**
      * @brief When the device is connected to NUGU Platform, all state information is delivered through the context.
      */
-    virtual void synchronizeState(void) = 0;
+    virtual void synchronizeState() = 0;
 
     /**
      * @brief Send disconnect event to server.
      */
-    virtual void disconnect(void) = 0;
+    virtual void disconnect() = 0;
 
     /**
      * @brief Update a timer that measures the user's inactivity.
      */
-    virtual void updateUserActivity(void) = 0;
+    virtual void updateUserActivity() = 0;
 };
 
 /**

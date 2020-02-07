@@ -120,7 +120,7 @@ public:
     virtual void updateInfoForContext(Json::Value& ctx) = 0;
 
     /**
-     * @brief Process commands from other objects.
+     * @brief Process command from other objects.
      * @param[in] from capability who send the command
      * @param[in] command command
      * @param[in] param command parameter
@@ -128,7 +128,7 @@ public:
     virtual void receiveCommand(const std::string& from, const std::string& command, const std::string& param) = 0;
 
     /**
-     * @brief Processes command received from capability manager.
+     * @brief Process command received from capability manager.
      * @param[in] command command
      * @param[in] param command parameter
      */

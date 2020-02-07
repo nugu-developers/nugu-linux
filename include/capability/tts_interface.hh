@@ -42,6 +42,9 @@ enum class TTSState {
     TTS_SPEECH_FINISH /**< Status finishing speech in TTS */
 };
 
+/**
+ * @brief Attributes for setting TTS options.
+ */
 typedef struct {
     std::string tts_engine; /**< TTS engine type */
 } TTSAttribute;

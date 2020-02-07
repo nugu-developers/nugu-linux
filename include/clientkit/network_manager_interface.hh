@@ -41,7 +41,7 @@ enum class NetworkStatus {
 
 enum class NetworkError {
     TOKEN_ERROR, /**< Occurs when the issued token expires */
-    UNKNOWN /**< UNKNOWN */
+    UNKNOWN /**< Unknown */
 };
 
 /**
