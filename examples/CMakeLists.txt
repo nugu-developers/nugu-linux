@@ -5,6 +5,7 @@ ADD_SUBDIRECTORY(oob_setup)
 ADD_SUBDIRECTORY(standalone)
 ADD_SUBDIRECTORY(simple_text)
 ADD_SUBDIRECTORY(simple_asr)
+ADD_SUBDIRECTORY(capability_injection)
 
 # A shell script that executes a program using the token information
 # generated in the OAuth2 example.
