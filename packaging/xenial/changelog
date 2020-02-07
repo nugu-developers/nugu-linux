@@ -1,3 +1,25 @@
+nugu (0.6.0ubuntu1~xenial) xenial; urgency=medium
+
+  * Fixed ring-buffer bugs
+  * Fixed network bugs
+  * Added Mic capability agent
+  * Added Speaker capability agent
+  * Added /v1/events support
+  * Added simple examples
+  * Added a capability injection example
+  * Removed NuguConfig
+  * Upgraded NuguUUID spec to v2.0
+  * Upgraded AudioPlayerAgent to v1.1
+  * Upgraded ExtensionAgent to v1.1
+  * Upgraded SystemAgent to v1.1
+  * Upgraded curl to v7.67.0
+  * Upgraded nghttp2 to v1.40.0
+  * Changed namespace
+  * Changed capability management
+  * Changed source-tree structure
+
+ -- nugulinux <nugulinux@gmail.com>  Fri, 7 Feb 2020 17:10:00 +0900
+
 nugu (0.5.0ubuntu1~xenial) xenial; urgency=medium
 
   * Fixed Network Module
