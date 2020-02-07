@@ -1,4 +1,4 @@
-ADD_EXECUTABLE(nugu_simple_text text.cc)
+ADD_EXECUTABLE(nugu_simple_text main_text.cc)
 TARGET_LINK_LIBRARIES(nugu_simple_text
 	${pkgs_LDFLAGS}
 	-L${CMAKE_BINARY_DIR}/src -lnugu)
