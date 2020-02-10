@@ -1,0 +1,5 @@
+<map id="NuguCapability::IAudioPlayerHandler" name="NuguCapability::IAudioPlayerHandler">
+<area shape="rect" id="node2" href="$classNuguCapability_1_1IDisplayHandler.html" title="display handler interface " alt="" coords="19,184,202,225"/>
+<area shape="rect" id="node3" href="$classNuguClientKit_1_1ICapabilityInterface.html" title="capability interface " alt="" coords="15,95,206,136"/>
+<area shape="rect" id="node4" href="$classNuguClientKit_1_1ICapabilityObservable.html" title="capability observer interface " alt="" coords="15,5,206,47"/>
+</map>

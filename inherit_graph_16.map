@@ -1,3 +1,4 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classNuguInterface_1_1IWakeupHandler.html" title="Wakeup handler interface. " alt="" coords="5,5,215,32"/>
+<area shape="rect" id="node1" href="$classNuguClientKit_1_1ICapabilityObserver.html" title="capability observer interface " alt="" coords="5,5,196,47"/>
+<area shape="rect" id="node2" href="$classNuguClientKit_1_1INuguClientListener.html" title="nugu client listener interface " alt="" coords="244,5,440,47"/>
 </map>

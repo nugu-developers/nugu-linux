@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['init',['init',['../structnugu__plugin__desc.html#a6974e1009410fd2e79c433c49a21cea8',1,'nugu_plugin_desc']]],
-  ['is_5fcharge',['is_charge',['../structnugu__network__server__policy.html#a291b38fe1ccf3735965b8fbaedb3f816',1,'nugu_network_server_policy']]]
+  ['hostname',['hostname',['../structnugu__network__server__policy.html#ac85cb3c6450e66de87ac51e0e94b8dec',1,'nugu_network_server_policy']]]
 ];

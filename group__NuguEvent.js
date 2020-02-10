@@ -1,6 +1,10 @@
 var group__NuguEvent =
 [
     [ "NuguEvent", "group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2", null ],
+    [ "nugu_event_type", "group__NuguEvent.html#gad962955274c901710ed7946542f0cff4", [
+      [ "NUGU_EVENT_TYPE_DEFAULT", "group__NuguEvent.html#ggad962955274c901710ed7946542f0cff4a6f7827affcc79339efc1fd353831ae26", null ],
+      [ "NUGU_EVENT_TYPE_WITH_ATTACHMENT", "group__NuguEvent.html#ggad962955274c901710ed7946542f0cff4a0a6cc05157afe5371dbc1c250c46337d", null ]
+    ] ],
     [ "nugu_event_new", "group__NuguEvent.html#gae133a612a3abc321f4de1d6376759bd7", null ],
     [ "nugu_event_free", "group__NuguEvent.html#gae6a8910c1375f0b5912189cedf53f6af", null ],
     [ "nugu_event_peek_namespace", "group__NuguEvent.html#gabfe0ceb0c8e44cd5354f669335aeb793", null ],
@@ -15,6 +19,8 @@ var group__NuguEvent =
     [ "nugu_event_peek_dialog_id", "group__NuguEvent.html#ga8946ce562c23a585f38d52672182515b", null ],
     [ "nugu_event_set_referrer_id", "group__NuguEvent.html#gab0cb6124cb6c5175ae189779f5485306", null ],
     [ "nugu_event_peek_referrer_id", "group__NuguEvent.html#gac018efd714cbd7da7db50de99da99fad", null ],
+    [ "nugu_event_set_type", "group__NuguEvent.html#gae0186e75ec81e98f179c79e3cd403195", null ],
+    [ "nugu_event_get_type", "group__NuguEvent.html#gaf82ec8b7067afa0353eaaae32368d536", null ],
     [ "nugu_event_get_seq", "group__NuguEvent.html#ga1c284181f7d1472f56453c8e9c621cda", null ],
     [ "nugu_event_increase_seq", "group__NuguEvent.html#ga4f031cf810f97b43a1105ad1db706b45", null ],
     [ "nugu_event_generate_payload", "group__NuguEvent.html#gaf2795300241b02cb2013cc4e997fd83a", null ]

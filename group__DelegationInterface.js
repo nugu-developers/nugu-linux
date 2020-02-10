@@ -1,12 +1,12 @@
 var group__DelegationInterface =
 [
-    [ "IDelegationHandler", "classNuguInterface_1_1IDelegationHandler.html", [
-      [ "~IDelegationHandler", "classNuguInterface_1_1IDelegationHandler.html#afc87e465d0a03098575aeaf92fd39e98", null ],
-      [ "request", "classNuguInterface_1_1IDelegationHandler.html#ac3e0c6f4c8e5493a889d3d13666de3fe", null ]
+    [ "IDelegationHandler", "classNuguCapability_1_1IDelegationHandler.html", [
+      [ "~IDelegationHandler", "classNuguCapability_1_1IDelegationHandler.html#af762f48c0f06ab5952ad249d9ef0fafc", null ],
+      [ "request", "classNuguCapability_1_1IDelegationHandler.html#a0356b183f526600c38ce72b7c580d20a", null ]
     ] ],
-    [ "IDelegationListener", "classNuguInterface_1_1IDelegationListener.html", [
-      [ "~IDelegationListener", "classNuguInterface_1_1IDelegationListener.html#aabca600ae8872911532074a397de5518", null ],
-      [ "delegate", "classNuguInterface_1_1IDelegationListener.html#a765f185b66783b8f659ba863289bf69a", null ],
-      [ "requestContext", "classNuguInterface_1_1IDelegationListener.html#ab926c62f0cc61c64d0ab326544b3bd33", null ]
+    [ "IDelegationListener", "classNuguCapability_1_1IDelegationListener.html", [
+      [ "~IDelegationListener", "classNuguCapability_1_1IDelegationListener.html#a9f8aebf31baf8227a6f0397b1661e532", null ],
+      [ "delegate", "classNuguCapability_1_1IDelegationListener.html#aec19405aa59febe6d7faaec01324b239", null ],
+      [ "requestContext", "classNuguCapability_1_1IDelegationListener.html#a3ffd053869ed24034b34514d79a029b7", null ]
     ] ]
 ];

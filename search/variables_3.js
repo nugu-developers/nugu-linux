@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['get_5fduration',['get_duration',['../structnugu__player__driver__ops.html#a0323114e63d8f8e9dc990553c1b41385',1,'nugu_player_driver_ops']]],
-  ['get_5fposition',['get_position',['../structnugu__player__driver__ops.html#ae1db694c938c0a1dd52031fae4416c16',1,'nugu_player_driver_ops']]]
+  ['epd_5ftype',['epd_type',['../structNuguCapability_1_1ASRAttribute.html#ae504d2e2415d00bafb6e45cdbe0800db',1,'NuguCapability::ASRAttribute']]]
 ];

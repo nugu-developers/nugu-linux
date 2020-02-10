@@ -1,27 +1,27 @@
 var group__NetworkManagerInterface =
 [
-    [ "INetworkManager", "classNuguInterface_1_1INetworkManager.html", [
-      [ "~INetworkManager", "classNuguInterface_1_1INetworkManager.html#ade0ff526b940a238aa805a6cd9104d98", null ],
-      [ "addListener", "classNuguInterface_1_1INetworkManager.html#a28f9fb5b0c6881727bfcd51cd0d92962", null ],
-      [ "removeListener", "classNuguInterface_1_1INetworkManager.html#ae09906e4ee713f4bcacc7098a6dcb008", null ],
-      [ "connect", "classNuguInterface_1_1INetworkManager.html#a375eeacea960ed1ae934bdd5ae8b749c", null ],
-      [ "disconnect", "classNuguInterface_1_1INetworkManager.html#a1357f32b4f7c059f1a0f06cebff950a6", null ],
-      [ "setToken", "classNuguInterface_1_1INetworkManager.html#aa49e47018bcd242118681bdeed68d462", null ],
-      [ "setRegistryUrl", "classNuguInterface_1_1INetworkManager.html#a4d8a417d7b82abaa7fc764e1220abf66", null ],
-      [ "setUserAgent", "classNuguInterface_1_1INetworkManager.html#a8f8982e44e97a78801a618fb7513a826", null ]
+    [ "INetworkManager", "classNuguClientKit_1_1INetworkManager.html", [
+      [ "~INetworkManager", "classNuguClientKit_1_1INetworkManager.html#abf560eccfb2b354badbf3ea426307dad", null ],
+      [ "addListener", "classNuguClientKit_1_1INetworkManager.html#a2300478c7a2bff03d2d8e28b5a7724f9", null ],
+      [ "removeListener", "classNuguClientKit_1_1INetworkManager.html#a67988331a740da1c091d23ce20bfcd98", null ],
+      [ "connect", "classNuguClientKit_1_1INetworkManager.html#acccae4f8cac190e9702fe8e13a73bca1", null ],
+      [ "disconnect", "classNuguClientKit_1_1INetworkManager.html#a9349b575599e4be6ed03b2c53d9ce513", null ],
+      [ "setToken", "classNuguClientKit_1_1INetworkManager.html#a95bb7392fbef8bc4c2a9cafaa3a078fc", null ],
+      [ "setRegistryUrl", "classNuguClientKit_1_1INetworkManager.html#a0f2221ebbd39373de657dda5c2e987ca", null ],
+      [ "setUserAgent", "classNuguClientKit_1_1INetworkManager.html#a29dbae7e3e8e3ce8e66cb77472c07ea9", null ]
     ] ],
-    [ "INetworkManagerListener", "classNuguInterface_1_1INetworkManagerListener.html", [
-      [ "~INetworkManagerListener", "classNuguInterface_1_1INetworkManagerListener.html#a13a9c43b44eab95fcb815781f6ec0203", null ],
-      [ "onStatusChanged", "classNuguInterface_1_1INetworkManagerListener.html#ab8d40ab8ff694f5ff926829d5503c685", null ],
-      [ "onError", "classNuguInterface_1_1INetworkManagerListener.html#a48ee2989a27dfe4b97859a8fa69d1875", null ]
+    [ "INetworkManagerListener", "classNuguClientKit_1_1INetworkManagerListener.html", [
+      [ "~INetworkManagerListener", "classNuguClientKit_1_1INetworkManagerListener.html#a5a7b463d5094b0a1a28e4d84bab7221f", null ],
+      [ "onStatusChanged", "classNuguClientKit_1_1INetworkManagerListener.html#a091c1b1e49bda57cb32e70ba2a3e1e3b", null ],
+      [ "onError", "classNuguClientKit_1_1INetworkManagerListener.html#af11a90bd687c8fb17ecb429fb64fe619", null ]
     ] ],
-    [ "NetworkStatus", "group__NetworkManagerInterface.html#ga67e8a5210dda4b52d9454634868c2a0c", [
-      [ "DISCONNECTED", "group__NetworkManagerInterface.html#gga67e8a5210dda4b52d9454634868c2a0ca99c8ce56e7ab246445d3b134724428f3", null ],
-      [ "CONNECTED", "group__NetworkManagerInterface.html#gga67e8a5210dda4b52d9454634868c2a0caa5afd6edd5336d91316964e493936858", null ],
-      [ "CONNECTING", "group__NetworkManagerInterface.html#gga67e8a5210dda4b52d9454634868c2a0ca9a14f95e151eec641316e7c784ce832d", null ]
+    [ "NetworkStatus", "group__NetworkManagerInterface.html#ga385a69cab88c2d456247e254424bf809", [
+      [ "DISCONNECTED", "group__NetworkManagerInterface.html#gga385a69cab88c2d456247e254424bf809a99c8ce56e7ab246445d3b134724428f3", null ],
+      [ "CONNECTED", "group__NetworkManagerInterface.html#gga385a69cab88c2d456247e254424bf809aa5afd6edd5336d91316964e493936858", null ],
+      [ "CONNECTING", "group__NetworkManagerInterface.html#gga385a69cab88c2d456247e254424bf809a9a14f95e151eec641316e7c784ce832d", null ]
     ] ],
-    [ "NetworkError", "group__NetworkManagerInterface.html#gad0580e49356d3bffd1cd854202fd15dc", [
-      [ "TOKEN_ERROR", "group__NetworkManagerInterface.html#ggad0580e49356d3bffd1cd854202fd15dcade5fb169ea8d8790ec07c79a01246313", null ],
-      [ "UNKNOWN", "group__NetworkManagerInterface.html#ggad0580e49356d3bffd1cd854202fd15dca696b031073e74bf2cb98e5ef201d4aa3", null ]
+    [ "NetworkError", "group__NetworkManagerInterface.html#ga6aff79e2435c590ea44de8c43754e015", [
+      [ "TOKEN_ERROR", "group__NetworkManagerInterface.html#gga6aff79e2435c590ea44de8c43754e015ade5fb169ea8d8790ec07c79a01246313", null ],
+      [ "UNKNOWN", "group__NetworkManagerInterface.html#gga6aff79e2435c590ea44de8c43754e015a696b031073e74bf2cb98e5ef201d4aa3", null ]
     ] ]
 ];

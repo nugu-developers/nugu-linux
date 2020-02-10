@@ -12,8 +12,7 @@ var searchData=
   ['nuguequeuedestroycallback',['NuguEqueueDestroyCallback',['../group__NuguEventQueue.html#ga4b6c1e599fbc010ded827b39f3e15a75',1,'nugu_equeue.h']]],
   ['nuguevent',['NuguEvent',['../group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2',1,'nugu_event.h']]],
   ['nugufocus',['NuguFocus',['../group__NuguFocus.html#ga0d2320b3577905f9b9d61e140c604a34',1,'nugu_focus.h']]],
-  ['nugufocuscallback',['NuguFocusCallback',['../group__NuguFocus.html#gac290c2ffcb3b3b8e1f11e04675b62d38',1,'nugu_focus.h']]],
-  ['nugufocusresource',['NuguFocusResource',['../group__NuguFocus.html#gad00f686f5a638ffc19ee3480f31a6f65',1,'nugu_focus.h']]],
+  ['nugufocuscallback',['NuguFocusCallback',['../group__NuguFocus.html#gaa27b9671e025820263e79d51ad8d615e',1,'nugu_focus.h']]],
   ['nugufocusresult',['NuguFocusResult',['../group__NuguFocus.html#gaea04eb137abffebd10b8841d4c32fc6c',1,'nugu_focus.h']]],
   ['nugufocusstealresult',['NuguFocusStealResult',['../group__NuguFocus.html#ga28216c01af6a630441c14b398c5dfc1f',1,'nugu_focus.h']]],
   ['nugufocustype',['NuguFocusType',['../group__NuguFocus.html#ga20d9fdec3e35bbfdcc3e30cd7cccdb54',1,'nugu_focus.h']]],
@@ -28,7 +27,7 @@ var searchData=
   ['nugurecorder',['NuguRecorder',['../group__NuguRecorder.html#gab144bbb8210d85955f0a7543c9b846af',1,'nugu_recorder.h']]],
   ['nugurecorderdriver',['NuguRecorderDriver',['../group__NuguRecorderDriver.html#gaf831b376e0fedb07e417052dd138ca45',1,'nugu_recorder.h']]],
   ['nuguringbuffer',['NuguRingBuffer',['../group__NuguRingBuffer.html#ga57173888361d6a882a2eb2929877115e',1,'nugu_ringbuffer.h']]],
-  ['nugustealfocuscallback',['NuguStealfocusCallback',['../group__NuguFocus.html#ga757ac923b03729a187051f2d702f95a6',1,'nugu_focus.h']]],
+  ['nugustealfocuscallback',['NuguStealfocusCallback',['../group__NuguFocus.html#ga259fcd51521192e03c51965306765c39',1,'nugu_focus.h']]],
   ['nugutimer',['NuguTimer',['../group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e',1,'nugu_timer.h']]],
-  ['nuguunfocuscallback',['NuguUnfocusCallback',['../group__NuguFocus.html#ga7bbb6f41d37b4e1c7efddc6f14a4a762',1,'nugu_focus.h']]]
+  ['nuguunfocuscallback',['NuguUnfocusCallback',['../group__NuguFocus.html#gaee166b8887bea216ad7df78e69f2c560',1,'nugu_focus.h']]]
 ];

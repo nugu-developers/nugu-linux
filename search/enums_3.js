@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['extensionresult',['ExtensionResult',['../group__ExtensionInterface.html#ga9a0f5226a32aa7629e7e2444c4009478',1,'NuguInterface']]]
+  ['extensionresult',['ExtensionResult',['../group__ExtensionInterface.html#gadd2b0227444d03a24893d20c51899bea',1,'NuguCapability']]]
 ];

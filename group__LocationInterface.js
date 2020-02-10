@@ -1,11 +1,11 @@
 var group__LocationInterface =
 [
-    [ "ILocationListener", "classNuguInterface_1_1ILocationListener.html", [
-      [ "~ILocationListener", "classNuguInterface_1_1ILocationListener.html#ae5a57fba5cbc8d86bebb8ae95065b9c7", null ],
-      [ "requestContext", "classNuguInterface_1_1ILocationListener.html#a765dc893ecb4ffb125e2f74b63258cbb", null ]
+    [ "ILocationListener", "classNuguCapability_1_1ILocationListener.html", [
+      [ "~ILocationListener", "classNuguCapability_1_1ILocationListener.html#aafcfcfe6bee7d8da12d1874722b204d7", null ],
+      [ "requestContext", "classNuguCapability_1_1ILocationListener.html#a2ae0146d0694c196cb1992e28bd0c85d", null ]
     ] ],
-    [ "LocationInfo", "structNuguInterface_1_1LocationInfo.html", [
-      [ "latitude", "structNuguInterface_1_1LocationInfo.html#ad03ec8ed0ea0b8bf0887c1ae908821bc", null ],
-      [ "longitude", "structNuguInterface_1_1LocationInfo.html#aa3090659d6a481548861a3c8bdf5d2bd", null ]
+    [ "LocationInfo", "structNuguCapability_1_1LocationInfo.html", [
+      [ "latitude", "structNuguCapability_1_1LocationInfo.html#aed943678636c01ed17737c43a84abc31", null ],
+      [ "longitude", "structNuguCapability_1_1LocationInfo.html#a78c920149a400edc878edb4dcafcf250", null ]
     ] ]
 ];

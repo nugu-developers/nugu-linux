@@ -1,17 +1,25 @@
 var group__DisplayInterface =
 [
-    [ "IDisplayHandler", "classNuguInterface_1_1IDisplayHandler.html", [
-      [ "~IDisplayHandler", "classNuguInterface_1_1IDisplayHandler.html#ac322aff5a23a817e5fa5d566f05a9b96", null ],
-      [ "displayRendered", "classNuguInterface_1_1IDisplayHandler.html#ab53168dc664ed3de3be4115522a2f4f3", null ],
-      [ "displayCleared", "classNuguInterface_1_1IDisplayHandler.html#ac7de6a792fa76c1d2228d5ecbd4de126", null ],
-      [ "elementSelected", "classNuguInterface_1_1IDisplayHandler.html#a3addd665ec28e0a4ee892c150a8eafaa", null ],
-      [ "setListener", "classNuguInterface_1_1IDisplayHandler.html#a0f9c3a7268f8fadd6cd00879b72a74f0", null ],
-      [ "removeListener", "classNuguInterface_1_1IDisplayHandler.html#abf24fe2c2d6b745ef96d9e6048182fa1", null ],
-      [ "stopRenderingTimer", "classNuguInterface_1_1IDisplayHandler.html#ab5ff104e76b0aec7cbf650139d9987cf", null ]
+    [ "IDisplayHandler", "classNuguCapability_1_1IDisplayHandler.html", [
+      [ "~IDisplayHandler", "classNuguCapability_1_1IDisplayHandler.html#af82928f7755f33e26839a7fae4b3958f", null ],
+      [ "displayRendered", "classNuguCapability_1_1IDisplayHandler.html#a86da394cf59bf45ea29e4c04bfe3ec20", null ],
+      [ "displayCleared", "classNuguCapability_1_1IDisplayHandler.html#a406f526d874a82adbb471f61a1dfef7f", null ],
+      [ "elementSelected", "classNuguCapability_1_1IDisplayHandler.html#a7a21d3eebb7d8296ecd315b7f5622e21", null ],
+      [ "setListener", "classNuguCapability_1_1IDisplayHandler.html#a574ad7a83b0d2ef72a46bdc3d9ec142b", null ],
+      [ "removeListener", "classNuguCapability_1_1IDisplayHandler.html#ad18e2643b8a69b60159d9a8ee1d6c10a", null ],
+      [ "stopRenderingTimer", "classNuguCapability_1_1IDisplayHandler.html#a91f02053eac057732c36b05324283615", null ]
     ] ],
-    [ "IDisplayListener", "classNuguInterface_1_1IDisplayListener.html", [
-      [ "~IDisplayListener", "classNuguInterface_1_1IDisplayListener.html#a7e63e003f361fcc4a44c12068f81ff19", null ],
-      [ "renderDisplay", "classNuguInterface_1_1IDisplayListener.html#a17f4e8c7ff0109dafed2f69290b2ce77", null ],
-      [ "clearDisplay", "classNuguInterface_1_1IDisplayListener.html#aed46a6119393339bc4890722b1bc8cf4", null ]
+    [ "IDisplayListener", "classNuguCapability_1_1IDisplayListener.html", [
+      [ "~IDisplayListener", "classNuguCapability_1_1IDisplayListener.html#a91c162d7f0a527f16d1df2752b04d2e7", null ],
+      [ "renderDisplay", "classNuguCapability_1_1IDisplayListener.html#ae4c5cade51a8ab354845af12c54396e4", null ],
+      [ "clearDisplay", "classNuguCapability_1_1IDisplayListener.html#a34ab149bdd1bd6a09bf4d10393c8cc19", null ],
+      [ "requestLyricsPageAvailable", "classNuguCapability_1_1IDisplayListener.html#a660b7f26f9cb711d53a135dc77a89211", null ],
+      [ "showLyrics", "classNuguCapability_1_1IDisplayListener.html#af7534e73dc4b27483e6f4d15b9ae55f5", null ],
+      [ "hideLyrics", "classNuguCapability_1_1IDisplayListener.html#a4b33120243e6e02216e291ead1bc93c8", null ],
+      [ "controlLyrics", "classNuguCapability_1_1IDisplayListener.html#aec2f2f50ebb3c1eaf95ff628f59203d8", null ]
+    ] ],
+    [ "ControlLyricsDirection", "group__DisplayInterface.html#ga981015a8d321936038813f3f1ea0bf0a", [
+      [ "PREVIOUS", "group__DisplayInterface.html#gga981015a8d321936038813f3f1ea0bf0aa315ba7a868d45a9cb131c8dca3166b51", null ],
+      [ "NEXT", "group__DisplayInterface.html#gga981015a8d321936038813f3f1ea0bf0aa47559fb833ff58321570e5e877b467f6", null ]
     ] ]
 ];

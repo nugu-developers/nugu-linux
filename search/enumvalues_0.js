@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['asr',['ASR',['../group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa1a3cf7bfb644cba9516cc28e2cb360ca',1,'NuguInterface']]],
-  ['asr_5frecognizing_5fexception',['ASR_RECOGNIZING_EXCEPTION',['../group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282ac980b55619ee70eb68682784c0a9e34e',1,'NuguInterface']]],
+  ['alarm',['ALARM',['../group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a9de6d0a670ae5a0dee31a6318aa00e8d',1,'NuguCapability']]],
+  ['all',['ALL',['../group__AudioPlayerInterface.html#gga0cb2048ef5fb507017eb53ee3e52716da5fb1f955b45e38e31789286a1790398d',1,'NuguCapability']]],
+  ['asr_5frecognizing_5fexception',['ASR_RECOGNIZING_EXCEPTION',['../group__SystemInterface.html#ggae95aa9037a85a223126f51c1efcbe671ac980b55619ee70eb68682784c0a9e34e',1,'NuguCapability']]],
   ['audio_5fformat_5fs16_5fbe',['AUDIO_FORMAT_S16_BE',['../nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4eea752dc98cd2211cf660b800f8410da83d',1,'nugu_audio.h']]],
   ['audio_5fformat_5fs16_5fle',['AUDIO_FORMAT_S16_LE',['../nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4eea094a940c199a6534a1719ec99aadcd9f',1,'nugu_audio.h']]],
   ['audio_5fformat_5fs24_5fbe',['AUDIO_FORMAT_S24_BE',['../nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4eeacb7eff5deafb162d1cf29d4e80d0f70f',1,'nugu_audio.h']]],
@@ -20,6 +21,5 @@ var searchData=
   ['audio_5fsample_5frate_5f22k',['AUDIO_SAMPLE_RATE_22K',['../nugu__audio_8h.html#a45142699425266966bf2e0eed6dad69ca48c4f61937f6fdf7ad4a5196725f8025',1,'nugu_audio.h']]],
   ['audio_5fsample_5frate_5f32k',['AUDIO_SAMPLE_RATE_32K',['../nugu__audio_8h.html#a45142699425266966bf2e0eed6dad69cadf8b32443f20ec450553ffd902ff09c1',1,'nugu_audio.h']]],
   ['audio_5fsample_5frate_5f44k',['AUDIO_SAMPLE_RATE_44K',['../nugu__audio_8h.html#a45142699425266966bf2e0eed6dad69cacfebdec3688e8acaa7ded03346ab1216',1,'nugu_audio.h']]],
-  ['audio_5fsample_5frate_5f8k',['AUDIO_SAMPLE_RATE_8K',['../nugu__audio_8h.html#a45142699425266966bf2e0eed6dad69ca650a06c99e7d240d3d698f2c49f882a7',1,'nugu_audio.h']]],
-  ['audioplayer',['AudioPlayer',['../group__CapabilityInterface.html#ggacf07cae71da4a8dcafc46ed5459bec7aa9875cb9f6eccd432273d37cb3653ad9b',1,'NuguInterface']]]
+  ['audio_5fsample_5frate_5f8k',['AUDIO_SAMPLE_RATE_8K',['../nugu__audio_8h.html#a45142699425266966bf2e0eed6dad69ca650a06c99e7d240d3d698f2c49f882a7',1,'nugu_audio.h']]]
 ];

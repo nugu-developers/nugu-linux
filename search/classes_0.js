@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['capabilitybuilder',['CapabilityBuilder',['../classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html',1,'NuguClientKit::NuguClient']]]
+  ['asrattribute',['ASRAttribute',['../structNuguCapability_1_1ASRAttribute.html',1,'NuguCapability']]]
 ];

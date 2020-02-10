@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['mediachanged',['mediaChanged',['../classNuguInterface_1_1IMediaPlayerListener.html#a86ab2997dcced51207c9524f45133d88',1,'NuguInterface::IMediaPlayerListener']]],
-  ['mediaeventreport',['mediaEventReport',['../classNuguInterface_1_1IMediaPlayerListener.html#a64d7b5e26edc3efacea6da4821879d1a',1,'NuguInterface::IMediaPlayerListener']]],
-  ['mediastatechanged',['mediaStateChanged',['../classNuguInterface_1_1IAudioPlayerListener.html#ae50b9a446b8d84c428c5be71ce0228ee',1,'NuguInterface::IAudioPlayerListener::mediaStateChanged()'],['../classNuguInterface_1_1IMediaPlayerListener.html#ad66920d634a2e0f11d8829780b492f9f',1,'NuguInterface::IMediaPlayerListener::mediaStateChanged()']]],
-  ['mute',['mute',['../classNuguInterface_1_1IMediaPlayer.html#a21b411a6eed7869b56eee51e15160341',1,'NuguInterface::IMediaPlayer']]],
-  ['mutechanged',['muteChanged',['../classNuguInterface_1_1IMediaPlayerListener.html#a49e65801ad9abfb38b08731bb330ff68',1,'NuguInterface::IMediaPlayerListener']]]
+  ['informmutefailed',['informMuteFailed',['../classNuguCapability_1_1ISpeakerHandler.html#a245689ff9c42cae4bcd59b287dc7958a',1,'NuguCapability::ISpeakerHandler']]],
+  ['informmutesucceeded',['informMuteSucceeded',['../classNuguCapability_1_1ISpeakerHandler.html#ad7f26ec7c55e7c73b6e50417f817b987',1,'NuguCapability::ISpeakerHandler']]],
+  ['informvolumefailed',['informVolumeFailed',['../classNuguCapability_1_1ISpeakerHandler.html#a69c93b2636cf8f56d1b86f96d0a9c889',1,'NuguCapability::ISpeakerHandler']]],
+  ['informvolumesucceeded',['informVolumeSucceeded',['../classNuguCapability_1_1ISpeakerHandler.html#ac0426571c701a48666d72b31e822c562',1,'NuguCapability::ISpeakerHandler']]],
+  ['initialize',['initialize',['../classNuguClientKit_1_1ICapabilityInterface.html#a442b46900c965ef90be4f2ebff189317',1,'NuguClientKit::ICapabilityInterface::initialize()'],['../classNuguClientKit_1_1NuguClient.html#aae1f4508ab77758bec29c5ef54f2736a',1,'NuguClientKit::NuguClient::initialize()']]],
+  ['isfocuson',['isFocusOn',['../classNuguClientKit_1_1ICapabilityHelper.html#ad03dadfe020c6393884f5092e812a916',1,'NuguClientKit::ICapabilityHelper']]],
+  ['isplaying',['isPlaying',['../classNuguClientKit_1_1IMediaPlayer.html#ae8e7fa937a30f7d17552a7ee7b9c1491',1,'NuguClientKit::IMediaPlayer']]]
 ];

@@ -1,15 +1,16 @@
 var group__ExtensionInterface =
 [
-    [ "IExtensionHandler", "classNuguInterface_1_1IExtensionHandler.html", [
-      [ "~IExtensionHandler", "classNuguInterface_1_1IExtensionHandler.html#ab6704545c8630e341a435f03413aa50a", null ]
+    [ "IExtensionHandler", "classNuguCapability_1_1IExtensionHandler.html", [
+      [ "~IExtensionHandler", "classNuguCapability_1_1IExtensionHandler.html#a3c2eead7c4b6a13eb2eee3646571c71c", null ],
+      [ "sendCommandToPlay", "classNuguCapability_1_1IExtensionHandler.html#a033a3ace1a299cc14642b230ab8e5fcb", null ]
     ] ],
-    [ "IExtensionListener", "classNuguInterface_1_1IExtensionListener.html", [
-      [ "~IExtensionListener", "classNuguInterface_1_1IExtensionListener.html#a9c9d94303f4f7b54e6d11d100550f85d", null ],
-      [ "receiveAction", "classNuguInterface_1_1IExtensionListener.html#a0c0c8490ab694aa94370af5a98409b69", null ],
-      [ "requestContext", "classNuguInterface_1_1IExtensionListener.html#a3e9d01766ca4a09d942c6394a2ad9ac7", null ]
+    [ "IExtensionListener", "classNuguCapability_1_1IExtensionListener.html", [
+      [ "~IExtensionListener", "classNuguCapability_1_1IExtensionListener.html#a91bdf9efcb5ee1244cd95a7b880a3a38", null ],
+      [ "receiveAction", "classNuguCapability_1_1IExtensionListener.html#a8673950c62cf6b73e66975720a9e2bb9", null ],
+      [ "requestContext", "classNuguCapability_1_1IExtensionListener.html#a42956a56a2aecf97432ac216b0ddfae1", null ]
     ] ],
-    [ "ExtensionResult", "group__ExtensionInterface.html#ga9a0f5226a32aa7629e7e2444c4009478", [
-      [ "SUCCEEDED", "group__ExtensionInterface.html#gga9a0f5226a32aa7629e7e2444c4009478afd9f6519d3f45276829fe74eb2c4bb85", null ],
-      [ "FAILED", "group__ExtensionInterface.html#gga9a0f5226a32aa7629e7e2444c4009478ab9e14d9b2886bcff408b85aefa780419", null ]
+    [ "ExtensionResult", "group__ExtensionInterface.html#gadd2b0227444d03a24893d20c51899bea", [
+      [ "SUCCEEDED", "group__ExtensionInterface.html#ggadd2b0227444d03a24893d20c51899beaafd9f6519d3f45276829fe74eb2c4bb85", null ],
+      [ "FAILED", "group__ExtensionInterface.html#ggadd2b0227444d03a24893d20c51899beaab9e14d9b2886bcff408b85aefa780419", null ]
     ] ]
 ];

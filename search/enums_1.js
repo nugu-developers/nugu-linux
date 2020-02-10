@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['capabilitysignal',['CapabilitySignal',['../group__CapabilityInterface.html#ga7969bc4408d26d7cb1ad72c1950cd5c0',1,'NuguInterface']]],
-  ['capabilitytype',['CapabilityType',['../group__CapabilityInterface.html#gacf07cae71da4a8dcafc46ed5459bec7a',1,'NuguInterface']]]
+  ['capabilitysignal',['CapabilitySignal',['../group__CapabilityInterface.html#ga4eb1c10c5e37e254cd3193dd6c541397',1,'NuguClientKit']]],
+  ['controllyricsdirection',['ControlLyricsDirection',['../group__DisplayInterface.html#ga981015a8d321936038813f3f1ea0bf0a',1,'NuguCapability']]]
 ];

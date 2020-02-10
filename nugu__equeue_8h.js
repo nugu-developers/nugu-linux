@@ -14,6 +14,7 @@ var nugu__equeue_8h =
       [ "NUGU_EQUEUE_TYPE_REGISTRY_FAILED", "group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba0ec8c080c037163a8ded594ab2982a9d", null ],
       [ "NUGU_EQUEUE_TYPE_SERVER_CONNECTED", "group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba4453728f9adddcd2661ad84873a99e38", null ],
       [ "NUGU_EQUEUE_TYPE_SERVER_DISCONNECTED", "group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba5b66d7f6cdb5a343533e2625c15d55b6", null ],
+      [ "NUGU_EQUEUE_TYPE_DIRECTIVES_CLOSED", "group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba050d3eccb50bcd084bf50ed8527ba59b", null ],
       [ "NUGU_EQUEUE_TYPE_MAX", "group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba71a2740adf555abd8fd757d93cd19ffc", null ]
     ] ],
     [ "nugu_equeue_initialize", "group__NuguEventQueue.html#ga94b136461320345223b21a5bb2ddfad3", null ],

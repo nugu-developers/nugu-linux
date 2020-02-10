@@ -1,52 +1,52 @@
 var group__MediaPlayerInterface =
 [
-    [ "IMediaPlayer", "classNuguInterface_1_1IMediaPlayer.html", [
-      [ "~IMediaPlayer", "classNuguInterface_1_1IMediaPlayer.html#a37ca66975cd08c22b96d9c7380e7da1f", null ],
-      [ "addListener", "classNuguInterface_1_1IMediaPlayer.html#a61b88f8611cad2cf95f06b34ccdbbf33", null ],
-      [ "removeListener", "classNuguInterface_1_1IMediaPlayer.html#a27734a9740e999a57897fbc30364c744", null ],
-      [ "setSource", "classNuguInterface_1_1IMediaPlayer.html#aea82c2afad01fe8b591289372985adb8", null ],
-      [ "play", "classNuguInterface_1_1IMediaPlayer.html#a1a527e9b81a2e31fe301f97c1d2201d8", null ],
-      [ "stop", "classNuguInterface_1_1IMediaPlayer.html#ab6cfbd7fc1669122a49c61e85093227a", null ],
-      [ "pause", "classNuguInterface_1_1IMediaPlayer.html#a7e0effebae26991ddc209b41687bfbca", null ],
-      [ "resume", "classNuguInterface_1_1IMediaPlayer.html#a7a114a802d75e998ba55cf001eb990e7", null ],
-      [ "seek", "classNuguInterface_1_1IMediaPlayer.html#a598351814277302487852529a2a2d12b", null ],
-      [ "position", "classNuguInterface_1_1IMediaPlayer.html#aef2450198812f1584a377e79d400f133", null ],
-      [ "setPosition", "classNuguInterface_1_1IMediaPlayer.html#acdad54e8afc8cf16da1a96758396749d", null ],
-      [ "loop", "classNuguInterface_1_1IMediaPlayer.html#a10b4355905ff5f1b1631866bcd20a33d", null ],
-      [ "setLoop", "classNuguInterface_1_1IMediaPlayer.html#a873a002bcbfa4fee4f490f1cfb4733ad", null ],
-      [ "duration", "classNuguInterface_1_1IMediaPlayer.html#a051f13f0af366fe6d3a092ee7b5d3727", null ],
-      [ "setDuration", "classNuguInterface_1_1IMediaPlayer.html#a2d3e94f18ee4bc005794ea3bef994d86", null ],
-      [ "volume", "classNuguInterface_1_1IMediaPlayer.html#abc6f11f2c5c344f61aa2a7c431b99eed", null ],
-      [ "setVolume", "classNuguInterface_1_1IMediaPlayer.html#ae05e36746c6417d1965ab12344ee7f33", null ],
-      [ "mute", "classNuguInterface_1_1IMediaPlayer.html#a21b411a6eed7869b56eee51e15160341", null ],
-      [ "setMute", "classNuguInterface_1_1IMediaPlayer.html#a6300a64fca9f9d351b926c09ba461527", null ],
-      [ "isPlaying", "classNuguInterface_1_1IMediaPlayer.html#a86c66d0e47538e36c944912aff782196", null ],
-      [ "state", "classNuguInterface_1_1IMediaPlayer.html#afb0290c47d6383b91d7fdeac8ff37396", null ],
-      [ "setState", "classNuguInterface_1_1IMediaPlayer.html#a7742333b7d93c99ebe58a903b46ef988", null ],
-      [ "stateString", "classNuguInterface_1_1IMediaPlayer.html#abbd088636c5be4e83d2e611be5678009", null ],
-      [ "url", "classNuguInterface_1_1IMediaPlayer.html#a89f4549d5f8546ba16d07f0223c6a439", null ]
+    [ "IMediaPlayer", "classNuguClientKit_1_1IMediaPlayer.html", [
+      [ "~IMediaPlayer", "classNuguClientKit_1_1IMediaPlayer.html#a91b5f39704e7fd789b795def71d0a216", null ],
+      [ "addListener", "classNuguClientKit_1_1IMediaPlayer.html#afa7eb30c96c86041ee7ceeb887436864", null ],
+      [ "removeListener", "classNuguClientKit_1_1IMediaPlayer.html#a17aa13c2170e53af6f4076a90bae8e91", null ],
+      [ "setSource", "classNuguClientKit_1_1IMediaPlayer.html#a64a38612cb19b20932169aa5237d0536", null ],
+      [ "play", "classNuguClientKit_1_1IMediaPlayer.html#a442cd3eb9b9cc42795a275203d1dd83f", null ],
+      [ "stop", "classNuguClientKit_1_1IMediaPlayer.html#a2d73568f405fa85861a48b651646f5de", null ],
+      [ "pause", "classNuguClientKit_1_1IMediaPlayer.html#a624cc048f4e50ed0278680ad39171e4b", null ],
+      [ "resume", "classNuguClientKit_1_1IMediaPlayer.html#aa738c1f7ad86ebe45b312e3e89198a38", null ],
+      [ "seek", "classNuguClientKit_1_1IMediaPlayer.html#ac61bd3407a6728044f61dac9adbee09c", null ],
+      [ "position", "classNuguClientKit_1_1IMediaPlayer.html#aab62fd2784737c7a7e3da6a4f30f0aa0", null ],
+      [ "setPosition", "classNuguClientKit_1_1IMediaPlayer.html#ac37b5340dbde66946df08af9a1edbd7b", null ],
+      [ "loop", "classNuguClientKit_1_1IMediaPlayer.html#a51682137259ad89c24d22e91c627e45f", null ],
+      [ "setLoop", "classNuguClientKit_1_1IMediaPlayer.html#ae3192815decb37672f568c6c83f160af", null ],
+      [ "duration", "classNuguClientKit_1_1IMediaPlayer.html#a97db3ca40157f51d7672629fbdd1756e", null ],
+      [ "setDuration", "classNuguClientKit_1_1IMediaPlayer.html#a0a3600cc12f2a049cd142ccdd03a794e", null ],
+      [ "volume", "classNuguClientKit_1_1IMediaPlayer.html#a674ba3231d646502f00008ecfcf2d1af", null ],
+      [ "setVolume", "classNuguClientKit_1_1IMediaPlayer.html#aab7fa32aadcfd153854e90d38594e388", null ],
+      [ "mute", "classNuguClientKit_1_1IMediaPlayer.html#a45316cfe6f809ec76954ab1fd3290eac", null ],
+      [ "setMute", "classNuguClientKit_1_1IMediaPlayer.html#a8c53c97a3c930d66d0fddb5b05d51d2d", null ],
+      [ "isPlaying", "classNuguClientKit_1_1IMediaPlayer.html#ae8e7fa937a30f7d17552a7ee7b9c1491", null ],
+      [ "state", "classNuguClientKit_1_1IMediaPlayer.html#ab8a3ab851673098f60dbf4e3210bc4e0", null ],
+      [ "setState", "classNuguClientKit_1_1IMediaPlayer.html#a88e06501237b066e4bd57d8c22dce1d6", null ],
+      [ "stateString", "classNuguClientKit_1_1IMediaPlayer.html#ac591932397b3ce466047b2d959fee41c", null ],
+      [ "url", "classNuguClientKit_1_1IMediaPlayer.html#a6c6f3e65e27c64dc4fe5bde9d4ccfbe0", null ]
     ] ],
-    [ "IMediaPlayerListener", "classNuguInterface_1_1IMediaPlayerListener.html", [
-      [ "mediaStateChanged", "classNuguInterface_1_1IMediaPlayerListener.html#ad66920d634a2e0f11d8829780b492f9f", null ],
-      [ "mediaEventReport", "classNuguInterface_1_1IMediaPlayerListener.html#a64d7b5e26edc3efacea6da4821879d1a", null ],
-      [ "mediaChanged", "classNuguInterface_1_1IMediaPlayerListener.html#a86ab2997dcced51207c9524f45133d88", null ],
-      [ "durationChanged", "classNuguInterface_1_1IMediaPlayerListener.html#a8bb0b7d9cef23c675630b81899e385e0", null ],
-      [ "positionChanged", "classNuguInterface_1_1IMediaPlayerListener.html#a6e312b258bf8f72f6d7d52560cd14bfc", null ],
-      [ "volumeChanged", "classNuguInterface_1_1IMediaPlayerListener.html#a7098f1898f3ab58246d57d25663d26e5", null ],
-      [ "muteChanged", "classNuguInterface_1_1IMediaPlayerListener.html#a49e65801ad9abfb38b08731bb330ff68", null ]
+    [ "IMediaPlayerListener", "classNuguClientKit_1_1IMediaPlayerListener.html", [
+      [ "mediaStateChanged", "classNuguClientKit_1_1IMediaPlayerListener.html#ac89057d0e7ae8cf435138c0510cf61a4", null ],
+      [ "mediaEventReport", "classNuguClientKit_1_1IMediaPlayerListener.html#a964a8591d9ac1b981216e09a74d4950b", null ],
+      [ "mediaChanged", "classNuguClientKit_1_1IMediaPlayerListener.html#a7a3835846590a14e39e136a296e44a6c", null ],
+      [ "durationChanged", "classNuguClientKit_1_1IMediaPlayerListener.html#a8bfd10ee9013673fe4489e09ade2c005", null ],
+      [ "positionChanged", "classNuguClientKit_1_1IMediaPlayerListener.html#ae44b581a05ca076d604ecb88310f0e49", null ],
+      [ "volumeChanged", "classNuguClientKit_1_1IMediaPlayerListener.html#a3cea4f5ed081bfdc2c18189f1ac2dce0", null ],
+      [ "muteChanged", "classNuguClientKit_1_1IMediaPlayerListener.html#aabe69756b2a317bd2f9d5f34e89c9e87", null ]
     ] ],
-    [ "MediaPlayerState", "group__MediaPlayerInterface.html#gad0ce90f562db76975afd0fb74f6713c8", [
-      [ "IDLE", "group__MediaPlayerInterface.html#ggad0ce90f562db76975afd0fb74f6713c8aa5daf7f2ebbba4975d61dab1c40188c7", null ],
-      [ "PREPARE", "group__MediaPlayerInterface.html#ggad0ce90f562db76975afd0fb74f6713c8ab205205bc58adbefd02d8ba357b9c57f", null ],
-      [ "READY", "group__MediaPlayerInterface.html#ggad0ce90f562db76975afd0fb74f6713c8a2baa69eafc7204f3bd8648eba580c489", null ],
-      [ "PLAYING", "group__MediaPlayerInterface.html#ggad0ce90f562db76975afd0fb74f6713c8a50366a49630a416ab3ccaa004196027e", null ],
-      [ "PAUSED", "group__MediaPlayerInterface.html#ggad0ce90f562db76975afd0fb74f6713c8a99b2439e63f73ad515f7ab2447a80673", null ],
-      [ "STOPPED", "group__MediaPlayerInterface.html#ggad0ce90f562db76975afd0fb74f6713c8a09d4d696b4e935115b9313e3c412509a", null ]
+    [ "MediaPlayerState", "group__MediaPlayerInterface.html#ga4394cbf300e5382612ec50d08e05317e", [
+      [ "IDLE", "group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317eaa5daf7f2ebbba4975d61dab1c40188c7", null ],
+      [ "PREPARE", "group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317eab205205bc58adbefd02d8ba357b9c57f", null ],
+      [ "READY", "group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317ea2baa69eafc7204f3bd8648eba580c489", null ],
+      [ "PLAYING", "group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317ea50366a49630a416ab3ccaa004196027e", null ],
+      [ "PAUSED", "group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317ea99b2439e63f73ad515f7ab2447a80673", null ],
+      [ "STOPPED", "group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317ea09d4d696b4e935115b9313e3c412509a", null ]
     ] ],
-    [ "MediaPlayerEvent", "group__MediaPlayerInterface.html#ga9a0e307c741ea670763d4c9e5c633b2f", [
-      [ "INVALID_MEDIA_URL", "group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa8c30cba168f5791d184af6ed7643b0d1", null ],
-      [ "LOADING_MEDIA_FAILED", "group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa1b5b0ec7563b006b267a82a514bcbb8b", null ],
-      [ "LOADING_MEDIA_SUCCESS", "group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa0d42d3f5ee2bf7356d33b623cfa12dfd", null ],
-      [ "PLAYING_MEDIA_FINISHED", "group__MediaPlayerInterface.html#gga9a0e307c741ea670763d4c9e5c633b2fa8aa89e3b945415649b8fa48f74865763", null ]
+    [ "MediaPlayerEvent", "group__MediaPlayerInterface.html#ga998b178629fb2f7d4eb807ece397c28c", [
+      [ "INVALID_MEDIA_URL", "group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca8c30cba168f5791d184af6ed7643b0d1", null ],
+      [ "LOADING_MEDIA_FAILED", "group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca1b5b0ec7563b006b267a82a514bcbb8b", null ],
+      [ "LOADING_MEDIA_SUCCESS", "group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca0d42d3f5ee2bf7356d33b623cfa12dfd", null ],
+      [ "PLAYING_MEDIA_FINISHED", "group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca8aa89e3b945415649b8fa48f74865763", null ]
     ] ]
 ];

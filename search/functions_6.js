@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['loop',['loop',['../classNuguInterface_1_1IMediaPlayer.html#a10b4355905ff5f1b1631866bcd20a33d',1,'NuguInterface::IMediaPlayer']]]
+  ['hidelyrics',['hideLyrics',['../classNuguCapability_1_1IDisplayListener.html#a4b33120243e6e02216e291ead1bc93c8',1,'NuguCapability::IDisplayListener']]]
 ];

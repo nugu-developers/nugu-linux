@@ -12,7 +12,7 @@ var NAVTREE =
       [ "Class Index", "classes.html", null ],
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
-        [ "All", "functions.html", null ],
+        [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", null ],
         [ "Variables", "functions_vars.html", null ]
       ] ]
@@ -34,11 +34,11 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"delegation__interface_8hh_source.html",
-"group__NuguDecoder.html#ga4cb94c83723d075d7777c0400898d01d",
-"group__NuguPcm.html#ga81c7cbad3a6400ab62c946ef748ac5f2",
-"group__SystemInterface.html#gga5e3c9cb6b18bd06e4393333e922c0282aaf828269166d62d6a53b6ee2d0851cf1",
-"structnugu__player__driver__ops.html#a1cfb23b5bf0d0d38eca95bf9a9cd44e9"
+"classNuguClientKit_1_1INetworkManager.html",
+"group__Log.html#gga087457802942b6cddead13bf0e061851af034f0aa539105b3287b00698e1f65f3",
+"group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba4453728f9adddcd2661ad84873a99e38",
+"group__NuguRecorder.html#ga23a56f3e6c907914e8bb5a0d642ab442",
+"group__uuid.html#ga680fd8dd3617514fa7b7ef5c1ce6ba63"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

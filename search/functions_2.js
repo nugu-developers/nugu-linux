@@ -1,10 +1,11 @@
 var searchData=
 [
   ['deinitialize',['deInitialize',['../classNuguClientKit_1_1NuguClient.html#a32def4bda93b3a706d6e7757c5e41220',1,'NuguClientKit::NuguClient']]],
-  ['delegate',['delegate',['../classNuguInterface_1_1IDelegationListener.html#a765f185b66783b8f659ba863289bf69a',1,'NuguInterface::IDelegationListener']]],
-  ['disconnect',['disconnect',['../classNuguInterface_1_1ISystemHandler.html#a4694ad015ff69bc8d95233bb00725f4d',1,'NuguInterface::ISystemHandler::disconnect()'],['../classNuguInterface_1_1INetworkManager.html#a1357f32b4f7c059f1a0f06cebff950a6',1,'NuguInterface::INetworkManager::disconnect()']]],
-  ['displaycleared',['displayCleared',['../classNuguInterface_1_1IDisplayHandler.html#ac7de6a792fa76c1d2228d5ecbd4de126',1,'NuguInterface::IDisplayHandler']]],
-  ['displayrendered',['displayRendered',['../classNuguInterface_1_1IDisplayHandler.html#ab53168dc664ed3de3be4115522a2f4f3',1,'NuguInterface::IDisplayHandler']]],
-  ['duration',['duration',['../classNuguInterface_1_1IMediaPlayer.html#a051f13f0af366fe6d3a092ee7b5d3727',1,'NuguInterface::IMediaPlayer']]],
-  ['durationchanged',['durationChanged',['../classNuguInterface_1_1IAudioPlayerListener.html#a333d127da180ebef8ec6434882fbbd14',1,'NuguInterface::IAudioPlayerListener::durationChanged()'],['../classNuguInterface_1_1IMediaPlayerListener.html#a8bb0b7d9cef23c675630b81899e385e0',1,'NuguInterface::IMediaPlayerListener::durationChanged()']]]
+  ['delegate',['delegate',['../classNuguCapability_1_1IDelegationListener.html#aec19405aa59febe6d7faaec01324b239',1,'NuguCapability::IDelegationListener']]],
+  ['disable',['disable',['../classNuguCapability_1_1IMicHandler.html#a05563bd9964522a4ff906a4d0163d627',1,'NuguCapability::IMicHandler']]],
+  ['disconnect',['disconnect',['../classNuguCapability_1_1ISystemHandler.html#ac0e9df99d961e7d1f57a4856a938553d',1,'NuguCapability::ISystemHandler::disconnect()'],['../classNuguClientKit_1_1INetworkManager.html#a9349b575599e4be6ed03b2c53d9ce513',1,'NuguClientKit::INetworkManager::disconnect()']]],
+  ['displaycleared',['displayCleared',['../classNuguCapability_1_1IDisplayHandler.html#a406f526d874a82adbb471f61a1dfef7f',1,'NuguCapability::IDisplayHandler']]],
+  ['displayrendered',['displayRendered',['../classNuguCapability_1_1IDisplayHandler.html#a86da394cf59bf45ea29e4c04bfe3ec20',1,'NuguCapability::IDisplayHandler']]],
+  ['duration',['duration',['../classNuguClientKit_1_1IMediaPlayer.html#a97db3ca40157f51d7672629fbdd1756e',1,'NuguClientKit::IMediaPlayer']]],
+  ['durationchanged',['durationChanged',['../classNuguCapability_1_1IAudioPlayerListener.html#a38701cf9b53fb056e7fee018c10a054b',1,'NuguCapability::IAudioPlayerListener::durationChanged()'],['../classNuguClientKit_1_1IMediaPlayerListener.html#a8bfd10ee9013673fe4489e09ade2c005',1,'NuguClientKit::IMediaPlayerListener::durationChanged()']]]
 ];

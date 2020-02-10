@@ -3,7 +3,7 @@ var nugu__buffer_8h =
     [ "NOT_FOUND", "group__Buffer.html#ga33bfc1f995233887a0414369c36936b8", null ],
     [ "NuguBuffer", "group__Buffer.html#ga065b515fc87d13912c156adb17456129", null ],
     [ "nugu_buffer_new", "group__Buffer.html#ga0b9004f84813282e2107c1e85c53dcf9", null ],
-    [ "nugu_buffer_free", "group__Buffer.html#gafe0799f248473ac8d71e84af4a1bfd9d", null ],
+    [ "nugu_buffer_free", "group__Buffer.html#ga505b48bbb39128531e1ea281ac7dac44", null ],
     [ "nugu_buffer_add", "group__Buffer.html#gaacefd9e2f61220e4b88a519c6c34be05", null ],
     [ "nugu_buffer_peek", "group__Buffer.html#ga388846c7b43f57daa5915d7a17b3ec8b", null ],
     [ "nugu_buffer_get_size", "group__Buffer.html#ga56b97f3aa4d3badc9f88207f59ffed45", null ],

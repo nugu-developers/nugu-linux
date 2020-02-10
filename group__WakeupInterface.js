@@ -1,17 +1,18 @@
 var group__WakeupInterface =
 [
-    [ "IWakeupHandler", "classNuguInterface_1_1IWakeupHandler.html", [
-      [ "~IWakeupHandler", "classNuguInterface_1_1IWakeupHandler.html#a007311b162fd538fad6ac1e9802dee2c", null ],
-      [ "setListener", "classNuguInterface_1_1IWakeupHandler.html#a2cee1a951e35190c54272b9fbbe22bdf", null ],
-      [ "startWakeup", "classNuguInterface_1_1IWakeupHandler.html#a39c1e742d1d8f8374e1595c0dc518af2", null ]
+    [ "IWakeupHandler", "classNuguClientKit_1_1IWakeupHandler.html", [
+      [ "~IWakeupHandler", "classNuguClientKit_1_1IWakeupHandler.html#a538df6480701a3b241d1d1c28f455146", null ],
+      [ "setListener", "classNuguClientKit_1_1IWakeupHandler.html#ac5725f07b3b20a9ff39b18261df4280c", null ],
+      [ "startWakeup", "classNuguClientKit_1_1IWakeupHandler.html#aa7bc36adfd4360f041e7e32888c24ec0", null ],
+      [ "stopWakeup", "classNuguClientKit_1_1IWakeupHandler.html#a80b2fa6e7df5b7eb6be9213b0cc48183", null ]
     ] ],
-    [ "IWakeupListener", "classNuguInterface_1_1IWakeupListener.html", [
-      [ "~IWakeupListener", "classNuguInterface_1_1IWakeupListener.html#a64cbd77fc583c26a0821b438f66fca81", null ],
-      [ "onWakeupState", "classNuguInterface_1_1IWakeupListener.html#a8bad143aca952e57f6250568317b868c", null ]
+    [ "IWakeupListener", "classNuguClientKit_1_1IWakeupListener.html", [
+      [ "~IWakeupListener", "classNuguClientKit_1_1IWakeupListener.html#a0588a6789cfdfaad012505d21a6874c0", null ],
+      [ "onWakeupState", "classNuguClientKit_1_1IWakeupListener.html#a697a2a4d080f5299d96246d2d95c116e", null ]
     ] ],
-    [ "WakeupDetectState", "group__WakeupInterface.html#gad17494517ef4254b780aa88e582df485", [
-      [ "WAKEUP_DETECTING", "group__WakeupInterface.html#ggad17494517ef4254b780aa88e582df485aaa5bf1ece51d36575b3f26c570899008", null ],
-      [ "WAKEUP_DETECTED", "group__WakeupInterface.html#ggad17494517ef4254b780aa88e582df485a414bbfd491b2bcc1fe2538cff08c2c28", null ],
-      [ "WAKEUP_FAIL", "group__WakeupInterface.html#ggad17494517ef4254b780aa88e582df485a7b2e84d7ac904c69cc66b63252822dbe", null ]
+    [ "WakeupDetectState", "group__WakeupInterface.html#ga5379a1d6d0c4ea118547f802b851e119", [
+      [ "WAKEUP_DETECTING", "group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119aaa5bf1ece51d36575b3f26c570899008", null ],
+      [ "WAKEUP_DETECTED", "group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a414bbfd491b2bcc1fe2538cff08c2c28", null ],
+      [ "WAKEUP_FAIL", "group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a7b2e84d7ac904c69cc66b63252822dbe", null ]
     ] ]
 ];

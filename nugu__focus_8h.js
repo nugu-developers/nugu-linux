@@ -1,17 +1,12 @@
 var nugu__focus_8h =
 [
-    [ "NuguFocusResource", "group__NuguFocus.html#gad00f686f5a638ffc19ee3480f31a6f65", null ],
     [ "NuguFocusType", "group__NuguFocus.html#ga20d9fdec3e35bbfdcc3e30cd7cccdb54", null ],
     [ "NuguFocusResult", "group__NuguFocus.html#gaea04eb137abffebd10b8841d4c32fc6c", null ],
     [ "NuguFocusStealResult", "group__NuguFocus.html#ga28216c01af6a630441c14b398c5dfc1f", null ],
     [ "NuguFocus", "group__NuguFocus.html#ga0d2320b3577905f9b9d61e140c604a34", null ],
-    [ "NuguFocusCallback", "group__NuguFocus.html#gac290c2ffcb3b3b8e1f11e04675b62d38", null ],
-    [ "NuguUnfocusCallback", "group__NuguFocus.html#ga7bbb6f41d37b4e1c7efddc6f14a4a762", null ],
-    [ "NuguStealfocusCallback", "group__NuguFocus.html#ga757ac923b03729a187051f2d702f95a6", null ],
-    [ "nugu_focus_resource", "group__NuguFocus.html#ga272ff61594b7b7d1c4b1f19461196f8a", [
-      [ "NUGU_FOCUS_RESOURCE_MIC", "group__NuguFocus.html#gga272ff61594b7b7d1c4b1f19461196f8aa23a4bc35e5e008d7ab2d841975fe6252", null ],
-      [ "NUGU_FOCUS_RESOURCE_SPK", "group__NuguFocus.html#gga272ff61594b7b7d1c4b1f19461196f8aaf3ac6fe6bb01b2db8ad9b29f718c32b1", null ]
-    ] ],
+    [ "NuguFocusCallback", "group__NuguFocus.html#gaa27b9671e025820263e79d51ad8d615e", null ],
+    [ "NuguUnfocusCallback", "group__NuguFocus.html#gaee166b8887bea216ad7df78e69f2c560", null ],
+    [ "NuguStealfocusCallback", "group__NuguFocus.html#ga259fcd51521192e03c51965306765c39", null ],
     [ "nugu_focus_type", "group__NuguFocus.html#ga0ec64a82f624b9066219fbd0846e8f77", [
       [ "NUGU_FOCUS_TYPE_WAKEWORD", "group__NuguFocus.html#gga0ec64a82f624b9066219fbd0846e8f77aa4fa4182b7a41d6b03910415123bdf07", null ],
       [ "NUGU_FOCUS_TYPE_ASR", "group__NuguFocus.html#gga0ec64a82f624b9066219fbd0846e8f77acf3858a86ad256c9eb159ac16579edff", null ],
@@ -35,7 +30,7 @@ var nugu__focus_8h =
     [ "nugu_focus_free", "group__NuguFocus.html#ga14acd882b7b93b2e78b6e6ed577f7c7b", null ],
     [ "nugu_focus_peek_name", "group__NuguFocus.html#gae53250244f0a9b5136b10c15d4e17c99", null ],
     [ "nugu_focus_get_type", "group__NuguFocus.html#ga52e7fefb4d5f3914cd443de1ae5c0795", null ],
-    [ "nugu_focus_peek_top", "group__NuguFocus.html#gafdf0c9436b08c22953a2d6418c098813", null ],
-    [ "nugu_focus_request", "group__NuguFocus.html#ga7097397b13d842eec7beddb89bd261b4", null ],
-    [ "nugu_focus_release", "group__NuguFocus.html#gad6dde521b62e96183630249e3dd4b2c1", null ]
+    [ "nugu_focus_peek_top", "group__NuguFocus.html#gab27814201b965ada2a8ce97a4b099342", null ],
+    [ "nugu_focus_request", "group__NuguFocus.html#ga8550978ab546788eec9e365c484701cf", null ],
+    [ "nugu_focus_release", "group__NuguFocus.html#ga9d5a3ecdefe8f9ef18360478464e9950", null ]
 ];

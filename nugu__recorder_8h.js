@@ -13,6 +13,7 @@ var nugu__recorder_8h =
     [ "nugu_recorder_set_property", "group__NuguRecorder.html#gacd7f549c14e5cbe14ee92566961890cf", null ],
     [ "nugu_recorder_start", "group__NuguRecorder.html#gae8dca5d6b22297b6ebff4b34b47c6da2", null ],
     [ "nugu_recorder_stop", "group__NuguRecorder.html#gacff76ba88a1e93b2ab18b67b0d4eb3ba", null ],
+    [ "nugu_recorder_clear", "group__NuguRecorder.html#ga21f4c4e95c0a1c274859f04ca6148c65", null ],
     [ "nugu_recorder_is_recording", "group__NuguRecorder.html#ga8171bf08b15954da49bae4af7f91b114", null ],
     [ "nugu_recorder_set_userdata", "group__NuguRecorder.html#ga89c8938844d289b9c225827b87839341", null ],
     [ "nugu_recorder_get_userdata", "group__NuguRecorder.html#gad33dc3145c0f6c827cf752e7f64e3237", null ],

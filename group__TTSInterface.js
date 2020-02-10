@@ -1,17 +1,23 @@
 var group__TTSInterface =
 [
-    [ "ITTSHandler", "classNuguInterface_1_1ITTSHandler.html", [
-      [ "~ITTSHandler", "classNuguInterface_1_1ITTSHandler.html#a102d87d39027e9143abe2b834d7fc381", null ],
-      [ "stopTTS", "classNuguInterface_1_1ITTSHandler.html#abe7686d2362fe6157642767b6d65a995", null ],
-      [ "requestTTS", "classNuguInterface_1_1ITTSHandler.html#ab00ed87b6f258e5842f11d29c60d6407", null ]
+    [ "ITTSHandler", "classNuguCapability_1_1ITTSHandler.html", [
+      [ "~ITTSHandler", "classNuguCapability_1_1ITTSHandler.html#acd5eb6906fcb7678d1087dd58e88c184", null ],
+      [ "stopTTS", "classNuguCapability_1_1ITTSHandler.html#af250d2068fc2a6f6edc49b70360cbaa5", null ],
+      [ "requestTTS", "classNuguCapability_1_1ITTSHandler.html#aabae14f10a0e6acf6b7a329e562817c9", null ],
+      [ "setVolume", "classNuguCapability_1_1ITTSHandler.html#a7dabffea5b4e697e1c8d084e51645ca4", null ],
+      [ "setAttribute", "classNuguCapability_1_1ITTSHandler.html#a4ea89acbbbc0b36c8e1058200a99fe6a", null ]
     ] ],
-    [ "ITTSListener", "classNuguInterface_1_1ITTSListener.html", [
-      [ "~ITTSListener", "classNuguInterface_1_1ITTSListener.html#af87c9b8b1b5111f7d973607ff0a6e78e", null ],
-      [ "onTTSState", "classNuguInterface_1_1ITTSListener.html#a987dfc2d6f3ff4120353f5d54bbec03e", null ],
-      [ "onTTSText", "classNuguInterface_1_1ITTSListener.html#a8e6dcbced07a6c7f0baa8915eaae98ca", null ]
+    [ "ITTSListener", "classNuguCapability_1_1ITTSListener.html", [
+      [ "~ITTSListener", "classNuguCapability_1_1ITTSListener.html#adc70bb5a36dd2cd2572d9b82b0591b54", null ],
+      [ "onTTSState", "classNuguCapability_1_1ITTSListener.html#a37f5ce98e06f5e81c87369eb08f9ef6a", null ],
+      [ "onTTSText", "classNuguCapability_1_1ITTSListener.html#a0eee1cd379ef2adde22bfcc0e63c1c62", null ],
+      [ "onTTSCancel", "classNuguCapability_1_1ITTSListener.html#a2286ebc32f17412ca1390989829401b7", null ]
     ] ],
-    [ "TTSState", "group__TTSInterface.html#gadb4be6f76ca207a1d78a1731c3de3842", [
-      [ "TTS_SPEECH_START", "group__TTSInterface.html#ggadb4be6f76ca207a1d78a1731c3de3842a6bd04d658b5dee0510833fa07ead4543", null ],
-      [ "TTS_SPEECH_FINISH", "group__TTSInterface.html#ggadb4be6f76ca207a1d78a1731c3de3842a334b1664f6e8ae94f40877279035593b", null ]
+    [ "TTSAttribute", "structNuguCapability_1_1TTSAttribute.html", [
+      [ "tts_engine", "structNuguCapability_1_1TTSAttribute.html#a3d27107d98ea2fbdff928b47ffa7c432", null ]
+    ] ],
+    [ "TTSState", "group__TTSInterface.html#ga7d4f4423b5757b9a2b029a5ce5fbcccf", [
+      [ "TTS_SPEECH_START", "group__TTSInterface.html#gga7d4f4423b5757b9a2b029a5ce5fbcccfa6bd04d658b5dee0510833fa07ead4543", null ],
+      [ "TTS_SPEECH_FINISH", "group__TTSInterface.html#gga7d4f4423b5757b9a2b029a5ce5fbcccfa334b1664f6e8ae94f40877279035593b", null ]
     ] ]
 ];
