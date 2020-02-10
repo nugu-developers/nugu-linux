@@ -97,8 +97,7 @@ int main(int argc, char* argv[])
 
     /* Create a TTS capability */
     auto tts_listener(std::make_shared<MyTTSListener>());
-    ITTSHandler* tts_handler = CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>();
-    tts_handler->setCapabilityListener(tts_listener.get());
+    ITTSHandler* tts_handler = CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(tts_listener.get());
 
     /* Register build-in capabilities */
     nugu_client->getCapabilityBuilder()
@@ -124,7 +123,8 @@ int main(int argc, char* argv[])
     /* Start GMainLoop */
     GMainLoop* loop = g_main_loop_new(NULL, FALSE);
 
-    std::cout << "Start the eventloop" << std::endl << std::endl;
+    std::cout << "Start the eventloop" << std::endl
+              << std::endl;
     g_main_loop_run(loop);
 
     /* wait until g_main_loop_quit() */

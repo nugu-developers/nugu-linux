@@ -30,22 +30,27 @@
 
 namespace NuguCapability {
 
-template <typename T, typename V, typename... Ts>
-V* CapabilityFactory::makeCapability(Ts&&... params)
+template <typename T, typename V>
+V* CapabilityFactory::makeCapability(ICapabilityListener* listener)
 {
-    return dynamic_cast<V*>(new T(std::forward<Ts>(params)...));
+    ICapabilityInterface* instance = new T();
+
+    if (listener)
+        instance->setCapabilityListener(listener);
+
+    return dynamic_cast<V*>(instance);
 }
 
-template IASRHandler* CapabilityFactory::makeCapability<ASRAgent, IASRHandler>();
-template ITTSHandler* CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>();
-template IAudioPlayerHandler* CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>();
-template ISystemHandler* CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>();
-template IDisplayHandler* CapabilityFactory::makeCapability<DisplayAgent, IDisplayHandler>();
-template IExtensionHandler* CapabilityFactory::makeCapability<ExtensionAgent, IExtensionHandler>();
-template ITextHandler* CapabilityFactory::makeCapability<TextAgent, ITextHandler>();
-template IDelegationHandler* CapabilityFactory::makeCapability<DelegationAgent, IDelegationHandler>();
-template ICapabilityInterface* CapabilityFactory::makeCapability<LocationAgent, ICapabilityInterface>();
-template ISpeakerHandler* CapabilityFactory::makeCapability<SpeakerAgent, ISpeakerHandler>();
-template IMicHandler* CapabilityFactory::makeCapability<MicAgent, IMicHandler>();
+template IASRHandler* CapabilityFactory::makeCapability<ASRAgent, IASRHandler>(ICapabilityListener* listener);
+template ITTSHandler* CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(ICapabilityListener* listener);
+template IAudioPlayerHandler* CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>(ICapabilityListener* listener);
+template ISystemHandler* CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>(ICapabilityListener* listener);
+template IDisplayHandler* CapabilityFactory::makeCapability<DisplayAgent, IDisplayHandler>(ICapabilityListener* listener);
+template IExtensionHandler* CapabilityFactory::makeCapability<ExtensionAgent, IExtensionHandler>(ICapabilityListener* listener);
+template ITextHandler* CapabilityFactory::makeCapability<TextAgent, ITextHandler>(ICapabilityListener* listener);
+template IDelegationHandler* CapabilityFactory::makeCapability<DelegationAgent, IDelegationHandler>(ICapabilityListener* listener);
+template ICapabilityInterface* CapabilityFactory::makeCapability<LocationAgent, ICapabilityInterface>(ICapabilityListener* listener);
+template ISpeakerHandler* CapabilityFactory::makeCapability<SpeakerAgent, ISpeakerHandler>(ICapabilityListener* listener);
+template IMicHandler* CapabilityFactory::makeCapability<MicAgent, IMicHandler>(ICapabilityListener* listener);
 
 } // NuguCapability
