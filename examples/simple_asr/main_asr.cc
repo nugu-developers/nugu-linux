@@ -154,14 +154,12 @@ int main()
 
     /* Create an ASR capability with model file path */
     auto my_asr_listener(std::make_shared<MyASR>());
-    asr_handler = CapabilityFactory::makeCapability<ASRAgent, IASRHandler>();
+    asr_handler = CapabilityFactory::makeCapability<ASRAgent, IASRHandler>(my_asr_listener.get());
     asr_handler->setAttribute(ASRAttribute { "/var/lib/nugu/model", "CLIENT", "PARTIAL" });
-    asr_handler->setCapabilityListener(my_asr_listener.get());
 
     /* Create a TTS capability */
     auto tts_listener(std::make_shared<MyTTSListener>());
-    ITTSHandler* tts_handler = CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>();
-    tts_handler->setCapabilityListener(tts_listener.get());
+    ITTSHandler* tts_handler = CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(tts_listener.get());
 
     /* Register build-in capabilities */
     nugu_client->getCapabilityBuilder()

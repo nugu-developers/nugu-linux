@@ -101,10 +101,10 @@ public:
      * @brief Create capability agent instance and return related capability handler.
      * @param[in] T capability agent class type
      * @param[in] V capability handler class type
-     * @param[in] Ts parameters which are forwarded to capability constructor
+     * @param[in] listener capability listener instance
      */
-    template <typename T, typename V, typename... Ts>
-    static V* makeCapability(Ts&&... params);
+    template <typename T, typename V>
+    static V* makeCapability(ICapabilityListener* listener = nullptr);
 };
 
 /**
