@@ -153,18 +153,8 @@ ASRAgent::ASRAgent()
 
 ASRAgent::~ASRAgent()
 {
-    if (timer) {
-        nugu_timer_delete(timer);
-        timer = nullptr;
-    }
-
-    if (rec_event) {
-        delete rec_event;
-        rec_event = nullptr;
-    }
-
-    delete asr_focus_listener;
-    delete expect_focus_listener;
+    if (initialized)
+        deInitialize();
 }
 
 void ASRAgent::setAttribute(ASRAttribute&& attribute)
@@ -205,6 +195,24 @@ void ASRAgent::initialize()
     expect_focus_listener = new ExpectFocusListener(this);
 
     initialized = true;
+}
+
+void ASRAgent::deInitialize()
+{
+    if (timer) {
+        nugu_timer_delete(timer);
+        timer = nullptr;
+    }
+
+    if (rec_event) {
+        delete rec_event;
+        rec_event = nullptr;
+    }
+
+    delete asr_focus_listener;
+    delete expect_focus_listener;
+
+    initialized = false;
 }
 
 void ASRAgent::startRecognition()

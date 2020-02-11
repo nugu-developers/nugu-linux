@@ -60,6 +60,12 @@ SystemAgent::SystemAgent()
 
 SystemAgent::~SystemAgent()
 {
+}
+
+void SystemAgent::deInitialize()
+{
+    disconnect();
+
     if (timer) {
         nugu_timer_delete(timer);
         timer = nullptr;

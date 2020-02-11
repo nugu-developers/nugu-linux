@@ -39,10 +39,8 @@ TextAgent::TextAgent()
 
 TextAgent::~TextAgent()
 {
-    if (timer) {
-        nugu_timer_delete(timer);
-        timer = nullptr;
-    }
+    if (initialized)
+        deInitialize();
 }
 
 void TextAgent::setAttribute(TextAttribute&& attribute)
@@ -67,6 +65,16 @@ void TextAgent::initialize()
         this);
 
     initialized = true;
+}
+
+void TextAgent::deInitialize()
+{
+    if (timer) {
+        nugu_timer_delete(timer);
+        timer = nullptr;
+    }
+
+    initialized = false;
 }
 
 void TextAgent::parsingDirective(const char* dname, const char* message)

@@ -166,12 +166,6 @@ bool NuguClientImpl::initialize(void)
 
 void NuguClientImpl::deInitialize(void)
 {
-    ISystemHandler* sys_handler = dynamic_cast<ISystemHandler*>(getCapabilityHandler("System"));
-
-    // Send a disconnect event indicating normal termination
-    if (sys_handler)
-        sys_handler->disconnect();
-
     // release capabilities
     for (auto& capability : icapability_map) {
         std::string cname = capability.second->getName();
@@ -179,8 +173,7 @@ void NuguClientImpl::deInitialize(void)
         if (!cname.empty())
             nugu_core_container->removeCapability(cname);
 
-        // TODO:It needs to move responsibility to user application later
-        delete capability.second;
+        capability.second->deInitialize();
     }
 
     icapability_map.clear();

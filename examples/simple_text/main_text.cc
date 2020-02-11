@@ -13,7 +13,7 @@ using namespace NuguClientKit;
 using namespace NuguCapability;
 
 static std::shared_ptr<NuguClient> nugu_client;
-static ITextHandler* text_handler = nullptr;
+static std::shared_ptr<ITextHandler> text_handler = nullptr;
 
 static std::string text_value;
 
@@ -92,19 +92,27 @@ int main(int argc, char* argv[])
 
     nugu_client = std::make_shared<NuguClient>();
 
+    /* Create System, AudioPlayer capability default */
+    auto system_handler(std::shared_ptr<ISystemHandler>(
+        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>()));
+    auto audio_player_handler(std::shared_ptr<IAudioPlayerHandler>(
+        CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>()));
+
     /* Create a Text capability */
-    text_handler = CapabilityFactory::makeCapability<TextAgent, ITextHandler>();
+    text_handler = std::shared_ptr<ITextHandler>(
+        CapabilityFactory::makeCapability<TextAgent, ITextHandler>());
 
     /* Create a TTS capability */
     auto tts_listener(std::make_shared<MyTTSListener>());
-    ITTSHandler* tts_handler = CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(tts_listener.get());
+    auto tts_handler(std::shared_ptr<ITTSHandler>(
+        CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(tts_listener.get())));
 
     /* Register build-in capabilities */
     nugu_client->getCapabilityBuilder()
-        ->add(CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>())
-        ->add(CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>())
-        ->add(tts_handler)
-        ->add(text_handler)
+        ->add(system_handler.get())
+        ->add(audio_player_handler.get())
+        ->add(tts_handler.get())
+        ->add(text_handler.get())
         ->construct();
 
     if (!nugu_client->initialize()) {
@@ -115,7 +123,7 @@ int main(int argc, char* argv[])
     /* Network manager */
     auto network_manager_listener(std::make_shared<MyNetwork>());
 
-    INetworkManager* network_manager = nugu_client->getNetworkManager();
+    auto network_manager(nugu_client->getNetworkManager());
     network_manager->addListener(network_manager_listener.get());
     network_manager->setToken(getenv("NUGU_TOKEN"));
     network_manager->connect();

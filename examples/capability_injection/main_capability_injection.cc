@@ -74,6 +74,10 @@ int main(int argc, char* argv[])
 
     auto nugu_client(std::make_shared<NuguClient>());
 
+    /* built-in capability */
+    auto system_handler(std::shared_ptr<ISystemHandler>(
+        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>()));
+
     /* add-on capability for injection */
     auto battery_agent(std::make_shared<BatteryAgent>());
     battery_agent->setBatteryLevel(battery_level);
@@ -81,7 +85,7 @@ int main(int argc, char* argv[])
 
     /* Register build-in capabilities */
     nugu_client->getCapabilityBuilder()
-        ->add(CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>())
+        ->add(system_handler.get())
         ->add(battery_agent.get())
         ->construct();
 
