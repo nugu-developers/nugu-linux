@@ -42,6 +42,11 @@ void BatteryAgent::initialize()
     // TODO : implements service logic
 }
 
+void BatteryAgent::deInitialize()
+{
+    // TODO : implements service logic
+}
+
 std::string BatteryAgent::getName()
 {
     return CAPABILITY_NAME;

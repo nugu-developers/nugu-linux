@@ -45,6 +45,7 @@ public:
     AudioPlayerAgent();
     virtual ~AudioPlayerAgent();
     void initialize() override;
+    void deInitialize() override;
 
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;

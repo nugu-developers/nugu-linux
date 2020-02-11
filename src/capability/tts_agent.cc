@@ -46,28 +46,8 @@ TTSAgent::TTSAgent()
 
 TTSAgent::~TTSAgent()
 {
-    if (speak_dir) {
-        nugu_directive_set_data_callback(speak_dir, NULL, NULL);
-        destoryDirective(speak_dir);
-        speak_dir = NULL;
-    }
-
-    if (decoder) {
-        nugu_decoder_free(decoder);
-        decoder = NULL;
-    }
-
-    if (pcm) {
-        nugu_pcm_stop(pcm);
-        nugu_pcm_set_event_callback(pcm, NULL, NULL);
-        nugu_pcm_set_status_callback(pcm, NULL, NULL);
-        nugu_pcm_remove(pcm);
-        nugu_pcm_free(pcm);
-        pcm = NULL;
-    }
-
-    initialized = false;
-    capa_helper->removeFocus("cap_tts");
+    if (initialized)
+        deInitialize();
 }
 
 void TTSAgent::setAttribute(TTSAttribute&& attribute)
@@ -99,6 +79,32 @@ void TTSAgent::initialize()
     capa_helper->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
     initialized = true;
+}
+
+void TTSAgent::deInitialize()
+{
+    if (speak_dir) {
+        nugu_directive_set_data_callback(speak_dir, NULL, NULL);
+        destoryDirective(speak_dir);
+        speak_dir = NULL;
+    }
+
+    if (decoder) {
+        nugu_decoder_free(decoder);
+        decoder = NULL;
+    }
+
+    if (pcm) {
+        nugu_pcm_stop(pcm);
+        nugu_pcm_set_event_callback(pcm, NULL, NULL);
+        nugu_pcm_set_status_callback(pcm, NULL, NULL);
+        nugu_pcm_remove(pcm);
+        nugu_pcm_free(pcm);
+        pcm = NULL;
+    }
+
+    initialized = false;
+    capa_helper->removeFocus("cap_tts");
 }
 
 void TTSAgent::pcmStatusCallback(enum nugu_media_status status, void* userdata)

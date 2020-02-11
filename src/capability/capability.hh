@@ -57,6 +57,7 @@ public:
 
     void setNuguCoreContainer(INuguCoreContainer* core_container) override;
     void initialize() override;
+    void deInitialize() override;
 
     std::string getReferrerDialogRequestId();
     void setReferrerDialogRequestId(const std::string& id);

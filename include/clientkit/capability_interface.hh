@@ -96,6 +96,11 @@ public:
     virtual void initialize() = 0;
 
     /**
+     * @brief deinitialize the current object.
+     */
+    virtual void deInitialize() = 0;
+
+    /**
      * @brief Get the capability name of the current object.
      * @return capability name of the object
      */

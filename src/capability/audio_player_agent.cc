@@ -41,15 +41,8 @@ AudioPlayerAgent::AudioPlayerAgent()
 
 AudioPlayerAgent::~AudioPlayerAgent()
 {
-    aplayer_listeners.clear();
-
-    capa_helper->removeFocus("cap_audio");
-
-    if (player) {
-        player->removeListener(this);
-        delete player;
-        player = nullptr;
-    }
+    if (initialized)
+        deInitialize();
 }
 
 void AudioPlayerAgent::initialize()
@@ -65,6 +58,21 @@ void AudioPlayerAgent::initialize()
     capa_helper->addFocus("cap_audio", NUGU_FOCUS_TYPE_MEDIA, this);
 
     initialized = true;
+}
+
+void AudioPlayerAgent::deInitialize()
+{
+    aplayer_listeners.clear();
+
+    capa_helper->removeFocus("cap_audio");
+
+    if (player) {
+        player->removeListener(this);
+        delete player;
+        player = nullptr;
+    }
+
+    initialized = false;
 }
 
 NuguFocusResult AudioPlayerAgent::onFocus(void* event)

@@ -36,6 +36,7 @@ public:
     // implements ICapabilityInterface
     void setNuguCoreContainer(INuguCoreContainer* core_container) override;
     void initialize() override;
+    void deInitialize() override;
     std::string getName() override;
     std::string getVersion() override;
     void processDirective(NuguDirective* ndir) override;

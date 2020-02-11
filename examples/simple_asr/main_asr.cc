@@ -14,7 +14,7 @@ using namespace NuguClientKit;
 using namespace NuguCapability;
 
 static std::shared_ptr<NuguClient> nugu_client;
-static IASRHandler* asr_handler = nullptr;
+static std::shared_ptr<IASRHandler> asr_handler = nullptr;
 
 class MyTTSListener : public ITTSListener {
 public:
@@ -152,22 +152,32 @@ int main()
 
     nugu_client = std::make_shared<NuguClient>();
 
+    /* Create System, AudioPlayer, Text capability default */
+    auto system_handler(std::shared_ptr<ISystemHandler>(
+        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>()));
+    auto audio_player_handler(std::shared_ptr<IAudioPlayerHandler>(
+        CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>()));
+    auto text_handler(std::shared_ptr<ITextHandler>(
+        CapabilityFactory::makeCapability<TextAgent, ITextHandler>()));
+
     /* Create an ASR capability with model file path */
     auto my_asr_listener(std::make_shared<MyASR>());
-    asr_handler = CapabilityFactory::makeCapability<ASRAgent, IASRHandler>(my_asr_listener.get());
+    asr_handler = std::shared_ptr<IASRHandler>(
+        CapabilityFactory::makeCapability<ASRAgent, IASRHandler>(my_asr_listener.get()));
     asr_handler->setAttribute(ASRAttribute { "/var/lib/nugu/model", "CLIENT", "PARTIAL" });
 
     /* Create a TTS capability */
     auto tts_listener(std::make_shared<MyTTSListener>());
-    ITTSHandler* tts_handler = CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(tts_listener.get());
+    auto tts_handler(std::shared_ptr<ITTSHandler>(
+        CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(tts_listener.get())));
 
     /* Register build-in capabilities */
     nugu_client->getCapabilityBuilder()
-        ->add(CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>())
-        ->add(CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>())
-        ->add(CapabilityFactory::makeCapability<TextAgent, ITextHandler>())
-        ->add(tts_handler)
-        ->add(asr_handler)
+        ->add(system_handler.get())
+        ->add(audio_player_handler.get())
+        ->add(text_handler.get())
+        ->add(tts_handler.get())
+        ->add(asr_handler.get())
         ->construct();
 
     if (!nugu_client->initialize()) {
@@ -178,7 +188,7 @@ int main()
     /* Network manager */
     auto network_manager_listener(std::make_shared<MyNetwork>());
 
-    INetworkManager* network_manager = nugu_client->getNetworkManager();
+    auto network_manager(nugu_client->getNetworkManager());
     network_manager->addListener(network_manager_listener.get());
     network_manager->setToken(getenv("NUGU_TOKEN"));
     network_manager->connect();

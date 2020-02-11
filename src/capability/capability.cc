@@ -140,6 +140,10 @@ void Capability::initialize()
 {
 }
 
+void Capability::deInitialize()
+{
+}
+
 std::string Capability::getReferrerDialogRequestId()
 {
     return ref_dialog_id;
