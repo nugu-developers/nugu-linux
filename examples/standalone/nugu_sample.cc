@@ -67,15 +67,6 @@ std::unique_ptr<T> make_unique(Ts&&... params)
     return std::unique_ptr<T>(new T(std::forward<Ts>(params)...));
 }
 
-template <class T>
-T getCapabilityHandler(const std::string& cname)
-{
-    if (nugu_client)
-        return dynamic_cast<T>(nugu_client->getCapabilityHandler(cname));
-
-    return nullptr;
-}
-
 void msg_error(const std::string& message)
 {
     NuguSampleManager::error(message);
