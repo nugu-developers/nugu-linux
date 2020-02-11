@@ -109,13 +109,6 @@ public:
     INuguCoreContainer* getNuguCoreContainer();
 
     /**
-     * @brief Get CapabilityHandler object
-     * @param[in] cname capability interface name
-     * @return ICapabilityInterface if a feature agent has been created with the feature builder, otherwise NULL
-     */
-    ICapabilityInterface* getCapabilityHandler(const std::string& cname);
-
-    /**
      * @brief Get NetworkManager object
      * @return INetworkManager if a feature agent has been created with the feature builder, otherwise NULL
      */

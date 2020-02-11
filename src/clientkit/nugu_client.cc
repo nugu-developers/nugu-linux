@@ -81,11 +81,6 @@ INuguCoreContainer* NuguClient::getNuguCoreContainer()
     return impl->getNuguCoreContainer();
 }
 
-ICapabilityInterface* NuguClient::getCapabilityHandler(const std::string& cname)
-{
-    return impl->getCapabilityHandler(cname);
-}
-
 INetworkManager* NuguClient::getNetworkManager()
 {
     return impl->getNetworkManager();
