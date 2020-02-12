@@ -27,11 +27,11 @@ namespace NuguCapability {
 
 using namespace NuguClientKit;
 
-class AudioPlayerAgent : public Capability,
-                         public IMediaPlayerListener,
-                         public IFocusListener,
-                         public IAudioPlayerHandler,
-                         public DisplayRenderAssembly<AudioPlayerAgent> {
+class AudioPlayerAgent final : public Capability,
+                               public IMediaPlayerListener,
+                               public IFocusListener,
+                               public IAudioPlayerHandler,
+                               public DisplayRenderAssembly<AudioPlayerAgent> {
 public:
     enum PlaybackError {
         MEDIA_ERROR_UNKNOWN,

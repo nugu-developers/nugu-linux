@@ -25,7 +25,7 @@ static const char* CAPABILITY_NAME = "Text";
 static const char* CAPABILITY_VERSION = "1.0";
 
 // define default property values
-static const int SERVER_RESPONSE_TIMEOUT_MSEC = 10000;
+static const int SERVER_RESPONSE_TIMEOUT_SEC = 10;
 
 TextAgent::TextAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -33,7 +33,7 @@ TextAgent::TextAgent()
     , timer(nullptr)
     , cur_state(TextState::IDLE)
     , cur_dialog_id("")
-    , response_timeout(SERVER_RESPONSE_TIMEOUT_MSEC)
+    , response_timeout(SERVER_RESPONSE_TIMEOUT_SEC)
 {
 }
 
@@ -56,13 +56,11 @@ void TextAgent::initialize()
         return;
     }
 
-    timer = nugu_timer_new(response_timeout, 1);
-    nugu_timer_set_callback(
-        timer, [](void* userdata) {
-            TextAgent* text = static_cast<TextAgent*>(userdata);
-            text->notifyResponseTimeout();
-        },
-        this);
+    timer = core_container->createNuguTimer();
+    timer->setInterval(response_timeout);
+    timer->setCallback([&](int count, int repeat) {
+        notifyResponseTimeout();
+    });
 
     initialized = true;
 }
@@ -70,7 +68,7 @@ void TextAgent::initialize()
 void TextAgent::deInitialize()
 {
     if (timer) {
-        nugu_timer_delete(timer);
+        delete timer;
         timer = nullptr;
     }
 
@@ -108,7 +106,9 @@ void TextAgent::receiveCommandAll(const std::string& command, const std::string&
     if (convert_command == "directive_dialog_id" && param == cur_dialog_id) {
         nugu_dbg("process receive command => directive_dialog_id(%s)", param.c_str());
 
-        nugu_timer_stop(timer);
+        if (timer)
+            timer->stop();
+
         cur_dialog_id = "";
 
         cur_state = TextState::IDLE;
@@ -131,7 +131,9 @@ bool TextAgent::requestTextInput(std::string text)
         return false;
     }
 
-    nugu_timer_start(timer);
+    if (timer)
+        timer->start();
+
     cur_state = TextState::BUSY;
     if (text_listener)
         text_listener->onState(cur_state);
@@ -230,7 +232,9 @@ void TextAgent::parsingTextSource(const char* message)
         return;
     }
 
-    nugu_timer_start(timer);
+    if (timer)
+        timer->start();
+
     cur_state = TextState::BUSY;
     if (text_listener)
         text_listener->onState(cur_state);

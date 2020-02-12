@@ -25,9 +25,9 @@
 
 namespace NuguCapability {
 
-class TTSAgent : public Capability,
-                 public ITTSHandler,
-                 public IFocusListener {
+class TTSAgent final : public Capability,
+                       public ITTSHandler,
+                       public IFocusListener {
 public:
     TTSAgent();
     virtual ~TTSAgent();

@@ -19,10 +19,10 @@
 #include "base/nugu_log.h"
 #include "playsync_manager.hh"
 
-#define HOLD_TIME_SHORT (7 * 1000) // 7 sec
-#define HOLD_TIME_MID (15 * 1000) // 15 sec
-#define HOLD_TIME_LONG (30 * 1000) // 30 sec
-#define HOLD_TIME_LONGEST (10 * 60 * 1000) // 10 min
+#define HOLD_TIME_SHORT 7 // 7 sec
+#define HOLD_TIME_MID 15 // 15 sec
+#define HOLD_TIME_LONG 30 // 30 sec
+#define HOLD_TIME_LONGEST (10 * 60) // 10 min
 #define DEFAULT_HOLD_TIME HOLD_TIME_SHORT
 
 namespace NuguCore {
@@ -40,7 +40,7 @@ namespace Test {
                 .append(context.first)
                 .append("] ");
 
-            for (auto element : context.second) {
+            for (const auto& element : context.second) {
                 context_log.append(element)
                     .append(", ");
             }
@@ -59,18 +59,17 @@ namespace Test {
 
 PlaySyncManager::PlaySyncManager()
     : DURATION_MAP({ { "SHORT", HOLD_TIME_SHORT },
-        { "MID", HOLD_TIME_MID },
-        { "LONG", HOLD_TIME_LONG },
-        { "LONGEST", HOLD_TIME_LONGEST } })
+          { "MID", HOLD_TIME_MID },
+          { "LONG", HOLD_TIME_LONG },
+          { "LONGEST", HOLD_TIME_LONGEST } })
 {
-    timer = nugu_timer_new(DEFAULT_HOLD_TIME, 1);
-    timer_cb_param.instance = this;
+    timer = new NUGUTimer(DEFAULT_HOLD_TIME, 1);
 }
 
 PlaySyncManager::~PlaySyncManager()
 {
     if (timer) {
-        nugu_timer_delete(timer);
+        delete timer;
         timer = nullptr;
     }
 
@@ -123,6 +122,18 @@ void PlaySyncManager::addContext(const std::string& ps_id, const std::string& ca
     Test::showAllContents(context_map);
 }
 
+void PlaySyncManager::removeContextAction(const std::string& ps_id, bool immediately)
+{
+    if (!removeRenderer(ps_id, immediately))
+        return;
+
+    context_map.erase(ps_id);
+    context_stack.erase(remove(context_stack.begin(), context_stack.end(), ps_id), context_stack.end());
+
+    // temp: Just debugging & test. Please, maintain in some period.
+    Test::showAllContents(context_map);
+}
+
 void PlaySyncManager::removeContext(const std::string& ps_id, const std::string& cap_name, bool immediately)
 {
     if (ps_id.empty()) {
@@ -131,40 +142,23 @@ void PlaySyncManager::removeContext(const std::string& ps_id, const std::string&
     }
 
     if (removeStackElement(ps_id, cap_name) && !is_expect_speech) {
-        auto timerCallback = [](void* userdata) {
+        auto timerCallback = [=](int count, int repeat) {
             nugu_dbg("[context] remove context");
-
-            TimerCallbackParam* param = static_cast<TimerCallbackParam*>(userdata);
-
-            if (!param->instance->removeRenderer(param->ps_id, param->immediately))
-                return;
-
-            param->instance->context_map.erase(param->ps_id);
-            param->instance->context_stack.erase(remove(param->instance->context_stack.begin(), param->instance->context_stack.end(), param->ps_id),
-                param->instance->context_stack.end());
-            param->callback();
-        };
-
-        timer_cb_param.ps_id = ps_id;
-        timer_cb_param.immediately = immediately;
-        timer_cb_param.callback = [&]() {
-            // temp: Just debugging & test. Please, maintain in some period.
-            Test::showAllContents(context_map);
+            removeContextAction(ps_id, immediately);
         };
 
         if (immediately || (renderer_map.find(ps_id) == renderer_map.end() && context_stack.size() >= 2)) {
             nugu_dbg("[context] try to remove context immediately.");
-
-            timerCallback(&timer_cb_param);
+            removeContextAction(ps_id, immediately);
         } else {
             nugu_dbg("[context] try to remove context by timer.");
-
-            nugu_timer_set_callback(timer, timerCallback, &timer_cb_param);
-            setTimerInterval(ps_id);
-            nugu_timer_start(timer);
+            if (timer) {
+                timer->setCallback(timerCallback);
+                timer->setInterval(getRendererInterval(ps_id));
+                timer->start();
+            }
         }
     }
-
     is_expect_speech = false;
 }
 
@@ -184,7 +178,7 @@ std::vector<std::string> PlaySyncManager::getAllPlayStackItems()
 std::string PlaySyncManager::getPlayStackItem(const std::string& cap_name)
 {
     for (auto context : context_map) {
-        for (auto element : context.second) {
+        for (const auto& element : context.second) {
             if (element == cap_name)
                 return context.first;
         }
@@ -238,9 +232,9 @@ bool PlaySyncManager::removeRenderer(const std::string& ps_id, bool unconditiona
     return result;
 }
 
-void PlaySyncManager::setTimerInterval(const std::string& ps_id)
+int PlaySyncManager::getRendererInterval(const std::string& ps_id)
 {
-    long duration_time = DEFAULT_HOLD_TIME;
+    int duration_time = DEFAULT_HOLD_TIME;
 
     if (renderer_map.find(ps_id) != renderer_map.end()) {
         try {
@@ -250,7 +244,7 @@ void PlaySyncManager::setTimerInterval(const std::string& ps_id)
         }
     }
 
-    nugu_timer_set_interval(timer, duration_time);
+    return duration_time;
 }
 
 template <typename T, typename V>
@@ -274,12 +268,14 @@ void PlaySyncManager::setExpectSpeech(bool expect_speech)
 
 void PlaySyncManager::onMicOn()
 {
-    nugu_timer_stop(timer);
+    if (timer)
+        timer->stop();
 }
 
 void PlaySyncManager::clearContextHold()
 {
-    nugu_timer_stop(timer);
+    if (timer)
+        timer->start();
 }
 
 void PlaySyncManager::onASRError()

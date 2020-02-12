@@ -17,18 +17,18 @@
 #ifndef __NUGU_SYSTEM_AGENT_H__
 #define __NUGU_SYSTEM_AGENT_H__
 
-#include "base/nugu_timer.h"
-#include "capability/system_interface.hh"
-
 #include "capability.hh"
+#include "capability/system_interface.hh"
 
 namespace NuguCapability {
 
-class SystemAgent : public Capability, public ISystemHandler {
+class SystemAgent final : public Capability,
+                          public ISystemHandler {
 public:
     SystemAgent();
     virtual ~SystemAgent();
 
+    void initialize() override;
     void deInitialize() override;
 
     void parsingDirective(const char* dname, const char* message) override;
@@ -57,7 +57,7 @@ private:
     void parsingRevoke(const char* message);
 
     ISystemListener* system_listener;
-    NuguTimer* timer;
+    INuguTimer* timer;
 };
 
 } // NuguCapability

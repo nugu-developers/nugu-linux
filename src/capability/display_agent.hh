@@ -22,8 +22,8 @@
 
 namespace NuguCapability {
 
-class DisplayAgent : public Capability,
-                     public DisplayRenderAssembly<DisplayAgent> {
+class DisplayAgent final : public Capability,
+                           public DisplayRenderAssembly<DisplayAgent> {
 public:
     DisplayAgent();
     virtual ~DisplayAgent();

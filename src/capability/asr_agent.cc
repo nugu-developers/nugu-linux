@@ -28,7 +28,7 @@ static const char* CAPABILITY_VERSION = "1.0";
 // define default attribute values
 static const char* ASR_EPD_TYPE = "CLIENT";
 static const char* ASR_ENCODING = "COMPLETE";
-static const int SERVER_RESPONSE_TIMEOUT_MSEC = 10000;
+static const int SERVER_RESPONSE_TIMEOUT_SEC = 10;
 
 class ASRFocusListener : public IFocusListener {
 public:
@@ -147,7 +147,7 @@ ASRAgent::ASRAgent()
     , model_path("")
     , epd_type(ASR_EPD_TYPE)
     , asr_encoding(ASR_ENCODING)
-    , response_timeout(SERVER_RESPONSE_TIMEOUT_MSEC)
+    , response_timeout(SERVER_RESPONSE_TIMEOUT_SEC)
 {
 }
 
@@ -182,14 +182,12 @@ void ASRAgent::initialize()
     speech_recognizer = std::unique_ptr<ISpeechRecognizer>(core_container->createSpeechRecognizer(model_path));
     speech_recognizer->setListener(this);
 
-    timer = nugu_timer_new(response_timeout, 1);
-    nugu_timer_set_callback(
-        timer, [](void* userdata) {
-            ASRAgent* asr = static_cast<ASRAgent*>(userdata);
-            asr->sendEventResponseTimeout();
-            asr->releaseASRFocus(false, ASRError::RESPONSE_TIMEOUT);
-        },
-        this);
+    timer = core_container->createNuguTimer();
+    timer->setInterval(response_timeout);
+    timer->setCallback([&](int count, int repeat) {
+        sendEventResponseTimeout();
+        releaseASRFocus(false, ASRError::RESPONSE_TIMEOUT);
+    });
 
     asr_focus_listener = new ASRFocusListener(this, this->speech_recognizer.get());
     expect_focus_listener = new ExpectFocusListener(this);
@@ -200,7 +198,7 @@ void ASRAgent::initialize()
 void ASRAgent::deInitialize()
 {
     if (timer) {
-        nugu_timer_delete(timer);
+        delete timer;
         timer = nullptr;
     }
 
@@ -303,12 +301,14 @@ void ASRAgent::getProperties(const std::string& property, std::list<std::string>
 
 void ASRAgent::checkResponseTimeout()
 {
-    nugu_timer_start(timer);
+    if (timer)
+        timer->start();
 }
 
 void ASRAgent::clearResponseTimeout()
 {
-    nugu_timer_stop(timer);
+    if (timer)
+        timer->stop();
 }
 
 void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_end)

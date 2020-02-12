@@ -21,7 +21,6 @@
 #include <vector>
 
 #include "base/nugu_focus.h"
-#include "base/nugu_timer.h"
 #include "capability/asr_interface.hh"
 #include "capability/capability.hh"
 
@@ -36,9 +35,9 @@ typedef struct expect_speech_attr {
     Json::Value domain_types;
 } ExpectSpeechAttr;
 
-class ASRAgent : public Capability,
-                 public IASRHandler,
-                 public ISpeechRecognizerListener {
+class ASRAgent final : public Capability,
+                       public IASRHandler,
+                       public ISpeechRecognizerListener {
 public:
     ASRAgent();
     virtual ~ASRAgent();
@@ -88,7 +87,7 @@ private:
 
     ExpectSpeechAttr es_attr;
     CapabilityEvent* rec_event;
-    NuguTimer* timer;
+    INuguTimer* timer;
     std::unique_ptr<ISpeechRecognizer> speech_recognizer;
     std::string all_context_info;
     std::string dialog_id;
