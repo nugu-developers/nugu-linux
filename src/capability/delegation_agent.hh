@@ -23,7 +23,8 @@
 
 namespace NuguCapability {
 
-class DelegationAgent : public Capability, public IDelegationHandler {
+class DelegationAgent final : public Capability,
+                              public IDelegationHandler {
 public:
     DelegationAgent();
     virtual ~DelegationAgent();

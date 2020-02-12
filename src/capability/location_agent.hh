@@ -23,7 +23,7 @@
 
 namespace NuguCapability {
 
-class LocationAgent : public Capability {
+class LocationAgent final : public Capability {
 public:
     LocationAgent();
     virtual ~LocationAgent();

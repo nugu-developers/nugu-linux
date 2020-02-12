@@ -23,7 +23,8 @@
 
 namespace NuguCapability {
 
-class MicAgent : public Capability, public IMicHandler {
+class MicAgent final : public Capability,
+                       public IMicHandler {
 public:
     MicAgent();
     virtual ~MicAgent();

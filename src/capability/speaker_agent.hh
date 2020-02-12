@@ -22,7 +22,8 @@
 
 namespace NuguCapability {
 
-class SpeakerAgent : public Capability, public ISpeakerHandler {
+class SpeakerAgent final : public Capability,
+                           public ISpeakerHandler {
 public:
     SpeakerAgent();
     virtual ~SpeakerAgent();

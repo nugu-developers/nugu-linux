@@ -30,7 +30,7 @@ public:
         std::cout << "TTS: " << text << std::endl;
     }
 
-    void onTTSCancel(const std::string& dialog_id)
+    void onTTSCancel(const std::string& dialog_id) override
     {
     }
 };

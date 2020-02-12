@@ -17,14 +17,13 @@
 #ifndef __NUGU_TEXT_AGENT_H__
 #define __NUGU_TEXT_AGENT_H__
 
-#include "base/nugu_timer.h"
-#include "capability/text_interface.hh"
-
 #include "capability.hh"
+#include "capability/text_interface.hh"
 
 namespace NuguCapability {
 
-class TextAgent : public Capability, public ITextHandler {
+class TextAgent final : public Capability,
+                        public ITextHandler {
 public:
     TextAgent();
     virtual ~TextAgent();
@@ -47,7 +46,7 @@ private:
     void parsingTextSource(const char* message);
 
     ITextListener* text_listener;
-    NuguTimer* timer;
+    INuguTimer* timer;
     TextState cur_state;
     std::string cur_dialog_id;
 

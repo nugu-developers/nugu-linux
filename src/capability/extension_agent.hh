@@ -23,7 +23,8 @@
 
 namespace NuguCapability {
 
-class ExtensionAgent : public Capability, public IExtensionHandler {
+class ExtensionAgent final : public Capability,
+                             public IExtensionHandler {
 public:
     ExtensionAgent();
     virtual ~ExtensionAgent();

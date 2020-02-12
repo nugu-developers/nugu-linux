@@ -60,6 +60,25 @@ SystemAgent::SystemAgent()
 
 SystemAgent::~SystemAgent()
 {
+    if (initialized)
+        deInitialize();
+}
+
+void SystemAgent::initialize()
+{
+    if (initialized) {
+        nugu_info("It's already initialized.");
+        return;
+    }
+
+    timer = core_container->createNuguTimer();
+    timer->setInterval(DEFAULT_INACTIVITY_TIMEOUT);
+    timer->setCallback([&](int count, int repeat) {
+        nugu_dbg("inactivity timeout");
+        sendEventUserInactivityReport(DEFAULT_INACTIVITY_TIMEOUT);
+    });
+
+    initialized = true;
 }
 
 void SystemAgent::deInitialize()
@@ -67,11 +86,13 @@ void SystemAgent::deInitialize()
     disconnect();
 
     if (timer) {
-        nugu_timer_delete(timer);
+        delete timer;
         timer = nullptr;
     }
 
     nugu_network_manager_set_handoff_status_callback(NULL, NULL);
+
+    initialized = false;
 }
 
 void SystemAgent::parsingDirective(const char* dname, const char* message)
@@ -136,25 +157,14 @@ void SystemAgent::receiveCommand(const std::string& from, const std::string& com
     if (!convert_command.compare("activity")) {
         nugu_dbg("update timer");
         if (timer)
-            nugu_timer_start(timer);
+            timer->start();
     }
 }
 
 void SystemAgent::synchronizeState(void)
 {
-    if (!timer) {
-        timer = nugu_timer_new(DEFAULT_INACTIVITY_TIMEOUT * 1000, 1);
-        nugu_timer_set_callback(
-            timer, [](void* userdata) {
-                SystemAgent* sa = static_cast<SystemAgent*>(userdata);
-
-                nugu_dbg("inactivity timeout");
-                sa->sendEventUserInactivityReport(DEFAULT_INACTIVITY_TIMEOUT);
-            },
-            this);
-    }
-
-    nugu_timer_start(timer);
+    if (timer)
+        timer->start();
 
     sendEventSynchronizeState();
 }
@@ -162,7 +172,7 @@ void SystemAgent::synchronizeState(void)
 void SystemAgent::disconnect(void)
 {
     if (timer)
-        nugu_timer_stop(timer);
+        timer->stop();
 
     sendEventDisconnect();
 }
@@ -170,7 +180,7 @@ void SystemAgent::disconnect(void)
 void SystemAgent::updateUserActivity(void)
 {
     if (timer)
-        nugu_timer_start(timer);
+        timer->start();
 }
 
 void SystemAgent::sendEventSynchronizeState(void)
@@ -212,7 +222,7 @@ void SystemAgent::sendEventEcho(void)
 void SystemAgent::parsingResetUserInactivity(const char* message)
 {
     if (timer)
-        nugu_timer_start(timer);
+        timer->start();
 }
 
 void SystemAgent::parsingHandoffConnection(const char* message)
