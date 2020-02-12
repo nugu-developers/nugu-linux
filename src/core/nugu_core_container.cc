@@ -19,6 +19,7 @@
 #include "capability_manager.hh"
 #include "media_player.hh"
 #include "network_manager.hh"
+#include "nugu_timer.hh"
 #include "speech_recognizer.hh"
 #include "wakeup_handler.hh"
 
@@ -58,6 +59,11 @@ IMediaPlayer* NuguCoreContainer::createMediaPlayer()
     // TODO : It needs guarantee related plugin is loaded.
 
     return new MediaPlayer();
+}
+
+INuguTimer* NuguCoreContainer::createNuguTimer()
+{
+    return new NUGUTimer();
 }
 
 ICapabilityHelper* NuguCoreContainer::getCapabilityHelper()

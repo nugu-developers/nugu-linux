@@ -34,8 +34,8 @@ static gboolean _nugu_timer_callback(gpointer userdata)
 {
 	NuguTimer *timer = (NuguTimer *)userdata;
 
-	timer->cb(timer->userdata);
 	timer->count++;
+	timer->cb(timer->userdata);
 
 	if (timer->repeat > timer->count)
 		return TRUE;
@@ -51,7 +51,7 @@ EXPORT_API NuguTimer *nugu_timer_new(long interval, int repeat)
 	timer->source = NULL;
 	timer->interval = interval;
 	timer->repeat = repeat;
-	timer->count = 1;
+	timer->count = 0;
 	timer->cb = NULL;
 	timer->userdata = NULL;
 
@@ -99,6 +99,13 @@ EXPORT_API int nugu_timer_get_repeat(NuguTimer *timer)
 	g_return_val_if_fail(timer != NULL, -1);
 
 	return timer->repeat;
+}
+
+EXPORT_API int nugu_timer_get_count(NuguTimer *timer)
+{
+	g_return_val_if_fail(timer != NULL, -1);
+
+	return timer->count;
 }
 
 EXPORT_API void nugu_timer_start(NuguTimer *timer)

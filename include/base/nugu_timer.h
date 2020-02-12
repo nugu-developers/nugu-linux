@@ -89,6 +89,13 @@ void nugu_timer_set_repeat(NuguTimer *timer, int repeat);
 int nugu_timer_get_repeat(NuguTimer *timer);
 
 /**
+ * @brief Get timeout count
+ * @param[in] timer timer object
+ * @return timeout count
+ */
+int nugu_timer_get_count(NuguTimer *timer);
+
+/**
  * @brief Start the timer
  * @param[in] timer timer object
  * @see nugu_timer_stop()

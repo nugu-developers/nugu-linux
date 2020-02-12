@@ -1,0 +1,12 @@
+SET(UNIT_TEST test-core-NuguTimer)
+ADD_EXECUTABLE(${UNIT_TEST}
+				${UNIT_TEST}.cc
+				nugu_timer_mock.cc
+				../../src/core/nugu_timer.cc)
+TARGET_INCLUDE_DIRECTORIES(${UNIT_TEST} PRIVATE
+	../../src/core
+	../../include)
+TARGET_LINK_LIBRARIES(${UNIT_TEST} ${pkgs_LDFLAGS})
+
+ADD_TEST(${UNIT_TEST} ${UNIT_TEST})
+SET_PROPERTY(TEST ${UNIT_TEST} PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/src")
