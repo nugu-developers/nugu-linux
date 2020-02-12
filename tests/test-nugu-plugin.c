@@ -147,6 +147,57 @@ static void test_plugin_init_fail(void)
 	nugu_plugin_deinitialize();
 }
 
+static void test_plugin_load(void)
+{
+	NuguPlugin *plugin;
+	int (*custom_add)(int a, int b);
+
+	/* File does not exist. */
+#define PLUGIN_NOFILE RUNPATH "/xxx.so"
+	g_assert(nugu_plugin_new_from_file(PLUGIN_NOFILE) == NULL);
+
+	/* Not the nugu plugin (can't get pre-defined symbol) */
+#define PLUGIN_DUMMY RUNPATH "/plugin_dummy.so"
+	g_assert(nugu_plugin_new_from_file(PLUGIN_DUMMY) == NULL);
+
+	/* nugu plugin */
+#define PLUGIN_NUGU RUNPATH "/plugin_nugu.so"
+	plugin = nugu_plugin_new_from_file(PLUGIN_NUGU);
+	g_assert(plugin != NULL);
+
+	/* There is no 'custom_add' symbol in this plugin. */
+	g_assert(nugu_plugin_get_symbol(plugin, "custom_add") == NULL);
+
+	nugu_plugin_free(plugin);
+
+	/* nugu plugin with custom symbol */
+#define PLUGIN_NUGU_CUSTOM RUNPATH "/plugin_nugu_custom.so"
+	plugin = nugu_plugin_new_from_file(PLUGIN_NUGU_CUSTOM);
+	g_assert(plugin != NULL);
+
+	custom_add = nugu_plugin_get_symbol(plugin, "custom_add");
+	g_assert(custom_add != NULL);
+	g_assert(custom_add(1, 5) == 6);
+
+	nugu_plugin_free(plugin);
+
+	/* Load all plugins */
+	nugu_plugin_initialize();
+
+	nugu_plugin_load_directory(RUNPATH);
+
+	g_assert(nugu_plugin_find("xxx") == NULL);
+	g_assert(nugu_plugin_find("test_nugu") != NULL);
+
+	plugin = nugu_plugin_find("test_nugu_custom");
+	g_assert(plugin != NULL);
+	custom_add = nugu_plugin_get_symbol(plugin, "custom_add");
+	g_assert(custom_add != NULL);
+	g_assert(custom_add(2, 6) == 8);
+
+	nugu_plugin_deinitialize();
+}
+
 static void test_plugin_default(void)
 {
 	NuguPlugin *p;
@@ -186,6 +237,7 @@ int main(int argc, char *argv[])
 	g_test_add_func("/plugin/default", test_plugin_default);
 	g_test_add_func("/plugin/init_fail", test_plugin_init_fail);
 	g_test_add_func("/plugin/priority", test_plugin_priority);
+	g_test_add_func("/plugin/load", test_plugin_load);
 
 	return g_test_run();
 }

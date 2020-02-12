@@ -183,6 +183,14 @@ int nugu_plugin_set_data(NuguPlugin *p, void *data);
 void *nugu_plugin_get_data(NuguPlugin *p);
 
 /**
+ * @brief Get dlsym result from plugin
+ * @param[in] p plugin object
+ * @param[in] symbol_name symbol name to find
+ * @return symbol address
+ */
+void *nugu_plugin_get_symbol(NuguPlugin *p, const char *symbol_name);
+
+/**
  * @brief Get the plugin description
  * @param[in] p plugin object
  * @return plugin description

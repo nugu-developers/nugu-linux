@@ -145,6 +145,14 @@ EXPORT_API void *nugu_plugin_get_data(NuguPlugin *p)
 	return p->data;
 }
 
+EXPORT_API void *nugu_plugin_get_symbol(NuguPlugin *p, const char *symbol_name)
+{
+	g_return_val_if_fail(p != NULL, NULL);
+	g_return_val_if_fail(symbol_name != NULL, NULL);
+
+	return dlsym(p->handle, symbol_name);
+}
+
 EXPORT_API const struct nugu_plugin_desc *
 nugu_plugin_get_description(NuguPlugin *p)
 {
