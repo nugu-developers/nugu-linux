@@ -20,6 +20,7 @@
 #include <clientkit/capability_helper_interface.hh>
 #include <clientkit/media_player_interface.hh>
 #include <clientkit/network_manager_interface.hh>
+#include <clientkit/nugu_timer_interface.hh>
 #include <clientkit/speech_recognizer_interface.hh>
 #include <clientkit/wakeup_interface.hh>
 
@@ -59,6 +60,11 @@ public:
      * @brief Create MediaPlayer instance
      */
     virtual IMediaPlayer* createMediaPlayer() = 0;
+
+    /**
+     * @brief Create NuguTimer instance
+     */
+    virtual INuguTimer* createNuguTimer() = 0;
 
     /**
      * @brief Get CapabilityHelper instance
