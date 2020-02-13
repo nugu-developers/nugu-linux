@@ -480,6 +480,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     std::string token;
     std::string prev_token;
     std::string temp;
+    std::string play_service_id;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -491,7 +492,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         nugu_error("directive message syntex error");
         return;
     }
-    ps_id = root["playServiceId"].asString();
+    play_service_id = root["playServiceId"].asString();
     cache_key = root["cacheKey"].asString();
 
     source_type = root["sourceType"].asString();
@@ -518,7 +519,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     token = stream["token"].asString();
     prev_token = stream["expectedPreviousToken"].asString();
 
-    if (url.size() == 0 || token.size() == 0 || ps_id.size() == 0) {
+    if (url.size() == 0 || token.size() == 0 || play_service_id.size() == 0) {
         nugu_error("There is no mandatory data in directive message");
         return;
     }
@@ -550,7 +551,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
             Json::StyledWriter writer;
 
             std::string id = composeRenderInfo(std::make_tuple(
-                ps_id,
+                play_service_id,
                 meta["template"]["type"].asString(),
                 writer.write(meta["template"]),
                 nugu_directive_peek_dialog_id(getNuguDirective()),
@@ -588,6 +589,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     pre_ref_dialog_id = id;
     cur_token = token;
 
+    ps_id = play_service_id;
     if (!player->setSource(url)) {
         nugu_error("set source failed");
         sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "can't set source");
