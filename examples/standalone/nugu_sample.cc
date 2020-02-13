@@ -82,16 +82,6 @@ public:
     void onInitialized(void* userdata)
     {
     }
-
-    void notify(std::string c_name, CapabilitySignal signal, void* data)
-    {
-        switch (signal) {
-        case CapabilitySignal::DIALOG_REQUEST_ID:
-            if (data)
-                std::cout << "[NuguClient] DIALOG_REQUEST_ID = " << data << std::endl;
-            break;
-        }
-    }
 };
 
 class NetworkManagerListener : public INetworkManagerListener {

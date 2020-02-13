@@ -100,8 +100,6 @@ void CapabilityEvent::sendEvent(const std::string& context, const std::string& p
     capability->getCapabilityHelper()->sendCommand(capability->getName(), "System", "activity", "");
 
     nugu_network_manager_send_event(event);
-    // dialog_request_id is made every time to send event
-    capability->notifyObservers(CapabilitySignal::DIALOG_REQUEST_ID, (void*)dialog_id.c_str());
 }
 
 void CapabilityEvent::sendAttachmentEvent(bool is_end, size_t size, unsigned char* data)
@@ -125,8 +123,6 @@ Capability::Capability(const std::string& name, const std::string& ver)
 
 Capability::~Capability()
 {
-    if (!observers.empty())
-        observers.clear();
 }
 
 void Capability::setNuguCoreContainer(INuguCoreContainer* core_container)
@@ -297,31 +293,6 @@ std::string Capability::getContextInfo()
 ICapabilityHelper* Capability::getCapabilityHelper()
 {
     return capa_helper;
-}
-
-/********************************************************************
- * implements ICapabilityObservable
- ********************************************************************/
-void Capability::registerObserver(ICapabilityObserver* observer)
-{
-    auto iterator = std::find(observers.begin(), observers.end(), observer);
-
-    if (iterator == observers.end())
-        observers.emplace_back(observer);
-}
-
-void Capability::removeObserver(ICapabilityObserver* observer)
-{
-    auto iterator = std::find(observers.begin(), observers.end(), observer);
-
-    if (iterator != observers.end())
-        observers.erase(iterator);
-}
-
-void Capability::notifyObservers(CapabilitySignal signal, void* data)
-{
-    for (auto observer : observers)
-        observer->notify(getName(), signal, data);
 }
 
 } // NuguCapability

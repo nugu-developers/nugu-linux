@@ -85,11 +85,6 @@ public:
     virtual std::string getContextInfo();
     ICapabilityHelper* getCapabilityHelper();
 
-    // implements ICapabilityObservable
-    void registerObserver(ICapabilityObserver* observer) override;
-    void removeObserver(ICapabilityObserver* observer) override;
-    void notifyObservers(CapabilitySignal signal, void* data) override;
-
 protected:
     bool initialized = false;
     bool has_attachment = false;
@@ -102,7 +97,6 @@ private:
     std::string cname;
     std::string version;
     std::string ref_dialog_id;
-    std::vector<ICapabilityObserver*> observers;
     NuguDirective* cur_ndir;
 };
 

@@ -99,25 +99,3 @@ void BatteryAgent::setCapabilityListener(ICapabilityListener* clistener)
     if (clistener)
         battery_listener = dynamic_cast<IBatteryListener*>(clistener);
 }
-
-void BatteryAgent::registerObserver(ICapabilityObserver* observer)
-{
-    auto iterator = std::find(observers.begin(), observers.end(), observer);
-
-    if (iterator == observers.end())
-        observers.emplace_back(observer);
-}
-
-void BatteryAgent::removeObserver(ICapabilityObserver* observer)
-{
-    auto iterator = std::find(observers.begin(), observers.end(), observer);
-
-    if (iterator != observers.end())
-        observers.erase(iterator);
-}
-
-void BatteryAgent::notifyObservers(CapabilitySignal signal, void* data)
-{
-    for (auto observer : observers)
-        observer->notify(getName(), signal, data);
-}
