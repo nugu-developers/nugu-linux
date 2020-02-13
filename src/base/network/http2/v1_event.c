@@ -91,32 +91,31 @@ int v1_event_set_info(V1Event *event, const char *msg_id, const char *dialog_id)
 	return 0;
 }
 
-/* invoked in a thread loop */
-static void _on_finish(HTTP2Request *req, void *userdata)
+static void _emit_send_result(int code, HTTP2Request *req)
 {
 	struct equeue_data_request_result *event;
 
-	event = malloc(sizeof(struct equeue_data_request_result));
+	event = calloc(1, sizeof(struct equeue_data_request_result));
 	if (!event) {
 		error_nomem();
 		return;
 	}
 
-	event->code = http2_request_get_response_code(req);
-	if (event->code == HTTP2_RESPONSE_OK)
-		event->success = 1;
-	else
-		event->success = 0;
+	event->code = code;
 
 	if (http2_request_peek_msgid(req))
 		event->msg_id = strdup(http2_request_peek_msgid(req));
-	else
-		event->msg_id = NULL;
 
 	if (http2_request_peek_dialogid(req))
 		event->dialog_id = strdup(http2_request_peek_dialogid(req));
-	else
-		event->dialog_id = NULL;
+
+	if (code == HTTP2_RESPONSE_OK) {
+		event->success = 1;
+	} else {
+		event->success = 0;
+		nugu_error("event send failed: %d (msg=%s)", event->code,
+			   event->msg_id);
+	}
 
 	if (nugu_equeue_push(NUGU_EQUEUE_TYPE_SEND_EVENT_RESULT, event) < 0) {
 		nugu_error("nugu_equeue_push failed");
@@ -126,18 +125,19 @@ static void _on_finish(HTTP2Request *req, void *userdata)
 		if (event->msg_id)
 			free(event->msg_id);
 		free(event);
-
-		return;
 	}
+}
 
-	if (event->success == 1)
-		return;
+/* invoked in a thread loop */
+static void _on_finish(HTTP2Request *req, void *userdata)
+{
+	int code;
 
-	nugu_error("event send failed: %d (msg=%s)", event->code,
-		   event->msg_id);
+	code = http2_request_get_response_code(req);
 
-	if (event->code == HTTP2_RESPONSE_AUTHFAIL ||
-	    event->code == HTTP2_RESPONSE_FORBIDDEN)
+	_emit_send_result(code, req);
+
+	if (code == HTTP2_RESPONSE_AUTHFAIL || code == HTTP2_RESPONSE_FORBIDDEN)
 		nugu_equeue_push(NUGU_EQUEUE_TYPE_INVALID_TOKEN, NULL);
 }
 
