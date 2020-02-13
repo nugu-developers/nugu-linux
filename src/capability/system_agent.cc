@@ -60,8 +60,6 @@ SystemAgent::SystemAgent()
 
 SystemAgent::~SystemAgent()
 {
-    if (initialized)
-        deInitialize();
 }
 
 void SystemAgent::initialize()

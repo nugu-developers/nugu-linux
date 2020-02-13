@@ -153,8 +153,6 @@ ASRAgent::ASRAgent()
 
 ASRAgent::~ASRAgent()
 {
-    if (initialized)
-        deInitialize();
 }
 
 void ASRAgent::setAttribute(ASRAttribute&& attribute)

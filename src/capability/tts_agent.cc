@@ -46,8 +46,6 @@ TTSAgent::TTSAgent()
 
 TTSAgent::~TTSAgent()
 {
-    if (initialized)
-        deInitialize();
 }
 
 void TTSAgent::setAttribute(TTSAttribute&& attribute)
