@@ -39,8 +39,6 @@ TextAgent::TextAgent()
 
 TextAgent::~TextAgent()
 {
-    if (initialized)
-        deInitialize();
 }
 
 void TextAgent::setAttribute(TextAttribute&& attribute)

@@ -41,8 +41,6 @@ AudioPlayerAgent::AudioPlayerAgent()
 
 AudioPlayerAgent::~AudioPlayerAgent()
 {
-    if (initialized)
-        deInitialize();
 }
 
 void AudioPlayerAgent::initialize()
