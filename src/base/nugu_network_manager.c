@@ -162,8 +162,9 @@ static void on_event_send_result(enum nugu_equeue_type type, void *data,
 	struct equeue_data_request_result *item = data;
 	NetworkManager *nm = userdata;
 
-	nugu_info("emit event send result(%d, %s, %s, %d)", item->success,
-		  item->msg_id, item->dialog_id, item->code);
+	if (item->success == 0)
+		nugu_error("event send failed: msg_id=%s, code=%d",
+			   item->msg_id, item->code);
 
 	if (nm->event_result_callback == NULL)
 		return;

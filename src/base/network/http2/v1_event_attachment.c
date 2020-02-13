@@ -103,7 +103,7 @@ void v1_event_attachment_set_query(V1EventAttachment *attach,
 			      name_space, name, dialog_id, msg_id, version,
 			      parent_msg_id, seq, endstr);
 	http2_request_set_url(attach->req, tmp);
-	nugu_dbg("attachment req(%p): %s", attach->req, tmp);
+	nugu_dbg("attachment req(%p)", attach->req);
 	g_free(tmp);
 }
 
@@ -120,6 +120,13 @@ int v1_event_attachment_set_data(V1EventAttachment *attach,
 	return http2_request_close_send_data(attach->req);
 }
 
+/* invoked in a thread loop */
+static void _on_finish(HTTP2Request *req, void *userdata)
+{
+	nugu_log_protocol_send(NUGU_LOG_LEVEL_INFO, "EventAttachment\n%s",
+			       http2_request_peek_url(req));
+}
+
 int v1_event_attachment_send_with_free(V1EventAttachment *attach,
 				       HTTP2Network *net)
 {
@@ -127,6 +134,8 @@ int v1_event_attachment_send_with_free(V1EventAttachment *attach,
 
 	g_return_val_if_fail(attach != NULL, -1);
 	g_return_val_if_fail(net != NULL, -1);
+
+	http2_request_set_finish_callback(attach->req, _on_finish, NULL);
 
 	ret = http2_network_add_request(net, attach->req);
 	if (ret < 0)
