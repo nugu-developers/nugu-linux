@@ -44,6 +44,74 @@ extern "C" {
  * @{
  */
 
+#ifndef NUGU_ANSI_COLOR_NORMAL
+#define NUGU_ANSI_COLOR_NORMAL       "\e[0m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_BLACK
+#define NUGU_ANSI_COLOR_BLACK        "\e[0;30m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_RED
+#define NUGU_ANSI_COLOR_RED          "\e[0;31m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_GREEN
+#define NUGU_ANSI_COLOR_GREEN        "\e[0;32m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_BROWN
+#define NUGU_ANSI_COLOR_BROWN        "\e[0;33m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_BLUE
+#define NUGU_ANSI_COLOR_BLUE         "\e[0;34m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_MAGENTA
+#define NUGU_ANSI_COLOR_MAGENTA      "\e[0;35m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_CYAN
+#define NUGU_ANSI_COLOR_CYAN         "\e[0;36m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_LIGHTGRAY
+#define NUGU_ANSI_COLOR_LIGHTGRAY    "\e[0;37m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_DARKGRAY
+#define NUGU_ANSI_COLOR_DARKGRAY     "\e[1;30m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_LIGHTRED
+#define NUGU_ANSI_COLOR_LIGHTRED     "\e[1;31m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_LIGHTGREEN
+#define NUGU_ANSI_COLOR_LIGHTGREEN   "\e[1;32m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_YELLOW
+#define NUGU_ANSI_COLOR_YELLOW       "\e[1;33m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_LIGHTBLUE
+#define NUGU_ANSI_COLOR_LIGHTBLUE    "\e[1;34m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_LIGHTMAGENTA
+#define NUGU_ANSI_COLOR_LIGHTMAGENTA "\e[1;35m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_LIGHTCYAN
+#define NUGU_ANSI_COLOR_LIGHTCYAN    "\e[1;36m"
+#endif
+
+#ifndef NUGU_ANSI_COLOR_WHITE
+#define NUGU_ANSI_COLOR_WHITE        "\e[1;37m"
+#endif
+
 /**
  * @brief log levels.
  *
@@ -89,7 +157,7 @@ enum nugu_log_prefix {
 		(NUGU_LOG_PREFIX_TIMESTAMP | NUGU_LOG_PREFIX_PID |
 		 NUGU_LOG_PREFIX_TID | NUGU_LOG_PREFIX_LEVEL |
 		 NUGU_LOG_PREFIX_FILENAME | NUGU_LOG_PREFIX_LINE),
-	/**< TIMESTAMP + PID + TID + LEVEL + FILENAME + LINE*/
+	/**< TIMESTAMP + PID + TID + LEVEL + FILENAME + LINE */
 	NUGU_LOG_PREFIX_ALL =
 		(NUGU_LOG_PREFIX_DEFAULT | NUGU_LOG_PREFIX_FUNCTION |
 		 NUGU_LOG_PREFIX_FILEPATH) /**< All prefix */
@@ -104,6 +172,7 @@ enum nugu_log_module {
 	NUGU_LOG_MODULE_DEFAULT = 0x01, /**< Default module */
 	NUGU_LOG_MODULE_NETWORK = 0x02, /**< Network module */
 	NUGU_LOG_MODULE_NETWORK_TRACE = 0x04, /**< Network trace module */
+	NUGU_LOG_MODULE_PROTOCOL = 0x10, /**< Protocol module */
 	NUGU_LOG_MODULE_AUDIO = 0x08, /**< Audio module */
 	NUGU_LOG_MODULE_ALL = 0xFF /**< All modules */
 };
@@ -193,11 +262,17 @@ void nugu_log_set_modules(unsigned int bitset);
 unsigned int nugu_log_get_modules(void);
 
 /**
- * @brief Hexdump the specific data
+ * @brief Hexdump the specific data to stderr
+ * @param[in] module log module
  * @param[in] data memory address to hexdump
  * @param[in] data_size size
+ * @param[in] header message to be printed at the top of hexdump
+ * @param[in] footer message to be printed at the bottom of hexdump
+ * @param[in] lineindent message to be printed at the beginning of each line
  */
-void nugu_hexdump(const uint8_t *data, size_t data_size);
+void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
+		  size_t data_size, const char *header, const char *footer,
+		  const char *lineindent);
 
 #ifdef __cplusplus
 }
@@ -257,6 +332,48 @@ void nugu_hexdump(const uint8_t *data, size_t data_size);
  */
 #define nugu_error(fmt, ...)                                                   \
 	nugu_log(NUGU_LOG_MODULE, NUGU_LOG_LEVEL_ERROR, fmt, ##__VA_ARGS__)
+
+#ifndef NUGU_ANSI_COLOR_SEND
+#define NUGU_ANSI_COLOR_SEND NUGU_ANSI_COLOR_BROWN
+#endif
+
+#ifndef NUGU_ANSI_COLOR_RECV
+#define NUGU_ANSI_COLOR_RECV NUGU_ANSI_COLOR_GREEN
+#endif
+
+#ifndef NUGU_LOG_MARK_SEND
+#define NUGU_LOG_MARK_SEND "--> "
+#endif
+
+#ifndef NUGU_LOG_MARK_RECV
+#define NUGU_LOG_MARK_RECV "<-- "
+#endif
+
+/**
+ * @brief Protocol log message for sending
+ * @param[in] level logging level
+ * @param[in] fmt printf format string
+ * @see nugu_log_print()
+ * @see enum nugu_log_level
+ */
+#define nugu_log_protocol_send(level, fmt, ...)                                \
+	nugu_log_print(NUGU_LOG_MODULE_PROTOCOL, level, NULL, NULL, -1,        \
+		       NUGU_ANSI_COLOR_SEND NUGU_LOG_MARK_SEND fmt             \
+			       NUGU_ANSI_COLOR_NORMAL,                         \
+		       ##__VA_ARGS__)
+
+/**
+ * @brief Protocol log message for receiving
+ * @param[in] level logging level
+ * @param[in] fmt printf format string
+ * @see nugu_log_print()
+ * @see enum nugu_log_level
+ */
+#define nugu_log_protocol_recv(level, fmt, ...)                                \
+	nugu_log_print(NUGU_LOG_MODULE_PROTOCOL, level, NULL, NULL, -1,        \
+		       NUGU_ANSI_COLOR_RECV NUGU_LOG_MARK_RECV fmt             \
+			       NUGU_ANSI_COLOR_NORMAL,                         \
+		       ##__VA_ARGS__)
 
 /**
  * @brief Default error message for 'Not enough memory'

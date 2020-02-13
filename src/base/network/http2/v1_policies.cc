@@ -206,7 +206,7 @@ static void _on_finish(HTTP2Request* req, void* userdata)
     }
 
     dump = writer.write(root);
-    nugu_dbg("Policy: %s", dump.c_str());
+    nugu_log_protocol_recv(NUGU_LOG_LEVEL_INFO, "Policy\n%s", dump.c_str());
 
     if (_parse_health_policy(root) < 0)
         return;

@@ -176,6 +176,7 @@ static void _body_json(const char* data, size_t length)
     }
 
     dump = writer.write(root);
+    nugu_log_protocol_recv(NUGU_LOG_LEVEL_INFO, "Directives\n%s", dump.c_str());
 
     dir_list = root["directives"];
 
@@ -194,8 +195,7 @@ static void _body_json(const char* data, size_t length)
     }
     group.append("] }");
 
-    nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE, NUGU_LOG_LEVEL_INFO, NULL, NULL, -1,
-        "<-- Directives: group=%s\n%s", group.c_str(), dump.c_str());
+    nugu_dbg("group=%s", group.c_str());
 
     for (Json::ArrayIndex i = 0; i < dir_list.size(); ++i) {
         Json::Value dir = dir_list[i];

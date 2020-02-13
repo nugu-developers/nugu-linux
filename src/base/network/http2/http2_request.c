@@ -84,28 +84,34 @@ static int _debug_callback(CURL *handle, curl_infotype type, char *data,
 	case CURLINFO_HEADER_OUT:
 		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
 			       NULL, NULL, -1, "[CURL] Send header: %s", data);
+		nugu_hexdump(NUGU_LOG_MODULE_NETWORK_TRACE, (uint8_t *)data,
+			     size, NUGU_ANSI_COLOR_SEND, NUGU_ANSI_COLOR_NORMAL,
+			     NUGU_LOG_MARK_SEND);
 		break;
 	case CURLINFO_DATA_OUT:
 		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
 			       NULL, NULL, -1, "[CURL] Send data: %d bytes",
 			       size);
-#ifdef FEATURE_ENABLE_HTTP2_DATA_HEXDUMP
-		nugu_hexdump((uint8_t *)data, size);
-#endif
+		nugu_hexdump(NUGU_LOG_MODULE_NETWORK_TRACE, (uint8_t *)data,
+			     size, NUGU_ANSI_COLOR_SEND, NUGU_ANSI_COLOR_NORMAL,
+			     NUGU_LOG_MARK_SEND);
 		break;
 	case CURLINFO_SSL_DATA_OUT:
 		break;
 	case CURLINFO_HEADER_IN:
 		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
 			       NULL, NULL, -1, "[CURL] Recv header: %s", data);
+		nugu_hexdump(NUGU_LOG_MODULE_NETWORK_TRACE, (uint8_t *)data,
+			     size, NUGU_ANSI_COLOR_RECV, NUGU_ANSI_COLOR_NORMAL,
+			     NUGU_LOG_MARK_RECV);
 		break;
 	case CURLINFO_DATA_IN:
 		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
 			       NULL, NULL, -1, "[CURL] Recv data: %d bytes",
 			       size);
-#ifdef FEATURE_ENABLE_HTTP2_DATA_HEXDUMP
-		nugu_hexdump((uint8_t *)data, size);
-#endif
+		nugu_hexdump(NUGU_LOG_MODULE_NETWORK_TRACE, (uint8_t *)data,
+			     size, NUGU_ANSI_COLOR_RECV, NUGU_ANSI_COLOR_NORMAL,
+			     NUGU_LOG_MARK_RECV);
 		break;
 	case CURLINFO_SSL_DATA_IN:
 		break;
@@ -149,26 +155,21 @@ static size_t _request_body_cb(char *buffer, size_t size, size_t nitems,
 
 	memcpy(buffer, nugu_buffer_peek(req->send_body), length);
 
+	nugu_dbg("Sent req(%p) %d bytes", req, length);
+
 	if (req->type == HTTP2_REQUEST_CONTENT_TYPE_JSON) {
 		if (length < size * nitems)
 			buffer[length] = '\0';
 
-		nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE,
-			       NUGU_LOG_LEVEL_INFO, NULL, NULL, -1,
-			       "--> Sent req(%p) %d bytes (json)\n%s", req,
-			       length, buffer);
+		nugu_log_protocol_send(NUGU_LOG_LEVEL_INFO, "Event\n%s",
+				       buffer);
+
 	} else if (req->type == HTTP2_REQUEST_CONTENT_TYPE_MULTIPART) {
 		if (length < size * nitems)
 			buffer[length] = '\0';
 
-		nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE,
-			       NUGU_LOG_LEVEL_INFO, NULL, NULL, -1,
-			       "--> Sent req(%p) %d bytes (multipart)\n%s", req,
-			       length, buffer);
-	} else {
-		nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE,
-			       NUGU_LOG_LEVEL_INFO, NULL, NULL, -1,
-			       "--> Sent req(%p) %d bytes", req, length);
+		nugu_log_protocol_send(NUGU_LOG_LEVEL_INFO,
+				       "Event (multipart)\n%s", buffer);
 	}
 
 	nugu_buffer_shift_left(req->send_body, length);
@@ -400,6 +401,17 @@ int http2_request_set_url(HTTP2Request *req, const char *url)
 	}
 
 	return 0;
+}
+
+const char *http2_request_peek_url(HTTP2Request *req)
+{
+	char *url = NULL;
+
+	g_return_val_if_fail(req != NULL, NULL);
+
+	curl_easy_getinfo(req->easy, CURLINFO_EFFECTIVE_URL, &url);
+
+	return url;
 }
 
 int http2_request_set_content_type(HTTP2Request *req,

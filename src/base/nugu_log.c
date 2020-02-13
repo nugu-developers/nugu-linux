@@ -36,26 +36,8 @@
 #define MAX_FIELDSIZE_FUNCNAME 30
 
 #define HEXDUMP_COLUMN_SIZE 32
-
-#define ANSI_COLOR_NORMAL       "\e[0m"
-
-#define ANSI_COLOR_BLACK        "\e[0;30m"
-#define ANSI_COLOR_RED          "\e[0;31m"
-#define ANSI_COLOR_GREEN        "\e[0;32m"
-#define ANSI_COLOR_BROWN        "\e[0;33m"
-#define ANSI_COLOR_BLUE         "\e[0;34m"
-#define ANSI_COLOR_MAGENTA      "\e[0;35m"
-#define ANSI_COLOR_CYAN         "\e[0;36m"
-#define ANSI_COLOR_LIGHTGRAY    "\e[0;37m"
-
-#define ANSI_COLOR_DARKGRAY     "\e[1;30m"
-#define ANSI_COLOR_LIGHTRED     "\e[1;31m"
-#define ANSI_COLOR_LIGHTGREEN   "\e[1;32m"
-#define ANSI_COLOR_YELLOW       "\e[1;33m"
-#define ANSI_COLOR_LIGHTBLUE    "\e[1;34m"
-#define ANSI_COLOR_LIGHTMAGENTA "\e[1;35m"
-#define ANSI_COLOR_LIGHTCYAN    "\e[1;36m"
-#define ANSI_COLOR_WHITE        "\e[1;37m"
+#define HEXDUMP_LINE_BUFSIZE                                                   \
+	(8 + (HEXDUMP_COLUMN_SIZE * 3) + 3 + 3 + (HEXDUMP_COLUMN_SIZE) + 2)
 
 #ifdef __APPLE__
 #define FMT_TID "%5" PRIu64 " "
@@ -70,7 +52,8 @@ static void *_log_handler_user_data;
 static int _log_override_enabled;
 static int _log_override_checked;
 static pthread_mutex_t _log_mutex = PTHREAD_MUTEX_INITIALIZER;
-static unsigned int _log_module_bitset = NUGU_LOG_MODULE_ALL;
+static unsigned int _log_module_bitset =
+	NUGU_LOG_MODULE_ALL & (~NUGU_LOG_MODULE_NETWORK_TRACE);
 
 static struct _log_level_info {
 	char mark;
@@ -134,11 +117,13 @@ static void _log_check_override_module(void)
 			bitset = bitset | NUGU_LOG_MODULE_NETWORK;
 		if (!strncasecmp(modules[i], "network_trace", 14))
 			bitset = bitset | NUGU_LOG_MODULE_NETWORK_TRACE;
+		if (!strncasecmp(modules[i], "protocol", 9))
+			bitset = bitset | NUGU_LOG_MODULE_PROTOCOL;
 		if (!strncasecmp(modules[i], "audio", 6))
 			bitset = bitset | NUGU_LOG_MODULE_AUDIO;
 	}
 
-	nugu_log_set_modules(bitset);
+	_log_module_bitset = bitset;
 	g_strfreev(modules);
 }
 #endif
@@ -205,8 +190,8 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 		if (len > 0 && pid != 0 && pid != tid)
 #endif
 			len += snprintf(prefix + len, 18,
-					ANSI_COLOR_DARKGRAY
-					FMT_TID ANSI_COLOR_NORMAL,
+					NUGU_ANSI_COLOR_DARKGRAY
+					FMT_TID NUGU_ANSI_COLOR_NORMAL,
 					tid);
 		else
 			len += snprintf(prefix + len, 7, FMT_TID, tid);
@@ -304,13 +289,13 @@ static void _log_formatted(enum nugu_log_module module,
 		case NUGU_LOG_LEVEL_DEBUG:
 			break;
 		case NUGU_LOG_LEVEL_INFO:
-			fputs(ANSI_COLOR_LIGHTBLUE, stderr);
+			fputs(NUGU_ANSI_COLOR_LIGHTBLUE, stderr);
 			break;
 		case NUGU_LOG_LEVEL_WARNING:
-			fputs(ANSI_COLOR_LIGHTGRAY, stderr);
+			fputs(NUGU_ANSI_COLOR_LIGHTGRAY, stderr);
 			break;
 		case NUGU_LOG_LEVEL_ERROR:
-			fputs(ANSI_COLOR_LIGHTRED, stderr);
+			fputs(NUGU_ANSI_COLOR_LIGHTRED, stderr);
 			break;
 		default:
 			break;
@@ -318,7 +303,7 @@ static void _log_formatted(enum nugu_log_module module,
 #endif
 		vfprintf(stderr, format, arg);
 #ifdef CONFIG_LOG_ANSICOLOR
-		fputs(ANSI_COLOR_NORMAL, stderr);
+		fputs(NUGU_ANSI_COLOR_NORMAL, stderr);
 #endif
 		fputc('\n', stderr);
 		fflush(stderr);
@@ -339,11 +324,17 @@ EXPORT_API void nugu_log_print(enum nugu_log_module module,
 {
 	va_list arg;
 
+	pthread_mutex_lock(&_log_mutex);
+
 	if (!_log_override_checked)
 		_log_check_override();
 
-	if ((_log_module_bitset & module) == 0)
+	if ((_log_module_bitset & module) == 0) {
+		pthread_mutex_unlock(&_log_mutex);
 		return;
+	}
+
+	pthread_mutex_unlock(&_log_mutex);
 
 	switch (_log_system) {
 	case NUGU_LOG_SYSTEM_SYSLOG:
@@ -373,10 +364,16 @@ EXPORT_API int nugu_log_set_system(enum nugu_log_system log_system)
 		return -EINVAL;
 	}
 
-	if (_log_override_enabled)
+	pthread_mutex_lock(&_log_mutex);
+
+	if (_log_override_enabled) {
+		pthread_mutex_unlock(&_log_mutex);
 		return 0;
+	}
 
 	_log_system = log_system;
+
+	pthread_mutex_unlock(&_log_mutex);
 
 	return 0;
 }
@@ -388,72 +385,141 @@ EXPORT_API int nugu_log_set_handler(nugu_log_handler handler, void *user_data)
 		return -EINVAL;
 	}
 
-	if (_log_override_enabled)
+	pthread_mutex_lock(&_log_mutex);
+
+	if (_log_override_enabled) {
+		pthread_mutex_unlock(&_log_mutex);
 		return 0;
+	}
 
 	_log_system = NUGU_LOG_SYSTEM_CUSTOM;
 	_log_handler = handler;
 	_log_handler_user_data = user_data;
+
+	pthread_mutex_unlock(&_log_mutex);
 
 	return 0;
 }
 
 EXPORT_API void nugu_log_set_prefix_fields(enum nugu_log_prefix field_set)
 {
+	pthread_mutex_lock(&_log_mutex);
 	_log_prefix_fields = field_set;
+	pthread_mutex_unlock(&_log_mutex);
 }
 
 EXPORT_API enum nugu_log_prefix nugu_log_get_prefix_fields(void)
 {
-	return _log_prefix_fields;
+	enum nugu_log_prefix tmp;
+
+	pthread_mutex_lock(&_log_mutex);
+	tmp = _log_prefix_fields;
+	pthread_mutex_unlock(&_log_mutex);
+
+	return tmp;
 }
 
 EXPORT_API void nugu_log_set_modules(unsigned int bitset)
 {
+	pthread_mutex_lock(&_log_mutex);
 	_log_module_bitset = bitset;
+	pthread_mutex_unlock(&_log_mutex);
 }
 
 EXPORT_API unsigned int nugu_log_get_modules(void)
 {
-	return _log_module_bitset;
+	unsigned int tmp;
+
+	pthread_mutex_lock(&_log_mutex);
+	tmp = _log_module_bitset;
+	pthread_mutex_unlock(&_log_mutex);
+
+	return tmp;
 }
 
-EXPORT_API void nugu_hexdump(const uint8_t *data, size_t data_size)
+EXPORT_API void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
+		  size_t data_size, const char *header, const char *footer,
+		  const char *lineindent)
 {
 	size_t i;
 	size_t j;
+	char linebuf[HEXDUMP_LINE_BUFSIZE];
+
+	g_return_if_fail(data != NULL);
+	g_return_if_fail(data_size > 0);
 
 	pthread_mutex_lock(&_log_mutex);
 
+	if (!_log_override_checked)
+		_log_check_override();
+
+	if ((_log_module_bitset & module) == 0) {
+		pthread_mutex_unlock(&_log_mutex);
+		return;
+	}
+
+	if (header)
+		fprintf(stderr, "%s", header);
+
 	for (i = 0; i < data_size; i += HEXDUMP_COLUMN_SIZE) {
-		printf("0x%04X: ", (unsigned int)i);
+		int col = snprintf(linebuf, HEXDUMP_LINE_BUFSIZE,
+			       "0x%04X: ", (unsigned int)i);
 
 		/* hex */
 		for (j = i; j < i + HEXDUMP_COLUMN_SIZE; j++) {
-			if (j >= data_size)
-				printf("   ");
-			else
-				printf("%02X ", data[j]);
+			if (j >= data_size) {
+				/* fill empty space between hex and ascii */
+				linebuf[col++] = ' ';
+				linebuf[col++] = ' ';
+				linebuf[col++] = ' ';
+			} else {
+				uint8_t x = (data[j] & 0xF0) >> 4;
 
-			if ((j + 1) % (HEXDUMP_COLUMN_SIZE / 2) == 0)
-				printf("  ");
+				if (x < 10)
+					linebuf[col++] = '0' + x;
+				else
+					linebuf[col++] = 'A' + (x - 10);
+
+				x = (data[j] & 0x0F);
+				if (x < 10)
+					linebuf[col++] = '0' + x;
+				else
+					linebuf[col++] = 'A' + (x - 10);
+
+				linebuf[col++] = ' ';
+			}
+
+			/* middle space */
+			if ((j + 1) % (HEXDUMP_COLUMN_SIZE / 2) == 0) {
+				linebuf[col++] = ' ';
+				linebuf[col++] = ' ';
+			}
 		}
 
 		/* ascii */
 		for (j = i; j < i + HEXDUMP_COLUMN_SIZE; j++) {
 			if (j >= data_size)
-				printf(" ");
+				linebuf[col++] = ' ';
 			else if (isprint(data[j]))
-				putchar(data[j]);
+				linebuf[col++] = data[j];
 			else
-				putchar('.');
+				linebuf[col++] = '.';
 		}
 
-		printf("\n");
+		linebuf[col++] = '\n';
+		linebuf[col++] = '\0';
+
+		if (lineindent)
+			fprintf(stderr, "%s%s", lineindent, linebuf);
+		else
+			fprintf(stderr, "%s", linebuf);
 	}
 
 	if (i % HEXDUMP_COLUMN_SIZE != 0)
-		printf("\n");
+		fputc('\n', stderr);
+
+	if (footer)
+		fprintf(stderr, "%s", footer);
 
 	pthread_mutex_unlock(&_log_mutex);
 }

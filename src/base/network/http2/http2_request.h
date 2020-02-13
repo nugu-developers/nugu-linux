@@ -63,6 +63,7 @@ int http2_request_set_method(HTTP2Request *req,
 			     enum http2_request_method method);
 int http2_request_set_useragent(HTTP2Request *req, const char *useragent);
 int http2_request_set_url(HTTP2Request *req, const char *url);
+const char *http2_request_peek_url(HTTP2Request *req);
 int http2_request_set_content_type(HTTP2Request *req,
 				   enum http2_request_content_type type,
 				   const char *boundary);
