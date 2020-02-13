@@ -114,10 +114,6 @@ int NuguClientImpl::createCapabilities(void)
         if (capability.first.empty() || !capability.second)
             continue;
 
-        // add general observer
-        if (listener)
-            capability.second->registerObserver(listener);
-
         // set NuguCoreContainer
         capability.second->setNuguCoreContainer(getNuguCoreContainer());
 

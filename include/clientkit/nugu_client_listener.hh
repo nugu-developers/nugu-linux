@@ -17,8 +17,6 @@
 #ifndef __NUGU_CLIENT_LISTENER_H__
 #define __NUGU_CLIENT_LISTENER_H__
 
-#include <clientkit/capability_observer.hh>
-
 namespace NuguClientKit {
 
 /**
@@ -32,9 +30,8 @@ namespace NuguClientKit {
 
 /**
  * @brief nugu client listener interface
- * @see ICapabilityObserver
  */
-class INuguClientListener : public ICapabilityObserver {
+class INuguClientListener {
 public:
     virtual ~INuguClientListener() = default;
 

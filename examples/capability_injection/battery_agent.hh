@@ -46,9 +46,6 @@ public:
     void getProperty(const std::string& property, std::string& value) override;
     void getProperties(const std::string& property, std::list<std::string>& values) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
-    void registerObserver(ICapabilityObserver* observer) override;
-    void removeObserver(ICapabilityObserver* observer) override;
-    void notifyObservers(CapabilitySignal signal, void* data) override;
 
 private:
     std::string battery_level = "10";
@@ -56,7 +53,6 @@ private:
 
     INuguCoreContainer* core_container = nullptr;
     IBatteryListener* battery_listener = nullptr;
-    std::vector<ICapabilityObserver*> observers;
 };
 
 #endif /* __NUGU_BATTERY_AGENT_H__ */

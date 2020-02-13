@@ -22,7 +22,6 @@
 #include <string>
 
 #include <base/nugu_directive.h>
-#include <clientkit/capability_observer.hh>
 #include <clientkit/nugu_core_container_interface.hh>
 
 namespace NuguClientKit {
@@ -48,39 +47,11 @@ public:
 };
 
 /**
- * @brief capability observer interface
- * @see ICapabilityObserver
- */
-class ICapabilityObservable {
-public:
-    virtual ~ICapabilityObservable() = default;
-
-    /**
-     * @brief Add the observer
-     * @param[in] observer observer
-     */
-    virtual void registerObserver(ICapabilityObserver* observer) = 0;
-
-    /**
-     * @brief Remove the observer
-     * @param[in] observer observer
-     */
-    virtual void removeObserver(ICapabilityObserver* observer) = 0;
-
-    /**
-     * @brief notify signal to the observer
-     * @param[in] signal signal
-     * @param[in] data signal's metadata
-     */
-    virtual void notifyObservers(CapabilitySignal signal, void* data) = 0;
-};
-
-/**
  * @brief capability interface
  * @see NuguDirective
  * @see ICapabilityListener
  */
-class ICapabilityInterface : public ICapabilityObservable {
+class ICapabilityInterface {
 public:
     virtual ~ICapabilityInterface() = default;
 
