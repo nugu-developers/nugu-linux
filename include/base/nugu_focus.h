@@ -149,7 +149,6 @@ NuguFocus *nugu_focus_peek_top(void);
 /**
  * @brief Request to get focus.
  * @param[in] focus focus object
- * @param[in] rsrc resource type
  * @param[in] event custom event data to pass the callback
  * @return result
  * @retval 0 success
@@ -161,7 +160,6 @@ int nugu_focus_request(NuguFocus *focus, void *event);
 /**
  * @brief Request to release focus.
  * @param[in] focus focus object
- * @param[in] rsrc resource type
  * @return result
  * @retval 0 success
  * @retval -1 failure
