@@ -219,9 +219,8 @@ void SpeakerAgent::parsingSetVolume(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
-    std::string name;
+    Json::Value volumes;
     std::string rate;
-    int volume;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -229,35 +228,42 @@ void SpeakerAgent::parsingSetVolume(const char* message)
     }
 
     ps_id = root["playServiceId"].asString();
-    name = root["name"].asString();
+    rate = root["rate"].asString();
+    volumes = root["volumes"];
 
-    if (ps_id.size() == 0 || name.size() == 0 || root["volume"].empty()) {
+    if (ps_id.size() == 0 || volumes.empty()) {
         nugu_error("There is no mandatory data in directive message");
         return;
     }
 
-    SpeakerType type;
-    if (!getSpeakerType(name, type)) {
-        nugu_error("The name(%s) is outside the scope of the specification", name.c_str());
-        return;
+    for (int i = 0; i < (int)volumes.size(); i++) {
+        if (volumes[i]["name"].empty() || volumes[i]["volume"].empty()) {
+            nugu_error("There is no mandatory data in directive message");
+            return;
+        }
+
+        std::string name = volumes[i]["name"].asString();
+        int volume = volumes[i]["volume"].asInt();
+
+        SpeakerType type;
+        if (!getSpeakerType(name, type)) {
+            nugu_error("The name(%s) is outside the scope of the specification", name.c_str());
+            continue;
+        }
+
+        cur_speaker.type = type;
+        cur_speaker.volume = volume;
+
+        if (speaker_listener)
+            speaker_listener->requestSetVolume(type, volume, rate == "SLOW");
     }
-
-    rate = root["rate"].asString();
-    volume = root["volume"].asInt();
-
-    cur_speaker.type = type;
-    cur_speaker.volume = volume;
-
-    if (speaker_listener)
-        speaker_listener->requestSetVolume(type, volume, rate == "SLOW");
 }
 
 void SpeakerAgent::parsingSetMute(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
-    std::string name;
-    bool mute;
+    Json::Value volumes;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -265,26 +271,34 @@ void SpeakerAgent::parsingSetMute(const char* message)
     }
 
     ps_id = root["playServiceId"].asString();
-    name = root["name"].asString();
+    volumes = root["volumes"];
 
-    if (ps_id.size() == 0 || name.size() == 0 || root["mute"].empty()) {
+    if (ps_id.size() == 0 || volumes.empty()) {
         nugu_error("There is no mandatory data in directive message");
         return;
     }
 
-    SpeakerType type;
-    if (!getSpeakerType(name, type)) {
-        nugu_error("The name(%s) is outside the scope of the specification", name.c_str());
-        return;
+    for (int i = 0; i < (int)volumes.size(); i++) {
+        if (volumes[i]["name"].empty() || volumes[i]["mute"].empty()) {
+            nugu_error("There is no mandatory data in directive message");
+            return;
+        }
+
+        std::string name = volumes[i]["name"].asString();
+        bool mute = volumes[i]["mute"].asBool();
+
+        SpeakerType type;
+        if (!getSpeakerType(name, type)) {
+            nugu_error("The name(%s) is outside the scope of the specification", name.c_str());
+            continue;
+        }
+
+        cur_speaker.type = type;
+        cur_speaker.mute = mute;
+
+        if (speaker_listener)
+            speaker_listener->requestSetMute(type, mute);
     }
-
-    mute = root["mute"].asBool();
-
-    cur_speaker.type = type;
-    cur_speaker.mute = mute;
-
-    if (speaker_listener)
-        speaker_listener->requestSetMute(type, mute);
 }
 
 } // NuguCapability

@@ -231,7 +231,7 @@ bool AudioPlayerAgent::setVolume(int volume)
     if (!player)
         return false;
 
-    if (player->setVolume(volume))
+    if (!player->setVolume(volume))
         return false;
 
     nugu_dbg("media player's volume(%d) changed..", volume);
