@@ -85,8 +85,13 @@ void AudioPlayerAgent::onFocus(void* event)
     }
 }
 
-NuguFocusResult AudioPlayerAgent::onUnfocus(void* event)
+NuguFocusResult AudioPlayerAgent::onUnfocus(void* event, NuguUnFocusMode mode)
 {
+    if (mode == NUGU_UNFOCUS_FORCE) {
+        player->stop();
+        return NUGU_FOCUS_REMOVE;
+    }
+
     if (is_finished)
         return NUGU_FOCUS_REMOVE;
 

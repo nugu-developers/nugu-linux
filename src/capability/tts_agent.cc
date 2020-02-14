@@ -191,7 +191,7 @@ void TTSAgent::onFocus(void* event)
     }
 }
 
-NuguFocusResult TTSAgent::onUnfocus(void* event)
+NuguFocusResult TTSAgent::onUnfocus(void* event, NuguUnFocusMode mode)
 {
     int cur_status = speak_status;
 

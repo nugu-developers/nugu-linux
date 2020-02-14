@@ -74,6 +74,16 @@ enum nugu_focus_steal_result {
 };
 
 /**
+ * @brief Unfocus mode
+ */
+enum nugu_unfocus_mode {
+	/** @brief Judge remove or pause action if unfocus is called */
+	NUGU_UNFOCUS_JUDGE,
+	/** @brief Force remove action if unfocus is called */
+	NUGU_UNFOCUS_FORCE
+};
+
+/**
  * @see enum nugu_focus_steal_result
  */
 typedef enum nugu_focus_steal_result NuguFocusStealResult;
@@ -84,6 +94,11 @@ typedef enum nugu_focus_steal_result NuguFocusStealResult;
 typedef struct _nugu_focus NuguFocus;
 
 /**
+ * @brief enum nugu_unfocus_mode
+ */
+typedef enum nugu_unfocus_mode NuguUnFocusMode;
+
+/**
  * @brief Callback prototype for got focus
  */
 typedef void (*NuguFocusCallback)(NuguFocus *focus, void *event,
@@ -92,8 +107,9 @@ typedef void (*NuguFocusCallback)(NuguFocus *focus, void *event,
 /**
  * @brief Callback prototype for lost focus
  */
-typedef NuguFocusResult (*NuguUnfocusCallback)(NuguFocus *focus, void *event,
-					       void *userdata);
+typedef NuguFocusResult (*NuguUnfocusCallback)(NuguFocus *focus,
+					       NuguUnFocusMode mode,
+					       void *event, void *userdata);
 /**
  * @brief Callback prototype for steal focus
  */
@@ -166,6 +182,15 @@ int nugu_focus_request(NuguFocus *focus, void *event);
  * @see nugu_focus_request()
  */
 int nugu_focus_release(NuguFocus *focus);
+
+/**
+ * @brief Request to release all focus.
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ * @see nugu_focus_request()
+ */
+void nugu_focus_release_all(void);
 
 /**
  * @}

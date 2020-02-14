@@ -118,7 +118,7 @@ private:
     std::string playerActivity(AudioPlayerState state);
 
     void onFocus(void* event) override;
-    NuguFocusResult onUnfocus(void* event) override;
+    NuguFocusResult onUnfocus(void* event, NuguUnFocusMode mode) override;
     NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
 
     IMediaPlayer* player;

@@ -66,7 +66,7 @@ private:
 
     void startTTS(NuguDirective* ndir);
     void onFocus(void* event) override;
-    NuguFocusResult onUnfocus(void* event) override;
+    NuguFocusResult onUnfocus(void* event, NuguUnFocusMode mode) override;
     NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
 
     NuguDirective* speak_dir;
