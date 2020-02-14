@@ -18,8 +18,7 @@
 #define __NUGU_EXTENSION_AGENT_H__
 
 #include "capability/extension_interface.hh"
-
-#include "capability.hh"
+#include "clientkit/capability.hh"
 
 namespace NuguCapability {
 

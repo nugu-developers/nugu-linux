@@ -17,7 +17,7 @@
 #ifndef __NUGU_DISPLAY_AGENT_H__
 #define __NUGU_DISPLAY_AGENT_H__
 
-#include "capability.hh"
+#include "clientkit/capability.hh"
 #include "display_render_assembly.hh"
 
 namespace NuguCapability {

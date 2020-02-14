@@ -22,7 +22,7 @@
 
 #include "base/nugu_focus.h"
 #include "capability/asr_interface.hh"
-#include "capability/capability.hh"
+#include "clientkit/capability.hh"
 
 namespace NuguCapability {
 

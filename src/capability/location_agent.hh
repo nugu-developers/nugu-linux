@@ -18,8 +18,7 @@
 #define __NUGU_LOCATION_AGENT_H__
 
 #include "capability/location_interface.hh"
-
-#include "capability.hh"
+#include "clientkit/capability.hh"
 
 namespace NuguCapability {
 

@@ -18,8 +18,7 @@
 #define __NUGU_MIC_AGENT_H__
 
 #include "capability/mic_interface.hh"
-
-#include "capability.hh"
+#include "clientkit/capability.hh"
 
 namespace NuguCapability {
 

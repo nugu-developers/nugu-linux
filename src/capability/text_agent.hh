@@ -17,7 +17,7 @@
 #ifndef __NUGU_TEXT_AGENT_H__
 #define __NUGU_TEXT_AGENT_H__
 
-#include "capability.hh"
+#include "clientkit/capability.hh"
 #include "capability/text_interface.hh"
 
 namespace NuguCapability {

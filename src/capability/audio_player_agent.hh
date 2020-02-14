@@ -18,7 +18,7 @@
 #define __NUGU_AUDIO_PLAYER_AGENT_H__
 
 #include "base/nugu_focus.h"
-#include "capability.hh"
+#include "clientkit/capability.hh"
 #include "capability/audio_player_interface.hh"
 #include "capability/display_interface.hh"
 #include "display_render_assembly.hh"

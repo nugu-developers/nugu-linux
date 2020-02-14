@@ -83,7 +83,7 @@ void TTSAgent::deInitialize()
 {
     if (speak_dir) {
         nugu_directive_set_data_callback(speak_dir, NULL, NULL);
-        destoryDirective(speak_dir);
+        destroyDirective(speak_dir);
         speak_dir = NULL;
     }
 
@@ -168,7 +168,7 @@ void TTSAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
 
     if (nugu_directive_is_data_end(ndir)) {
         nugu_pcm_push_data_done(tts->pcm);
-        tts->destoryDirective(ndir);
+        tts->destroyDirective(ndir);
         tts->speak_dir = NULL;
     }
 }
@@ -221,7 +221,7 @@ void TTSAgent::stopTTS()
 
     if (speak_dir) {
         nugu_directive_set_data_callback(speak_dir, NULL, NULL);
-        destoryDirective(speak_dir);
+        destroyDirective(speak_dir);
         speak_dir = NULL;
     }
     if (pcm) {

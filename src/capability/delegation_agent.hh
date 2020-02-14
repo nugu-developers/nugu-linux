@@ -18,8 +18,7 @@
 #define __NUGU_DELEGATION_AGENT_H__
 
 #include "capability/delegation_interface.hh"
-
-#include "capability.hh"
+#include "clientkit/capability.hh"
 
 namespace NuguCapability {
 

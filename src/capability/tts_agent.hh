@@ -20,7 +20,7 @@
 #include "base/nugu_decoder.h"
 #include "base/nugu_focus.h"
 #include "base/nugu_pcm.h"
-#include "capability.hh"
+#include "clientkit/capability.hh"
 #include "capability/tts_interface.hh"
 
 namespace NuguCapability {
