@@ -19,16 +19,29 @@
 #include "base/nugu_directive_sequencer.h"
 #include "base/nugu_log.h"
 
-#include "capability.hh"
+#include "clientkit/capability.hh"
 
-namespace NuguCapability {
+namespace NuguClientKit {
+
+struct Capability::Impl {
+    std::string cname;
+    std::string version;
+    std::string ref_dialog_id;
+    NuguDirective* cur_ndir = nullptr;
+};
+
+struct CapabilityEvent::Impl {
+    Capability* capability = nullptr;
+    NuguEvent* event = nullptr;
+    std::string dialog_id;
+};
 
 CapabilityEvent::CapabilityEvent(const std::string& name, Capability* cap)
+    : pimpl(std::unique_ptr<Impl>(new Impl()))
 {
-    capability = cap;
-
-    event = nugu_event_new(cap->getName().c_str(), name.c_str(), cap->getVersion().c_str());
-    dialog_id = nugu_event_peek_dialog_id(event);
+    pimpl->capability = cap;
+    pimpl->event = nugu_event_new(cap->getName().c_str(), name.c_str(), cap->getVersion().c_str());
+    pimpl->dialog_id = nugu_event_peek_dialog_id(pimpl->event);
 
     if (isUserAction(name))
         cap->setReferrerDialogRequestId("");
@@ -36,15 +49,15 @@ CapabilityEvent::CapabilityEvent(const std::string& name, Capability* cap)
 
 CapabilityEvent::~CapabilityEvent()
 {
-    if (event) {
-        nugu_event_free(event);
-        event = nullptr;
+    if (pimpl->event) {
+        nugu_event_free(pimpl->event);
+        pimpl->event = nullptr;
     }
 }
 
 bool CapabilityEvent::isUserAction(const std::string& name)
 {
-    const std::string& cname = capability->getName();
+    const std::string& cname = pimpl->capability->getName();
 
     if ((cname == "ASR" && name == "Recognize")
         || (cname == "TTS" && name == "SpeechPlay")
@@ -58,67 +71,66 @@ bool CapabilityEvent::isUserAction(const std::string& name)
 
 std::string CapabilityEvent::getDialogMessageId()
 {
-    return dialog_id;
+    return pimpl->dialog_id;
 }
 
 void CapabilityEvent::setDialogMessageId(const std::string& id)
 {
-    dialog_id = id;
-    nugu_event_set_dialog_id(event, dialog_id.c_str());
+    pimpl->dialog_id = id;
+    nugu_event_set_dialog_id(pimpl->event, pimpl->dialog_id.c_str());
 }
 
 void CapabilityEvent::setType(enum nugu_event_type type)
 {
-    nugu_event_set_type(event, type);
+    nugu_event_set_type(pimpl->event, type);
 }
 
 void CapabilityEvent::forceClose()
 {
-    if (nugu_event_get_type(event) == NUGU_EVENT_TYPE_DEFAULT)
+    if (nugu_event_get_type(pimpl->event) == NUGU_EVENT_TYPE_DEFAULT)
         return;
 
-    nugu_network_manager_force_close_event(event);
+    nugu_network_manager_force_close_event(pimpl->event);
 }
 
 void CapabilityEvent::sendEvent(const std::string& context, const std::string& payload)
 {
-    if (event == NULL) {
+    if (pimpl->event == NULL) {
         nugu_error("event is NULL");
         return;
     }
 
     if (context.size())
-        nugu_event_set_context(event, context.c_str());
+        nugu_event_set_context(pimpl->event, context.c_str());
 
     if (payload.size())
-        nugu_event_set_json(event, payload.c_str());
+        nugu_event_set_json(pimpl->event, payload.c_str());
 
-    std::string ref_dialog_id = capability->getReferrerDialogRequestId();
+    std::string ref_dialog_id = pimpl->capability->getReferrerDialogRequestId();
     if (ref_dialog_id.size())
-        nugu_event_set_referrer_id(event, ref_dialog_id.c_str());
+        nugu_event_set_referrer_id(pimpl->event, ref_dialog_id.c_str());
 
-    capability->getCapabilityHelper()->sendCommand(capability->getName(), "System", "activity", "");
+    pimpl->capability->getCapabilityHelper()->sendCommand(pimpl->capability->getName(), "System", "activity", "");
 
-    nugu_network_manager_send_event(event);
+    nugu_network_manager_send_event(pimpl->event);
 }
 
 void CapabilityEvent::sendAttachmentEvent(bool is_end, size_t size, unsigned char* data)
 {
-    if (event == NULL) {
+    if (pimpl->event == NULL) {
         nugu_error("event is NULL");
         return;
     }
 
     if ((size && data) || is_end)
-        nugu_network_manager_send_event_data(event, is_end, size, data);
+        nugu_network_manager_send_event_data(pimpl->event, is_end, size, data);
 }
 
 Capability::Capability(const std::string& name, const std::string& ver)
-    : cname(name)
-    , version(ver)
-    , ref_dialog_id("")
-    , cur_ndir(NULL)
+    : pimpl(std::unique_ptr<Impl>(new Impl()))
 {
+    pimpl->cname = name;
+    pimpl->version = ver;
 }
 
 Capability::~Capability()
@@ -142,32 +154,32 @@ void Capability::deInitialize()
 
 std::string Capability::getReferrerDialogRequestId()
 {
-    return ref_dialog_id;
+    return pimpl->ref_dialog_id;
 }
 
 void Capability::setReferrerDialogRequestId(const std::string& id)
 {
-    ref_dialog_id = id;
+    pimpl->ref_dialog_id = id;
 }
 
 void Capability::setName(const std::string& name)
 {
-    cname = name;
+    pimpl->cname = name;
 }
 
 std::string Capability::getName()
 {
-    return cname;
+    return pimpl->cname;
 }
 
 void Capability::setVersion(const std::string& ver)
 {
-    version = ver;
+    pimpl->version = ver;
 }
 
 std::string Capability::getVersion()
 {
-    return version;
+    return pimpl->version;
 }
 
 std::string Capability::getPlayServiceIdInStackControl(const Json::Value& playstack_control)
@@ -195,11 +207,11 @@ void Capability::processDirective(NuguDirective* ndir)
         message = nugu_directive_peek_json(ndir);
         dname = nugu_directive_peek_name(ndir);
 
-        cur_ndir = ndir;
+        pimpl->cur_ndir = ndir;
 
         if (!message || !dname) {
             nugu_error("directive message is not correct");
-            destoryDirective(ndir);
+            destroyDirective(ndir);
             return;
         }
 
@@ -214,27 +226,27 @@ void Capability::processDirective(NuguDirective* ndir)
 
         // the directive with attachment should destroy by agent
         if (!has_attachment)
-            destoryDirective(ndir);
+            destroyDirective(ndir);
     }
 }
 
-void Capability::destoryDirective(NuguDirective* ndir)
+void Capability::destroyDirective(NuguDirective* ndir)
 {
-    if (ndir == cur_ndir)
-        cur_ndir = NULL;
+    if (ndir == pimpl->cur_ndir)
+        pimpl->cur_ndir = NULL;
 
     nugu_dirseq_complete(ndir);
 }
 
 NuguDirective* Capability::getNuguDirective()
 {
-    return cur_ndir;
+    return pimpl->cur_ndir;
 }
 
 void Capability::parsingDirective(const char* dname, const char* message)
 {
     nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
-    destoryDirective(cur_ndir);
+    destroyDirective(pimpl->cur_ndir);
 }
 
 void Capability::getProperty(const std::string& property, std::string& value)
@@ -295,4 +307,4 @@ ICapabilityHelper* Capability::getCapabilityHelper()
     return capa_helper;
 }
 
-} // NuguCapability
+} // NuguClientKit

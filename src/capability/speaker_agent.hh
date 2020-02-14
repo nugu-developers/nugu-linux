@@ -17,7 +17,7 @@
 #ifndef __NUGU_SPEAKER_AGENT_H__
 #define __NUGU_SPEAKER_AGENT_H__
 
-#include "capability.hh"
+#include "clientkit/capability.hh"
 #include "capability/speaker_interface.hh"
 
 namespace NuguCapability {
