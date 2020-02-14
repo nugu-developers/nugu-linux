@@ -33,11 +33,11 @@ static void on_focus(NuguFocus* focus, void* event, void* userdata)
     listener->onFocus(event);
 }
 
-static NuguFocusResult on_unfocus(NuguFocus* focus, void* event, void* userdata)
+static NuguFocusResult on_unfocus(NuguFocus* focus, NuguUnFocusMode mode, void* event, void* userdata)
 {
     IFocusListener* listener = static_cast<IFocusListener*>(userdata);
 
-    return listener->onUnfocus(event);
+    return listener->onUnfocus(event, mode);
 }
 
 static NuguFocusStealResult on_steal_request(NuguFocus* focus, void* event, NuguFocus* target, void* userdata)

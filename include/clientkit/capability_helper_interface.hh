@@ -51,11 +51,12 @@ public:
     /**
      * @brief Receive callback when request focus is released.
      * @param[in] event focus event
+     * @param[in] mode focus mode
      * @return focus result
      * @retval NUGU_FOCUS_REMOVE lost and remove focus
      * @retval NUGU_FOCUS_PAUSE lost but add focus to queue
      */
-    virtual NuguFocusResult onUnfocus(void* event) = 0;
+    virtual NuguFocusResult onUnfocus(void* event, NuguUnFocusMode mode) = 0;
 
     /**
      * @brief Receive callback when another focus try to steal.

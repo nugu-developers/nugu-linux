@@ -161,12 +161,13 @@ static void _invoke_focus(struct _focus_item *item)
 	item->focus->focus_cb(item->focus, item->event, item->focus->userdata);
 }
 
-static NuguFocusResult _invoke_unfocus(struct _focus_item *item)
+static NuguFocusResult _invoke_unfocus(struct _focus_item *item,
+				       NuguUnFocusMode mode)
 {
 	nugu_info("ON-UN-FOCUS: name=%s (type=%s)", item->focus->name,
 		  _type_str[item->focus->type]);
 
-	return item->focus->unfocus_cb(item->focus, item->event,
+	return item->focus->unfocus_cb(item->focus, mode, item->event,
 				       item->focus->userdata);
 }
 
@@ -238,7 +239,7 @@ EXPORT_API int nugu_focus_request(NuguFocus *focus, void *event)
 	/* focus intercept */
 	if (_invoke_stealfocus(item, focus) == NUGU_FOCUS_STEAL_ALLOW) {
 		/* unfocus current focused item */
-		ret = _invoke_unfocus(item);
+		ret = _invoke_unfocus(item, NUGU_UNFOCUS_JUDGE);
 		REMOVE_LINK(_focus_stack, l);
 		if (ret == NUGU_FOCUS_REMOVE) {
 			nugu_dbg("return REMOVE: remove focus item");
@@ -303,7 +304,7 @@ EXPORT_API int nugu_focus_release(NuguFocus *focus)
 
 	REMOVE(_focus_stack, item);
 
-	ret = _invoke_unfocus(item);
+	ret = _invoke_unfocus(item, NUGU_UNFOCUS_JUDGE);
 	if (ret == NUGU_FOCUS_REMOVE) {
 		nugu_info(" - return REMOVE: remove focus item");
 		free(item);
@@ -329,4 +330,27 @@ EXPORT_API int nugu_focus_release(NuguFocus *focus)
 	nugu_dbg("nugu_focus_release() done");
 
 	return 0;
+}
+
+EXPORT_API void nugu_focus_release_all(void)
+{
+	nugu_info("FOCUS-RELEASE-ALL");
+
+	if (_focus_stack == NULL) {
+		nugu_dbg("empty");
+		return;
+	}
+
+	while (_focus_stack != NULL) {
+		struct _focus_item *item = _focus_stack->data;
+
+		REMOVE(_focus_stack, item);
+		_invoke_unfocus(item, NUGU_UNFOCUS_FORCE);
+		nugu_info(" - REMOVE: remove focus item[name: %s, type: %s]",
+			  item->focus->name, _type_str[item->focus->type]);
+		free(item);
+	}
+
+	dump_list();
+	nugu_dbg("nugu_focus_release_all() done");
 }

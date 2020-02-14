@@ -36,7 +36,7 @@ public:
     virtual ~ASRFocusListener();
 
     void onFocus(void* event) override;
-    NuguFocusResult onUnfocus(void* event) override;
+    NuguFocusResult onUnfocus(void* event, NuguUnFocusMode mode) override;
     NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
 
 private:
@@ -69,7 +69,7 @@ void ASRFocusListener::onFocus(void* event)
     }
 }
 
-NuguFocusResult ASRFocusListener::onUnfocus(void* event)
+NuguFocusResult ASRFocusListener::onUnfocus(void* event, NuguUnFocusMode mode)
 {
     nugu_dbg("ASRFocusListener::onUnfocus");
     speech_recognizer->stopListening();
@@ -95,7 +95,7 @@ public:
     virtual ~ExpectFocusListener();
 
     void onFocus(void* event) override;
-    NuguFocusResult onUnfocus(void* event) override;
+    NuguFocusResult onUnfocus(void* event, NuguUnFocusMode mode) override;
     NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
 
 private:
@@ -119,7 +119,7 @@ void ExpectFocusListener::onFocus(void* event)
     agent->startRecognition();
 }
 
-NuguFocusResult ExpectFocusListener::onUnfocus(void* event)
+NuguFocusResult ExpectFocusListener::onUnfocus(void* event, NuguUnFocusMode mode)
 {
     nugu_dbg("ExpectFocusListener::onUnfocus");
 
