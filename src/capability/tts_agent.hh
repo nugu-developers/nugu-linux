@@ -20,8 +20,8 @@
 #include "base/nugu_decoder.h"
 #include "base/nugu_focus.h"
 #include "base/nugu_pcm.h"
-#include "clientkit/capability.hh"
 #include "capability/tts_interface.hh"
+#include "clientkit/capability.hh"
 
 namespace NuguCapability {
 
@@ -65,7 +65,7 @@ private:
     void parsingStop(const char* message);
 
     void startTTS(NuguDirective* ndir);
-    NuguFocusResult onFocus(void* event) override;
+    void onFocus(void* event) override;
     NuguFocusResult onUnfocus(void* event) override;
     NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
 

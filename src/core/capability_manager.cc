@@ -26,24 +26,21 @@ static const char* WAKEUP_WORD = "아리아";
 
 CapabilityManager* CapabilityManager::instance = NULL;
 
-static NuguFocusResult on_focus(NuguFocus* focus,
-    void* event, void* userdata)
+static void on_focus(NuguFocus* focus, void* event, void* userdata)
 {
     IFocusListener* listener = static_cast<IFocusListener*>(userdata);
 
-    return listener->onFocus(event);
+    listener->onFocus(event);
 }
 
-static NuguFocusResult on_unfocus(NuguFocus* focus,
-    void* event, void* userdata)
+static NuguFocusResult on_unfocus(NuguFocus* focus, void* event, void* userdata)
 {
     IFocusListener* listener = static_cast<IFocusListener*>(userdata);
 
     return listener->onUnfocus(event);
 }
 
-static NuguFocusStealResult on_steal_request(NuguFocus* focus,
-    void* event, NuguFocus* target, void* userdata)
+static NuguFocusStealResult on_steal_request(NuguFocus* focus, void* event, NuguFocus* target, void* userdata)
 {
     IFocusListener* listener = static_cast<IFocusListener*>(userdata);
 

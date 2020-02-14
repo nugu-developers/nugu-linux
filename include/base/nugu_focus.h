@@ -53,11 +53,9 @@ enum nugu_focus_type {
 typedef enum nugu_focus_type NuguFocusType;
 
 /**
- * @brief Return type of focus/unfocus callback
+ * @brief Return type of unfocus callback
  */
 enum nugu_focus_result {
-	NUGU_FOCUS_OK, /**< OK - got focus */
-	NUGU_FOCUS_FAIL, /**< Failure */
 	NUGU_FOCUS_REMOVE, /**< OK - Unfocus with remove */
 	NUGU_FOCUS_PAUSE /**< OK - Unfocus with pause */
 };
@@ -88,14 +86,14 @@ typedef struct _nugu_focus NuguFocus;
 /**
  * @brief Callback prototype for got focus
  */
-typedef NuguFocusResult (*NuguFocusCallback)(NuguFocus *focus,
-					     void *event, void *userdata);
+typedef void (*NuguFocusCallback)(NuguFocus *focus, void *event,
+				  void *userdata);
 
 /**
  * @brief Callback prototype for lost focus
  */
-typedef NuguFocusResult (*NuguUnfocusCallback)(NuguFocus *focus,
-					       void *event, void *userdata);
+typedef NuguFocusResult (*NuguUnfocusCallback)(NuguFocus *focus, void *event,
+					       void *userdata);
 /**
  * @brief Callback prototype for steal focus
  */

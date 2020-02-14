@@ -73,19 +73,16 @@ void AudioPlayerAgent::deInitialize()
     initialized = false;
 }
 
-NuguFocusResult AudioPlayerAgent::onFocus(void* event)
+void AudioPlayerAgent::onFocus(void* event)
 {
     if (is_paused)
-        return NUGU_FOCUS_OK;
+        return;
 
     if (!player->play()) {
         nugu_error("play media failed");
         sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
             "player can't play");
-        return NUGU_FOCUS_FAIL;
     }
-
-    return NUGU_FOCUS_OK;
 }
 
 NuguFocusResult AudioPlayerAgent::onUnfocus(void* event)

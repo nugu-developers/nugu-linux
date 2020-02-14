@@ -18,9 +18,9 @@
 #define __NUGU_AUDIO_PLAYER_AGENT_H__
 
 #include "base/nugu_focus.h"
-#include "clientkit/capability.hh"
 #include "capability/audio_player_interface.hh"
 #include "capability/display_interface.hh"
+#include "clientkit/capability.hh"
 #include "display_render_assembly.hh"
 
 namespace NuguCapability {
@@ -117,7 +117,7 @@ private:
     std::string playbackError(PlaybackError error);
     std::string playerActivity(AudioPlayerState state);
 
-    NuguFocusResult onFocus(void* event) override;
+    void onFocus(void* event) override;
     NuguFocusResult onUnfocus(void* event) override;
     NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
 
