@@ -214,7 +214,7 @@ static void _body_json(const char* data, size_t length)
         ndir = nugu_directive_new(h["namespace"].asCString(),
             h["name"].asCString(), h["version"].asCString(),
             h["messageId"].asCString(), h["dialogRequestId"].asCString(),
-            referrer.c_str(), p.c_str());
+            referrer.c_str(), p.c_str(), group.c_str());
         if (!ndir)
             continue;
 

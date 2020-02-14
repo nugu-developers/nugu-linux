@@ -52,7 +52,7 @@ static void test_nugu_directive_callback(void)
 	NuguDirective *ndir;
 
 	ndir = nugu_directive_new("TTS", "Speak", "1.0", TEST_UUID_1,
-				  TEST_UUID_2, TEST_UUID_1, "{}");
+				  TEST_UUID_2, TEST_UUID_1, "{}", "{}");
 	g_assert(ndir != NULL);
 
 	g_assert(nugu_directive_set_data_callback(ndir, on_data,
@@ -76,23 +76,23 @@ static void test_nugu_directive_default(void)
 {
 	NuguDirective *ndir;
 
-	g_assert(nugu_directive_new(NULL, NULL, NULL, NULL, NULL, NULL, NULL) ==
-		 NULL);
-	g_assert(nugu_directive_new("TTS", NULL, NULL, NULL, NULL, NULL,
+	g_assert(nugu_directive_new(NULL, NULL, NULL, NULL, NULL, NULL, NULL,
 				    NULL) == NULL);
-	g_assert(nugu_directive_new(NULL, "Speak", NULL, NULL, NULL, NULL,
+	g_assert(nugu_directive_new("TTS", NULL, NULL, NULL, NULL, NULL, NULL,
 				    NULL) == NULL);
-	g_assert(nugu_directive_new(NULL, NULL, "1.0", NULL, NULL, NULL,
+	g_assert(nugu_directive_new(NULL, "Speak", NULL, NULL, NULL, NULL, NULL,
+				    NULL) == NULL);
+	g_assert(nugu_directive_new(NULL, NULL, "1.0", NULL, NULL, NULL, NULL,
 				    NULL) == NULL);
 	g_assert(nugu_directive_new(NULL, NULL, NULL, TEST_UUID_1, NULL, NULL,
+				    NULL, NULL) == NULL);
+	g_assert(nugu_directive_new(NULL, NULL, NULL, NULL, NULL, "{}", NULL,
 				    NULL) == NULL);
-	g_assert(nugu_directive_new(NULL, NULL, NULL, NULL, TEST_UUID_1, NULL,
-				    NULL) == NULL);
-	g_assert(nugu_directive_new(NULL, NULL, NULL, NULL, TEST_UUID_1, NULL,
-				    "{}") == NULL);
+	g_assert(nugu_directive_new(NULL, NULL, NULL, NULL, NULL, NULL, NULL,
+				    "{AudioPlayer.Play}") == NULL);
 
 	ndir = nugu_directive_new("TTS", "Speak", "1.0", TEST_UUID_1,
-				  TEST_UUID_2, TEST_UUID_1, "{}");
+				  TEST_UUID_2, TEST_UUID_1, "{}", "{}");
 	g_assert(ndir != NULL);
 
 	g_assert_cmpstr(nugu_directive_peek_namespace(ndir), ==, "TTS");
