@@ -45,10 +45,8 @@ public:
     /**
      * @brief Receive callback when request focus is acquired.
      * @param[in] event focus event
-     * @return focus result
-     * @retval NUGU_FOCUS_OK success
      */
-    virtual NuguFocusResult onFocus(void* event) = 0;
+    virtual void onFocus(void* event) = 0;
 
     /**
      * @brief Receive callback when request focus is released.

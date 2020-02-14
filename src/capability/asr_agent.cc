@@ -35,7 +35,7 @@ public:
     explicit ASRFocusListener(ASRAgent* agent, ISpeechRecognizer* speech_recognizer);
     virtual ~ASRFocusListener();
 
-    NuguFocusResult onFocus(void* event) override;
+    void onFocus(void* event) override;
     NuguFocusResult onUnfocus(void* event) override;
     NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
 
@@ -57,18 +57,16 @@ ASRFocusListener::~ASRFocusListener()
     agent->getCapabilityHelper()->removeFocus("asr");
 }
 
-NuguFocusResult ASRFocusListener::onFocus(void* event)
+void ASRFocusListener::onFocus(void* event)
 {
     nugu_dbg("ASRFocusListener::onFocus");
     if (!speech_recognizer->startListening())
-        return NUGU_FOCUS_REMOVE;
+        return;
 
     if (agent->isExpectSpeechState()) {
         agent->resetExpectSpeechState();
         agent->getCapabilityHelper()->releaseFocus("expect");
     }
-
-    return NUGU_FOCUS_OK;
 }
 
 NuguFocusResult ASRFocusListener::onUnfocus(void* event)
@@ -96,7 +94,7 @@ public:
     explicit ExpectFocusListener(ASRAgent* agent);
     virtual ~ExpectFocusListener();
 
-    NuguFocusResult onFocus(void* event) override;
+    void onFocus(void* event) override;
     NuguFocusResult onUnfocus(void* event) override;
     NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
 
@@ -115,12 +113,10 @@ ExpectFocusListener::~ExpectFocusListener()
     agent->getCapabilityHelper()->removeFocus("expect");
 }
 
-NuguFocusResult ExpectFocusListener::onFocus(void* event)
+void ExpectFocusListener::onFocus(void* event)
 {
     nugu_dbg("ExpectFocusListener::onFocus");
     agent->startRecognition();
-
-    return NUGU_FOCUS_OK;
 }
 
 NuguFocusResult ExpectFocusListener::onUnfocus(void* event)

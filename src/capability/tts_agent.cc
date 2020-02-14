@@ -72,7 +72,7 @@ void TTSAgent::initialize()
     nugu_pcm_set_status_callback(pcm, pcmStatusCallback, this);
     nugu_pcm_set_event_callback(pcm, pcmEventCallback, this);
 
-    nugu_pcm_set_property(pcm, (NuguAudioProperty) { NUGU_AUDIO_SAMPLE_RATE_22K, NUGU_AUDIO_FORMAT_S16_LE, 1 });
+    nugu_pcm_set_property(pcm, (NuguAudioProperty){ NUGU_AUDIO_SAMPLE_RATE_22K, NUGU_AUDIO_FORMAT_S16_LE, 1 });
 
     capa_helper->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
@@ -173,7 +173,7 @@ void TTSAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
     }
 }
 
-NuguFocusResult TTSAgent::onFocus(void* event)
+void TTSAgent::onFocus(void* event)
 {
     nugu_info("speak_status: %d", speak_status);
 
@@ -189,8 +189,6 @@ NuguFocusResult TTSAgent::onFocus(void* event)
         nugu_info("already playing");
         break;
     }
-
-    return NUGU_FOCUS_OK;
 }
 
 NuguFocusResult TTSAgent::onUnfocus(void* event)

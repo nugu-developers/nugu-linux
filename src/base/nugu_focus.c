@@ -153,13 +153,12 @@ EXPORT_API const char *nugu_focus_peek_name(NuguFocus *focus)
 	return focus->name;
 }
 
-static NuguFocusResult _invoke_focus(struct _focus_item *item)
+static void _invoke_focus(struct _focus_item *item)
 {
 	nugu_info("ON-FOCUS: name=%s (type=%s)", item->focus->name,
 		  _type_str[item->focus->type]);
 
-	return item->focus->focus_cb(item->focus, item->event,
-				     item->focus->userdata);
+	item->focus->focus_cb(item->focus, item->event, item->focus->userdata);
 }
 
 static NuguFocusResult _invoke_unfocus(struct _focus_item *item)
@@ -224,10 +223,7 @@ EXPORT_API int nugu_focus_request(NuguFocus *focus, void *event)
 		/* empty focus */
 		item = _item_new(focus, event);
 		APPEND(_focus_stack, item);
-		if (_invoke_focus(item) != NUGU_FOCUS_OK) {
-			REMOVE(_focus_stack, item);
-			free(item);
-		}
+		_invoke_focus(item);
 
 		dump_list();
 
@@ -258,10 +254,7 @@ EXPORT_API int nugu_focus_request(NuguFocus *focus, void *event)
 		/* set new item to focus */
 		item = _item_new(focus, event);
 		PREPEND(_focus_stack, item);
-		if (_invoke_focus(item) != NUGU_FOCUS_OK) {
-			REMOVE(_focus_stack, item);
-			free(item);
-		}
+		_invoke_focus(item);
 
 		dump_list();
 		nugu_dbg("nugu_focus_request() done");
