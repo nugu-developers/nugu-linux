@@ -116,7 +116,7 @@ void MicAgent::parsingSetMic(const char* message)
     }
 
     ps_id = root["playServiceId"].asString();
-    mic_status = root["MicStatus"].asString();
+    mic_status = root["status"].asString();
 
     if (ps_id.size() == 0 || mic_status.size() == 0) {
         nugu_error("There is no mandatory data in directive message");
