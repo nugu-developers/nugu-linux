@@ -183,7 +183,7 @@ enum nugu_media_status nugu_pcm_get_status(NuguPcm *pcm);
  * @param[in] cb callback function
  * @param[in] userdata data to pass to the user callback
  */
-void nugu_pcm_set_status_callback(NuguPcm *pcm, mediaStatusCallback cb,
+void nugu_pcm_set_status_callback(NuguPcm *pcm, NuguMediaStatusCallback cb,
 				  void *userdata);
 
 /**
@@ -199,7 +199,7 @@ void nugu_pcm_emit_status(NuguPcm *pcm, enum nugu_media_status status);
  * @param[in] cb callback function
  * @param[in] userdata data to pass to the user callback
  */
-void nugu_pcm_set_event_callback(NuguPcm *pcm, mediaEventCallback cb,
+void nugu_pcm_set_event_callback(NuguPcm *pcm, NuguMediaEventCallback cb,
 				 void *userdata);
 
 /**

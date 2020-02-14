@@ -49,7 +49,7 @@ V1EventAttachment *v1_event_attachment_new(const char *host)
 
 	attach = calloc(1, sizeof(struct _v1_event_attachment));
 	if (!attach) {
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 

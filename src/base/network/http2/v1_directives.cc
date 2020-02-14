@@ -71,7 +71,7 @@ static struct _parser_data* parser_data_new(void)
 
     pdata = (struct _parser_data*)calloc(1, sizeof(struct _parser_data));
     if (!pdata) {
-        error_nomem();
+        nugu_error_nomem();
         return NULL;
     }
 
@@ -232,7 +232,7 @@ static void _body_opus(const char* parent_msg_id, int is_end, const char* data, 
 
     item = (struct equeue_data_attachment*)malloc(sizeof(struct equeue_data_attachment));
     if (!item) {
-        error_nomem();
+        nugu_error_nomem();
         return;
     }
 
@@ -356,7 +356,7 @@ V1Directives* v1_directives_new(const char* host, int connection_timeout_secs)
 
     dir = (V1Directives*)calloc(1, sizeof(struct _v1_directives));
     if (!dir) {
-        error_nomem();
+        nugu_error_nomem();
         return NULL;
     }
 
@@ -391,13 +391,13 @@ int v1_directives_establish(V1Directives* dir, HTTP2Network* net)
 
     parser = multipart_parser_new();
     if (!parser) {
-        error_nomem();
+        nugu_error_nomem();
         return -1;
     }
 
     pdata = parser_data_new();
     if (!pdata) {
-        error_nomem();
+        nugu_error_nomem();
         multipart_parser_free(parser);
         return -1;
     }

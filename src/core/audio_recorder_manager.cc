@@ -264,51 +264,51 @@ NuguAudioProperty AudioRecorderManager::convertNuguAudioProperty(std::string& sa
     std::transform(format.begin(), format.end(), format.begin(), ::tolower);
 
     if (sample == "8k")
-        property.samplerate = AUDIO_SAMPLE_RATE_8K;
+        property.samplerate = NUGU_AUDIO_SAMPLE_RATE_8K;
     else if (sample == "16k")
-        property.samplerate = AUDIO_SAMPLE_RATE_16K;
+        property.samplerate = NUGU_AUDIO_SAMPLE_RATE_16K;
     else if (sample == "32k")
-        property.samplerate = AUDIO_SAMPLE_RATE_32K;
+        property.samplerate = NUGU_AUDIO_SAMPLE_RATE_32K;
     else if (sample == "22k")
-        property.samplerate = AUDIO_SAMPLE_RATE_22K;
+        property.samplerate = NUGU_AUDIO_SAMPLE_RATE_22K;
     else if (sample == "44k")
-        property.samplerate = AUDIO_SAMPLE_RATE_44K;
+        property.samplerate = NUGU_AUDIO_SAMPLE_RATE_44K;
     else {
         nugu_error("not support the sample rate => %s", sample.c_str());
-        property.samplerate = AUDIO_SAMPLE_RATE_16K;
+        property.samplerate = NUGU_AUDIO_SAMPLE_RATE_16K;
     }
 
     if (format == "s8")
-        property.format = AUDIO_FORMAT_S8;
+        property.format = NUGU_AUDIO_FORMAT_S8;
     else if (format == "u8")
-        property.format = AUDIO_FORMAT_U8;
+        property.format = NUGU_AUDIO_FORMAT_U8;
     else if (format == "s16le")
-        property.format = AUDIO_FORMAT_S16_LE;
+        property.format = NUGU_AUDIO_FORMAT_S16_LE;
     else if (format == "s16be")
-        property.format = AUDIO_FORMAT_S16_BE;
+        property.format = NUGU_AUDIO_FORMAT_S16_BE;
     else if (format == "u16le")
-        property.format = AUDIO_FORMAT_U16_LE;
+        property.format = NUGU_AUDIO_FORMAT_U16_LE;
     else if (format == "u16be")
-        property.format = AUDIO_FORMAT_U16_BE;
+        property.format = NUGU_AUDIO_FORMAT_U16_BE;
     else if (format == "s24le")
-        property.format = AUDIO_FORMAT_S24_LE;
+        property.format = NUGU_AUDIO_FORMAT_S24_LE;
     else if (format == "s24be")
-        property.format = AUDIO_FORMAT_S24_BE;
+        property.format = NUGU_AUDIO_FORMAT_S24_BE;
     else if (format == "u24le")
-        property.format = AUDIO_FORMAT_U24_LE;
+        property.format = NUGU_AUDIO_FORMAT_U24_LE;
     else if (format == "u24be")
-        property.format = AUDIO_FORMAT_U24_BE;
+        property.format = NUGU_AUDIO_FORMAT_U24_BE;
     else if (format == "s32le")
-        property.format = AUDIO_FORMAT_S32_LE;
+        property.format = NUGU_AUDIO_FORMAT_S32_LE;
     else if (format == "s32be")
-        property.format = AUDIO_FORMAT_S32_BE;
+        property.format = NUGU_AUDIO_FORMAT_S32_BE;
     else if (format == "u32le")
-        property.format = AUDIO_FORMAT_U32_LE;
+        property.format = NUGU_AUDIO_FORMAT_U32_LE;
     else if (format == "u32be")
-        property.format = AUDIO_FORMAT_U32_BE;
+        property.format = NUGU_AUDIO_FORMAT_U32_BE;
     else {
         nugu_error("not support the format => %s", format.c_str());
-        property.format = AUDIO_FORMAT_S16_LE;
+        property.format = NUGU_AUDIO_FORMAT_S16_LE;
     }
 
     property.channel = std::stoi(channel);

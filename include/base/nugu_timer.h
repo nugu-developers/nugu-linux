@@ -40,7 +40,7 @@ typedef struct _nugu_timer NuguTimer;
 /**
  * @brief Callback prototype for timeout
  */
-typedef void (*timeoutCallback)(void *userdata);
+typedef void (*NuguTimeoutCallback)(void *userdata);
 
 /**
  * @brief Create new timer object
@@ -115,7 +115,7 @@ void nugu_timer_stop(NuguTimer *timer);
  * @param[in] callback callback function
  * @param[in] userdata data to pass to the user callback
  */
-void nugu_timer_set_callback(NuguTimer *timer, timeoutCallback callback,
+void nugu_timer_set_callback(NuguTimer *timer, NuguTimeoutCallback callback,
 			     void *userdata);
 
 /**

@@ -29,33 +29,33 @@ extern "C" {
  * @brief audio sample rate
  */
 enum nugu_audio_sample_rate {
-	AUDIO_SAMPLE_RATE_8K, /**< 8K */
-	AUDIO_SAMPLE_RATE_16K, /**< 16K */
-	AUDIO_SAMPLE_RATE_32K, /**< 32K */
-	AUDIO_SAMPLE_RATE_22K, /**< 22K */
-	AUDIO_SAMPLE_RATE_44K, /**< 44K */
-	AUDIO_SAMPLE_RATE_MAX
+	NUGU_AUDIO_SAMPLE_RATE_8K, /**< 8K */
+	NUGU_AUDIO_SAMPLE_RATE_16K, /**< 16K */
+	NUGU_AUDIO_SAMPLE_RATE_32K, /**< 32K */
+	NUGU_AUDIO_SAMPLE_RATE_22K, /**< 22K */
+	NUGU_AUDIO_SAMPLE_RATE_44K, /**< 44K */
+	NUGU_AUDIO_SAMPLE_RATE_MAX
 };
 
 /**
  * @brief audio format
  */
 enum nugu_audio_format {
-	AUDIO_FORMAT_S8, /**< Signed 8 bits */
-	AUDIO_FORMAT_U8, /**< Unsigned 8 bits */
-	AUDIO_FORMAT_S16_LE, /**< Signed 16 bits little endian */
-	AUDIO_FORMAT_S16_BE, /**< Signed 16 bits big endian */
-	AUDIO_FORMAT_U16_LE, /**< Unsigned 16 bits little endian */
-	AUDIO_FORMAT_U16_BE, /**< Unsigned 16 bits big endian */
-	AUDIO_FORMAT_S24_LE, /**< Signed 24 bits little endian */
-	AUDIO_FORMAT_S24_BE, /**< Signed 24 bits big endian */
-	AUDIO_FORMAT_U24_LE, /**< Unsigned 24 bits little endian */
-	AUDIO_FORMAT_U24_BE, /**< Unsigned 24 bits big endian */
-	AUDIO_FORMAT_S32_LE, /**< Signed 32 bits little endian */
-	AUDIO_FORMAT_S32_BE, /**< Signed 32 bits big endian */
-	AUDIO_FORMAT_U32_LE, /**< Unsigned 32 bits little endian */
-	AUDIO_FORMAT_U32_BE, /**< Unsigned 32 bits big endian */
-	AUDIO_FORMAT_MAX
+	NUGU_AUDIO_FORMAT_S8, /**< Signed 8 bits */
+	NUGU_AUDIO_FORMAT_U8, /**< Unsigned 8 bits */
+	NUGU_AUDIO_FORMAT_S16_LE, /**< Signed 16 bits little endian */
+	NUGU_AUDIO_FORMAT_S16_BE, /**< Signed 16 bits big endian */
+	NUGU_AUDIO_FORMAT_U16_LE, /**< Unsigned 16 bits little endian */
+	NUGU_AUDIO_FORMAT_U16_BE, /**< Unsigned 16 bits big endian */
+	NUGU_AUDIO_FORMAT_S24_LE, /**< Signed 24 bits little endian */
+	NUGU_AUDIO_FORMAT_S24_BE, /**< Signed 24 bits big endian */
+	NUGU_AUDIO_FORMAT_U24_LE, /**< Unsigned 24 bits little endian */
+	NUGU_AUDIO_FORMAT_U24_BE, /**< Unsigned 24 bits big endian */
+	NUGU_AUDIO_FORMAT_S32_LE, /**< Signed 32 bits little endian */
+	NUGU_AUDIO_FORMAT_S32_BE, /**< Signed 32 bits big endian */
+	NUGU_AUDIO_FORMAT_U32_LE, /**< Unsigned 32 bits little endian */
+	NUGU_AUDIO_FORMAT_U32_BE, /**< Unsigned 32 bits big endian */
+	NUGU_AUDIO_FORMAT_MAX
 };
 
 /**

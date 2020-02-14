@@ -35,8 +35,8 @@ struct _nugu_player {
 	enum nugu_media_status status;
 	char *playurl;
 	int volume;
-	mediaEventCallback ecb;
-	mediaStatusCallback scb;
+	NuguMediaEventCallback ecb;
+	NuguMediaStatusCallback scb;
 	void *eud; /* user data for event callback */
 	void *sud; /* user data for status callback */
 	void *device;
@@ -55,6 +55,11 @@ nugu_player_driver_new(const char *name, struct nugu_player_driver_ops *ops)
 	g_return_val_if_fail(ops != NULL, NULL);
 
 	driver = g_malloc0(sizeof(struct _nugu_player_driver));
+	if (!driver) {
+		nugu_error_nomem();
+		return NULL;
+	}
+
 	driver->name = g_strdup(name);
 	driver->ops = ops;
 	driver->ref_count = 0;
@@ -157,6 +162,11 @@ EXPORT_API NuguPlayer *nugu_player_new(const char *name,
 	g_return_val_if_fail(driver->ops->create != NULL, NULL);
 
 	player = g_malloc0(sizeof(struct _nugu_player));
+	if (!player) {
+		nugu_error_nomem();
+		return NULL;
+	}
+
 	player->name = g_strdup(name);
 	player->driver = driver;
 	player->ecb = NULL;
@@ -167,7 +177,7 @@ EXPORT_API NuguPlayer *nugu_player_new(const char *name,
 	player->volume = NUGU_SET_VOLUME_DEFAULT;
 	player->driver->ref_count++;
 	player->device = player->driver->ops->create(player);
-	player->status = MEDIA_STATUS_STOPPED;
+	player->status = NUGU_MEDIA_STATUS_STOPPED;
 
 	return player;
 }
@@ -385,7 +395,7 @@ EXPORT_API enum nugu_media_status nugu_player_get_status(NuguPlayer *player)
 }
 
 EXPORT_API void nugu_player_set_status_callback(NuguPlayer *player,
-						mediaStatusCallback cb,
+						NuguMediaStatusCallback cb,
 						void *userdata)
 {
 	g_return_if_fail(player != NULL);
@@ -409,7 +419,7 @@ EXPORT_API void nugu_player_emit_status(NuguPlayer *player,
 }
 
 EXPORT_API void nugu_player_set_event_callback(NuguPlayer *player,
-					       mediaEventCallback cb,
+					       NuguMediaEventCallback cb,
 					       void *userdata)
 {
 	g_return_if_fail(player != NULL);
@@ -423,8 +433,8 @@ EXPORT_API void nugu_player_emit_event(NuguPlayer *player,
 {
 	g_return_if_fail(player != NULL);
 
-	if (event == MEDIA_EVENT_END_OF_STREAM)
-		player->status = MEDIA_STATUS_STOPPED;
+	if (event == NUGU_MEDIA_EVENT_END_OF_STREAM)
+		player->status = NUGU_MEDIA_STATUS_STOPPED;
 
 	if (player->ecb != NULL)
 		player->ecb(event, player->eud);

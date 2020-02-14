@@ -70,6 +70,11 @@ nugu_recorder_driver_new(const char *name, struct nugu_recorder_driver_ops *ops)
 	g_return_val_if_fail(name != NULL, NULL);
 
 	driver = malloc(sizeof(struct _nugu_recorder_driver));
+	if (!driver) {
+		nugu_error_nomem();
+		return NULL;
+	}
+
 	driver->name = g_strdup(name);
 	driver->ops = ops;
 

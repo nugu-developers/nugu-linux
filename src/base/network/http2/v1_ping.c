@@ -42,7 +42,7 @@ V1Ping *v1_ping_new(const char *host,
 
 	ping = calloc(1, sizeof(struct _v1_ping));
 	if (!ping) {
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 

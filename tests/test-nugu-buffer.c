@@ -85,20 +85,20 @@ static void test_buffer_byte(void)
 	NuguBuffer *buf;
 	int pos;
 
-	g_assert(nugu_buffer_find_byte(NULL, '0') == NOT_FOUND);
+	g_assert(nugu_buffer_find_byte(NULL, '0') == NUGU_BUFFER_NOT_FOUND);
 	g_assert(nugu_buffer_peek_byte(NULL, 0) == 0);
 
 	buf = nugu_buffer_new(0);
 	g_assert(buf != NULL);
 
 	g_assert(nugu_buffer_add(buf, "abcde", 5) == 5);
-	g_assert(nugu_buffer_find_byte(buf, '0') == NOT_FOUND);
+	g_assert(nugu_buffer_find_byte(buf, '0') == NUGU_BUFFER_NOT_FOUND);
 	g_assert(nugu_buffer_find_byte(buf, 'a') == 0);
 	g_assert(nugu_buffer_find_byte(buf, 'b') == 1);
 	g_assert(nugu_buffer_find_byte(buf, 'c') == 2);
 	g_assert(nugu_buffer_find_byte(buf, 'd') == 3);
 	g_assert(nugu_buffer_find_byte(buf, 'e') == 4);
-	g_assert(nugu_buffer_find_byte(buf, '\0') == NOT_FOUND);
+	g_assert(nugu_buffer_find_byte(buf, '\0') == NUGU_BUFFER_NOT_FOUND);
 
 	g_assert(nugu_buffer_peek_byte(buf, 0) == 'a');
 	g_assert(nugu_buffer_peek_byte(buf, 1) == 'b');
@@ -120,7 +120,7 @@ static void test_buffer_byte(void)
 
 	g_assert(nugu_buffer_clear(buf) == 0);
 	g_assert(nugu_buffer_get_size(buf) == 0);
-	g_assert(nugu_buffer_find_byte(buf, '\r') == NOT_FOUND);
+	g_assert(nugu_buffer_find_byte(buf, '\r') == NUGU_BUFFER_NOT_FOUND);
 
 	g_assert(nugu_buffer_free(buf, 1) == NULL);
 }

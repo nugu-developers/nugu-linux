@@ -41,7 +41,7 @@ extern "C" {
  * @brief Not found return type of nugu_buffer_find_byte()
  * @see nugu_buffer_find_byte()
  */
-#define NOT_FOUND ((size_t)-1)
+#define NUGU_BUFFER_NOT_FOUND ((size_t)-1)
 
 /**
  * @brief Buffer object
@@ -105,8 +105,8 @@ size_t nugu_buffer_get_alloc_size(NuguBuffer *buf);
  * @brief Get the position of the data you want to find.
  * @param[in] buf buffer object
  * @param[in] want byte data you want to find
- * @return position. if fail, return NOT_FOUND
- * @see NOT_FOUND
+ * @return position. if fail, return NUGU_BUFFER_NOT_FOUND
+ * @see NUGU_BUFFER_NOT_FOUND
  */
 size_t nugu_buffer_find_byte(NuguBuffer *buf, unsigned char want);
 

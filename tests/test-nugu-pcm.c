@@ -49,18 +49,18 @@ static int dummy_start(NuguPcmDriver *driver, NuguPcm *pcm,
 		       NuguAudioProperty prop)
 {
 	if (pcm == nugu_pcm_find("pcm2")) {
-		nugu_pcm_emit_status(pcm, MEDIA_STATUS_READY);
-		nugu_pcm_emit_event(pcm, MEDIA_EVENT_MEDIA_LOAD_FAILED);
+		nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_READY);
+		nugu_pcm_emit_event(pcm, NUGU_MEDIA_EVENT_MEDIA_LOAD_FAILED);
 	} else {
-		nugu_pcm_emit_event(pcm, MEDIA_EVENT_MEDIA_LOADED);
-		nugu_pcm_emit_status(pcm, MEDIA_STATUS_PLAYING);
+		nugu_pcm_emit_event(pcm, NUGU_MEDIA_EVENT_MEDIA_LOADED);
+		nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_PLAYING);
 	}
 	return 0;
 }
 
 static int dummy_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 {
-	nugu_pcm_emit_status(pcm, MEDIA_STATUS_STOPPED);
+	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_STOPPED);
 	return 0;
 }
 
@@ -110,13 +110,13 @@ static void test_pcm_default(void)
 	nugu_pcm_set_status_callback(pcm, pcm_status_callback, NULL);
 	nugu_pcm_set_event_callback(pcm, pcm_event_callback, NULL);
 
-	prop.samplerate = AUDIO_SAMPLE_RATE_22K;
-	prop.format = AUDIO_FORMAT_S16_LE;
+	prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_22K;
+	prop.format = NUGU_AUDIO_FORMAT_S16_LE;
 	prop.channel = 1;
 	g_assert(nugu_pcm_set_property(pcm, prop) == 0);
 
-	CHECK_EVENT(MEDIA_EVENT_MEDIA_LOADED);
-	CHECK_STATUS(MEDIA_STATUS_PLAYING);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOADED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
 	g_assert(nugu_pcm_start(pcm) == 0);
 
 	/* push data 10 bytes */
@@ -138,7 +138,7 @@ static void test_pcm_default(void)
 	g_assert_cmpstr(tmp, ==, "abc");
 	g_assert(nugu_pcm_get_data_size(pcm) == 2);
 
-	CHECK_STATUS(MEDIA_STATUS_STOPPED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_STOPPED);
 	g_assert(nugu_pcm_stop(pcm) == 0);
 
 	nugu_pcm_remove(pcm);
@@ -169,22 +169,22 @@ static void test_pcm_multiple(void)
 	nugu_pcm_set_status_callback(pcm2, pcm_status_callback2, NULL);
 	nugu_pcm_set_event_callback(pcm2, pcm_event_callback2, NULL);
 
-	prop.samplerate = AUDIO_SAMPLE_RATE_22K;
-	prop.format = AUDIO_FORMAT_S16_LE;
+	prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_22K;
+	prop.format = NUGU_AUDIO_FORMAT_S16_LE;
 	prop.channel = 1;
 	g_assert(nugu_pcm_set_property(pcm1, prop) == 0);
 
-	CHECK_STATUS(MEDIA_STATUS_PLAYING);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
 	g_assert(nugu_pcm_start(pcm1) == 0);
 
-	CHECK_STATUS(MEDIA_STATUS_STOPPED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_STOPPED);
 	g_assert(nugu_pcm_stop(pcm1) == 0);
 
-	CHECK_EVENT2(MEDIA_EVENT_MEDIA_LOAD_FAILED);
-	CHECK_STATUS2(MEDIA_STATUS_READY);
+	CHECK_EVENT2(NUGU_MEDIA_EVENT_MEDIA_LOAD_FAILED);
+	CHECK_STATUS2(NUGU_MEDIA_STATUS_READY);
 	g_assert(nugu_pcm_start(pcm2) == 0);
 
-	CHECK_STATUS2(MEDIA_STATUS_STOPPED);
+	CHECK_STATUS2(NUGU_MEDIA_STATUS_STOPPED);
 	g_assert(nugu_pcm_stop(pcm2) == 0);
 
 	nugu_pcm_remove(pcm1);

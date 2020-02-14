@@ -19,6 +19,7 @@
 
 #include <glib.h>
 
+#include "base/nugu_log.h"
 #include "base/nugu_timer.h"
 
 struct _nugu_timer {
@@ -26,7 +27,7 @@ struct _nugu_timer {
 	long interval;
 	int repeat;
 	int count;
-	timeoutCallback cb;
+	NuguTimeoutCallback cb;
 	void *userdata;
 };
 
@@ -48,6 +49,11 @@ EXPORT_API NuguTimer *nugu_timer_new(long interval, int repeat)
 	NuguTimer *timer;
 
 	timer = g_malloc0(sizeof(struct _nugu_timer));
+	if (!timer) {
+		nugu_error_nomem();
+		return NULL;
+	}
+
 	timer->source = NULL;
 	timer->interval = interval;
 	timer->repeat = repeat;
@@ -138,7 +144,7 @@ EXPORT_API void nugu_timer_stop(NuguTimer *timer)
 }
 
 EXPORT_API void nugu_timer_set_callback(NuguTimer *timer,
-					timeoutCallback callback,
+					NuguTimeoutCallback callback,
 					void *userdata)
 {
 	g_return_if_fail(timer != NULL);

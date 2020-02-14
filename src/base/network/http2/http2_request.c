@@ -212,7 +212,7 @@ HTTP2Request *http2_request_new()
 
 	req = calloc(1, sizeof(struct _http2_request));
 	if (!req) {
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 

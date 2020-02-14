@@ -82,14 +82,14 @@ void CapabilityManager::destroyInstance()
     }
 }
 
-DirseqReturn CapabilityManager::dirseqCallback(NuguDirective* ndir, void* userdata)
+NuguDirseqReturn CapabilityManager::dirseqCallback(NuguDirective* ndir, void* userdata)
 {
     CapabilityManager* agent = static_cast<CapabilityManager*>(userdata);
     const char* name_space = nugu_directive_peek_namespace(ndir);
     ICapabilityInterface* cap = agent->findCapability(std::string(name_space));
     if (!cap) {
         nugu_warn("capability(%s) is not support", name_space);
-        return DIRSEQ_REMOVE;
+        return NUGU_DIRSEQ_REMOVE;
     }
 
     agent->preprocessDirective(ndir);
@@ -98,11 +98,11 @@ DirseqReturn CapabilityManager::dirseqCallback(NuguDirective* ndir, void* userda
     if (!agent->isSupportDirectiveVersion(version, cap)) {
         nugu_error("directives[%s] cannot work on %s[%s] agent",
             version, cap->getName().c_str(), cap->getVersion().c_str());
-        return DIRSEQ_REMOVE;
+        return NUGU_DIRSEQ_REMOVE;
     }
 
     cap->processDirective(ndir);
-    return DIRSEQ_CONTINUE;
+    return NUGU_DIRSEQ_CONTINUE;
 }
 
 void CapabilityManager::addCapability(const std::string& cname, ICapabilityInterface* cap)

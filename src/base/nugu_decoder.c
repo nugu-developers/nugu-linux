@@ -34,7 +34,7 @@ struct _nugu_decoder {
 
 struct _nugu_decoder_driver {
 	char *name;
-	enum decoder_type type;
+	enum nugu_decoder_type type;
 	struct nugu_decoder_driver_ops *ops;
 	int ref_count;
 };
@@ -42,7 +42,7 @@ struct _nugu_decoder_driver {
 static GList *_decoder_drivers;
 
 EXPORT_API NuguDecoderDriver *
-nugu_decoder_driver_new(const char *name, enum decoder_type type,
+nugu_decoder_driver_new(const char *name, enum nugu_decoder_type type,
 			struct nugu_decoder_driver_ops *ops)
 {
 	NuguDecoderDriver *driver;
@@ -120,7 +120,7 @@ EXPORT_API NuguDecoderDriver *nugu_decoder_driver_find(const char *name)
 }
 
 EXPORT_API NuguDecoderDriver *
-nugu_decoder_driver_find_bytype(enum decoder_type type)
+nugu_decoder_driver_find_bytype(enum nugu_decoder_type type)
 {
 	GList *cur;
 

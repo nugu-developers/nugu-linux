@@ -379,7 +379,7 @@ void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
  * @brief Default error message for 'Not enough memory'
  * @see nugu_error()
  */
-#define error_nomem() nugu_error("Not enough memory")
+#define nugu_error_nomem() nugu_error("Not enough memory")
 
 /**
  * @}

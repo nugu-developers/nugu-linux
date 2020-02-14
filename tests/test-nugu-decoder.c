@@ -63,7 +63,7 @@ static void test_decoder_decode(void)
 	size_t result_length = 0;
 	void *output;
 
-	driver = nugu_decoder_driver_new("test", DECODER_TYPE_CUSTOM,
+	driver = nugu_decoder_driver_new("test", NUGU_DECODER_TYPE_CUSTOM,
 					 &decoder_driver_ops);
 	g_assert(driver != NULL);
 
@@ -93,38 +93,39 @@ static void test_decoder_default(void)
 	char *mydata = "test";
 	size_t result_length = 999;
 
-	g_assert(nugu_decoder_driver_new(NULL, DECODER_TYPE_CUSTOM, NULL) ==
-		 NULL);
-	g_assert(nugu_decoder_driver_new("test", DECODER_TYPE_CUSTOM, NULL) ==
-		 NULL);
-	g_assert(nugu_decoder_driver_new(NULL, DECODER_TYPE_CUSTOM,
+	g_assert(nugu_decoder_driver_new(NULL, NUGU_DECODER_TYPE_CUSTOM,
+					 NULL) == NULL);
+	g_assert(nugu_decoder_driver_new("test", NUGU_DECODER_TYPE_CUSTOM,
+					 NULL) == NULL);
+	g_assert(nugu_decoder_driver_new(NULL, NUGU_DECODER_TYPE_CUSTOM,
 					 &empty_ops) == NULL);
 	g_assert(nugu_decoder_driver_register(NULL) < 0);
 	g_assert(nugu_decoder_driver_remove(NULL) < 0);
 	g_assert(nugu_decoder_driver_find(NULL) == NULL);
 	g_assert(nugu_decoder_driver_find("") == NULL);
 
-	driver = nugu_decoder_driver_new("test", DECODER_TYPE_CUSTOM,
+	driver = nugu_decoder_driver_new("test", NUGU_DECODER_TYPE_CUSTOM,
 					 &empty_ops);
 	g_assert(driver != NULL);
 
 	g_assert(nugu_decoder_driver_find("test") == NULL);
 	g_assert(nugu_decoder_driver_register(driver) == 0);
 	g_assert(nugu_decoder_driver_find("test") == driver);
-	g_assert(nugu_decoder_driver_find_bytype(DECODER_TYPE_CUSTOM) ==
+	g_assert(nugu_decoder_driver_find_bytype(NUGU_DECODER_TYPE_CUSTOM) ==
 		 driver);
-	g_assert(nugu_decoder_driver_find_bytype(DECODER_TYPE_OPUS) == NULL);
+	g_assert(nugu_decoder_driver_find_bytype(NUGU_DECODER_TYPE_OPUS) ==
+		 NULL);
 	g_assert(nugu_decoder_driver_remove(driver) == 0);
 	g_assert(nugu_decoder_driver_find("test") == NULL);
 
 	nugu_decoder_driver_free(driver);
 
-	driver = nugu_decoder_driver_new("test1", DECODER_TYPE_CUSTOM,
+	driver = nugu_decoder_driver_new("test1", NUGU_DECODER_TYPE_CUSTOM,
 					 &empty_ops);
 	g_assert(driver != NULL);
 	g_assert(nugu_decoder_driver_register(driver) == 0);
 
-	driver2 = nugu_decoder_driver_new("test2", DECODER_TYPE_CUSTOM,
+	driver2 = nugu_decoder_driver_new("test2", NUGU_DECODER_TYPE_CUSTOM,
 					  &empty_ops);
 	g_assert(driver2 != NULL);
 	g_assert(nugu_decoder_driver_register(driver2) == 0);

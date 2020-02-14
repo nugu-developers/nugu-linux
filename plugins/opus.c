@@ -178,7 +178,7 @@ static int init(NuguPlugin *p)
 {
 	nugu_dbg("plugin-init '%s'", nugu_plugin_get_description(p)->name);
 
-	driver = nugu_decoder_driver_new("opus", DECODER_TYPE_OPUS,
+	driver = nugu_decoder_driver_new("opus", NUGU_DECODER_TYPE_OPUS,
 					 &decoder_ops);
 	if (!driver)
 		return -1;

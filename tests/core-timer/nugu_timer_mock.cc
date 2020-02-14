@@ -28,7 +28,7 @@ struct _nugu_timer {
     int fake_count;
     int repeat;
     int count;
-    timeoutCallback cb;
+    NuguTimeoutCallback cb;
     void* userdata;
     int start;
 };
@@ -151,7 +151,7 @@ void nugu_timer_stop(NuguTimer* timer)
     timers = g_list_remove(timers, timer);
 }
 
-void nugu_timer_set_callback(NuguTimer* timer, timeoutCallback callback,
+void nugu_timer_set_callback(NuguTimer* timer, NuguTimeoutCallback callback,
     void* userdata)
 {
     timer->cb = callback;

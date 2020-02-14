@@ -38,7 +38,7 @@ EXPORT_API NuguBuffer *nugu_buffer_new(size_t default_size)
 
 	buf = calloc(1, sizeof(struct _nugu_buffer));
 	if (!buf) {
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 
@@ -51,7 +51,7 @@ EXPORT_API NuguBuffer *nugu_buffer_new(size_t default_size)
 	buf->data = calloc(1, buf->alloc_size);
 	if (!buf->data) {
 		free(buf);
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 
@@ -92,7 +92,7 @@ static int _buffer_resize(NuguBuffer *buf, size_t needed)
 
 	tmp = realloc(buf->data, new_size);
 	if (!tmp) {
-		error_nomem();
+		nugu_error_nomem();
 		return -1;
 	}
 
@@ -158,7 +158,7 @@ EXPORT_API size_t nugu_buffer_find_byte(NuguBuffer *buf, unsigned char want)
 		pos++;
 	}
 
-	return NOT_FOUND;
+	return NUGU_BUFFER_NOT_FOUND;
 }
 
 EXPORT_API unsigned char nugu_buffer_peek_byte(NuguBuffer *buf, size_t pos)
@@ -234,7 +234,7 @@ EXPORT_API void *nugu_buffer_pop(NuguBuffer *buf, size_t size)
 
 	tmp = malloc(size + 1);
 	if (!tmp) {
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 

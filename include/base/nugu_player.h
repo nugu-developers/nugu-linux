@@ -211,7 +211,8 @@ enum nugu_media_status nugu_player_get_status(NuguPlayer *player);
  * @param[in] cb callback function
  * @param[in] userdata data to pass to the user callback
  */
-void nugu_player_set_status_callback(NuguPlayer *player, mediaStatusCallback cb,
+void nugu_player_set_status_callback(NuguPlayer *player,
+				     NuguMediaStatusCallback cb,
 				     void *userdata);
 
 /**
@@ -227,8 +228,8 @@ void nugu_player_emit_status(NuguPlayer *player, enum nugu_media_status status);
  * @param[in] cb callback function
  * @param[in] userdata data to pass to the user callback
  */
-void nugu_player_set_event_callback(NuguPlayer *player, mediaEventCallback cb,
-				    void *userdata);
+void nugu_player_set_event_callback(NuguPlayer *player,
+				    NuguMediaEventCallback cb, void *userdata);
 
 /**
  * @brief Emit event to registered callback

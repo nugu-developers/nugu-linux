@@ -53,7 +53,7 @@ static void _parse_servers(const Json::Value& root)
 
         server_item = (NuguNetworkServerPolicy*)calloc(1, sizeof(NuguNetworkServerPolicy));
         if (!server_item) {
-            error_nomem();
+            nugu_error_nomem();
             break;
         }
 
@@ -156,7 +156,7 @@ static int _parse_health_policy(const Json::Value& root)
 
     policy = (struct dg_health_check_policy*)malloc(sizeof(struct dg_health_check_policy));
     if (!policy) {
-        error_nomem();
+        nugu_error_nomem();
         return -1;
     }
 
