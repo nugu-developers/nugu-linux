@@ -24,8 +24,8 @@
 #include "base/nugu_recorder.h"
 
 #define SET_DEFAULT_AUDIO_PROPERTY(property)                                   \
-	property.samplerate = AUDIO_SAMPLE_RATE_16K;                           \
-	property.format = AUDIO_FORMAT_S16_LE;                                 \
+	property.samplerate = NUGU_AUDIO_SAMPLE_RATE_16K;                      \
+	property.format = NUGU_AUDIO_FORMAT_S16_LE;                            \
 	property.channel = 1
 
 #define DEFAULT_PLUGIN_NAME "portaudio"
@@ -49,8 +49,8 @@ static int dummy_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 {
 	(void)driver;
 
-	g_assert(property.samplerate == AUDIO_SAMPLE_RATE_16K);
-	g_assert(property.format == AUDIO_FORMAT_S16_LE);
+	g_assert(property.samplerate == NUGU_AUDIO_SAMPLE_RATE_16K);
+	g_assert(property.format == NUGU_AUDIO_FORMAT_S16_LE);
 	g_assert(property.channel == 1);
 
 	g_assert(nugu_recorder_push_frame(rec, MOCK_AUDIO_FRAMES,
@@ -76,8 +76,8 @@ static int timeout_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 	(void)driver;
 	(void)rec;
 
-	g_assert(property.samplerate == AUDIO_SAMPLE_RATE_16K);
-	g_assert(property.format == AUDIO_FORMAT_S16_LE);
+	g_assert(property.samplerate == NUGU_AUDIO_SAMPLE_RATE_16K);
+	g_assert(property.format == NUGU_AUDIO_FORMAT_S16_LE);
 	g_assert(property.channel == 1);
 
 	return 0;

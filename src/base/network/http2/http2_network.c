@@ -256,7 +256,7 @@ HTTP2Network *http2_network_new()
 
 	net = calloc(1, sizeof(struct _http2_network));
 	if (!net) {
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 
@@ -317,7 +317,7 @@ static struct request_item *_request_item_new(enum request_type type,
 
 	item = malloc(sizeof(struct request_item));
 	if (!item) {
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 

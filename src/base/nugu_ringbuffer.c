@@ -57,6 +57,11 @@ EXPORT_API NuguRingBuffer *nugu_ring_buffer_new(int item_size, int max_items)
 	g_return_val_if_fail(max_items > 0, NULL);
 
 	buffer = (NuguRingBuffer *)calloc(1, sizeof(struct _nugu_ring_buffer));
+	if (!buffer) {
+		nugu_error_nomem();
+		return NULL;
+	}
+
 	buffer->buf = (unsigned char *)calloc(1, item_size * max_items);
 	buffer->item_size = item_size;
 	buffer->max_items = max_items;

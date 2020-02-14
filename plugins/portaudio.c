@@ -52,19 +52,19 @@ static int _set_property_to_param(struct pa_audio_param *param,
 	g_return_val_if_fail(param != NULL, -1);
 
 	switch (prop.samplerate) {
-	case AUDIO_SAMPLE_RATE_8K:
+	case NUGU_AUDIO_SAMPLE_RATE_8K:
 		param->samplerate = 8000;
 		break;
-	case AUDIO_SAMPLE_RATE_16K:
+	case NUGU_AUDIO_SAMPLE_RATE_16K:
 		param->samplerate = 16000;
 		break;
-	case AUDIO_SAMPLE_RATE_32K:
+	case NUGU_AUDIO_SAMPLE_RATE_32K:
 		param->samplerate = 32000;
 		break;
-	case AUDIO_SAMPLE_RATE_22K:
+	case NUGU_AUDIO_SAMPLE_RATE_22K:
 		param->samplerate = 22050;
 		break;
-	case AUDIO_SAMPLE_RATE_44K:
+	case NUGU_AUDIO_SAMPLE_RATE_44K:
 		param->samplerate = 44100;
 		break;
 	default:
@@ -73,26 +73,26 @@ static int _set_property_to_param(struct pa_audio_param *param,
 	}
 
 	switch (prop.format) {
-	case AUDIO_FORMAT_S8:
+	case NUGU_AUDIO_FORMAT_S8:
 		param->format = paInt8;
 		param->samplebyte = 1;
 		break;
-	case AUDIO_FORMAT_U8:
+	case NUGU_AUDIO_FORMAT_U8:
 		param->format = paUInt8;
 		param->samplebyte = 1;
 		break;
-	case AUDIO_FORMAT_S16_LE:
-	case AUDIO_FORMAT_S16_BE:
+	case NUGU_AUDIO_FORMAT_S16_LE:
+	case NUGU_AUDIO_FORMAT_S16_BE:
 		param->format = paInt16;
 		param->samplebyte = 2;
 		break;
-	case AUDIO_FORMAT_S24_LE:
-	case AUDIO_FORMAT_S24_BE:
+	case NUGU_AUDIO_FORMAT_S24_LE:
+	case NUGU_AUDIO_FORMAT_S24_BE:
 		param->format = paInt24;
 		param->samplebyte = 3;
 		break;
-	case AUDIO_FORMAT_S32_LE:
-	case AUDIO_FORMAT_S32_BE:
+	case NUGU_AUDIO_FORMAT_S32_LE:
+	case NUGU_AUDIO_FORMAT_S32_BE:
 		param->format = paFloat32;
 		param->samplebyte = 4;
 		break;
@@ -144,7 +144,7 @@ static gboolean _playerEndOfStream(void *userdata)
 	NuguPcm *pcm = (NuguPcm *)userdata;
 
 	if (pcm)
-		nugu_pcm_emit_event(pcm, MEDIA_EVENT_END_OF_STREAM);
+		nugu_pcm_emit_event(pcm, NUGU_MEDIA_EVENT_END_OF_STREAM);
 	else
 		nugu_error("wrong parameter");
 
@@ -337,7 +337,7 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm,
 		return -1;
 	}
 
-	nugu_pcm_emit_status(pcm, MEDIA_STATUS_READY);
+	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_READY);
 
 	pcm_param->pause = 0;
 	pcm_param->stop = 0;
@@ -350,7 +350,7 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm,
 
 	nugu_pcm_set_userdata(pcm, pcm_param);
 
-	nugu_pcm_emit_status(pcm, MEDIA_STATUS_PLAYING);
+	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_PLAYING);
 
 	nugu_dbg("start done");
 	return 0;
@@ -378,7 +378,7 @@ static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 	if (err != paNoError)
 		nugu_error("Pa_CloseStream return fail");
 
-	nugu_pcm_emit_status(pcm, MEDIA_STATUS_STOPPED);
+	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_STOPPED);
 
 	free(pcm_param);
 	nugu_pcm_set_userdata(pcm, NULL);
@@ -406,7 +406,7 @@ static int _pcm_pause(NuguPcmDriver *driver, NuguPcm *pcm)
 	}
 
 	pcm_param->pause = 1;
-	nugu_pcm_emit_status(pcm, MEDIA_STATUS_PAUSED);
+	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_PAUSED);
 
 	nugu_dbg("pause done");
 
@@ -431,7 +431,7 @@ static int _pcm_resume(NuguPcmDriver *driver, NuguPcm *pcm)
 	}
 
 	pcm_param->pause = 0;
-	nugu_pcm_emit_status(pcm, MEDIA_STATUS_PLAYING);
+	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_PLAYING);
 
 	nugu_dbg("resume done");
 

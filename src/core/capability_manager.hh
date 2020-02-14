@@ -37,7 +37,7 @@ public:
     static void destroyInstance();
     PlaySyncManager* getPlaySyncManager();
 
-    static DirseqReturn dirseqCallback(NuguDirective* ndir, void* userdata);
+    static NuguDirseqReturn dirseqCallback(NuguDirective* ndir, void* userdata);
 
     void addCapability(const std::string& cname, ICapabilityInterface* cap);
     void removeCapability(const std::string& cname);

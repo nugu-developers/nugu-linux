@@ -140,9 +140,9 @@ NuguPcm *nugu_decoder_get_pcm(NuguDecoder *dec);
  * @brief decoder type
  * @see nugu_decoder_driver_new()
  */
-enum decoder_type {
-	DECODER_TYPE_OPUS, /**< OPUS */
-	DECODER_TYPE_CUSTOM = 99 /**< Custom type */
+enum nugu_decoder_type {
+	NUGU_DECODER_TYPE_OPUS, /**< OPUS */
+	NUGU_DECODER_TYPE_CUSTOM = 99 /**< Custom type */
 };
 
 /**
@@ -178,7 +178,7 @@ struct nugu_decoder_driver_ops {
  * @see nugu_decoder_driver_free()
  */
 NuguDecoderDriver *nugu_decoder_driver_new(const char *name,
-					   enum decoder_type type,
+					   enum nugu_decoder_type type,
 					   struct nugu_decoder_driver_ops *ops);
 
 /**
@@ -222,7 +222,7 @@ NuguDecoderDriver *nugu_decoder_driver_find(const char *name);
  * @return decoder driver object
  * @see nugu_decoder_driver_find
  */
-NuguDecoderDriver *nugu_decoder_driver_find_bytype(enum decoder_type type);
+NuguDecoderDriver *nugu_decoder_driver_find_bytype(enum nugu_decoder_type type);
 
 /**
  * @}

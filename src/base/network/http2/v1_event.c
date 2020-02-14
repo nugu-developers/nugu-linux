@@ -40,7 +40,7 @@ V1Event *v1_event_new(const char *host)
 
 	event = calloc(1, sizeof(struct _v1_event));
 	if (!event) {
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 
@@ -97,7 +97,7 @@ static void _emit_send_result(int code, HTTP2Request *req)
 
 	event = calloc(1, sizeof(struct equeue_data_request_result));
 	if (!event) {
-		error_nomem();
+		nugu_error_nomem();
 		return;
 	}
 

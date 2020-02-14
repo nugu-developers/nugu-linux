@@ -83,21 +83,21 @@ MediaPlayer::MediaPlayer(int volume)
     }
     nugu_player_add(d->player);
 
-    mediaStatusCallback scb = [](enum nugu_media_status status,
+    NuguMediaStatusCallback scb = [](enum nugu_media_status status,
                                   void* userdata) {
         MediaPlayer* mplayer = static_cast<MediaPlayer*>(userdata);
 
         switch (status) {
-        case MEDIA_STATUS_STOPPED:
+        case NUGU_MEDIA_STATUS_STOPPED:
             mplayer->setState(MediaPlayerState::STOPPED);
             break;
-        case MEDIA_STATUS_READY:
+        case NUGU_MEDIA_STATUS_READY:
             mplayer->setState(MediaPlayerState::READY);
             break;
-        case MEDIA_STATUS_PLAYING:
+        case NUGU_MEDIA_STATUS_PLAYING:
             mplayer->setState(MediaPlayerState::PLAYING);
             break;
-        case MEDIA_STATUS_PAUSED:
+        case NUGU_MEDIA_STATUS_PAUSED:
             mplayer->setState(MediaPlayerState::PAUSED);
             break;
         default:
@@ -107,7 +107,7 @@ MediaPlayer::MediaPlayer(int volume)
     };
     nugu_player_set_status_callback(d->player, scb, this);
 
-    mediaEventCallback ecb = [](enum nugu_media_event event,
+    NuguMediaEventCallback ecb = [](enum nugu_media_event event,
                                  void* userdata) {
         MediaPlayer* mplayer = static_cast<MediaPlayer*>(userdata);
         MediaPlayerPrivate* d = MediaPlayerPrivate::mp_map[mplayer];
@@ -121,19 +121,19 @@ MediaPlayer::MediaPlayer(int volume)
             return;
 
         switch (event) {
-        case MEDIA_EVENT_MEDIA_SOURCE_CHANGED:
+        case NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED:
             for (auto l : d->listeners)
                 l->mediaChanged(mplayer->url());
             break;
-        case MEDIA_EVENT_MEDIA_INVALID:
+        case NUGU_MEDIA_EVENT_MEDIA_INVALID:
             for (auto l : d->listeners)
                 l->mediaEventReport(MediaPlayerEvent::INVALID_MEDIA_URL);
             break;
-        case MEDIA_EVENT_MEDIA_LOAD_FAILED:
+        case NUGU_MEDIA_EVENT_MEDIA_LOAD_FAILED:
             for (auto l : d->listeners)
                 l->mediaEventReport(MediaPlayerEvent::LOADING_MEDIA_FAILED);
             break;
-        case MEDIA_EVENT_MEDIA_LOADED: {
+        case NUGU_MEDIA_EVENT_MEDIA_LOADED: {
             int duration = nugu_player_get_duration(player);
             if (duration > 0)
                 mplayer->setDuration(duration);
@@ -141,7 +141,7 @@ MediaPlayer::MediaPlayer(int volume)
             for (auto l : d->listeners)
                 l->mediaEventReport(MediaPlayerEvent::LOADING_MEDIA_SUCCESS);
         } break;
-        case MEDIA_EVENT_END_OF_STREAM:
+        case NUGU_MEDIA_EVENT_END_OF_STREAM:
             // ignore STOP event after EOF
             d->state = MediaPlayerState::STOPPED;
 

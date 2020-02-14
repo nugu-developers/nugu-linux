@@ -24,7 +24,7 @@
 #include "base/nugu_directive_sequencer.h"
 
 struct _dirseq_callback {
-	DirseqCallback callback;
+	NuguDirseqCallback callback;
 	void *userdata;
 };
 
@@ -41,7 +41,8 @@ static gint _compare_callback(gconstpointer a, gconstpointer b)
 	return -1;
 }
 
-EXPORT_API int nugu_dirseq_add_callback(DirseqCallback callback, void *userdata)
+EXPORT_API int nugu_dirseq_add_callback(NuguDirseqCallback callback,
+					void *userdata)
 {
 	struct _dirseq_callback *cb;
 
@@ -61,7 +62,7 @@ EXPORT_API int nugu_dirseq_add_callback(DirseqCallback callback, void *userdata)
 	return 0;
 }
 
-EXPORT_API int nugu_dirseq_remove_callback(DirseqCallback callback)
+EXPORT_API int nugu_dirseq_remove_callback(NuguDirseqCallback callback)
 {
 	GList *l;
 
@@ -84,11 +85,11 @@ EXPORT_API int nugu_dirseq_remove_callback(DirseqCallback callback)
 	return 0;
 }
 
-static DirseqReturn nugu_dirseq_emit_callback(NuguDirective *ndir)
+static NuguDirseqReturn nugu_dirseq_emit_callback(NuguDirective *ndir)
 {
 	GList *l;
 	struct _dirseq_callback *cb;
-	DirseqReturn ret = DIRSEQ_REMOVE;
+	NuguDirseqReturn ret = NUGU_DIRSEQ_REMOVE;
 
 	g_return_val_if_fail(ndir != NULL, -1);
 
@@ -100,7 +101,7 @@ static DirseqReturn nugu_dirseq_emit_callback(NuguDirective *ndir)
 			continue;
 
 		ret = cb->callback(ndir, cb->userdata);
-		if (ret != DIRSEQ_CONTINUE)
+		if (ret != NUGU_DIRSEQ_CONTINUE)
 			break;
 	}
 
@@ -109,15 +110,16 @@ static DirseqReturn nugu_dirseq_emit_callback(NuguDirective *ndir)
 
 EXPORT_API int nugu_dirseq_push(NuguDirective *ndir)
 {
-	DirseqReturn ret;
+	NuguDirseqReturn ret;
 
 	list_dir = g_list_append(list_dir, ndir);
 	nugu_dbg("added: %s.%s 'id=%s'", nugu_directive_peek_namespace(ndir),
-	    nugu_directive_peek_name(ndir), nugu_directive_peek_msg_id(ndir));
+		 nugu_directive_peek_name(ndir),
+		 nugu_directive_peek_msg_id(ndir));
 
 	nugu_directive_set_active(ndir, 1);
 	ret = nugu_dirseq_emit_callback(ndir);
-	if (ret == DIRSEQ_REMOVE) {
+	if (ret == NUGU_DIRSEQ_REMOVE) {
 		nugu_dbg("directive removed");
 		list_dir = g_list_remove(list_dir, ndir);
 	}

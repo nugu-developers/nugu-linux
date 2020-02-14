@@ -35,8 +35,8 @@ struct _nugu_pcm {
 	NuguPcmDriver *driver;
 	enum nugu_media_status status;
 	NuguAudioProperty property;
-	mediaEventCallback ecb;
-	mediaStatusCallback scb;
+	NuguMediaEventCallback ecb;
+	NuguMediaStatusCallback scb;
 	void *eud; /* user data for event callback */
 	void *sud; /* user data for status callback */
 	void *dud; /* user data for driver */
@@ -60,6 +60,11 @@ EXPORT_API NuguPcmDriver *nugu_pcm_driver_new(const char *name,
 	g_return_val_if_fail(ops != NULL, NULL);
 
 	driver = g_malloc0(sizeof(struct _nugu_pcm_driver));
+	if (!driver) {
+		nugu_error_nomem();
+		return NULL;
+	}
+
 	driver->name = g_strdup(name);
 	driver->ops = ops;
 	driver->ref_count = 0;
@@ -162,6 +167,11 @@ EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver)
 	g_return_val_if_fail(driver != NULL, NULL);
 
 	pcm = g_malloc0(sizeof(struct _nugu_pcm));
+	if (!pcm) {
+		nugu_error_nomem();
+		return NULL;
+	}
+
 	pcm->name = g_strdup(name);
 	pcm->driver = driver;
 	pcm->buf = nugu_buffer_new(0);
@@ -171,7 +181,7 @@ EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver)
 	pcm->sud = NULL;
 	pcm->eud = NULL;
 	pcm->dud = NULL;
-	pcm->status = MEDIA_STATUS_STOPPED;
+	pcm->status = NUGU_MEDIA_STATUS_STOPPED;
 	pcm->volume = NUGU_SET_VOLUME_MAX;
 
 	if (pcm->buf == NULL) {
@@ -336,7 +346,7 @@ EXPORT_API int nugu_pcm_get_volume(NuguPcm *pcm)
 }
 
 EXPORT_API void nugu_pcm_set_status_callback(NuguPcm *pcm,
-					     mediaStatusCallback cb,
+					     NuguMediaStatusCallback cb,
 					     void *userdata)
 {
 	g_return_if_fail(pcm != NULL);
@@ -361,12 +371,13 @@ EXPORT_API void nugu_pcm_emit_status(NuguPcm *pcm,
 
 EXPORT_API enum nugu_media_status nugu_pcm_get_status(NuguPcm *pcm)
 {
-	g_return_val_if_fail(pcm != NULL, MEDIA_STATUS_STOPPED);
+	g_return_val_if_fail(pcm != NULL, NUGU_MEDIA_STATUS_STOPPED);
 
 	return pcm->status;
 }
 
-EXPORT_API void nugu_pcm_set_event_callback(NuguPcm *pcm, mediaEventCallback cb,
+EXPORT_API void nugu_pcm_set_event_callback(NuguPcm *pcm,
+					    NuguMediaEventCallback cb,
 					    void *userdata)
 {
 	g_return_if_fail(pcm != NULL);
@@ -379,8 +390,8 @@ EXPORT_API void nugu_pcm_emit_event(NuguPcm *pcm, enum nugu_media_event event)
 {
 	g_return_if_fail(pcm != NULL);
 
-	if (event == MEDIA_EVENT_END_OF_STREAM)
-		pcm->status = MEDIA_STATUS_STOPPED;
+	if (event == NUGU_MEDIA_EVENT_END_OF_STREAM)
+		pcm->status = NUGU_MEDIA_STATUS_STOPPED;
 
 	if (pcm->ecb != NULL)
 		pcm->ecb(event, pcm->eud);

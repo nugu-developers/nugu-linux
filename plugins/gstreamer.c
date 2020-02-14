@@ -129,14 +129,14 @@ void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
 	}
 
 	if (discoverer_result != GST_DISCOVERER_OK) {
-		if (gh->status == MEDIA_STATUS_PLAYING) {
+		if (gh->status == NUGU_MEDIA_STATUS_PLAYING) {
 			nugu_dbg("Gstreamer is already played!!");
 			return;
 		}
 		if (discoverer_result == GST_DISCOVERER_URI_INVALID) {
-			NOTIFY_EVENT(MEDIA_EVENT_MEDIA_INVALID);
+			NOTIFY_EVENT(NUGU_MEDIA_EVENT_MEDIA_INVALID);
 		} else {
-			NOTIFY_EVENT(MEDIA_EVENT_MEDIA_LOAD_FAILED);
+			NOTIFY_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOAD_FAILED);
 		}
 
 		nugu_dbg("This URI cannot be played");
@@ -152,10 +152,10 @@ void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
 	nugu_dbg("[gstreamer]Duration: %" GST_TIME_FORMAT "",
 		 GST_TIME_ARGS(gst_discoverer_info_get_duration(info)));
 
-	if (gh->status == MEDIA_STATUS_STOPPED)
-		NOTIFY_STATUS_CHANGED(MEDIA_STATUS_READY);
+	if (gh->status == NUGU_MEDIA_STATUS_STOPPED)
+		NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_READY);
 
-	NOTIFY_EVENT(MEDIA_EVENT_MEDIA_LOADED);
+	NOTIFY_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOADED);
 }
 
 void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
@@ -168,9 +168,9 @@ void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 		gst_message_parse_error(msg, &err, &debug);
 		nugu_dbg("GST_MESSAGE_ERROR: %s", err->message);
 
-		if (gh->status != MEDIA_STATUS_STOPPED) {
-			NOTIFY_EVENT(MEDIA_EVENT_MEDIA_LOAD_FAILED);
-			NOTIFY_STATUS_CHANGED(MEDIA_STATUS_STOPPED);
+		if (gh->status != NUGU_MEDIA_STATUS_STOPPED) {
+			NOTIFY_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOAD_FAILED);
+			NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_STOPPED);
 		}
 
 		g_error_free(err);
@@ -194,14 +194,15 @@ void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 			 gst_element_state_get_name(new_state));
 
 		if (new_state == GST_STATE_PLAYING) {
-			if (gh->status == MEDIA_STATUS_READY ||
-			    gh->status == MEDIA_STATUS_STOPPED ||
-			    gh->status == MEDIA_STATUS_PAUSED) {
-				NOTIFY_STATUS_CHANGED(MEDIA_STATUS_PLAYING);
+			if (gh->status == NUGU_MEDIA_STATUS_READY ||
+			    gh->status == NUGU_MEDIA_STATUS_STOPPED ||
+			    gh->status == NUGU_MEDIA_STATUS_PAUSED) {
+				NOTIFY_STATUS_CHANGED(
+					NUGU_MEDIA_STATUS_PLAYING);
 
 				if (gh->seek_reserve)
 					need_seek = TRUE;
-			} else if (gh->status == MEDIA_STATUS_PAUSED &&
+			} else if (gh->status == NUGU_MEDIA_STATUS_PAUSED &&
 				   gh->seek_done) {
 				gst_element_set_state(gh->pipeline,
 						      GST_STATE_PAUSED);
@@ -228,8 +229,8 @@ void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 	case GST_MESSAGE_EOS:
 		nugu_dbg("GST_MESSAGE_EOS");
 		gst_element_set_state(gh->pipeline, GST_STATE_READY);
-		NOTIFY_EVENT(MEDIA_EVENT_END_OF_STREAM);
-		NOTIFY_STATUS_CHANGED(MEDIA_STATUS_STOPPED);
+		NOTIFY_EVENT(NUGU_MEDIA_EVENT_END_OF_STREAM);
+		NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_STOPPED);
 		break;
 
 	case GST_MESSAGE_BUFFERING: {
@@ -336,7 +337,7 @@ void *_create(NuguPlayer *player)
 
 	gh = (GstreamerHandle *)g_malloc0(sizeof(GstreamerHandle));
 	if (!gh) {
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 
@@ -384,7 +385,7 @@ void *_create(NuguPlayer *player)
 	gh->seek_reserve = 0;
 	gh->buffering = -1;
 	gh->duration = -1;
-	gh->status = MEDIA_STATUS_STOPPED;
+	gh->status = NUGU_MEDIA_STATUS_STOPPED;
 	gh->player = player;
 
 	gst_bin_add_many(GST_BIN(gh->pipeline), gh->audio_src,
@@ -475,7 +476,7 @@ int _set_source(void *device, NuguPlayer *player, const char *url)
 	memcpy(gh->playurl, url, strlen(url));
 	nugu_dbg("playurl:%s", gh->playurl);
 
-	nugu_player_emit_event(player, MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
+	nugu_player_emit_event(player, NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
 	_stop(device, player);
 
 	return 0;
@@ -539,7 +540,7 @@ int _stop(void *device, NuguPlayer *player)
 		}
 	}
 
-	NOTIFY_STATUS_CHANGED(MEDIA_STATUS_STOPPED);
+	NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_STOPPED);
 
 	return 0;
 }
@@ -565,7 +566,7 @@ int _pause(void *device, NuguPlayer *player)
 		return -1;
 	}
 
-	NOTIFY_STATUS_CHANGED(MEDIA_STATUS_PAUSED);
+	NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_PAUSED);
 
 	return 0;
 }
@@ -591,7 +592,7 @@ int _resume(void *device, NuguPlayer *player)
 		return -1;
 	}
 
-	NOTIFY_STATUS_CHANGED(MEDIA_STATUS_PLAYING);
+	NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_PLAYING);
 
 	return 0;
 }
@@ -611,8 +612,8 @@ int _seek(void *device, NuguPlayer *player, int sec)
 		return -1;
 	}
 
-	if (gh->status == MEDIA_STATUS_READY ||
-	    gh->status == MEDIA_STATUS_STOPPED) {
+	if (gh->status == NUGU_MEDIA_STATUS_READY ||
+	    gh->status == NUGU_MEDIA_STATUS_STOPPED) {
 		/* wait to play & seek */
 		nugu_dbg("seek is reserved (%d sec)", sec);
 		gh->seek_reserve = sec;

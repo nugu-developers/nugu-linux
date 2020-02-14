@@ -46,7 +46,7 @@ EXPORT_API NuguPlugin *nugu_plugin_new(struct nugu_plugin_desc *desc)
 
 	p = malloc(sizeof(struct _plugin));
 	if (!p) {
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 

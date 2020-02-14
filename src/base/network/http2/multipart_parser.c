@@ -63,7 +63,7 @@ MultipartParser *multipart_parser_new()
 
 	parser = calloc(1, sizeof(struct _multipart_parser));
 	if (!parser) {
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 

@@ -62,8 +62,8 @@ typedef enum nugu_network_status {
  * @brief Callback prototype for receiving network status events
  * @see nugu_network_manager_set_status_callback()
  */
-typedef void (*NetworkManagerStatusCallback)(NuguNetworkStatus status,
-					     void *userdata);
+typedef void (*NuguNetworkManagerStatusCallback)(NuguNetworkStatus status,
+						 void *userdata);
 
 /**
  * @brief network handoff status
@@ -84,17 +84,17 @@ typedef enum nugu_network_handoff_status {
 /**
  * @brief Callback prototype for handoff status events
  */
-typedef void (*NetworkManagerHandoffStatusCallback)(
+typedef void (*NuguNetworkManagerHandoffStatusCallback)(
 	NuguNetworkHandoffStatus status, void *userdata);
 
 /**
  * @brief Callback prototype for result of event transfer request.
  * @see nugu_network_manager_send_event()
  */
-typedef void (*NetworkManagerEventResultCallback)(int success,
-						  const char *msg_id,
-						  const char *dialog_id,
-						  int code, void *userdata);
+typedef void (*NuguNetworkManagerEventResultCallback)(int success,
+						      const char *msg_id,
+						      const char *dialog_id,
+						      int code, void *userdata);
 
 /**
  * @brief network protocols
@@ -133,7 +133,7 @@ typedef struct nugu_network_server_policy {
  * @retval -1 failure
  */
 int nugu_network_manager_set_status_callback(
-	NetworkManagerStatusCallback callback, void *userdata);
+	NuguNetworkManagerStatusCallback callback, void *userdata);
 
 /**
  * @brief Set handoff status callback
@@ -144,7 +144,7 @@ int nugu_network_manager_set_status_callback(
  * @retval -1 failure
  */
 int nugu_network_manager_set_handoff_status_callback(
-	NetworkManagerHandoffStatusCallback callback, void *userdata);
+	NuguNetworkManagerHandoffStatusCallback callback, void *userdata);
 
 /**
  * @brief Set event result callback
@@ -155,7 +155,7 @@ int nugu_network_manager_set_handoff_status_callback(
  * @retval -1 failure
  */
 int nugu_network_manager_set_event_result_callback(
-	NetworkManagerEventResultCallback callback, void *userdata);
+	NuguNetworkManagerEventResultCallback callback, void *userdata);
 
 /**
  * @brief Set the current network status

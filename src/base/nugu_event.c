@@ -20,6 +20,7 @@
 
 #include <glib.h>
 
+#include "base/nugu_log.h"
 #include "base/nugu_uuid.h"
 #include "base/nugu_event.h"
 
@@ -79,6 +80,11 @@ EXPORT_API NuguEvent *nugu_event_new(const char *name_space, const char *name,
 	g_return_val_if_fail(version != NULL, NULL);
 
 	nev = calloc(1, sizeof(NuguEvent));
+	if (!nev) {
+		nugu_error_nomem();
+		return NULL;
+	}
+
 	nev->name_space = strdup(name_space);
 	nev->name = strdup(name);
 	nev->msg_id = nugu_uuid_generate_time();

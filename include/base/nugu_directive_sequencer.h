@@ -38,23 +38,18 @@ extern "C" {
 /**
  * @brief Callback return type
  */
-enum dirseq_return {
-	DIRSEQ_STOP_PROPAGATE, /**< Stop event propagation */
-	DIRSEQ_CONTINUE, /**< Pass to the next callback */
-	DIRSEQ_REMOVE /**< Remove the directive */
-};
-
-/**
- * @brief Callback return type
- * @see enum dirseq_return
- */
-typedef enum dirseq_return DirseqReturn;
+typedef enum nugu_dirseq_return {
+	NUGU_DIRSEQ_STOP_PROPAGATE, /**< Stop event propagation */
+	NUGU_DIRSEQ_CONTINUE, /**< Pass to the next callback */
+	NUGU_DIRSEQ_REMOVE /**< Remove the directive */
+} NuguDirseqReturn;
 
 /**
  * @brief Callback prototype
- * @see DirseqReturn
+ * @see NuguDirseqReturn
  */
-typedef DirseqReturn (*DirseqCallback)(NuguDirective *ndir, void *userdata);
+typedef NuguDirseqReturn (*NuguDirseqCallback)(NuguDirective *ndir,
+					       void *userdata);
 
 /**
  * @brief Add event callback to Directive sequencer
@@ -64,7 +59,7 @@ typedef DirseqReturn (*DirseqCallback)(NuguDirective *ndir, void *userdata);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_dirseq_add_callback(DirseqCallback callback, void *userdata);
+int nugu_dirseq_add_callback(NuguDirseqCallback callback, void *userdata);
 
 /**
  * @brief Remove event callback
@@ -73,7 +68,7 @@ int nugu_dirseq_add_callback(DirseqCallback callback, void *userdata);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_dirseq_remove_callback(DirseqCallback callback);
+int nugu_dirseq_remove_callback(NuguDirseqCallback callback);
 
 /**
  * @brief Add new directive object to directive sequencer

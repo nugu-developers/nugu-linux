@@ -54,36 +54,37 @@ extern "C" {
  * @brief media status
  */
 enum nugu_media_status {
-	MEDIA_STATUS_STOPPED, /**< media stopped */
-	MEDIA_STATUS_READY, /**< media ready */
-	MEDIA_STATUS_PLAYING, /**< media playing */
-	MEDIA_STATUS_PAUSED /**< media paused */
+	NUGU_MEDIA_STATUS_STOPPED, /**< media stopped */
+	NUGU_MEDIA_STATUS_READY, /**< media ready */
+	NUGU_MEDIA_STATUS_PLAYING, /**< media playing */
+	NUGU_MEDIA_STATUS_PAUSED /**< media paused */
 };
 
 /**
  * @brief media event type
  */
 enum nugu_media_event {
-	MEDIA_EVENT_MEDIA_SOURCE_CHANGED, /**< media source changed */
-	MEDIA_EVENT_MEDIA_INVALID, /**< media invalid */
-	MEDIA_EVENT_MEDIA_LOAD_FAILED, /**< media load failed */
-	MEDIA_EVENT_MEDIA_LOADED, /**< media loaded */
-	MEDIA_EVENT_MEDIA_UNDERRUN, /**< media buffer underrun */
-	MEDIA_EVENT_MEDIA_BUFFER_FULL, /**< media buffer full */
-	MEDIA_EVENT_END_OF_STREAM, /**< end of stream */
-	MEDIA_EVENT_MAX
+	NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED, /**< media source changed */
+	NUGU_MEDIA_EVENT_MEDIA_INVALID, /**< media invalid */
+	NUGU_MEDIA_EVENT_MEDIA_LOAD_FAILED, /**< media load failed */
+	NUGU_MEDIA_EVENT_MEDIA_LOADED, /**< media loaded */
+	NUGU_MEDIA_EVENT_MEDIA_UNDERRUN, /**< media buffer underrun */
+	NUGU_MEDIA_EVENT_MEDIA_BUFFER_FULL, /**< media buffer full */
+	NUGU_MEDIA_EVENT_END_OF_STREAM, /**< end of stream */
+	NUGU_MEDIA_EVENT_MAX
 };
 
 /**
  * @brief Callback type for media status
  */
-typedef void (*mediaStatusCallback)(enum nugu_media_status status,
+typedef void (*NuguMediaStatusCallback)(enum nugu_media_status status,
 				    void *userdata);
 
 /**
  * @brief Callback type for media event
  */
-typedef void (*mediaEventCallback)(enum nugu_media_event event, void *userdata);
+typedef void (*NuguMediaEventCallback)(enum nugu_media_event event,
+				       void *userdata);
 
 /**
  * @}

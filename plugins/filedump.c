@@ -127,7 +127,7 @@ static int init(NuguPlugin *p)
 	nugu_dbg("plugin-init '%s'", nugu_plugin_get_description(p)->name);
 
 	decoder_driver = nugu_decoder_driver_new(
-		"filedump", DECODER_TYPE_CUSTOM, &decoder_ops);
+		"filedump", NUGU_DECODER_TYPE_CUSTOM, &decoder_ops);
 	if (!decoder_driver)
 		return -1;
 

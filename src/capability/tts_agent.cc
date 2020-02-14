@@ -72,7 +72,7 @@ void TTSAgent::initialize()
     nugu_pcm_set_status_callback(pcm, pcmStatusCallback, this);
     nugu_pcm_set_event_callback(pcm, pcmEventCallback, this);
 
-    nugu_pcm_set_property(pcm, (NuguAudioProperty) { AUDIO_SAMPLE_RATE_22K, AUDIO_FORMAT_S16_LE, 1 });
+    nugu_pcm_set_property(pcm, (NuguAudioProperty) { NUGU_AUDIO_SAMPLE_RATE_22K, NUGU_AUDIO_FORMAT_S16_LE, 1 });
 
     capa_helper->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
@@ -112,14 +112,14 @@ void TTSAgent::pcmStatusCallback(enum nugu_media_status status, void* userdata)
     nugu_dbg("pcm state changed(%d -> %d)", tts->speak_status, status);
 
     switch (status) {
-    case MEDIA_STATUS_PLAYING:
+    case NUGU_MEDIA_STATUS_PLAYING:
         tts->sendEventSpeechStarted(tts->cur_token);
         break;
-    case MEDIA_STATUS_STOPPED:
+    case NUGU_MEDIA_STATUS_STOPPED:
         tts->sendEventSpeechStopped(tts->cur_token);
         break;
     default:
-        status = MEDIA_STATUS_STOPPED;
+        status = NUGU_MEDIA_STATUS_STOPPED;
         break;
     }
 
@@ -131,10 +131,10 @@ void TTSAgent::pcmEventCallback(enum nugu_media_event event, void* userdata)
     TTSAgent* tts = static_cast<TTSAgent*>(userdata);
 
     switch (event) {
-    case MEDIA_EVENT_END_OF_STREAM:
+    case NUGU_MEDIA_EVENT_END_OF_STREAM:
         tts->sendEventSpeechFinished(tts->cur_token);
         tts->finish = true;
-        tts->speak_status = MEDIA_STATUS_STOPPED;
+        tts->speak_status = NUGU_MEDIA_STATUS_STOPPED;
         tts->capa_helper->releaseFocus("cap_tts");
         break;
     default:
@@ -179,13 +179,13 @@ NuguFocusResult TTSAgent::onFocus(void* event)
 
     switch (speak_status) {
     case -1:
-    case MEDIA_STATUS_STOPPED:
-    case MEDIA_STATUS_READY:
+    case NUGU_MEDIA_STATUS_STOPPED:
+    case NUGU_MEDIA_STATUS_READY:
         nugu_info("nugu_pcm_start(speak->pcm)");
         if (nugu_directive_get_data_size(speak_dir) > 0)
             getAttachmentData(speak_dir, this);
         break;
-    case MEDIA_STATUS_PLAYING:
+    case NUGU_MEDIA_STATUS_PLAYING:
         nugu_info("already playing");
         break;
     }
@@ -201,7 +201,7 @@ NuguFocusResult TTSAgent::onUnfocus(void* event)
 
     playsync_manager->removeContext(playstackctl_ps_id, getName(), !finish);
 
-    if (tts_listener && cur_status != MEDIA_STATUS_STOPPED)
+    if (tts_listener && cur_status != NUGU_MEDIA_STATUS_STOPPED)
         tts_listener->onTTSCancel(dialog_id);
 
     return NUGU_FOCUS_REMOVE;
@@ -228,7 +228,7 @@ void TTSAgent::stopTTS()
         nugu_pcm_stop(pcm);
     }
 
-    if (tts_listener && cur_status != MEDIA_STATUS_STOPPED && cur_status != -1)
+    if (tts_listener && cur_status != NUGU_MEDIA_STATUS_STOPPED && cur_status != -1)
         tts_listener->onTTSCancel(dialog_id);
 }
 
@@ -292,11 +292,11 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
     case -1:
         tts["ttsActivity"] = "IDLE";
         break;
-    case MEDIA_STATUS_STOPPED:
+    case NUGU_MEDIA_STATUS_STOPPED:
         tts["ttsActivity"] = "STOPPED";
         break;
-    case MEDIA_STATUS_READY:
-    case MEDIA_STATUS_PLAYING:
+    case NUGU_MEDIA_STATUS_READY:
+    case NUGU_MEDIA_STATUS_PLAYING:
         tts["ttsActivity"] = "PLAYING";
         break;
     default:

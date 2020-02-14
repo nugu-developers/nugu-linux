@@ -72,7 +72,7 @@ DGServer *dg_server_new(const NuguNetworkServerPolicy *policy)
 
 	server = calloc(1, sizeof(struct _dg_server));
 	if (!server) {
-		error_nomem();
+		nugu_error_nomem();
 		g_free(tmp);
 		return NULL;
 	}

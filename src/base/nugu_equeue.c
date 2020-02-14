@@ -111,7 +111,7 @@ EXPORT_API int nugu_equeue_initialize(void)
 
 	_equeue = calloc(1, sizeof(struct _equeue));
 	if (!_equeue) {
-		error_nomem();
+		nugu_error_nomem();
 		pthread_mutex_unlock(&_lock);
 		return -1;
 	}
@@ -251,7 +251,7 @@ EXPORT_API int nugu_equeue_push(enum nugu_equeue_type type, void *data)
 
 	item = malloc(sizeof(struct _econtainer));
 	if (!item) {
-		error_nomem();
+		nugu_error_nomem();
 		pthread_mutex_unlock(&_lock);
 		return -1;
 	}

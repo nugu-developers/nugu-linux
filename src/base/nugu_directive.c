@@ -38,7 +38,7 @@ struct _nugu_directive {
 
 	char *media_type;
 	NuguBuffer *buf;
-	DirectiveDataCallback callback;
+	NuguDirectiveDataCallback callback;
 	void *callback_userdata;
 
 	int ref_count;
@@ -303,9 +303,8 @@ EXPORT_API size_t nugu_directive_get_data_size(NuguDirective *ndir)
 	return size;
 }
 
-EXPORT_API int nugu_directive_set_data_callback(NuguDirective *ndir,
-						DirectiveDataCallback callback,
-						void *userdata)
+EXPORT_API int nugu_directive_set_data_callback(
+	NuguDirective *ndir, NuguDirectiveDataCallback callback, void *userdata)
 {
 	g_return_val_if_fail(ndir != NULL, -1);
 	g_return_val_if_fail(callback != NULL, -1);

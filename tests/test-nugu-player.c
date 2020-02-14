@@ -66,10 +66,11 @@ static int dummy_start(void *device, NuguPlayer *player)
 {
 	(void)device;
 	if (g_strcmp0(_playurl, WRONG_PLAYURL) == 0)
-		nugu_player_emit_event(player, MEDIA_EVENT_MEDIA_LOAD_FAILED);
+		nugu_player_emit_event(player,
+				       NUGU_MEDIA_EVENT_MEDIA_LOAD_FAILED);
 	else {
-		nugu_player_emit_event(player, MEDIA_EVENT_MEDIA_LOADED);
-		nugu_player_emit_status(player, MEDIA_STATUS_PLAYING);
+		nugu_player_emit_event(player, NUGU_MEDIA_EVENT_MEDIA_LOADED);
+		nugu_player_emit_status(player, NUGU_MEDIA_STATUS_PLAYING);
 	}
 	_seek_pos = 0;
 	_position = 0;
@@ -78,19 +79,19 @@ static int dummy_start(void *device, NuguPlayer *player)
 static int dummy_stop(void *device, NuguPlayer *player)
 {
 	(void)device;
-	nugu_player_emit_status(player, MEDIA_STATUS_STOPPED);
+	nugu_player_emit_status(player, NUGU_MEDIA_STATUS_STOPPED);
 	return 0;
 }
 static int dummy_pause(void *device, NuguPlayer *player)
 {
 	(void)device;
-	nugu_player_emit_status(player, MEDIA_STATUS_PAUSED);
+	nugu_player_emit_status(player, NUGU_MEDIA_STATUS_PAUSED);
 	return 0;
 }
 static int dummy_resume(void *device, NuguPlayer *player)
 {
 	(void)device;
-	nugu_player_emit_status(player, MEDIA_STATUS_PLAYING);
+	nugu_player_emit_status(player, NUGU_MEDIA_STATUS_PLAYING);
 	return 0;
 }
 static int dummy_seek(void *device, NuguPlayer *player, int sec)
@@ -101,7 +102,7 @@ static int dummy_seek(void *device, NuguPlayer *player, int sec)
 
 	if (_seek_pos > _duration) {
 		_seek_pos = _duration;
-		nugu_player_emit_event(player, MEDIA_EVENT_END_OF_STREAM);
+		nugu_player_emit_event(player, NUGU_MEDIA_EVENT_END_OF_STREAM);
 	} else if (_seek_pos < 0) {
 		_seek_pos = 0;
 	}
@@ -110,7 +111,7 @@ static int dummy_seek(void *device, NuguPlayer *player, int sec)
 }
 static int dummy_set_source(void *device, NuguPlayer *player, const char *url)
 {
-	nugu_player_emit_event(player, MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
+	nugu_player_emit_event(player, NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
 	dummy_stop(device, player);
 
 	_playurl = url;
@@ -128,7 +129,7 @@ static int dummy_get_duration(void *device, NuguPlayer *player)
 {
 	(void)device;
 	(void)player;
-	if (_status == MEDIA_STATUS_STOPPED)
+	if (_status == NUGU_MEDIA_STATUS_STOPPED)
 		_duration = -1;
 	else
 		_duration = DUMMY_DURATION;
@@ -140,7 +141,7 @@ static int dummy_get_position(void *device, NuguPlayer *player)
 {
 	(void)device;
 	(void)player;
-	if (_status == MEDIA_STATUS_STOPPED)
+	if (_status == NUGU_MEDIA_STATUS_STOPPED)
 		_position = -1;
 	else if (_seek_pos)
 		_position = _seek_pos;
@@ -192,22 +193,22 @@ static void test_player_default(void)
 	nugu_player_set_status_callback(player, player_status_callback, NULL);
 	nugu_player_set_event_callback(player, player_event_callback, NULL);
 
-	CHECK_EVENT(MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
-	CHECK_STATUS(MEDIA_STATUS_STOPPED);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_STOPPED);
 	nugu_player_set_source(player, RIGHT_PLAYURL);
 
-	CHECK_EVENT(MEDIA_EVENT_MEDIA_LOADED);
-	CHECK_STATUS(MEDIA_STATUS_PLAYING);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOADED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
 	CHECK_VOLUME(NUGU_SET_VOLUME_DEFAULT);
 	g_assert(nugu_player_start(player) == 0);
 
-	CHECK_STATUS(MEDIA_STATUS_PAUSED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_PAUSED);
 	g_assert(nugu_player_pause(player) == 0);
 
-	CHECK_STATUS(MEDIA_STATUS_PLAYING);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
 	g_assert(nugu_player_resume(player) == 0);
 
-	CHECK_STATUS(MEDIA_STATUS_STOPPED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_STOPPED);
 	g_assert(nugu_player_stop(player) == 0);
 
 	nugu_player_remove(player);
@@ -234,7 +235,7 @@ static void test_player_info(void)
 	nugu_player_set_source(player, RIGHT_PLAYURL);
 
 	CHECK_VOLUME(NUGU_SET_VOLUME_DEFAULT);
-	CHECK_STATUS(MEDIA_STATUS_PLAYING);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
 	g_assert(nugu_player_start(player) == 0);
 
 	g_assert(nugu_player_get_duration(player) == DUMMY_DURATION);
@@ -264,21 +265,21 @@ static void test_player_probe(void)
 	nugu_player_set_event_callback(player, player_event_callback, NULL);
 
 	/* set available media content source */
-	CHECK_EVENT(MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
-	CHECK_STATUS(MEDIA_STATUS_STOPPED);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_STOPPED);
 	nugu_player_set_source(player, RIGHT_PLAYURL);
 
-	CHECK_EVENT(MEDIA_EVENT_MEDIA_LOADED);
-	CHECK_STATUS(MEDIA_STATUS_PLAYING);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOADED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
 	CHECK_VOLUME(NUGU_SET_VOLUME_DEFAULT);
 	g_assert(nugu_player_start(player) == 0);
 
 	/* set unavailable media content source */
-	CHECK_EVENT(MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
-	CHECK_STATUS(MEDIA_STATUS_STOPPED);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_STOPPED);
 	nugu_player_set_source(player, WRONG_PLAYURL);
 
-	CHECK_EVENT(MEDIA_EVENT_MEDIA_LOAD_FAILED);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOAD_FAILED);
 	g_assert(nugu_player_start(player) == 0);
 
 	nugu_player_remove(player);
@@ -302,13 +303,13 @@ static void test_nugu_player_seek(void)
 	nugu_player_set_status_callback(player, player_status_callback, NULL);
 	nugu_player_set_event_callback(player, player_event_callback, NULL);
 
-	CHECK_EVENT(MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
-	CHECK_STATUS(MEDIA_STATUS_STOPPED);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_STOPPED);
 	nugu_player_set_source(player, RIGHT_PLAYURL);
 
 	/* test for positive seek */
-	CHECK_EVENT(MEDIA_EVENT_MEDIA_LOADED);
-	CHECK_STATUS(MEDIA_STATUS_PLAYING);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOADED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
 	CHECK_VOLUME(NUGU_SET_VOLUME_DEFAULT);
 	g_assert(nugu_player_start(player) == 0);
 
@@ -318,16 +319,16 @@ static void test_nugu_player_seek(void)
 	g_assert(nugu_player_seek(player, DUMMY_SEEK_ONE_THIRD) == 0);
 	g_assert(nugu_player_get_position(player) == 2 * DUMMY_SEEK_ONE_THIRD);
 
-	CHECK_EVENT(MEDIA_EVENT_END_OF_STREAM);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_END_OF_STREAM);
 	g_assert(nugu_player_seek(player, DUMMY_SEEK_ONE_THIRD) == 0);
 	g_assert(nugu_player_get_position(player) == DUMMY_DURATION);
 
-	CHECK_STATUS(MEDIA_STATUS_STOPPED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_STOPPED);
 	g_assert(nugu_player_stop(player) == 0);
 
 	/* test for negative seek */
-	CHECK_EVENT(MEDIA_EVENT_MEDIA_LOADED);
-	CHECK_STATUS(MEDIA_STATUS_PLAYING);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOADED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
 	CHECK_VOLUME(NUGU_SET_VOLUME_DEFAULT);
 	g_assert(nugu_player_start(player) == 0);
 
@@ -343,16 +344,16 @@ static void test_nugu_player_seek(void)
 	g_assert(nugu_player_seek(player, -DUMMY_SEEK_ONE_THIRD) == 0);
 	g_assert(nugu_player_get_position(player) == 0);
 
-	CHECK_STATUS(MEDIA_STATUS_STOPPED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_STOPPED);
 	g_assert(nugu_player_stop(player) == 0);
 
 	/* test for positive seek when palyer is paused */
-	CHECK_EVENT(MEDIA_EVENT_MEDIA_LOADED);
-	CHECK_STATUS(MEDIA_STATUS_PLAYING);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOADED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
 	CHECK_VOLUME(NUGU_SET_VOLUME_DEFAULT);
 	g_assert(nugu_player_start(player) == 0);
 
-	CHECK_STATUS(MEDIA_STATUS_PAUSED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_PAUSED);
 	g_assert(nugu_player_pause(player) == 0);
 
 	g_assert(nugu_player_get_position(player) == DUMMY_POSITION);
@@ -360,12 +361,12 @@ static void test_nugu_player_seek(void)
 	g_assert(nugu_player_seek(player, DUMMY_SEEK_ONE_HALF) == 0);
 	g_assert(nugu_player_get_position(player) == DUMMY_SEEK_ONE_HALF);
 
-	g_assert(nugu_player_get_status(player) == MEDIA_STATUS_PAUSED);
+	g_assert(nugu_player_get_status(player) == NUGU_MEDIA_STATUS_PAUSED);
 
-	CHECK_STATUS(MEDIA_STATUS_PLAYING);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
 	g_assert(nugu_player_resume(player) == 0);
 
-	CHECK_STATUS(MEDIA_STATUS_STOPPED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_STOPPED);
 	g_assert(nugu_player_stop(player) == 0);
 
 	nugu_player_remove(player);
@@ -390,14 +391,14 @@ static void test_player_volume(void)
 	nugu_player_set_status_callback(player, player_status_callback, NULL);
 	nugu_player_set_event_callback(player, player_event_callback, NULL);
 
-	CHECK_EVENT(MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
-	CHECK_STATUS(MEDIA_STATUS_STOPPED);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_STOPPED);
 	nugu_player_set_source(player, RIGHT_PLAYURL);
 
 	g_assert(nugu_player_get_volume(player) == NUGU_SET_VOLUME_DEFAULT);
 
-	CHECK_EVENT(MEDIA_EVENT_MEDIA_LOADED);
-	CHECK_STATUS(MEDIA_STATUS_PLAYING);
+	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOADED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
 	CHECK_VOLUME(NUGU_SET_VOLUME_DEFAULT);
 	g_assert(nugu_player_start(player) == 0);
 
@@ -417,7 +418,7 @@ static void test_player_volume(void)
 		g_assert(nugu_player_get_volume(player) == i);
 	}
 
-	CHECK_STATUS(MEDIA_STATUS_STOPPED);
+	CHECK_STATUS(NUGU_MEDIA_STATUS_STOPPED);
 	g_assert(nugu_player_stop(player) == 0);
 
 	nugu_player_remove(player);

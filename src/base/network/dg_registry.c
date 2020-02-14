@@ -36,7 +36,7 @@ DGRegistry *dg_registry_new(void)
 
 	registry = calloc(1, sizeof(struct _dg_registry));
 	if (!registry) {
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 

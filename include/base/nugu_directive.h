@@ -47,7 +47,7 @@ typedef struct _nugu_directive NuguDirective;
 /**
  * @brief Callback prototype for receiving an attachment
  */
-typedef void (*DirectiveDataCallback)(NuguDirective *ndir, void *userdata);
+typedef void (*NuguDirectiveDataCallback)(NuguDirective *ndir, void *userdata);
 
 /**
  * @brief Create new directive object
@@ -237,7 +237,7 @@ size_t nugu_directive_get_data_size(NuguDirective *ndir);
  * @see nugu_directive_remove_data_callback()
  */
 int nugu_directive_set_data_callback(NuguDirective *ndir,
-				     DirectiveDataCallback callback,
+				     NuguDirectiveDataCallback callback,
 				     void *userdata);
 
 /**

@@ -86,16 +86,16 @@ struct _nugu_network {
 
 	/* Handoff */
 	DGServer *handoff;
-	NetworkManagerHandoffStatusCallback handoff_callback;
+	NuguNetworkManagerHandoffStatusCallback handoff_callback;
 	void *handoff_callback_userdata;
 
 	/* Event result */
-	NetworkManagerEventResultCallback event_result_callback;
+	NuguNetworkManagerEventResultCallback event_result_callback;
 	void *event_result_callback_userdata;
 
 	/* Status & Callback */
 	NuguNetworkStatus cur_status;
-	NetworkManagerStatusCallback status_callback;
+	NuguNetworkManagerStatusCallback status_callback;
 	void *status_callback_userdata;
 };
 
@@ -569,7 +569,7 @@ static NetworkManager *nugu_network_manager_new(void)
 
 	nm = calloc(1, sizeof(NetworkManager));
 	if (!nm) {
-		error_nomem();
+		nugu_error_nomem();
 		return NULL;
 	}
 
@@ -740,9 +740,8 @@ EXPORT_API int nugu_network_manager_disconnect(void)
 	return 0;
 }
 
-EXPORT_API int
-nugu_network_manager_set_status_callback(NetworkManagerStatusCallback callback,
-					 void *userdata)
+EXPORT_API int nugu_network_manager_set_status_callback(
+	NuguNetworkManagerStatusCallback callback, void *userdata)
 {
 	if (!_network)
 		return -1;
@@ -754,7 +753,7 @@ nugu_network_manager_set_status_callback(NetworkManagerStatusCallback callback,
 }
 
 EXPORT_API int nugu_network_manager_set_handoff_status_callback(
-	NetworkManagerHandoffStatusCallback callback, void *userdata)
+	NuguNetworkManagerHandoffStatusCallback callback, void *userdata)
 {
 	if (!_network)
 		return -1;
@@ -766,7 +765,7 @@ EXPORT_API int nugu_network_manager_set_handoff_status_callback(
 }
 
 EXPORT_API int nugu_network_manager_set_event_result_callback(
-	NetworkManagerEventResultCallback callback, void *userdata)
+	NuguNetworkManagerEventResultCallback callback, void *userdata)
 {
 	if (!_network)
 		return -1;

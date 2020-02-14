@@ -103,6 +103,11 @@ EXPORT_API NuguFocus *nugu_focus_new(const char *name, NuguFocusType type,
 	struct _nugu_focus *focus;
 
 	focus = malloc(sizeof(struct _nugu_focus));
+	if (!focus) {
+		nugu_error_nomem();
+		return NULL;
+	}
+
 	focus->name = g_strdup(name);
 	focus->type = type;
 	focus->focus_cb = focus_cb;
