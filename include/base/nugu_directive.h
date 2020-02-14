@@ -58,13 +58,15 @@ typedef void (*DirectiveDataCallback)(NuguDirective *ndir, void *userdata);
  * @param[in] dialog_id unique dialog-request-id
  * @param[in] referrer_id referrer-dialog-request-id
  * @param[in] json payload
+ * @param[in] groups groups
  * @return directive object
  * @see nugu_directive_free()
  */
 NuguDirective *nugu_directive_new(const char *name_space, const char *name,
 				  const char *version, const char *msg_id,
 				  const char *dialog_id,
-				  const char *referrer_id, const char *json);
+				  const char *referrer_id, const char *json,
+				  const char *groups);
 
 /**
  * @brief Increment the reference count of the directive object.
@@ -93,6 +95,13 @@ const char *nugu_directive_peek_namespace(NuguDirective *ndir);
  * @return name. Please don't free the data manually.
  */
 const char *nugu_directive_peek_name(NuguDirective *ndir);
+
+/**
+ * @brief Get the group of directive
+ * @param[in] ndir directive object
+ * @return groups. Please don't free the data manually.
+ */
+const char *nugu_directive_peek_groups(NuguDirective *ndir);
 
 /**
  * @brief Get the version of directive
