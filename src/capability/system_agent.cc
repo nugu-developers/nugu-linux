@@ -362,15 +362,13 @@ void SystemAgent::parsingNoDirectives(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
-    const char* dialog_id;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
         return;
     }
 
-    dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
-    capa_helper->sendCommand("System", "ASR", "releasefocus", dialog_id);
+    // Do Nothing
 }
 
 void SystemAgent::parsingRevoke(const char* message)

@@ -182,7 +182,29 @@ std::string CapabilityManager::makeAllContextInfoStack()
 
 void CapabilityManager::preprocessDirective(NuguDirective* ndir)
 {
+    std::string name_space = nugu_directive_peek_namespace(ndir);
+    std::string dname = nugu_directive_peek_name(ndir);
+
     sendCommandAll("directive_dialog_id", nugu_directive_peek_dialog_id(ndir));
+
+    if (check_asr_focus_release && asr_dialog_id == nugu_directive_peek_dialog_id(ndir)) {
+        std::string groups = nugu_directive_peek_groups(ndir);
+
+        nugu_info("Check ASR Focus Release: %s", groups.c_str());
+        if (groups.find("TTS.Speak") == std::string::npos && groups.find("AudioPlayer.Play") == std::string::npos) {
+            nugu_info("ASR Focus Release by CapabilityManager");
+            sendCommand("CapabilityManager", "ASR", "releasefocus", asr_dialog_id);
+        } else {
+            nugu_info("ASR Focus Release by TTS or AudioPlayer");
+        }
+
+        check_asr_focus_release = false;
+    }
+
+    if (name_space == "ASR" && dname == "NotifyResult") {
+        check_asr_focus_release = true;
+        asr_dialog_id = nugu_directive_peek_dialog_id(ndir);
+    }
 }
 
 bool CapabilityManager::isSupportDirectiveVersion(const std::string& version, ICapabilityInterface* cap)
