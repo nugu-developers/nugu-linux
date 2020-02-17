@@ -26,12 +26,8 @@ void SpeakerListener::requestSetVolume(SpeakerType type, int volume, bool linear
     if (type == SpeakerType::NUGU && nugu_speaker_volume)
         success = nugu_speaker_volume(volume);
 
-    if (speaker_handler) {
-        if (success)
-            speaker_handler->informVolumeSucceeded(type, volume);
-        else
-            speaker_handler->informVolumeFailed(type, volume);
-    }
+    if (speaker_handler)
+        speaker_handler->informSetVolumeResult(type, volume, success);
 }
 
 void SpeakerListener::requestSetMute(SpeakerType type, bool mute)
@@ -42,12 +38,8 @@ void SpeakerListener::requestSetMute(SpeakerType type, bool mute)
     if (type == SpeakerType::NUGU && nugu_speaker_mute)
         success = nugu_speaker_mute(mute);
 
-    if (speaker_handler) {
-        if (success)
-            speaker_handler->informMuteSucceeded(type, mute);
-        else
-            speaker_handler->informMuteFailed(type, mute);
-    }
+    if (speaker_handler)
+        speaker_handler->informSetMuteResult(type, mute, success);
 }
 
 void SpeakerListener::setSpeakerHandler(ISpeakerHandler* speaker)

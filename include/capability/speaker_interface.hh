@@ -101,34 +101,33 @@ public:
      * @param[in] info speaker's information map
      */
     virtual void setSpeakerInfo(std::map<SpeakerType, SpeakerInfo*> info) = 0;
-
     /**
-     * @brief Inform the SDK of the volume setup result (success).
+     * @brief Inform volume changed by application to the SDK
      * @param[in] type speaker type
      * @param[in] volume volume level
      */
-    virtual void informVolumeSucceeded(SpeakerType type, int volume) = 0;
-
+    virtual void informVolumeChanged(SpeakerType type, int volume) = 0;
     /**
-     * @brief Inform the SDK of the volume setup result (failure).
+     * @brief Inform mute changed by application to the SDK
+     * @param[in] type speaker type
+     * @param[in] mute volume mute
+     */
+    virtual void informMuteChanged(SpeakerType type, bool mute) = 0;
+    /**
+     * @brief Inform the result of request SetVolume to the SDK.
      * @param[in] type speaker type
      * @param[in] volume volume level
+     * @param[in] result result of SetVolume
      */
-    virtual void informVolumeFailed(SpeakerType type, int volume) = 0;
+    virtual void informSetVolumeResult(SpeakerType type, int volume, bool result) = 0;
 
     /**
-     * @brief Inform the SDK of the volume mute result (success).
+     * @brief Inform the result of request SetMute to the SDK.
      * @param[in] type speaker type
      * @param[in] mute volume mute
+     * @param[in] result result of SetMute
      */
-    virtual void informMuteSucceeded(SpeakerType type, bool mute) = 0;
-
-    /**
-     * @brief Inform the SDK of the volume mute result (failure).
-     * @param[in] type speaker type
-     * @param[in] mute volume mute
-     */
-    virtual void informMuteFailed(SpeakerType type, bool mute) = 0;
+    virtual void informSetMuteResult(SpeakerType type, bool mute, bool result) = 0;
 };
 
 /**
