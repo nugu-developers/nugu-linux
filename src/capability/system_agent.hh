@@ -17,8 +17,8 @@
 #ifndef __NUGU_SYSTEM_AGENT_H__
 #define __NUGU_SYSTEM_AGENT_H__
 
-#include "clientkit/capability.hh"
 #include "capability/system_interface.hh"
+#include "clientkit/capability.hh"
 
 namespace NuguCapability {
 

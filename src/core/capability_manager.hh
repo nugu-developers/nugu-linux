@@ -70,6 +70,8 @@ private:
     std::map<std::string, NuguFocus*> focusmap;
     std::string wword;
     std::unique_ptr<PlaySyncManager> playsync_manager = nullptr;
+    bool check_asr_focus_release = false;
+    std::string asr_dialog_id;
 };
 
 } // NuguCore

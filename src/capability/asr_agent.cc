@@ -260,7 +260,7 @@ void ASRAgent::receiveCommand(const std::string& from, const std::string& comman
             es_attr = {};
         }
     } else if (!convert_command.compare("releasefocus")) {
-        if (from == "System") {
+        if (from == "System" || from == "CapabilityManager") {
             if (dialog_id == param)
                 capa_helper->releaseFocus("asr");
         } else {
