@@ -34,11 +34,11 @@ public:
 
     void setSpeakerInfo(std::map<SpeakerType, SpeakerInfo*> info) override;
 
-    void informVolumeSucceeded(SpeakerType type, int volume) override;
-    void informVolumeFailed(SpeakerType type, int volume) override;
+    void informVolumeChanged(SpeakerType type, int volume) override;
+    void informMuteChanged(SpeakerType type, bool mute) override;
 
-    void informMuteSucceeded(SpeakerType type, bool mute) override;
-    void informMuteFailed(SpeakerType type, bool mute) override;
+    void informSetVolumeResult(SpeakerType type, int volume, bool result) override;
+    void informSetMuteResult(SpeakerType type, bool mute, bool result) override;
 
 private:
     void sendEventCommon(const std::string& ename);

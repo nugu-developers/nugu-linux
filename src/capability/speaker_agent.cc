@@ -64,9 +64,6 @@ void SpeakerAgent::updateInfoForContext(Json::Value& ctx)
         if (!sinfo->can_control)
             continue;
 
-        if (volumes.empty())
-            speaker["volumes"] = Json::Value(Json::arrayValue);
-
         Json::Value volume;
         volume["name"] = getSpeakerName(sinfo->type);
         volume["volume"] = sinfo->volume;
@@ -109,36 +106,40 @@ void SpeakerAgent::setSpeakerInfo(std::map<SpeakerType, SpeakerInfo*> info)
     }
 }
 
-void SpeakerAgent::informVolumeSucceeded(SpeakerType type, int volume)
+void SpeakerAgent::informVolumeChanged(SpeakerType type, int volume)
 {
-    if (cur_speaker.type == type && cur_speaker.volume == volume)
-        sendEventSetVolumeSucceeded();
-
+    nugu_dbg("application change the volume[%d] => %d", type, volume);
     updateSpeakerInfo(type, volume, cur_speaker.mute);
 }
 
-void SpeakerAgent::informVolumeFailed(SpeakerType type, int volume)
+void SpeakerAgent::informMuteChanged(SpeakerType type, bool mute)
 {
-    if (cur_speaker.type == type && cur_speaker.volume == volume)
-        sendEventSetVolumeFailed();
+    nugu_dbg("application change the mute[%d] => %d", type, mute);
+    updateSpeakerInfo(type, cur_speaker.volume, mute);
+}
 
+void SpeakerAgent::informSetVolumeResult(SpeakerType type, int volume, bool result)
+{
+    nugu_dbg("application inform the result of changing volume[%d] => %d | result: %d", type, volume, result);
     updateSpeakerInfo(type, volume, cur_speaker.mute);
+    if (cur_speaker.type == type && cur_speaker.volume == volume) {
+        if (result)
+            sendEventSetVolumeSucceeded();
+        else
+            sendEventSetVolumeFailed();
+    }
 }
 
-void SpeakerAgent::informMuteSucceeded(SpeakerType type, bool mute)
+void SpeakerAgent::informSetMuteResult(SpeakerType type, bool mute, bool result)
 {
-    if (cur_speaker.type == type && cur_speaker.mute == mute)
-        sendEventSetMuteSucceeded();
-
+    nugu_dbg("application inform the succeeded result of changing mute[%d] => %d | result: %d", type, mute, result);
     updateSpeakerInfo(type, cur_speaker.volume, mute);
-}
-
-void SpeakerAgent::informMuteFailed(SpeakerType type, bool mute)
-{
-    if (cur_speaker.type == type && cur_speaker.mute == mute)
-        sendEventSetMuteFailed();
-
-    updateSpeakerInfo(type, cur_speaker.volume, mute);
+    if (cur_speaker.type == type && cur_speaker.mute == mute) {
+        if (result)
+            sendEventSetMuteSucceeded();
+        else
+            sendEventSetMuteFailed();
+    }
 }
 
 void SpeakerAgent::updateSpeakerInfo(SpeakerType type, int volume, bool mute)
