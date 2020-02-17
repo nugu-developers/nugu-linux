@@ -16,11 +16,12 @@
  * limitations under the License.
  */
 
-#include <glib.h>
 #include <stdio.h>
 #include <string.h>
 
-#include <base/nugu_timer.h>
+#include <glib.h>
+
+#include "base/nugu_timer.h"
 
 struct _nugu_timer {
     GSource* source;

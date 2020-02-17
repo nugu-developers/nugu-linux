@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-#include <base/nugu_timer.h>
-#include <glib.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
+#include <glib.h>
+
+#include "base/nugu_timer.h"
 #include "nugu_timer.hh"
 
 using namespace NuguCore;
@@ -226,7 +227,7 @@ int main(int argc, char* argv[])
     g_type_init();
 #endif
 
-    g_test_init(&argc, &argv, NULL);
+    g_test_init(&argc, &argv, (void*)NULL);
     g_log_set_always_fatal((GLogLevelFlags)G_LOG_FATAL_MASK);
 
     G_TEST_ADD_FUNC("/core/NuguTimer/Trigger", test_nugutimer_trigger);
