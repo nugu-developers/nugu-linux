@@ -25,7 +25,7 @@ extern "C" {
 
 typedef struct _v1_events V1Events;
 
-V1Events *v1_events_new(const char *host, HTTP2Network *net);
+V1Events *v1_events_new(const char *host, HTTP2Network *net, int is_sync);
 void v1_events_free(V1Events *event);
 
 int v1_events_set_info(V1Events *event, const char *msg_id,

@@ -93,7 +93,7 @@ void CapabilityEvent::forceClose()
     nugu_network_manager_force_close_event(pimpl->event);
 }
 
-void CapabilityEvent::sendEvent(const std::string& context, const std::string& payload)
+void CapabilityEvent::sendEvent(const std::string& context, const std::string& payload, bool is_sync)
 {
     if (pimpl->event == NULL) {
         nugu_error("event is NULL");
@@ -112,7 +112,10 @@ void CapabilityEvent::sendEvent(const std::string& context, const std::string& p
 
     pimpl->capability->getCapabilityHelper()->sendCommand(pimpl->capability->getName(), "System", "activity", "");
 
-    nugu_network_manager_send_event(pimpl->event);
+    if (is_sync)
+        nugu_network_manager_send_event(pimpl->event, 1);
+    else
+        nugu_network_manager_send_event(pimpl->event, 0);
 }
 
 void CapabilityEvent::sendAttachmentEvent(bool is_end, size_t size, unsigned char* data)
@@ -259,19 +262,19 @@ void Capability::getProperties(const std::string& property, std::list<std::strin
     values.clear();
 }
 
-void Capability::sendEvent(const std::string& name, const std::string& context, const std::string& payload)
+void Capability::sendEvent(const std::string& name, const std::string& context, const std::string& payload, bool is_sync)
 {
     CapabilityEvent event(name, this);
 
-    sendEvent(&event, context, payload);
+    sendEvent(&event, context, payload, is_sync);
 }
 
-void Capability::sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload)
+void Capability::sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload, bool is_sync)
 {
     if (!event)
         return;
 
-    event->sendEvent(context, payload);
+    event->sendEvent(context, payload, is_sync);
 }
 
 void Capability::sendAttachmentEvent(CapabilityEvent* event, bool is_end, size_t size, unsigned char* data)

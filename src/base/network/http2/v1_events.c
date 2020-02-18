@@ -43,6 +43,7 @@
 struct _v1_events {
 	HTTP2Request *req;
 	char *boundary;
+	int sync;
 };
 
 
@@ -96,7 +97,7 @@ static void _on_finish(HTTP2Request *req, void *userdata)
 		nugu_equeue_push(NUGU_EQUEUE_TYPE_INVALID_TOKEN, NULL);
 }
 
-V1Events *v1_events_new(const char *host, HTTP2Network *net)
+V1Events *v1_events_new(const char *host, HTTP2Network *net, int is_sync)
 {
 	char *tmp;
 	struct _v1_events *event;
@@ -118,6 +119,7 @@ V1Events *v1_events_new(const char *host, HTTP2Network *net)
 	boundary[16] = '\0';
 
 	event->boundary = g_strdup_printf("%s--%s", CRLF, boundary);
+	event->sync = is_sync;
 
 	event->req = http2_request_new();
 	http2_request_set_method(event->req, HTTP2_REQUEST_METHOD_POST);
