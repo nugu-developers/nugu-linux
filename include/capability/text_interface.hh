@@ -34,7 +34,7 @@ using namespace NuguClientKit;
  * @{
  */
 
-#define NUGU_SERVER_RESPONSE_TIMEOUT_SEC 10
+#define NUGU_SERVER_RESPONSE_TIMEOUT_SEC 10 /** @def Set server response timeout about 10s */
 
 /**
  * @brief TextState

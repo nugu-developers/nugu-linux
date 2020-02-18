@@ -35,9 +35,9 @@ using namespace NuguClientKit;
  * @{
  */
 
-#define NUGU_ASR_EPD_TYPE "CLIENT"
-#define NUGU_ASR_ENCODING "COMPLETE"
-#define NUGU_SERVER_RESPONSE_TIMEOUT_SEC 10
+#define NUGU_ASR_EPD_TYPE "CLIENT" /** @def Use client end point detector */
+#define NUGU_ASR_ENCODING "COMPLETE" /** @def Receive asr result by complete sentence */
+#define NUGU_SERVER_RESPONSE_TIMEOUT_SEC 10 /** @def Set server response timeout about 10s */
 
 /**
  * @brief ASR state list
