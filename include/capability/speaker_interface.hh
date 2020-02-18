@@ -34,9 +34,9 @@ using namespace NuguClientKit;
  * @{
  */
 
-#define NUGU_SPEAKER_MIN_VOLUME 0
-#define NUGU_SPEAKER_MAX_VOLUME 100
-#define NUGU_SPEAKER_DEFAULT_VOLUME 50
+#define NUGU_SPEAKER_MIN_VOLUME 0 /** @def Set speaker minimum volume to 0 */
+#define NUGU_SPEAKER_MAX_VOLUME 100 /** @def Set speaker maximum volume to 100 */
+#define NUGU_SPEAKER_DEFAULT_VOLUME 50 /** @def Set speaker default volume to 50 */
 
 /**
  * @brief SpeakerType
