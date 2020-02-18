@@ -25,11 +25,6 @@ namespace NuguCapability {
 static const char* CAPABILITY_NAME = "ASR";
 static const char* CAPABILITY_VERSION = "1.0";
 
-// define default attribute values
-static const char* ASR_EPD_TYPE = "CLIENT";
-static const char* ASR_ENCODING = "COMPLETE";
-static const int SERVER_RESPONSE_TIMEOUT_SEC = 10;
-
 class ASRFocusListener : public IFocusListener {
 public:
     explicit ASRFocusListener(ASRAgent* agent, ISpeechRecognizer* speech_recognizer);
@@ -141,9 +136,9 @@ ASRAgent::ASRAgent()
     , asr_focus_listener(nullptr)
     , expect_focus_listener(nullptr)
     , model_path("")
-    , epd_type(ASR_EPD_TYPE)
-    , asr_encoding(ASR_ENCODING)
-    , response_timeout(SERVER_RESPONSE_TIMEOUT_SEC)
+    , epd_type(NUGU_ASR_EPD_TYPE)
+    , asr_encoding(NUGU_ASR_ENCODING)
+    , response_timeout(NUGU_SERVER_RESPONSE_TIMEOUT_SEC)
 {
 }
 

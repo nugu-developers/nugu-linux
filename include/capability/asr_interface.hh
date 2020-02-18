@@ -35,6 +35,10 @@ using namespace NuguClientKit;
  * @{
  */
 
+#define NUGU_ASR_EPD_TYPE "CLIENT"
+#define NUGU_ASR_ENCODING "COMPLETE"
+#define NUGU_SERVER_RESPONSE_TIMEOUT_SEC 10
+
 /**
  * @brief ASR state list
  * @see IASRListener::onState

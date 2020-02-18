@@ -34,6 +34,8 @@ using namespace NuguClientKit;
  * @{
  */
 
+#define NUGU_SERVER_RESPONSE_TIMEOUT_SEC 10
+
 /**
  * @brief TextState
  */

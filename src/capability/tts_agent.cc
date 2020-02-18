@@ -26,9 +26,6 @@ namespace NuguCapability {
 static const char* CAPABILITY_NAME = "TTS";
 static const char* CAPABILITY_VERSION = "1.0";
 
-// define default property values
-static const char* TTS_ENGINE = "skt";
-
 TTSAgent::TTSAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , cur_token("")
@@ -40,7 +37,7 @@ TTSAgent::TTSAgent()
     , dialog_id("")
     , ps_id("")
     , tts_listener(nullptr)
-    , tts_engine(TTS_ENGINE)
+    , tts_engine(NUGU_TTS_ENGINE)
 {
 }
 
@@ -72,7 +69,7 @@ void TTSAgent::initialize()
     nugu_pcm_set_status_callback(pcm, pcmStatusCallback, this);
     nugu_pcm_set_event_callback(pcm, pcmEventCallback, this);
 
-    nugu_pcm_set_property(pcm, (NuguAudioProperty){ NUGU_AUDIO_SAMPLE_RATE_22K, NUGU_AUDIO_FORMAT_S16_LE, 1 });
+    nugu_pcm_set_property(pcm, (NuguAudioProperty) { NUGU_AUDIO_SAMPLE_RATE_22K, NUGU_AUDIO_FORMAT_S16_LE, 1 });
 
     capa_helper->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
