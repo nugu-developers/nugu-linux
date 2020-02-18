@@ -22,7 +22,7 @@
 namespace NuguCore {
 
 WakeupHandler::WakeupHandler(const std::string& model_path)
-    : wakeup_detector(std::unique_ptr<WakeupDetector>(new WakeupDetector(WakeupDetector::Attribute { "", "", "", model_path })))
+    : wakeup_detector(std::unique_ptr<WakeupDetector>(new WakeupDetector(WakeupDetector::Attribute{ "", "", "", model_path })))
 {
     wakeup_detector->setListener(this);
 }
@@ -36,12 +36,12 @@ void WakeupHandler::setListener(IWakeupListener* listener)
     this->listener = listener;
 }
 
-void WakeupHandler::startWakeup(void)
+bool WakeupHandler::startWakeup()
 {
-    wakeup_detector->startWakeup();
+    return wakeup_detector->startWakeup();
 }
 
-void WakeupHandler::stopWakeup(void)
+void WakeupHandler::stopWakeup()
 {
     wakeup_detector->stopWakeup();
 }

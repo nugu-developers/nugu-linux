@@ -72,13 +72,14 @@ public:
 
     /**
      * @brief Start the wakeup detection
+     * @return result of wakeup process
      */
-    virtual void startWakeup(void) = 0;
+    virtual bool startWakeup() = 0;
 
     /**
      * @brief Stop the wakeup detection
      */
-    virtual void stopWakeup(void) = 0;
+    virtual void stopWakeup() = 0;
 };
 
 /**

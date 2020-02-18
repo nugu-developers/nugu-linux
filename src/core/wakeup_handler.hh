@@ -35,8 +35,8 @@ public:
     ~WakeupHandler();
 
     void setListener(IWakeupListener* listener) override;
-    void startWakeup(void) override;
-    void stopWakeup(void) override;
+    bool startWakeup() override;
+    void stopWakeup() override;
     void onWakeupState(WakeupState state) override;
 
 private:

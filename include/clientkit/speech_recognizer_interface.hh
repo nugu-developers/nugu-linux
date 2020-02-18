@@ -83,13 +83,20 @@ public:
 
     /**
      * @brief Start listening speech
+     * @return result of start listening
      */
-    virtual bool startListening(void) = 0;
+    virtual bool startListening() = 0;
 
     /**
      * @brief Stop listening speech
      */
-    virtual void stopListening(void) = 0;
+    virtual void stopListening() = 0;
+
+    /**
+     * @brief Get audio recorder's mute
+     * @return mute
+     */
+    virtual bool isMute() = 0;
 };
 
 /**

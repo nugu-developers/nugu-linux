@@ -29,7 +29,7 @@ static const char* MODEL_PATH = "./";
 
 WakeupDetector::WakeupDetector()
 {
-    initialize(Attribute {});
+    initialize(Attribute{});
 }
 
 WakeupDetector::WakeupDetector(Attribute&& attribute)
@@ -61,7 +61,7 @@ void WakeupDetector::initialize(Attribute&& attribute)
     AudioInputProcessor::init("kwd", sample, format, channel);
 }
 
-void WakeupDetector::loop(void)
+void WakeupDetector::loop()
 {
     int pcm_size;
     std::string model_net_file;
@@ -140,13 +140,13 @@ void WakeupDetector::loop(void)
 
             if (kwd_put_audio((short*)pcm_buf, pcm_size) == 1) {
                 sendSyncWakeupEvent(WakeupState::DETECTED);
-                is_running = false;
                 break;
             }
         }
 
         recorder->stop();
         kwd_deinitialize();
+        is_running = false;
 
         if (g_atomic_int_get(&destroy) == 0)
             sendSyncWakeupEvent(WakeupState::DONE);
@@ -155,15 +155,15 @@ void WakeupDetector::loop(void)
     nugu_dbg("Wakeup Thread: exited");
 }
 
-void WakeupDetector::startWakeup(void)
+bool WakeupDetector::startWakeup()
 {
-    AudioInputProcessor::start([&] {
+    return AudioInputProcessor::start([&] {
         if (listener)
             listener->onWakeupState(WakeupState::DETECTING);
     });
 }
 
-void WakeupDetector::stopWakeup(void)
+void WakeupDetector::stopWakeup()
 {
     AudioInputProcessor::stop();
 }

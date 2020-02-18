@@ -60,8 +60,7 @@ ASRFocusListener::~ASRFocusListener()
 void ASRFocusListener::onFocus(void* event)
 {
     nugu_dbg("ASRFocusListener::onFocus");
-    if (!speech_recognizer->startListening())
-        return;
+    speech_recognizer->startListening();
 
     if (agent->isExpectSpeechState()) {
         agent->resetExpectSpeechState();
@@ -207,12 +206,16 @@ void ASRAgent::deInitialize()
     initialized = false;
 }
 
-void ASRAgent::startRecognition()
+bool ASRAgent::startRecognition()
 {
     nugu_dbg("startRecognition()");
 
+    if (speech_recognizer->isMute())
+        return false;
+
     saveAllContextInfo();
     capa_helper->requestFocus("asr", NULL);
+    return true;
 }
 
 void ASRAgent::stopRecognition()

@@ -46,12 +46,13 @@ public:
 
     // implements ISpeechRecognizer
     void setListener(ISpeechRecognizerListener* listener) override;
-    bool startListening(void) override;
-    void stopListening(void) override;
+    bool startListening() override;
+    void stopListening() override;
+    bool isMute() override;
 
 private:
     void initialize(Attribute&& attribute);
-    void loop(void) override;
+    void loop() override;
     void sendSyncListeningEvent(ListeningState state);
 
     const unsigned int OUT_DATA_SIZE = 1024 * 9;

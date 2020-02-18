@@ -54,12 +54,12 @@ public:
     virtual ~WakeupDetector() = default;
 
     void setListener(IWakeupDetectorListener* listener);
-    void startWakeup(void);
-    void stopWakeup(void);
+    bool startWakeup();
+    void stopWakeup();
 
 private:
     void initialize(Attribute&& attribute);
-    void loop(void) override;
+    void loop() override;
     void sendSyncWakeupEvent(WakeupState state);
 
     IWakeupDetectorListener* listener = nullptr;

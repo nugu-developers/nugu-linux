@@ -32,7 +32,7 @@ static const int ASR_EPD_PAUSE_LENGTH_MSEC = 700;
 
 SpeechRecognizer::SpeechRecognizer()
 {
-    initialize(Attribute {});
+    initialize(Attribute{});
 }
 
 SpeechRecognizer::SpeechRecognizer(Attribute&& attribute)
@@ -67,7 +67,7 @@ void SpeechRecognizer::initialize(Attribute&& attribute)
     AudioInputProcessor::init("asr", sample, format, channel);
 }
 
-void SpeechRecognizer::loop(void)
+void SpeechRecognizer::loop()
 {
     unsigned char epd_buf[OUT_DATA_SIZE];
     EpdParam epd_param;
@@ -210,6 +210,7 @@ void SpeechRecognizer::loop(void)
 
         recorder->stop();
         epd_client_release();
+        is_running = false;
 
         if (g_atomic_int_get(&destroy) == 0)
             sendSyncListeningEvent(ListeningState::DONE);
@@ -218,7 +219,7 @@ void SpeechRecognizer::loop(void)
     nugu_dbg("Listening Thread: exited");
 }
 
-bool SpeechRecognizer::startListening(void)
+bool SpeechRecognizer::startListening()
 {
     return AudioInputProcessor::start([&] {
         if (listener)
@@ -228,9 +229,17 @@ bool SpeechRecognizer::startListening(void)
     });
 }
 
-void SpeechRecognizer::stopListening(void)
+void SpeechRecognizer::stopListening()
 {
     AudioInputProcessor::stop();
+}
+
+bool SpeechRecognizer::isMute()
+{
+    if (!recorder)
+        return false;
+
+    return recorder->isMute();
 }
 
 } // NuguCore
