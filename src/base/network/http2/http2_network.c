@@ -30,6 +30,7 @@
 #include "base/nugu_log.h"
 #include "base/nugu_network_manager.h"
 
+#include "threadsync.h"
 #include "http2_network.h"
 
 enum request_type {
@@ -47,9 +48,7 @@ struct request_item {
 	 * conflict with curl_multi_remove_handle().
 	 * Therefore, add a lock to wait for curl_multi_remove_handle().
 	 */
-	int is_done;
-	pthread_cond_t cond;
-	pthread_mutex_t lock;
+	ThreadSync *sync;
 };
 
 struct _http2_network {
@@ -59,11 +58,11 @@ struct _http2_network {
 
 	const char *useragent;
 
-	/* communication with thread loop */
+	/* Communicate to thread context from gmainloop */
 	int wakeup_fd;
 	GAsyncQueue *requests;
 
-	/* handled only thread loop */
+	/* Handled only within the thread context */
 	CURLM *handle;
 	GList *hlist;
 
@@ -71,9 +70,35 @@ struct _http2_network {
 	gchar *token;
 
 	/* thread creation check */
-	pthread_cond_t cond;
-	pthread_mutex_t init_lock;
+	ThreadSync *sync_init;
 };
+
+static struct request_item *_request_item_new(enum request_type type,
+					      HTTP2Request *req)
+{
+	struct request_item *item;
+
+	item = malloc(sizeof(struct request_item));
+	if (!item) {
+		nugu_error_nomem();
+		return NULL;
+	}
+
+	item->type = type;
+	item->req = req;
+	item->sync = thread_sync_new();
+
+	return item;
+}
+
+static void _request_item_free(struct request_item *item)
+{
+	g_return_if_fail(item != NULL);
+
+	thread_sync_free(item->sync);
+
+	free(item);
+}
 
 static int _process_add(HTTP2Network *net, struct request_item *item)
 {
@@ -130,12 +155,11 @@ static void *_loop(void *data)
 
 	nugu_dbg("thread started");
 
-	pthread_mutex_lock(&net->init_lock);
 	net->running = 1;
 	net->handle = curl_multi_init();
 	curl_multi_setopt(net->handle, CURLMOPT_PIPELINING, CURLPIPE_MULTIPLEX);
-	pthread_cond_signal(&net->cond);
-	pthread_mutex_unlock(&net->init_lock);
+
+	thread_sync_signal(net->sync_init);
 
 	while (net->running) {
 		mc = curl_multi_perform(net->handle, &still_running);
@@ -208,14 +232,10 @@ static void *_loop(void *data)
 
 				if (item->type == REQUEST_ADD) {
 					_process_add(net, item);
-					free(item);
+					_request_item_free(item);
 				} else if (item->type == REQUEST_REMOVE) {
 					_process_remove(net, item);
-
-					pthread_mutex_lock(&item->lock);
-					item->is_done = 1;
-					pthread_cond_signal(&item->cond);
-					pthread_mutex_unlock(&item->lock);
+					thread_sync_signal(item->sync);
 				}
 			}
 		}
@@ -260,12 +280,11 @@ HTTP2Network *http2_network_new()
 		return NULL;
 	}
 
-	pthread_cond_init(&net->cond, NULL);
-	pthread_mutex_init(&net->init_lock, NULL);
-
 	net->wakeup_fd = eventfd(0, EFD_CLOEXEC);
-	net->requests = g_async_queue_new_full(g_free);
+	net->requests =
+		g_async_queue_new_full((GDestroyNotify)_request_item_free);
 	net->useragent = nugu_network_manager_peek_useragent();
+	net->sync_init = thread_sync_new();
 
 	return net;
 }
@@ -296,7 +315,7 @@ void http2_network_free(HTTP2Network *net)
 		if (!item)
 			break;
 
-		free(item);
+		_request_item_free(item);
 	}
 
 	if (net->requests)
@@ -304,30 +323,13 @@ void http2_network_free(HTTP2Network *net)
 
 	close(net->wakeup_fd);
 
+	if (net->sync_init)
+		thread_sync_free(net->sync_init);
+
 	g_free(net->token);
 
 	memset(net, 0, sizeof(HTTP2Network));
 	free(net);
-}
-
-static struct request_item *_request_item_new(enum request_type type,
-					      HTTP2Request *req)
-{
-	struct request_item *item;
-
-	item = malloc(sizeof(struct request_item));
-	if (!item) {
-		nugu_error_nomem();
-		return NULL;
-	}
-
-	item->type = type;
-	item->req = req;
-	item->is_done = 0;
-	pthread_cond_init(&item->cond, NULL);
-	pthread_mutex_init(&item->lock, NULL);
-
-	return item;
 }
 
 int http2_network_set_token(HTTP2Network *net, const char *token)
@@ -353,13 +355,10 @@ int http2_network_add_request(HTTP2Network *net, HTTP2Request *req)
 	g_return_val_if_fail(net != NULL, -1);
 	g_return_val_if_fail(req != NULL, -1);
 
-	pthread_mutex_lock(&net->init_lock);
-	if (!net->handle) {
+	if (thread_sync_check(net->sync_init) == 0) {
 		nugu_error("network is not started");
-		pthread_mutex_unlock(&net->init_lock);
 		return -1;
 	}
-	pthread_mutex_unlock(&net->init_lock);
 
 	if (net->log)
 		http2_request_enable_curl_log(req);
@@ -389,19 +388,14 @@ int http2_network_remove_request_sync(HTTP2Network *net, HTTP2Request *req)
 	uint64_t ev = 1;
 	ssize_t written;
 	struct request_item *item;
-	struct timespec spec;
-	int status = 0;
 
 	g_return_val_if_fail(net != NULL, -1);
 	g_return_val_if_fail(req != NULL, -1);
 
-	pthread_mutex_lock(&net->init_lock);
-	if (!net->handle) {
+	if (thread_sync_check(net->sync_init) == 0) {
 		nugu_error("network is not started");
-		pthread_mutex_unlock(&net->init_lock);
 		return -1;
 	}
-	pthread_mutex_unlock(&net->init_lock);
 
 	item = _request_item_new(REQUEST_REMOVE, req);
 	if (!item)
@@ -415,34 +409,19 @@ int http2_network_remove_request_sync(HTTP2Network *net, HTTP2Request *req)
 		nugu_error("write failed");
 
 	/* wait for curl_multi_remove_handle() (maximum 5 secs) */
-	clock_gettime(CLOCK_REALTIME, &spec);
-	spec.tv_sec = spec.tv_sec + 5;
-
-	pthread_mutex_lock(&item->lock);
-	if (item->is_done == 0)
-		status =
-			pthread_cond_timedwait(&item->cond, &item->lock, &spec);
-	pthread_mutex_unlock(&item->lock);
-
-	if (status == ETIMEDOUT) {
-		nugu_info("timeout");
-
-		if (item->is_done == 0) {
-			nugu_error("failed");
-			return -1;
-		}
+	if (thread_sync_wait_secs(item->sync, 5) != THREAD_SYNC_RESULT_OK) {
+		nugu_error("http2_network_remove_request_sync() timeout");
+		return -1;
 	}
 
-	free(item);
+	_request_item_free(item);
 
 	return 0;
 }
 
 int http2_network_start(HTTP2Network *net)
 {
-	struct timespec spec;
 	int ret;
-	int status = 0;
 
 	g_return_val_if_fail(net != NULL, -1);
 
@@ -460,22 +439,9 @@ int http2_network_start(HTTP2Network *net)
 		nugu_error("pthread_setname_np() failed");
 
 	/* Wait for thread creation (maximum 5 secs) */
-	clock_gettime(CLOCK_REALTIME, &spec);
-	spec.tv_sec = spec.tv_sec + 5;
-
-	pthread_mutex_lock(&net->init_lock);
-	if (net->running == 0)
-		status = pthread_cond_timedwait(&net->cond, &net->init_lock,
-						&spec);
-	pthread_mutex_unlock(&net->init_lock);
-
-	if (status == ETIMEDOUT) {
-		nugu_info("timeout");
-
-		if (net->running == 0) {
-			nugu_error("failed");
-			return -1;
-		}
+	if (thread_sync_wait_secs(net->sync_init, 5) != THREAD_SYNC_RESULT_OK) {
+		nugu_error("thread creation timeout");
+		return -1;
 	}
 
 	return 0;

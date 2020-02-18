@@ -1,5 +1,6 @@
 # HTTP/2 module using curl and nghttp2 libraries
 ADD_LIBRARY(objhttp2 OBJECT
+	network/http2/threadsync.c
 	network/http2/multipart_parser.c
 	network/http2/http2_request.c
 	network/http2/http2_network.c
