@@ -25,10 +25,6 @@ NuguClient::CapabilityBuilder::CapabilityBuilder(NuguClientImpl* client_impl)
     this->client_impl = client_impl;
 }
 
-NuguClient::CapabilityBuilder::~CapabilityBuilder()
-{
-}
-
 NuguClient::CapabilityBuilder* NuguClient::CapabilityBuilder::add(ICapabilityInterface* cap_instance)
 {
     client_impl->registerCapability(cap_instance);
@@ -44,11 +40,15 @@ bool NuguClient::CapabilityBuilder::construct()
 NuguClient::NuguClient()
 {
     impl = std::unique_ptr<NuguClientImpl>(new NuguClientImpl());
-    cap_builder = std::unique_ptr<CapabilityBuilder>(new CapabilityBuilder(impl.get()));
+    cap_builder = new CapabilityBuilder(impl.get());
 }
 
 NuguClient::~NuguClient()
 {
+    if (cap_builder) {
+        delete cap_builder;
+        cap_builder = nullptr;
+    }
 }
 
 void NuguClient::setListener(INuguClientListener* listener)
@@ -63,7 +63,7 @@ void NuguClient::setWakeupWord(const std::string& wakeup_word)
 
 NuguClient::CapabilityBuilder* NuguClient::getCapabilityBuilder()
 {
-    return cap_builder.get();
+    return cap_builder;
 }
 
 bool NuguClient::initialize(void)

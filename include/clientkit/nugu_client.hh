@@ -51,9 +51,6 @@ public:
      */
     class CapabilityBuilder {
     public:
-        explicit CapabilityBuilder(NuguClientImpl* client_impl);
-        virtual ~CapabilityBuilder();
-
         /**
          * @brief Add capability instance. It could create from CapabilityFactory or by self as inhering ICapabilityInterface
          * @param[in] cap_instance capability interface
@@ -68,6 +65,11 @@ public:
         bool construct();
 
     private:
+        friend class NuguClient;
+
+        explicit CapabilityBuilder(NuguClientImpl* client_impl);
+        virtual ~CapabilityBuilder() = default;
+
         NuguClientImpl* client_impl = nullptr;
     };
 
@@ -116,7 +118,7 @@ public:
 
 private:
     std::unique_ptr<NuguClientImpl> impl;
-    std::unique_ptr<CapabilityBuilder> cap_builder;
+    CapabilityBuilder* cap_builder;
 };
 
 /**
