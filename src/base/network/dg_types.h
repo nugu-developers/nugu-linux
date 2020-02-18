@@ -17,6 +17,8 @@
 #ifndef __NETWORK_DEVICE_GATEWAY_TYPES_H__
 #define __NETWORK_DEVICE_GATEWAY_TYPES_H__
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

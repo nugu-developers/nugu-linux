@@ -781,7 +781,7 @@ EXPORT_API NuguNetworkStatus nugu_network_manager_get_status(void)
 	return _network->cur_status;
 }
 
-EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
+EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev, int is_sync)
 {
 	g_return_val_if_fail(nev != NULL, -1);
 
@@ -800,7 +800,12 @@ EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
 		return -1;
 	}
 
-	return dg_server_send_event(_network->server, nev);
+	if (is_sync && nugu_event_get_type(nev) != NUGU_EVENT_TYPE_DEFAULT) {
+		nugu_error("sync option supports only default type event");
+		return -1;
+	}
+
+	return dg_server_send_event(_network->server, nev, is_sync);
 }
 
 EXPORT_API int nugu_network_manager_force_close_event(NuguEvent *nev)

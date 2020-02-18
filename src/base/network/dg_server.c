@@ -233,11 +233,12 @@ void dg_server_reset_retry_count(DGServer *server)
 	server->retry_count = 0;
 }
 
-static int _send_event(DGServer *server, NuguEvent *nev, const char *payload)
+static int _send_event(DGServer *server, NuguEvent *nev, const char *payload,
+		       int is_sync)
 {
 	V1Event *e;
 
-	e = v1_event_new(server->host);
+	e = v1_event_new(server->host, is_sync);
 	if (!e)
 		return -1;
 
@@ -249,11 +250,12 @@ static int _send_event(DGServer *server, NuguEvent *nev, const char *payload)
 	return 0;
 }
 
-static int _send_events(DGServer *server, NuguEvent *nev, const char *payload)
+static int _send_events(DGServer *server, NuguEvent *nev, const char *payload,
+			int is_sync)
 {
 	V1Events *e;
 
-	e = v1_events_new(server->host, server->net);
+	e = v1_events_new(server->host, server->net, is_sync);
 	if (!e)
 		return -1;
 
@@ -279,7 +281,7 @@ static int _send_events(DGServer *server, NuguEvent *nev, const char *payload)
 	return 0;
 }
 
-int dg_server_send_event(DGServer *server, NuguEvent *nev)
+int dg_server_send_event(DGServer *server, NuguEvent *nev, int is_sync)
 {
 	char *payload;
 	int ret;
@@ -289,9 +291,9 @@ int dg_server_send_event(DGServer *server, NuguEvent *nev)
 		return -1;
 
 	if (server->use_events == 0)
-		ret = _send_event(server, nev, payload);
+		ret = _send_event(server, nev, payload, is_sync);
 	else
-		ret = _send_events(server, nev, payload);
+		ret = _send_events(server, nev, payload, is_sync);
 
 	g_free(payload);
 
@@ -375,10 +377,8 @@ int dg_server_force_close_event(DGServer *server, NuguEvent *nev)
 	g_return_val_if_fail(server != NULL, -1);
 	g_return_val_if_fail(nev != NULL, -1);
 
-	if (server->use_events == 0) {
-		nugu_error("force_close is not supported");
+	if (server->use_events == 0)
 		return -1;
-	}
 
 	e = g_hash_table_lookup(server->pending_events,
 				nugu_event_peek_msg_id(nev));
