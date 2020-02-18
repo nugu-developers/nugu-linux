@@ -98,7 +98,7 @@ bool AudioInputProcessor::start(const std::function<void()>& extra_func)
     return true;
 }
 
-void AudioInputProcessor::stop(void)
+void AudioInputProcessor::stop()
 {
     if (!is_running) {
         nugu_dbg("Thread is not running...");

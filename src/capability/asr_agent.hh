@@ -46,8 +46,8 @@ public:
     void initialize() override;
     void deInitialize() override;
 
-    void startRecognition(void) override;
-    void stopRecognition(void) override;
+    bool startRecognition() override;
+    void stopRecognition() override;
 
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;

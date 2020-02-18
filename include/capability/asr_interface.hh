@@ -126,12 +126,12 @@ public:
     /**
      * @brief Turn on the microphone and start speech recognition
      */
-    virtual void startRecognition(void) = 0;
+    virtual bool startRecognition() = 0;
 
     /**
      * @brief Turn off the microphone and stop speech recognition
      */
-    virtual void stopRecognition(void) = 0;
+    virtual void stopRecognition() = 0;
 
     /**
      * @brief Add the Listener object
