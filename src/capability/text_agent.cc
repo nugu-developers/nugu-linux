@@ -24,16 +24,13 @@ namespace NuguCapability {
 static const char* CAPABILITY_NAME = "Text";
 static const char* CAPABILITY_VERSION = "1.0";
 
-// define default property values
-static const int SERVER_RESPONSE_TIMEOUT_SEC = 10;
-
 TextAgent::TextAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , text_listener(nullptr)
     , timer(nullptr)
     , cur_state(TextState::IDLE)
     , cur_dialog_id("")
-    , response_timeout(SERVER_RESPONSE_TIMEOUT_SEC)
+    , response_timeout(NUGU_SERVER_RESPONSE_TIMEOUT_SEC)
 {
 }
 

@@ -34,6 +34,8 @@ using namespace NuguClientKit;
  * @{
  */
 
+#define NUGU_TTS_ENGINE "skt"
+
 /**
  * @brief TTSState
  */
