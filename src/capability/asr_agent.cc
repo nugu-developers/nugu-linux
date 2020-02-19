@@ -351,55 +351,26 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
 
 void ASRAgent::sendEventResponseTimeout()
 {
-    std::string ename = "ResponseTimeout";
-    std::string payload = "";
-
-    if (es_attr.is_handle) {
-        Json::StyledWriter writer;
-        Json::Value root;
-
-        root["playServiceId"] = es_attr.play_service_id;
-        payload = writer.write(root);
-    }
-
-    sendEvent(ename, getContextInfo(), payload);
+    sendEventCommon("ResponseTimeout");
 }
 
 void ASRAgent::sendEventListenTimeout()
 {
-    std::string ename = "ListenTimeout";
-    std::string payload = "";
-
-    if (es_attr.is_handle) {
-        Json::StyledWriter writer;
-        Json::Value root;
-
-        root["playServiceId"] = es_attr.play_service_id;
-        payload = writer.write(root);
-    }
-
-    sendEvent(ename, getContextInfo(), payload);
+    sendEventCommon("ListenTimeout");
 }
 
 void ASRAgent::sendEventListenFailed()
 {
-    std::string ename = "ListenFailed";
-    std::string payload = "";
-
-    if (es_attr.is_handle) {
-        Json::StyledWriter writer;
-        Json::Value root;
-
-        root["playServiceId"] = es_attr.play_service_id;
-        payload = writer.write(root);
-    }
-
-    sendEvent(ename, getContextInfo(), payload);
+    sendEventCommon("ListenFailed");
 }
 
 void ASRAgent::sendEventStopRecognize()
 {
-    std::string ename = "StopRecognize";
+    sendEventCommon("StopRecognize");
+}
+
+void ASRAgent::sendEventCommon(const std::string& ename)
+{
     std::string payload = "";
 
     if (es_attr.is_handle) {
