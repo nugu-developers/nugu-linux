@@ -23,94 +23,28 @@
 #include "base/nugu_log.h"
 #include "base/nugu_directive_sequencer.h"
 
-struct _dirseq_callback {
-	NuguDirseqCallback callback;
-	void *userdata;
-};
-
 static GList *list_dir;
-static GList *list_callbacks;
+static NuguDirseqCallback _callback;
+static void *_callback_userdata;
 
-static gint _compare_callback(gconstpointer a, gconstpointer b)
-{
-	struct _dirseq_callback *cb = ((GList *)a)->data;
-
-	if (cb->callback == b)
-		return 0;
-
-	return -1;
-}
-
-EXPORT_API int nugu_dirseq_add_callback(NuguDirseqCallback callback,
+EXPORT_API int nugu_dirseq_set_callback(NuguDirseqCallback callback,
 					void *userdata)
 {
-	struct _dirseq_callback *cb;
-
-	g_return_val_if_fail(callback != NULL, -1);
-
-	if (g_list_find_custom(list_callbacks, callback, _compare_callback)) {
-		nugu_warn("callback already registered");
-		return 0;
-	}
-
-	cb = malloc(sizeof(struct _dirseq_callback));
-	cb->callback = callback;
-	cb->userdata = userdata;
-
-	list_callbacks = g_list_append(list_callbacks, cb);
+	_callback = callback;
+	_callback_userdata = userdata;
 
 	return 0;
 }
 
-EXPORT_API int nugu_dirseq_remove_callback(NuguDirseqCallback callback)
+EXPORT_API void nugu_dirseq_unset_callback(void)
 {
-	GList *l;
-
-	g_return_val_if_fail(callback != NULL, -1);
-
-	l = list_callbacks;
-	while (l != NULL) {
-		struct _dirseq_callback *cb = l->data;
-
-		if (cb->callback != callback) {
-			l = l->next;
-			continue;
-		}
-
-		free(cb);
-		list_callbacks = g_list_delete_link(list_callbacks, l);
-		l = list_callbacks;
-	}
-
-	return 0;
-}
-
-static NuguDirseqReturn nugu_dirseq_emit_callback(NuguDirective *ndir)
-{
-	GList *l;
-	struct _dirseq_callback *cb;
-	NuguDirseqReturn ret = NUGU_DIRSEQ_REMOVE;
-
-	g_return_val_if_fail(ndir != NULL, -1);
-
-	for (l = list_callbacks; l; l = l->next) {
-		cb = l->data;
-		if (!cb)
-			continue;
-		if (!cb->callback)
-			continue;
-
-		ret = cb->callback(ndir, cb->userdata);
-		if (ret != NUGU_DIRSEQ_CONTINUE)
-			break;
-	}
-
-	return ret;
+	_callback = NULL;
+	_callback_userdata = NULL;
 }
 
 EXPORT_API int nugu_dirseq_push(NuguDirective *ndir)
 {
-	NuguDirseqReturn ret;
+	NuguDirseqReturn ret = NUGU_DIRSEQ_FAILURE;
 
 	list_dir = g_list_append(list_dir, ndir);
 	nugu_dbg("added: %s.%s 'id=%s'", nugu_directive_peek_namespace(ndir),
@@ -118,10 +52,13 @@ EXPORT_API int nugu_dirseq_push(NuguDirective *ndir)
 		 nugu_directive_peek_msg_id(ndir));
 
 	nugu_directive_set_active(ndir, 1);
-	ret = nugu_dirseq_emit_callback(ndir);
-	if (ret == NUGU_DIRSEQ_REMOVE) {
-		nugu_dbg("directive removed");
-		list_dir = g_list_remove(list_dir, ndir);
+
+	if (_callback)
+		ret = _callback(ndir, _callback_userdata);
+
+	if (ret == NUGU_DIRSEQ_FAILURE) {
+		nugu_info("fail to handle the directive. remove!");
+		nugu_dirseq_complete(ndir);
 	}
 
 	return 0;
@@ -154,17 +91,13 @@ static gint _compare_msgid(gconstpointer a, gconstpointer b)
 EXPORT_API NuguDirective *nugu_dirseq_find_by_msgid(const char *msgid)
 {
 	GList *found;
-	NuguDirective *ndir = NULL;
 
 	g_return_val_if_fail(msgid != NULL, NULL);
 	g_return_val_if_fail(strlen(msgid) > 0, NULL);
 
 	found = g_list_find_custom(list_dir, msgid, _compare_msgid);
 	if (found)
-		ndir = found->data;
-
-	if (ndir)
-		return ndir;
+		return found->data;
 
 	nugu_dbg("can't find msgid('%s')", msgid);
 
@@ -183,9 +116,8 @@ static void _free_directive(gpointer data)
 
 void nugu_dirseq_deinitialize(void)
 {
-	if (list_callbacks)
-		g_list_free_full(list_callbacks, g_free);
-	list_callbacks = NULL;
+	_callback = NULL;
+	_callback_userdata = NULL;
 
 	if (list_dir)
 		g_list_free_full(list_dir, _free_directive);
