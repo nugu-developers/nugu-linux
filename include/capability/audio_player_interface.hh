@@ -17,7 +17,6 @@
 #ifndef __NUGU_AUDIO_PLAYER_INTERFACE_H__
 #define __NUGU_AUDIO_PLAYER_INTERFACE_H__
 
-#include <capability/display_interface.hh>
 #include <clientkit/capability_interface.hh>
 
 namespace NuguCapability {
@@ -57,10 +56,18 @@ enum class RepeatType {
 };
 
 /**
+ * @brief ControlLyricsDirection
+ */
+enum class ControlLyricsDirection {
+    PREVIOUS, /**< Previous direction */
+    NEXT /**< Next direction */
+};
+
+/**
  * @brief audioplayer listener interface
  * @see IAudioPlayerHandler
  */
-class IAudioPlayerListener : virtual public IDisplayListener {
+class IAudioPlayerListener : public ICapabilityListener {
 public:
     virtual ~IAudioPlayerListener() = default;
 
@@ -120,7 +127,7 @@ public:
  * @brief audioplayer handler interface
  * @see IAudioPlayerListener
  */
-class IAudioPlayerHandler : virtual public IDisplayHandler {
+class IAudioPlayerHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IAudioPlayerHandler() = default;
 
@@ -203,7 +210,6 @@ public:
      * @param[in] listener listener object
      */
     virtual void removeListener(IAudioPlayerListener* listener) = 0;
-    using IDisplayHandler::removeListener;
 };
 
 /**

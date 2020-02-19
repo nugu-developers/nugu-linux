@@ -21,7 +21,6 @@
 
 #include "audio_player_listener.hh"
 #include "delegation_listener.hh"
-#include "display_listener.hh"
 #include "extension_listener.hh"
 #include "location_listener.hh"
 #include "mic_listener.hh"
@@ -46,12 +45,10 @@ std::shared_ptr<IAudioPlayerHandler> audio_player_handler = nullptr;
 std::shared_ptr<ITextHandler> text_handler = nullptr;
 std::shared_ptr<ISpeakerHandler> speaker_handler = nullptr;
 std::shared_ptr<IMicHandler> mic_handler = nullptr;
-std::shared_ptr<IDisplayHandler> display_handler = nullptr;
 
 // Capability listener
 std::unique_ptr<SpeechOperator> speech_operator = nullptr;
 std::unique_ptr<TTSListener> tts_listener = nullptr;
-std::unique_ptr<DisplayListener> display_listener = nullptr;
 std::unique_ptr<AudioPlayerListener> aplayer_listener = nullptr;
 std::unique_ptr<SystemListener> system_listener = nullptr;
 std::unique_ptr<TextListener> text_listener = nullptr;
@@ -141,8 +138,6 @@ void registerCapabilities()
         CapabilityFactory::makeCapability<SpeakerAgent, ISpeakerHandler>(speaker_listener.get()));
     mic_handler = std::shared_ptr<IMicHandler>(
         CapabilityFactory::makeCapability<MicAgent, IMicHandler>(mic_listener.get()));
-    display_handler = std::shared_ptr<IDisplayHandler>(
-        CapabilityFactory::makeCapability<DisplayAgent, IDisplayHandler>(display_listener.get()));
 
     // set MicAgent
     mic_handler->enable();
@@ -201,7 +196,6 @@ void registerCapabilities()
         ->add(text_handler.get())
         ->add(speaker_handler.get())
         ->add(mic_handler.get())
-        ->add(display_handler.get())
         ->construct();
 }
 
@@ -220,7 +214,6 @@ int main(int argc, char** argv)
 
     speech_operator = make_unique<SpeechOperator>();
     tts_listener = make_unique<TTSListener>();
-    display_listener = make_unique<DisplayListener>();
     aplayer_listener = make_unique<AudioPlayerListener>();
     system_listener = make_unique<SystemListener>();
     text_listener = make_unique<TextListener>();

@@ -17,7 +17,6 @@
 #include "asr_agent.hh"
 #include "audio_player_agent.hh"
 #include "delegation_agent.hh"
-#include "display_agent.hh"
 #include "extension_agent.hh"
 #include "location_agent.hh"
 #include "mic_agent.hh"
@@ -45,7 +44,6 @@ template IASRHandler* CapabilityFactory::makeCapability<ASRAgent, IASRHandler>(I
 template ITTSHandler* CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(ICapabilityListener* listener);
 template IAudioPlayerHandler* CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>(ICapabilityListener* listener);
 template ISystemHandler* CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>(ICapabilityListener* listener);
-template IDisplayHandler* CapabilityFactory::makeCapability<DisplayAgent, IDisplayHandler>(ICapabilityListener* listener);
 template IExtensionHandler* CapabilityFactory::makeCapability<ExtensionAgent, IExtensionHandler>(ICapabilityListener* listener);
 template ITextHandler* CapabilityFactory::makeCapability<TextAgent, ITextHandler>(ICapabilityListener* listener);
 template IDelegationHandler* CapabilityFactory::makeCapability<DelegationAgent, IDelegationHandler>(ICapabilityListener* listener);

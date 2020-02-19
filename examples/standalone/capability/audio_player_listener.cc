@@ -18,11 +18,6 @@
 
 #include "audio_player_listener.hh"
 
-AudioPlayerListener::AudioPlayerListener()
-{
-    listener_name = "[AudioPlayer]";
-}
-
 void AudioPlayerListener::mediaStateChanged(AudioPlayerState state)
 {
     std::cout << "[AudioPlayer] ";

@@ -19,15 +19,14 @@
 
 #include <capability/audio_player_interface.hh>
 
-#include "display_listener.hh"
-
 using namespace NuguCapability;
 
-class AudioPlayerListener : public IAudioPlayerListener, public DisplayListener {
+class AudioPlayerListener : public IAudioPlayerListener {
 public:
-    AudioPlayerListener();
+    AudioPlayerListener() = default;
     virtual ~AudioPlayerListener() = default;
 
+    // implements IAudioPlayerListener
     void mediaStateChanged(AudioPlayerState state) override;
     void durationChanged(int duration) override;
     void positionChanged(int position) override;

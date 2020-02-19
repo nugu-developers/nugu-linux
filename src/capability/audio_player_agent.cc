@@ -290,12 +290,6 @@ void AudioPlayerAgent::updateInfoForContext(Json::Value& ctx)
         if (duration)
             aplayer["durationInMilliseconds"] = duration;
     }
-    if (display_listener) {
-        bool visible = false;
-
-        if (display_listener->requestLyricsPageAvailable(visible))
-            aplayer["lyricsVisible"] = visible;
-    }
 
     ctx[getName()] = aplayer;
 }
@@ -313,7 +307,6 @@ void AudioPlayerAgent::receiveCommand(const std::string& from, const std::string
 void AudioPlayerAgent::setCapabilityListener(ICapabilityListener* listener)
 {
     if (listener) {
-        setListener(dynamic_cast<IDisplayListener*>(listener));
         addListener(dynamic_cast<IAudioPlayerListener*>(listener));
     }
 }
@@ -544,26 +537,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     std::string playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
     if (!playstackctl_ps_id.empty()) {
-        IPlaySyncManager::DisplayRenderer renderer;
-        Json::Value meta = audio_item["metadata"];
-
-        if (!meta.empty() && !meta["template"].empty()) {
-            Json::StyledWriter writer;
-
-            std::string id = composeRenderInfo(std::make_tuple(
-                play_service_id,
-                meta["template"]["type"].asString(),
-                writer.write(meta["template"]),
-                nugu_directive_peek_dialog_id(getNuguDirective()),
-                root["token"].asString()));
-
-            renderer.cap_name = getName();
-            renderer.listener = this;
-            renderer.display_id = id;
-        }
-
-        // sync display rendering with context
-        playsync_manager->addContext(playstackctl_ps_id, getName(), std::move(renderer));
+        playsync_manager->addContext(playstackctl_ps_id, getName());
     }
 
     is_finished = false;
@@ -738,14 +712,6 @@ void AudioPlayerAgent::parsingShowLyrics(const char* message)
         nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
         return;
     }
-
-    if (display_listener) {
-        bool ret = display_listener->showLyrics();
-        if (ret)
-            sendEventShowLyricsSucceeded();
-        else
-            sendEventShowLyricsFailed();
-    }
 }
 
 void AudioPlayerAgent::parsingHideLyrics(const char* message)
@@ -767,14 +733,6 @@ void AudioPlayerAgent::parsingHideLyrics(const char* message)
     if (playserviceid != ps_id) {
         nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
         return;
-    }
-
-    if (display_listener) {
-        bool ret = display_listener->hideLyrics();
-        if (ret)
-            sendEventHideLyricsSucceeded();
-        else
-            sendEventHideLyricsFailed();
     }
 }
 
@@ -800,18 +758,6 @@ void AudioPlayerAgent::parsingControlLyricsPage(const char* message)
     if (playserviceid != ps_id) {
         nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
         return;
-    }
-
-    if (display_listener) {
-        ControlLyricsDirection cdir = ControlLyricsDirection::PREVIOUS;
-        if (direction == "NEXT")
-            cdir = ControlLyricsDirection::NEXT;
-
-        bool ret = display_listener->controlLyrics(cdir);
-        if (ret)
-            sendEventControlLyricsPageSucceeded();
-        else
-            sendEventControlLyricsPageFailed();
     }
 }
 
@@ -962,15 +908,6 @@ void AudioPlayerAgent::volumeChanged(int volume)
 
 void AudioPlayerAgent::muteChanged(int mute)
 {
-}
-
-void AudioPlayerAgent::onElementSelected(const std::string& item_token)
-{
-}
-
-IPlaySyncManager* AudioPlayerAgent::getPlaySyncManager()
-{
-    return playsync_manager;
 }
 
 } // NuguCapability
