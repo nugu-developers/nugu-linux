@@ -45,7 +45,6 @@ private:
 
     IMicListener* mic_listener;
     MicStatus cur_status;
-    MicStatus pre_status;
     std::string ps_id;
 };
 

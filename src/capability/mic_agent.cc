@@ -28,7 +28,6 @@ MicAgent::MicAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , mic_listener(nullptr)
     , cur_status(MicStatus::ON)
-    , pre_status(MicStatus::ON)
     , ps_id("")
 {
 }
@@ -54,7 +53,7 @@ void MicAgent::updateInfoForContext(Json::Value& ctx)
     Json::Value mic;
 
     mic["version"] = getVersion();
-    if (pre_status == MicStatus::ON)
+    if (cur_status == MicStatus::ON)
         mic["micStatus"] = "ON";
     else
         mic["micStatus"] = "OFF";
@@ -128,6 +127,8 @@ void MicAgent::parsingSetMic(const char* message)
 
 void MicAgent::control(bool enable, bool send_event)
 {
+    MicStatus pre_status = cur_status;
+
     if (enable)
         cur_status = MicStatus::ON;
     else
@@ -143,8 +144,6 @@ void MicAgent::control(bool enable, bool send_event)
 
     if (mic_listener)
         mic_listener->micStatusChanged(cur_status);
-
-    pre_status = cur_status;
 }
 
 } // NuguCapability
