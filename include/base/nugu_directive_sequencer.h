@@ -39,9 +39,11 @@ extern "C" {
  * @brief Callback return type
  */
 typedef enum nugu_dirseq_return {
-	NUGU_DIRSEQ_STOP_PROPAGATE, /**< Stop event propagation */
-	NUGU_DIRSEQ_CONTINUE, /**< Pass to the next callback */
-	NUGU_DIRSEQ_REMOVE /**< Remove the directive */
+	NUGU_DIRSEQ_SUCCESS,
+	/**< Directive will be processed and managed(nugu_dirseq_complete()) */
+
+	NUGU_DIRSEQ_FAILURE
+	/**< Unknown/Unhandled directive (Removed Automatically) */
 } NuguDirseqReturn;
 
 /**
@@ -52,23 +54,19 @@ typedef NuguDirseqReturn (*NuguDirseqCallback)(NuguDirective *ndir,
 					       void *userdata);
 
 /**
- * @brief Add event callback to Directive sequencer
+ * @brief Set an event callback to directive sequencer
  * @param[in] callback callback function
  * @param[in] userdata data to pass to the user callback
  * @return result
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_dirseq_add_callback(NuguDirseqCallback callback, void *userdata);
+int nugu_dirseq_set_callback(NuguDirseqCallback callback, void *userdata);
 
 /**
- * @brief Remove event callback
- * @param[in] callback callback function
- * @return result
- * @retval 0 success
- * @retval -1 failure
+ * @brief Unset the event callback from directive sequencer
  */
-int nugu_dirseq_remove_callback(NuguDirseqCallback callback);
+void nugu_dirseq_unset_callback(void);
 
 /**
  * @brief Add new directive object to directive sequencer

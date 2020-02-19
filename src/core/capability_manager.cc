@@ -49,7 +49,7 @@ static NuguFocusStealResult on_steal_request(NuguFocus* focus, void* event, Nugu
 
 CapabilityManager::CapabilityManager()
 {
-    nugu_dirseq_add_callback(dirseqCallback, this);
+    nugu_dirseq_set_callback(dirseqCallback, this);
 
     wword = WAKEUP_WORD;
     playsync_manager = std::unique_ptr<PlaySyncManager>(new PlaySyncManager());
@@ -60,7 +60,7 @@ CapabilityManager::~CapabilityManager()
     caps.clear();
     focusmap.clear();
 
-    nugu_dirseq_remove_callback(dirseqCallback);
+    nugu_dirseq_unset_callback();
 }
 
 CapabilityManager* CapabilityManager::getInstance()
@@ -86,7 +86,7 @@ NuguDirseqReturn CapabilityManager::dirseqCallback(NuguDirective* ndir, void* us
     ICapabilityInterface* cap = agent->findCapability(std::string(name_space));
     if (!cap) {
         nugu_warn("capability(%s) is not support", name_space);
-        return NUGU_DIRSEQ_REMOVE;
+        return NUGU_DIRSEQ_FAILURE;
     }
 
     agent->preprocessDirective(ndir);
@@ -95,11 +95,11 @@ NuguDirseqReturn CapabilityManager::dirseqCallback(NuguDirective* ndir, void* us
     if (!agent->isSupportDirectiveVersion(version, cap)) {
         nugu_error("directives[%s] cannot work on %s[%s] agent",
             version, cap->getName().c_str(), cap->getVersion().c_str());
-        return NUGU_DIRSEQ_REMOVE;
+        return NUGU_DIRSEQ_FAILURE;
     }
 
     cap->processDirective(ndir);
-    return NUGU_DIRSEQ_CONTINUE;
+    return NUGU_DIRSEQ_SUCCESS;
 }
 
 void CapabilityManager::addCapability(const std::string& cname, ICapabilityInterface* cap)
