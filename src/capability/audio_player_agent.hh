@@ -19,9 +19,7 @@
 
 #include "base/nugu_focus.h"
 #include "capability/audio_player_interface.hh"
-#include "capability/display_interface.hh"
 #include "clientkit/capability.hh"
-#include "display_render_assembly.hh"
 
 namespace NuguCapability {
 
@@ -30,8 +28,7 @@ using namespace NuguClientKit;
 class AudioPlayerAgent final : public Capability,
                                public IMediaPlayerListener,
                                public IFocusListener,
-                               public IAudioPlayerHandler,
-                               public DisplayRenderAssembly<AudioPlayerAgent> {
+                               public IAudioPlayerHandler {
 public:
     enum PlaybackError {
         MEDIA_ERROR_UNKNOWN,
@@ -52,6 +49,7 @@ public:
     void receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
+    // implements IAudioPlayerHandler
     void addListener(IAudioPlayerListener* listener) override;
     void removeListener(IAudioPlayerListener* listener) override;
     void play() override;
@@ -93,12 +91,6 @@ public:
     void positionChanged(int position) override;
     void volumeChanged(int volume) override;
     void muteChanged(int mute) override;
-
-    // implement DisplayRenderAssembly
-    void onElementSelected(const std::string& item_token) override;
-    IPlaySyncManager* getPlaySyncManager() override;
-
-    using IDisplayHandler::removeListener;
 
 private:
     void sendEventCommon(const std::string& ename);

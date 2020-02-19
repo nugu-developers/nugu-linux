@@ -56,11 +56,6 @@ class AudioPlayerAgent;
 class SystemAgent;
 
 /**
- * @brief DisplayAgent
- */
-class DisplayAgent;
-
-/**
  * @brief ExtensionAgent
  */
 class ExtensionAgent;
