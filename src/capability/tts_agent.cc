@@ -113,6 +113,8 @@ void TTSAgent::pcmStatusCallback(enum nugu_media_status status, void* userdata)
 
     nugu_dbg("pcm state changed(%d -> %d)", tts->speak_status, status);
 
+    tts->speak_status = status;
+
     switch (status) {
     case NUGU_MEDIA_STATUS_PLAYING:
         tts->sendEventSpeechStarted(tts->cur_token);
@@ -121,11 +123,9 @@ void TTSAgent::pcmStatusCallback(enum nugu_media_status status, void* userdata)
         tts->sendEventSpeechStopped(tts->cur_token);
         break;
     default:
-        status = NUGU_MEDIA_STATUS_STOPPED;
+        tts->speak_status = NUGU_MEDIA_STATUS_STOPPED;
         break;
     }
-
-    tts->speak_status = status;
 }
 
 void TTSAgent::pcmEventCallback(enum nugu_media_event event, void* userdata)
@@ -134,9 +134,9 @@ void TTSAgent::pcmEventCallback(enum nugu_media_event event, void* userdata)
 
     switch (event) {
     case NUGU_MEDIA_EVENT_END_OF_STREAM:
-        tts->sendEventSpeechFinished(tts->cur_token);
         tts->finish = true;
         tts->speak_status = NUGU_MEDIA_STATUS_STOPPED;
+        tts->sendEventSpeechFinished(tts->cur_token);
         tts->capa_helper->releaseFocus("cap_tts");
         break;
     default:
@@ -312,7 +312,8 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
 
 void TTSAgent::sendEventSpeechStarted(const std::string& token)
 {
-    sendEventCommon("SpeechStarted", token);
+    if (ps_id.size())
+        sendEventCommon("SpeechStarted", token);
 
     if (tts_listener)
         tts_listener->onTTSState(TTSState::TTS_SPEECH_START, dialog_id);
@@ -320,7 +321,8 @@ void TTSAgent::sendEventSpeechStarted(const std::string& token)
 
 void TTSAgent::sendEventSpeechFinished(const std::string& token)
 {
-    sendEventCommon("SpeechFinished", token);
+    if (ps_id.size())
+        sendEventCommon("SpeechFinished", token);
 
     if (tts_listener)
         tts_listener->onTTSState(TTSState::TTS_SPEECH_FINISH, dialog_id);
@@ -328,7 +330,8 @@ void TTSAgent::sendEventSpeechFinished(const std::string& token)
 
 void TTSAgent::sendEventSpeechStopped(const std::string& token)
 {
-    sendEventCommon("SpeechStopped", token);
+    if (ps_id.size())
+        sendEventCommon("SpeechStopped", token);
 }
 
 void TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id)
@@ -377,6 +380,7 @@ void TTSAgent::parsingSpeak(const char* message)
     std::string format;
     std::string text;
     std::string token;
+    std::string play_service_id;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -386,7 +390,7 @@ void TTSAgent::parsingSpeak(const char* message)
     format = root["format"].asString();
     text = root["text"].asString();
     token = root["token"].asString();
-    ps_id = root["playServiceId"].asString();
+    play_service_id = root["playServiceId"].asString();
 
     if (format.size() == 0 || text.size() == 0 || token.size() == 0) {
         nugu_error("There is no mandatory data in directive message");
@@ -395,9 +399,6 @@ void TTSAgent::parsingSpeak(const char* message)
 
     has_attachment = true;
 
-    cur_token = token;
-    dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
-
     stopTTS();
 
     playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
@@ -405,6 +406,10 @@ void TTSAgent::parsingSpeak(const char* message)
     if (!playstackctl_ps_id.empty()) {
         playsync_manager->addContext(playstackctl_ps_id, getName());
     }
+
+    cur_token = token;
+    dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
+    ps_id = play_service_id;
 
     startTTS(getNuguDirective());
 
