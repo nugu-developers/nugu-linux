@@ -62,13 +62,3 @@ void SystemListener::onRevoke(RevokeReason reason)
     }
 }
 
-bool SystemListener::requestDeviceCharging(bool& charge)
-{
-    return false;
-}
-
-bool SystemListener::requestDeviceBattery(int& battery)
-{
-    return false;
-}
-
