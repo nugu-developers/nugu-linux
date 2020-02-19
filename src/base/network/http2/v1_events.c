@@ -25,6 +25,7 @@
 
 #include "dg_types.h"
 
+#include "threadsync.h"
 #include "http2_request.h"
 #include "v1_events.h"
 
@@ -45,7 +46,6 @@ struct _v1_events {
 	char *boundary;
 	int sync;
 };
-
 
 static void _emit_send_result(int code, HTTP2Request *req)
 {
@@ -88,6 +88,9 @@ static void _emit_send_result(int code, HTTP2Request *req)
 static void _on_finish(HTTP2Request *req, void *userdata)
 {
 	int code;
+
+	if (userdata)
+		thread_sync_signal(userdata);
 
 	code = http2_request_get_response_code(req);
 
@@ -231,7 +234,14 @@ int v1_events_send_binary(V1Events *event, int seq, int is_end, size_t length,
 
 int v1_events_send_done(V1Events *event)
 {
+	ThreadSync *sync = NULL;
+
 	g_return_val_if_fail(event != NULL, -1);
+
+	if (event->sync)
+		sync = thread_sync_new();
+
+	http2_request_set_finish_callback(event->req, _on_finish, sync);
 
 	http2_request_lock_send_data(event->req);
 	http2_request_add_send_data(event->req,
@@ -243,6 +253,11 @@ int v1_events_send_done(V1Events *event)
 	http2_request_unlock_send_data(event->req);
 
 	http2_request_resume(event->req);
+
+	if (sync) {
+		thread_sync_wait_secs(sync, 5);
+		thread_sync_free(sync);
+	}
 
 	return 0;
 }
