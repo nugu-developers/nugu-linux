@@ -76,6 +76,8 @@ public:
     bool isExpectSpeechState();
 
 private:
+    void sendEventCommon(const std::string& ename);
+
     // implements ISpeechRecognizerListener
     void onListeningState(ListeningState state) override;
     void onRecordData(unsigned char* buf, int length) override;
