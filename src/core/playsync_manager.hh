@@ -35,6 +35,7 @@ public:
     void addContext(const std::string& ps_id, const std::string& cap_name) override;
     void addContext(const std::string& ps_id, const std::string& cap_name, DisplayRenderer&& renderer) override;
     void removeContext(const std::string& ps_id, const std::string& cap_name, bool immediately = true) override;
+    void removeContextLater(const std::string& ps_id, const std::string& cap_name, unsigned int sec) override;
     void clearPendingContext(const std::string& ps_id) override;
     std::vector<std::string> getAllPlayStackItems() override;
     std::string getPlayStackItem(const std::string& cap_name) override;
