@@ -121,6 +121,7 @@ private:
     AudioPlayerState cur_aplayer_state;
     AudioPlayerState prev_aplayer_state;
     bool is_paused;
+    bool is_steal_focus;
     std::string ps_id;
     long report_delay_time;
     long report_interval_time;
