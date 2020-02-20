@@ -53,15 +53,6 @@ static GList *_recorders;
 static GList *_recorder_drivers;
 static NuguRecorderDriver *_default_driver;
 
-static void _recorder_release_condition(NuguRecorder *rec)
-{
-	g_return_if_fail(rec != NULL);
-
-	pthread_mutex_lock(&rec->lock);
-	pthread_cond_signal(&rec->cond);
-	pthread_mutex_unlock(&rec->lock);
-}
-
 EXPORT_API NuguRecorderDriver *
 nugu_recorder_driver_new(const char *name, struct nugu_recorder_driver_ops *ops)
 {
@@ -199,8 +190,12 @@ EXPORT_API void nugu_recorder_free(NuguRecorder *rec)
 	g_return_if_fail(rec != NULL);
 	g_return_if_fail(rec->driver != NULL);
 
+	pthread_mutex_lock(&rec->lock);
+
 	g_free(rec->name);
 	nugu_ring_buffer_free(rec->buf);
+
+	pthread_mutex_unlock(&rec->lock);
 
 	pthread_mutex_destroy(&rec->lock);
 	pthread_cond_destroy(&rec->cond);
@@ -275,8 +270,13 @@ EXPORT_API int nugu_recorder_start(NuguRecorder *rec)
 		nugu_error("Not supported");
 		return -1;
 	}
+
+	pthread_mutex_lock(&rec->lock);
+
 	nugu_ring_buffer_clear_items(rec->buf);
 	rec->is_recording = 1;
+
+	pthread_mutex_unlock(&rec->lock);
 
 	return rec->driver->ops->start(rec->driver, rec, rec->property);
 }
@@ -290,9 +290,14 @@ EXPORT_API int nugu_recorder_stop(NuguRecorder *rec)
 		nugu_error("Not supported");
 		return -1;
 	}
+
+	pthread_mutex_lock(&rec->lock);
+
 	nugu_ring_buffer_clear_items(rec->buf);
-	_recorder_release_condition(rec);
 	rec->is_recording = 0;
+	pthread_cond_signal(&rec->cond);
+
+	pthread_mutex_unlock(&rec->lock);
 
 	return rec->driver->ops->stop(rec->driver, rec);
 }
@@ -301,7 +306,12 @@ EXPORT_API int nugu_recorder_clear(NuguRecorder *rec)
 {
 	g_return_val_if_fail(rec != NULL, -1);
 
+	pthread_mutex_lock(&rec->lock);
+
 	nugu_ring_buffer_clear_items(rec->buf);
+
+	pthread_mutex_unlock(&rec->lock);
+
 	return 0;
 }
 
@@ -334,8 +344,12 @@ EXPORT_API int nugu_recorder_get_frame_size(NuguRecorder *rec, int *size,
 	g_return_val_if_fail(size != NULL, -1);
 	g_return_val_if_fail(max != NULL, -1);
 
+	pthread_mutex_lock(&rec->lock);
+
 	*size = nugu_ring_buffer_get_item_size(rec->buf);
 	*max = nugu_ring_buffer_get_maxcount(rec->buf);
+
+	pthread_mutex_unlock(&rec->lock);
 
 	return 0;
 }
@@ -343,12 +357,20 @@ EXPORT_API int nugu_recorder_get_frame_size(NuguRecorder *rec, int *size,
 EXPORT_API int nugu_recorder_set_frame_size(NuguRecorder *rec, int size,
 					    int max)
 {
+	int ret;
+
 	g_return_val_if_fail(rec != NULL, -1);
 	g_return_val_if_fail(rec->buf != NULL, -1);
 	g_return_val_if_fail(size > 0, -1);
 	g_return_val_if_fail(max > 0, -1);
 
-	return nugu_ring_buffer_resize(rec->buf, size, max);
+	pthread_mutex_lock(&rec->lock);
+
+	ret = nugu_ring_buffer_resize(rec->buf, size, max);
+
+	pthread_mutex_unlock(&rec->lock);
+
+	return ret;
 }
 
 EXPORT_API int nugu_recorder_push_frame(NuguRecorder *rec, const char *data,
@@ -361,24 +383,36 @@ EXPORT_API int nugu_recorder_push_frame(NuguRecorder *rec, const char *data,
 	g_return_val_if_fail(data != NULL, -1);
 	g_return_val_if_fail(size > 0, -1);
 
+	pthread_mutex_lock(&rec->lock);
+
 #ifdef RECORDER_FILE_DUMP
 	fwrite(data, size, 1, rec->file);
 #endif
 	ret = nugu_ring_buffer_push_data(rec->buf, data, size);
 
-	if (nugu_recorder_get_frame_count(rec))
-		_recorder_release_condition(rec);
+	if (nugu_ring_buffer_get_count(rec->buf))
+		pthread_cond_signal(&rec->cond);
+
+	pthread_mutex_unlock(&rec->lock);
 
 	return ret;
 }
 
 EXPORT_API int nugu_recorder_get_frame(NuguRecorder *rec, char *data, int *size)
 {
+	int ret;
+
 	g_return_val_if_fail(rec != NULL, -1);
 	g_return_val_if_fail(data != NULL, -1);
 	g_return_val_if_fail(size != NULL, -1);
 
-	return nugu_ring_buffer_read_item(rec->buf, data, size);
+	pthread_mutex_lock(&rec->lock);
+
+	ret = nugu_ring_buffer_read_item(rec->buf, data, size);
+
+	pthread_mutex_unlock(&rec->lock);
+
+	return ret;
 }
 
 EXPORT_API int nugu_recorder_get_frame_timeout(NuguRecorder *rec, char *data,
@@ -387,13 +421,15 @@ EXPORT_API int nugu_recorder_get_frame_timeout(NuguRecorder *rec, char *data,
 	struct timeval curtime;
 	struct timespec spec;
 	int status = 0;
+	int ret;
 
 	g_return_val_if_fail(rec != NULL, -1);
 	g_return_val_if_fail(data != NULL, -1);
 	g_return_val_if_fail(size != NULL, -1);
 
-	if (nugu_recorder_get_frame_count(rec) == 0) {
-		pthread_mutex_lock(&rec->lock);
+	pthread_mutex_lock(&rec->lock);
+
+	if (nugu_ring_buffer_get_count(rec->buf) == 0) {
 		if (timeout) {
 			gettimeofday(&curtime, NULL);
 			spec.tv_sec = curtime.tv_sec + timeout / 1000;
@@ -402,13 +438,16 @@ EXPORT_API int nugu_recorder_get_frame_timeout(NuguRecorder *rec, char *data,
 							&spec);
 		} else
 			pthread_cond_wait(&rec->cond, &rec->lock);
-		pthread_mutex_unlock(&rec->lock);
 	}
+
+	ret = nugu_ring_buffer_read_item(rec->buf, data, size);
+
+	pthread_mutex_unlock(&rec->lock);
 
 	if (status == ETIMEDOUT)
 		nugu_dbg("timeout");
 
-	return nugu_ring_buffer_read_item(rec->buf, data, size);
+	return ret;
 }
 
 EXPORT_API int nugu_recorder_get_frame_count(NuguRecorder *rec)
