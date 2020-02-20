@@ -32,6 +32,7 @@ AudioRecorder::AudioRecorder(std::string& samplerate, std::string& format, std::
 
 AudioRecorder::~AudioRecorder()
 {
+    stop();
 }
 
 std::string& AudioRecorder::getFormat()
@@ -92,6 +93,8 @@ AudioRecorderManager::AudioRecorderManager()
 
 AudioRecorderManager::~AudioRecorderManager()
 {
+    std::lock_guard<std::mutex> lock(mutex);
+
     for (auto container : nugu_recorders)
         nugu_recorder_free(container.second);
     nugu_recorders.clear();
@@ -118,6 +121,8 @@ IAudioRecorder* AudioRecorderManager::requestRecorder(std::string& samplerate, s
     NuguAudioProperty property = convertNuguAudioProperty(samplerate, format, channel);
     std::string key = extractRecorderKey(samplerate, format, channel);
 
+    std::lock_guard<std::mutex> lock(mutex);
+
     if (nugu_recorders.find(key) != nugu_recorders.end()) {
         nugu_dbg("already created nugu recorder - key:%s", key.c_str());
     } else {
@@ -133,11 +138,11 @@ IAudioRecorder* AudioRecorderManager::requestRecorder(std::string& samplerate, s
 
 bool AudioRecorderManager::start(IAudioRecorder* recorder)
 {
-    std::lock_guard<std::mutex> lock(mutex);
-
     NuguRecorder* nugu_recorder = extractNuguRecorder(recorder);
     if (!nugu_recorder)
         return false;
+
+    std::lock_guard<std::mutex> lock(mutex);
 
     std::list<IAudioRecorder*> recorder_list = recorders[nugu_recorder];
     auto iter = std::find(recorder_list.begin(), recorder_list.end(), recorder);
@@ -153,11 +158,11 @@ bool AudioRecorderManager::start(IAudioRecorder* recorder)
 
 bool AudioRecorderManager::stop(IAudioRecorder* recorder)
 {
-    std::lock_guard<std::mutex> lock(mutex);
-
     NuguRecorder* nugu_recorder = extractNuguRecorder(recorder);
     if (!nugu_recorder)
         return false;
+
+    std::lock_guard<std::mutex> lock(mutex);
 
     std::list<IAudioRecorder*> recorder_list = recorders[nugu_recorder];
     auto iter = std::find(recorder_list.begin(), recorder_list.end(), recorder);
@@ -165,7 +170,6 @@ bool AudioRecorderManager::stop(IAudioRecorder* recorder)
         recorder_list.remove(recorder);
         recorders[nugu_recorder] = recorder_list;
     }
-
     nugu_dbg("stop recorder: %p, list's size: %d", recorder, recorder_list.size());
 
     if (!recorder_list.size())
@@ -176,8 +180,6 @@ bool AudioRecorderManager::stop(IAudioRecorder* recorder)
 
 bool AudioRecorderManager::isRecording(IAudioRecorder* recorder)
 {
-    std::lock_guard<std::mutex> lock(mutex);
-
     NuguRecorder* nugu_recorder = extractNuguRecorder(recorder);
     if (!nugu_recorder)
         return false;
@@ -187,15 +189,11 @@ bool AudioRecorderManager::isRecording(IAudioRecorder* recorder)
 
 bool AudioRecorderManager::isMute()
 {
-    std::lock_guard<std::mutex> lock(mutex);
-
     return muted;
 }
 
 bool AudioRecorderManager::setMute(bool mute)
 {
-    std::lock_guard<std::mutex> lock(mutex);
-
     if (muted == mute)
         return true;
 
@@ -213,8 +211,6 @@ bool AudioRecorderManager::setMute(bool mute)
 
 int AudioRecorderManager::getAudioFrameSize(IAudioRecorder* recorder)
 {
-    std::lock_guard<std::mutex> lock(mutex);
-
     NuguRecorder* nugu_recorder = extractNuguRecorder(recorder);
     if (!nugu_recorder)
         return false;
@@ -230,8 +226,6 @@ int AudioRecorderManager::getAudioFrameSize(IAudioRecorder* recorder)
 
 int AudioRecorderManager::getAudioFrameCount(IAudioRecorder* recorder)
 {
-    std::lock_guard<std::mutex> lock(mutex);
-
     if (muted)
         return 0;
 
@@ -244,8 +238,6 @@ int AudioRecorderManager::getAudioFrameCount(IAudioRecorder* recorder)
 
 bool AudioRecorderManager::getAudioFrame(IAudioRecorder* recorder, char* data, int* size, int timeout)
 {
-    std::lock_guard<std::mutex> lock(mutex);
-
     if (muted)
         return false;
 
@@ -327,6 +319,8 @@ std::string AudioRecorderManager::extractRecorderKey(std::string& sample, std::s
 
 NuguRecorder* AudioRecorderManager::extractNuguRecorder(IAudioRecorder* recorder)
 {
+    std::lock_guard<std::mutex> lock(mutex);
+
     if (!recorder)
         return nullptr;
 
