@@ -113,6 +113,8 @@ private:
     NuguFocusResult onUnfocus(void* event, NuguUnFocusMode mode) override;
     NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
 
+    const unsigned int PAUSE_CONTEXT_HOLD_TIME = 60 * 10;
+
     IMediaPlayer* player;
     AudioPlayerState cur_aplayer_state;
     AudioPlayerState prev_aplayer_state;

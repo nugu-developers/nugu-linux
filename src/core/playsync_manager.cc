@@ -59,9 +59,9 @@ namespace Test {
 
 PlaySyncManager::PlaySyncManager()
     : DURATION_MAP({ { "SHORT", HOLD_TIME_SHORT },
-          { "MID", HOLD_TIME_MID },
-          { "LONG", HOLD_TIME_LONG },
-          { "LONGEST", HOLD_TIME_LONGEST } })
+        { "MID", HOLD_TIME_MID },
+        { "LONG", HOLD_TIME_LONG },
+        { "LONGEST", HOLD_TIME_LONGEST } })
 {
     timer = new NUGUTimer(DEFAULT_HOLD_TIME, 1);
 }
@@ -98,6 +98,10 @@ void PlaySyncManager::addContext(const std::string& ps_id, const std::string& ca
         if (renderer.only_rendering)
             return;
     }
+
+    // stop previous timer if exist
+    if (timer)
+        timer->stop();
 
     // remove previous context
     auto play_stack = getAllPlayStackItems();
@@ -160,6 +164,17 @@ void PlaySyncManager::removeContext(const std::string& ps_id, const std::string&
         }
     }
     is_expect_speech = false;
+}
+
+void PlaySyncManager::removeContextLater(const std::string& ps_id, const std::string& cap_name, unsigned int sec)
+{
+    if (timer) {
+        timer->setCallback([=](int count, int repeat) {
+            removeContext(ps_id, cap_name, true);
+        });
+        timer->setInterval(sec);
+        timer->start();
+    }
 }
 
 void PlaySyncManager::clearPendingContext(const std::string& ps_id)

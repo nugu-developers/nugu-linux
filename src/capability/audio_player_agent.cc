@@ -597,6 +597,9 @@ void AudioPlayerAgent::parsingPause(const char* message)
     if (playserviceid.size()) {
         capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
 
+        // hold context about 10m' and remove it, if there are no action.
+        playsync_manager->removeContextLater(playserviceid, getName(), PAUSE_CONTEXT_HOLD_TIME);
+
         if (!player->pause()) {
             nugu_error("pause media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't pause");

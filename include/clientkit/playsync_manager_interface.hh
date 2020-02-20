@@ -104,6 +104,14 @@ public:
     virtual void removeContext(const std::string& ps_id, const std::string& cap_name, bool immediately = true) = 0;
 
     /**
+     * @brief Remove play service id from context stack after some time later
+     * @param[in] ps_id play service id
+     * @param[in] cap_name CapabilityAgent name
+     * @param[in] sec hold time for starting action
+     */
+    virtual void removeContextLater(const std::string& ps_id, const std::string& cap_name, unsigned int sec) = 0;
+
+    /**
      * @brief Clear pendind play service id from context stack.
      * @param[in] ps_id play service id
      */
