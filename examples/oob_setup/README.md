@@ -12,11 +12,11 @@ The nugu_oob program is included in the `libnugu-examples` debian package.
 
 ## Get OAuth2 token
 
-First, please open the [http://lvh.me:8080](http://lvh.me:8080) using web browser.
+First, please open the [http://localhost:8080](http://localhost:8080) using web browser.
 
 Next, fill the information like `client_id`, `client_secret`, etc. in the `OAuth2 information` form and press the `Save` button to save it.
 
-Now, click the [Get OAuth2 token](http://lvh.me:8080/login) link to proceed with authentication.
+Now, click the [Get OAuth2 token](http://localhost:8080/login) link to proceed with authentication.
 
 ## How to get the OAuth2 token in your program
 

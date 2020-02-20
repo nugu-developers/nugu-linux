@@ -40,7 +40,7 @@ DEFAULT_JSON_OAUTH = """{
 
 authorization_base_url = OAUTH2_URL + '/v1/auth/oauth/authorize'
 token_url = OAUTH2_URL + '/v1/auth/oauth/token'
-redirect_uri = 'http://lvh.me:8080/callback'
+redirect_uri = 'http://localhost:8080/callback'
 
 app = Flask(__name__)
 app.secret_key = 'test'
