@@ -30,6 +30,7 @@ AudioPlayerAgent::AudioPlayerAgent()
     , cur_aplayer_state(AudioPlayerState::IDLE)
     , prev_aplayer_state(AudioPlayerState::IDLE)
     , is_paused(false)
+    , is_steal_focus(false)
     , ps_id("")
     , report_delay_time(-1)
     , report_interval_time(-1)
@@ -120,6 +121,7 @@ NuguFocusResult AudioPlayerAgent::onUnfocus(void* event, NuguUnFocusMode mode)
 
 NuguFocusStealResult AudioPlayerAgent::onStealRequest(void* event, NuguFocusType target_type)
 {
+    is_steal_focus = true;
     return NUGU_FOCUS_STEAL_ALLOW;
 }
 
@@ -551,6 +553,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     }
 
     is_finished = false;
+    is_steal_focus = false;
 
     nugu_dbg("= token: %s", token.c_str());
     nugu_dbg("= url: %s", url.c_str());
@@ -610,9 +613,13 @@ void AudioPlayerAgent::parsingPause(const char* message)
         // hold context about 10m' and remove it, if there are no action.
         playsync_manager->removeContextLater(playserviceid, getName(), PAUSE_CONTEXT_HOLD_TIME);
 
-        if (!player->pause()) {
-            nugu_error("pause media failed");
-            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't pause");
+        if (player->state() == MediaPlayerState::PAUSED && cur_aplayer_state == AudioPlayerState::PAUSED)
+            sendEventPlaybackPaused();
+        else {
+            if (!player->pause()) {
+                nugu_error("pause media failed");
+                sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't pause");
+            }
         }
 
         capa_helper->releaseFocus("cap_audio");
@@ -835,25 +842,31 @@ void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
         return;
         break;
     case MediaPlayerState::PLAYING:
-        if (prev_aplayer_state == AudioPlayerState::PAUSED)
-            sendEventPlaybackResumed();
-        else
-            sendEventPlaybackStarted();
         cur_aplayer_state = AudioPlayerState::PLAYING;
+        if (!is_steal_focus) {
+            if (prev_aplayer_state == AudioPlayerState::PAUSED)
+                sendEventPlaybackResumed();
+            else
+                sendEventPlaybackStarted();
+        }
+        is_steal_focus = false;
         break;
     case MediaPlayerState::PAUSED:
-        sendEventPlaybackPaused();
         cur_aplayer_state = AudioPlayerState::PAUSED;
+        if (!is_paused && !is_steal_focus)
+            sendEventPlaybackPaused();
         break;
     case MediaPlayerState::STOPPED:
         capa_helper->releaseFocus("cap_audio");
         if (is_finished) {
-            sendEventPlaybackFinished();
             cur_aplayer_state = AudioPlayerState::FINISHED;
+            sendEventPlaybackFinished();
         } else {
-            sendEventPlaybackStopped();
             cur_aplayer_state = AudioPlayerState::STOPPED;
+            sendEventPlaybackStopped();
         }
+        is_paused = false;
+        is_steal_focus = false;
         break;
     default:
         break;
@@ -865,6 +878,11 @@ void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
 
     for (auto aplayer_listener : aplayer_listeners)
         aplayer_listener->mediaStateChanged(cur_aplayer_state);
+
+    if (is_paused && cur_aplayer_state == AudioPlayerState::PAUSED) {
+        nugu_info("[audioplayer state] skip to save prev_aplayer_state");
+        return;
+    }
 
     prev_aplayer_state = cur_aplayer_state;
 }

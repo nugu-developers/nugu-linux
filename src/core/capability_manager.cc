@@ -195,7 +195,7 @@ void CapabilityManager::preprocessDirective(NuguDirective* ndir)
             std::string groups = nugu_directive_peek_groups(ndir);
 
             nugu_info("Check ASR Focus Release: %s", groups.c_str());
-            if (groups.find("TTS.Speak") == std::string::npos && groups.find("AudioPlayer.Play") == std::string::npos) {
+            if (groups.find("TTS") == std::string::npos && groups.find("AudioPlayer") == std::string::npos) {
                 nugu_info("ASR Focus Release by CapabilityManager");
                 sendCommand("CapabilityManager", "ASR", "releasefocus", asr_dialog_id);
             } else {
