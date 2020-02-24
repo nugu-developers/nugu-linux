@@ -42,7 +42,7 @@ public:
 public:
     SpeechRecognizer();
     SpeechRecognizer(Attribute&& attribute);
-    virtual ~SpeechRecognizer() = default;
+    virtual ~SpeechRecognizer();
 
     // implements ISpeechRecognizer
     void setListener(ISpeechRecognizerListener* listener) override;

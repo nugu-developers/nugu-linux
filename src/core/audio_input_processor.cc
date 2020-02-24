@@ -39,13 +39,13 @@ AudioInputProcessor::~AudioInputProcessor()
     cond.notify_all();
     mutex.unlock();
 
+    if (thread.joinable())
+        thread.join();
+
     if (recorder) {
         delete recorder;
         recorder = nullptr;
     }
-
-    if (thread.joinable())
-        thread.join();
 }
 
 void AudioInputProcessor::init(std::string name, std::string& sample, std::string& format, std::string& channel)
@@ -104,6 +104,9 @@ void AudioInputProcessor::stop()
         nugu_dbg("Thread is not running...");
         return;
     }
+
+    if (recorder)
+        recorder->stop();
 
     is_running = false;
 }

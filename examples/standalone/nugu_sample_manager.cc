@@ -32,7 +32,6 @@ const char* NuguSampleManager::C_WHITE = "\033[1;97m";
 const char* NuguSampleManager::C_RESET = "\033[0m";
 
 NuguSampleManager::Commander NuguSampleManager::commander = { false, 0, { nullptr, nullptr }, nullptr, nullptr };
-GMainLoop* NuguSampleManager::loop = nullptr;
 bool NuguSampleManager::is_show_prompt = true;
 
 void NuguSampleManager::error(const std::string& message)
@@ -88,26 +87,35 @@ void NuguSampleManager::prepare()
     std::cout << " - Model path: " << model_path << std::endl;
     std::cout << "=======================================================\n";
 
-    signal(SIGINT, &quit);
-
     context = g_main_context_default();
     loop = g_main_loop_new(context, FALSE);
 
     GIOChannel* channel = g_io_channel_unix_new(STDIN_FILENO);
-    g_io_add_watch(channel, (GIOCondition)(G_IO_IN | G_IO_ERR | G_IO_HUP | G_IO_NVAL), onKeyInput, loop);
+    g_io_add_watch(channel, (GIOCondition)(G_IO_IN | G_IO_ERR | G_IO_HUP | G_IO_NVAL), onKeyInput, this);
     g_io_channel_unref(channel);
 
     is_prepared = true;
 }
 
-void NuguSampleManager::runLoop()
+void NuguSampleManager::runLoop(std::function<void()> quit_callback)
 {
+    if (quit_callback)
+        quit_func = quit_callback;
+
     if (loop && is_prepared) {
         g_main_loop_run(loop);
         g_main_loop_unref(loop);
 
         info("mainloop exited");
     }
+}
+
+void NuguSampleManager::quit()
+{
+    if (quit_func)
+        quit_func();
+
+    g_main_loop_quit(loop);
 }
 
 const std::string& NuguSampleManager::getModelPath()
@@ -151,12 +159,6 @@ void NuguSampleManager::handleNetworkResult(bool is_connected, bool is_show_cmd)
     showPrompt();
 }
 
-void NuguSampleManager::quit(int signal)
-{
-    if (loop)
-        g_main_loop_quit(loop);
-}
-
 void NuguSampleManager::showPrompt(void)
 {
     if (!is_show_prompt)
@@ -198,6 +200,7 @@ void NuguSampleManager::showPrompt(void)
 gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpointer userdata)
 {
     char keybuf[4096];
+    NuguSampleManager *mgr = static_cast<NuguSampleManager*>(userdata);
 
     if (fgets(keybuf, 4096, stdin) == NULL)
         return TRUE;
@@ -261,7 +264,7 @@ gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpoint
             commander.is_connected = false;
         }
     } else if (g_strcmp0(keybuf, "q") == 0) {
-        g_main_loop_quit((GMainLoop*)userdata);
+        mgr->quit();
     } else {
         error("invalid input");
         showPrompt();

@@ -253,15 +253,19 @@ int main(int argc, char** argv)
             [&]() { return network_manager->disconnect(); } })
         ->setTextHandler(text_handler.get())
         ->setMicHandler(mic_handler.get())
-        ->runLoop();
+        ->runLoop([&] {
+            msg_info("de-initialization start");
 
-    // release resource
-    if (wakeup_handler) {
-        delete wakeup_handler;
-        wakeup_handler = nullptr;
-    }
+            // release resource
+            if (wakeup_handler) {
+                delete wakeup_handler;
+                wakeup_handler = nullptr;
+            }
 
-    nugu_client->deInitialize();
+            nugu_client->deInitialize();
+
+            msg_info("de-initialization done");
+        });
 
     return EXIT_SUCCESS;
 }

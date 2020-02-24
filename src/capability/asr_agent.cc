@@ -185,6 +185,11 @@ void ASRAgent::initialize()
 
 void ASRAgent::deInitialize()
 {
+    if (initialized == false) {
+        nugu_info("already de-initialized");
+        return;
+    }
+
     if (timer) {
         delete timer;
         timer = nullptr;
@@ -197,6 +202,8 @@ void ASRAgent::deInitialize()
 
     delete asr_focus_listener;
     delete expect_focus_listener;
+
+    speech_recognizer.reset();
 
     initialized = false;
 }

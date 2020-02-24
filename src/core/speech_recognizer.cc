@@ -35,6 +35,11 @@ SpeechRecognizer::SpeechRecognizer()
     initialize(Attribute{});
 }
 
+SpeechRecognizer::~SpeechRecognizer()
+{
+    listener = nullptr;
+}
+
 SpeechRecognizer::SpeechRecognizer(Attribute&& attribute)
 {
     initialize(std::move(attribute));
@@ -42,6 +47,9 @@ SpeechRecognizer::SpeechRecognizer(Attribute&& attribute)
 
 void SpeechRecognizer::sendSyncListeningEvent(ListeningState state)
 {
+    if (!listener)
+        return;
+
     AudioInputProcessor::sendSyncEvent([&] {
         if (listener)
             listener->onListeningState(state);
