@@ -45,6 +45,7 @@ public:
     void setAttribute(ASRAttribute&& attribute) override;
     void initialize() override;
     void deInitialize() override;
+    void suspend() override;
 
     bool startRecognition() override;
     void stopRecognition() override;

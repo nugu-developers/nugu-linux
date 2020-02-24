@@ -155,6 +155,14 @@ void Capability::deInitialize()
 {
 }
 
+void Capability::suspend()
+{
+}
+
+void Capability::restore()
+{
+}
+
 std::string Capability::getReferrerDialogRequestId()
 {
     return pimpl->ref_dialog_id;

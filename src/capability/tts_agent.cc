@@ -102,6 +102,11 @@ void TTSAgent::deInitialize()
     capa_helper->removeFocus("cap_tts");
 }
 
+void TTSAgent::suspend()
+{
+    // TODO : implements related suspend action
+}
+
 void TTSAgent::pcmStatusCallback(enum nugu_media_status status, void* userdata)
 {
     TTSAgent* tts = static_cast<TTSAgent*>(userdata);

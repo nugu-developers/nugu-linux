@@ -261,6 +261,20 @@ void CapabilityManager::getCapabilityProperties(const std::string& cap, const st
     }
 }
 
+void CapabilityManager::suspendAll()
+{
+    for (const auto& iter : caps) {
+        iter.second->suspend();
+    }
+}
+
+void CapabilityManager::restoreAll()
+{
+    for (const auto& iter : caps) {
+        iter.second->restore();
+    }
+}
+
 bool CapabilityManager::isFocusOn(NuguFocusType type)
 {
     NuguFocus* focus = nugu_focus_peek_top();

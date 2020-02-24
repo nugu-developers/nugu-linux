@@ -73,6 +73,16 @@ void AudioPlayerAgent::deInitialize()
     initialized = false;
 }
 
+void AudioPlayerAgent::suspend()
+{
+    // TODO : implements related suspend action
+}
+
+void AudioPlayerAgent::restore()
+{
+    // TODO : implements related restore action
+}
+
 void AudioPlayerAgent::onFocus(void* event)
 {
     if (is_paused)

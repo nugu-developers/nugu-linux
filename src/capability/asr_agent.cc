@@ -201,6 +201,11 @@ void ASRAgent::deInitialize()
     initialized = false;
 }
 
+void ASRAgent::suspend()
+{
+    // TODO : implements related suspend action
+}
+
 bool ASRAgent::startRecognition()
 {
     nugu_dbg("startRecognition()");

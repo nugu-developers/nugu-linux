@@ -72,6 +72,16 @@ public:
     virtual void deInitialize() = 0;
 
     /**
+     * @brief Suspend current action
+     */
+    virtual void suspend() = 0;
+
+    /**
+     * @brief Restore previous suspended action
+     */
+    virtual void restore() = 0;
+
+    /**
      * @brief Get the capability name of the current object.
      * @return capability name of the object
      */

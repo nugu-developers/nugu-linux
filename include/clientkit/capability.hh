@@ -129,6 +129,16 @@ public:
     void deInitialize() override;
 
     /**
+     * @brief Suspend current action
+     */
+    void suspend() override;
+
+    /**
+     * @brief Restore previous suspended action
+     */
+    void restore() override;
+
+    /**
      * @brief Get referred dialog request id.
      * @return referred dialog request id
      */

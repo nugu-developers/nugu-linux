@@ -62,6 +62,16 @@ void CapabilityHelper::sendCommand(const std::string& from, const std::string& t
     CapabilityManager::getInstance()->sendCommand(from, to, command, param);
 }
 
+void CapabilityHelper::suspendAll()
+{
+    CapabilityManager::getInstance()->suspendAll();
+}
+
+void CapabilityHelper::restoreAll()
+{
+    CapabilityManager::getInstance()->restoreAll();
+}
+
 void CapabilityHelper::getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value)
 {
     CapabilityManager::getInstance()->getCapabilityProperty(cap, property, value);

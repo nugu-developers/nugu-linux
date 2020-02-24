@@ -97,6 +97,16 @@ public:
     virtual void sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param) = 0;
 
     /**
+     * @brief Suspend all current capability action
+     */
+    virtual void suspendAll() = 0;
+
+    /**
+     * @brief Restore previous suspended capability action
+     */
+    virtual void restoreAll() = 0;
+
+    /**
      * @brief Get property from CapabilityAgent.
      * @param[in] cap CapabilityAgent
      * @param[in] property property key
