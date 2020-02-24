@@ -17,6 +17,11 @@ SET(prefix ${CMAKE_INSTALL_PREFIX})
 SET(bindir "${prefix}/${CMAKE_INSTALL_BINDIR}")
 SET(plugindir "${CMAKE_INSTALL_FULL_LIBDIR}/nugu")
 
+# Set default build options
+OPTION(ENABLE_GSTREAMER_PLUGIN "Enable the GStreamer plugin" ON)
+OPTION(ENABLE_OPUS_PLUGIN "Enable the OPUS plugin" ON)
+OPTION(ENABLE_PORTAUDIO_PLUGIN "Enable the PortAudio plugin" ON)
+
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -33,17 +38,30 @@ IF (NOT CMAKE_BUILD_TYPE)
 	SET(CMAKE_BUILD_TYPE Debug)
 ENDIF()
 
-# Get CFLAGS and LDFLAGS from pkg-config
-pkg_check_modules(pkgs REQUIRED
-	nugu-kwd
-	nugu-epd
-	glib-2.0
-	gio-2.0
-	gio-unix-2.0
-	gthread-2.0
+# Set NUGU SDK library default dependency
+SET(DEFAULT_LIB_DEPENDENCY
+	glib-2.0 gio-2.0 gio-unix-2.0 gthread-2.0
 	openssl
 	zlib)
+SET(FORCE_LIB_DEPENDENCY)
+
+# Add vendor specific library dependency (keyword detector, end-point detector)
+LIST(APPEND DEFAULT_LIB_DEPENDENCY nugu-kwd nugu-epd)
+
+# Gstreamer does not support dynamic loading/unloading of their libraries.
+# Therefore, add the library dependency to NUGU SDK instead of NUGU Plugin.
+IF(ENABLE_GSTREAMER_PLUGIN)
+	LIST(APPEND FORCE_LIB_DEPENDENCY gstreamer-1.0 gstreamer-pbutils-1.0)
+ENDIF(ENABLE_GSTREAMER_PLUGIN)
+
+# Get CFLAGS and LDFLAGS from pkg-config list
+pkg_check_modules(pkgs REQUIRED ${DEFAULT_LIB_DEPENDENCY})
 FOREACH(flag ${pkgs_CFLAGS})
+	ADD_COMPILE_OPTIONS(${flag})
+ENDFOREACH(flag)
+
+pkg_check_modules(force_pkgs REQUIRED ${FORCE_LIB_DEPENDENCY})
+FOREACH(flag ${force_pkgs_CFLAGS})
 	ADD_COMPILE_OPTIONS(${flag})
 ENDFOREACH(flag)
 
@@ -94,6 +112,9 @@ IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 		-Wl,--gc-sections)
 
 	IF (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+		# Link with force dependency libraries
+		LINK_LIBRARIES(-Wl,--no-as-needed ${force_pkgs_LDFLAGS})
+
 		# Link only needed libraries
 		LINK_LIBRARIES(-Wl,--as-needed)
 
