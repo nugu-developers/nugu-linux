@@ -32,6 +32,11 @@ WakeupDetector::WakeupDetector()
     initialize(Attribute{});
 }
 
+WakeupDetector::~WakeupDetector()
+{
+    listener = nullptr;
+}
+
 WakeupDetector::WakeupDetector(Attribute&& attribute)
 {
     initialize(std::move(attribute));
@@ -39,6 +44,9 @@ WakeupDetector::WakeupDetector(Attribute&& attribute)
 
 void WakeupDetector::sendSyncWakeupEvent(WakeupState state)
 {
+    if (!listener)
+        return;
+
     AudioInputProcessor::sendSyncEvent([&] {
         if (listener)
             listener->onWakeupState(state);

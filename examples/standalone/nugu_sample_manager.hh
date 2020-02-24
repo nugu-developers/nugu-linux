@@ -49,7 +49,8 @@ public:
 
     bool handleArguments(const int& argc, char** argv);
     void prepare();
-    void runLoop();
+    void runLoop(std::function<void()> quit_callback = nullptr);
+    void quit();
 
     const std::string& getModelPath();
 
@@ -60,7 +61,6 @@ public:
     void handleNetworkResult(bool is_connected, bool is_show_cmd = true);
 
 private:
-    static void quit(int signal);
     static void showPrompt(void);
     static gboolean onKeyInput(GIOChannel* src, GIOCondition con, gpointer userdata);
 
@@ -71,12 +71,13 @@ private:
     static const char* C_WHITE;
     static const char* C_RESET;
     static Commander commander;
-    static GMainLoop* loop;
     static bool is_show_prompt;
 
+    GMainLoop* loop;
     GMainContext* context = nullptr;
     std::string model_path = "./";
     bool is_prepared = false;
+    std::function<void()> quit_func;
 };
 
 #endif /* __NUGU_SAMPLE_MANAGER_H__ */

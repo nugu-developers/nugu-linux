@@ -51,7 +51,7 @@ public:
 public:
     WakeupDetector();
     WakeupDetector(Attribute&& attribute);
-    virtual ~WakeupDetector() = default;
+    virtual ~WakeupDetector();
 
     void setListener(IWakeupDetectorListener* listener);
     bool startWakeup();
