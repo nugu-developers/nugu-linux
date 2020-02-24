@@ -55,6 +55,8 @@ public:
     void sendCommandAll(const std::string& command, const std::string& param);
     void getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value);
     void getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values);
+    void suspendAll();
+    void restoreAll();
 
     bool isFocusOn(NuguFocusType type);
     int addFocus(const std::string& fname, NuguFocusType type, IFocusListener* listener);

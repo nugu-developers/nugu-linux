@@ -37,6 +37,8 @@ public:
     void setNuguCoreContainer(INuguCoreContainer* core_container) override;
     void initialize() override;
     void deInitialize() override;
+    void suspend() override;
+    void restore() override;
     std::string getName() override;
     std::string getVersion() override;
     void processDirective(NuguDirective* ndir) override;
