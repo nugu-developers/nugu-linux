@@ -27,7 +27,6 @@ static const char* CAPABILITY_VERSION = "1.0";
 SpeakerAgent::SpeakerAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , speaker_listener(nullptr)
-    , ps_id("")
 {
 }
 
@@ -109,45 +108,49 @@ void SpeakerAgent::setSpeakerInfo(std::map<SpeakerType, SpeakerInfo*> info)
 void SpeakerAgent::informVolumeChanged(SpeakerType type, int volume)
 {
     nugu_dbg("application change the volume[%d] => %d", type, volume);
-    updateSpeakerInfo(type, volume, cur_speaker.mute);
+    updateSpeakerVolume(type, volume);
 }
 
 void SpeakerAgent::informMuteChanged(SpeakerType type, bool mute)
 {
     nugu_dbg("application change the mute[%d] => %d", type, mute);
-    updateSpeakerInfo(type, cur_speaker.volume, mute);
+    updateSpeakerMute(type, mute);
 }
 
-void SpeakerAgent::informSetVolumeResult(SpeakerType type, int volume, bool result)
+void SpeakerAgent::sendEventVolumeChanged(const std::string& ps_id, bool result)
 {
-    nugu_dbg("application inform the result of changing volume[%d] => %d | result: %d", type, volume, result);
-    updateSpeakerInfo(type, volume, cur_speaker.mute);
-    if (cur_speaker.type == type && cur_speaker.volume == volume) {
-        if (result)
-            sendEventSetVolumeSucceeded();
-        else
-            sendEventSetVolumeFailed();
-    }
+    nugu_dbg("application send the volume result(%d) event to the Play(%s)", result, ps_id.c_str());
+    if (result)
+        sendEventSetVolumeSucceeded(ps_id);
+    else
+        sendEventSetVolumeFailed(ps_id);
 }
 
-void SpeakerAgent::informSetMuteResult(SpeakerType type, bool mute, bool result)
+void SpeakerAgent::sendEventMuteChanged(const std::string& ps_id, bool result)
 {
-    nugu_dbg("application inform the succeeded result of changing mute[%d] => %d | result: %d", type, mute, result);
-    updateSpeakerInfo(type, cur_speaker.volume, mute);
-    if (cur_speaker.type == type && cur_speaker.mute == mute) {
-        if (result)
-            sendEventSetMuteSucceeded();
-        else
-            sendEventSetMuteFailed();
-    }
+    nugu_dbg("application send the mute result(%d) event to the Play(%s)", result, ps_id.c_str());
+    if (result)
+        sendEventSetMuteSucceeded(ps_id);
+    else
+        sendEventSetMuteFailed(ps_id);
 }
 
-void SpeakerAgent::updateSpeakerInfo(SpeakerType type, int volume, bool mute)
+void SpeakerAgent::updateSpeakerVolume(SpeakerType type, int volume)
 {
     for (auto container : speakers) {
         SpeakerInfo* sinfo = container.second;
         if (sinfo->type == type) {
             sinfo->volume = volume;
+            break;
+        }
+    }
+}
+
+void SpeakerAgent::updateSpeakerMute(SpeakerType type, bool mute)
+{
+    for (auto container : speakers) {
+        SpeakerInfo* sinfo = container.second;
+        if (sinfo->type == type) {
             sinfo->mute = mute;
             break;
         }
@@ -184,27 +187,27 @@ std::string SpeakerAgent::getSpeakerName(SpeakerType& type)
         return "NUGU";
 }
 
-void SpeakerAgent::sendEventSetVolumeSucceeded()
+void SpeakerAgent::sendEventSetVolumeSucceeded(const std::string& ps_id)
 {
-    sendEventCommon("SetVolumeSucceeded");
+    sendEventCommon(ps_id, "SetVolumeSucceeded");
 }
 
-void SpeakerAgent::sendEventSetVolumeFailed()
+void SpeakerAgent::sendEventSetVolumeFailed(const std::string& ps_id)
 {
-    sendEventCommon("SetVolumeFailed");
+    sendEventCommon(ps_id, "SetVolumeFailed");
 }
 
-void SpeakerAgent::sendEventSetMuteSucceeded()
+void SpeakerAgent::sendEventSetMuteSucceeded(const std::string& ps_id)
 {
-    sendEventCommon("SetMuteSucceeded");
+    sendEventCommon(ps_id, "SetMuteSucceeded");
 }
 
-void SpeakerAgent::sendEventSetMuteFailed()
+void SpeakerAgent::sendEventSetMuteFailed(const std::string& ps_id)
 {
-    sendEventCommon("SetMuteFailed");
+    sendEventCommon(ps_id, "SetMuteFailed");
 }
 
-void SpeakerAgent::sendEventCommon(const std::string& ename)
+void SpeakerAgent::sendEventCommon(const std::string& ps_id, const std::string& ename)
 {
     std::string payload = "";
     Json::Value root;
@@ -222,6 +225,7 @@ void SpeakerAgent::parsingSetVolume(const char* message)
     Json::Reader reader;
     Json::Value volumes;
     std::string rate;
+    std::string ps_id;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -252,11 +256,8 @@ void SpeakerAgent::parsingSetVolume(const char* message)
             continue;
         }
 
-        cur_speaker.type = type;
-        cur_speaker.volume = volume;
-
         if (speaker_listener)
-            speaker_listener->requestSetVolume(type, volume, rate == "SLOW");
+            speaker_listener->requestSetVolume(ps_id, type, volume, rate == "SLOW");
     }
 }
 
@@ -265,6 +266,7 @@ void SpeakerAgent::parsingSetMute(const char* message)
     Json::Value root;
     Json::Reader reader;
     Json::Value volumes;
+    std::string ps_id;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -294,11 +296,8 @@ void SpeakerAgent::parsingSetMute(const char* message)
             continue;
         }
 
-        cur_speaker.type = type;
-        cur_speaker.mute = mute;
-
         if (speaker_listener)
-            speaker_listener->requestSetMute(type, mute);
+            speaker_listener->requestSetMute(ps_id, type, mute);
     }
 }
 

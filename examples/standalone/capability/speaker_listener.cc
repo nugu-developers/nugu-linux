@@ -18,7 +18,7 @@
 
 #include "speaker_listener.hh"
 
-void SpeakerListener::requestSetVolume(SpeakerType type, int volume, bool linear)
+void SpeakerListener::requestSetVolume(const std::string& ps_id, SpeakerType type, int volume, bool linear)
 {
     std::cout << "[Speaker] type: " << (int)type << ", volume: " << volume << ", linear: " << linear << std::endl;
     bool success = false;
@@ -26,11 +26,13 @@ void SpeakerListener::requestSetVolume(SpeakerType type, int volume, bool linear
     if (type == SpeakerType::NUGU && nugu_speaker_volume)
         success = nugu_speaker_volume(volume);
 
-    if (speaker_handler)
-        speaker_handler->informSetVolumeResult(type, volume, success);
+    if (speaker_handler) {
+        speaker_handler->informVolumeChanged(type, volume);
+        speaker_handler->sendEventVolumeChanged(ps_id, success);
+    }
 }
 
-void SpeakerListener::requestSetMute(SpeakerType type, bool mute)
+void SpeakerListener::requestSetMute(const std::string& ps_id, SpeakerType type, bool mute)
 {
     std::cout << "[Speaker] type: " << (int)type << ", mute: " << mute << std::endl;
     bool success = false;
@@ -38,8 +40,10 @@ void SpeakerListener::requestSetMute(SpeakerType type, bool mute)
     if (type == SpeakerType::NUGU && nugu_speaker_mute)
         success = nugu_speaker_mute(mute);
 
-    if (speaker_handler)
-        speaker_handler->informSetMuteResult(type, mute, success);
+    if (speaker_handler) {
+        speaker_handler->informMuteChanged(type, mute);
+        speaker_handler->sendEventMuteChanged(ps_id, success);
+    }
 }
 
 void SpeakerListener::setSpeakerHandler(ISpeakerHandler* speaker)
