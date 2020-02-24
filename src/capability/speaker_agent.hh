@@ -37,27 +37,26 @@ public:
     void informVolumeChanged(SpeakerType type, int volume) override;
     void informMuteChanged(SpeakerType type, bool mute) override;
 
-    void informSetVolumeResult(SpeakerType type, int volume, bool result) override;
-    void informSetMuteResult(SpeakerType type, bool mute, bool result) override;
+    void sendEventVolumeChanged(const std::string& ps_id, bool result) override;
+    void sendEventMuteChanged(const std::string& ps_id, bool result) override;
 
 private:
-    void sendEventCommon(const std::string& ename);
-    void sendEventSetVolumeSucceeded();
-    void sendEventSetVolumeFailed();
-    void sendEventSetMuteSucceeded();
-    void sendEventSetMuteFailed();
+    void sendEventCommon(const std::string& ps_id, const std::string& ename);
+    void sendEventSetVolumeSucceeded(const std::string& ps_id);
+    void sendEventSetVolumeFailed(const std::string& ps_id);
+    void sendEventSetMuteSucceeded(const std::string& ps_id);
+    void sendEventSetMuteFailed(const std::string& ps_id);
 
     void parsingSetVolume(const char* message);
     void parsingSetMute(const char* message);
 
-    void updateSpeakerInfo(SpeakerType type, int volume, bool mute);
+    void updateSpeakerVolume(SpeakerType type, int volume);
+    void updateSpeakerMute(SpeakerType type, bool mute);
     bool getSpeakerType(const std::string& name, SpeakerType& type);
     std::string getSpeakerName(SpeakerType& type);
 
     std::map<SpeakerType, SpeakerInfo*> speakers;
-    SpeakerInfo cur_speaker;
     ISpeakerListener* speaker_listener;
-    std::string ps_id;
 };
 
 } // NuguCore

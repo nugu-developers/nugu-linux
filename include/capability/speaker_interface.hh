@@ -74,18 +74,22 @@ public:
 
     /**
      * @brief The SDK requests the volume setting received from the server.
+     * @param[in] ps_id play service id
      * @param[in] type speaker type
      * @param[in] volume volume level
      * @param[in] linear change volume method. if linear is true volume is changed gradually, otherwise immediately
+     * @see sendEventVolumeChanged()
      */
-    virtual void requestSetVolume(SpeakerType type, int volume, bool linear) = 0;
+    virtual void requestSetVolume(const std::string& ps_id, SpeakerType type, int volume, bool linear) = 0;
 
     /**
      * @brief The SDK requests the mute setting received from the server.
+     * @param[in] ps_id play service id
      * @param[in] type speaker type
      * @param[in] mute volume mute
+     * @see sendEventMuteChanged()
      */
-    virtual void requestSetMute(SpeakerType type, bool mute) = 0;
+    virtual void requestSetMute(const std::string& ps_id, SpeakerType type, bool mute) = 0;
 };
 
 /**
@@ -114,20 +118,18 @@ public:
      */
     virtual void informMuteChanged(SpeakerType type, bool mute) = 0;
     /**
-     * @brief Inform the result of request SetVolume to the SDK.
-     * @param[in] type speaker type
-     * @param[in] volume volume level
+     * @brief Send event the result of request SetVolume to the SDK.
+     * @param[in] ps_id play service id
      * @param[in] result result of SetVolume
      */
-    virtual void informSetVolumeResult(SpeakerType type, int volume, bool result) = 0;
+    virtual void sendEventVolumeChanged(const std::string& ps_id, bool result) = 0;
 
     /**
-     * @brief Inform the result of request SetMute to the SDK.
-     * @param[in] type speaker type
-     * @param[in] mute volume mute
+     * @brief Send event the result of request SetMute to the SDK.
+     * @param[in] ps_id play service id
      * @param[in] result result of SetMute
      */
-    virtual void informSetMuteResult(SpeakerType type, bool mute, bool result) = 0;
+    virtual void sendEventMuteChanged(const std::string& ps_id, bool result) = 0;
 };
 
 /**

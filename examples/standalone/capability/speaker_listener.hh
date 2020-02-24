@@ -29,8 +29,8 @@ class SpeakerListener : public ISpeakerListener {
 public:
     virtual ~SpeakerListener() = default;
 
-    void requestSetVolume(SpeakerType type, int volume, bool linear) override;
-    void requestSetMute(SpeakerType type, bool mute) override;
+    void requestSetVolume(const std::string& ps_id, SpeakerType type, int volume, bool linear) override;
+    void requestSetMute(const std::string& ps_id, SpeakerType type, bool mute) override;
 
     void setSpeakerHandler(ISpeakerHandler* speaker);
     void setVolumeNuguSpeakerCallback(nugu_volume_func vns);
