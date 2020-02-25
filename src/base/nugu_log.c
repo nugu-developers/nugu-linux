@@ -323,6 +323,7 @@ EXPORT_API void nugu_log_print(enum nugu_log_module module,
 			       const char *format, ...)
 {
 	va_list arg;
+	enum nugu_log_system log_system;
 
 	pthread_mutex_lock(&_log_mutex);
 
@@ -334,9 +335,11 @@ EXPORT_API void nugu_log_print(enum nugu_log_module module,
 		return;
 	}
 
+	log_system = _log_system;
+
 	pthread_mutex_unlock(&_log_mutex);
 
-	switch (_log_system) {
+	switch (log_system) {
 	case NUGU_LOG_SYSTEM_SYSLOG:
 		va_start(arg, format);
 		vsyslog(_log_level_map[level].syslog_level, format, arg);
@@ -376,6 +379,17 @@ EXPORT_API int nugu_log_set_system(enum nugu_log_system log_system)
 	pthread_mutex_unlock(&_log_mutex);
 
 	return 0;
+}
+
+EXPORT_API enum nugu_log_system nugu_log_get_system(void)
+{
+	enum nugu_log_system log_system;
+
+	pthread_mutex_lock(&_log_mutex);
+	log_system = _log_system;
+	pthread_mutex_unlock(&_log_mutex);
+
+	return log_system;
 }
 
 EXPORT_API int nugu_log_set_handler(nugu_log_handler handler, void *user_data)
