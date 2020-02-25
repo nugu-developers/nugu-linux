@@ -245,12 +245,17 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    auto wakeup_handler(nugu_client->getNuguCoreContainer()->createWakeupHandler(nugu_sample_manager->getModelPath()));
+    auto nugu_core_container(nugu_client->getNuguCoreContainer());
+    auto wakeup_handler(nugu_core_container->createWakeupHandler(nugu_sample_manager->getModelPath()));
+
     speech_operator->setWakeupHandler(wakeup_handler);
     nugu_sample_manager->setSpeechOperator(speech_operator.get())
         ->setNetworkCallback(NuguSampleManager::NetworkCallback {
             [&]() { return network_manager->connect(); },
             [&]() { return network_manager->disconnect(); } })
+        ->setActionCallback(NuguSampleManager::ActionCallback {
+            [&]() { nugu_core_container->getCapabilityHelper()->suspendAll(); },
+            [&]() { nugu_core_container->getCapabilityHelper()->restoreAll(); } })
         ->setTextHandler(text_handler.get())
         ->setMicHandler(mic_handler.get())
         ->runLoop([&] {

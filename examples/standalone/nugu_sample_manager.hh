@@ -35,10 +35,17 @@ public:
         std::function<bool()> connect;
         std::function<bool()> disconnect;
     };
+
+    using ActionCallback = struct {
+        std::function<void()> suspend_all_func;
+        std::function<void()> restore_all_func;
+    };
+
     using Commander = struct {
         bool is_connected;
         int text_input;
         NetworkCallback network_callback;
+        ActionCallback action_callback;
         ITextHandler* text_handler;
         SpeechOperator* speech_operator;
         IMicHandler* mic_handler;
@@ -58,6 +65,7 @@ public:
     NuguSampleManager* setTextHandler(ITextHandler* text_handler);
     NuguSampleManager* setSpeechOperator(SpeechOperator* speech_operator);
     NuguSampleManager* setMicHandler(IMicHandler* mic_handler);
+    NuguSampleManager* setActionCallback(ActionCallback&& callback);
     void handleNetworkResult(bool is_connected, bool is_show_cmd = true);
 
 private:
