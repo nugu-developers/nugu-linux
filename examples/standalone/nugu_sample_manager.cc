@@ -19,8 +19,8 @@
 
 #include <iostream>
 
-#include "nugu.h"
 #include "base/nugu_log.h"
+#include "nugu.h"
 
 #include "nugu_sample_manager.hh"
 
@@ -151,6 +151,13 @@ NuguSampleManager* NuguSampleManager::setMicHandler(IMicHandler* mic_handler)
     return this;
 }
 
+NuguSampleManager* NuguSampleManager::setActionCallback(ActionCallback&& callback)
+{
+    commander.action_callback = std::move(callback);
+
+    return this;
+}
+
 void NuguSampleManager::handleNetworkResult(bool is_connected, bool is_show_cmd)
 {
     commander.is_connected = is_connected;
@@ -178,15 +185,17 @@ void NuguSampleManager::showPrompt(void)
                   << C_BLUE;
 
         if (commander.is_connected)
-            std::cout << "w : start wakeup\n"
-                      << "l : start listening\n"
-                      << "s : stop listening\n"
-                      << "t : text input\n"
-                      << "m : set mic mute\n";
+            std::cout << " w : start wakeup\n"
+                      << " l : start listening\n"
+                      << " s : stop listening\n"
+                      << " t : text input\n"
+                      << " m : set mic mute\n"
+                      << "sa : suspend all\n"
+                      << "ra : restore all\n";
 
-        std::cout << "c : connect\n"
-                  << "d : disconnect\n"
-                  << "q : quit\n"
+        std::cout << " c : connect\n"
+                  << " d : disconnect\n"
+                  << " q : quit\n"
                   << C_YELLOW
                   << "-------------------------------------------------------\n"
                   << C_WHITE
@@ -200,7 +209,7 @@ void NuguSampleManager::showPrompt(void)
 gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpointer userdata)
 {
     char keybuf[4096];
-    NuguSampleManager *mgr = static_cast<NuguSampleManager*>(userdata);
+    NuguSampleManager* mgr = static_cast<NuguSampleManager*>(userdata);
 
     if (fgets(keybuf, 4096, stdin) == NULL)
         return TRUE;
@@ -263,6 +272,12 @@ gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpoint
         if (commander.network_callback.disconnect && commander.network_callback.disconnect()) {
             commander.is_connected = false;
         }
+    } else if (g_strcmp0(keybuf, "sa") == 0) {
+        if (commander.action_callback.suspend_all_func)
+            commander.action_callback.suspend_all_func();
+    } else if (g_strcmp0(keybuf, "ra") == 0) {
+        if (commander.action_callback.restore_all_func)
+            commander.action_callback.restore_all_func();
     } else if (g_strcmp0(keybuf, "q") == 0) {
         mgr->quit();
     } else {
