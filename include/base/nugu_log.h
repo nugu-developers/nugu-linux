@@ -226,6 +226,12 @@ typedef void (*nugu_log_handler)(enum nugu_log_module module,
 int nugu_log_set_system(enum nugu_log_system log_system);
 
 /**
+ * @brief Get logging backend system
+ * @see enum nugu_log_system
+ */
+enum nugu_log_system nugu_log_get_system(void);
+
+/**
  * @brief Set custom log handler
  * @param[in] handler callback
  * @param[in] user_data The user data to be passed to the callback function
