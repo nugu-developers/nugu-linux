@@ -135,9 +135,9 @@ public:
     virtual void setExpectSpeech(bool expect_speech) = 0;
 
     /**
-     * @brief Notify mic on as starting listening speech.
+     * @brief Hold to maintain current context in stack
      */
-    virtual void onMicOn() = 0;
+    virtual void holdContext() = 0;
 
     /**
      * @brief Clear holding context.
