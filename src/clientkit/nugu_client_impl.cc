@@ -165,16 +165,18 @@ void NuguClientImpl::deInitialize(void)
     // release capabilities
     for (auto& capability : icapability_map) {
         std::string cname = capability.second->getName();
+        nugu_dbg("'%s' capability de-initializing...", cname.c_str());
 
         if (!cname.empty())
             nugu_core_container->removeCapability(cname);
 
         capability.second->deInitialize();
+        nugu_dbg("'%s' capability de-initialized", cname.c_str());
     }
 
     icapability_map.clear();
 
-    nugu_core_container->destroyInstance();
+    nugu_core_container->destoryAudioRecorderManager();
 
     // deinitialize core component
     nugu_plugin_deinitialize();
