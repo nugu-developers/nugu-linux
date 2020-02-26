@@ -57,6 +57,28 @@ namespace Test {
  * <<< Temp
  ******************************************************************************/
 
+PlaySyncManager::LongTimer::LongTimer(int interval, int repeat)
+    : NUGUTimer(interval, repeat)
+{
+}
+
+bool PlaySyncManager::LongTimer::hasPending()
+{
+    return has_pending;
+}
+
+void PlaySyncManager::LongTimer::start(unsigned int sec)
+{
+    NUGUTimer::start(sec);
+    has_pending = false;
+}
+
+void PlaySyncManager::LongTimer::stop(bool pending)
+{
+    NUGUTimer::stop();
+    has_pending = pending;
+}
+
 PlaySyncManager::PlaySyncManager()
     : DURATION_MAP({ { "SHORT", HOLD_TIME_SHORT },
         { "MID", HOLD_TIME_MID },
@@ -64,6 +86,7 @@ PlaySyncManager::PlaySyncManager()
         { "LONGEST", HOLD_TIME_LONGEST } })
 {
     timer = new NUGUTimer(DEFAULT_HOLD_TIME, 1);
+    long_timer = new LongTimer(HOLD_TIME_LONGEST, 1);
 }
 
 PlaySyncManager::~PlaySyncManager()
@@ -73,9 +96,15 @@ PlaySyncManager::~PlaySyncManager()
         timer = nullptr;
     }
 
+    if (long_timer) {
+        delete long_timer;
+        long_timer = nullptr;
+    }
+
     renderer_map.clear();
     context_map.clear();
     context_stack.clear();
+    layer_map.clear();
 }
 
 void PlaySyncManager::addContext(const std::string& ps_id, const std::string& cap_name)
@@ -108,7 +137,7 @@ void PlaySyncManager::addContext(const std::string& ps_id, const std::string& ca
 
     for (const auto& play_item : play_stack) {
         if (ps_id != play_item)
-            removeContext(play_item, cap_name);
+            removeContextInnerly(play_item, cap_name);
     }
 
     if (context_map.find(ps_id) != context_map.end()) {
@@ -120,6 +149,7 @@ void PlaySyncManager::addContext(const std::string& ps_id, const std::string& ca
         stack_elements.emplace_back(cap_name);
         context_map[ps_id] = stack_elements;
         context_stack.emplace_back(ps_id);
+        layer_map.emplace(ps_id, layer);
     }
 
     // temp: Just debugging & test. Please, maintain in some period.
@@ -132,6 +162,7 @@ void PlaySyncManager::removeContextAction(const std::string& ps_id, bool immedia
         return;
 
     context_map.erase(ps_id);
+    layer_map.erase(ps_id);
     context_stack.erase(remove(context_stack.begin(), context_stack.end(), ps_id), context_stack.end());
 
     // temp: Just debugging & test. Please, maintain in some period.
@@ -139,6 +170,28 @@ void PlaySyncManager::removeContextAction(const std::string& ps_id, bool immedia
 }
 
 void PlaySyncManager::removeContext(const std::string& ps_id, const std::string& cap_name, bool immediately)
+{
+    if (ps_id.empty()) {
+        nugu_error("Invalid PlayServiceId.");
+        return;
+    }
+
+    // reset or stop pending long timer if exist
+    if (long_timer && long_timer->hasPending() && !is_expect_speech) {
+        try {
+            if (layer_map.at(ps_id) == Layer::Media)
+                long_timer->stop();
+            else
+                long_timer->start();
+        } catch (std::out_of_range& exception) {
+            nugu_error(exception.what());
+        }
+    }
+
+    removeContextInnerly(ps_id, cap_name, immediately);
+}
+
+void PlaySyncManager::removeContextInnerly(const std::string& ps_id, const std::string& cap_name, bool immediately)
 {
     if (ps_id.empty()) {
         nugu_error("Invalid PlayServiceId.");
@@ -168,19 +221,18 @@ void PlaySyncManager::removeContext(const std::string& ps_id, const std::string&
 
 void PlaySyncManager::removeContextLater(const std::string& ps_id, const std::string& cap_name, unsigned int sec)
 {
-    if (timer) {
-        timer->setCallback([=](int count, int repeat) {
-            removeContext(ps_id, cap_name, true);
-        });
-        timer->setInterval(sec);
-        timer->start();
-    }
+    long_timer->stop();
+    long_timer->setInterval(sec > 0 ? sec : HOLD_TIME_LONGEST);
+    long_timer->setCallback([=](int count, int repeat) {
+        removeContextInnerly(ps_id, cap_name, true);
+    });
+    long_timer->start();
 }
 
 void PlaySyncManager::clearPendingContext(const std::string& ps_id)
 {
     renderer_map.erase(ps_id);
-    removeContext(ps_id, "Display");
+    removeContextInnerly(ps_id, "Display");
 }
 
 std::vector<std::string> PlaySyncManager::getAllPlayStackItems()
@@ -281,10 +333,14 @@ void PlaySyncManager::setExpectSpeech(bool expect_speech)
     is_expect_speech = expect_speech;
 }
 
-void PlaySyncManager::onMicOn()
+void PlaySyncManager::holdContext()
 {
     if (timer)
         timer->stop();
+
+    if (long_timer) {
+        long_timer->stop(true);
+    }
 }
 
 void PlaySyncManager::clearContextHold()
@@ -298,6 +354,23 @@ void PlaySyncManager::onASRError()
     is_expect_speech = false;
 
     if (!context_stack.empty())
-        removeContext(context_stack.back(), "TTS");
+        removeContextInnerly(context_stack.back(), "TTS", false);
+
+    // reset pending long timer if exists
+    if (long_timer && long_timer->hasPending())
+        long_timer->start();
+}
+
+void PlaySyncManager::setDirectiveGroups(const std::string& groups)
+{
+    if (groups.empty()) {
+        layer = Layer::Info;
+        return;
+    }
+
+    if (groups.find("AudioPlayer") != std::string::npos)
+        layer = Layer::Media;
+    else
+        layer = Layer::Info;
 }
 } // NuguCore

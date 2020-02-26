@@ -35,17 +35,39 @@ public:
     void addContext(const std::string& ps_id, const std::string& cap_name) override;
     void addContext(const std::string& ps_id, const std::string& cap_name, DisplayRenderer&& renderer) override;
     void removeContext(const std::string& ps_id, const std::string& cap_name, bool immediately = true) override;
-    void removeContextLater(const std::string& ps_id, const std::string& cap_name, unsigned int sec) override;
+    void removeContextLater(const std::string& ps_id, const std::string& cap_name, unsigned int sec = 0) override;
     void clearPendingContext(const std::string& ps_id) override;
     std::vector<std::string> getAllPlayStackItems() override;
     std::string getPlayStackItem(const std::string& cap_name) override;
 
     void setExpectSpeech(bool expect_speech) override;
-    void onMicOn() override;
+    void holdContext() override;
     void clearContextHold() override;
     void onASRError() override;
 
+    void setDirectiveGroups(const std::string& groups);
+
     using ContextMap = std::map<std::string, std::vector<std::string>>;
+
+private:
+    enum class Layer {
+        Info,
+        Media,
+        Alert,
+        Call
+    };
+
+    class LongTimer final : public NUGUTimer {
+    public:
+        explicit LongTimer(int interval, int repeat = 0);
+
+        bool hasPending();
+        void start(unsigned int sec = 0) override;
+        void stop(bool pending = false);
+
+    private:
+        bool has_pending = false;
+    };
 
 private:
     void addStackElement(const std::string& ps_id, const std::string& cap_name);
@@ -54,18 +76,25 @@ private:
     bool removeRenderer(const std::string& ps_id, bool unconditionally = true);
     int getRendererInterval(const std::string& ps_id);
     void removeContextAction(const std::string& ps_id, bool immediately);
+    void removeContextInnerly(const std::string& ps_id, const std::string& cap_name, bool immediately = true);
 
     const std::map<std::string, int> DURATION_MAP;
 
     template <typename T, typename V>
     std::vector<std::string> getKeyOfMap(const std::map<T, V>& map);
 
+    using RendererMap = std::map<std::string, DisplayRenderer>;
+    using LayerMap = std::map<std::string, Layer>;
+
     ContextMap context_map;
     std::vector<std::string> context_stack;
-    std::map<std::string, DisplayRenderer> renderer_map;
+    RendererMap renderer_map;
+    LayerMap layer_map;
 
     NUGUTimer* timer = nullptr;
+    LongTimer* long_timer = nullptr;
     bool is_expect_speech = false;
+    Layer layer = Layer::Info;
 };
 } // NuguCore
 

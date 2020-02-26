@@ -182,6 +182,8 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
 
     cur_dialog_id = event.getDialogMessageId();
 
+    playsync_manager->holdContext();
+
     sendEvent(&event, capa_helper->makeAllContextInfoStack(), payload);
 }
 

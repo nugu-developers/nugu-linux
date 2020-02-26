@@ -184,16 +184,16 @@ void CapabilityManager::preprocessDirective(NuguDirective* ndir)
 {
     std::string name_space = nugu_directive_peek_namespace(ndir);
     std::string dname = nugu_directive_peek_name(ndir);
+    std::string groups = nugu_directive_peek_groups(ndir);
 
     sendCommandAll("directive_dialog_id", nugu_directive_peek_dialog_id(ndir));
+    playsync_manager->setDirectiveGroups(groups);
 
     if (name_space == "ASR" && dname == "NotifyResult") {
         check_asr_focus_release = true;
         asr_dialog_id = nugu_directive_peek_dialog_id(ndir);
     } else {
         if (check_asr_focus_release && asr_dialog_id == nugu_directive_peek_dialog_id(ndir)) {
-            std::string groups = nugu_directive_peek_groups(ndir);
-
             nugu_info("Check ASR Focus Release: %s", groups.c_str());
             if (groups.find("TTS") == std::string::npos && groups.find("AudioPlayer") == std::string::npos) {
                 nugu_info("ASR Focus Release by CapabilityManager");
