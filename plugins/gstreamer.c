@@ -341,9 +341,10 @@ void *_create(NuguPlayer *player)
 		return NULL;
 	}
 
+	nugu_dbg("create pipeline(%s)", pipeline);
 	gh->pipeline = gst_pipeline_new(pipeline);
 	if (!gh->pipeline) {
-		nugu_error("create pipeline failed");
+		nugu_error("create pipeline(%s) failed", pipeline);
 		goto error_out;
 	}
 
@@ -750,8 +751,6 @@ static void unload(NuguPlugin *p)
 		nugu_player_driver_free(driver);
 		driver = NULL;
 	}
-
-	gst_deinit();
 
 	nugu_dbg("'%s' plugin unloaded done",
 		 nugu_plugin_get_description(p)->name);
