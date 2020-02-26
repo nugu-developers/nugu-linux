@@ -20,6 +20,7 @@
 #include <json/json.h>
 #include <list>
 
+#include <base/nugu_event.h>
 #include <base/nugu_focus.h>
 #include <clientkit/playsync_manager_interface.hh>
 
@@ -95,6 +96,12 @@ public:
      * @param[in] param parameter
      */
     virtual void sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param) = 0;
+
+    /**
+     * @brief Request to send event result via CapabilityManager.
+     * @param[in] event event for monitoring result
+     */
+    virtual void requestEventResult(NuguEvent* event) = 0;
 
     /**
      * @brief Suspend all current capability action

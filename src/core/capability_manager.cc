@@ -15,8 +15,11 @@
  */
 
 #include <cmath>
+#include <cstring>
+#include <iostream>
 
 #include "base/nugu_log.h"
+#include "base/nugu_network_manager.h"
 #include "capability_manager.hh"
 
 namespace NuguCore {
@@ -50,6 +53,7 @@ static NuguFocusStealResult on_steal_request(NuguFocus* focus, void* event, Nugu
 CapabilityManager::CapabilityManager()
 {
     nugu_dirseq_set_callback(dirseqCallback, this);
+    nugu_network_manager_set_event_result_callback(eventResultCallback, this);
 
     wword = WAKEUP_WORD;
     playsync_manager = std::unique_ptr<PlaySyncManager>(new PlaySyncManager());
@@ -59,6 +63,7 @@ CapabilityManager::~CapabilityManager()
 {
     caps.clear();
     focusmap.clear();
+    events.clear();
 
     nugu_dirseq_unset_callback();
 }
@@ -81,18 +86,18 @@ void CapabilityManager::destroyInstance()
 
 NuguDirseqReturn CapabilityManager::dirseqCallback(NuguDirective* ndir, void* userdata)
 {
-    CapabilityManager* agent = static_cast<CapabilityManager*>(userdata);
+    CapabilityManager* cap_manager = static_cast<CapabilityManager*>(userdata);
     const char* name_space = nugu_directive_peek_namespace(ndir);
-    ICapabilityInterface* cap = agent->findCapability(std::string(name_space));
+    ICapabilityInterface* cap = cap_manager->findCapability(std::string(name_space));
     if (!cap) {
         nugu_warn("capability(%s) is not support", name_space);
         return NUGU_DIRSEQ_FAILURE;
     }
 
-    agent->preprocessDirective(ndir);
+    cap_manager->preprocessDirective(ndir);
 
     const char* version = nugu_directive_peek_version(ndir);
-    if (!agent->isSupportDirectiveVersion(version, cap)) {
+    if (!cap_manager->isSupportDirectiveVersion(version, cap)) {
         nugu_error("directives[%s] cannot work on %s[%s] agent",
             version, cap->getName().c_str(), cap->getVersion().c_str());
         return NUGU_DIRSEQ_FAILURE;
@@ -100,6 +105,12 @@ NuguDirseqReturn CapabilityManager::dirseqCallback(NuguDirective* ndir, void* us
 
     cap->processDirective(ndir);
     return NUGU_DIRSEQ_SUCCESS;
+}
+
+void CapabilityManager::eventResultCallback(int success, const char* msg_id, const char* dialog_id, int code, void* userdata)
+{
+    CapabilityManager* cap_manager = static_cast<CapabilityManager*>(userdata);
+    cap_manager->reportEventResult(msg_id, success, code);
 }
 
 void CapabilityManager::addCapability(const std::string& cname, ICapabilityInterface* cap)
@@ -112,6 +123,60 @@ void CapabilityManager::removeCapability(const std::string& cname)
     caps.erase(cname);
 }
 
+void CapabilityManager::requestEventResult(NuguEvent* event)
+{
+    if (!event) {
+        nugu_error("event is null pointer");
+        return;
+    }
+
+    const char* name_space = nugu_event_peek_namespace(event);
+    const char* name = nugu_event_peek_name(event);
+    const char* dialog_id = nugu_event_peek_dialog_id(event);
+    const char* msg_id = nugu_event_peek_msg_id(event);
+
+    if (!name_space || !name || !dialog_id || !msg_id) {
+        nugu_error("event is not valid information");
+        return;
+    }
+
+    std::string event_desc = std::string(name_space)
+                                 .append(".")
+                                 .append(name)
+                                 .append(".")
+                                 .append(msg_id)
+                                 .append(".")
+                                 .append(dialog_id);
+
+    events[msg_id] = event_desc;
+
+    nugu_dbg("request event[%s] result - %s", msg_id, event_desc.c_str());
+}
+
+void CapabilityManager::reportEventResult(const char* msg_id, int success, int code)
+{
+    if (events.find(msg_id) == events.end()) {
+        nugu_warn("event[%s] is not monitoring target", msg_id);
+        return;
+    }
+
+    std::string temp = events[msg_id];
+    std::string cname = std::strtok((char*)temp.c_str(), ".");
+    std::string desc = events[msg_id]
+                            .append(".")
+                            .append(std::to_string(success))
+                            .append(".")
+                            .append(std::to_string(code));
+
+    nugu_dbg("report event result - %s", cname.c_str(), desc.c_str());
+
+    ICapabilityInterface* cap = findCapability(cname);
+    if (cap != nullptr)
+        cap->notifyEventResult(desc);
+
+    events.erase(msg_id);
+}
+
 void CapabilityManager::setWakeupWord(const std::string& word)
 {
     if (word.size())
@@ -121,7 +186,7 @@ void CapabilityManager::setWakeupWord(const std::string& word)
 ICapabilityInterface* CapabilityManager::findCapability(const std::string& cname)
 {
     if (caps.find(cname) == caps.end())
-        return NULL;
+        return nullptr;
 
     return caps[cname];
 }

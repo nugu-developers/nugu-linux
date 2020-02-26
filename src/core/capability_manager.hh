@@ -21,6 +21,7 @@
 #include <memory>
 
 #include "base/nugu_directive_sequencer.h"
+#include "base/nugu_event.h"
 #include "base/nugu_focus.h"
 #include "clientkit/capability_interface.hh"
 #include "playsync_manager.hh"
@@ -38,9 +39,13 @@ public:
     PlaySyncManager* getPlaySyncManager();
 
     static NuguDirseqReturn dirseqCallback(NuguDirective* ndir, void* userdata);
+    static void eventResultCallback(int success, const char* msg_id, const char* dialog_id, int code, void* userdata);
 
     void addCapability(const std::string& cname, ICapabilityInterface* cap);
     void removeCapability(const std::string& cname);
+
+    void requestEventResult(NuguEvent* event);
+    void reportEventResult(const char* msg_id, int success, int code);
 
     void setWakeupWord(const std::string& word);
 
@@ -70,6 +75,7 @@ private:
     static CapabilityManager* instance;
     std::map<std::string, ICapabilityInterface*> caps;
     std::map<std::string, NuguFocus*> focusmap;
+    std::map<std::string, std::string> events;
     std::string wword;
     std::unique_ptr<PlaySyncManager> playsync_manager = nullptr;
     bool check_asr_focus_release = false;

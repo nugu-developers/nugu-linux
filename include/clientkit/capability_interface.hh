@@ -20,6 +20,7 @@
 #include <json/json.h>
 #include <list>
 #include <string>
+#include <functional>
 
 #include <base/nugu_directive.h>
 #include <clientkit/nugu_core_container_interface.hh>
@@ -61,6 +62,16 @@ public:
         PAUSE /**< Pause current action. It could resume later */
     };
 
+    /**
+     * @brief Event result callback for error handling
+     * @param[in] ename event name
+     * @param[in] msg_id event message id
+     * @param[in] dialog_id event request dialog id
+     * @param[in] success event result
+     * @param[in] code event result code (similar to http status code)
+     */
+    using EventResultCallback = std::function<void(const std::string&, const std::string&, const std::string&, int, int)>;
+
 public:
     virtual ~ICapabilityInterface() = default;
 
@@ -95,6 +106,25 @@ public:
      * @brief Restore previous suspended action
      */
     virtual void restore() = 0;
+
+    /**
+     * @brief Add event result callback for error handling
+     * @param[in] ename event name
+     * @param[in] callback event result callback
+     */
+    virtual void addEventResultCallback(const std::string& ename, EventResultCallback callback) = 0;
+
+    /**
+     * @brief Remove event result callback
+     * @param[in] ename event name
+     */
+    virtual void removeEventResultCallback(const std::string& ename) = 0;
+
+    /**
+     * @brief Notift event result
+     * @param[in] event_desc event result description (format: 'cname.ename.msgid.dialogid.success.code')
+     */
+    virtual void notifyEventResult(const std::string& event_desc) = 0;
 
     /**
      * @brief Get the capability name of the current object.

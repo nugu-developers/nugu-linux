@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <cstring>
+#include <iostream>
 #include <string.h>
 
 #include "base/nugu_directive_sequencer.h"
@@ -69,6 +71,11 @@ bool CapabilityEvent::isUserAction(const std::string& name)
         return false;
 }
 
+std::string CapabilityEvent::getName()
+{
+    return nugu_event_peek_name(pimpl->event);
+}
+
 std::string CapabilityEvent::getDialogMessageId()
 {
     return pimpl->dialog_id;
@@ -112,10 +119,12 @@ void CapabilityEvent::sendEvent(const std::string& context, const std::string& p
 
     pimpl->capability->getCapabilityHelper()->sendCommand(pimpl->capability->getName(), "System", "activity", "");
 
-    if (is_sync)
+    if (is_sync) {
         nugu_network_manager_send_event(pimpl->event, 1);
-    else
+    } else {
+        pimpl->capability->getCapabilityHelper()->requestEventResult(pimpl->event);
         nugu_network_manager_send_event(pimpl->event, 0);
+    }
 }
 
 void CapabilityEvent::sendAttachmentEvent(bool is_end, size_t size, unsigned char* data)
@@ -138,6 +147,7 @@ Capability::Capability(const std::string& name, const std::string& ver)
 
 Capability::~Capability()
 {
+    event_result_cbs.clear();
 }
 
 void Capability::setNuguCoreContainer(INuguCoreContainer* core_container)
@@ -166,6 +176,31 @@ void Capability::suspend()
 
 void Capability::restore()
 {
+}
+
+void Capability::addEventResultCallback(const std::string& ename, EventResultCallback callback)
+{
+    if (ename.size() == 0 || callback == nullptr)
+        return;
+
+    event_result_cbs[ename] = std::move(callback);
+}
+
+void Capability::removeEventResultCallback(const std::string& ename)
+{
+    event_result_cbs.erase(ename);
+}
+
+void Capability::notifyEventResult(const std::string& event_desc)
+{
+    std::string ename;
+    std::string msg_id;
+    std::string dialog_id;
+    bool success;
+    int code;
+
+    if (parseEventResultDesc(event_desc, ename, msg_id, dialog_id, success, code))
+        event_result_cbs[ename](ename, msg_id, dialog_id, success, code);
 }
 
 std::string Capability::getReferrerDialogRequestId()
@@ -275,17 +310,25 @@ void Capability::getProperties(const std::string& property, std::list<std::strin
     values.clear();
 }
 
-void Capability::sendEvent(const std::string& name, const std::string& context, const std::string& payload, bool is_sync)
+void Capability::sendEvent(const std::string& name, const std::string& context, const std::string& payload, EventResultCallback cb, bool is_sync)
 {
     CapabilityEvent event(name, this);
 
-    sendEvent(&event, context, payload, is_sync);
+    sendEvent(&event, context, payload, std::move(cb), is_sync);
 }
 
-void Capability::sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload, bool is_sync)
+void Capability::sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload, EventResultCallback cb, bool is_sync)
 {
     if (!event)
         return;
+
+    std::string ename = event->getName();
+    if (cb == nullptr)
+        addEventResultCallback(ename, [&](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {
+            nugu_warn("The %sAgent ignore the %s result %d(code:%d)", getName().c_str(), ename.c_str(), success, code);
+    });
+    else
+        addEventResultCallback(ename, std::move(cb));
 
     event->sendEvent(context, payload, is_sync);
 }
@@ -296,6 +339,30 @@ void Capability::sendAttachmentEvent(CapabilityEvent* event, bool is_end, size_t
         return;
 
     event->sendAttachmentEvent(is_end, size, data);
+}
+
+bool Capability::parseEventResultDesc(const std::string& desc, std::string& ename, std::string& msg_id, std::string& dialog_id, bool& success, int& code)
+{
+    char* temp = (char*)desc.c_str();
+    char* _cname = std::strtok(temp, ".");
+    char* _ename = std::strtok(NULL, ".");
+    char* _msg_id = std::strtok(NULL, ".");
+    char* _dialog_id = std::strtok(NULL, ".");
+    char* _success = std::strtok(NULL, ".");
+    char* _code = std::strtok(NULL, ".");
+
+    if (!temp || !_cname || !_ename || !_msg_id || !_dialog_id || !_success || !_code) {
+        nugu_error("event description is something wrong");
+        return false;
+    }
+
+    ename = _ename;
+    dialog_id = _dialog_id;
+    msg_id = _msg_id;
+    success = std::stoi(_success) == 1 ? true : false;
+    code = std::stoi(_code);
+
+    return true;
 }
 
 void Capability::setCapabilityListener(ICapabilityListener* clistener)
