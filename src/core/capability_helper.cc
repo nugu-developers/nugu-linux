@@ -62,6 +62,11 @@ void CapabilityHelper::sendCommand(const std::string& from, const std::string& t
     CapabilityManager::getInstance()->sendCommand(from, to, command, param);
 }
 
+void CapabilityHelper::requestEventResult(NuguEvent* event)
+{
+    CapabilityManager::getInstance()->requestEventResult(event);
+}
+
 void CapabilityHelper::suspendAll()
 {
     CapabilityManager::getInstance()->suspendAll();

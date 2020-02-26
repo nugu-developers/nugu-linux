@@ -187,7 +187,7 @@ void SystemAgent::sendEventDisconnect(void)
     std::string ename = "Disconnect";
     std::string payload = "";
 
-    sendEvent(ename, getContextInfo(), payload, true);
+    sendEvent(ename, getContextInfo(), payload, nullptr, true);
 }
 
 void SystemAgent::sendEventEcho(void)

@@ -61,6 +61,12 @@ public:
     bool isUserAction(const std::string& name);
 
     /**
+     * @brief Get event name
+     * @return event name
+     */
+    std::string getName();
+
+    /**
      * @brief Get dialog message id
      * @return dialog message id
      */
@@ -145,6 +151,25 @@ public:
     void restore() override;
 
     /**
+     * @brief Add event result callback for error handling
+     * @param[in] ename event name
+     * @param[in] callback event result callback
+     */
+    void addEventResultCallback(const std::string& ename, EventResultCallback callback) override;
+
+    /**
+     * @brief Remove event result callback
+     * @param[in] ename event name
+     */
+    void removeEventResultCallback(const std::string& ename) override;
+
+    /**
+     * @brief Notift event result
+     * @param[in] event_desc event result description (format: 'cname.ename.msgid.dialogid.success.code')
+     */
+    void notifyEventResult(const std::string& event_desc) override;
+
+    /**
      * @brief Get referred dialog request id.
      * @return referred dialog request id
      */
@@ -211,7 +236,7 @@ public:
      * @param[in] payload payload info
      * @param[in] is_sync whether synchronized blocking event
      */
-    void sendEvent(const std::string& name, const std::string& context, const std::string& payload, bool is_sync = false);
+    void sendEvent(const std::string& name, const std::string& context, const std::string& payload, EventResultCallback cb = nullptr, bool is_sync = false);
 
     /**
      * @brief Send event to server.
@@ -220,7 +245,7 @@ public:
      * @param[in] payload payload info
      * @param[in] is_sync whether synchronized blocking event
      */
-    void sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload, bool is_sync = false);
+    void sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload, EventResultCallback cb = nullptr, bool is_sync = false);
 
     /**
      * @brief Send attachment event to server.
@@ -230,6 +255,18 @@ public:
      * @param[in] data attachment data
      */
     void sendAttachmentEvent(CapabilityEvent* event, bool is_end, size_t size, unsigned char* data);
+
+    /**
+     * @brief Parse the event result description.
+     * @param[in] desc event result description (format: 'cname.ename.msgid.dialogid.success.code')
+     * @param[out] ename event name
+     * @param[out] msg_id event message id
+     * @param[out] dialog_id event request dialog id
+     * @param[out] success event result
+     * @param[out] code event result code (similar to http status code)
+     * @return parsing result
+     */
+    bool parseEventResultDesc(const std::string& desc, std::string& ename, std::string& msg_id, std::string& dialog_id, bool& success, int& code);
 
     /**
      * @brief It is possible to share own property value among objects.
@@ -307,6 +344,7 @@ protected:
 private:
     struct Impl;
     std::unique_ptr<Impl> pimpl;
+    std::map<std::string, EventResultCallback> event_result_cbs;
 };
 
 /**
