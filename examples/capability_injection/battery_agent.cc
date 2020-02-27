@@ -22,67 +22,29 @@
 static const char* CAPABILITY_NAME = "Battery";
 static const char* CAPABILITY_VERSION = "1.0";
 
-void BatteryAgent::setBatteryLevel(const std::string& level)
+BatteryAgent::BatteryAgent()
+    : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
 {
-    battery_level = level;
+    // TODO : implements service logic
 }
 
-void BatteryAgent::setCharging(bool charging)
+BatteryAgent::~BatteryAgent()
 {
-    battery_charging = charging;
-}
-
-void BatteryAgent::setNuguCoreContainer(INuguCoreContainer* core_container)
-{
-    this->core_container = core_container;
+    // TODO : implements service logic
 }
 
 void BatteryAgent::initialize()
 {
-    // TODO : implements service logic
 }
 
 void BatteryAgent::deInitialize()
 {
-    // TODO : implements service logic
 }
 
-void BatteryAgent::setSuspendPolicy(SuspendPolicy policy)
+void BatteryAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
-    suspend_policy = policy;
-}
-
-void BatteryAgent::suspend()
-{
-    if (suspend_policy == SuspendPolicy::PAUSE) {
-        // TODO : implements when SuspendPolicy is pause
-    } else {
-        // TODO : implements when SuspendPolicy is stop
-    }
-}
-
-void BatteryAgent::restore()
-{
-    if (suspend_policy == SuspendPolicy::PAUSE) {
-        // TODO : implements when SuspendPolicy is pause
-    } else {
-        // TODO : implements when SuspendPolicy is stop
-    }
-}
-
-std::string BatteryAgent::getName()
-{
-    return CAPABILITY_NAME;
-}
-
-std::string BatteryAgent::getVersion()
-{
-    return CAPABILITY_VERSION;
-}
-
-void BatteryAgent::processDirective(NuguDirective* ndir)
-{
-    // TODO : implements service logic
+    if (clistener)
+        battery_listener = dynamic_cast<IBatteryListener*>(clistener);
 }
 
 void BatteryAgent::updateInfoForContext(Json::Value& ctx)
@@ -97,28 +59,12 @@ void BatteryAgent::updateInfoForContext(Json::Value& ctx)
     std::cout << ">> Collecting BatteryAgent Context Info : " << battery << std::endl;
 }
 
-void BatteryAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
+void BatteryAgent::setBatteryLevel(const std::string& level)
 {
-    // TODO : implements service logic
+    battery_level = level;
 }
 
-void BatteryAgent::receiveCommandAll(const std::string& command, const std::string& param)
+void BatteryAgent::setCharging(bool charging)
 {
-    // TODO : implements service logic
-}
-
-void BatteryAgent::getProperty(const std::string& property, std::string& value)
-{
-    // TODO : implements service logic
-}
-
-void BatteryAgent::getProperties(const std::string& property, std::list<std::string>& values)
-{
-    // TODO : implements service logic
-}
-
-void BatteryAgent::setCapabilityListener(ICapabilityListener* clistener)
-{
-    if (clistener)
-        battery_listener = dynamic_cast<IBatteryListener*>(clistener);
+    battery_charging = charging;
 }
