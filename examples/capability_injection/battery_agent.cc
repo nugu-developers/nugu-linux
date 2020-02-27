@@ -47,14 +47,27 @@ void BatteryAgent::deInitialize()
     // TODO : implements service logic
 }
 
+void BatteryAgent::setSuspendPolicy(SuspendPolicy policy)
+{
+    suspend_policy = policy;
+}
+
 void BatteryAgent::suspend()
 {
-    // TODO : implements service logic
+    if (suspend_policy == SuspendPolicy::PAUSE) {
+        // TODO : implements when SuspendPolicy is pause
+    } else {
+        // TODO : implements when SuspendPolicy is stop
+    }
 }
 
 void BatteryAgent::restore()
 {
-    // TODO : implements service logic
+    if (suspend_policy == SuspendPolicy::PAUSE) {
+        // TODO : implements when SuspendPolicy is pause
+    } else {
+        // TODO : implements when SuspendPolicy is stop
+    }
 }
 
 std::string BatteryAgent::getName()

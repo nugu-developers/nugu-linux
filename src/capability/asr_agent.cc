@@ -210,7 +210,7 @@ void ASRAgent::deInitialize()
 
 void ASRAgent::suspend()
 {
-    // TODO : implements related suspend action
+    stopRecognition();
 }
 
 bool ASRAgent::startRecognition()
