@@ -19,7 +19,7 @@
 
 #include <vector>
 
-#include <clientkit/capability_interface.hh>
+#include <clientkit/capability.hh>
 
 using namespace NuguClientKit;
 
@@ -28,34 +28,24 @@ public:
     virtual ~IBatteryListener() = default;
 };
 
-class BatteryAgent : public ICapabilityInterface {
+class BatteryAgent : public Capability {
 public:
-    void setBatteryLevel(const std::string& level);
-    void setCharging(bool charging);
+    BatteryAgent();
+    virtual ~BatteryAgent();
 
-    // implements ICapabilityInterface
-    void setNuguCoreContainer(INuguCoreContainer* core_container) override;
     void initialize() override;
     void deInitialize() override;
-    void setSuspendPolicy(SuspendPolicy policy = SuspendPolicy::STOP) override;
-    void suspend() override;
-    void restore() override;
-    std::string getName() override;
-    std::string getVersion() override;
-    void processDirective(NuguDirective* ndir) override;
-    void updateInfoForContext(Json::Value& ctx) override;
-    void receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
-    void receiveCommandAll(const std::string& command, const std::string& param) override;
-    void getProperty(const std::string& property, std::string& value) override;
-    void getProperties(const std::string& property, std::list<std::string>& values) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
+    void updateInfoForContext(Json::Value& ctx) override;
+
+    void setBatteryLevel(const std::string& level);
+    void setCharging(bool charging);
 
 private:
     std::string battery_level = "10";
     bool battery_charging = false;
     SuspendPolicy suspend_policy = SuspendPolicy::STOP;
 
-    INuguCoreContainer* core_container = nullptr;
     IBatteryListener* battery_listener = nullptr;
 };
 
