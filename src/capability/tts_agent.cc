@@ -311,31 +311,31 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
     ctx[getName()] = tts;
 }
 
-void TTSAgent::sendEventSpeechStarted(const std::string& token)
+void TTSAgent::sendEventSpeechStarted(const std::string& token, EventResultCallback cb)
 {
     if (ps_id.size())
-        sendEventCommon("SpeechStarted", token);
+        sendEventCommon("SpeechStarted", token, std::move(cb));
 
     if (tts_listener)
         tts_listener->onTTSState(TTSState::TTS_SPEECH_START, dialog_id);
 }
 
-void TTSAgent::sendEventSpeechFinished(const std::string& token)
+void TTSAgent::sendEventSpeechFinished(const std::string& token, EventResultCallback cb)
 {
     if (ps_id.size())
-        sendEventCommon("SpeechFinished", token);
+        sendEventCommon("SpeechFinished", token, std::move(cb));
 
     if (tts_listener)
         tts_listener->onTTSState(TTSState::TTS_SPEECH_FINISH, dialog_id);
 }
 
-void TTSAgent::sendEventSpeechStopped(const std::string& token)
+void TTSAgent::sendEventSpeechStopped(const std::string& token, EventResultCallback cb)
 {
     if (ps_id.size())
-        sendEventCommon("SpeechStopped", token);
+        sendEventCommon("SpeechStopped", token, std::move(cb));
 }
 
-void TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id)
+void TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id, EventResultCallback cb)
 {
     std::string ename = "SpeechPlay";
     std::string payload = "";
@@ -358,10 +358,10 @@ void TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& 
         root["playServiceId"] = ps_id;
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload);
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
-void TTSAgent::sendEventCommon(const std::string& ename, const std::string& token)
+void TTSAgent::sendEventCommon(const std::string& ename, const std::string& token, EventResultCallback cb)
 {
     std::string payload = "";
     Json::StyledWriter writer;
@@ -371,7 +371,7 @@ void TTSAgent::sendEventCommon(const std::string& ename, const std::string& toke
     root["playServiceId"] = ps_id;
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload);
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void TTSAgent::parsingSpeak(const char* message)

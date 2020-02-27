@@ -67,21 +67,21 @@ public:
     bool setVolume(int volume) override;
     bool setMute(bool mute) override;
 
-    void sendEventPlaybackStarted();
-    void sendEventPlaybackFinished();
-    void sendEventPlaybackStopped();
-    void sendEventPlaybackPaused();
-    void sendEventPlaybackResumed();
-    void sendEventPlaybackFailed(PlaybackError err, const std::string& reason);
-    void sendEventProgressReportDelayElapsed();
-    void sendEventProgressReportIntervalElapsed();
-    void sendEventByDisplayInterface(const std::string& command);
-    void sendEventShowLyricsSucceeded();
-    void sendEventShowLyricsFailed();
-    void sendEventHideLyricsSucceeded();
-    void sendEventHideLyricsFailed();
-    void sendEventControlLyricsPageSucceeded();
-    void sendEventControlLyricsPageFailed();
+    void sendEventPlaybackStarted(EventResultCallback cb = nullptr);
+    void sendEventPlaybackFinished(EventResultCallback cb = nullptr);
+    void sendEventPlaybackStopped(EventResultCallback cb = nullptr);
+    void sendEventPlaybackPaused(EventResultCallback cb = nullptr);
+    void sendEventPlaybackResumed(EventResultCallback cb = nullptr);
+    void sendEventPlaybackFailed(PlaybackError err, const std::string& reason, EventResultCallback cb = nullptr);
+    void sendEventProgressReportDelayElapsed(EventResultCallback cb = nullptr);
+    void sendEventProgressReportIntervalElapsed(EventResultCallback cb = nullptr);
+    void sendEventByDisplayInterface(const std::string& command, EventResultCallback cb = nullptr);
+    void sendEventShowLyricsSucceeded(EventResultCallback cb = nullptr);
+    void sendEventShowLyricsFailed(EventResultCallback cb = nullptr);
+    void sendEventHideLyricsSucceeded(EventResultCallback cb = nullptr);
+    void sendEventHideLyricsFailed(EventResultCallback cb = nullptr);
+    void sendEventControlLyricsPageSucceeded(EventResultCallback cb = nullptr);
+    void sendEventControlLyricsPageFailed(EventResultCallback cb = nullptr);
 
     void mediaStateChanged(MediaPlayerState state) override;
     void mediaEventReport(MediaPlayerEvent event) override;
@@ -95,7 +95,7 @@ public:
     void muteChanged(int mute) override;
 
 private:
-    void sendEventCommon(const std::string& ename);
+    void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);
 
     AudioPlayerState audioPlayerState();
 

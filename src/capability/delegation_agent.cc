@@ -116,7 +116,7 @@ bool DelegationAgent::request()
     return sendEventRequest();
 }
 
-bool DelegationAgent::sendEventRequest()
+bool DelegationAgent::sendEventRequest(EventResultCallback cb)
 {
     std::string context_info = getContextInfo();
 
@@ -128,7 +128,7 @@ bool DelegationAgent::sendEventRequest()
     std::string ename = "Request";
     std::string payload = "";
 
-    sendEvent(ename, context_info, payload);
+    sendEvent(ename, context_info, payload, std::move(cb));
     return true;
 }
 

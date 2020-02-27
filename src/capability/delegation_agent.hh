@@ -36,7 +36,7 @@ public:
 
 private:
     void parsingDelegate(const char* message);
-    bool sendEventRequest();
+    bool sendEventRequest(EventResultCallback cb = nullptr);
 
     IDelegationListener* delegation_listener = nullptr;
 };

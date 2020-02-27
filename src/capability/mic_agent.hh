@@ -35,9 +35,9 @@ public:
     void disable() override;
 
 private:
-    void sendEventCommon(const std::string& ename);
-    void sendEventSetMicSucceeded();
-    void sendEventSetMicFailed();
+    void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);
+    void sendEventSetMicSucceeded(EventResultCallback cb = nullptr);
+    void sendEventSetMicFailed(EventResultCallback cb = nullptr);
 
     void control(bool enable, bool send_event = false);
 

@@ -34,10 +34,10 @@ public:
     void sendCommandToPlay(const std::string& data) override;
 
 private:
-    void sendEventCommon(const std::string& ename, const std::string& data = "");
-    void sendEventActionSucceeded();
-    void sendEventActionFailed();
-    void sendEventCommandIssued(const std::string& data);
+    void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);
+    void sendEventActionSucceeded(EventResultCallback cb = nullptr);
+    void sendEventActionFailed(EventResultCallback cb = nullptr);
+    void sendEventCommandIssued(const std::string& data, EventResultCallback cb = nullptr);
 
     void parsingAction(const char* message);
 

@@ -77,17 +77,17 @@ void MicAgent::disable()
     control(false);
 }
 
-void MicAgent::sendEventSetMicSucceeded()
+void MicAgent::sendEventSetMicSucceeded(EventResultCallback cb)
 {
-    sendEventCommon("SetMicSucceeded");
+    sendEventCommon("SetMicSucceeded", std::move(cb));
 }
 
-void MicAgent::sendEventSetMicFailed()
+void MicAgent::sendEventSetMicFailed(EventResultCallback cb)
 {
-    sendEventCommon("SetMicFailed");
+    sendEventCommon("SetMicFailed", std::move(cb));
 }
 
-void MicAgent::sendEventCommon(const std::string& ename)
+void MicAgent::sendEventCommon(const std::string& ename, EventResultCallback cb)
 {
     std::string payload = "";
     Json::Value root;
@@ -100,7 +100,7 @@ void MicAgent::sendEventCommon(const std::string& ename)
         root["micStatus"] = "OFF";
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload);
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void MicAgent::parsingSetMic(const char* message)

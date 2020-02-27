@@ -315,7 +315,7 @@ void ASRAgent::clearResponseTimeout()
         timer->stop();
 }
 
-void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_end)
+void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_end, EventResultCallback cb)
 {
     Json::StyledWriter writer;
     Json::Value root;
@@ -344,32 +344,32 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
 
     dialog_id = rec_event->getDialogMessageId();
     if (!is_end && (length == 0 || data == nullptr))
-        sendEvent(rec_event, all_context_info, payload);
+        sendEvent(rec_event, all_context_info, payload, std::move(cb));
     else
         sendAttachmentEvent(rec_event, is_end, length, data);
 }
 
-void ASRAgent::sendEventResponseTimeout()
+void ASRAgent::sendEventResponseTimeout(EventResultCallback cb)
 {
-    sendEventCommon("ResponseTimeout");
+    sendEventCommon("ResponseTimeout", std::move(cb));
 }
 
-void ASRAgent::sendEventListenTimeout()
+void ASRAgent::sendEventListenTimeout(EventResultCallback cb)
 {
-    sendEventCommon("ListenTimeout");
+    sendEventCommon("ListenTimeout", std::move(cb));
 }
 
-void ASRAgent::sendEventListenFailed()
+void ASRAgent::sendEventListenFailed(EventResultCallback cb)
 {
-    sendEventCommon("ListenFailed");
+    sendEventCommon("ListenFailed", std::move(cb));
 }
 
-void ASRAgent::sendEventStopRecognize()
+void ASRAgent::sendEventStopRecognize(EventResultCallback cb)
 {
-    sendEventCommon("StopRecognize");
+    sendEventCommon("StopRecognize", std::move(cb));
 }
 
-void ASRAgent::sendEventCommon(const std::string& ename)
+void ASRAgent::sendEventCommon(const std::string& ename, EventResultCallback cb)
 {
     std::string payload = "";
 
@@ -381,7 +381,7 @@ void ASRAgent::sendEventCommon(const std::string& ename)
         payload = writer.write(root);
     }
 
-    sendEvent(ename, getContextInfo(), payload);
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void ASRAgent::setCapabilityListener(ICapabilityListener* clistener)
@@ -493,7 +493,9 @@ void ASRAgent::onListeningState(ListeningState state)
 
         playsync_manager->holdContext();
 
-        sendEventRecognize(NULL, 0, false);
+        sendEventRecognize(NULL, 0, false, [&](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {
+            nugu_dbg("receive %s.%s(%s) result %d(code:%d)", getName().c_str(), ename.c_str(), msg_id.c_str(), success, code);
+        });
 
         break;
     }

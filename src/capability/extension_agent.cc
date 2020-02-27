@@ -82,33 +82,40 @@ void ExtensionAgent::setCapabilityListener(ICapabilityListener* clistener)
         extension_listener = dynamic_cast<IExtensionListener*>(clistener);
 }
 
-void ExtensionAgent::sendEventActionSucceeded()
+void ExtensionAgent::sendEventActionSucceeded(EventResultCallback cb)
 {
-    sendEventCommon("ActionSucceeded");
+    sendEventCommon("ActionSucceeded", std::move(cb));
 }
 
-void ExtensionAgent::sendEventActionFailed()
+void ExtensionAgent::sendEventActionFailed(EventResultCallback cb)
 {
-    sendEventCommon("ActionFailed");
+    sendEventCommon("ActionFailed", std::move(cb));
 }
 
-void ExtensionAgent::sendEventCommandIssued(const std::string& data)
+void ExtensionAgent::sendEventCommandIssued(const std::string& data, EventResultCallback cb)
 {
-    sendEventCommon("CommandIssued", data);
+    std::string ename = "CommandIssued";
+    std::string payload = "";
+    Json::Value root;
+    Json::StyledWriter writer;
+
+    root["playServiceId"] = ps_id;
+    root["data"] = data;
+    payload = writer.write(root);
+
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
-void ExtensionAgent::sendEventCommon(const std::string& ename, const std::string& data)
+void ExtensionAgent::sendEventCommon(const std::string& ename, EventResultCallback cb)
 {
     std::string payload = "";
     Json::Value root;
     Json::StyledWriter writer;
 
     root["playServiceId"] = ps_id;
-    if (data.length())
-        root["data"] = data;
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload);
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void ExtensionAgent::parsingAction(const char* message)
