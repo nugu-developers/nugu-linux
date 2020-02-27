@@ -74,6 +74,7 @@ public:
 
     void resetExpectSpeechState();
     bool isExpectSpeechState();
+    ListeningState getListeningState();
 
 private:
     void sendEventCommon(const std::string& ename);
