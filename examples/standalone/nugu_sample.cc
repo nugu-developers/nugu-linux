@@ -139,9 +139,6 @@ void registerCapabilities()
     mic_handler = std::shared_ptr<IMicHandler>(
         CapabilityFactory::makeCapability<MicAgent, IMicHandler>(mic_listener.get()));
 
-    // set AudioPlayerAgent
-    audio_player_handler->setSuspendPolicy(ICapabilityInterface::SuspendPolicy::PAUSE);
-
     // set MicAgent
     mic_handler->enable();
 

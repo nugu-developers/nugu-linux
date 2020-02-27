@@ -105,7 +105,7 @@ void TTSAgent::deInitialize()
 void TTSAgent::suspend()
 {
     if (speak_status == NUGU_MEDIA_STATUS_PLAYING)
-        stopTTS();
+        capa_helper->releaseFocus("cap_tts");
 }
 
 void TTSAgent::pcmStatusCallback(enum nugu_media_status status, void* userdata)
