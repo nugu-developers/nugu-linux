@@ -129,6 +129,12 @@ public:
     void deInitialize() override;
 
     /**
+     * @brief Set capability suspend policy
+     * @param[in] policy suspend policy
+     */
+    void setSuspendPolicy(SuspendPolicy policy = SuspendPolicy::STOP) override;
+
+    /**
      * @brief Suspend current action
      */
     void suspend() override;
@@ -294,6 +300,9 @@ protected:
 
     /** @brief IPlaySyncManager instance for using play context sync */
     IPlaySyncManager* playsync_manager = nullptr;
+
+    /** @brief SuspendPolicy variable for deciding suspend action (default:STOP) */
+    SuspendPolicy suspend_policy = SuspendPolicy::STOP;
 
 private:
     struct Impl;

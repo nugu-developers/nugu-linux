@@ -155,6 +155,11 @@ void Capability::deInitialize()
 {
 }
 
+void Capability::setSuspendPolicy(SuspendPolicy policy)
+{
+    suspend_policy = policy;
+}
+
 void Capability::suspend()
 {
 }

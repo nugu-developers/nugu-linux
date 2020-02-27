@@ -37,6 +37,7 @@ public:
     void setNuguCoreContainer(INuguCoreContainer* core_container) override;
     void initialize() override;
     void deInitialize() override;
+    void setSuspendPolicy(SuspendPolicy policy = SuspendPolicy::STOP) override;
     void suspend() override;
     void restore() override;
     std::string getName() override;
@@ -52,6 +53,7 @@ public:
 private:
     std::string battery_level = "10";
     bool battery_charging = false;
+    SuspendPolicy suspend_policy = SuspendPolicy::STOP;
 
     INuguCoreContainer* core_container = nullptr;
     IBatteryListener* battery_listener = nullptr;

@@ -53,6 +53,15 @@ public:
  */
 class ICapabilityInterface {
 public:
+    /**
+     * @brief Capability suspend policy
+     */
+    enum class SuspendPolicy {
+        STOP, /**< Stop current action unconditionally */
+        PAUSE /**< Pause current action. It could resume later */
+    };
+
+public:
     virtual ~ICapabilityInterface() = default;
 
     /**
@@ -67,9 +76,15 @@ public:
     virtual void initialize() = 0;
 
     /**
-     * @brief deinitialize the current object.
+     * @brief Deinitialize the current object.
      */
     virtual void deInitialize() = 0;
+
+    /**
+     * @brief Set capability suspend policy
+     * @param[in] policy suspend policy
+     */
+    virtual void setSuspendPolicy(SuspendPolicy policy = SuspendPolicy::STOP) = 0;
 
     /**
      * @brief Suspend current action

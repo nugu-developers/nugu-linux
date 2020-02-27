@@ -76,12 +76,19 @@ void AudioPlayerAgent::deInitialize()
 
 void AudioPlayerAgent::suspend()
 {
-    // TODO : implements related suspend action
+    if (suspend_policy == SuspendPolicy::PAUSE) {
+        if (cur_aplayer_state == AudioPlayerState::PLAYING)
+            capa_helper->releaseFocus("cap_audio");
+    } else {
+        if (cur_aplayer_state == AudioPlayerState::PLAYING || cur_aplayer_state == AudioPlayerState::PAUSED)
+            stop();
+    }
 }
 
 void AudioPlayerAgent::restore()
 {
-    // TODO : implements related restore action
+    if (suspend_policy == SuspendPolicy::PAUSE && cur_aplayer_state == AudioPlayerState::PAUSED)
+        capa_helper->requestFocus("cap_audio", NULL);
 }
 
 void AudioPlayerAgent::onFocus(void* event)

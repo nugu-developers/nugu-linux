@@ -104,7 +104,8 @@ void TTSAgent::deInitialize()
 
 void TTSAgent::suspend()
 {
-    // TODO : implements related suspend action
+    if (speak_status == NUGU_MEDIA_STATUS_PLAYING)
+        stopTTS();
 }
 
 void TTSAgent::pcmStatusCallback(enum nugu_media_status status, void* userdata)
