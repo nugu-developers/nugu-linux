@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+#ifndef __NUGU_SAMPLE_MANAGER_H__
+#define __NUGU_SAMPLE_MANAGER_H__
+
 #include <functional>
 #include <string>
 
@@ -23,9 +26,6 @@
 #include <capability/text_interface.hh>
 
 #include "speech_operator.hh"
-
-#ifndef __NUGU_SAMPLE_MANAGER_H__
-#define __NUGU_SAMPLE_MANAGER_H__
 
 class NuguSampleManager {
 public:
