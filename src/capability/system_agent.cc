@@ -140,7 +140,7 @@ void SystemAgent::receiveCommand(const std::string& from, const std::string& com
     }
 }
 
-void SystemAgent::synchronizeState(void)
+void SystemAgent::synchronizeState()
 {
     if (timer)
         timer->start();
@@ -148,7 +148,7 @@ void SystemAgent::synchronizeState(void)
     sendEventSynchronizeState();
 }
 
-void SystemAgent::disconnect(void)
+void SystemAgent::disconnect()
 {
     if (timer)
         timer->stop();
@@ -156,21 +156,21 @@ void SystemAgent::disconnect(void)
     sendEventDisconnect();
 }
 
-void SystemAgent::updateUserActivity(void)
+void SystemAgent::updateUserActivity()
 {
     if (timer)
         timer->start();
 }
 
-void SystemAgent::sendEventSynchronizeState(void)
+void SystemAgent::sendEventSynchronizeState(EventResultCallback cb)
 {
     std::string ename = "SynchronizeState";
     std::string payload = "";
 
-    sendEvent(ename, capa_helper->makeAllContextInfo(), payload);
+    sendEvent(ename, capa_helper->makeAllContextInfo(), payload, std::move(cb));
 }
 
-void SystemAgent::sendEventUserInactivityReport(int seconds)
+void SystemAgent::sendEventUserInactivityReport(int seconds, EventResultCallback cb)
 {
     std::string ename = "UserInactivityReport";
     std::string payload = "";
@@ -179,23 +179,23 @@ void SystemAgent::sendEventUserInactivityReport(int seconds)
     snprintf(buf, 64, "{\"inactiveTimeInSeconds\": %d}", seconds);
     payload = buf;
 
-    sendEvent(ename, getContextInfo(), payload);
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
-void SystemAgent::sendEventDisconnect(void)
+void SystemAgent::sendEventDisconnect(EventResultCallback cb)
 {
     std::string ename = "Disconnect";
     std::string payload = "";
 
-    sendEvent(ename, getContextInfo(), payload, nullptr, true);
+    sendEvent(ename, getContextInfo(), payload, std::move(cb), true);
 }
 
-void SystemAgent::sendEventEcho(void)
+void SystemAgent::sendEventEcho(EventResultCallback cb)
 {
     std::string ename = "Echo";
     std::string payload = "";
 
-    sendEvent(ename, getContextInfo(), payload);
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void SystemAgent::parsingResetUserInactivity(const char* message)

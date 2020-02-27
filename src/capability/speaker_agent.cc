@@ -187,27 +187,27 @@ std::string SpeakerAgent::getSpeakerName(SpeakerType& type)
         return "NUGU";
 }
 
-void SpeakerAgent::sendEventSetVolumeSucceeded(const std::string& ps_id)
+void SpeakerAgent::sendEventSetVolumeSucceeded(const std::string& ps_id, EventResultCallback cb)
 {
-    sendEventCommon(ps_id, "SetVolumeSucceeded");
+    sendEventCommon(ps_id, "SetVolumeSucceeded", std::move(cb));
 }
 
-void SpeakerAgent::sendEventSetVolumeFailed(const std::string& ps_id)
+void SpeakerAgent::sendEventSetVolumeFailed(const std::string& ps_id, EventResultCallback cb)
 {
-    sendEventCommon(ps_id, "SetVolumeFailed");
+    sendEventCommon(ps_id, "SetVolumeFailed", std::move(cb));
 }
 
-void SpeakerAgent::sendEventSetMuteSucceeded(const std::string& ps_id)
+void SpeakerAgent::sendEventSetMuteSucceeded(const std::string& ps_id, EventResultCallback cb)
 {
-    sendEventCommon(ps_id, "SetMuteSucceeded");
+    sendEventCommon(ps_id, "SetMuteSucceeded", std::move(cb));
 }
 
-void SpeakerAgent::sendEventSetMuteFailed(const std::string& ps_id)
+void SpeakerAgent::sendEventSetMuteFailed(const std::string& ps_id, EventResultCallback cb)
 {
-    sendEventCommon(ps_id, "SetMuteFailed");
+    sendEventCommon(ps_id, "SetMuteFailed", std::move(cb));
 }
 
-void SpeakerAgent::sendEventCommon(const std::string& ps_id, const std::string& ename)
+void SpeakerAgent::sendEventCommon(const std::string& ps_id, const std::string& ename, EventResultCallback cb)
 {
     std::string payload = "";
     Json::Value root;
@@ -216,7 +216,7 @@ void SpeakerAgent::sendEventCommon(const std::string& ps_id, const std::string& 
     root["playServiceId"] = ps_id;
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload);
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void SpeakerAgent::parsingSetVolume(const char* message)

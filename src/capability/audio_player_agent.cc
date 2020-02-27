@@ -346,62 +346,62 @@ void AudioPlayerAgent::removeListener(IAudioPlayerListener* listener)
         aplayer_listeners.erase(iterator);
 }
 
-void AudioPlayerAgent::sendEventPlaybackStarted()
+void AudioPlayerAgent::sendEventPlaybackStarted(EventResultCallback cb)
 {
-    sendEventCommon("PlaybackStarted");
+    sendEventCommon("PlaybackStarted", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventPlaybackFinished()
+void AudioPlayerAgent::sendEventPlaybackFinished(EventResultCallback cb)
 {
-    sendEventCommon("PlaybackFinished");
+    sendEventCommon("PlaybackFinished", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventPlaybackStopped()
+void AudioPlayerAgent::sendEventPlaybackStopped(EventResultCallback cb)
 {
-    sendEventCommon("PlaybackStopped");
+    sendEventCommon("PlaybackStopped", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventPlaybackPaused()
+void AudioPlayerAgent::sendEventPlaybackPaused(EventResultCallback cb)
 {
-    sendEventCommon("PlaybackPaused");
+    sendEventCommon("PlaybackPaused", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventPlaybackResumed()
+void AudioPlayerAgent::sendEventPlaybackResumed(EventResultCallback cb)
 {
-    sendEventCommon("PlaybackResumed");
+    sendEventCommon("PlaybackResumed", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventShowLyricsSucceeded()
+void AudioPlayerAgent::sendEventShowLyricsSucceeded(EventResultCallback cb)
 {
-    sendEventCommon("ShowLyricsSucceeded");
+    sendEventCommon("ShowLyricsSucceeded", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventShowLyricsFailed()
+void AudioPlayerAgent::sendEventShowLyricsFailed(EventResultCallback cb)
 {
-    sendEventCommon("EventShowLyricsFailed");
+    sendEventCommon("EventShowLyricsFailed", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventHideLyricsSucceeded()
+void AudioPlayerAgent::sendEventHideLyricsSucceeded(EventResultCallback cb)
 {
-    sendEventCommon("HideLyricsSucceeded");
+    sendEventCommon("HideLyricsSucceeded", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventHideLyricsFailed()
+void AudioPlayerAgent::sendEventHideLyricsFailed(EventResultCallback cb)
 {
-    sendEventCommon("HideLyricsFailed");
+    sendEventCommon("HideLyricsFailed", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventControlLyricsPageSucceeded()
+void AudioPlayerAgent::sendEventControlLyricsPageSucceeded(EventResultCallback cb)
 {
-    sendEventCommon("ControlLyricsPageSucceeded");
+    sendEventCommon("ControlLyricsPageSucceeded", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventControlLyricsPageFailed()
+void AudioPlayerAgent::sendEventControlLyricsPageFailed(EventResultCallback cb)
 {
-    sendEventCommon("ControlLyricsPageFailed");
+    sendEventCommon("ControlLyricsPageFailed", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::string& reason)
+void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::string& reason, EventResultCallback cb)
 {
     std::string ename = "PlaybackFailed";
     std::string payload = "";
@@ -424,27 +424,27 @@ void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::str
     root["currentPlaybackState.playActivity"] = playerActivity(cur_aplayer_state);
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload);
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventProgressReportDelayElapsed()
+void AudioPlayerAgent::sendEventProgressReportDelayElapsed(EventResultCallback cb)
 {
     nugu_dbg("report_delay_time: %d, position: %d", report_delay_time / 1000, player->position());
-    sendEventCommon("ProgressReportDelayElapsed");
+    sendEventCommon("ProgressReportDelayElapsed", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventProgressReportIntervalElapsed()
+void AudioPlayerAgent::sendEventProgressReportIntervalElapsed(EventResultCallback cb)
 {
     nugu_dbg("report_interval_time: %d, position: %d", report_interval_time / 1000, player->position());
-    sendEventCommon("ProgressReportIntervalElapsed");
+    sendEventCommon("ProgressReportIntervalElapsed", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventByDisplayInterface(const std::string& command)
+void AudioPlayerAgent::sendEventByDisplayInterface(const std::string& command, EventResultCallback cb)
 {
-    sendEventCommon(command);
+    sendEventCommon(command, std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventCommon(const std::string& ename)
+void AudioPlayerAgent::sendEventCommon(const std::string& ename, EventResultCallback cb)
 {
     std::string payload = "";
     Json::StyledWriter writer;
@@ -461,7 +461,7 @@ void AudioPlayerAgent::sendEventCommon(const std::string& ename)
     root["offsetInMilliseconds"] = std::to_string(offset);
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload);
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 bool AudioPlayerAgent::isContentCached(const std::string& key, std::string& playurl)

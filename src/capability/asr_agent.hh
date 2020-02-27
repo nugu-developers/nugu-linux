@@ -61,11 +61,11 @@ public:
     void checkResponseTimeout();
     void clearResponseTimeout();
 
-    void sendEventRecognize(unsigned char* data, size_t length, bool is_end);
-    void sendEventResponseTimeout();
-    void sendEventListenTimeout();
-    void sendEventListenFailed();
-    void sendEventStopRecognize();
+    void sendEventRecognize(unsigned char* data, size_t length, bool is_end, EventResultCallback cb = nullptr);
+    void sendEventResponseTimeout(EventResultCallback cb = nullptr);
+    void sendEventListenTimeout(EventResultCallback cb = nullptr);
+    void sendEventListenFailed(EventResultCallback cb = nullptr);
+    void sendEventStopRecognize(EventResultCallback cb = nullptr);
 
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void addListener(IASRListener* listener) override;
@@ -77,7 +77,7 @@ public:
     ListeningState getListeningState();
 
 private:
-    void sendEventCommon(const std::string& ename);
+    void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);
 
     // implements ISpeechRecognizerListener
     void onListeningState(ListeningState state) override;

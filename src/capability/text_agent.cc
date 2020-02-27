@@ -147,7 +147,7 @@ void TextAgent::notifyResponseTimeout()
         text_listener->onState(cur_state);
 }
 
-void TextAgent::sendEventTextInput(const std::string& text, const std::string& token)
+void TextAgent::sendEventTextInput(const std::string& text, const std::string& token, EventResultCallback cb)
 {
     CapabilityEvent event("TextInput", this);
     std::string payload = "";
@@ -184,10 +184,10 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
 
     playsync_manager->holdContext();
 
-    sendEvent(&event, capa_helper->makeAllContextInfoStack(), payload);
+    sendEvent(&event, capa_helper->makeAllContextInfoStack(), payload, std::move(cb));
 }
 
-void TextAgent::sendEventTextSourceFailed(const std::string& text, const std::string& token)
+void TextAgent::sendEventTextSourceFailed(const std::string& text, const std::string& token, EventResultCallback cb)
 {
     std::string ename = "TextSourceFailed";
     std::string payload = "";
@@ -198,7 +198,7 @@ void TextAgent::sendEventTextSourceFailed(const std::string& text, const std::st
     root["token"] = token;
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload);
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void TextAgent::parsingTextSource(const char* message)

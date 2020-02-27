@@ -41,11 +41,11 @@ public:
     void sendEventMuteChanged(const std::string& ps_id, bool result) override;
 
 private:
-    void sendEventCommon(const std::string& ps_id, const std::string& ename);
-    void sendEventSetVolumeSucceeded(const std::string& ps_id);
-    void sendEventSetVolumeFailed(const std::string& ps_id);
-    void sendEventSetMuteSucceeded(const std::string& ps_id);
-    void sendEventSetMuteFailed(const std::string& ps_id);
+    void sendEventCommon(const std::string& ps_id, const std::string& ename, EventResultCallback cb = nullptr);
+    void sendEventSetVolumeSucceeded(const std::string& ps_id, EventResultCallback cb = nullptr);
+    void sendEventSetVolumeFailed(const std::string& ps_id, EventResultCallback cb = nullptr);
+    void sendEventSetMuteSucceeded(const std::string& ps_id, EventResultCallback cb = nullptr);
+    void sendEventSetMuteFailed(const std::string& ps_id, EventResultCallback cb = nullptr);
 
     void parsingSetVolume(const char* message);
     void parsingSetMute(const char* message);
