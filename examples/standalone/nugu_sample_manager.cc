@@ -185,22 +185,26 @@ void NuguSampleManager::showPrompt(void)
                   << C_BLUE;
 
         if (commander.is_connected)
-            std::cout << " w : start wakeup\n"
+            std::cout << " w : start listening with wakeup\n"
                       << " l : start listening\n"
-                      << " s : stop listening\n"
+                      << " s : stop listening/wakeup\n"
                       << " t : text input\n"
                       << " m : set mic mute\n"
                       << "sa : suspend all\n"
-                      << "ra : restore all\n";
+                      << "ra : restore all\n"
+                      << C_YELLOW
+                      << "-------------------------------------------------------\n"
+                      << C_BLUE;
 
-        std::cout << " c : connect\n"
-                  << " d : disconnect\n"
-                  << " q : quit\n"
-                  << C_YELLOW
-                  << "-------------------------------------------------------\n"
-                  << C_WHITE
-                  << "Select Command > "
-                  << C_RESET;
+        std::cout
+            << " c : connect\n"
+            << " d : disconnect\n"
+            << " q : quit\n"
+            << C_YELLOW
+            << "-------------------------------------------------------\n"
+            << C_WHITE
+            << "Select Command > "
+            << C_RESET;
     }
 
     fflush(stdout);
@@ -240,15 +244,15 @@ gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpoint
             commander.text_handler->requestTextInput(keybuf);
     } else if (g_strcmp0(keybuf, "w") == 0) {
         if (commander.speech_operator)
-            commander.speech_operator->startWakeup();
+            commander.speech_operator->startListeningWithWakeup();
     } else if (g_strcmp0(keybuf, "l") == 0) {
         if (commander.speech_operator)
             commander.speech_operator->startListening();
     } else if (g_strcmp0(keybuf, "s") == 0) {
         if (commander.speech_operator)
-            commander.speech_operator->stopListening();
+            commander.speech_operator->stopListeningAndWakeup();
 
-        showPrompt();
+        // showPrompt();
     } else if (g_strcmp0(keybuf, "t") == 0) {
         commander.text_input = 1;
         showPrompt();

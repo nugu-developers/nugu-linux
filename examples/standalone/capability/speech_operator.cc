@@ -80,11 +80,8 @@ void SpeechOperator::onWakeupState(WakeupDetectState state)
     case WakeupDetectState::WAKEUP_DETECTED:
         msg::wakeup::state("wakeup detected");
 
-        if (wakeup_handler)
-            wakeup_handler->stopWakeup();
-
-        if (asr_handler)
-            asr_handler->startRecognition();
+        stopWakeup();
+        startListening();
 
         break;
     case WakeupDetectState::WAKEUP_FAIL:
@@ -111,6 +108,30 @@ void SpeechOperator::setASRHandler(IASRHandler* asr_handler)
     this->asr_handler = asr_handler;
 }
 
+void SpeechOperator::startListeningWithWakeup()
+{
+    stopListeningAndWakeup();
+    startWakeup();
+}
+
+void SpeechOperator::startListening()
+{
+    stopListening();
+
+    if (!asr_handler) {
+        msg::error("It's fail to start speech recognition.");
+        return;
+    }
+
+    asr_handler->startRecognition();
+}
+
+void SpeechOperator::stopListeningAndWakeup()
+{
+    stopListening();
+    stopWakeup();
+}
+
 void SpeechOperator::startWakeup()
 {
     if (!wakeup_handler) {
@@ -121,14 +142,10 @@ void SpeechOperator::startWakeup()
     wakeup_handler->startWakeup();
 }
 
-void SpeechOperator::startListening()
+void SpeechOperator::stopWakeup()
 {
-    if (!asr_handler) {
-        msg::error("It's fail to start speech recognition.");
-        return;
-    }
-
-    asr_handler->startRecognition();
+    if (wakeup_handler)
+        wakeup_handler->stopWakeup();
 }
 
 void SpeechOperator::stopListening()
@@ -146,19 +163,13 @@ void SpeechOperator::onState(ASRState state)
     switch (state) {
     case ASRState::IDLE: {
         msg::asr::state("IDLE");
-
-        if (wakeup_handler)
-            wakeup_handler->startWakeup();
-
         break;
     }
     case ASRState::EXPECTING_SPEECH: {
         msg::wakeup::state("stop wakeup");
-        if (wakeup_handler)
-            wakeup_handler->stopWakeup();
+        stopWakeup();
 
         msg::asr::state("EXPECTING_SPEECH");
-
         break;
     }
     case ASRState::LISTENING: {
