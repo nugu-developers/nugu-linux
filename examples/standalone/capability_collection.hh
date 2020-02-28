@@ -50,6 +50,7 @@ public:
 
 private:
     void composeCapabilityFactory();
+    SpeakerInfo makeSpeakerInfo(SpeakerType type, bool can_control = false);
 
     // Capability instance
     std::shared_ptr<ISystemHandler> system_handler = nullptr;
