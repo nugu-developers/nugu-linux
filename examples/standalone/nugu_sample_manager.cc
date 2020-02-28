@@ -31,7 +31,7 @@ const char* NuguSampleManager::C_CYAN = "\033[1;96m";
 const char* NuguSampleManager::C_WHITE = "\033[1;97m";
 const char* NuguSampleManager::C_RESET = "\033[0m";
 
-NuguSampleManager::Commander NuguSampleManager::commander = { false, 0, { nullptr, nullptr }, nullptr, nullptr };
+NuguSampleManager::Commander NuguSampleManager::commander = { false, 0, { nullptr, nullptr }, { nullptr, nullptr }, nullptr, nullptr, nullptr };
 bool NuguSampleManager::is_show_prompt = true;
 
 void NuguSampleManager::error(const std::string& message)
@@ -99,8 +99,8 @@ void NuguSampleManager::prepare()
 
 void NuguSampleManager::runLoop(std::function<void()> quit_callback)
 {
-    if (quit_callback)
-        quit_func = quit_callback;
+    if (quit_callback != nullptr)
+        quit_func = std::move(quit_callback);
 
     if (loop && is_prepared) {
         g_main_loop_run(loop);

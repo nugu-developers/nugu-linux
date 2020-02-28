@@ -28,7 +28,7 @@
 
 namespace NuguCore {
 
-class AudioRecorder : public IAudioRecorder {
+class AudioRecorder final : public IAudioRecorder {
 public:
     AudioRecorder(std::string& samplerate, std::string& format, std::string& channel);
     virtual ~AudioRecorder();
