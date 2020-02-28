@@ -251,8 +251,6 @@ gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpoint
     } else if (g_strcmp0(keybuf, "s") == 0) {
         if (commander.speech_operator)
             commander.speech_operator->stopListeningAndWakeup();
-
-        // showPrompt();
     } else if (g_strcmp0(keybuf, "t") == 0) {
         commander.text_input = 1;
         showPrompt();
@@ -273,9 +271,8 @@ gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpoint
                 commander.network_callback.connect();
         }
     } else if (g_strcmp0(keybuf, "d") == 0) {
-        if (commander.network_callback.disconnect && commander.network_callback.disconnect()) {
+        if (commander.network_callback.disconnect && commander.network_callback.disconnect())
             commander.is_connected = false;
-        }
     } else if (g_strcmp0(keybuf, "sa") == 0) {
         if (commander.action_callback.suspend_all_func)
             commander.action_callback.suspend_all_func();

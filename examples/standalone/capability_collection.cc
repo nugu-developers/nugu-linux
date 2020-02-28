@@ -84,27 +84,18 @@ void CapabilityCollection::composeCapabilityFactory()
             speaker_listener = std::make_shared<SpeakerListener>();
             speaker_handler = makeCapability<SpeakerAgent, ISpeakerHandler>(speaker_listener.get());
 
-            SpeakerInfo nugu_speaker;
-            nugu_speaker.type = SpeakerType::NUGU;
-            nugu_speaker.can_control = true;
+            // compose SpeakerInfo
+            SpeakerInfo nugu_speaker = makeSpeakerInfo(SpeakerType::NUGU, true);
+            SpeakerInfo call_speaker = makeSpeakerInfo(SpeakerType::CALL);
+            SpeakerInfo alarm_speaker = makeSpeakerInfo(SpeakerType::ALARM);
+            SpeakerInfo external_speaker = makeSpeakerInfo(SpeakerType::EXTERNAL);
 
-            SpeakerInfo call_speaker;
-            call_speaker.type = SpeakerType::CALL;
-            call_speaker.can_control = false;
-
-            SpeakerInfo alarm_speaker;
-            alarm_speaker.type = SpeakerType::ALARM;
-            alarm_speaker.can_control = false;
-
-            SpeakerInfo external_speaker;
-            external_speaker.type = SpeakerType::EXTERNAL;
-            external_speaker.can_control = false;
-
-            std::map<SpeakerType, SpeakerInfo*> speakers;
-            speakers[SpeakerType::NUGU] = &nugu_speaker;
-            speakers[SpeakerType::CALL] = &call_speaker;
-            speakers[SpeakerType::ALARM] = &alarm_speaker;
-            speakers[SpeakerType::EXTERNAL] = &external_speaker;
+            std::map<SpeakerType, SpeakerInfo*> speakers = {
+                { SpeakerType::NUGU, &nugu_speaker },
+                { SpeakerType::CALL, &call_speaker },
+                { SpeakerType::ALARM, &alarm_speaker },
+                { SpeakerType::EXTERNAL, &external_speaker },
+            };
 
             speaker_handler->setSpeakerInfo(speakers);
             speaker_listener->setSpeakerHandler(speaker_handler.get());
@@ -136,4 +127,13 @@ void CapabilityCollection::composeCapabilityFactory()
 
         return mic_handler.get();
     });
+}
+
+SpeakerInfo CapabilityCollection::makeSpeakerInfo(SpeakerType type, bool can_control)
+{
+    SpeakerInfo nugu_speaker;
+    nugu_speaker.type = type;
+    nugu_speaker.can_control = can_control;
+
+    return nugu_speaker;
 }
