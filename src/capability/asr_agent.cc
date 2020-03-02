@@ -472,8 +472,11 @@ void ASRAgent::parsingNotifyResult(const char* message)
             asr_listener->onComplete(result);
         else if (state == "NONE")
             asr_listener->onNone();
-        else if (state == "ERROR")
-            asr_listener->onError(ASRError::RECOGNIZE_ERROR);
+    }
+
+    if (state == "ERROR") {
+        nugu_error("NotifyResult.state is ERROR");
+        releaseASRFocus(false, ASRError::RECOGNIZE_ERROR);
     }
 }
 
