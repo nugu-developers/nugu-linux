@@ -56,24 +56,9 @@ class AudioPlayerAgent;
 class SystemAgent;
 
 /**
- * @brief ExtensionAgent
- */
-class ExtensionAgent;
-
-/**
  * @brief TextAgent
  */
 class TextAgent;
-
-/**
- * @brief DelegationAgent
- */
-class DelegationAgent;
-
-/**
- * @brief LocationAgent
- */
-class LocationAgent;
 
 /**
  * @brief SpeakerAgent

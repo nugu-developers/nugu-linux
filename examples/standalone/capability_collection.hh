@@ -22,9 +22,6 @@
 #include <memory>
 
 #include "audio_player_listener.hh"
-#include "delegation_listener.hh"
-#include "extension_listener.hh"
-#include "location_listener.hh"
 #include "mic_listener.hh"
 #include "speaker_listener.hh"
 #include "speech_operator.hh"
