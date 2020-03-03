@@ -89,6 +89,10 @@ struct _nugu_network {
 	NuguNetworkManagerHandoffStatusCallback handoff_callback;
 	void *handoff_callback_userdata;
 
+	/* Event send notify */
+	NuguNetworkManagerEventSendNotifyCallback event_send_callback;
+	void *event_send_callback_userdata;
+
 	/* Event result */
 	NuguNetworkManagerEventResultCallback event_result_callback;
 	void *event_result_callback_userdata;
@@ -764,6 +768,18 @@ EXPORT_API int nugu_network_manager_set_handoff_status_callback(
 	return 0;
 }
 
+EXPORT_API int nugu_network_manager_set_event_send_notify_callback(
+	NuguNetworkManagerEventSendNotifyCallback callback, void *userdata)
+{
+	if (!_network)
+		return -1;
+
+	_network->event_send_callback = callback;
+	_network->event_send_callback_userdata = userdata;
+
+	return 0;
+}
+
 EXPORT_API int nugu_network_manager_set_event_result_callback(
 	NuguNetworkManagerEventResultCallback callback, void *userdata)
 {
@@ -783,6 +799,8 @@ EXPORT_API NuguNetworkStatus nugu_network_manager_get_status(void)
 
 EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev, int is_sync)
 {
+	int ret;
+
 	g_return_val_if_fail(nev != NULL, -1);
 
 	if (!_network) {
@@ -805,7 +823,17 @@ EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev, int is_sync)
 		return -1;
 	}
 
-	return dg_server_send_event(_network->server, nev, is_sync);
+	ret = dg_server_send_event(_network->server, nev, is_sync);
+	if (ret < 0) {
+		nugu_error("event send failed: %d", ret);
+		return -1;
+	}
+
+	if (_network->event_send_callback)
+		_network->event_send_callback(
+			nev, _network->event_send_callback_userdata);
+
+	return 0;
 }
 
 EXPORT_API int nugu_network_manager_force_close_event(NuguEvent *nev)
