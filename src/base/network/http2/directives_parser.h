@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
-#ifndef __HTTP2_V1_DIRECTIVES_H__
-#define __HTTP2_V1_DIRECTIVES_H__
+#ifndef __HTTP2_DIRECTIVES_PARSER_H__
+#define __HTTP2_DIRECTIVES_PARSER_H__
 
-#include "http2/http2_network.h"
+#include "http2/http2_request.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef struct _v1_directives V1Directives;
+typedef struct _dir_parser DirParser;
 
-V1Directives *v1_directives_new(const char *host, int api_version,
-				int connection_timeout_secs);
-void v1_directives_free(V1Directives *dir);
+DirParser *dir_parser_new(void);
+void dir_parser_free(DirParser *parser);
 
-int v1_directives_establish(V1Directives *dir, HTTP2Network *net);
+int dir_parser_add_header(DirParser *parser, const char *buffer,
+			  size_t buffer_len);
+
+int dir_parser_parse(DirParser *parser, const char *buffer, size_t buffer_len);
 
 #ifdef __cplusplus
 }

@@ -4,10 +4,11 @@ ADD_LIBRARY(objhttp2 OBJECT
 	network/http2/multipart_parser.c
 	network/http2/http2_request.c
 	network/http2/http2_network.c
+	network/http2/directives_parser.cc
 	network/http2/v1_event.c
 	network/http2/v1_event_attachment.c
 	network/http2/v1_events.c
-	network/http2/v1_directives.cc
+	network/http2/v1_directives.c
 	network/http2/v1_ping.c
 	network/http2/v1_policies.cc
 	network/dg_registry.c
