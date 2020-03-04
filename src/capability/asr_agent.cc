@@ -331,8 +331,12 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
 
     if (es_attr.is_handle) {
         root["sessionId"] = es_attr.session_id;
-        root["playServiceId"] = es_attr.play_service_id;
-        root["domainTypes"] = es_attr.domain_types;
+        if (es_attr.play_service_id.size())
+            root["playServiceId"] = es_attr.play_service_id;
+        if (!es_attr.domain_types.empty())
+            root["domainTypes"] = es_attr.domain_types;
+        if (!es_attr.asr_context.empty())
+            root["asrContext"] = es_attr.asr_context;
     }
     payload = writer.write(root);
 
@@ -414,7 +418,7 @@ void ASRAgent::parsingExpectSpeech(const char* message)
         return;
     }
 
-    if (root["sessionId"].asString().empty()) {
+    if (root["sessionId"].asString().empty() || root["timeoutInMilliseconds"].empty()) {
         nugu_error("There is no mandatory data in directive message");
         return;
     }
@@ -424,6 +428,7 @@ void ASRAgent::parsingExpectSpeech(const char* message)
     es_attr.session_id = root["sessionId"].asString();
     es_attr.play_service_id = root["playServiceId"].asString();
     es_attr.domain_types = root["domainTypes"];
+    es_attr.asr_context = root["asrContext"];
 
     nugu_dbg("Parsing ExpectSpeech directive");
 
