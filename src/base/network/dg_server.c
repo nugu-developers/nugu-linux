@@ -43,6 +43,8 @@ struct _dg_server {
 	NuguNetworkServerPolicy policy;
 	enum dg_server_type type;
 
+	int api_version;
+
 	int use_events;
 	GHashTable *pending_events;
 };
@@ -88,6 +90,7 @@ DGServer *dg_server_new(const NuguNetworkServerPolicy *policy)
 	server->host = tmp;
 	server->type = DG_SERVER_TYPE_NORMAL;
 	server->retry_count = 0;
+	server->api_version = 1;
 
 #ifdef NUGU_ENV_NETWORK_USE_EVENTS
 	tmp = getenv(NUGU_ENV_NETWORK_USE_EVENTS);
@@ -155,8 +158,9 @@ int dg_server_connect_async(DGServer *server)
 	if (server->directives)
 		v1_directives_free(server->directives);
 
-	server->directives = v1_directives_new(
-		server->host, server->policy.connection_timeout_ms / 1000);
+	server->directives =
+		v1_directives_new(server->host, server->api_version,
+				  server->policy.connection_timeout_ms / 1000);
 
 	ret = v1_directives_establish(server->directives, server->net);
 	if (ret < 0) {
