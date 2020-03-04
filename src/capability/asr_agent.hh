@@ -31,7 +31,6 @@ typedef struct expect_speech_attr {
     std::string timeout;
     std::string session_id;
     std::string play_service_id;
-    std::string property;
     Json::Value domain_types;
 } ExpectSpeechAttr;
 

@@ -23,7 +23,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "ASR";
-static const char* CAPABILITY_VERSION = "1.0";
+static const char* CAPABILITY_VERSION = "1.1";
 
 class ASRFocusListener : public IFocusListener {
 public:
@@ -283,8 +283,6 @@ void ASRAgent::getProperty(const std::string& property, std::string& value)
 {
     if (property == "es.playServiceId") {
         value = es_attr.play_service_id;
-    } else if (property == "es.property") {
-        value = es_attr.property;
     } else if (property == "es.sessionId") {
         value = es_attr.session_id;
     } else {
@@ -327,7 +325,6 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
     }
 
     root["codec"] = "SPEEX";
-    root["property"] = "NORMAL";
     root["language"] = "KOR";
     root["endpointing"] = epd_type;
     root["encoding"] = asr_encoding;
@@ -336,9 +333,6 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
         root["sessionId"] = es_attr.session_id;
         root["playServiceId"] = es_attr.play_service_id;
         root["domainTypes"] = es_attr.domain_types;
-
-        if (!es_attr.property.empty())
-            root["property"] = es_attr.property;
     }
     payload = writer.write(root);
 
@@ -429,7 +423,6 @@ void ASRAgent::parsingExpectSpeech(const char* message)
     es_attr.timeout = root["timeoutInMilliseconds"].asString();
     es_attr.session_id = root["sessionId"].asString();
     es_attr.play_service_id = root["playServiceId"].asString();
-    es_attr.property = root["property"].asString();
     es_attr.domain_types = root["domainTypes"];
 
     nugu_dbg("Parsing ExpectSpeech directive");
