@@ -32,6 +32,7 @@ typedef struct expect_speech_attr {
     std::string session_id;
     std::string play_service_id;
     Json::Value domain_types;
+    Json::Value asr_context;
 } ExpectSpeechAttr;
 
 class ASRAgent final : public Capability,
