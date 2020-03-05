@@ -215,7 +215,7 @@ static void _body_opus(const char* parent_msg_id, int is_end, const char* data,
     item->data = (unsigned char*)malloc(length);
     memcpy(item->data, data, length);
 
-    nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE, NUGU_LOG_LEVEL_INFO, NULL,
+    nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG, NULL,
         NULL, -1, "<-- Attachment: parent=%s (%zd bytes, is_end=%d)",
         parent_msg_id, length, is_end);
 

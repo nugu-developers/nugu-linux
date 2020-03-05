@@ -142,8 +142,8 @@ static size_t _request_body_cb(char *buffer, size_t size, size_t nitems,
 	else if (length == 0) {
 		if (req->send_body_closed == 0) {
 			/* Pause the current uploading */
+			nugu_dbg("request paused until resume (req=%p)", req);
 			http2_request_unlock_send_data(req);
-			nugu_dbg("request paused until resume (req=%x)", req);
 			return CURL_READFUNC_PAUSE;
 		}
 
@@ -360,16 +360,6 @@ void http2_request_unlock_send_data(HTTP2Request *req)
 	g_return_if_fail(req != NULL);
 
 	pthread_mutex_unlock(&req->lock_send_body);
-}
-
-int http2_request_resume(HTTP2Request *req)
-{
-	g_return_val_if_fail(req != NULL, -1);
-
-	nugu_dbg("resume the paused request (req=%p)", req);
-	curl_easy_pause(req->easy, CURLPAUSE_CONT);
-
-	return 0;
 }
 
 int http2_request_set_method(HTTP2Request *req,

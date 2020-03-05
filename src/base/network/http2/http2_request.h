@@ -106,7 +106,7 @@ int http2_request_add_header(HTTP2Request *req, const char *header);
  *   http2_request_add_send_data(... 100 bytes) - Additional data to send
  *   http2_request_close_send_data()
  *   http2_request_unlock_send_data()
- *   http2_request_resume()
+ *   http2_network_resume_request()
  *
  *   Additional 100 bytes will be sent. And the upload will be finished
  *   because http2_request_close_send_data()
@@ -114,7 +114,6 @@ int http2_request_add_header(HTTP2Request *req, const char *header);
 int http2_request_add_send_data(HTTP2Request *req, const unsigned char *data,
 				size_t length);
 int http2_request_close_send_data(HTTP2Request *req);
-int http2_request_resume(HTTP2Request *req);
 
 void http2_request_lock_send_data(HTTP2Request *req);
 void http2_request_unlock_send_data(HTTP2Request *req);
