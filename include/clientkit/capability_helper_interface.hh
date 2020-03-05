@@ -104,6 +104,14 @@ public:
     virtual void requestEventResult(NuguEvent* event) = 0;
 
     /**
+     * @brief Notify to send event result to CapabilityManager.
+     * @param[in] msg_id event message id
+     * @param[in] success event result
+     * @param[in] code event result code (similar to http status code)
+     */
+    virtual void notifyEventResult(const char* msg_id, bool success, int code) = 0;
+
+    /**
      * @brief Suspend all current capability action
      */
     virtual void suspendAll() = 0;

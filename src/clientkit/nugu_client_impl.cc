@@ -196,6 +196,11 @@ void NuguClientImpl::onStatusChanged(NetworkStatus status)
         sys_handler->synchronizeState();
 }
 
+void NuguClientImpl::onEventResult(const char* msg_id, bool success, int code)
+{
+    nugu_core_container->getCapabilityHelper()->notifyEventResult(msg_id, success, code);
+}
+
 INetworkManager* NuguClientImpl::getNetworkManager()
 {
     return network_manager.get();

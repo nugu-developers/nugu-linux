@@ -53,7 +53,6 @@ static NuguFocusStealResult on_steal_request(NuguFocus* focus, void* event, Nugu
 CapabilityManager::CapabilityManager()
 {
     nugu_dirseq_set_callback(dirseqCallback, this);
-    nugu_network_manager_set_event_result_callback(eventResultCallback, this);
 
     wword = WAKEUP_WORD;
     playsync_manager = std::unique_ptr<PlaySyncManager>(new PlaySyncManager());
@@ -105,12 +104,6 @@ NuguDirseqReturn CapabilityManager::dirseqCallback(NuguDirective* ndir, void* us
 
     cap->processDirective(ndir);
     return NUGU_DIRSEQ_SUCCESS;
-}
-
-void CapabilityManager::eventResultCallback(int success, const char* msg_id, const char* dialog_id, int code, void* userdata)
-{
-    CapabilityManager* cap_manager = static_cast<CapabilityManager*>(userdata);
-    cap_manager->reportEventResult(msg_id, success, code);
 }
 
 void CapabilityManager::addCapability(const std::string& cname, ICapabilityInterface* cap)
