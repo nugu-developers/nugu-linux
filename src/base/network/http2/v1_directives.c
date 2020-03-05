@@ -22,7 +22,6 @@
 
 #include "base/nugu_equeue.h"
 #include "base/nugu_log.h"
-#include "base/nugu_network_manager.h"
 
 #include "directives_parser.h"
 #include "http2_request.h"

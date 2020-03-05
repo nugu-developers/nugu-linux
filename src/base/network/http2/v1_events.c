@@ -45,6 +45,7 @@ struct _v1_events {
 	HTTP2Request *req;
 	char *boundary;
 	int sync;
+	HTTP2Network *net;
 };
 
 static void _emit_send_result(int code, HTTP2Request *req)
@@ -123,6 +124,7 @@ V1Events *v1_events_new(const char *host, HTTP2Network *net, int is_sync)
 
 	event->boundary = g_strdup_printf("%s--%s", CRLF, boundary);
 	event->sync = is_sync;
+	event->net = net;
 
 	event->req = http2_request_new();
 	http2_request_set_method(event->req, HTTP2_REQUEST_METHOD_POST);
@@ -138,7 +140,7 @@ V1Events *v1_events_new(const char *host, HTTP2Network *net, int is_sync)
 
 	http2_request_set_finish_callback(event->req, _on_finish, NULL);
 
-	ret = http2_network_add_request(net, event->req);
+	ret = http2_network_add_request(event->net, event->req);
 	if (ret < 0) {
 		nugu_error("http2_network_add_request() failed: %d", ret);
 		http2_request_unref(event->req);
@@ -192,7 +194,7 @@ int v1_events_send_json(V1Events *event, const char *data, size_t length)
 	http2_request_add_send_data(event->req, (unsigned char *)CRLF, 2);
 	http2_request_unlock_send_data(event->req);
 
-	http2_request_resume(event->req);
+	http2_network_resume_request(event->net, event->req);
 
 	return 0;
 }
@@ -227,7 +229,7 @@ int v1_events_send_binary(V1Events *event, int seq, int is_end, size_t length,
 
 	g_free(part_header);
 
-	http2_request_resume(event->req);
+	http2_network_resume_request(event->net, event->req);
 
 	return 0;
 }
@@ -252,7 +254,7 @@ int v1_events_send_done(V1Events *event)
 	http2_request_close_send_data(event->req);
 	http2_request_unlock_send_data(event->req);
 
-	http2_request_resume(event->req);
+	http2_network_resume_request(event->net, event->req);
 
 	if (sync) {
 		thread_sync_wait_secs(sync, 5);
