@@ -34,6 +34,7 @@ public:
     bool setMute(bool mute) override;
     void sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param) override;
     void requestEventResult(NuguEvent* event) override;
+    void notifyEventResult(const char* msg_id, bool success, int code) override;
     void suspendAll() override;
     void restoreAll() override;
     void getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value) override;

@@ -86,6 +86,21 @@ public:
 
         nugu_sample_manager->handleNetworkResult(false);
     }
+
+    void onEventSent(const char* ename, const char* msg_id, const char* dialog_id, const char* referrer_id)
+    {
+        std::string msg = "send event(" + std::string(ename) + ") msg_id - " + std::string(msg_id);
+        msg += "\n\tdialog_id: " + std::string(dialog_id);
+        if (referrer_id)
+            msg += ", referrer_id: " + std::string(referrer_id);
+        msg_info(msg);
+    }
+
+    void onEventResult(const char* msg_id, bool success, int code)
+    {
+        std::string msg = "result event - " + std::string(msg_id) + "(" + std::to_string(success) + ", code: " + std::to_string(code) + ")";
+        msg_info(msg);
+    }
 };
 
 void registerCapabilities()

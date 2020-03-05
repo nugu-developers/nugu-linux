@@ -67,6 +67,11 @@ void CapabilityHelper::requestEventResult(NuguEvent* event)
     CapabilityManager::getInstance()->requestEventResult(event);
 }
 
+void CapabilityHelper::notifyEventResult(const char* msg_id, bool success, int code)
+{
+    CapabilityManager::getInstance()->reportEventResult(msg_id, success, code);
+}
+
 void CapabilityHelper::suspendAll()
 {
     CapabilityManager::getInstance()->suspendAll();

@@ -54,13 +54,32 @@ public:
 
     /**
      * @brief Report the connection status with the NUGU server.
+     * @param[in] status network status
      */
     virtual void onStatusChanged(NetworkStatus status);
 
     /**
      * @brief Report an error while communicating with the NUGU server.
+     * @param[in] error network error
      */
     virtual void onError(NetworkError error);
+
+    /**
+     * @brief Report that an event has been sent to the server.
+     * @param[in] ename event name
+     * @param[in] msg_id event message id
+     * @param[in] dialog_id event dialog request id
+     * @param[in] referrer_id event referrer dialog request id
+     */
+    virtual void onEventSent(const char* ename, const char* msg_id, const char* dialog_id, const char* referrer_id);
+
+    /**
+     * @brief Report the result of sending an event from the server.
+     * @param[in] msg_id event message id
+     * @param[in] success event result
+     * @param[in] code event result code (similar to http status code)
+     */
+    virtual void onEventResult(const char* msg_id, bool success, int code);
 };
 
 /**

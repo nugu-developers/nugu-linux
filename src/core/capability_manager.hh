@@ -39,7 +39,6 @@ public:
     PlaySyncManager* getPlaySyncManager();
 
     static NuguDirseqReturn dirseqCallback(NuguDirective* ndir, void* userdata);
-    static void eventResultCallback(int success, const char* msg_id, const char* dialog_id, int code, void* userdata);
 
     void addCapability(const std::string& cname, ICapabilityInterface* cap);
     void removeCapability(const std::string& cname);
