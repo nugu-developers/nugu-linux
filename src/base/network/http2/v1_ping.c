@@ -96,6 +96,12 @@ static void _on_finish(HTTP2Request *req, void *userdata)
 	if (code == HTTP2_RESPONSE_OK)
 		return;
 
+	if (code == HTTP2_RESPONSE_NODEVICE) {
+		nugu_info("can't find the device(%d), but treated as a success",
+			  code);
+		return;
+	}
+
 	nugu_error("ping send failed: %d", code);
 
 	if (code == HTTP2_RESPONSE_AUTHFAIL || code == HTTP2_RESPONSE_FORBIDDEN)
