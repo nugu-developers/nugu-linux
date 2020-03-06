@@ -11,6 +11,7 @@ ADD_LIBRARY(objhttp2 OBJECT
 	network/http2/v1_directives.c
 	network/http2/v1_ping.c
 	network/http2/v1_policies.cc
+	network/http2/v2_events.c
 	network/dg_registry.c
 	network/dg_server.c)
 TARGET_INCLUDE_DIRECTORIES(objhttp2 PRIVATE

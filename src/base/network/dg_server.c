@@ -30,6 +30,7 @@
 #include "http2/v1_ping.h"
 #include "http2/v1_policies.h"
 #include "http2/v1_events.h"
+#include "http2/v2_events.h"
 
 #include "dg_server.h"
 
@@ -47,7 +48,169 @@ struct _dg_server {
 
 	int use_events;
 	GHashTable *pending_events;
+
+	int (*send_event)(DGServer *server, NuguEvent *nev, const char *payload,
+			  int is_sync);
+	int (*send_attachment)(DGServer *server, NuguEvent *nev, int is_end,
+			       size_t length, unsigned char *data);
 };
+
+static int _send_v1_event(DGServer *server, NuguEvent *nev, const char *payload,
+			  int is_sync)
+{
+	V1Event *e;
+
+	e = v1_event_new(server->host, is_sync);
+	if (!e)
+		return -1;
+
+	v1_event_set_info(e, nugu_event_peek_msg_id(nev),
+			  nugu_event_peek_dialog_id(nev));
+	v1_event_set_json(e, payload, strlen(payload));
+	v1_event_send_with_free(e, server->net);
+
+	return 0;
+}
+
+static int _send_v1_events(DGServer *server, NuguEvent *nev,
+			   const char *payload, int is_sync)
+{
+	V1Events *e;
+
+	e = v1_events_new(server->host, server->net, is_sync);
+	if (!e)
+		return -1;
+
+	v1_events_set_info(e, nugu_event_peek_msg_id(nev),
+			   nugu_event_peek_dialog_id(nev));
+	v1_events_send_json(e, payload, strlen(payload));
+
+	if (nugu_event_get_type(nev) == NUGU_EVENT_TYPE_DEFAULT) {
+		v1_events_send_done(e);
+		v1_events_free(e);
+		return 0;
+	}
+
+	if (server->pending_events == NULL) {
+		nugu_error("pending_events is NULL");
+		return -1;
+	}
+
+	/* add to pending list for use in sending attachments */
+	g_hash_table_insert(server->pending_events,
+			    g_strdup(nugu_event_peek_msg_id(nev)), e);
+
+	return 0;
+}
+
+static int _send_v2_events(DGServer *server, NuguEvent *nev,
+			   const char *payload, int is_sync)
+{
+	V2Events *e;
+
+	e = v2_events_new(server->host, server->net, is_sync);
+	if (!e)
+		return -1;
+
+	v2_events_set_info(e, nugu_event_peek_msg_id(nev),
+			   nugu_event_peek_dialog_id(nev));
+	v2_events_send_json(e, payload, strlen(payload));
+
+	if (nugu_event_get_type(nev) == NUGU_EVENT_TYPE_DEFAULT) {
+		v2_events_send_done(e);
+		v2_events_free(e);
+		return 0;
+	}
+
+	if (server->pending_events == NULL) {
+		nugu_error("pending_events is NULL");
+		return -1;
+	}
+
+	/* add to pending list for use in sending attachments */
+	g_hash_table_insert(server->pending_events,
+			    g_strdup(nugu_event_peek_msg_id(nev)), e);
+
+	return 0;
+}
+
+static int _send_v1_attachment(DGServer *server, NuguEvent *nev, int is_end,
+			       size_t length, unsigned char *data)
+{
+	char *msg_id;
+	V1EventAttachment *ea;
+
+	ea = v1_event_attachment_new(server->host);
+	if (!ea)
+		return -1;
+
+	msg_id = nugu_uuid_generate_time();
+	v1_event_attachment_set_query(ea, nugu_event_peek_namespace(nev),
+				      nugu_event_peek_name(nev),
+				      nugu_event_peek_version(nev),
+				      nugu_event_peek_msg_id(nev), msg_id,
+				      nugu_event_peek_dialog_id(nev),
+				      nugu_event_get_seq(nev), is_end);
+	free(msg_id);
+
+	v1_event_attachment_set_data(ea, data, length);
+
+	return v1_event_attachment_send_with_free(ea, server->net);
+}
+
+static int _send_v1_events_attachment(DGServer *server, NuguEvent *nev,
+				      int is_end, size_t length,
+				      unsigned char *data)
+{
+	V1Events *e;
+
+	/* find an active event from pending list */
+	e = g_hash_table_lookup(server->pending_events,
+				nugu_event_peek_msg_id(nev));
+	if (!e) {
+		nugu_error("invalid attachment (can't find an event)");
+		return -1;
+	}
+
+	v1_events_send_binary(e, nugu_event_get_seq(nev), is_end, length, data);
+
+	if (is_end == 0)
+		return 0;
+
+	v1_events_send_done(e);
+
+	g_hash_table_remove(server->pending_events,
+			    nugu_event_peek_msg_id(nev));
+
+	return 0;
+}
+
+static int _send_v2_events_attachment(DGServer *server, NuguEvent *nev,
+				      int is_end, size_t length,
+				      unsigned char *data)
+{
+	V2Events *e;
+
+	/* find an active event from pending list */
+	e = g_hash_table_lookup(server->pending_events,
+				nugu_event_peek_msg_id(nev));
+	if (!e) {
+		nugu_error("invalid attachment (can't find an event)");
+		return -1;
+	}
+
+	v2_events_send_binary(e, nugu_event_get_seq(nev), is_end, length, data);
+
+	if (is_end == 0)
+		return 0;
+
+	v2_events_send_done(e);
+
+	g_hash_table_remove(server->pending_events,
+			    nugu_event_peek_msg_id(nev));
+
+	return 0;
+}
 
 DGServer *dg_server_new(const NuguNetworkServerPolicy *policy)
 {
@@ -91,6 +254,25 @@ DGServer *dg_server_new(const NuguNetworkServerPolicy *policy)
 	server->type = DG_SERVER_TYPE_NORMAL;
 	server->retry_count = 0;
 	server->api_version = 1;
+	server->use_events = 0;
+	server->send_event = _send_v1_event;
+	server->send_attachment = _send_v1_attachment;
+
+#ifdef NUGU_ENV_NETWORK_USE_V2
+	tmp = getenv(NUGU_ENV_NETWORK_USE_V2);
+	if (tmp) {
+		if (tmp[0] == '1') {
+			nugu_dbg("use /v2/events (multipart)");
+			server->api_version = 2;
+			server->use_events = 1;
+			server->send_event = _send_v2_events;
+			server->send_attachment = _send_v2_events_attachment;
+			server->pending_events = g_hash_table_new_full(
+				g_str_hash, g_str_equal, g_free,
+				(GDestroyNotify)v2_events_free);
+		}
+	}
+#endif
 
 #ifdef NUGU_ENV_NETWORK_USE_EVENTS
 	tmp = getenv(NUGU_ENV_NETWORK_USE_EVENTS);
@@ -98,6 +280,8 @@ DGServer *dg_server_new(const NuguNetworkServerPolicy *policy)
 		if (tmp[0] == '1') {
 			nugu_dbg("use /v1/events (multipart)");
 			server->use_events = 1;
+			server->send_event = _send_v1_events;
+			server->send_attachment = _send_v1_events_attachment;
 			server->pending_events = g_hash_table_new_full(
 				g_str_hash, g_str_equal, g_free,
 				(GDestroyNotify)v1_events_free);
@@ -237,119 +421,29 @@ void dg_server_reset_retry_count(DGServer *server)
 	server->retry_count = 0;
 }
 
-static int _send_event(DGServer *server, NuguEvent *nev, const char *payload,
-		       int is_sync)
-{
-	V1Event *e;
-
-	e = v1_event_new(server->host, is_sync);
-	if (!e)
-		return -1;
-
-	v1_event_set_info(e, nugu_event_peek_msg_id(nev),
-			  nugu_event_peek_dialog_id(nev));
-	v1_event_set_json(e, payload, strlen(payload));
-	v1_event_send_with_free(e, server->net);
-
-	return 0;
-}
-
-static int _send_events(DGServer *server, NuguEvent *nev, const char *payload,
-			int is_sync)
-{
-	V1Events *e;
-
-	e = v1_events_new(server->host, server->net, is_sync);
-	if (!e)
-		return -1;
-
-	v1_events_set_info(e, nugu_event_peek_msg_id(nev),
-			   nugu_event_peek_dialog_id(nev));
-	v1_events_send_json(e, payload, strlen(payload));
-
-	if (nugu_event_get_type(nev) == NUGU_EVENT_TYPE_DEFAULT) {
-		v1_events_send_done(e);
-		v1_events_free(e);
-		return 0;
-	}
-
-	if (server->pending_events == NULL) {
-		nugu_error("pending_events is NULL");
-		return -1;
-	}
-
-	/* add to pending list for use in sending attachments */
-	g_hash_table_insert(server->pending_events,
-			    g_strdup(nugu_event_peek_msg_id(nev)), e);
-
-	return 0;
-}
-
 int dg_server_send_event(DGServer *server, NuguEvent *nev, int is_sync)
 {
 	char *payload;
 	int ret;
 
 	payload = nugu_event_generate_payload(nev);
-	if (!payload)
-		return -1;
-
-	if (server->use_events == 0)
-		ret = _send_event(server, nev, payload, is_sync);
-	else
-		ret = _send_events(server, nev, payload, is_sync);
-
-	g_free(payload);
-
-	return ret;
-}
-
-static int _send_attachment(DGServer *server, NuguEvent *nev, int is_end,
-			    size_t length, unsigned char *data)
-{
-	char *msg_id;
-	V1EventAttachment *ea;
-
-	ea = v1_event_attachment_new(server->host);
-	if (!ea)
-		return -1;
-
-	msg_id = nugu_uuid_generate_time();
-	v1_event_attachment_set_query(ea, nugu_event_peek_namespace(nev),
-				      nugu_event_peek_name(nev),
-				      nugu_event_peek_version(nev),
-				      nugu_event_peek_msg_id(nev), msg_id,
-				      nugu_event_peek_dialog_id(nev),
-				      nugu_event_get_seq(nev), is_end);
-	free(msg_id);
-
-	v1_event_attachment_set_data(ea, data, length);
-
-	return v1_event_attachment_send_with_free(ea, server->net);
-}
-
-static int _send_events_attachment(DGServer *server, NuguEvent *nev, int is_end,
-				   size_t length, unsigned char *data)
-{
-	V1Events *e;
-
-	/* find an active event from pending list */
-	e = g_hash_table_lookup(server->pending_events,
-				nugu_event_peek_msg_id(nev));
-	if (!e) {
-		nugu_error("invalid attachment (can't find an event)");
+	if (!payload) {
+		nugu_error("payload generation failed");
 		return -1;
 	}
 
-	v1_events_send_binary(e, nugu_event_get_seq(nev), is_end, length, data);
+	if (!server->send_event) {
+		nugu_error("send_event function is invalid");
+		return -1;
+	}
 
-	if (is_end == 0)
-		return 0;
+	ret = server->send_event(server, nev, payload, is_sync);
+	g_free(payload);
 
-	v1_events_send_done(e);
-
-	g_hash_table_remove(server->pending_events,
-			    nugu_event_peek_msg_id(nev));
+	if (ret < 0) {
+		nugu_error("send_event() failed");
+		return -1;
+	}
 
 	return 0;
 }
@@ -362,21 +456,25 @@ int dg_server_send_attachment(DGServer *server, NuguEvent *nev, int is_end,
 	g_return_val_if_fail(server != NULL, -1);
 	g_return_val_if_fail(nev != NULL, -1);
 
-	if (server->use_events == 0)
-		ret = _send_attachment(server, nev, is_end, length, data);
-	else
-		ret = _send_events_attachment(server, nev, is_end, length,
-					      data);
+	if (!server->send_attachment) {
+		nugu_error("send_attachment function is invalid");
+		return -1;
+	}
 
-	if (ret == 0)
-		nugu_event_increase_seq(nev);
+	ret = server->send_attachment(server, nev, is_end, length, data);
+	if (ret < 0) {
+		nugu_error("send_attachment() failed");
+		return -1;
+	}
 
-	return ret;
+	nugu_event_increase_seq(nev);
+
+	return 0;
 }
 
 int dg_server_force_close_event(DGServer *server, NuguEvent *nev)
 {
-	V1Events *e;
+	void *e;
 
 	g_return_val_if_fail(server != NULL, -1);
 	g_return_val_if_fail(nev != NULL, -1);
@@ -391,7 +489,10 @@ int dg_server_force_close_event(DGServer *server, NuguEvent *nev)
 		return -1;
 	}
 
-	v1_events_send_done(e);
+	if (server->api_version == 1)
+		v1_events_send_done(e);
+	else if (server->api_version == 2)
+		v2_events_send_done(e);
 
 	g_hash_table_remove(server->pending_events,
 			    nugu_event_peek_msg_id(nev));
