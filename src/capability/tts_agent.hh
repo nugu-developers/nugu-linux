@@ -17,9 +17,7 @@
 #ifndef __NUGU_TTS_AGENT_H__
 #define __NUGU_TTS_AGENT_H__
 
-#include "base/nugu_decoder.h"
 #include "base/nugu_focus.h"
-#include "base/nugu_pcm.h"
 #include "capability/tts_interface.hh"
 #include "clientkit/capability.hh"
 
@@ -27,7 +25,8 @@ namespace NuguCapability {
 
 class TTSAgent final : public Capability,
                        public ITTSHandler,
-                       public IFocusListener {
+                       public IFocusListener,
+                       public IMediaPlayerListener {
 public:
     TTSAgent();
     virtual ~TTSAgent();
@@ -50,14 +49,8 @@ public:
     void sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id = "", EventResultCallback cb = nullptr);
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
-    static void pcmStatusCallback(enum nugu_media_status status, void* userdata);
-    static void pcmEventCallback(enum nugu_media_event event, void* userdata);
     static void directiveDataCallback(NuguDirective* ndir, void* userdata);
     static void getAttachmentData(NuguDirective* ndir, void* userdata);
-
-    std::string cur_token;
-    int speak_status;
-    bool finish;
 
 private:
     void sendEventCommon(const std::string& ename, const std::string& token, EventResultCallback cb = nullptr);
@@ -65,14 +58,24 @@ private:
     void parsingSpeak(const char* message);
     void parsingStop(const char* message);
 
-    void startTTS(NuguDirective* ndir);
     void onFocus(void* event) override;
     NuguFocusResult onUnfocus(void* event, NuguUnFocusMode mode) override;
     NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
 
+    void mediaStateChanged(MediaPlayerState state) override;
+    void mediaEventReport(MediaPlayerEvent event) override;
+    void mediaChanged(const std::string& url) override;
+    void durationChanged(int duration) override;
+    void positionChanged(int position) override;
+    void volumeChanged(int volume) override;
+    void muteChanged(int mute) override;
+
+    ITTSPlayer* player;
+    MediaPlayerState cur_state;
+    std::string cur_token;
+    bool is_finished;
+
     NuguDirective* speak_dir;
-    NuguPcm* pcm;
-    NuguDecoder* decoder;
 
     std::string dialog_id;
     std::string ps_id;
