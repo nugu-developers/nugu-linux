@@ -14,26 +14,29 @@
  * limitations under the License.
  */
 
-#ifndef __NUGU_MEDIA_PLAYER_H__
-#define __NUGU_MEDIA_PLAYER_H__
+#ifndef __NUGU_TTS_PLAYER_H__
+#define __NUGU_TTS_PLAYER_H__
 
 #include <string>
 
-#include "base/nugu_media.h"
+#include "base/nugu_pcm.h"
 #include "clientkit/media_player_interface.hh"
 
 namespace NuguCore {
 
 using namespace NuguClientKit;
 
-class MediaPlayerPrivate;
-class MediaPlayer : public IMediaPlayer {
+class TTSPlayerPrivate;
+class TTSPlayer : public ITTSPlayer {
 public:
-    explicit MediaPlayer(int volume = NUGU_SET_VOLUME_MAX);
-    virtual ~MediaPlayer();
+    explicit TTSPlayer(int volume = NUGU_SET_VOLUME_MAX);
+    virtual ~TTSPlayer();
 
     void addListener(IMediaPlayerListener* listener) override;
     void removeListener(IMediaPlayerListener* listener) override;
+
+    bool write_audio(const char *data, int size) override;
+    void write_done() override;
 
     bool setSource(const std::string& url) override;
     bool play() override;
@@ -66,7 +69,9 @@ public:
     std::string url() override;
 
 private:
-    MediaPlayerPrivate* d;
+    void clearContent();
+
+    TTSPlayerPrivate* d;
 };
 
 } // NuguCore

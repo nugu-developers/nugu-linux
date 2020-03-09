@@ -62,6 +62,11 @@ public:
     virtual IMediaPlayer* createMediaPlayer() = 0;
 
     /**
+     * @brief Create TTSPlayer instance
+     */
+    virtual ITTSPlayer* createTTSPlayer() = 0;
+
+    /**
      * @brief Create NuguTimer instance
      */
     virtual INuguTimer* createNuguTimer() = 0;

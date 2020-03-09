@@ -21,6 +21,7 @@
 #include "network_manager.hh"
 #include "nugu_timer.hh"
 #include "speech_recognizer.hh"
+#include "tts_player.hh"
 #include "wakeup_handler.hh"
 
 #include "nugu_core_container.hh"
@@ -59,6 +60,13 @@ IMediaPlayer* NuguCoreContainer::createMediaPlayer()
     // TODO : It needs guarantee related plugin is loaded.
 
     return new MediaPlayer();
+}
+
+ITTSPlayer* NuguCoreContainer::createTTSPlayer()
+{
+    // TODO : It needs guarantee related plugin is loaded.
+
+    return new TTSPlayer();
 }
 
 INuguTimer* NuguCoreContainer::createNuguTimer()
