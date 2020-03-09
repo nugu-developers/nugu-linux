@@ -28,12 +28,11 @@ static const char* CAPABILITY_VERSION = "1.0";
 
 TTSAgent::TTSAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
+    , player(nullptr)
+    , cur_state(MediaPlayerState::IDLE)
     , cur_token("")
-    , speak_status(-1)
-    , finish(false)
+    , is_finished(false)
     , speak_dir(nullptr)
-    , pcm(nullptr)
-    , decoder(nullptr)
     , dialog_id("")
     , ps_id("")
     , tts_listener(nullptr)
@@ -58,18 +57,8 @@ void TTSAgent::initialize()
         return;
     }
 
-    pcm = nugu_pcm_new("ttsplayer", nugu_pcm_driver_get_default());
-    if (nugu_pcm_add(pcm) == -1) {
-        nugu_error("ttsplayer is not unique");
-        nugu_pcm_free(pcm);
-        return;
-    }
-    decoder = nugu_decoder_new(nugu_decoder_driver_find("opus"), pcm);
-
-    nugu_pcm_set_status_callback(pcm, pcmStatusCallback, this);
-    nugu_pcm_set_event_callback(pcm, pcmEventCallback, this);
-
-    nugu_pcm_set_property(pcm, (NuguAudioProperty) { NUGU_AUDIO_SAMPLE_RATE_22K, NUGU_AUDIO_FORMAT_S16_LE, 1 });
+    player = core_container->createTTSPlayer();
+    player->addListener(this);
 
     capa_helper->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
@@ -84,18 +73,9 @@ void TTSAgent::deInitialize()
         speak_dir = NULL;
     }
 
-    if (decoder) {
-        nugu_decoder_free(decoder);
-        decoder = NULL;
-    }
-
-    if (pcm) {
-        nugu_pcm_stop(pcm);
-        nugu_pcm_set_event_callback(pcm, NULL, NULL);
-        nugu_pcm_set_status_callback(pcm, NULL, NULL);
-        nugu_pcm_remove(pcm);
-        nugu_pcm_free(pcm);
-        pcm = NULL;
+    if (player) {
+        player->removeListener(this);
+        delete player;
     }
 
     initialized = false;
@@ -104,45 +84,8 @@ void TTSAgent::deInitialize()
 
 void TTSAgent::suspend()
 {
-    if (speak_status == NUGU_MEDIA_STATUS_PLAYING)
+    if (cur_state == MediaPlayerState::PLAYING)
         capa_helper->releaseFocus("cap_tts");
-}
-
-void TTSAgent::pcmStatusCallback(enum nugu_media_status status, void* userdata)
-{
-    TTSAgent* tts = static_cast<TTSAgent*>(userdata);
-
-    nugu_dbg("pcm state changed(%d -> %d)", tts->speak_status, status);
-
-    tts->speak_status = status;
-
-    switch (status) {
-    case NUGU_MEDIA_STATUS_PLAYING:
-        tts->sendEventSpeechStarted(tts->cur_token);
-        break;
-    case NUGU_MEDIA_STATUS_STOPPED:
-        tts->sendEventSpeechStopped(tts->cur_token);
-        break;
-    default:
-        tts->speak_status = NUGU_MEDIA_STATUS_STOPPED;
-        break;
-    }
-}
-
-void TTSAgent::pcmEventCallback(enum nugu_media_event event, void* userdata)
-{
-    TTSAgent* tts = static_cast<TTSAgent*>(userdata);
-
-    switch (event) {
-    case NUGU_MEDIA_EVENT_END_OF_STREAM:
-        tts->finish = true;
-        tts->speak_status = NUGU_MEDIA_STATUS_STOPPED;
-        tts->sendEventSpeechFinished(tts->cur_token);
-        tts->capa_helper->releaseFocus("cap_tts");
-        break;
-    default:
-        break;
-    }
 }
 
 void TTSAgent::directiveDataCallback(NuguDirective* ndir, void* userdata)
@@ -158,19 +101,12 @@ void TTSAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
 
     buf = nugu_directive_get_data(ndir, &length);
     if (buf) {
-        unsigned char* dbuf;
-        size_t size;
-
-        dbuf = (unsigned char*)nugu_decoder_decode(tts->decoder, (const void*)buf, length, &size);
-
-        nugu_pcm_push_data(tts->pcm, (const char*)dbuf, size, 0);
-
-        free(dbuf);
+        tts->player->write_audio((const char*)buf, length);
         free(buf);
     }
 
     if (nugu_directive_is_data_end(ndir)) {
-        nugu_pcm_push_data_done(tts->pcm);
+        tts->player->write_done();
         tts->destroyDirective(ndir);
         tts->speak_dir = NULL;
     }
@@ -178,31 +114,24 @@ void TTSAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
 
 void TTSAgent::onFocus(void* event)
 {
-    nugu_info("speak_status: %d", speak_status);
+    player->play();
 
-    switch (speak_status) {
-    case -1:
-    case NUGU_MEDIA_STATUS_STOPPED:
-    case NUGU_MEDIA_STATUS_READY:
-        nugu_info("nugu_pcm_start(speak->pcm)");
-        if (nugu_directive_get_data_size(speak_dir) > 0)
-            getAttachmentData(speak_dir, this);
-        break;
-    case NUGU_MEDIA_STATUS_PLAYING:
-        nugu_info("already playing");
-        break;
-    }
+    if (nugu_directive_get_data_size(speak_dir) > 0)
+        getAttachmentData(speak_dir, this);
+
+    if (speak_dir)
+        nugu_directive_set_data_callback(speak_dir, directiveDataCallback, this);
 }
 
 NuguFocusResult TTSAgent::onUnfocus(void* event, NuguUnFocusMode mode)
 {
-    int cur_status = speak_status;
+    MediaPlayerState pre_state = cur_state;
 
-    nugu_pcm_stop(pcm);
+    player->stop();
 
-    playsync_manager->removeContext(playstackctl_ps_id, getName(), !finish);
+    playsync_manager->removeContext(playstackctl_ps_id, getName(), !is_finished);
 
-    if (tts_listener && cur_status != NUGU_MEDIA_STATUS_STOPPED)
+    if (tts_listener && pre_state != MediaPlayerState::STOPPED)
         tts_listener->onTTSCancel(dialog_id);
 
     return NUGU_FOCUS_REMOVE;
@@ -210,7 +139,7 @@ NuguFocusResult TTSAgent::onUnfocus(void* event, NuguUnFocusMode mode)
 
 NuguFocusStealResult TTSAgent::onStealRequest(void* event, NuguFocusType target_type)
 {
-    if (target_type == NUGU_FOCUS_TYPE_ASR)
+    if (target_type == NUGU_FOCUS_TYPE_ASR || target_type == NUGU_FOCUS_TYPE_TTS)
         return NUGU_FOCUS_STEAL_ALLOW;
     else
         return NUGU_FOCUS_STEAL_REJECT;
@@ -218,30 +147,19 @@ NuguFocusStealResult TTSAgent::onStealRequest(void* event, NuguFocusType target_
 
 void TTSAgent::stopTTS()
 {
-    int cur_status = speak_status;
+    MediaPlayerState pre_state = cur_state;
 
     if (speak_dir) {
         nugu_directive_set_data_callback(speak_dir, NULL, NULL);
         destroyDirective(speak_dir);
         speak_dir = NULL;
     }
-    if (pcm) {
-        nugu_pcm_stop(pcm);
-    }
 
-    if (tts_listener && cur_status != NUGU_MEDIA_STATUS_STOPPED && cur_status != -1)
+    if (player)
+        player->stop();
+
+    if (tts_listener && pre_state != MediaPlayerState::STOPPED && pre_state != MediaPlayerState::IDLE)
         tts_listener->onTTSCancel(dialog_id);
-}
-
-void TTSAgent::startTTS(NuguDirective* ndir)
-{
-    finish = false;
-    speak_dir = ndir;
-
-    if (pcm)
-        nugu_pcm_start(pcm);
-
-    nugu_directive_set_data_callback(speak_dir, directiveDataCallback, this);
 }
 
 void TTSAgent::requestTTS(const std::string& text, const std::string& play_service_id)
@@ -259,10 +177,8 @@ void TTSAgent::requestTTS(const std::string& text, const std::string& play_servi
 bool TTSAgent::setVolume(int volume)
 {
     nugu_dbg("set pcm player's volume: %d", volume);
-    if (!pcm)
-        return false;
 
-    if (nugu_pcm_set_volume(pcm, volume) != 0)
+    if (!player || player->setVolume(volume) != 0)
         return false;
 
     nugu_dbg("pcm player's volume(%d) changed..", volume);
@@ -289,15 +205,15 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
 
     tts["engine"] = tts_engine;
     tts["version"] = getVersion();
-    switch (speak_status) {
-    case -1:
+    switch (cur_state) {
+    case MediaPlayerState::IDLE:
         tts["ttsActivity"] = "IDLE";
         break;
-    case NUGU_MEDIA_STATUS_STOPPED:
+    case MediaPlayerState::STOPPED:
         tts["ttsActivity"] = "STOPPED";
         break;
-    case NUGU_MEDIA_STATUS_READY:
-    case NUGU_MEDIA_STATUS_PLAYING:
+    case MediaPlayerState::READY:
+    case MediaPlayerState::PLAYING:
         tts["ttsActivity"] = "PLAYING";
         break;
     default:
@@ -305,7 +221,7 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
         break;
     }
 
-    if (finish)
+    if (is_finished)
         tts["ttsActivity"] = "FINISHED";
 
     ctx[getName()] = tts;
@@ -412,14 +328,10 @@ void TTSAgent::parsingSpeak(const char* message)
     dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
     ps_id = play_service_id;
 
-    startTTS(getNuguDirective());
+    is_finished = false;
+    speak_dir = getNuguDirective();
 
-    if (capa_helper->isFocusOn(NUGU_FOCUS_TYPE_TTS)) {
-        if (nugu_directive_get_data_size(speak_dir) > 0)
-            getAttachmentData(speak_dir, this);
-    } else {
-        capa_helper->requestFocus("cap_tts", NULL);
-    }
+    capa_helper->requestFocus("cap_tts", NULL);
 
     if (tts_listener)
         tts_listener->onTTSText(text, dialog_id);
@@ -456,6 +368,65 @@ void TTSAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)
         tts_listener = dynamic_cast<ITTSListener*>(clistener);
+}
+
+void TTSAgent::mediaStateChanged(MediaPlayerState state)
+{
+    cur_state = state;
+
+    switch (state) {
+    case MediaPlayerState::PLAYING:
+        sendEventSpeechStarted(cur_token);
+        break;
+    case MediaPlayerState::STOPPED:
+        if (is_finished)
+            sendEventSpeechFinished(cur_token);
+        else
+            sendEventSpeechStopped(cur_token);
+        break;
+    default:
+        break;
+    }
+}
+
+void TTSAgent::mediaEventReport(MediaPlayerEvent event)
+{
+    switch (event) {
+    case MediaPlayerEvent::LOADING_MEDIA_FAILED:
+        nugu_warn("LOADING_MEDIA_FAILED");
+        break;
+    case MediaPlayerEvent::LOADING_MEDIA_SUCCESS:
+        nugu_dbg("LOADING_MEDIA_SUCCESS");
+        break;
+    case MediaPlayerEvent::PLAYING_MEDIA_FINISHED:
+        nugu_dbg("PLAYING_MEDIA_FINISHED");
+        is_finished = true;
+        mediaStateChanged(MediaPlayerState::STOPPED);
+        capa_helper->releaseFocus("cap_tts");
+        break;
+    default:
+        break;
+    }
+}
+
+void TTSAgent::mediaChanged(const std::string& url)
+{
+}
+
+void TTSAgent::durationChanged(int duration)
+{
+}
+
+void TTSAgent::positionChanged(int position)
+{
+}
+
+void TTSAgent::volumeChanged(int volume)
+{
+}
+
+void TTSAgent::muteChanged(int mute)
+{
 }
 
 } // NuguCapability
