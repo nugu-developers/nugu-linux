@@ -83,8 +83,7 @@ MediaPlayer::MediaPlayer(int volume)
     }
     nugu_player_add(d->player);
 
-    NuguMediaStatusCallback scb = [](enum nugu_media_status status,
-                                  void* userdata) {
+    NuguMediaStatusCallback scb = [](enum nugu_media_status status, void* userdata) {
         MediaPlayer* mplayer = static_cast<MediaPlayer*>(userdata);
 
         switch (status) {
@@ -107,8 +106,7 @@ MediaPlayer::MediaPlayer(int volume)
     };
     nugu_player_set_status_callback(d->player, scb, this);
 
-    NuguMediaEventCallback ecb = [](enum nugu_media_event event,
-                                 void* userdata) {
+    NuguMediaEventCallback ecb = [](enum nugu_media_event event, void* userdata) {
         MediaPlayer* mplayer = static_cast<MediaPlayer*>(userdata);
         MediaPlayerPrivate* d = MediaPlayerPrivate::mp_map[mplayer];
 
@@ -212,7 +210,7 @@ void MediaPlayer::removeListener(IMediaPlayerListener* listener)
     d->listeners.remove(listener);
 }
 
-bool MediaPlayer::setSource(std::string url)
+bool MediaPlayer::setSource(const std::string& url)
 {
     if (url.size() == 0) {
         nugu_error("must set the playurl to the media player");
@@ -417,8 +415,7 @@ MediaPlayerState MediaPlayer::state()
 
 bool MediaPlayer::setState(MediaPlayerState state)
 {
-    nugu_dbg("media state changed(%s -> %s)", stateString(d->state).c_str(),
-        stateString(state).c_str());
+    nugu_dbg("media state changed(%s -> %s)", stateString(d->state).c_str(), stateString(state).c_str());
 
     if (state == d->state) {
         return true;

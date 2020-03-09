@@ -127,7 +127,7 @@ public:
      * @brief Sets the playurl of the media content to play in the media player.
      * @param[in] url media content url
      */
-    virtual bool setSource(std::string url) = 0;
+    virtual bool setSource(const std::string& url) = 0;
 
     /**
      * @brief Request media player to play the media content.
@@ -245,6 +245,26 @@ public:
      * @return media content's url
      */
     virtual std::string url() = 0;
+};
+
+/**
+ * @brief ttsplayer interface
+ * @see IMediaPlayer
+ */
+class ITTSPlayer : public IMediaPlayer {
+public:
+    virtual ~ITTSPlayer() = default;
+    /**
+     * @brief Write audio samples to the tts player. The player decodes it using opus.
+     * @param[in] data raw audio data
+     * @param[in] size data size
+     * @return success or not
+     */
+    virtual bool write_audio(const char *data, int size) = 0;
+    /**
+     * @brief Notify to write done to the tts player.
+     */
+    virtual void write_done() = 0;
 };
 
 /**
