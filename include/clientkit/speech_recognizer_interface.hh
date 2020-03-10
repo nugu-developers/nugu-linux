@@ -97,6 +97,12 @@ public:
      * @return mute
      */
     virtual bool isMute() = 0;
+
+    /**
+     * @brief Get epd pause length
+     * @return Pause length
+     */
+    virtual int getEpdPauseLength() = 0;
 };
 
 /**

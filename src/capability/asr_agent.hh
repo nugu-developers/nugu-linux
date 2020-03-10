@@ -70,6 +70,7 @@ public:
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void addListener(IASRListener* listener) override;
     void removeListener(IASRListener* listener) override;
+    long getEpdSilenceInterval() override;
     std::vector<IASRListener*> getListener();
 
     void resetExpectSpeechState();
