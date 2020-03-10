@@ -51,6 +51,9 @@ public:
     void receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
+    static void directiveDataCallback(NuguDirective* ndir, void* userdata);
+    static void getAttachmentData(NuguDirective* ndir, void* userdata);
+
     // implements IAudioPlayerHandler
     void addListener(IAudioPlayerListener* listener) override;
     void removeListener(IAudioPlayerListener* listener) override;
@@ -117,7 +120,12 @@ private:
 
     const unsigned int PAUSE_CONTEXT_HOLD_TIME = 60 * 10;
 
-    IMediaPlayer* player;
+    IMediaPlayer* cur_player;
+    IMediaPlayer* media_player;
+    ITTSPlayer* tts_player;
+    NuguDirective* speak_dir;
+    bool is_tts_activate;
+
     AudioPlayerState cur_aplayer_state;
     AudioPlayerState prev_aplayer_state;
     bool is_paused;
