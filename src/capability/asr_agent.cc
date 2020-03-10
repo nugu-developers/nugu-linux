@@ -403,6 +403,11 @@ void ASRAgent::removeListener(IASRListener* listener)
         asr_listeners.erase(iterator);
 }
 
+long ASRAgent::getEpdSilenceInterval()
+{
+    return static_cast<long>(speech_recognizer ? speech_recognizer->getEpdPauseLength() : 0);
+}
+
 std::vector<IASRListener*> ASRAgent::getListener()
 {
     return asr_listeners;

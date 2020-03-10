@@ -154,6 +154,12 @@ public:
      * @param[in] attribute attribute object
      */
     virtual void setAttribute(ASRAttribute&& attribute) = 0;
+
+    /**
+     * @brief Get epd silence interval
+     * @return Interval milliseconds
+     */
+    virtual long getEpdSilenceInterval() = 0;
 };
 
 /**

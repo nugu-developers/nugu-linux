@@ -32,7 +32,7 @@ static const int ASR_EPD_PAUSE_LENGTH_MSEC = 700;
 
 SpeechRecognizer::SpeechRecognizer()
 {
-    initialize(Attribute{});
+    initialize(Attribute {});
 }
 
 SpeechRecognizer::~SpeechRecognizer()
@@ -250,4 +250,8 @@ bool SpeechRecognizer::isMute()
     return recorder->isMute();
 }
 
+int SpeechRecognizer::getEpdPauseLength()
+{
+    return epd_pause_length;
+}
 } // NuguCore

@@ -49,6 +49,7 @@ public:
     bool startListening() override;
     void stopListening() override;
     bool isMute() override;
+    int getEpdPauseLength() override;
 
 private:
     void initialize(Attribute&& attribute);
