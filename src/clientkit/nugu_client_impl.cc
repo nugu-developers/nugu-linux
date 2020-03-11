@@ -132,8 +132,7 @@ bool NuguClientImpl::initialize(void)
     }
 
     if (nugu_plugin_load_directory(NUGU_PLUGIN_DIR) < 0) {
-        nugu_error("Fail to load nugu_plugin ");
-        return false;
+        nugu_error("Fail to load nugu_plugin");
     }
 
     nugu_plugin_initialize();
