@@ -550,6 +550,9 @@ void ASRAgent::onListeningState(ListeningState state)
     case ListeningState::FAILED:
         nugu_dbg("ListeningState::FAILED");
 
+        if (rec_event)
+            rec_event->forceClose();
+
         stopRecognition();
         releaseASRFocus(false, ASRError::LISTEN_FAILED);
 

@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+#ifdef ENABLE_VENDOR_LIBRARY
 #include <endpoint_detector.h>
+#endif
 
 #include "base/nugu_log.h"
 #include "speech_recognizer.hh"
@@ -75,6 +77,7 @@ void SpeechRecognizer::initialize(Attribute&& attribute)
     AudioInputProcessor::init("asr", sample, format, channel);
 }
 
+#ifdef ENABLE_VENDOR_LIBRARY
 void SpeechRecognizer::loop()
 {
     unsigned char epd_buf[OUT_DATA_SIZE];
@@ -223,9 +226,31 @@ void SpeechRecognizer::loop()
         if (g_atomic_int_get(&destroy) == 0)
             sendSyncListeningEvent(ListeningState::DONE);
     }
-
     nugu_dbg("Listening Thread: exited");
 }
+#else
+void SpeechRecognizer::loop()
+{
+    mutex.lock();
+    thread_created = true;
+    cond.notify_all();
+    mutex.unlock();
+
+    while (g_atomic_int_get(&destroy) == 0) {
+        std::unique_lock<std::mutex> lock(mutex);
+        cond.wait(lock);
+        lock.unlock();
+
+        if (is_running == false)
+            continue;
+
+        nugu_dbg("Listening Thread: asr_is_running=%d", is_running);
+        nugu_error("nugu_epd is not supported");
+        sendSyncListeningEvent(ListeningState::FAILED);
+        is_running = false;
+    }
+}
+#endif
 
 bool SpeechRecognizer::startListening()
 {

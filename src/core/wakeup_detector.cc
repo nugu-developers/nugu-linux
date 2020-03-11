@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+#ifdef ENABLE_VENDOR_LIBRARY
 #include <keyword_detector.h>
+#endif
 
 #include "base/nugu_log.h"
 #include "wakeup_detector.hh"
@@ -69,6 +71,8 @@ void WakeupDetector::initialize(Attribute&& attribute)
     AudioInputProcessor::init("kwd", sample, format, channel);
 }
 
+
+#ifdef ENABLE_VENDOR_LIBRARY
 void WakeupDetector::loop()
 {
     int pcm_size;
@@ -162,6 +166,29 @@ void WakeupDetector::loop()
 
     nugu_dbg("Wakeup Thread: exited");
 }
+#else
+void WakeupDetector::loop()
+{
+    mutex.lock();
+    thread_created = true;
+    cond.notify_all();
+    mutex.unlock();
+
+    while (g_atomic_int_get(&destroy) == 0) {
+        std::unique_lock<std::mutex> lock(mutex);
+        cond.wait(lock);
+        lock.unlock();
+
+        if (is_running == false)
+            continue;
+
+        nugu_dbg("Wakeup Thread: kwd_is_running=%d", is_running);
+        nugu_error("nugu_wwd is not supported");
+        sendSyncWakeupEvent(WakeupState::FAIL);
+        is_running = false;
+    }
+}
+#endif
 
 bool WakeupDetector::startWakeup()
 {
