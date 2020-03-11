@@ -32,12 +32,13 @@ struct _v1_ping {
 	char *url;
 };
 
-V1Ping *v1_ping_new(const char *host,
+V1Ping *v1_ping_new(const char *host, int api_version,
 		    const struct dg_health_check_policy *policy)
 {
 	struct _v1_ping *ping;
 
 	g_return_val_if_fail(host != NULL, NULL);
+	g_return_val_if_fail(api_version == 1 || api_version == 2, NULL);
 	g_return_val_if_fail(policy != NULL, NULL);
 
 	ping = calloc(1, sizeof(struct _v1_ping));
@@ -46,7 +47,7 @@ V1Ping *v1_ping_new(const char *host,
 		return NULL;
 	}
 
-	ping->url = g_strdup_printf("%s/v1/ping", host);
+	ping->url = g_strdup_printf("%s/v%d/ping", host, api_version);
 	memcpy(&ping->policy, policy, sizeof(struct dg_health_check_policy));
 
 	return ping;

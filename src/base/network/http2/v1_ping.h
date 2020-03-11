@@ -27,7 +27,7 @@ extern "C" {
 
 typedef struct _v1_ping V1Ping;
 
-V1Ping *v1_ping_new(const char *host,
+V1Ping *v1_ping_new(const char *host, int api_version,
 		    const struct dg_health_check_policy *policy);
 void v1_ping_free(V1Ping *ping);
 

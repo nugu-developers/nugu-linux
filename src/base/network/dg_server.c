@@ -364,7 +364,7 @@ int dg_server_start_health_check(DGServer *server,
 	if (server->ping)
 		v1_ping_free(server->ping);
 
-	server->ping = v1_ping_new(server->host, policy);
+	server->ping = v1_ping_new(server->host, server->api_version, policy);
 	v1_ping_establish(server->ping, server->net);
 
 	return 0;
