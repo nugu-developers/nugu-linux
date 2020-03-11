@@ -171,6 +171,24 @@ int nugu_pcm_set_volume(NuguPcm *pcm, int volume);
 int nugu_pcm_get_volume(NuguPcm *pcm);
 
 /**
+ * @brief Get duration information of pcm
+ * @param[in] pcm pcm object
+ * @return result
+ * @retval >0 success (duration)
+ * @retval -1 failure
+ */
+int nugu_pcm_get_duration(NuguPcm *pcm);
+
+/**
+ * @brief Get current playback position of pcm
+ * @param[in] pcm pcm object
+ * @return result
+ * @retval >0 success (position)
+ * @retval -1 failure
+ */
+int nugu_pcm_get_position(NuguPcm *pcm);
+
+/**
  * @brief Get status of pcm
  * @param[in] pcm pcm object
  * @return status
@@ -332,6 +350,12 @@ struct nugu_pcm_driver_ops {
 	 * @see nugu_pcm_resume()
 	 */
 	int (*resume)(NuguPcmDriver *driver, NuguPcm *pcm);
+
+	/**
+	 * @brief Called when a playback position is requested.
+	 * @see nugu_pcm_get_position()
+	 */
+	int (*get_position)(NuguPcmDriver *driver, NuguPcm *pcm);
 };
 
 /**

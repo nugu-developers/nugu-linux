@@ -43,6 +43,7 @@ struct _nugu_pcm {
 	NuguBuffer *buf;
 	int is_last;
 	int volume;
+	size_t total_size;
 
 	pthread_mutex_t mutex;
 };
@@ -183,6 +184,7 @@ EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver)
 	pcm->dud = NULL;
 	pcm->status = NUGU_MEDIA_STATUS_STOPPED;
 	pcm->volume = NUGU_SET_VOLUME_MAX;
+	pcm->total_size = 0;
 
 	if (pcm->buf == NULL) {
 		nugu_error("buffer new is internal error");
@@ -345,6 +347,48 @@ EXPORT_API int nugu_pcm_get_volume(NuguPcm *pcm)
 	return pcm->volume;
 }
 
+EXPORT_API int nugu_pcm_get_duration(NuguPcm *pcm)
+{
+	g_return_val_if_fail(pcm != NULL, -1);
+	int samplerate;
+
+	switch (pcm->property.samplerate) {
+	case NUGU_AUDIO_SAMPLE_RATE_8K:
+		samplerate = 8000;
+		break;
+	case NUGU_AUDIO_SAMPLE_RATE_16K:
+		samplerate = 16000;
+		break;
+	case NUGU_AUDIO_SAMPLE_RATE_32K:
+		samplerate = 32000;
+		break;
+	case NUGU_AUDIO_SAMPLE_RATE_22K:
+		samplerate = 22050;
+		break;
+	case NUGU_AUDIO_SAMPLE_RATE_44K:
+		samplerate = 44100;
+		break;
+	default:
+		samplerate = 16000;
+		break;
+	}
+
+	return (pcm->total_size / samplerate);
+}
+
+EXPORT_API int nugu_pcm_get_position(NuguPcm *pcm)
+{
+	g_return_val_if_fail(pcm != NULL, -1);
+	g_return_val_if_fail(pcm->driver != NULL, -1);
+
+	if (pcm->driver->ops->get_position == NULL) {
+		nugu_error("Not supported");
+		return -1;
+	}
+
+	return pcm->driver->ops->get_position(pcm->driver, pcm);
+}
+
 EXPORT_API void nugu_pcm_set_status_callback(NuguPcm *pcm,
 					     NuguMediaStatusCallback cb,
 					     void *userdata)
@@ -419,6 +463,7 @@ EXPORT_API void nugu_pcm_clear_buffer(NuguPcm *pcm)
 	pthread_mutex_lock(&pcm->mutex);
 
 	nugu_buffer_clear(pcm->buf);
+	pcm->total_size = 0;
 	pcm->is_last = 0;
 
 	pthread_mutex_unlock(&pcm->mutex);
@@ -437,6 +482,7 @@ EXPORT_API int nugu_pcm_push_data(NuguPcm *pcm, const char *data, size_t size,
 
 	pthread_mutex_lock(&pcm->mutex);
 
+	pcm->total_size += size;
 	if (!pcm->is_last)
 		pcm->is_last = is_last;
 
@@ -447,7 +493,6 @@ EXPORT_API int nugu_pcm_push_data(NuguPcm *pcm, const char *data, size_t size,
 	if (pcm->driver->ops->push_data)
 		pcm->driver->ops->push_data(pcm->driver, pcm, data, size,
 					    pcm->is_last);
-
 	return ret;
 }
 

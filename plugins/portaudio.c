@@ -40,6 +40,7 @@ struct pa_audio_param {
 	int stop;
 	int pause;
 	int done;
+	size_t write_data;
 	void *data;
 };
 
@@ -178,6 +179,7 @@ static int _playbackCallback(const void *inputBuffer, void *outputBuffer,
 
 	if (nugu_pcm_get_data_size(pcm) > 0) {
 		nugu_pcm_get_data(pcm, buf, buf_size);
+		param->write_data += buf_size;
 	} else if (nugu_pcm_receive_is_last_data(pcm)) {
 		// send event to the main loop thread
 		if (!param->done) {
@@ -312,7 +314,6 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm,
 	}
 
 	pcm_param->data = (void *)pcm;
-
 	/* default output device */
 	output_param.device = Pa_GetDefaultOutputDevice();
 	if (output_param.device == paNoDevice) {
@@ -341,6 +342,7 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm,
 
 	pcm_param->pause = 0;
 	pcm_param->stop = 0;
+	pcm_param->write_data = 0;
 	err = Pa_StartStream(pcm_param->stream);
 	if (err != paNoError) {
 		nugu_error("Pa_OpenStream return fail");
@@ -438,6 +440,21 @@ static int _pcm_resume(NuguPcmDriver *driver, NuguPcm *pcm)
 	return 0;
 }
 
+static int _pcm_get_position(NuguPcmDriver *driver, NuguPcm *pcm)
+{
+	struct pa_audio_param *pcm_param =
+		(struct pa_audio_param *)nugu_pcm_get_userdata(pcm);
+
+	g_return_val_if_fail(pcm != NULL, -1);
+
+	if (pcm_param == NULL) {
+		nugu_error("pcm is not started");
+		return -1;
+	}
+
+	return (pcm_param->write_data / pcm_param->samplerate);
+}
+
 static void snd_error_log(const char *file, int line, const char *function,
 			  int err, const char *fmt, ...)
 {
@@ -452,6 +469,7 @@ static void snd_error_log(const char *file, int line, const char *function,
 		       -1, "[ALSA] <%s:%d> err=%d, %s", file, line, err, msg);
 }
 
+
 static struct nugu_recorder_driver_ops rec_ops = {
 	.start = _rec_start,
 	.stop = _rec_stop
@@ -461,7 +479,8 @@ static struct nugu_pcm_driver_ops pcm_ops = {
 	.start = _pcm_start,
 	.stop = _pcm_stop,
 	.pause = _pcm_pause,
-	.resume = _pcm_resume
+	.resume = _pcm_resume,
+	.get_position = _pcm_get_position
 };
 
 static int init(NuguPlugin *p)
