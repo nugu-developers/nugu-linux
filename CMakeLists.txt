@@ -21,6 +21,7 @@ SET(plugindir "${CMAKE_INSTALL_FULL_LIBDIR}/nugu")
 OPTION(ENABLE_GSTREAMER_PLUGIN "Enable the GStreamer plugin" ON)
 OPTION(ENABLE_OPUS_PLUGIN "Enable the OPUS plugin" ON)
 OPTION(ENABLE_PORTAUDIO_PLUGIN "Enable the PortAudio plugin" ON)
+OPTION(ENABLE_VENDOR_LIBRARY "Enable the vendor specific library" ON)
 
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -46,24 +47,29 @@ SET(DEFAULT_LIB_DEPENDENCY
 SET(FORCE_LIB_DEPENDENCY)
 
 # Add vendor specific library dependency (keyword detector, end-point detector)
-LIST(APPEND DEFAULT_LIB_DEPENDENCY nugu-kwd nugu-epd)
+IF(ENABLE_VENDOR_LIBRARY)
+	ADD_DEFINITIONS(-DENABLE_VENDOR_LIBRARY)
+	LIST(APPEND DEFAULT_LIB_DEPENDENCY nugu-kwd nugu-epd)
+ENDIF()
 
 # Gstreamer does not support dynamic loading/unloading of their libraries.
 # Therefore, add the library dependency to NUGU SDK instead of NUGU Plugin.
 IF(ENABLE_GSTREAMER_PLUGIN)
 	LIST(APPEND FORCE_LIB_DEPENDENCY gstreamer-1.0 gstreamer-pbutils-1.0)
-ENDIF(ENABLE_GSTREAMER_PLUGIN)
+ENDIF()
 
 # Get CFLAGS and LDFLAGS from pkg-config list
 pkg_check_modules(pkgs REQUIRED ${DEFAULT_LIB_DEPENDENCY})
 FOREACH(flag ${pkgs_CFLAGS})
 	ADD_COMPILE_OPTIONS(${flag})
-ENDFOREACH(flag)
+ENDFOREACH()
 
-pkg_check_modules(force_pkgs REQUIRED ${FORCE_LIB_DEPENDENCY})
-FOREACH(flag ${force_pkgs_CFLAGS})
-	ADD_COMPILE_OPTIONS(${flag})
-ENDFOREACH(flag)
+IF(FORCE_LIB_DEPENDENCY)
+	pkg_check_modules(force_pkgs REQUIRED ${FORCE_LIB_DEPENDENCY})
+	FOREACH(flag ${force_pkgs_CFLAGS})
+		ADD_COMPILE_OPTIONS(${flag})
+	ENDFOREACH(flag)
+ENDIF()
 
 # Common compile options
 ADD_COMPILE_OPTIONS(
