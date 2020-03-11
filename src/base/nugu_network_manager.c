@@ -913,7 +913,7 @@ nugu_network_manager_handoff(const NuguNetworkServerPolicy *policy)
 	return 0;
 }
 
-int nugu_network_manager_set_token(const char *token)
+EXPORT_API int nugu_network_manager_set_token(const char *token)
 {
 	if (!_network) {
 		nugu_error("network manager not initialized");
@@ -933,7 +933,7 @@ int nugu_network_manager_set_token(const char *token)
 	return 0;
 }
 
-const char *nugu_network_manager_peek_token(void)
+EXPORT_API const char *nugu_network_manager_peek_token(void)
 {
 	if (!_network) {
 		nugu_error("network manager not initialized");
@@ -943,7 +943,7 @@ const char *nugu_network_manager_peek_token(void)
 	return _network->token;
 }
 
-int nugu_network_manager_set_registry_url(const char *urlname)
+EXPORT_API int nugu_network_manager_set_registry_url(const char *urlname)
 {
 #ifdef NUGU_ENV_NETWORK_REGISTRY_SERVER
 	char *override_value;
@@ -975,7 +975,7 @@ int nugu_network_manager_set_registry_url(const char *urlname)
 	return 0;
 }
 
-const char *nugu_network_manager_peek_registry_url(void)
+EXPORT_API const char *nugu_network_manager_peek_registry_url(void)
 {
 	if (!_network) {
 		nugu_error("network manager not initialized");
@@ -985,7 +985,7 @@ const char *nugu_network_manager_peek_registry_url(void)
 	return _network->registry_url;
 }
 
-int nugu_network_manager_set_useragent(const char *uagent)
+EXPORT_API int nugu_network_manager_set_useragent(const char *uagent)
 {
 #ifdef NUGU_ENV_NETWORK_USERAGENT
 	char *override_value;
@@ -1017,7 +1017,7 @@ int nugu_network_manager_set_useragent(const char *uagent)
 	return 0;
 }
 
-const char *nugu_network_manager_peek_useragent(void)
+EXPORT_API const char *nugu_network_manager_peek_useragent(void)
 {
 	if (!_network) {
 		nugu_error("network manager not initialized");
