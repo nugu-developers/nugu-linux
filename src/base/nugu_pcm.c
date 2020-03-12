@@ -277,7 +277,6 @@ EXPORT_API int nugu_pcm_start(NuguPcm *pcm)
 		return -1;
 	}
 	nugu_pcm_clear_buffer(pcm);
-	nugu_pcm_set_userdata(pcm, NULL);
 
 	return pcm->driver->ops->start(pcm->driver, pcm, pcm->property);
 }
