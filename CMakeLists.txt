@@ -18,6 +18,7 @@ SET(bindir "${prefix}/${CMAKE_INSTALL_BINDIR}")
 SET(plugindir "${CMAKE_INSTALL_FULL_LIBDIR}/nugu")
 
 # Set default build options
+OPTION(ENABLE_LOG_ANSICOLOR "Enable ansicolor to log message" ON)
 OPTION(ENABLE_GSTREAMER_PLUGIN "Enable the GStreamer plugin" ON)
 OPTION(ENABLE_OPUS_PLUGIN "Enable the OPUS plugin" ON)
 OPTION(ENABLE_PORTAUDIO_PLUGIN "Enable the PortAudio plugin" ON)
@@ -142,13 +143,15 @@ ENDIF()
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${CMAKE_SOURCE_DIR})/,,$(abspath $<))\"'")
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${CMAKE_SOURCE_DIR})/,,$(abspath $<))\"'")
 
+IF(ENABLE_LOG_ANSICOLOR)
+	# Turn on the colorful log message
+	ADD_DEFINITIONS(-DNUGU_LOG_USE_ANSICOLOR)
+ENDIF()
+
 # Global definitions
 ADD_DEFINITIONS(
 	# Run-time buffer overflow detection
 	-D_FORTIFY_SOURCE=2
-
-	# Turn on the colorful log message
-	-DCONFIG_LOG_ANSICOLOR
 
 	# Environment variable names
 	# - Please comment out the following definition to avoid overwriting
