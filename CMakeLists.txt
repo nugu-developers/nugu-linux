@@ -22,6 +22,7 @@ OPTION(ENABLE_GSTREAMER_PLUGIN "Enable the GStreamer plugin" ON)
 OPTION(ENABLE_OPUS_PLUGIN "Enable the OPUS plugin" ON)
 OPTION(ENABLE_PORTAUDIO_PLUGIN "Enable the PortAudio plugin" ON)
 OPTION(ENABLE_VENDOR_LIBRARY "Enable the vendor specific library" ON)
+OPTION(ENABLE_OPUS_LIBRARY "Enable to embed OPUS library" OFF)
 
 # Generate compile_commands.json
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

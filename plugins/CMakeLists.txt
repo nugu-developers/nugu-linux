@@ -13,11 +13,22 @@ ENDFOREACH(plugin)
 
 # OPUS plugin
 IF(ENABLE_OPUS_PLUGIN)
-	pkg_check_modules(opus REQUIRED opus)
 	ADD_LIBRARY(opus SHARED opus.c)
-	TARGET_COMPILE_OPTIONS(opus PRIVATE ${opus_CFLAGS})
-	TARGET_LINK_LIBRARIES(opus ${pkgs_LDFLAGS} ${opus_LDFLAGS}
-		-L${CMAKE_BINARY_DIR}/src -lnugu -ldl)
+
+	IF(ENABLE_OPUS_LIBRARY)
+		TARGET_INCLUDE_DIRECTORIES(opus PRIVATE
+			${CMAKE_BINARY_DIR}/opus/include/opus)
+		TARGET_LINK_LIBRARIES(opus ${pkgs_LDFLAGS}
+			${CMAKE_BINARY_DIR}/opus/lib/libopus.a
+			-L${CMAKE_BINARY_DIR}/src -lnugu -ldl -lm)
+		ADD_DEPENDENCIES(opus OPUSLIB)
+	ELSE()
+		pkg_check_modules(opus REQUIRED opus)
+		TARGET_COMPILE_OPTIONS(opus PRIVATE ${opus_CFLAGS})
+		TARGET_LINK_LIBRARIES(opus ${pkgs_LDFLAGS} ${opus_LDFLAGS}
+			-L${CMAKE_BINARY_DIR}/src -lnugu -ldl)
+	ENDIF()
+
 	SET_TARGET_PROPERTIES(opus PROPERTIES PREFIX "" OUTPUT_NAME opus)
 	INSTALL(TARGETS opus LIBRARY DESTINATION ${plugindir})
 	ADD_DEPENDENCIES(opus libnugu)
