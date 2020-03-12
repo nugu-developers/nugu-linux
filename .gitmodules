@@ -8,3 +8,6 @@
 [submodule "externals/curl"]
 	path = externals/curl
 	url = https://github.com/curl/curl.git
+[submodule "externals/opus"]
+	path = externals/opus
+	url = https://github.com/xiph/opus
