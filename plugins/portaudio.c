@@ -420,10 +420,10 @@ static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 	nugu_info("#### pcm(%p) param is destroyed(%p) ####", pcm, pcm_param);
 #endif
 
-	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_STOPPED);
-
 	free(pcm_param);
 	nugu_pcm_set_userdata(pcm, NULL);
+
+	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_STOPPED);
 
 	nugu_dbg("stop done");
 
