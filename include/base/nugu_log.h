@@ -340,11 +340,19 @@ void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
 	nugu_log(NUGU_LOG_MODULE, NUGU_LOG_LEVEL_ERROR, fmt, ##__VA_ARGS__)
 
 #ifndef NUGU_ANSI_COLOR_SEND
+#ifdef NUGU_LOG_USE_ANSICOLOR
 #define NUGU_ANSI_COLOR_SEND NUGU_ANSI_COLOR_BROWN
+#else
+#define NUGU_ANSI_COLOR_SEND ""
+#endif
 #endif
 
 #ifndef NUGU_ANSI_COLOR_RECV
+#ifdef NUGU_LOG_USE_ANSICOLOR
 #define NUGU_ANSI_COLOR_RECV NUGU_ANSI_COLOR_GREEN
+#else
+#define NUGU_ANSI_COLOR_RECV ""
+#endif
 #endif
 
 #ifndef NUGU_LOG_MARK_SEND

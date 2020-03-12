@@ -183,7 +183,7 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 		tid = (pid_t)syscall(SYS_gettid);
 #endif
 
-#ifdef CONFIG_LOG_ANSICOLOR
+#ifdef NUGU_LOG_USE_ANSICOLOR
 #ifdef __APPLE__
 		if (len > 0 && pid != 0 && (uint64_t)pid != tid)
 #else
@@ -284,7 +284,7 @@ static void _log_formatted(enum nugu_log_module module,
 		pthread_mutex_lock(&_log_mutex);
 		if (len > 0)
 			fprintf(stderr, "%s ", prefix);
-#ifdef CONFIG_LOG_ANSICOLOR
+#ifdef NUGU_LOG_USE_ANSICOLOR
 		switch (level) {
 		case NUGU_LOG_LEVEL_DEBUG:
 			break;
@@ -302,7 +302,7 @@ static void _log_formatted(enum nugu_log_module module,
 		}
 #endif
 		vfprintf(stderr, format, arg);
-#ifdef CONFIG_LOG_ANSICOLOR
+#ifdef NUGU_LOG_USE_ANSICOLOR
 		fputs(NUGU_ANSI_COLOR_NORMAL, stderr);
 #endif
 		fputc('\n', stderr);
