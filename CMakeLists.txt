@@ -3,6 +3,7 @@ PROJECT(nugu)
 
 INCLUDE(GNUInstallDirs)
 INCLUDE(FindPkgConfig)
+INCLUDE(FeatureSummary)
 
 SET(VERSION_MAJOR 0)
 SET(VERSION_MINOR 6)
@@ -17,16 +18,8 @@ SET(prefix ${CMAKE_INSTALL_PREFIX})
 SET(bindir "${prefix}/${CMAKE_INSTALL_BINDIR}")
 SET(plugindir "${CMAKE_INSTALL_FULL_LIBDIR}/nugu")
 
-# Set default build options
-OPTION(ENABLE_LOG_ANSICOLOR "Enable ansicolor to log message" ON)
-OPTION(ENABLE_GSTREAMER_PLUGIN "Enable the GStreamer plugin" ON)
-OPTION(ENABLE_OPUS_PLUGIN "Enable the OPUS plugin" ON)
-OPTION(ENABLE_PORTAUDIO_PLUGIN "Enable the PortAudio plugin" ON)
-OPTION(ENABLE_VENDOR_LIBRARY "Enable the vendor specific library" ON)
-OPTION(ENABLE_OPUS_LIBRARY "Enable to embed OPUS library" OFF)
-
 # Generate compile_commands.json
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # C++ standard: c++11 (not gnu++11)
 SET(CMAKE_CXX_STANDARD 11)
@@ -40,6 +33,37 @@ SET(CMAKE_C_EXTENSIONS ON)
 IF (NOT CMAKE_BUILD_TYPE)
 	SET(CMAKE_BUILD_TYPE Debug)
 ENDIF()
+
+# Set default build options
+OPTION(ENABLE_LOG_ANSICOLOR "Enable ansicolor to log message" ON)
+add_feature_info(LOG_ANSICOLOR ENABLE_LOG_ANSICOLOR "ANSI Color to log message")
+
+OPTION(ENABLE_ASAN "Enable Address Sanitizer" OFF)
+IF (NOT PACKAGING)
+	IF ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" AND "${CMAKE_LIBRARY_ARCHITECTURE}" MATCHES "x86")
+		SET(ENABLE_ASAN ON CACHE BOOL "" FORCE)
+		MESSAGE("Force enable the Address Sanitizer on x86 Debug environment")
+	ENDIF()
+ENDIF()
+add_feature_info(SANITIZE_ASAN ENABLE_ASAN "Address Sanitizer")
+
+OPTION(ENABLE_GSTREAMER_PLUGIN "Enable the GStreamer plugin" ON)
+add_feature_info(GSTREAMER_PLUGIN ENABLE_GSTREAMER_PLUGIN "GStreamer plugin")
+
+OPTION(ENABLE_OPUS_PLUGIN "Enable the OPUS plugin" ON)
+add_feature_info(OPUS_PLUGIN ENABLE_OPUS_PLUGIN "OPUS plugin")
+
+OPTION(ENABLE_PORTAUDIO_PLUGIN "Enable the PortAudio plugin" ON)
+add_feature_info(PORTAUDIO_PLUGIN ENABLE_PORTAUDIO_PLUGIN "PortAudio plugin")
+
+OPTION(ENABLE_VENDOR_LIBRARY "Enable the vendor specific library" ON)
+add_feature_info(VENDOR_LIBRARY ENABLE_VENDOR_LIBRARY "vendor specific library(nugu_wwd, nugu_epd)")
+
+OPTION(ENABLE_OPUS_LIBRARY "Enable to compile OPUS library" OFF)
+add_feature_info(OPUS_LIBRARY ENABLE_OPUS_LIBRARY "compile OPUS library")
+
+OPTION(ENABLE_OPUS_LIBRARY_FLOAT_API "Enable float api to OPUS library" OFF)
+add_feature_info(OPUS_LIBRARY_FLOAT_API ENABLE_OPUS_LIBRARY_FLOAT_API "compile with the floating point to OPUS library")
 
 # Set NUGU SDK library default dependency
 SET(DEFAULT_LIB_DEPENDENCY
@@ -101,16 +125,6 @@ ADD_COMPILE_OPTIONS(
 	-Wno-missing-field-initializers
 	-Wno-unused-parameter)
 
-IF (NOT PACKAGING)
-	IF ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug" AND "${CMAKE_LIBRARY_ARCHITECTURE}" MATCHES "x86")
-		MESSAGE("Enable AddressSanitizer")
-		# Apply AddressSanitizer
-		# - https://github.com/google/sanitizers/wiki/AddressSanitizer
-		ADD_COMPILE_OPTIONS(-fsanitize=address)
-		LINK_LIBRARIES(-lasan)
-	ENDIF()
-ENDIF()
-
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	ADD_COMPILE_OPTIONS(
 		# Non-executable stack
@@ -149,6 +163,14 @@ IF(ENABLE_LOG_ANSICOLOR)
 	ADD_DEFINITIONS(-DNUGU_LOG_USE_ANSICOLOR)
 ENDIF()
 
+IF(ENABLE_ASAN)
+	# Apply AddressSanitizer
+	# - https://github.com/google/sanitizers/wiki/AddressSanitizer
+	ADD_COMPILE_OPTIONS(-fsanitize=address)
+	LINK_LIBRARIES(-lasan)
+	MESSAGE("Address Sanitizer enabled")
+ENDIF()
+
 # Global definitions
 ADD_DEFINITIONS(
 	# Run-time buffer overflow detection
@@ -180,6 +202,8 @@ CONFIGURE_FILE(nugu.pc.in ${CMAKE_BINARY_DIR}/nugu.pc @ONLY)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/nugu.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
 
 ENABLE_TESTING()
+
+feature_summary(WHAT ALL)
 
 # External dependency modules - nghttp2, curl, jsoncpp
 ADD_SUBDIRECTORY(externals)
