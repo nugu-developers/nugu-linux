@@ -125,6 +125,14 @@ ADD_COMPILE_OPTIONS(
 	-Wno-missing-field-initializers
 	-Wno-unused-parameter)
 
+IF(ENABLE_ASAN)
+	# Apply AddressSanitizer
+	# - https://github.com/google/sanitizers/wiki/AddressSanitizer
+	ADD_COMPILE_OPTIONS(-fsanitize=address)
+	LINK_LIBRARIES(-lasan)
+	MESSAGE("Address Sanitizer enabled")
+ENDIF()
+
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	ADD_COMPILE_OPTIONS(
 		# Non-executable stack
@@ -161,14 +169,6 @@ SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${C
 IF(ENABLE_LOG_ANSICOLOR)
 	# Turn on the colorful log message
 	ADD_DEFINITIONS(-DNUGU_LOG_USE_ANSICOLOR)
-ENDIF()
-
-IF(ENABLE_ASAN)
-	# Apply AddressSanitizer
-	# - https://github.com/google/sanitizers/wiki/AddressSanitizer
-	ADD_COMPILE_OPTIONS(-fsanitize=address)
-	LINK_LIBRARIES(-lasan)
-	MESSAGE("Address Sanitizer enabled")
 ENDIF()
 
 # Global definitions
