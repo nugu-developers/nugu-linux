@@ -183,6 +183,13 @@ void ASRAgent::initialize()
     asr_focus_listener = new ASRFocusListener(this, this->speech_recognizer.get());
     expect_focus_listener = new ExpectFocusListener(this);
 
+    addReferrerEvents("Recognize", "ExpectSpeech");
+    addReferrerEvents("ResponseTimeout", "ASRAgent.sendEventRecognize");
+    addReferrerEvents("ListenTimeout", "ASRAgent.sendEventRecognize");
+    addReferrerEvents("RecognizeResult", "ASRAgent.sendEventRecognize");
+    addReferrerEvents("StopRecognize", "ASRAgent.sendEventRecognize");
+    addReferrerEvents("ListenFailed", "ASRAgent.sendEventRecognize");
+
     initialized = true;
 }
 
@@ -347,10 +354,15 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
             root["domainTypes"] = es_attr.domain_types;
         if (!es_attr.asr_context.empty())
             root["asrContext"] = es_attr.asr_context;
+    } else {
+        // reset referrer dialog request id
+        setReferrerDialogRequestId("ExpectSpeech", "");
     }
     payload = writer.write(root);
 
     dialog_id = rec_event->getDialogRequestId();
+    setReferrerDialogRequestId("ASRAgent.sendEventRecognize", dialog_id);
+
     if (!is_end && (length == 0 || data == nullptr))
         sendEvent(rec_event, all_context_info, payload, std::move(cb));
     else

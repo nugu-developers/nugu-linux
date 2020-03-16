@@ -54,13 +54,6 @@ public:
     virtual ~CapabilityEvent();
 
     /**
-     * @brief Check whether the action is driven by user
-     * @param[in] name action name
-     * @return whether the action is driven by user
-     */
-    bool isUserAction(const std::string& name);
-
-    /**
      * @brief Get event name
      * @return event name
      */
@@ -170,16 +163,25 @@ public:
     void notifyEventResult(const std::string& event_desc) override;
 
     /**
-     * @brief Get referred dialog request id.
+     * @brief Add event name and directive name for referred dialog request id.
+     * @param[in] ename event name
      * @return referred dialog request id
      */
-    std::string getReferrerDialogRequestId();
+    void addReferrerEvents(const std::string& ename, const std::string& dname);
+
+    /**
+     * @brief Get referred dialog request id.
+     * @param[in] ename event name
+     * @return referred dialog request id
+     */
+    std::string getReferrerDialogRequestId(const std::string& ename);
 
     /**
      * @brief Set referred dialog request id.
+     * @param[in] dname directive name
      * @param[in] id referred dialog request id
      */
-    void setReferrerDialogRequestId(const std::string& id);
+    void setReferrerDialogRequestId(const std::string& dname, const std::string& id);
 
     /**
      * @brief Set the capability name of the current object.

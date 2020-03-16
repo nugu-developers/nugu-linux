@@ -36,6 +36,19 @@ MicAgent::~MicAgent()
 {
 }
 
+void MicAgent::initialize()
+{
+    if (initialized) {
+        nugu_info("It's already initialized.");
+        return;
+    }
+
+    addReferrerEvents("SetMicSucceeded", "SetMic");
+    addReferrerEvents("SetMicFailed", "SetMic");
+
+    initialized = true;
+}
+
 void MicAgent::parsingDirective(const char* dname, const char* message)
 {
     nugu_dbg("message: %s", message);
