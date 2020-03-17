@@ -47,7 +47,7 @@ public:
     void deInitialize() override;
     void suspend() override;
 
-    bool startRecognition() override;
+    void startRecognition(AsrRecognizeCallback callback = nullptr) override;
     void stopRecognition() override;
 
     void parsingDirective(const char* dname, const char* message) override;
@@ -60,6 +60,8 @@ public:
 
     void checkResponseTimeout();
     void clearResponseTimeout();
+
+    std::string getRecognizeDialogId();
 
     void sendEventRecognize(unsigned char* data, size_t length, bool is_end, EventResultCallback cb = nullptr);
     void sendEventResponseTimeout(EventResultCallback cb = nullptr);
@@ -100,6 +102,7 @@ private:
     IFocusListener* expect_focus_listener;
     std::vector<IASRListener*> asr_listeners;
     ListeningState prev_listening_state = ListeningState::DONE;
+    AsrRecognizeCallback rec_callback;
 
     // attribute
     std::string model_path;

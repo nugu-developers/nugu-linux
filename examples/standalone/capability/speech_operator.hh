@@ -27,12 +27,12 @@ class SpeechOperator : public IWakeupListener,
                        public IASRListener {
 public:
     void onWakeupState(WakeupDetectState state) override;
-    void onState(ASRState state) override;
-    void onNone() override;
-    void onPartial(const std::string& text) override;
-    void onComplete(const std::string& text) override;
-    void onError(ASRError error) override;
-    void onCancel() override;
+    void onState(ASRState state, const std::string& dialog_id) override;
+    void onNone(const std::string& dialog_id) override;
+    void onPartial(const std::string& text, const std::string& dialog_id) override;
+    void onComplete(const std::string& text, const std::string& dialog_id) override;
+    void onError(ASRError error, const std::string& dialog_id) override;
+    void onCancel(const std::string& dialog_id) override;
 
     IASRListener* getASRListener();
     void setWakeupHandler(IWakeupHandler* wakeup_handler);

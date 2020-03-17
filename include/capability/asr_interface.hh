@@ -18,6 +18,7 @@
 #define __NUGU_ASR_INTERFACE_H__
 
 #include <clientkit/capability_interface.hh>
+#include <functional>
 
 namespace NuguCapability {
 
@@ -85,38 +86,44 @@ public:
     /**
      * @brief Report to the user asr state changed.
      * @param[in] state asr state
+     * @param[in] dialog_id dialog request id
      * @see IASRHandler::startRecognition()
      * @see IASRHandler::stopRecognition()
      */
-    virtual void onState(ASRState state) = 0;
+    virtual void onState(ASRState state, const std::string& dialog_id) = 0;
 
     /**
      * @brief No speech recognition results.
+     * @param[in] dialog_id dialog request id
      */
-    virtual void onNone() = 0;
+    virtual void onNone(const std::string& dialog_id) = 0;
 
     /**
      * @brief The result of recognizing the user's speech in real time.
      * @param[in] text Speech recognition result
+     * @param[in] dialog_id dialog request id
      */
-    virtual void onPartial(const std::string& text) = 0;
+    virtual void onPartial(const std::string& text, const std::string& dialog_id) = 0;
 
     /**
      * @brief Speech recognition results which are reported naturally in situations based on the entire speech.
      * @param[in] text Speech recognition result
+     * @param[in] dialog_id dialog request id
      */
-    virtual void onComplete(const std::string& text) = 0;
+    virtual void onComplete(const std::string& text, const std::string& dialog_id) = 0;
 
     /**
      * @brief Report an error occurred during speech recognition to the user.
      * @param[in] error ASR error
+     * @param[in] dialog_id dialog request id
      */
-    virtual void onError(ASRError error) = 0;
+    virtual void onError(ASRError error, const std::string& dialog_id) = 0;
 
     /**
      * @brief Speech recognition is canceled.
+     * @param[in] dialog_id dialog request id
      */
-    virtual void onCancel() = 0;
+    virtual void onCancel(const std::string& dialog_id) = 0;
 };
 
 /**
@@ -125,12 +132,20 @@ public:
  */
 class IASRHandler : virtual public ICapabilityInterface {
 public:
+    /**
+     * @brief ASR recognize callback for user request and response mapping
+     * @param[in] dialog_id event request dialog id
+     */
+    using AsrRecognizeCallback = std::function <void(const std::string& dialog_id)>;
+
+public:
     virtual ~IASRHandler() = default;
 
     /**
      * @brief Turn on the microphone and start speech recognition
+     * @param[in] callback asr recognize callback
      */
-    virtual bool startRecognition() = 0;
+    virtual void startRecognition(AsrRecognizeCallback callback) = 0;
 
     /**
      * @brief Turn off the microphone and stop speech recognition
