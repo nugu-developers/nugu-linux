@@ -34,7 +34,7 @@ extern void fake_timer_elapse();
             fake_timer_elapse();                         \
     }
 
-#define TIMEOUT_UNIT_SEC 1
+#define TIMEOUT_UNIT_SEC (1 * NUGU_TIMER_UNIT_SEC)
 
 typedef struct {
     NUGUTimer* timer1;
@@ -74,15 +74,15 @@ static void test_nugutimer_trigger(ntimerFixture* fixture, gconstpointer ignored
     /* Trigger Timer Once after 1 Second */
     timer->setInterval(TIMEOUT_UNIT_SEC);
     timer->start();
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer->getCount() == 1);
 
     /* Trigger Timer Once after 2 Seconds */
     timer->setInterval(TIMEOUT_UNIT_SEC * 2);
     timer->start();
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer->getCount() == 0);
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer->getCount() == 1);
 }
 
@@ -103,9 +103,9 @@ static void test_nugutimer_repeat(ntimerFixture* fixture, gconstpointer ignored)
     timer->start();
 
     expect_count = 1;
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer->getCount() == (unsigned int)expect_count);
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer->getCount() == (unsigned int)expect_count);
 
     /* Trigger Timer Twice Once after 3 Seconds */
@@ -115,12 +115,12 @@ static void test_nugutimer_repeat(ntimerFixture* fixture, gconstpointer ignored)
     timer->start();
 
     expect_count = 1;
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer->getCount() == (unsigned int)expect_count);
     expect_count = 2;
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer->getCount() == (unsigned int)expect_count);
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer->getCount() == (unsigned int)expect_count);
 }
 
@@ -140,7 +140,7 @@ static void test_nugutimer_multi_trigger(ntimerFixture* fixture, gconstpointer i
     timer1->start();
     timer2->setInterval(TIMEOUT_UNIT_SEC);
     timer2->start();
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer1->getCount() == 1);
     g_assert(timer2->getCount() == 1);
 
@@ -149,10 +149,10 @@ static void test_nugutimer_multi_trigger(ntimerFixture* fixture, gconstpointer i
     timer1->start();
     timer2->setInterval(TIMEOUT_UNIT_SEC * 2);
     timer2->start();
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer1->getCount() == 0);
     g_assert(timer2->getCount() == 0);
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer1->getCount() == 1);
     g_assert(timer2->getCount() == 1);
 }
@@ -189,10 +189,10 @@ static void test_nugutimer_multi_repeat(ntimerFixture* fixture, gconstpointer ig
 
     expect_count1 = 1;
     expect_count2 = 1;
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer1->getCount() == (unsigned int)expect_count1);
     g_assert(timer2->getCount() == (unsigned int)expect_count2);
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer1->getCount() == (unsigned int)expect_count1);
     g_assert(timer2->getCount() == (unsigned int)expect_count2);
 
@@ -209,14 +209,14 @@ static void test_nugutimer_multi_repeat(ntimerFixture* fixture, gconstpointer ig
 
     expect_count1 = 1;
     expect_count2 = 1;
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer1->getCount() == (unsigned int)expect_count1);
     g_assert(timer2->getCount() == (unsigned int)expect_count2);
     expect_count2 = 2;
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer1->getCount() == (unsigned int)expect_count1);
     g_assert(timer2->getCount() == (unsigned int)expect_count2);
-    TIMER_ELAPSE_SEC(1);
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
     g_assert(timer1->getCount() == (unsigned int)expect_count1);
     g_assert(timer2->getCount() == (unsigned int)expect_count2);
 }

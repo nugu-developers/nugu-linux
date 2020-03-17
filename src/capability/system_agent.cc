@@ -70,7 +70,7 @@ void SystemAgent::initialize()
     }
 
     timer = core_container->createNuguTimer();
-    timer->setInterval(DEFAULT_INACTIVITY_TIMEOUT);
+    timer->setInterval(DEFAULT_INACTIVITY_TIMEOUT * NUGU_TIMER_UNIT_SEC);
     timer->setCallback([&](int count, int repeat) {
         nugu_dbg("inactivity timeout");
         sendEventUserInactivityReport(DEFAULT_INACTIVITY_TIMEOUT);

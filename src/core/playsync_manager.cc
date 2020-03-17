@@ -85,8 +85,8 @@ PlaySyncManager::PlaySyncManager()
         { "LONG", HOLD_TIME_LONG },
         { "LONGEST", HOLD_TIME_LONGEST } })
 {
-    timer = new NUGUTimer(DEFAULT_HOLD_TIME, 1);
-    long_timer = new LongTimer(HOLD_TIME_LONGEST, 1);
+    timer = new NUGUTimer(DEFAULT_HOLD_TIME * NUGU_TIMER_UNIT_SEC, 1);
+    long_timer = new LongTimer(HOLD_TIME_LONGEST * NUGU_TIMER_UNIT_SEC, 1);
 }
 
 PlaySyncManager::~PlaySyncManager()
@@ -211,7 +211,7 @@ void PlaySyncManager::removeContextInnerly(const std::string& ps_id, const std::
             nugu_dbg("[context] try to remove context by timer.");
             if (timer) {
                 timer->setCallback(timerCallback);
-                timer->setInterval(getRendererInterval(ps_id));
+                timer->setInterval(getRendererInterval(ps_id) * NUGU_TIMER_UNIT_SEC);
                 timer->start();
             }
         }
@@ -222,7 +222,7 @@ void PlaySyncManager::removeContextInnerly(const std::string& ps_id, const std::
 void PlaySyncManager::removeContextLater(const std::string& ps_id, const std::string& cap_name, unsigned int sec)
 {
     long_timer->stop();
-    long_timer->setInterval(sec > 0 ? sec : HOLD_TIME_LONGEST);
+    long_timer->setInterval((sec > 0 ? sec : HOLD_TIME_LONGEST) * NUGU_TIMER_UNIT_SEC);
     long_timer->setCallback([=](int count, int repeat) {
         removeContextInnerly(ps_id, cap_name, true);
     });

@@ -52,7 +52,7 @@ void TextAgent::initialize()
     }
 
     timer = core_container->createNuguTimer();
-    timer->setInterval(response_timeout);
+    timer->setInterval(response_timeout * NUGU_TIMER_UNIT_SEC);
     timer->setCallback([&](int count, int repeat) {
         notifyResponseTimeout();
     });

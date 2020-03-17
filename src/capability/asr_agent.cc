@@ -171,7 +171,7 @@ void ASRAgent::initialize()
     speech_recognizer->setListener(this);
 
     timer = core_container->createNuguTimer();
-    timer->setInterval(response_timeout);
+    timer->setInterval(response_timeout * NUGU_TIMER_UNIT_SEC);
     timer->setCallback([&](int count, int repeat) {
         sendEventResponseTimeout();
         releaseASRFocus(false, ASRError::RESPONSE_TIMEOUT);

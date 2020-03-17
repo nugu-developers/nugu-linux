@@ -19,8 +19,7 @@
 
 namespace NuguCore {
 
-#define TIME_UNIT_MSEC 1000
-#define DEFAULT_TIMEOUT_1SEC 1 * TIME_UNIT_MSEC
+#define DEFAULT_TIMEOUT_MSEC 1
 
 class NUGUTimerPrivate {
 public:
@@ -41,14 +40,14 @@ public:
 NUGUTimer::NUGUTimer()
     : d(new NUGUTimerPrivate())
 {
-    d->timer = nugu_timer_new(DEFAULT_TIMEOUT_1SEC, 1);
+    d->timer = nugu_timer_new(DEFAULT_TIMEOUT_MSEC, 1);
     nugu_timer_set_callback(d->timer, timerCallback, this);
 }
 
 NUGUTimer::NUGUTimer(int interval, int repeat)
     : d(new NUGUTimerPrivate())
 {
-    d->timer = nugu_timer_new(interval * TIME_UNIT_MSEC, (repeat > 1) ? repeat : 1);
+    d->timer = nugu_timer_new(interval, (repeat > 1) ? repeat : 1);
     nugu_timer_set_callback(d->timer, timerCallback, this);
 }
 
@@ -62,9 +61,9 @@ NUGUTimer::~NUGUTimer()
     delete d;
 }
 
-void NUGUTimer::setInterval(unsigned int sec)
+void NUGUTimer::setInterval(unsigned int msec)
 {
-    nugu_timer_set_interval(d->timer, sec * TIME_UNIT_MSEC);
+    nugu_timer_set_interval(d->timer, msec);
 }
 
 unsigned int NUGUTimer::getInterval()
@@ -95,18 +94,18 @@ void NUGUTimer::stop()
     nugu_timer_stop(d->timer);
 }
 
-void NUGUTimer::start(unsigned int sec)
+void NUGUTimer::start(unsigned int msec)
 {
-    if (sec)
-        setInterval(sec);
+    if (msec)
+        setInterval(msec);
 
     nugu_timer_start(d->timer);
 }
 
-void NUGUTimer::restart(unsigned int sec)
+void NUGUTimer::restart(unsigned int msec)
 {
     stop();
-    start(sec);
+    start(msec);
 }
 
 void NUGUTimer::setCallback(timer_callback cb)

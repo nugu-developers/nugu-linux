@@ -33,6 +33,9 @@ namespace NuguClientKit {
  * @{
  */
 
+/** @brief time unit value(second) */
+#define NUGU_TIMER_UNIT_SEC  1000
+
 /**
  * @brief nugu timer interface
  */
@@ -50,12 +53,12 @@ public:
 
     /**
      * @brief Set timer's timeout interval
-     * @param[in] sec timeout (unit: sec)
+     * @param[in] msec timeout (unit: msec)
      */
-    virtual void setInterval(unsigned int sec) = 0;
+    virtual void setInterval(unsigned int msec) = 0;
     /**
      * @brief Get timer's timeout interval
-     * @return timeout interval (unit: sec)
+     * @return timeout interval (unit: msec)
      */
     virtual unsigned int getInterval() = 0;
     /**
@@ -79,14 +82,14 @@ public:
     virtual void stop() = 0;
     /**
      * @brief Request start timer with new interval
-     * @param[in] sec timeout interval. The timer works with internal interval if sec is 0.
+     * @param[in] msec timeout interval. The timer works with internal interval if msec is 0.
      */
-    virtual void start(unsigned int sec = 0) = 0;
+    virtual void start(unsigned int msec = 0) = 0;
     /**
      * @brief Request re-start timer with new interval
-     * @param[in] sec timeout interval. The timer works with internal interval if sec is 0.
+     * @param[in] msec timeout interval. The timer works with internal interval if msec is 0.
      */
-    virtual void restart(unsigned int sec = 0) = 0;
+    virtual void restart(unsigned int msec = 0) = 0;
     /**
      * @brief Request set timeout callback
      * @param[in] cb timeout callback
