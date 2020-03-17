@@ -64,9 +64,7 @@ static void fake_timer_action(gpointer data, gpointer user_data)
         return;
 
     timer->fake_count++;
-    int interval = timer->interval / 1000;
-
-    if (timer->fake_count >= interval) {
+    if (timer->fake_count >= timer->interval) {
         if (_nugu_timer_callback(timer) == FALSE)
             timer->start = 0;
         timer->fake_count = 0;
