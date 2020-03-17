@@ -40,13 +40,13 @@ public:
     void updateInfoForContext(Json::Value& ctx) override;
 
     void stopTTS() override;
-    void requestTTS(const std::string& text, const std::string& play_service_id) override;
+    std::string requestTTS(const std::string& text, const std::string& play_service_id) override;
     bool setVolume(int volume) override;
 
     void sendEventSpeechStarted(const std::string& token, EventResultCallback cb = nullptr);
     void sendEventSpeechFinished(const std::string& token, EventResultCallback cb = nullptr);
     void sendEventSpeechStopped(const std::string& token, EventResultCallback cb = nullptr);
-    void sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id = "", EventResultCallback cb = nullptr);
+    std::string sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id = "", EventResultCallback cb = nullptr);
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     static void directiveDataCallback(NuguDirective* ndir, void* userdata);
