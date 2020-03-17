@@ -240,8 +240,10 @@ gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpoint
     if (commander.text_input) {
         commander.text_input = 0;
 
+        std::string id;
         if (commander.text_handler)
-            commander.text_handler->requestTextInput(keybuf);
+            id = commander.text_handler->requestTextInput(keybuf);
+        std::cout << "[Text][id:" << id << "] requestTextInput" << std::endl;
     } else if (g_strcmp0(keybuf, "w") == 0) {
         if (commander.speech_operator)
             commander.speech_operator->startListeningWithWakeup();

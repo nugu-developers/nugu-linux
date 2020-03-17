@@ -67,16 +67,16 @@ public:
     std::string getName();
 
     /**
-     * @brief Get dialog message id
-     * @return dialog message id
+     * @brief Get dialog request id
+     * @return dialog request id
      */
-    std::string getDialogMessageId();
+    std::string getDialogRequestId();
 
     /**
-     * @brief Set dialog message id.
-     * @param[in] id dialog message id
+     * @brief Set dialog request id.
+     * @param[in] id dialog request id
      */
-    void setDialogMessageId(const std::string& id);
+    void setDialogRequestId(const std::string& id);
 
     /**
      * @brief Set event type.

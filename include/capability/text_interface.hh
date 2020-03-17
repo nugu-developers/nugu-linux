@@ -69,20 +69,23 @@ public:
     /**
      * @brief TextState changed
      * @param[in] state text state
+     * @param[in] dialog_id dialog request id
      * @see ITextHandler::requestTextInput()
      */
-    virtual void onState(TextState state) = 0;
+    virtual void onState(TextState state, const std::string& dialog_id) = 0;
 
     /**
      * @brief When server processing for text input requests is completed
+     * @param[in] dialog_id dialog request id
      */
-    virtual void onComplete() = 0;
+    virtual void onComplete(const std::string& dialog_id) = 0;
 
     /**
      * @brief An error occurred during requesting text input.
      * @param[in] error text error
+     * @param[in] dialog_id dialog request id
      */
-    virtual void onError(TextError error) = 0;
+    virtual void onError(TextError error, const std::string& dialog_id) = 0;
 };
 
 /**
@@ -95,9 +98,9 @@ public:
 
     /**
      * @brief Request NUGU services based on text input.
-     * @return true if a NUGU service request succeeds with user text, otherwise false
+     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual bool requestTextInput(std::string text) = 0;
+    virtual std::string requestTextInput(std::string text) = 0;
 
     /**
      * @brief Set attribute about response

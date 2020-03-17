@@ -17,8 +17,8 @@
 #ifndef __NUGU_TEXT_AGENT_H__
 #define __NUGU_TEXT_AGENT_H__
 
-#include "clientkit/capability.hh"
 #include "capability/text_interface.hh"
+#include "clientkit/capability.hh"
 
 namespace NuguCapability {
 
@@ -37,7 +37,7 @@ public:
     void receiveCommandAll(const std::string& command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
-    bool requestTextInput(std::string text) override;
+    std::string requestTextInput(std::string text) override;
     void notifyResponseTimeout();
 
 private:
@@ -47,6 +47,7 @@ private:
 
     ITextListener* text_listener;
     INuguTimer* timer;
+    INuguTimer* timer_msec;
     TextState cur_state;
     std::string cur_dialog_id;
 
