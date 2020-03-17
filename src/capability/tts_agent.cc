@@ -162,7 +162,7 @@ void TTSAgent::stopTTS()
         tts_listener->onTTSCancel(dialog_id);
 }
 
-void TTSAgent::requestTTS(const std::string& text, const std::string& play_service_id)
+std::string TTSAgent::requestTTS(const std::string& text, const std::string& play_service_id)
 {
     std::string token;
     char* uuid;
@@ -171,7 +171,9 @@ void TTSAgent::requestTTS(const std::string& text, const std::string& play_servi
     token = uuid;
     free(uuid);
 
-    sendEventSpeechPlay(token, text, play_service_id);
+    std::string id = sendEventSpeechPlay(token, text, play_service_id);
+    nugu_dbg("user request dialog id: %s", id.c_str());
+    return id;
 }
 
 bool TTSAgent::setVolume(int volume)
@@ -251,7 +253,7 @@ void TTSAgent::sendEventSpeechStopped(const std::string& token, EventResultCallb
         sendEventCommon("SpeechStopped", token, std::move(cb));
 }
 
-void TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id, EventResultCallback cb)
+std::string TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id, EventResultCallback cb)
 {
     std::string ename = "SpeechPlay";
     std::string payload = "";
@@ -260,7 +262,7 @@ void TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& 
     std::string skml = text;
 
     if (text.size() == 0)
-        return;
+        return "";
 
     if (text.find("<skml", 0) == std::string::npos)
         skml = "<skml domain=\"general\">" + text + "</skml>";
@@ -274,7 +276,7 @@ void TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& 
         root["playServiceId"] = ps_id;
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload, std::move(cb));
+    return sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void TTSAgent::sendEventCommon(const std::string& ename, const std::string& token, EventResultCallback cb)
