@@ -24,9 +24,9 @@ using namespace NuguCapability;
 class TextListener : public ITextListener {
 public:
     virtual ~TextListener() = default;
-    void onState(TextState state) override;
-    void onComplete() override;
-    void onError(TextError error) override;
+    void onState(TextState state, const std::string& dialog_id) override;
+    void onComplete(const std::string& dialog_id) override;
+    void onError(TextError error, const std::string& dialog_id) override;
 };
 
 #endif /* __TEXT_LISTENER_H__ */

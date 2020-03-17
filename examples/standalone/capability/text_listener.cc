@@ -18,9 +18,9 @@
 
 #include "text_listener.hh"
 
-void TextListener::onState(TextState state)
+void TextListener::onState(TextState state, const std::string& dialog_id)
 {
-    std::cout << "[Text] onState: ";
+    std::cout << "[Text][id:" << dialog_id << "] onState: ";
 
     switch (state) {
     case TextState::BUSY:
@@ -35,14 +35,14 @@ void TextListener::onState(TextState state)
     }
 }
 
-void TextListener::onComplete()
+void TextListener::onComplete(const std::string& dialog_id)
 {
-    std::cout << "[Text] onComplete" << std::endl;
+    std::cout << "[Text][id:" << dialog_id << "] onComplete" << std::endl;
 }
 
-void TextListener::onError(TextError error)
+void TextListener::onError(TextError error, const std::string& dialog_id)
 {
-    std::cout << "[Text] onError: ";
+    std::cout << "[Text][id:" << dialog_id << "] onError: ";
 
     switch (error) {
     case TextError::RESPONSE_TIMEOUT:

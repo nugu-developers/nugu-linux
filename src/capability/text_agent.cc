@@ -57,6 +57,18 @@ void TextAgent::initialize()
         notifyResponseTimeout();
     });
 
+    timer_msec = core_container->createNuguTimer();
+    timer_msec->setInterval(response_timeout);
+    timer_msec->setCallback([&](int count, int repeat) {
+        if (!cur_dialog_id.size()) {
+            nugu_warn("cur_dialog_id is cleared...");
+            return;
+        }
+
+        if (text_listener)
+            text_listener->onState(cur_state, cur_dialog_id);
+    });
+
     initialized = true;
 }
 
@@ -65,6 +77,11 @@ void TextAgent::deInitialize()
     if (timer) {
         delete timer;
         timer = nullptr;
+    }
+
+    if (timer_msec) {
+        delete timer_msec;
+        timer_msec = nullptr;
     }
 
     initialized = false;
@@ -104,11 +121,14 @@ void TextAgent::receiveCommandAll(const std::string& command, const std::string&
         if (timer)
             timer->stop();
 
-        cur_dialog_id = "";
+        if (text_listener)
+            text_listener->onComplete(cur_dialog_id);
 
         cur_state = TextState::IDLE;
         if (text_listener)
-            text_listener->onState(cur_state);
+            text_listener->onState(cur_state, cur_dialog_id);
+
+        cur_dialog_id = "";
     }
 }
 
@@ -118,33 +138,36 @@ void TextAgent::setCapabilityListener(ICapabilityListener* clistener)
         text_listener = dynamic_cast<ITextListener*>(clistener);
 }
 
-bool TextAgent::requestTextInput(std::string text)
+std::string TextAgent::requestTextInput(std::string text)
 {
     nugu_dbg("receive text interface : %s from user app", text.c_str());
     if (cur_state == TextState::BUSY) {
         nugu_warn("already request nugu service to the server");
-        return false;
+        return "";
     }
 
     if (timer)
         timer->start();
 
-    cur_state = TextState::BUSY;
-    if (text_listener)
-        text_listener->onState(cur_state);
+    if (timer_msec)
+        timer_msec->start();
 
+    cur_state = TextState::BUSY;
     sendEventTextInput(text, "");
-    return true;
+
+    nugu_dbg("user request id: %s", cur_dialog_id.c_str());
+
+    return cur_dialog_id;
 }
 
 void TextAgent::notifyResponseTimeout()
 {
     if (text_listener)
-        text_listener->onError(TextError::RESPONSE_TIMEOUT);
+        text_listener->onError(TextError::RESPONSE_TIMEOUT, cur_dialog_id);
 
     cur_state = TextState::IDLE;
     if (text_listener)
-        text_listener->onState(cur_state);
+        text_listener->onState(cur_state, cur_dialog_id);
 }
 
 void TextAgent::sendEventTextInput(const std::string& text, const std::string& token, EventResultCallback cb)
@@ -180,7 +203,7 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
     }
     payload = writer.write(root);
 
-    cur_dialog_id = event.getDialogMessageId();
+    cur_dialog_id = event.getDialogRequestId();
 
     playsync_manager->holdContext();
 
@@ -233,10 +256,10 @@ void TextAgent::parsingTextSource(const char* message)
         timer->start();
 
     cur_state = TextState::BUSY;
-    if (text_listener)
-        text_listener->onState(cur_state);
-
     sendEventTextInput(text, token);
+
+    if (text_listener)
+        text_listener->onState(cur_state, cur_dialog_id);
 }
 
 } // NuguCapability
