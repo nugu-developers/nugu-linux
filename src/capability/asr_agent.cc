@@ -71,7 +71,7 @@ NuguFocusResult ASRFocusListener::onUnfocus(void* event, NuguUnFocusMode mode)
     auto agent_listeners = agent->getListener();
 
     for (auto asr_listener : agent_listeners) {
-        asr_listener->onState(ASRState::IDLE);
+        asr_listener->onState(ASRState::IDLE, agent->getRecognizeDialogId());
         agent->resetExpectSpeechState();
     }
 
@@ -213,16 +213,18 @@ void ASRAgent::suspend()
     stopRecognition();
 }
 
-bool ASRAgent::startRecognition()
+void ASRAgent::startRecognition(AsrRecognizeCallback callback)
 {
     nugu_dbg("startRecognition()");
 
+    if (callback != nullptr)
+        rec_callback = std::move(callback);
+
     if (speech_recognizer->isMute())
-        return false;
+        return;
 
     saveAllContextInfo();
     capa_helper->requestFocus("asr", NULL);
-    return true;
 }
 
 void ASRAgent::stopRecognition()
@@ -311,6 +313,11 @@ void ASRAgent::clearResponseTimeout()
 {
     if (timer)
         timer->stop();
+}
+
+std::string ASRAgent::getRecognizeDialogId()
+{
+    return dialog_id;
 }
 
 void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_end, EventResultCallback cb)
@@ -438,7 +445,7 @@ void ASRAgent::parsingExpectSpeech(const char* message)
     nugu_dbg("Parsing ExpectSpeech directive");
 
     for (auto asr_listener : asr_listeners) {
-        asr_listener->onState(ASRState::EXPECTING_SPEECH);
+        asr_listener->onState(ASRState::EXPECTING_SPEECH, getRecognizeDialogId());
     }
 
     playsync_manager->setExpectSpeech(true);
@@ -470,11 +477,11 @@ void ASRAgent::parsingNotifyResult(const char* message)
 
     for (auto asr_listener : asr_listeners) {
         if (state == "PARTIAL")
-            asr_listener->onPartial(result);
+            asr_listener->onPartial(result, getRecognizeDialogId());
         else if (state == "COMPLETE")
-            asr_listener->onComplete(result);
+            asr_listener->onComplete(result, getRecognizeDialogId());
         else if (state == "NONE")
-            asr_listener->onNone();
+            asr_listener->onNone(getRecognizeDialogId());
     }
 
     if (state == "ERROR") {
@@ -503,13 +510,17 @@ void ASRAgent::onListeningState(ListeningState state)
             nugu_dbg("receive %s.%s(%s) result %d(code:%d)", getName().c_str(), ename.c_str(), msg_id.c_str(), success, code);
         });
 
+        std::string id = getRecognizeDialogId();
+        nugu_dbg("user request dialog id: %s", id.c_str());
+        if (rec_callback != nullptr && id.size())
+            rec_callback(id);
         break;
     }
     case ListeningState::LISTENING:
         nugu_dbg("ListeningState::LISTENING");
 
         for (auto asr_listener : asr_listeners) {
-            asr_listener->onState(ASRState::LISTENING);
+            asr_listener->onState(ASRState::LISTENING, getRecognizeDialogId());
         }
 
         break;
@@ -517,7 +528,7 @@ void ASRAgent::onListeningState(ListeningState state)
         nugu_dbg("ListeningState::SPEECH_START");
 
         for (auto asr_listener : asr_listeners) {
-            asr_listener->onState(ASRState::RECOGNIZING);
+            asr_listener->onState(ASRState::RECOGNIZING, getRecognizeDialogId());
         }
 
         break;
@@ -531,7 +542,7 @@ void ASRAgent::onListeningState(ListeningState state)
         checkResponseTimeout();
 
         for (auto asr_listener : asr_listeners) {
-            asr_listener->onState(ASRState::BUSY);
+            asr_listener->onState(ASRState::BUSY, getRecognizeDialogId());
         }
 
         break;
@@ -582,9 +593,9 @@ void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error)
 {
     for (auto asr_listener : asr_listeners) {
         if (is_cancel)
-            asr_listener->onCancel();
+            asr_listener->onCancel(getRecognizeDialogId());
         else
-            asr_listener->onError(error);
+            asr_listener->onError(error, getRecognizeDialogId());
     }
 
     capa_helper->releaseFocus("asr");
