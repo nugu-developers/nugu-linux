@@ -27,21 +27,23 @@ const char* C_WHITE = "\033[1;97m";
 const char* C_RESET = "\033[0m";
 
 namespace asr {
-    const char* TAG = "[ASR] ";
+    const char* TAG = "[ASR]";
 
-    void state(const std::string& message)
+    void state(const std::string& dialog_id, const std::string& message)
     {
         std::cout << C_YELLOW
                   << TAG
+                  << "[id:" << dialog_id << "] "
                   << message
                   << C_RESET
                   << std::endl;
     }
 
-    void callback(const std::string& func, const std::string& message = "")
+    void callback(const std::string& func, const std::string& dialog_id, const std::string& message = "")
     {
         std::cout << C_CYAN
                   << TAG
+                  << "[id:" << dialog_id << "] "
                   << func
                   << (!message.empty() ? " > " + message : "")
                   << C_RESET
@@ -123,7 +125,9 @@ void SpeechOperator::startListening()
         return;
     }
 
-    asr_handler->startRecognition();
+    asr_handler->startRecognition([&](const std::string& dialog_id) {
+        msg::asr::callback(__FUNCTION__, dialog_id, "startRecognition callback");
+    });
 }
 
 void SpeechOperator::stopListeningAndWakeup()
@@ -158,71 +162,71 @@ void SpeechOperator::stopListening()
     asr_handler->stopRecognition();
 }
 
-void SpeechOperator::onState(ASRState state)
+void SpeechOperator::onState(ASRState state, const std::string& dialog_id)
 {
     switch (state) {
     case ASRState::IDLE: {
-        msg::asr::state("IDLE");
+        msg::asr::state(dialog_id, "IDLE");
         break;
     }
     case ASRState::EXPECTING_SPEECH: {
         msg::wakeup::state("stop wakeup");
         stopWakeup();
 
-        msg::asr::state("EXPECTING_SPEECH");
+        msg::asr::state(dialog_id, "EXPECTING_SPEECH");
         break;
     }
     case ASRState::LISTENING: {
-        msg::asr::state("LISTENING");
+        msg::asr::state(dialog_id, "LISTENING");
         break;
     }
     case ASRState::RECOGNIZING: {
-        msg::asr::state("RECOGNIZING");
+        msg::asr::state(dialog_id, "RECOGNIZING");
         break;
     }
     case ASRState::BUSY: {
-        msg::asr::state("BUSY");
+        msg::asr::state(dialog_id, "BUSY");
         break;
     }
     }
 }
 
-void SpeechOperator::onNone()
+void SpeechOperator::onNone(const std::string& dialog_id)
 {
-    msg::asr::callback(__FUNCTION__);
+    msg::asr::callback(__FUNCTION__, dialog_id);
 }
 
-void SpeechOperator::onPartial(const std::string& text)
+void SpeechOperator::onPartial(const std::string& text, const std::string& dialog_id)
 {
-    msg::asr::callback(__FUNCTION__, text);
+    msg::asr::callback(__FUNCTION__, dialog_id, text);
 }
 
-void SpeechOperator::onComplete(const std::string& text)
+void SpeechOperator::onComplete(const std::string& text, const std::string& dialog_id)
 {
-    msg::asr::callback(__FUNCTION__, text);
+    msg::asr::callback(__FUNCTION__, dialog_id, text);
 }
 
-void SpeechOperator::onError(ASRError error)
+void SpeechOperator::onError(ASRError error, const std::string& dialog_id)
 {
     switch (error) {
     case ASRError::RESPONSE_TIMEOUT: {
-        msg::asr::callback(__FUNCTION__, "RESPONSE_TIMEOUT");
+        msg::asr::callback(__FUNCTION__, dialog_id, "RESPONSE_TIMEOUT");
         break;
     }
     case ASRError::LISTEN_TIMEOUT: {
-        msg::asr::callback(__FUNCTION__, "LISTEN_TIMEOUT");
+        msg::asr::callback(__FUNCTION__, dialog_id, "LISTEN_TIMEOUT");
         break;
     }
     case ASRError::LISTEN_FAILED: {
-        msg::asr::callback(__FUNCTION__, "LISTEN_FAILED");
+        msg::asr::callback(__FUNCTION__, dialog_id, "LISTEN_FAILED");
         break;
     }
     case ASRError::RECOGNIZE_ERROR: {
-        msg::asr::callback(__FUNCTION__, "RECOGNIZE_ERROR");
+        msg::asr::callback(__FUNCTION__, dialog_id, "RECOGNIZE_ERROR");
         break;
     }
     case ASRError::UNKNOWN: {
-        msg::asr::callback(__FUNCTION__, "UNKNOWN");
+        msg::asr::callback(__FUNCTION__, dialog_id, "UNKNOWN");
         break;
     }
     }
@@ -230,7 +234,7 @@ void SpeechOperator::onError(ASRError error)
     std::cout << msg::C_RESET;
 }
 
-void SpeechOperator::onCancel()
+void SpeechOperator::onCancel(const std::string& dialog_id)
 {
-    msg::asr::callback(__FUNCTION__);
+    msg::asr::callback(__FUNCTION__, dialog_id);
 }

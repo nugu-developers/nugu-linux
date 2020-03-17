@@ -38,66 +38,66 @@ class MyASR : public IASRListener {
 public:
     virtual ~MyASR() = default;
 
-    void onState(ASRState state)
+    void onState(ASRState state, const std::string& dialog_id)
     {
         switch (state) {
         case ASRState::IDLE:
             std::cout << "ASR Idle" << std::endl;
             break;
         case ASRState::EXPECTING_SPEECH:
-            std::cout << "ASR Expecting speech" << std::endl;
+            std::cout << "ASR Expecting speech, request dialog id: " << dialog_id << std::endl;
             break;
         case ASRState::LISTENING:
-            std::cout << "ASR Listening... Speak please !" << std::endl;
+            std::cout << "ASR Listening... Speak please !, request dialog id: " << dialog_id << std::endl;
             break;
         case ASRState::RECOGNIZING:
-            std::cout << "ASR Recognizing..." << std::endl;
+            std::cout << "ASR Recognizing..., request dialog id: " << dialog_id << std::endl;
             break;
         case ASRState::BUSY:
-            std::cout << "ASR Processing..." << std::endl;
+            std::cout << "ASR Processing..., request dialog id: " << dialog_id << std::endl;
             break;
         }
     }
 
-    void onNone()
+    void onNone(const std::string& dialog_id)
     {
-        std::cout << "ASR no recognition result" << std::endl;
+        std::cout << "ASR no recognition result, request dialog id: " << dialog_id << std::endl;
     }
 
-    void onPartial(const std::string& text)
+    void onPartial(const std::string& text, const std::string& dialog_id)
     {
-        std::cout << "ASR partial result: " << text << std::endl;
+        std::cout << "ASR partial result: " << text << ", request dialog id: " << dialog_id << std::endl;
     }
 
-    void onComplete(const std::string& text)
+    void onComplete(const std::string& text, const std::string& dialog_id)
     {
-        std::cout << "ASR complete result: " << text << std::endl;
+        std::cout << "ASR complete result: " << text << ", request dialog id: " << dialog_id << std::endl;
     }
 
-    void onError(ASRError error)
+    void onError(ASRError error, const std::string& dialog_id)
     {
         switch (error) {
         case ASRError::RESPONSE_TIMEOUT:
-            std::cout << "ASR response timeout" << std::endl;
+            std::cout << "ASR response timeout, request dialog id: " << dialog_id << std::endl;
             break;
         case ASRError::LISTEN_TIMEOUT:
-            std::cout << "ASR listen timeout" << std::endl;
+            std::cout << "ASR listen timeout, request dialog id: " << dialog_id << std::endl;
             break;
         case ASRError::LISTEN_FAILED:
-            std::cout << "ASR listen failed" << std::endl;
+            std::cout << "ASR listen failed, request dialog id: " << dialog_id << std::endl;
             break;
         case ASRError::RECOGNIZE_ERROR:
-            std::cout << "ASR recognition error" << std::endl;
+            std::cout << "ASR recognition error, request dialog id: " << dialog_id << std::endl;
             break;
         case ASRError::UNKNOWN:
-            std::cout << "ASR unknown error" << std::endl;
+            std::cout << "ASR unknown error, request dialog id: " << dialog_id << std::endl;
             break;
         }
     }
 
-    void onCancel()
+    void onCancel(const std::string& dialog_id)
     {
-        std::cout << "ASR canceled" << std::endl;
+        std::cout << "ASR canceled, request dialog id: " << dialog_id << std::endl;
     }
 
     void setExpectSpeechState(bool is_es_state)
@@ -117,7 +117,9 @@ public:
         case NetworkStatus::CONNECTED:
             std::cout << "Network connected !" << std::endl;
             std::cout << "Start ASR Recognition !" << std::endl;
-            asr_handler->startRecognition();
+            asr_handler->startRecognition([&](const std::string& dialog_id) {
+                std::cout << "ASR request dialog id: " << dialog_id << std::endl;
+            });
             break;
         case NetworkStatus::CONNECTING:
             std::cout << "Network connecting..." << std::endl;
