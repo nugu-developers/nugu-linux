@@ -310,11 +310,13 @@ void Capability::getProperties(const std::string& property, std::list<std::strin
     values.clear();
 }
 
-void Capability::sendEvent(const std::string& name, const std::string& context, const std::string& payload, EventResultCallback cb, bool is_sync)
+std::string Capability::sendEvent(const std::string& name, const std::string& context, const std::string& payload, EventResultCallback cb, bool is_sync)
 {
     CapabilityEvent event(name, this);
 
     sendEvent(&event, context, payload, std::move(cb), is_sync);
+
+    return event.getDialogRequestId();
 }
 
 void Capability::sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload, EventResultCallback cb, bool is_sync)

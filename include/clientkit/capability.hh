@@ -235,8 +235,9 @@ public:
      * @param[in] context context info
      * @param[in] payload payload info
      * @param[in] is_sync whether synchronized blocking event
+     * @return event's request dialog id
      */
-    void sendEvent(const std::string& name, const std::string& context, const std::string& payload, EventResultCallback cb = nullptr, bool is_sync = false);
+    std::string sendEvent(const std::string& name, const std::string& context, const std::string& payload, EventResultCallback cb = nullptr, bool is_sync = false);
 
     /**
      * @brief Send event to server.
