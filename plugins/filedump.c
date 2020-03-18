@@ -97,8 +97,10 @@ static int _pcm_push_data(NuguPcmDriver *driver, NuguPcm *pcm, const char *data,
 
 	fd = GPOINTER_TO_INT(nugu_pcm_get_userdata(pcm));
 
-	if (write(fd, data, size) < 0)
-		return -1;
+	if (data != NULL && size > 0) {
+		if (write(fd, data, size) < 0)
+			return -1;
+	}
 
 	return 0;
 }
