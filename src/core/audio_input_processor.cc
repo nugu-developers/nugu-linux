@@ -134,7 +134,7 @@ void AudioInputProcessor::sendSyncEvent(const std::function<void()>& action)
 
     std::unique_lock<std::mutex> lock(data->mutex);
 
-    g_main_context_invoke(NULL, invoke_sync_event, data);
+    g_idle_add(invoke_sync_event, data);
 
     data->cond.wait(lock);
     lock.unlock();
