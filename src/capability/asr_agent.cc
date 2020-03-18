@@ -80,6 +80,9 @@ NuguFocusResult ASRFocusListener::onUnfocus(void* event, NuguUnFocusMode mode)
 
 NuguFocusStealResult ASRFocusListener::onStealRequest(void* event, NuguFocusType target_type)
 {
+    if (target_type == NUGU_FOCUS_TYPE_ALERT)
+        return NUGU_FOCUS_STEAL_ALLOW;
+
     return (agent->getListeningState() == ListeningState::DONE) ? NUGU_FOCUS_STEAL_ALLOW : NUGU_FOCUS_STEAL_REJECT;
 }
 
