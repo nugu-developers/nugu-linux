@@ -506,6 +506,9 @@ EXPORT_API int nugu_pcm_push_data_done(NuguPcm *pcm)
 
 	pthread_mutex_unlock(&pcm->mutex);
 
+	if (pcm->driver->ops->push_data)
+		pcm->driver->ops->push_data(pcm->driver, pcm, NULL, 0, 1);
+
 	return 0;
 }
 
