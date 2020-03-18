@@ -139,7 +139,7 @@ NuguFocusResult TTSAgent::onUnfocus(void* event, NuguUnFocusMode mode)
 
 NuguFocusStealResult TTSAgent::onStealRequest(void* event, NuguFocusType target_type)
 {
-    if (target_type == NUGU_FOCUS_TYPE_ASR || target_type == NUGU_FOCUS_TYPE_TTS)
+    if (target_type <= NUGU_FOCUS_TYPE_TTS)
         return NUGU_FOCUS_STEAL_ALLOW;
     else
         return NUGU_FOCUS_STEAL_REJECT;

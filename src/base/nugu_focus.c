@@ -22,7 +22,7 @@
 #include "base/nugu_log.h"
 #include "base/nugu_focus.h"
 
-static const char *const _type_str[] = { "WAKEWORD",   "ASR",   "ALERT", "TTS",
+static const char *const _type_str[] = { "ALERT",      "ASR",   "TTS",
 					 "ASR_EXPECT", "MEDIA", "CUSTOM" };
 
 struct _nugu_focus {

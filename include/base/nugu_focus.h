@@ -38,9 +38,8 @@ extern "C" {
  * @brief Predefined focus types by priority
  */
 enum nugu_focus_type {
-	NUGU_FOCUS_TYPE_WAKEWORD, /**< Wakeword */
-	NUGU_FOCUS_TYPE_ASR, /**< ASR */
 	NUGU_FOCUS_TYPE_ALERT, /**< Alerts */
+	NUGU_FOCUS_TYPE_ASR, /**< ASR */
 	NUGU_FOCUS_TYPE_TTS, /**< TTS */
 	NUGU_FOCUS_TYPE_ASR_EXPECT, /**< ASR Expect speech */
 	NUGU_FOCUS_TYPE_MEDIA, /**< Media player */
