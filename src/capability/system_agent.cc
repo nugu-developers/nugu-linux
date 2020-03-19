@@ -335,8 +335,10 @@ void SystemAgent::parsingException(const char* message)
         capa_helper->releaseFocus("asr");
     }
 
+    std::string dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
+
     if (system_listener)
-        system_listener->onException(exception);
+        system_listener->onException(exception, dialog_id);
 }
 
 void SystemAgent::parsingNoDirectives(const char* message)
@@ -349,7 +351,10 @@ void SystemAgent::parsingNoDirectives(const char* message)
         return;
     }
 
-    // Do Nothing
+    std::string dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
+
+    if (system_listener)
+        system_listener->onNoDirective(dialog_id);
 }
 
 void SystemAgent::parsingRevoke(const char* message)
