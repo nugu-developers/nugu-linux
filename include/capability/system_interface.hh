@@ -63,8 +63,9 @@ public:
     /**
      * @brief Deliver the exception received from the server to the user.
      * @param[in] exception server exception
+     * @param[in] dialog_id dialog request id
      */
-    virtual void onException(SystemException exception) = 0;
+    virtual void onException(SystemException exception, const std::string& dialog_id) = 0;
 
     /**
      * @brief Received a device turn off request from the server.
@@ -76,6 +77,12 @@ public:
      * @param[in] reason reason for revoke
      */
     virtual void onRevoke(RevokeReason reason) = 0;
+
+    /**
+     * @brief Received a no directive from the server.
+     * @param[in] dialog_id dialog request id
+     */
+    virtual void onNoDirective(const std::string& dialog_id) = 0;
 };
 
 /**

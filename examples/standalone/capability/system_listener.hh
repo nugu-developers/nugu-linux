@@ -25,9 +25,10 @@ class SystemListener : public ISystemListener {
 public:
     virtual ~SystemListener() = default;
 
-    void onException(SystemException exception) override;
+    void onException(SystemException exception, const std::string& dialog_id) override;
     void onTurnOff(void) override;
     void onRevoke(RevokeReason reason) override;
+    void onNoDirective(const std::string& dialog_id) override;
 };
 
 #endif /* __TTS_LISTENER_H__ */
