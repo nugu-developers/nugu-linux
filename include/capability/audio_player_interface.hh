@@ -74,8 +74,9 @@ public:
     /**
      * @brief Report this to the user when the state of the audio player changes.
      * @param[in] state audioplayer's state
+     * @param[in] dialog_id dialog request id
      */
-    virtual void mediaStateChanged(AudioPlayerState state) = 0;
+    virtual void mediaStateChanged(AudioPlayerState state, const std::string& dialog_id) = 0;
 
     /**
      * @brief The audio player reports the total duration of the content being played to the user.
@@ -92,20 +93,23 @@ public:
     /**
      * @brief The audio player reports to the user the current content's favorite setting changed.
      * @param[in] favorite media content's favorite
+     * @param[in] dialog_id dialog request id
      */
-    virtual void favoriteChanged(bool favorite) = 0;
+    virtual void favoriteChanged(bool favorite, const std::string& dialog_id) = 0;
 
     /**
      * @brief The audio player reports to the user the current content's shuffle setting changed.
      * @param[in] shuffle media content's shuffle
+     * @param[in] dialog_id dialog request id
      */
-    virtual void shuffleChanged(bool shuffle) = 0;
+    virtual void shuffleChanged(bool shuffle, const std::string& dialog_id) = 0;
 
     /**
      * @brief The audio player reports to the user the current content's repeat setting changed.
      * @param[in] repeat media content's repeat
+     * @param[in] dialog_id dialog request id
      */
-    virtual void repeatChanged(RepeatType repeat) = 0;
+    virtual void repeatChanged(RepeatType repeat, const std::string& dialog_id) = 0;
 
     /**
      * @brief The audio player request to the user to cache the content if possible
@@ -133,33 +137,39 @@ public:
 
     /**
      * @brief Request the audio player to play the current content.
+     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual void play() = 0;
+    virtual std::string play() = 0;
 
     /**
      * @brief Request the audio player to stop the current content.
+     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual void stop() = 0;
+    virtual std::string stop() = 0;
 
     /**
      * @brief Request the audio player to play the next content.
+     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual void next() = 0;
+    virtual std::string next() = 0;
 
     /**
      * @brief Request the audio player to play the previous content.
+     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual void prev() = 0;
+    virtual std::string prev() = 0;
 
     /**
      * @brief Request the audio player to pause the current content.
+     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual void pause() = 0;
+    virtual std::string pause() = 0;
 
     /**
      * @brief Request the audio player to resume the current content.
+     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual void resume() = 0;
+    virtual std::string resume() = 0;
 
     /**
      * @brief Request the audio player to move the current content section.
@@ -170,20 +180,23 @@ public:
     /**
      * @brief Request the audio player to set favorite the content.
      * @param[in] favorite favorite value
+     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual void setFavorite(bool favorite) = 0;
+    virtual std::string setFavorite(bool favorite) = 0;
 
     /**
      * @brief Request the audio player to set repeat the content.
      * @param[in] repeat repeat value
+     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual void setRepeat(RepeatType repeat) = 0;
+    virtual std::string setRepeat(RepeatType repeat) = 0;
 
     /**
      * @brief Request the audio player to set shuffle the content.
      * @param[in] shuffle shuffle value
+     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual void setShuffle(bool shuffle) = 0;
+    virtual std::string setShuffle(bool shuffle) = 0;
 
     /**
      * @brief set media player's volume

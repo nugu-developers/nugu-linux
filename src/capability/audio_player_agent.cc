@@ -193,34 +193,46 @@ NuguFocusStealResult AudioPlayerAgent::onStealRequest(void* event, NuguFocusType
     return NUGU_FOCUS_STEAL_ALLOW;
 }
 
-void AudioPlayerAgent::play()
+std::string AudioPlayerAgent::play()
 {
-    sendEventByDisplayInterface("PlayCommandIssued");
+    std::string id = sendEventByDisplayInterface("PlayCommandIssued");
+    nugu_dbg("user request dialog id: %s", id.c_str());
+    return id;
 }
 
-void AudioPlayerAgent::stop()
+std::string AudioPlayerAgent::stop()
 {
-    sendEventByDisplayInterface("StopCommandIssued");
+    std::string id = sendEventByDisplayInterface("StopCommandIssued");
+    nugu_dbg("user request dialog id: %s", id.c_str());
+    return id;
 }
 
-void AudioPlayerAgent::next()
+std::string AudioPlayerAgent::next()
 {
-    sendEventByDisplayInterface("NextCommandIssued");
+    std::string id = sendEventByDisplayInterface("NextCommandIssued");
+    nugu_dbg("user request dialog id: %s", id.c_str());
+    return id;
 }
 
-void AudioPlayerAgent::prev()
+std::string AudioPlayerAgent::prev()
 {
-    sendEventByDisplayInterface("PreviousCommandIssued");
+    std::string id = sendEventByDisplayInterface("PreviousCommandIssued");
+    nugu_dbg("user request dialog id: %s", id.c_str());
+    return id;
 }
 
-void AudioPlayerAgent::pause()
+std::string AudioPlayerAgent::pause()
 {
-    sendEventByDisplayInterface("PauseCommandIssued");
+    std::string id = sendEventByDisplayInterface("PauseCommandIssued");
+    nugu_dbg("user request dialog id: %s", id.c_str());
+    return id;
 }
 
-void AudioPlayerAgent::resume()
+std::string AudioPlayerAgent::resume()
 {
-    sendEventByDisplayInterface("PlayCommandIssued");
+    std::string id = sendEventByDisplayInterface("PlayCommandIssued");
+    nugu_dbg("user request dialog id: %s", id.c_str());
+    return id;
 }
 
 void AudioPlayerAgent::seek(int msec)
@@ -229,7 +241,7 @@ void AudioPlayerAgent::seek(int msec)
         cur_player->seek(msec * 1000);
 }
 
-void AudioPlayerAgent::setFavorite(bool favorite)
+std::string AudioPlayerAgent::setFavorite(bool favorite)
 {
     std::string ename = "FavoriteCommandIssued";
     std::string payload = "";
@@ -239,7 +251,7 @@ void AudioPlayerAgent::setFavorite(bool favorite)
 
     if (offset < 0 && cur_token.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
-        return;
+        return "";
     }
 
     root["token"] = cur_token;
@@ -248,10 +260,12 @@ void AudioPlayerAgent::setFavorite(bool favorite)
     root["favorite"] = favorite;
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload);
+    std::string id = sendEvent(ename, getContextInfo(), payload);
+    nugu_dbg("user request dialog id: %s", id.c_str());
+    return id;
 }
 
-void AudioPlayerAgent::setRepeat(RepeatType repeat)
+std::string AudioPlayerAgent::setRepeat(RepeatType repeat)
 {
     std::string ename = "RepeatCommandIssued";
     std::string payload = "";
@@ -261,7 +275,7 @@ void AudioPlayerAgent::setRepeat(RepeatType repeat)
 
     if (offset < 0 && cur_token.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
-        return;
+        return "";
     }
 
     root["token"] = cur_token;
@@ -280,10 +294,12 @@ void AudioPlayerAgent::setRepeat(RepeatType repeat)
     }
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload);
+    std::string id = sendEvent(ename, getContextInfo(), payload);
+    nugu_dbg("user request dialog id: %s", id.c_str());
+    return id;
 }
 
-void AudioPlayerAgent::setShuffle(bool shuffle)
+std::string AudioPlayerAgent::setShuffle(bool shuffle)
 {
     std::string ename = "ShuffleCommandIssued";
     std::string payload = "";
@@ -293,7 +309,7 @@ void AudioPlayerAgent::setShuffle(bool shuffle)
 
     if (offset < 0 && cur_token.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
-        return;
+        return "";
     }
 
     root["token"] = cur_token;
@@ -302,7 +318,9 @@ void AudioPlayerAgent::setShuffle(bool shuffle)
     root["shuffle"] = shuffle;
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload);
+    std::string id = sendEvent(ename, getContextInfo(), payload);
+    nugu_dbg("user request dialog id: %s", id.c_str());
+    return id;
 }
 
 bool AudioPlayerAgent::setVolume(int volume)
@@ -500,12 +518,12 @@ void AudioPlayerAgent::sendEventProgressReportIntervalElapsed(EventResultCallbac
     sendEventCommon("ProgressReportIntervalElapsed", std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventByDisplayInterface(const std::string& command, EventResultCallback cb)
+std::string AudioPlayerAgent::sendEventByDisplayInterface(const std::string& command, EventResultCallback cb)
 {
-    sendEventCommon(command, std::move(cb));
+    return sendEventCommon(command, std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventCommon(const std::string& ename, EventResultCallback cb)
+std::string AudioPlayerAgent::sendEventCommon(const std::string& ename, EventResultCallback cb)
 {
     std::string payload = "";
     Json::StyledWriter writer;
@@ -514,7 +532,7 @@ void AudioPlayerAgent::sendEventCommon(const std::string& ename, EventResultCall
 
     if (offset < 0 && cur_token.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
-        return;
+        return "";
     }
 
     root["token"] = cur_token;
@@ -522,7 +540,7 @@ void AudioPlayerAgent::sendEventCommon(const std::string& ename, EventResultCall
     root["offsetInMilliseconds"] = std::to_string(offset);
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload, std::move(cb));
+    return sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 bool AudioPlayerAgent::isContentCached(const std::string& key, std::string& playurl)
@@ -633,7 +651,8 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     nugu_dbg("= report_delay_time: %d", report_delay_time);
     nugu_dbg("= report_interval_time: %d", report_interval_time);
 
-    std::string id = getReferrerDialogRequestId();
+    std::string ref_id = getReferrerDialogRequestId();
+    std::string dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
     // Different tokens mean different media play requests.
     if (token != cur_token
         /* Temporary add condition: Service(keyword news) is always same token on 2020/03/12 */
@@ -647,8 +666,9 @@ void AudioPlayerAgent::parsingPlay(const char* message)
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
         }
     }
-    setReferrerDialogRequestId(id);
-    pre_ref_dialog_id = id;
+    setReferrerDialogRequestId(ref_id);
+    pre_ref_dialog_id = ref_id;
+    cur_dialog_id = dialog_id;
     cur_token = token;
     ps_id = play_service_id;
 
@@ -698,6 +718,7 @@ void AudioPlayerAgent::parsingPause(const char* message)
         if (cur_player->state() == MediaPlayerState::PAUSED && cur_aplayer_state == AudioPlayerState::PAUSED)
             sendEventPlaybackPaused();
         else {
+            cur_dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
             if (!cur_player->pause()) {
                 nugu_error("pause media failed");
                 sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't pause");
@@ -739,6 +760,7 @@ void AudioPlayerAgent::parsingStop(const char* message)
             speak_dir = nullptr;
         }
 
+        cur_dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
         if (!cur_player->stop()) {
             nugu_error("stop media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
@@ -773,6 +795,8 @@ void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
         return;
     }
 
+    std::string dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
+
     settings = root["metadata"]["template"]["settings"];
     if (!settings["repeat"].empty()) {
         std::string repeat = settings["repeat"].asString();
@@ -784,19 +808,19 @@ void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
             type = RepeatType::ALL;
 
         for (auto aplayer_listener : aplayer_listeners)
-            aplayer_listener->repeatChanged(type);
+            aplayer_listener->repeatChanged(type, dialog_id);
     }
     if (!settings["favorite"].empty()) {
         bool favorite = settings["favorite"].asBool();
 
         for (auto aplayer_listener : aplayer_listeners)
-            aplayer_listener->favoriteChanged(favorite);
+            aplayer_listener->favoriteChanged(favorite, dialog_id);
     }
     if (!settings["shuffle"].empty()) {
         bool shuffle = settings["shuffle"].asBool();
 
         for (auto aplayer_listener : aplayer_listeners)
-            aplayer_listener->shuffleChanged(shuffle);
+            aplayer_listener->shuffleChanged(shuffle, dialog_id);
     }
 }
 
@@ -964,7 +988,7 @@ void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
         return;
 
     for (auto aplayer_listener : aplayer_listeners)
-        aplayer_listener->mediaStateChanged(cur_aplayer_state);
+        aplayer_listener->mediaStateChanged(cur_aplayer_state, cur_dialog_id);
 
     if (is_paused && cur_aplayer_state == AudioPlayerState::PAUSED) {
         nugu_info("[audioplayer state] skip to save prev_aplayer_state");

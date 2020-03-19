@@ -57,16 +57,16 @@ public:
     // implements IAudioPlayerHandler
     void addListener(IAudioPlayerListener* listener) override;
     void removeListener(IAudioPlayerListener* listener) override;
-    void play() override;
-    void stop() override;
-    void next() override;
-    void prev() override;
-    void pause() override;
-    void resume() override;
+    std::string play() override;
+    std::string stop() override;
+    std::string next() override;
+    std::string prev() override;
+    std::string pause() override;
+    std::string resume() override;
     void seek(int msec) override;
-    void setFavorite(bool favorite) override;
-    void setRepeat(RepeatType repeat) override;
-    void setShuffle(bool shuffle) override;
+    std::string setFavorite(bool favorite) override;
+    std::string setRepeat(RepeatType repeat) override;
+    std::string setShuffle(bool shuffle) override;
     bool setVolume(int volume) override;
     bool setMute(bool mute) override;
 
@@ -78,7 +78,7 @@ public:
     void sendEventPlaybackFailed(PlaybackError err, const std::string& reason, EventResultCallback cb = nullptr);
     void sendEventProgressReportDelayElapsed(EventResultCallback cb = nullptr);
     void sendEventProgressReportIntervalElapsed(EventResultCallback cb = nullptr);
-    void sendEventByDisplayInterface(const std::string& command, EventResultCallback cb = nullptr);
+    std::string sendEventByDisplayInterface(const std::string& command, EventResultCallback cb = nullptr);
     void sendEventShowLyricsSucceeded(EventResultCallback cb = nullptr);
     void sendEventShowLyricsFailed(EventResultCallback cb = nullptr);
     void sendEventHideLyricsSucceeded(EventResultCallback cb = nullptr);
@@ -98,7 +98,7 @@ public:
     void muteChanged(int mute) override;
 
 private:
-    void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);
+    std::string sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);
 
     AudioPlayerState audioPlayerState();
 
@@ -135,6 +135,7 @@ private:
     long report_interval_time;
     std::string cur_token;
     std::string pre_ref_dialog_id;
+    std::string cur_dialog_id;
     bool is_finished;
     std::vector<IAudioPlayerListener*> aplayer_listeners;
 };
