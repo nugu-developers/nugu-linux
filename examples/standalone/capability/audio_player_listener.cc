@@ -18,9 +18,9 @@
 
 #include "audio_player_listener.hh"
 
-void AudioPlayerListener::mediaStateChanged(AudioPlayerState state)
+void AudioPlayerListener::mediaStateChanged(AudioPlayerState state, const std::string& dialog_id)
 {
-    std::cout << "[AudioPlayer] ";
+    std::cout << "[AudioPlayer][id:" << dialog_id << "] ";
     switch (state) {
     case AudioPlayerState::IDLE:
         std::cout << "IDLE\n";
@@ -50,19 +50,19 @@ void AudioPlayerListener::positionChanged(int position)
     std::cout << "[AudioPlayer] - position: " << position << std::endl;
 }
 
-void AudioPlayerListener::favoriteChanged(bool favorite)
+void AudioPlayerListener::favoriteChanged(bool favorite, const std::string& dialog_id)
 {
-    std::cout << "[AudioPlayer] - favorite: " << favorite << std::endl;
+    std::cout << "[AudioPlayer][id:" << dialog_id << "] - favorite: " << favorite << std::endl;
 }
 
-void AudioPlayerListener::shuffleChanged(bool shuffle)
+void AudioPlayerListener::shuffleChanged(bool shuffle, const std::string& dialog_id)
 {
-    std::cout << "[AudioPlayer] - shuffle: " << shuffle << std::endl;
+    std::cout << "[AudioPlayer][id:" << dialog_id << "] - shuffle: " << shuffle << std::endl;
 }
 
-void AudioPlayerListener::repeatChanged(RepeatType repeat)
+void AudioPlayerListener::repeatChanged(RepeatType repeat, const std::string& dialog_id)
 {
-    std::cout << "[AudioPlayer] - repeat: " << (int)repeat << std::endl;
+    std::cout << "[AudioPlayer][id:" << dialog_id << "] - repeat: " << (int)repeat << std::endl;
 }
 
 void AudioPlayerListener::requestContentCache(const std::string& key, const std::string& playurl)
