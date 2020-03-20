@@ -199,8 +199,12 @@ void Capability::notifyEventResult(const std::string& event_desc)
     bool success;
     int code;
 
-    if (parseEventResultDesc(event_desc, ename, msg_id, dialog_id, success, code))
-        event_result_cbs[ename](ename, msg_id, dialog_id, success, code);
+    if (parseEventResultDesc(event_desc, ename, msg_id, dialog_id, success, code)) {
+        if (event_result_cbs.find(ename) == event_result_cbs.end())
+            nugu_warn("%s is not match in event result callback", ename.c_str());
+        else
+            event_result_cbs[ename](ename, msg_id, dialog_id, success, code);
+    }
 }
 
 std::string Capability::getReferrerDialogRequestId()
