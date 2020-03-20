@@ -43,8 +43,7 @@ SystemAgent::SystemAgent()
                 nugu_error("handoff failed");
                 break;
             case NUGU_NETWORK_HANDOFF_READY:
-                nugu_dbg("handoff ready. send 'Disconnect' event");
-                sa->sendEventDisconnect();
+                nugu_dbg("handoff ready.");
                 break;
             case NUGU_NETWORK_HANDOFF_COMPLETED:
                 nugu_dbg("handoff completed. send 'SynchronizeState' event");
@@ -81,8 +80,6 @@ void SystemAgent::initialize()
 
 void SystemAgent::deInitialize()
 {
-    disconnect();
-
     if (timer) {
         delete timer;
         timer = nullptr;
@@ -148,14 +145,6 @@ void SystemAgent::synchronizeState()
     sendEventSynchronizeState();
 }
 
-void SystemAgent::disconnect()
-{
-    if (timer)
-        timer->stop();
-
-    sendEventDisconnect();
-}
-
 void SystemAgent::updateUserActivity()
 {
     if (timer)
@@ -180,14 +169,6 @@ void SystemAgent::sendEventUserInactivityReport(int seconds, EventResultCallback
     payload = buf;
 
     sendEvent(ename, getContextInfo(), payload, std::move(cb));
-}
-
-void SystemAgent::sendEventDisconnect(EventResultCallback cb)
-{
-    std::string ename = "Disconnect";
-    std::string payload = "";
-
-    sendEvent(ename, getContextInfo(), payload, std::move(cb), true);
 }
 
 void SystemAgent::sendEventEcho(EventResultCallback cb)

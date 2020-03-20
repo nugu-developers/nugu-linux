@@ -99,11 +99,6 @@ public:
     virtual void synchronizeState() = 0;
 
     /**
-     * @brief Send disconnect event to server.
-     */
-    virtual void disconnect() = 0;
-
-    /**
      * @brief Update a timer that measures the user's inactivity.
      */
     virtual void updateUserActivity() = 0;
