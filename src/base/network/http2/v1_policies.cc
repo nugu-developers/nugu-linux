@@ -85,18 +85,6 @@ static void _parse_servers(const Json::Value& root)
             continue;
         }
 
-        if (server["address"].isString()) {
-            const char* tmp = server["address"].asCString();
-            if (tmp) {
-                int len = strlen(tmp);
-                memcpy(server_item->address, tmp, (len > NUGU_NETWORK_MAX_ADDRESS) ? NUGU_NETWORK_MAX_ADDRESS : len);
-            }
-        } else {
-            nugu_error("can't find 'address' string attribute in item-%d", i);
-            free(server_item);
-            continue;
-        }
-
         if (server["port"].isNumeric()) {
             server_item->port = server["port"].asInt();
         } else {

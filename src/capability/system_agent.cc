@@ -224,17 +224,6 @@ void SystemAgent::parsingHandoffConnection(const char* message)
         return;
     }
 
-    if (root["address"].isString()) {
-        const char* tmp = root["address"].asCString();
-        if (tmp) {
-            int len = strlen(tmp);
-            memcpy(policy.address, tmp, (len > NUGU_NETWORK_MAX_ADDRESS) ? NUGU_NETWORK_MAX_ADDRESS : len);
-        }
-    } else {
-        nugu_error("can't find 'address' string attribute");
-        return;
-    }
-
     if (root["port"].isNumeric()) {
         policy.port = root["port"].asInt();
     } else {
@@ -265,8 +254,8 @@ void SystemAgent::parsingHandoffConnection(const char* message)
         nugu_error("can't find 'charge' attribute");
     }
 
-    nugu_dbg("%s:%d (%s:%d, protocol=%d)", policy.hostname, policy.port,
-        policy.address, policy.port, policy.protocol);
+    nugu_dbg("%s:%d (protocol=%d)", policy.hostname, policy.port,
+        policy.protocol);
     nugu_dbg(" - retryCountLimit: %d, connectionTimeout: %d, charge: %d",
         policy.retry_count_limit, policy.connection_timeout_ms, policy.is_charge);
 
