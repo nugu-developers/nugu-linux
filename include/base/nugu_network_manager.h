@@ -125,7 +125,6 @@ enum nugu_network_protocol {
  */
 typedef struct nugu_network_server_policy {
 	enum nugu_network_protocol protocol; /**< protocol */
-	char address[NUGU_NETWORK_MAX_ADDRESS + 1]; /**< IP address */
 	char hostname[NUGU_NETWORK_MAX_ADDRESS + 1]; /**< dns name */
 	int port; /**< port number */
 	int retry_count_limit; /**< maximum number of connection retries */
