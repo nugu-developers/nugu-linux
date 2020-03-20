@@ -38,12 +38,10 @@ public:
     void receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
 
     void synchronizeState() override;
-    void disconnect() override;
     void updateUserActivity() override;
 
     void sendEventSynchronizeState(EventResultCallback cb = nullptr);
     void sendEventUserInactivityReport(int seconds, EventResultCallback cb = nullptr);
-    void sendEventDisconnect(EventResultCallback cb = nullptr);
     void sendEventEcho(EventResultCallback cb = nullptr);
 
 private:
