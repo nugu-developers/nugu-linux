@@ -22,7 +22,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "AudioPlayer";
-static const char* CAPABILITY_VERSION = "1.1";
+static const char* CAPABILITY_VERSION = "1.2";
 
 AudioPlayerAgent::AudioPlayerAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -370,6 +370,14 @@ void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
         parsingHideLyrics(message);
     else if (!strcmp(dname, "ControlLyricsPage"))
         parsingControlLyricsPage(message);
+    else if (!strcmp(dname, "RequestPlayCommand"))
+        parsingRequestPlayCommand(dname, message);
+    else if (!strcmp(dname, "RequestResumeCommand")
+        || !strcmp(dname, "RequestNextCommand")
+        || !strcmp(dname, "RequestPreviousCommand")
+        || !strcmp(dname, "RequestPauseCommand")
+        || !strcmp(dname, "RequestStopCommand"))
+        sendEventByRequestDirective(dname);
     else
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
 }
@@ -478,6 +486,18 @@ void AudioPlayerAgent::sendEventControlLyricsPageSucceeded(EventResultCallback c
 void AudioPlayerAgent::sendEventControlLyricsPageFailed(EventResultCallback cb)
 {
     sendEventCommon("ControlLyricsPageFailed", std::move(cb));
+}
+
+void AudioPlayerAgent::sendEventRequestPlayCommandIssued(const std::string& dname, const std::string& payload, EventResultCallback cb)
+{
+    std::string ename = dname + "Issued";
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
+}
+
+void AudioPlayerAgent::sendEventByRequestDirective(const std::string& dname, EventResultCallback cb)
+{
+    std::string ename = dname + "Issued";
+    sendEventCommon(ename, std::move(cb));
 }
 
 void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::string& reason, EventResultCallback cb)
@@ -891,6 +911,29 @@ void AudioPlayerAgent::parsingControlLyricsPage(const char* message)
         nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
         return;
     }
+}
+
+void AudioPlayerAgent::parsingRequestPlayCommand(const char* dname, const char* message)
+{
+    Json::Value root;
+    Json::Reader reader;
+    std::string play_service_id;
+    std::string payload;
+
+    if (!reader.parse(message, root)) {
+        nugu_error("parsing error");
+        return;
+    }
+
+    play_service_id = root["playServiceId"].asString();
+
+    if (play_service_id.size() == 0 || root["tracks"].empty() || root["tracks"].size() == 0) {
+        nugu_error("There is no mandatory data in directive message");
+        return;
+    }
+
+    payload = message;
+    sendEventRequestPlayCommandIssued(dname, payload);
 }
 
 std::string AudioPlayerAgent::playbackError(PlaybackError error)

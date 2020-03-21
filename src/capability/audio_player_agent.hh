@@ -85,6 +85,8 @@ public:
     void sendEventHideLyricsFailed(EventResultCallback cb = nullptr);
     void sendEventControlLyricsPageSucceeded(EventResultCallback cb = nullptr);
     void sendEventControlLyricsPageFailed(EventResultCallback cb = nullptr);
+    void sendEventByRequestDirective(const std::string& dname, EventResultCallback cb = nullptr);
+    void sendEventRequestPlayCommandIssued(const std::string& dname, const std::string& payload, EventResultCallback cb = nullptr);
 
     void mediaStateChanged(MediaPlayerState state) override;
     void mediaEventReport(MediaPlayerEvent event) override;
@@ -110,6 +112,7 @@ private:
     void parsingShowLyrics(const char* message);
     void parsingHideLyrics(const char* message);
     void parsingControlLyricsPage(const char* message);
+    void parsingRequestPlayCommand(const char* dname, const char* message);
 
     std::string playbackError(PlaybackError error);
     std::string playerActivity(AudioPlayerState state);
