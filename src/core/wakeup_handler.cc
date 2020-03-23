@@ -65,8 +65,6 @@ void WakeupHandler::onWakeupState(WakeupState state)
     case WakeupState::DETECTED:
         nugu_dbg("WakeupState::DETECTED");
 
-        CapabilityManager::getInstance()->sendCommand("ASR", "ASR", "wakeup_detected", "");
-
         if (listener)
             listener->onWakeupState(WakeupDetectState::WAKEUP_DETECTED);
         break;

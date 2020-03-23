@@ -68,19 +68,22 @@ NuguFocusResult ASRFocusListener::onUnfocus(void* event, NuguUnFocusMode mode)
     nugu_dbg("ASRFocusListener::onUnfocus");
     speech_recognizer->stopListening();
 
-    auto agent_listeners = agent->getListener();
+    if (agent->getASRState() == ASRState::LISTENING
+        || agent->getASRState() == ASRState::RECOGNIZING
+        || agent->getASRState() == ASRState::EXPECTING_SPEECH)
+        agent->sendEventStopRecognize();
 
-    for (auto asr_listener : agent_listeners) {
-        asr_listener->onState(ASRState::IDLE, agent->getRecognizeDialogId());
-        agent->resetExpectSpeechState();
-    }
+    if (agent->getASRState() == ASRState::BUSY)
+        agent->setASRState(ASRState::IDLE);
+
+    agent->resetExpectSpeechState();
 
     return NUGU_FOCUS_REMOVE;
 }
 
 NuguFocusStealResult ASRFocusListener::onStealRequest(void* event, NuguFocusType target_type)
 {
-    if (target_type == NUGU_FOCUS_TYPE_ALERT)
+    if (target_type == NUGU_FOCUS_TYPE_ALERT || target_type == NUGU_FOCUS_TYPE_ASR)
         return NUGU_FOCUS_STEAL_ALLOW;
 
     return (agent->getListeningState() == ListeningState::DONE) ? NUGU_FOCUS_STEAL_ALLOW : NUGU_FOCUS_STEAL_REJECT;
@@ -113,7 +116,7 @@ ExpectFocusListener::~ExpectFocusListener()
 void ExpectFocusListener::onFocus(void* event)
 {
     nugu_dbg("ExpectFocusListener::onFocus");
-    agent->startRecognition();
+    agent->startRecognition(true);
 }
 
 NuguFocusResult ExpectFocusListener::onUnfocus(void* event, NuguUnFocusMode mode)
@@ -137,6 +140,7 @@ ASRAgent::ASRAgent()
     , timer(nullptr)
     , asr_focus_listener(nullptr)
     , expect_focus_listener(nullptr)
+    , cur_state(ASRState::IDLE)
     , model_path("")
     , epd_type(NUGU_ASR_EPD_TYPE)
     , asr_encoding(NUGU_ASR_ENCODING)
@@ -218,13 +222,22 @@ void ASRAgent::suspend()
 
 void ASRAgent::startRecognition(AsrRecognizeCallback callback)
 {
-    nugu_dbg("startRecognition()");
-
     if (callback != nullptr)
         rec_callback = std::move(callback);
 
-    if (speech_recognizer->isMute())
+    startRecognition(false);
+}
+
+void ASRAgent::startRecognition(bool expected)
+{
+    nugu_dbg("startRecognition(%d)", expected);
+
+    if (speech_recognizer->isMute()) {
+        nugu_warn("recorder is mute state");
+        if (rec_callback != nullptr)
+            rec_callback("");
         return;
+    }
 
     saveAllContextInfo();
     capa_helper->requestFocus("asr", NULL);
@@ -233,10 +246,10 @@ void ASRAgent::startRecognition(AsrRecognizeCallback callback)
 void ASRAgent::stopRecognition()
 {
     nugu_dbg("stopRecognition()");
-
-    if (rec_event)
-        sendEventStopRecognize();
-
+    if (isExpectSpeechState()) {
+        capa_helper->releaseFocus("expect");
+        resetExpectSpeechState();
+    }
     capa_helper->releaseFocus("asr");
 }
 
@@ -269,12 +282,7 @@ void ASRAgent::receiveCommand(const std::string& from, const std::string& comman
     convert_command.resize(command.size());
     std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
 
-    if (!convert_command.compare("wakeup_detected")) {
-        if (es_attr.is_handle) {
-            capa_helper->releaseFocus("expect");
-            es_attr = {};
-        }
-    } else if (!convert_command.compare("releasefocus")) {
+    if (!convert_command.compare("releasefocus")) {
         if (from == "System" || from == "CapabilityManager") {
             if (dialog_id == param)
                 capa_helper->releaseFocus("asr");
@@ -451,12 +459,8 @@ void ASRAgent::parsingExpectSpeech(const char* message)
     es_attr.asr_context = root["asrContext"];
 
     nugu_dbg("Parsing ExpectSpeech directive");
-
-    for (auto asr_listener : asr_listeners) {
-        asr_listener->onState(ASRState::EXPECTING_SPEECH, getRecognizeDialogId());
-    }
-
     playsync_manager->setExpectSpeech(true);
+    setASRState(ASRState::EXPECTING_SPEECH);
 
     capa_helper->requestFocus("expect", NULL);
 }
@@ -503,7 +507,6 @@ void ASRAgent::onListeningState(ListeningState state)
     switch (state) {
     case ListeningState::READY: {
         nugu_dbg("ListeningState::READY");
-
         clearResponseTimeout();
 
         if (rec_event)
@@ -522,37 +525,23 @@ void ASRAgent::onListeningState(ListeningState state)
         nugu_dbg("user request dialog id: %s", id.c_str());
         if (rec_callback != nullptr && id.size())
             rec_callback(id);
+
+        setASRState(ASRState::LISTENING);
         break;
     }
     case ListeningState::LISTENING:
         nugu_dbg("ListeningState::LISTENING");
-
-        for (auto asr_listener : asr_listeners) {
-            asr_listener->onState(ASRState::LISTENING, getRecognizeDialogId());
-        }
-
         break;
     case ListeningState::SPEECH_START:
         nugu_dbg("ListeningState::SPEECH_START");
-
-        for (auto asr_listener : asr_listeners) {
-            asr_listener->onState(ASRState::RECOGNIZING, getRecognizeDialogId());
-        }
-
+        setASRState(ASRState::RECOGNIZING);
         break;
     case ListeningState::SPEECH_END:
         nugu_dbg("ListeningState::SPEECH_END");
         nugu_info("speech end detected");
-
-        speech_recognizer->stopListening();
-
         sendEventRecognize(NULL, 0, true);
         checkResponseTimeout();
-
-        for (auto asr_listener : asr_listeners) {
-            asr_listener->onState(ASRState::BUSY, getRecognizeDialogId());
-        }
-
+        setASRState(ASRState::BUSY);
         break;
     case ListeningState::TIMEOUT:
         nugu_dbg("ListeningState::TIMEOUT");
@@ -561,24 +550,18 @@ void ASRAgent::onListeningState(ListeningState state)
         if (rec_event)
             rec_event->forceClose();
 
-        stopRecognition();
         sendEventListenTimeout();
         releaseASRFocus(false, ASRError::LISTEN_TIMEOUT);
-
         break;
     case ListeningState::FAILED:
         nugu_dbg("ListeningState::FAILED");
-
         if (rec_event)
             rec_event->forceClose();
 
-        stopRecognition();
         releaseASRFocus(false, ASRError::LISTEN_FAILED);
-
         break;
     case ListeningState::DONE:
         nugu_dbg("ListeningState::DONE");
-
         if (rec_event) {
             delete rec_event;
             rec_event = nullptr;
@@ -591,6 +574,8 @@ void ASRAgent::onListeningState(ListeningState state)
             releaseASRFocus(true, ASRError::UNKNOWN);
         }
 
+        if (prev_listening_state != ListeningState::SPEECH_END)
+            setASRState(ASRState::IDLE);
         break;
     }
 
@@ -635,6 +620,24 @@ void ASRAgent::resetExpectSpeechState()
 void ASRAgent::onRecordData(unsigned char* buf, int length)
 {
     sendEventRecognize((unsigned char*)buf, length, false);
+}
+
+void ASRAgent::setASRState(ASRState state)
+{
+    if (state == cur_state)
+        return;
+
+    nugu_info("[asr state] %d => %d", cur_state, state);
+
+    cur_state = state;
+
+    for (auto asr_listener : asr_listeners)
+        asr_listener->onState(state, getRecognizeDialogId());
+}
+
+ASRState ASRAgent::getASRState()
+{
+    return cur_state;
 }
 
 } // NuguCapability

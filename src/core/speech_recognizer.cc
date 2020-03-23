@@ -127,6 +127,7 @@ void SpeechRecognizer::loop()
             continue;
 
         nugu_dbg("Listening Thread: asr_is_running=%d", is_running);
+        sendSyncListeningEvent(ListeningState::READY);
 
         if (epd_client_start(model_file.c_str(), epd_param) < 0) {
             nugu_error("epd_client_start() failed");
@@ -245,6 +246,8 @@ void SpeechRecognizer::loop()
             continue;
 
         nugu_dbg("Listening Thread: asr_is_running=%d", is_running);
+        sendSyncListeningEvent(ListeningState::READY);
+
         nugu_error("nugu_epd is not supported");
         sendSyncListeningEvent(ListeningState::FAILED);
         is_running = false;
@@ -255,9 +258,6 @@ void SpeechRecognizer::loop()
 bool SpeechRecognizer::startListening()
 {
     return AudioInputProcessor::start([&] {
-        if (listener)
-            listener->onListeningState(ListeningState::READY);
-
         epd_ret = 0;
     });
 }

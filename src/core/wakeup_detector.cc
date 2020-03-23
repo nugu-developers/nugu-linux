@@ -31,7 +31,7 @@ static const char* MODEL_PATH = "./";
 
 WakeupDetector::WakeupDetector()
 {
-    initialize(Attribute{});
+    initialize(Attribute {});
 }
 
 WakeupDetector::~WakeupDetector()
@@ -71,7 +71,6 @@ void WakeupDetector::initialize(Attribute&& attribute)
     AudioInputProcessor::init("kwd", sample, format, channel);
 }
 
-
 #ifdef ENABLE_VENDOR_LIBRARY
 void WakeupDetector::loop()
 {
@@ -105,6 +104,7 @@ void WakeupDetector::loop()
             continue;
 
         nugu_dbg("Wakeup Thread: kwd_is_running=%d", is_running);
+        sendSyncWakeupEvent(WakeupState::DETECTING);
 
         if (kwd_initialize(model_net_file.c_str(), model_search_file.c_str()) < 0) {
             nugu_error("kwd_initialize() failed");
@@ -183,6 +183,8 @@ void WakeupDetector::loop()
             continue;
 
         nugu_dbg("Wakeup Thread: kwd_is_running=%d", is_running);
+        sendSyncWakeupEvent(WakeupState::DETECTING);
+
         nugu_error("nugu_wwd is not supported");
         sendSyncWakeupEvent(WakeupState::FAIL);
         is_running = false;
@@ -192,10 +194,7 @@ void WakeupDetector::loop()
 
 bool WakeupDetector::startWakeup()
 {
-    return AudioInputProcessor::start([&] {
-        if (listener)
-            listener->onWakeupState(WakeupState::DETECTING);
-    });
+    return AudioInputProcessor::start();
 }
 
 void WakeupDetector::stopWakeup()

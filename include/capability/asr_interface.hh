@@ -145,7 +145,7 @@ public:
      * @brief Turn on the microphone and start speech recognition
      * @param[in] callback asr recognize callback
      */
-    virtual void startRecognition(AsrRecognizeCallback callback) = 0;
+    virtual void startRecognition(AsrRecognizeCallback callback = nullptr) = 0;
 
     /**
      * @brief Turn off the microphone and stop speech recognition
