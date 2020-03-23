@@ -179,11 +179,13 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
     std::string ps_id = "";
     std::string property = "";
     std::string session_id = "";
+    std::string asr_context = "";
     std::list<std::string> domainTypes;
 
     capa_helper->getCapabilityProperty("ASR", "es.playServiceId", ps_id);
     capa_helper->getCapabilityProperty("ASR", "es.property", property);
     capa_helper->getCapabilityProperty("ASR", "es.sessionId", session_id);
+    capa_helper->getCapabilityProperty("ASR", "es.asrContext", asr_context);
     capa_helper->getCapabilityProperties("ASR", "es.domainTypes", domainTypes);
 
     root["text"] = text;
@@ -195,6 +197,8 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
         root["property"] = property;
     if (session_id.size())
         root["sessionId"] = session_id;
+    if (asr_context.size())
+        root["asrContext"] = asr_context;
     if (domainTypes.size()) {
         while (!domainTypes.empty()) {
             root["domainTypes"].append(domainTypes.front());
@@ -208,20 +212,6 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
     playsync_manager->holdContext();
 
     sendEvent(&event, capa_helper->makeAllContextInfoStack(), payload, std::move(cb));
-}
-
-void TextAgent::sendEventTextSourceFailed(const std::string& text, const std::string& token, EventResultCallback cb)
-{
-    std::string ename = "TextSourceFailed";
-    std::string payload = "";
-    Json::StyledWriter writer;
-    Json::Value root;
-
-    root["text"] = text;
-    root["token"] = token;
-    payload = writer.write(root);
-
-    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void TextAgent::parsingTextSource(const char* message)
@@ -248,7 +238,6 @@ void TextAgent::parsingTextSource(const char* message)
 
     if (cur_state == TextState::BUSY) {
         nugu_warn("already request nugu service to the server");
-        sendEventTextSourceFailed(text, token);
         return;
     }
 
