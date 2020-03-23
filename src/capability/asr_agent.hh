@@ -48,6 +48,7 @@ public:
     void suspend() override;
 
     void startRecognition(AsrRecognizeCallback callback = nullptr) override;
+    void startRecognition(bool expected);
     void stopRecognition() override;
 
     void parsingDirective(const char* dname, const char* message) override;
@@ -79,6 +80,9 @@ public:
     bool isExpectSpeechState();
     ListeningState getListeningState();
 
+    void setASRState(ASRState state);
+    ASRState getASRState();
+
 private:
     void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);
 
@@ -103,6 +107,7 @@ private:
     std::vector<IASRListener*> asr_listeners;
     ListeningState prev_listening_state = ListeningState::DONE;
     AsrRecognizeCallback rec_callback;
+    ASRState cur_state;
 
     // attribute
     std::string model_path;
