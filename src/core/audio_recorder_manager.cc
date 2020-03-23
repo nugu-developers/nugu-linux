@@ -152,8 +152,13 @@ bool AudioRecorderManager::start(IAudioRecorder* recorder)
     }
 
     nugu_dbg("start recorder: %p", recorder);
-
-    return (nugu_recorder_start(nugu_recorder) >= 0);
+    if (recorder_list.size() == 1) {
+        nugu_dbg("request to start recorder");
+        return (nugu_recorder_start(nugu_recorder) >= 0);
+    } else {
+        nugu_dbg("recorder already started");
+        return true;
+    }
 }
 
 bool AudioRecorderManager::stop(IAudioRecorder* recorder)
@@ -172,10 +177,13 @@ bool AudioRecorderManager::stop(IAudioRecorder* recorder)
     }
     nugu_dbg("stop recorder: %p, list's size: %d", recorder, recorder_list.size());
 
-    if (!recorder_list.size())
+    if (!recorder_list.size()) {
+        nugu_dbg("request to stop recorder because nobody use the recorder");
         return (nugu_recorder_stop(nugu_recorder) >= 0);
-
-    return true;
+    } else {
+        nugu_dbg("someone use the recorder");
+        return true;
+    }
 }
 
 bool AudioRecorderManager::isRecording(IAudioRecorder* recorder)
