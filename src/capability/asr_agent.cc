@@ -286,23 +286,28 @@ void ASRAgent::receiveCommand(const std::string& from, const std::string& comman
 
 void ASRAgent::getProperty(const std::string& property, std::string& value)
 {
+    value = "";
+
     if (property == "es.playServiceId") {
         value = es_attr.play_service_id;
     } else if (property == "es.sessionId") {
         value = es_attr.session_id;
-    } else {
-        value = "";
+    } else if (property == "es.asrContext") {
+        if (!es_attr.asr_context.empty()) {
+            Json::StyledWriter writer;
+            value = writer.write(es_attr.asr_context);
+        }
     }
 }
 
 void ASRAgent::getProperties(const std::string& property, std::list<std::string>& values)
 {
+    values.clear();
+
     if (property == "es.domainTypes") {
         for (int i = 0; i < (int)es_attr.domain_types.size(); i++) {
             values.emplace_back(es_attr.domain_types[i].asString());
         }
-    } else {
-        values.clear();
     }
 }
 
