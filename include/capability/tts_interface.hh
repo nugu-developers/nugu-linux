@@ -98,9 +98,9 @@ public:
      * @brief request the sentence to speech.
      * @param[in] text sentense
      * @param[in] play_service_id received from server
-     * @return dialog request id if a NUGU service request succeeds with user tts, otherwise empty string
+     * @param[in] referrer_id referrer request dialog id for analysis
      */
-    virtual std::string requestTTS(const std::string& text, const std::string& play_service_id) = 0;
+    virtual std::string requestTTS(const std::string& text, const std::string& play_service_id, const std::string& referrer_id = "") = 0;
 
     /**
      * @brief set pcm player's volume

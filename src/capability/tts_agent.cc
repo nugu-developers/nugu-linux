@@ -62,6 +62,11 @@ void TTSAgent::initialize()
 
     capa_helper->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
 
+    addReferrerEvents("SpeechStarted", "Speak");
+    addReferrerEvents("SpeechFinished", "Speak");
+    addReferrerEvents("SpeechStopped", "Speak");
+    addReferrerEvents("SpeechPlay", "TTSAgent.requestTTS");
+
     initialized = true;
 }
 
@@ -162,7 +167,7 @@ void TTSAgent::stopTTS()
         tts_listener->onTTSCancel(dialog_id);
 }
 
-std::string TTSAgent::requestTTS(const std::string& text, const std::string& play_service_id)
+std::string TTSAgent::requestTTS(const std::string& text, const std::string& play_service_id, const std::string& referrer_id)
 {
     std::string token;
     char* uuid;
@@ -171,8 +176,13 @@ std::string TTSAgent::requestTTS(const std::string& text, const std::string& pla
     token = uuid;
     free(uuid);
 
+    if(referrer_id.size())
+        setReferrerDialogRequestId("TTSAgent.requestTTS", referrer_id);
+
     std::string id = sendEventSpeechPlay(token, text, play_service_id);
     nugu_dbg("user request dialog id: %s", id.c_str());
+
+    setReferrerDialogRequestId("TTSAgent.requestTTS", "");
     return id;
 }
 
