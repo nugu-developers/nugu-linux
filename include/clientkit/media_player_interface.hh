@@ -60,6 +60,8 @@ enum class MediaPlayerEvent {
  */
 class IMediaPlayerListener {
 public:
+    virtual ~IMediaPlayerListener() = default;
+
     /**
      * @brief Report changes in the mediaplayer state to the user.
      * @param[in] state mediaplayer state
@@ -254,6 +256,7 @@ public:
 class ITTSPlayer : public IMediaPlayer {
 public:
     virtual ~ITTSPlayer() = default;
+
     /**
      * @brief Write audio samples to the tts player. The player decodes it using opus.
      * @param[in] data raw audio data
