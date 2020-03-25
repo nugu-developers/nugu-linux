@@ -30,6 +30,8 @@ struct Capability::Impl {
     std::string version;
     std::string ref_dialog_id;
     NuguDirective* cur_ndir = nullptr;
+    std::map<std::string, std::string> referrer_events;
+    std::map<std::string, std::string> referrer_dirs;
 };
 
 struct CapabilityEvent::Impl {
@@ -44,9 +46,6 @@ CapabilityEvent::CapabilityEvent(const std::string& name, Capability* cap)
     pimpl->capability = cap;
     pimpl->event = nugu_event_new(cap->getName().c_str(), name.c_str(), cap->getVersion().c_str());
     pimpl->dialog_id = nugu_event_peek_dialog_id(pimpl->event);
-
-    if (isUserAction(name))
-        cap->setReferrerDialogRequestId("");
 }
 
 CapabilityEvent::~CapabilityEvent()
@@ -55,20 +54,6 @@ CapabilityEvent::~CapabilityEvent()
         nugu_event_free(pimpl->event);
         pimpl->event = nullptr;
     }
-}
-
-bool CapabilityEvent::isUserAction(const std::string& name)
-{
-    const std::string& cname = pimpl->capability->getName();
-
-    if ((cname == "ASR" && name == "Recognize")
-        || (cname == "TTS" && name == "SpeechPlay")
-        || (cname == "AudioPlayer" && (name.find("CommandIssued") != std::string::npos))
-        || (cname == "Text" && name == "TextInput")
-        || (cname == "Display" && name == "ElementSelected"))
-        return true;
-    else
-        return false;
 }
 
 std::string CapabilityEvent::getName()
@@ -113,7 +98,7 @@ void CapabilityEvent::sendEvent(const std::string& context, const std::string& p
     if (payload.size())
         nugu_event_set_json(pimpl->event, payload.c_str());
 
-    std::string ref_dialog_id = pimpl->capability->getReferrerDialogRequestId();
+    std::string ref_dialog_id = pimpl->capability->getReferrerDialogRequestId(getName());
     if (ref_dialog_id.size())
         nugu_event_set_referrer_id(pimpl->event, ref_dialog_id.c_str());
 
@@ -147,6 +132,8 @@ Capability::Capability(const std::string& name, const std::string& ver)
 
 Capability::~Capability()
 {
+    pimpl->referrer_events.clear();
+    pimpl->referrer_dirs.clear();
     event_result_cbs.clear();
 }
 
@@ -207,14 +194,22 @@ void Capability::notifyEventResult(const std::string& event_desc)
     }
 }
 
-std::string Capability::getReferrerDialogRequestId()
+void Capability::addReferrerEvents(const std::string& ename, const std::string& dname)
 {
-    return pimpl->ref_dialog_id;
+    pimpl->referrer_events[ename] = dname;
 }
 
-void Capability::setReferrerDialogRequestId(const std::string& id)
+std::string Capability::getReferrerDialogRequestId(const std::string& ename)
 {
-    pimpl->ref_dialog_id = id;
+    if (pimpl->referrer_events.find(ename)==pimpl->referrer_events.end())
+        return "";
+
+    return pimpl->referrer_dirs[pimpl->referrer_events[ename]];
+}
+
+void Capability::setReferrerDialogRequestId(const std::string& dname, const std::string& id)
+{
+    pimpl->referrer_dirs[dname] = id;
 }
 
 void Capability::setName(const std::string& name)
@@ -274,7 +269,7 @@ void Capability::processDirective(NuguDirective* ndir)
         if (!dref_id || !strlen(dref_id))
             dref_id = nugu_directive_peek_dialog_id(ndir);
 
-        setReferrerDialogRequestId(dref_id);
+        setReferrerDialogRequestId(nugu_directive_peek_name(ndir), nugu_directive_peek_dialog_id(ndir));
 
         has_attachment = false;
         parsingDirective(dname, message);
