@@ -165,6 +165,7 @@ public:
     /**
      * @brief Add event name and directive name for referred dialog request id.
      * @param[in] ename event name
+     * @param[in] dname directive name
      * @return referred dialog request id
      */
     void addReferrerEvents(const std::string& ename, const std::string& dname);
