@@ -38,6 +38,21 @@ SpeakerAgent::~SpeakerAgent()
     speakers.clear();
 }
 
+void SpeakerAgent::initialize()
+{
+    if (initialized) {
+        nugu_info("It's already initialized.");
+        return;
+    }
+
+    addReferrerEvents("SetVolumeSucceeded", "SetVolume");
+    addReferrerEvents("SetVolumeFailed", "SetVolume");
+    addReferrerEvents("SetMuteSucceeded", "SetMute");
+    addReferrerEvents("SetMuteFailed", "SetMute");
+
+    initialized = true;
+}
+
 void SpeakerAgent::parsingDirective(const char* dname, const char* message)
 {
     nugu_dbg("message: %s", message);
