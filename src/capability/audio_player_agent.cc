@@ -65,6 +65,29 @@ void AudioPlayerAgent::initialize()
 
     capa_helper->addFocus("cap_audio", NUGU_FOCUS_TYPE_MEDIA, this);
 
+    addReferrerEvents("PlaybackStarted", "Play");
+    addReferrerEvents("PlaybackFinished", "Play");
+    addReferrerEvents("PlaybackStopped", "Play");
+    addReferrerEvents("PlaybackFailed", "Play");
+    addReferrerEvents("ProgressReportDelayElapsed", "Play");
+    addReferrerEvents("ProgressReportIntervalElapsed", "Play");
+    addReferrerEvents("PlaybackPaused", "Play");
+    addReferrerEvents("PlaybackResumed", "Play");
+    addReferrerEvents("NextCommandIssued", "Play");
+    addReferrerEvents("PreviousCommandIssued", "Play");
+    addReferrerEvents("PlayCommandIssued", "Play");
+    addReferrerEvents("PauseCommandIssued", "Play");
+    addReferrerEvents("StopCommandIssued", "Play");
+    addReferrerEvents("FavoriteCommandIssued", "Play");
+    addReferrerEvents("RepeatCommandIssued", "Play");
+    addReferrerEvents("ShuffleCommandIssued", "Play");
+    addReferrerEvents("ShowLyricsSucceeded", "ShowLyrics");
+    addReferrerEvents("ShowLyricsFailed", "ShowLyrics");
+    addReferrerEvents("HideLyricsSucceeded", "HideLyrics");
+    addReferrerEvents("HideLyricsFailed", "HideLyrics");
+    addReferrerEvents("ControlLyricsPageSucceeded", "ControlLyricsPage");
+    addReferrerEvents("ControlLyricsPageFailed", "ControlLyricsPage");
+
     initialized = true;
 }
 
@@ -671,23 +694,27 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     nugu_dbg("= report_delay_time: %d", report_delay_time);
     nugu_dbg("= report_interval_time: %d", report_interval_time);
 
-    std::string ref_id = getReferrerDialogRequestId();
     std::string dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
+    std::string dname = nugu_directive_peek_name(getNuguDirective());
     // Different tokens mean different media play requests.
     if (token != cur_token
         /* Temporary add condition: Service(keyword news) is always same token on 2020/03/12 */
         || has_attachment) {
 
         if (pre_ref_dialog_id.size())
-            setReferrerDialogRequestId(pre_ref_dialog_id);
+            setReferrerDialogRequestId(dname, pre_ref_dialog_id);
 
         if (!cur_player->stop()) {
             nugu_error("stop media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
         }
+
+        std::string id = nugu_directive_peek_dialog_id(getNuguDirective());
+        setReferrerDialogRequestId(dname, id);
+        pre_ref_dialog_id = id;
+    } else {
+        setReferrerDialogRequestId(dname, pre_ref_dialog_id);
     }
-    setReferrerDialogRequestId(ref_id);
-    pre_ref_dialog_id = ref_id;
     cur_dialog_id = dialog_id;
     cur_token = token;
     ps_id = play_service_id;
