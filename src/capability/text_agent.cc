@@ -68,6 +68,7 @@ void TextAgent::initialize()
         if (text_listener)
             text_listener->onState(cur_state, cur_dialog_id);
     });
+    addReferrerEvents("TextInput", "TextSource");
 
     initialized = true;
 }
@@ -246,6 +247,8 @@ void TextAgent::parsingTextSource(const char* message)
 
     cur_state = TextState::BUSY;
     sendEventTextInput(text, token);
+
+    setReferrerDialogRequestId(nugu_directive_peek_name(getNuguDirective()), "");
 
     if (text_listener)
         text_listener->onState(cur_state, cur_dialog_id);
