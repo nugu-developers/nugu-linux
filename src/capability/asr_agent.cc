@@ -555,39 +555,40 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
         break;
     case ListeningState::SPEECH_END:
         nugu_dbg("[%s] ListeningState::SPEECH_END", id.c_str());
-        nugu_info("speech end detected");
-        sendEventRecognize(NULL, 0, true);
-        checkResponseTimeout();
-        setASRState(ASRState::BUSY);
         break;
     case ListeningState::TIMEOUT:
         nugu_dbg("[%s] ListeningState::TIMEOUT", id.c_str());
-        nugu_info("time out");
-
-        if (rec_event)
-            rec_event->forceClose();
-
-        sendEventListenTimeout();
-        releaseASRFocus(false, ASRError::LISTEN_TIMEOUT, (request_listening_id == id));
         break;
     case ListeningState::FAILED:
         nugu_dbg("[%s] ListeningState::FAILED", id.c_str());
-        if (rec_event)
-            rec_event->forceClose();
-
-        releaseASRFocus(false, ASRError::LISTEN_FAILED, (request_listening_id == id));
         break;
     case ListeningState::DONE:
         nugu_dbg("[%s] ListeningState::DONE", id.c_str());
+        if (prev_listening_state == ListeningState::READY || prev_listening_state == ListeningState::LISTENING) {
+            nugu_dbg("PrevListeningState::%s", prev_listening_state == ListeningState::READY ? "READY" : "LISTENING");
+            releaseASRFocus(true, ASRError::UNKNOWN, (request_listening_id == id));
+        } else if (prev_listening_state == ListeningState::SPEECH_END) {
+            nugu_dbg("PrevListeningState::SPEECH_END");
+            sendEventRecognize(NULL, 0, true);
+            checkResponseTimeout();
+            setASRState(ASRState::BUSY);
+        } else if (prev_listening_state == ListeningState::TIMEOUT) {
+            nugu_dbg("PrevListeningState::TIMEOUT");
+            if (rec_event)
+                rec_event->forceClose();
+
+            sendEventListenTimeout();
+            releaseASRFocus(false, ASRError::LISTEN_TIMEOUT, (request_listening_id == id));
+        } else if (prev_listening_state == ListeningState::FAILED) {
+            nugu_dbg("PrevListeningState::FAILED");
+            if (rec_event)
+                rec_event->forceClose();
+            releaseASRFocus(false, ASRError::LISTEN_FAILED, (request_listening_id == id));
+        }
+
         if (rec_event) {
             delete rec_event;
             rec_event = nullptr;
-        }
-
-        // it consider cancel by user
-        if (prev_listening_state == ListeningState::READY
-            || prev_listening_state == ListeningState::LISTENING) {
-            releaseASRFocus(true, ASRError::UNKNOWN, (request_listening_id == id));
         }
 
         if (prev_listening_state != ListeningState::SPEECH_END)
