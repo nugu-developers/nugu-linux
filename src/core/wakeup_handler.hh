@@ -37,11 +37,15 @@ public:
     void setListener(IWakeupListener* listener) override;
     bool startWakeup() override;
     void stopWakeup() override;
-    void onWakeupState(WakeupState state) override;
+    void onWakeupState(WakeupState state, const std::string& id) override;
+
+    void setWakeupId(const std::string& id);
 
 private:
     IWakeupListener* listener = nullptr;
     std::unique_ptr<WakeupDetector> wakeup_detector;
+    std::string request_wakeup_id;
+    int uniq;
 };
 } // NuguCore
 

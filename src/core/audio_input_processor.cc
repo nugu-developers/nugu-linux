@@ -25,8 +25,6 @@ namespace NuguCore {
 class SyncEvent {
 public:
     std::function<void()> action;
-    std::condition_variable cond;
-    std::mutex mutex;
 };
 
 AudioInputProcessor::~AudioInputProcessor()
@@ -76,6 +74,8 @@ void AudioInputProcessor::init(std::string name, std::string& sample, std::strin
 
 bool AudioInputProcessor::start(const std::function<void()>& extra_func)
 {
+    std::lock_guard<std::mutex> lock(mutex);
+
     if (is_running) {
         nugu_dbg("Thread is already running...");
         return true;
@@ -90,16 +90,16 @@ bool AudioInputProcessor::start(const std::function<void()>& extra_func)
         extra_func();
 
     is_running = true;
-
-    mutex.lock();
+    is_started = false;
     cond.notify_all();
-    mutex.unlock();
 
     return true;
 }
 
 void AudioInputProcessor::stop()
 {
+    std::lock_guard<std::mutex> lock(mutex);
+
     if (!is_running) {
         nugu_dbg("Thread is not running...");
         return;
@@ -111,35 +111,25 @@ void AudioInputProcessor::stop()
     is_running = false;
 }
 
-static gboolean invoke_sync_event(gpointer userdata)
+static gboolean invoke_event(gpointer userdata)
 {
     SyncEvent* e = static_cast<SyncEvent*>(userdata);
 
     if (e->action)
         e->action();
 
-    e->mutex.lock();
-    e->cond.notify_all();
-    e->mutex.unlock();
-
+    delete e;
     return FALSE;
 }
 
-void AudioInputProcessor::sendSyncEvent(const std::function<void()>& action)
+void AudioInputProcessor::sendEvent(const std::function<void()>& action)
 {
     g_return_if_fail(action != nullptr);
 
     SyncEvent* data = new SyncEvent;
-    data->action = action;
+    data->action = std::move(action);
 
-    std::unique_lock<std::mutex> lock(data->mutex);
-
-    g_idle_add(invoke_sync_event, data);
-
-    data->cond.wait(lock);
-    lock.unlock();
-
-    delete data;
+    g_idle_add(invoke_event, (void*)data);
 }
 
 } // NuguCore

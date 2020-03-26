@@ -19,6 +19,7 @@
 #endif
 
 #include "base/nugu_log.h"
+#include "nugu_timer.hh"
 #include "speech_recognizer.hh"
 
 namespace NuguCore {
@@ -47,15 +48,17 @@ SpeechRecognizer::SpeechRecognizer(Attribute&& attribute)
     initialize(std::move(attribute));
 }
 
-void SpeechRecognizer::sendSyncListeningEvent(ListeningState state)
+void SpeechRecognizer::sendListeningEvent(ListeningState state, const std::string& id)
 {
     if (!listener)
         return;
 
-    AudioInputProcessor::sendSyncEvent([&] {
+    mutex.lock();
+    AudioInputProcessor::sendEvent([=] {
         if (listener)
-            listener->onListeningState(state);
+            listener->onListeningState(state, id);
     });
+    mutex.unlock();
 }
 
 void SpeechRecognizer::setListener(ISpeechRecognizerListener* listener)
@@ -80,6 +83,7 @@ void SpeechRecognizer::initialize(Attribute&& attribute)
 #ifdef ENABLE_VENDOR_LIBRARY
 void SpeechRecognizer::loop()
 {
+    NUGUTimer* timer = new NUGUTimer(1);
     unsigned char epd_buf[OUT_DATA_SIZE];
     EpdParam epd_param;
     int pcm_size;
@@ -118,6 +122,8 @@ void SpeechRecognizer::loop()
     cond.notify_all();
     mutex.unlock();
 
+    std::string id = listening_id;
+
     while (g_atomic_int_get(&destroy) == 0) {
         std::unique_lock<std::mutex> lock(mutex);
         cond.wait(lock);
@@ -126,8 +132,11 @@ void SpeechRecognizer::loop()
         if (is_running == false)
             continue;
 
+        is_started = true;
+        id = listening_id;
+
         nugu_dbg("Listening Thread: asr_is_running=%d", is_running);
-        sendSyncListeningEvent(ListeningState::READY);
+        sendListeningEvent(ListeningState::READY, id);
 
         if (epd_client_start(model_file.c_str(), epd_param) < 0) {
             nugu_error("epd_client_start() failed");
@@ -139,7 +148,7 @@ void SpeechRecognizer::loop()
             break;
         }
 
-        sendSyncListeningEvent(ListeningState::LISTENING);
+        sendListeningEvent(ListeningState::LISTENING, id);
 
         prev_epd_ret = 0;
         is_epd_end = false;
@@ -161,19 +170,19 @@ void SpeechRecognizer::loop()
 
             if (recorder->isMute()) {
                 nugu_error("nugu recorder is mute");
-                sendSyncListeningEvent(ListeningState::FAILED);
+                sendListeningEvent(ListeningState::FAILED, id);
                 break;
             }
 
             if (!recorder->getAudioFrame(pcm_buf, &pcm_size, 0)) {
                 nugu_error("nugu_recorder_get_frame_timeout() failed");
-                sendSyncListeningEvent(ListeningState::FAILED);
+                sendListeningEvent(ListeningState::FAILED, id);
                 break;
             }
 
             if (pcm_size == 0) {
                 nugu_error("pcm_size result is 0");
-                sendSyncListeningEvent(ListeningState::FAILED);
+                sendListeningEvent(ListeningState::FAILED, id);
                 break;
             }
 
@@ -182,7 +191,7 @@ void SpeechRecognizer::loop()
 
             if (epd_ret < 0 || epd_ret > EPD_END_CHECK) {
                 nugu_error("epd_client_run() failed: %d", epd_ret);
-                sendSyncListeningEvent(ListeningState::FAILED);
+                sendListeningEvent(ListeningState::FAILED, id);
                 break;
             }
 
@@ -194,22 +203,22 @@ void SpeechRecognizer::loop()
 
             switch (epd_ret) {
             case EPD_END_DETECTED:
-                sendSyncListeningEvent(ListeningState::SPEECH_END);
+                sendListeningEvent(ListeningState::SPEECH_END, id);
                 is_epd_end = true;
                 break;
             case EPD_END_DETECTING:
             case EPD_START_DETECTED:
                 if (prev_epd_ret == EPD_START_DETECTING) {
-                    sendSyncListeningEvent(ListeningState::SPEECH_START);
+                    sendListeningEvent(ListeningState::SPEECH_START, id);
                 }
                 break;
             case EPD_TIMEOUT:
-                sendSyncListeningEvent(ListeningState::TIMEOUT);
+                sendListeningEvent(ListeningState::TIMEOUT, id);
                 is_epd_end = true;
                 break;
 
             case EPD_MAXSPEECH:
-                sendSyncListeningEvent(ListeningState::SPEECH_END);
+                sendListeningEvent(ListeningState::SPEECH_END, id);
                 is_epd_end = true;
                 break;
             }
@@ -225,8 +234,18 @@ void SpeechRecognizer::loop()
         is_running = false;
 
         if (g_atomic_int_get(&destroy) == 0)
-            sendSyncListeningEvent(ListeningState::DONE);
+            sendListeningEvent(ListeningState::DONE, id);
+
+        if (!is_started) {
+            is_running = false;
+            timer->setCallback([&](int count, int repeat) {
+                nugu_dbg("request to start audio input");
+                startListening(listening_id);
+            });
+            timer->start();
+        }
     }
+    delete timer;
     nugu_dbg("Listening Thread: exited");
 }
 #else
@@ -237,6 +256,8 @@ void SpeechRecognizer::loop()
     cond.notify_all();
     mutex.unlock();
 
+    std::string id = listening_id;
+
     while (g_atomic_int_get(&destroy) == 0) {
         std::unique_lock<std::mutex> lock(mutex);
         cond.wait(lock);
@@ -245,18 +266,21 @@ void SpeechRecognizer::loop()
         if (is_running == false)
             continue;
 
+        id = listening_id;
+
         nugu_dbg("Listening Thread: asr_is_running=%d", is_running);
-        sendSyncListeningEvent(ListeningState::READY);
+        sendListeningEvent(ListeningState::READY, id);
 
         nugu_error("nugu_epd is not supported");
-        sendSyncListeningEvent(ListeningState::FAILED);
+        sendListeningEvent(ListeningState::FAILED, id);
         is_running = false;
     }
 }
 #endif
 
-bool SpeechRecognizer::startListening()
+bool SpeechRecognizer::startListening(const std::string& id)
 {
+    listening_id = id;
     return AudioInputProcessor::start([&] {
         epd_ret = 0;
     });

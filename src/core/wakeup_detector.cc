@@ -19,6 +19,7 @@
 #endif
 
 #include "base/nugu_log.h"
+#include "nugu_timer.hh"
 #include "wakeup_detector.hh"
 
 namespace NuguCore {
@@ -44,15 +45,17 @@ WakeupDetector::WakeupDetector(Attribute&& attribute)
     initialize(std::move(attribute));
 }
 
-void WakeupDetector::sendSyncWakeupEvent(WakeupState state)
+void WakeupDetector::sendWakeupEvent(WakeupState state, const std::string& id)
 {
     if (!listener)
         return;
 
-    AudioInputProcessor::sendSyncEvent([&] {
+    mutex.lock();
+    AudioInputProcessor::sendEvent([=] {
         if (listener)
-            listener->onWakeupState(state);
+            listener->onWakeupState(state, id);
     });
+    mutex.unlock();
 }
 
 void WakeupDetector::setListener(IWakeupDetectorListener* listener)
@@ -74,6 +77,7 @@ void WakeupDetector::initialize(Attribute&& attribute)
 #ifdef ENABLE_VENDOR_LIBRARY
 void WakeupDetector::loop()
 {
+    NUGUTimer* timer = new NUGUTimer(1);
     int pcm_size;
     std::string model_net_file;
     std::string model_search_file;
@@ -95,6 +99,8 @@ void WakeupDetector::loop()
     cond.notify_all();
     mutex.unlock();
 
+    std::string id = listening_id;
+
     while (g_atomic_int_get(&destroy) == 0) {
         std::unique_lock<std::mutex> lock(mutex);
         cond.wait(lock);
@@ -103,8 +109,11 @@ void WakeupDetector::loop()
         if (is_running == false)
             continue;
 
+        is_started = true;
+        id = listening_id;
+
         nugu_dbg("Wakeup Thread: kwd_is_running=%d", is_running);
-        sendSyncWakeupEvent(WakeupState::DETECTING);
+        sendWakeupEvent(WakeupState::DETECTING, id);
 
         if (kwd_initialize(model_net_file.c_str(), model_search_file.c_str()) < 0) {
             nugu_error("kwd_initialize() failed");
@@ -134,24 +143,24 @@ void WakeupDetector::loop()
 
             if (recorder->isMute()) {
                 nugu_error("recorder is mute");
-                sendSyncWakeupEvent(WakeupState::FAIL);
+                sendWakeupEvent(WakeupState::FAIL, id);
                 break;
             }
 
             if (!recorder->getAudioFrame(pcm_buf, &pcm_size, 0)) {
                 nugu_error("recorder->getAudioFrame() failed");
-                sendSyncWakeupEvent(WakeupState::FAIL);
+                sendWakeupEvent(WakeupState::FAIL, id);
                 break;
             }
 
             if (pcm_size == 0) {
                 nugu_error("pcm_size result is 0");
-                sendSyncWakeupEvent(WakeupState::FAIL);
+                sendWakeupEvent(WakeupState::FAIL, id);
                 break;
             }
 
             if (kwd_put_audio((short*)pcm_buf, pcm_size) == 1) {
-                sendSyncWakeupEvent(WakeupState::DETECTED);
+                sendWakeupEvent(WakeupState::DETECTED, id);
                 break;
             }
         }
@@ -161,8 +170,18 @@ void WakeupDetector::loop()
         is_running = false;
 
         if (g_atomic_int_get(&destroy) == 0)
-            sendSyncWakeupEvent(WakeupState::DONE);
+            sendWakeupEvent(WakeupState::DONE, id);
+
+        if (!is_started) {
+            is_running = false;
+            timer->setCallback([&](int count, int repeat) {
+                nugu_dbg("request to start audio input");
+                startWakeup(listening_id);
+            });
+            timer->start();
+        }
     }
+    delete timer;
 
     nugu_dbg("Wakeup Thread: exited");
 }
@@ -174,6 +193,8 @@ void WakeupDetector::loop()
     cond.notify_all();
     mutex.unlock();
 
+    std::string id = listening_id;
+
     while (g_atomic_int_get(&destroy) == 0) {
         std::unique_lock<std::mutex> lock(mutex);
         cond.wait(lock);
@@ -182,18 +203,21 @@ void WakeupDetector::loop()
         if (is_running == false)
             continue;
 
+        id = listening_id;
+
         nugu_dbg("Wakeup Thread: kwd_is_running=%d", is_running);
-        sendSyncWakeupEvent(WakeupState::DETECTING);
+        sendWakeupEvent(WakeupState::DETECTING, id);
 
         nugu_error("nugu_wwd is not supported");
-        sendSyncWakeupEvent(WakeupState::FAIL);
+        sendWakeupEvent(WakeupState::FAIL, id);
         is_running = false;
     }
 }
 #endif
 
-bool WakeupDetector::startWakeup()
+bool WakeupDetector::startWakeup(const std::string& id)
 {
+    listening_id = id;
     return AudioInputProcessor::start();
 }
 
