@@ -82,19 +82,20 @@ public:
 
     void setASRState(ASRState state);
     ASRState getASRState();
+    void setListeningId(const std::string& id);
 
 private:
     void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);
 
     // implements ISpeechRecognizerListener
-    void onListeningState(ListeningState state) override;
+    void onListeningState(ListeningState state, const std::string& id) override;
     void onRecordData(unsigned char* buf, int length) override;
 
     // parsing directive
     void parsingExpectSpeech(const char* message);
     void parsingNotifyResult(const char* message);
 
-    void releaseASRFocus(bool is_cancel, ASRError error);
+    void releaseASRFocus(bool is_cancel, ASRError error, bool release_focus = true);
 
     ExpectSpeechAttr es_attr;
     CapabilityEvent* rec_event;
@@ -108,6 +109,7 @@ private:
     ListeningState prev_listening_state = ListeningState::DONE;
     AsrRecognizeCallback rec_callback;
     ASRState cur_state;
+    std::string request_listening_id;
 
     // attribute
     std::string model_path;

@@ -46,7 +46,7 @@ public:
 
     // implements ISpeechRecognizer
     void setListener(ISpeechRecognizerListener* listener) override;
-    bool startListening() override;
+    bool startListening(const std::string& id) override;
     void stopListening() override;
     bool isMute() override;
     int getEpdPauseLength() override;
@@ -54,7 +54,7 @@ public:
 private:
     void initialize(Attribute&& attribute);
     void loop() override;
-    void sendSyncListeningEvent(ListeningState state);
+    void sendListeningEvent(ListeningState state, const std::string& id);
 
     const unsigned int OUT_DATA_SIZE = 1024 * 9;
     int epd_ret = -1;

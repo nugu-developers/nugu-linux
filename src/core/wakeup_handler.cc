@@ -22,7 +22,8 @@
 namespace NuguCore {
 
 WakeupHandler::WakeupHandler(const std::string& model_path)
-    : wakeup_detector(std::unique_ptr<WakeupDetector>(new WakeupDetector(WakeupDetector::Attribute{ "", "", "", model_path })))
+    : wakeup_detector(std::unique_ptr<WakeupDetector>(new WakeupDetector(WakeupDetector::Attribute { "", "", "", model_path })))
+    , uniq(0)
 {
     wakeup_detector->setListener(this);
 }
@@ -38,7 +39,9 @@ void WakeupHandler::setListener(IWakeupListener* listener)
 
 bool WakeupHandler::startWakeup()
 {
-    return wakeup_detector->startWakeup();
+    std::string id = "id#" + std::to_string(uniq++);
+    setWakeupId(id);
+    return wakeup_detector->startWakeup(id);
 }
 
 void WakeupHandler::stopWakeup()
@@ -46,32 +49,43 @@ void WakeupHandler::stopWakeup()
     wakeup_detector->stopWakeup();
 }
 
-void WakeupHandler::onWakeupState(WakeupState state)
+void WakeupHandler::onWakeupState(WakeupState state, const std::string& id)
 {
+    if (request_wakeup_id != id) {
+        nugu_warn("[id: %s] ignore [id: %s]'s state %d", request_wakeup_id.c_str(), id.c_str(), state);
+        return;
+    }
+
     switch (state) {
     case WakeupState::FAIL:
-        nugu_dbg("WakeupState::FAIL");
+        nugu_dbg("[id: %s] WakeupState::FAIL", id.c_str());
 
         if (listener)
             listener->onWakeupState(WakeupDetectState::WAKEUP_FAIL);
 
         break;
     case WakeupState::DETECTING:
-        nugu_dbg("WakeupState::DETECTING");
+        nugu_dbg("[id: %s] WakeupState::DETECTING", id.c_str());
 
         if (listener)
             listener->onWakeupState(WakeupDetectState::WAKEUP_DETECTING);
         break;
     case WakeupState::DETECTED:
-        nugu_dbg("WakeupState::DETECTED");
+        nugu_dbg("[id: %s] WakeupState::DETECTED", id.c_str());
 
         if (listener)
             listener->onWakeupState(WakeupDetectState::WAKEUP_DETECTED);
         break;
     case WakeupState::DONE:
-        nugu_dbg("WakeupState::DONE");
+        nugu_dbg("[id: %s] WakeupState::DONE", id.c_str());
         break;
     }
+}
+
+void WakeupHandler::setWakeupId(const std::string& id)
+{
+    request_wakeup_id = id;
+    nugu_dbg("startListening with new id(%s)", request_wakeup_id.c_str());
 }
 
 } // NuguCore

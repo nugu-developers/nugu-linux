@@ -178,6 +178,9 @@ void SpeechOperator::onState(ASRState state, const std::string& dialog_id)
     }
     case ASRState::LISTENING: {
         msg::asr::state(dialog_id, "LISTENING");
+        // need to stop wakeup when asr state is changed from idle to listening
+        // without wakeup detected
+        stopWakeup();
         break;
     }
     case ASRState::RECOGNIZING: {

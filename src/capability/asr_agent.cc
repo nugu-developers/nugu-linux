@@ -37,11 +37,13 @@ public:
 private:
     ASRAgent* agent;
     ISpeechRecognizer* speech_recognizer;
+    int uniq;
 };
 
 ASRFocusListener::ASRFocusListener(ASRAgent* agent, ISpeechRecognizer* speech_recognizer)
     : agent(agent)
     , speech_recognizer(speech_recognizer)
+    , uniq(0)
 
 {
     agent->getCapabilityHelper()->addFocus("asr", NUGU_FOCUS_TYPE_ASR, this);
@@ -55,7 +57,10 @@ ASRFocusListener::~ASRFocusListener()
 void ASRFocusListener::onFocus(void* event)
 {
     nugu_dbg("ASRFocusListener::onFocus");
-    speech_recognizer->startListening();
+
+    std::string id = "id#" + std::to_string(uniq++);
+    agent->setListeningId(id);
+    speech_recognizer->startListening(id);
 
     if (agent->isExpectSpeechState()) {
         agent->resetExpectSpeechState();
@@ -502,11 +507,11 @@ void ASRAgent::parsingNotifyResult(const char* message)
     }
 }
 
-void ASRAgent::onListeningState(ListeningState state)
+void ASRAgent::onListeningState(ListeningState state, const std::string& id)
 {
     switch (state) {
     case ListeningState::READY: {
-        nugu_dbg("ListeningState::READY");
+        nugu_dbg("[%s] ListeningState::READY", id.c_str());
         clearResponseTimeout();
 
         if (rec_event)
@@ -530,38 +535,38 @@ void ASRAgent::onListeningState(ListeningState state)
         break;
     }
     case ListeningState::LISTENING:
-        nugu_dbg("ListeningState::LISTENING");
+        nugu_dbg("[%s] ListeningState::LISTENING", id.c_str());
         break;
     case ListeningState::SPEECH_START:
-        nugu_dbg("ListeningState::SPEECH_START");
+        nugu_dbg("[%s] ListeningState::SPEECH_START", id.c_str());
         setASRState(ASRState::RECOGNIZING);
         break;
     case ListeningState::SPEECH_END:
-        nugu_dbg("ListeningState::SPEECH_END");
+        nugu_dbg("[%s] ListeningState::SPEECH_END", id.c_str());
         nugu_info("speech end detected");
         sendEventRecognize(NULL, 0, true);
         checkResponseTimeout();
         setASRState(ASRState::BUSY);
         break;
     case ListeningState::TIMEOUT:
-        nugu_dbg("ListeningState::TIMEOUT");
+        nugu_dbg("[%s] ListeningState::TIMEOUT", id.c_str());
         nugu_info("time out");
 
         if (rec_event)
             rec_event->forceClose();
 
         sendEventListenTimeout();
-        releaseASRFocus(false, ASRError::LISTEN_TIMEOUT);
+        releaseASRFocus(false, ASRError::LISTEN_TIMEOUT, (request_listening_id == id));
         break;
     case ListeningState::FAILED:
-        nugu_dbg("ListeningState::FAILED");
+        nugu_dbg("[%s] ListeningState::FAILED", id.c_str());
         if (rec_event)
             rec_event->forceClose();
 
-        releaseASRFocus(false, ASRError::LISTEN_FAILED);
+        releaseASRFocus(false, ASRError::LISTEN_FAILED, (request_listening_id == id));
         break;
     case ListeningState::DONE:
-        nugu_dbg("ListeningState::DONE");
+        nugu_dbg("[%s] ListeningState::DONE", id.c_str());
         if (rec_event) {
             delete rec_event;
             rec_event = nullptr;
@@ -569,9 +574,8 @@ void ASRAgent::onListeningState(ListeningState state)
 
         // it consider cancel by user
         if (prev_listening_state == ListeningState::READY
-            || prev_listening_state == ListeningState::LISTENING
-            || prev_listening_state == ListeningState::SPEECH_START) {
-            releaseASRFocus(true, ASRError::UNKNOWN);
+            || prev_listening_state == ListeningState::LISTENING) {
+            releaseASRFocus(true, ASRError::UNKNOWN, (request_listening_id == id));
         }
 
         if (prev_listening_state != ListeningState::SPEECH_END)
@@ -582,7 +586,7 @@ void ASRAgent::onListeningState(ListeningState state)
     prev_listening_state = state;
 }
 
-void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error)
+void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error, bool release_focus)
 {
     for (auto asr_listener : asr_listeners) {
         if (is_cancel)
@@ -591,7 +595,10 @@ void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error)
             asr_listener->onError(error, getRecognizeDialogId());
     }
 
-    capa_helper->releaseFocus("asr");
+    if (release_focus) {
+        nugu_dbg("request to release focus");
+        capa_helper->releaseFocus("asr");
+    }
     playsync_manager->onASRError();
 }
 
@@ -640,4 +647,9 @@ ASRState ASRAgent::getASRState()
     return cur_state;
 }
 
+void ASRAgent::setListeningId(const std::string& id)
+{
+    request_listening_id = id;
+    nugu_dbg("startListening with new id(%s)", request_listening_id.c_str());
+}
 } // NuguCapability

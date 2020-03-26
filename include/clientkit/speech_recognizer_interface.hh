@@ -56,8 +56,9 @@ public:
     /**
      * @brief Report to the user listening state changed.
      * @param[in] state listening state
+     * @param[in] id listening id
      */
-    virtual void onListeningState(ListeningState state) = 0;
+    virtual void onListeningState(ListeningState state, const std::string& id) = 0;
 
     /**
      * @brief Get current audio input stream
@@ -83,9 +84,10 @@ public:
 
     /**
      * @brief Start listening speech
+     * @param[in] id listening id
      * @return result of start listening
      */
-    virtual bool startListening() = 0;
+    virtual bool startListening(const std::string& id) = 0;
 
     /**
      * @brief Stop listening speech

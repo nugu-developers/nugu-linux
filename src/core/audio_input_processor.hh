@@ -39,17 +39,19 @@ protected:
     void init(std::string name, std::string& sample, std::string& format, std::string& channel);
     bool start(const std::function<void()>& extra_func = nullptr);
     void stop();
-    void sendSyncEvent(const std::function<void()>& action = nullptr);
+    void sendEvent(const std::function<void()>& action = nullptr);
 
     virtual void loop() = 0;
 
     bool is_initialized = false;
     bool is_running = false;
+    bool is_started = false;
     bool thread_created = false;
     gint destroy;
     std::thread thread;
     std::condition_variable cond;
     std::mutex mutex;
+    std::string listening_id;
     IAudioRecorder* recorder = nullptr;
 };
 
