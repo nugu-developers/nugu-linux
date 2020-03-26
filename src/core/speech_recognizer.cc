@@ -229,12 +229,12 @@ void SpeechRecognizer::loop()
             prev_epd_ret = epd_ret;
         }
 
-        recorder->stop();
-        epd_client_release();
-        is_running = false;
-
         if (g_atomic_int_get(&destroy) == 0)
             sendListeningEvent(ListeningState::DONE, id);
+
+        is_running = false;
+        recorder->stop();
+        epd_client_release();
 
         if (!is_started) {
             is_running = false;
