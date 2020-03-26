@@ -165,9 +165,9 @@ void WakeupDetector::loop()
             }
         }
 
+        is_running = false;
         recorder->stop();
         kwd_deinitialize();
-        is_running = false;
 
         if (g_atomic_int_get(&destroy) == 0)
             sendWakeupEvent(WakeupState::DONE, id);
