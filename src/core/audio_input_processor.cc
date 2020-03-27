@@ -65,9 +65,10 @@ void AudioInputProcessor::init(std::string name, std::string& sample, std::strin
 
     /* Wait until thread creation */
     std::unique_lock<std::mutex> lock(mutex);
-    if (thread_created == false)
-        cond.wait(lock);
-    lock.unlock();
+    cond.wait(lock, [this] {
+        nugu_dbg("worker initialized: %d", thread_created);
+        return thread_created;
+    });
 
     is_initialized = true;
 }
