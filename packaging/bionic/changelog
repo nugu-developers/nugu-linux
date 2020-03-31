@@ -1,3 +1,27 @@
+nugu (0.7.0ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed build scripts
+  * Fixed capability management
+  * Fixed context of agents
+  * Fixed focus manager
+  * Fixed play context policy
+  * Fixed portaudio bugs
+  * Added Request & Response Mapping
+  * Added protocol log
+  * Added network v2 api
+  * Added libopus v1.3.1
+  * Update RDRID(Referrer Request Dialog Id)
+  * Upgraded ASR interface to v1.1
+  * Upgraded AudioPlayer interface to v1.2
+  * Upgraded Text interface to v1.1
+  * Upgraded curl to v7.69.1
+  * Removed Display agent
+  * Removed Location agent
+  * Removed Delegation agent
+  * Removed Extension agent
+
+ -- nugulinux <nugulinux@gmail.com>  Tue, 31 Mar 2020 14:30:00 +0900
+
 nugu (0.6.0ubuntu1~bionic) bionic; urgency=medium
 
   * Fixed ring-buffer bugs
