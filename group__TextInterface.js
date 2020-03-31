@@ -2,14 +2,14 @@ var group__TextInterface =
 [
     [ "ITextHandler", "classNuguCapability_1_1ITextHandler.html", [
       [ "~ITextHandler", "classNuguCapability_1_1ITextHandler.html#add1982074666a831c1ae312e25eaf669", null ],
-      [ "requestTextInput", "classNuguCapability_1_1ITextHandler.html#a617e4d97b94acc5c6faacfaae078b9ac", null ],
+      [ "requestTextInput", "classNuguCapability_1_1ITextHandler.html#a51fc0b7b9e2b4b6452a07de4a5819467", null ],
       [ "setAttribute", "classNuguCapability_1_1ITextHandler.html#aa0c88b42f05df6beb30891a4ccf406c6", null ]
     ] ],
     [ "ITextListener", "classNuguCapability_1_1ITextListener.html", [
       [ "~ITextListener", "classNuguCapability_1_1ITextListener.html#a80af001763fd0c5468dac33d7b4aa99b", null ],
-      [ "onState", "classNuguCapability_1_1ITextListener.html#a2ef78fcfe78da04041ce2db694637e12", null ],
-      [ "onComplete", "classNuguCapability_1_1ITextListener.html#a1870d3db8e718b583b975d73612e8e08", null ],
-      [ "onError", "classNuguCapability_1_1ITextListener.html#a0c8c8a36581ee79cc10ed2f9d7c3a04c", null ]
+      [ "onState", "classNuguCapability_1_1ITextListener.html#a3c9939d7e4f2a9c699b538eba5871c86", null ],
+      [ "onComplete", "classNuguCapability_1_1ITextListener.html#a8b755a518de09ce32db5a5b1defdb131", null ],
+      [ "onError", "classNuguCapability_1_1ITextListener.html#a54338d4a48a2d02c31b1447c896bca83", null ]
     ] ],
     [ "TextAttribute", "structNuguCapability_1_1TextAttribute.html", [
       [ "response_timeout", "structNuguCapability_1_1TextAttribute.html#ae72d79a9d75aade383869bbc3f0de2c6", null ]

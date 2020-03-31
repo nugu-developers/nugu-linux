@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['latitude',['latitude',['../structNuguCapability_1_1LocationInfo.html#aed943678636c01ed17737c43a84abc31',1,'NuguCapability::LocationInfo']]],
   ['listen_5ffailed',['LISTEN_FAILED',['../group__ASRInterface.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21a25b5127a7de62d625277c315c505f18f',1,'NuguCapability']]],
   ['listen_5ftimeout',['LISTEN_TIMEOUT',['../group__ASRInterface.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21a54a62829eeacbac64ad20c96ade3b58d',1,'NuguCapability']]],
   ['listener',['listener',['../structNuguClientKit_1_1IPlaySyncManager_1_1DisplayRenderer.html#aeb9f3c5fcf22b140b24e6a464529a1e2',1,'NuguClientKit::IPlaySyncManager::DisplayRenderer']]],
@@ -9,10 +8,6 @@ var searchData=
   ['load',['load',['../structnugu__plugin__desc.html#afef3d74c5f09b6dbc1d82c43640d3093',1,'nugu_plugin_desc']]],
   ['loading_5fmedia_5ffailed',['LOADING_MEDIA_FAILED',['../group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca1b5b0ec7563b006b267a82a514bcbb8b',1,'NuguClientKit']]],
   ['loading_5fmedia_5fsuccess',['LOADING_MEDIA_SUCCESS',['../group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca0d42d3f5ee2bf7356d33b623cfa12dfd',1,'NuguClientKit']]],
-  ['location_5finterface_2ehh',['location_interface.hh',['../location__interface_8hh.html',1,'']]],
-  ['locationinfo',['LocationInfo',['../structNuguCapability_1_1LocationInfo.html',1,'NuguCapability']]],
-  ['locationinterface',['LocationInterface',['../group__LocationInterface.html',1,'']]],
   ['log',['Log',['../group__Log.html',1,'']]],
-  ['longitude',['longitude',['../structNuguCapability_1_1LocationInfo.html#a78c920149a400edc878edb4dcafcf250',1,'NuguCapability::LocationInfo']]],
   ['loop',['loop',['../classNuguClientKit_1_1IMediaPlayer.html#a51682137259ad89c24d22e91c627e45f',1,'NuguClientKit::IMediaPlayer']]]
 ];

@@ -1,7 +1,7 @@
 var classNuguCapability_1_1ITextListener =
 [
     [ "~ITextListener", "classNuguCapability_1_1ITextListener.html#a80af001763fd0c5468dac33d7b4aa99b", null ],
-    [ "onState", "classNuguCapability_1_1ITextListener.html#a2ef78fcfe78da04041ce2db694637e12", null ],
-    [ "onComplete", "classNuguCapability_1_1ITextListener.html#a1870d3db8e718b583b975d73612e8e08", null ],
-    [ "onError", "classNuguCapability_1_1ITextListener.html#a0c8c8a36581ee79cc10ed2f9d7c3a04c", null ]
+    [ "onState", "classNuguCapability_1_1ITextListener.html#a3c9939d7e4f2a9c699b538eba5871c86", null ],
+    [ "onComplete", "classNuguCapability_1_1ITextListener.html#a8b755a518de09ce32db5a5b1defdb131", null ],
+    [ "onError", "classNuguCapability_1_1ITextListener.html#a54338d4a48a2d02c31b1447c896bca83", null ]
 ];

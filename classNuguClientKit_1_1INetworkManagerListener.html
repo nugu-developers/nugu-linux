@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -95,19 +95,203 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1INetworkManagerL
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af11a90bd687c8fb17ecb429fb64fe619"><td class="memItemLeft" align="right" valign="top"><a id="af11a90bd687c8fb17ecb429fb64fe619"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#af11a90bd687c8fb17ecb429fb64fe619">onError</a> (<a class="el" href="group__NetworkManagerInterface.html#ga6aff79e2435c590ea44de8c43754e015">NetworkError</a> error)</td></tr>
-<tr class="memdesc:af11a90bd687c8fb17ecb429fb64fe619"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report an error while communicating with the NUGU server. <br /></td></tr>
+<tr class="memitem:af11a90bd687c8fb17ecb429fb64fe619"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#af11a90bd687c8fb17ecb429fb64fe619">onError</a> (<a class="el" href="group__NetworkManagerInterface.html#ga6aff79e2435c590ea44de8c43754e015">NetworkError</a> error)</td></tr>
+<tr class="memdesc:af11a90bd687c8fb17ecb429fb64fe619"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report an error while communicating with the NUGU server.  <a href="#af11a90bd687c8fb17ecb429fb64fe619">More...</a><br /></td></tr>
 <tr class="separator:af11a90bd687c8fb17ecb429fb64fe619"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a091c1b1e49bda57cb32e70ba2a3e1e3b"><td class="memItemLeft" align="right" valign="top"><a id="a091c1b1e49bda57cb32e70ba2a3e1e3b"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#a091c1b1e49bda57cb32e70ba2a3e1e3b">onStatusChanged</a> (<a class="el" href="group__NetworkManagerInterface.html#ga385a69cab88c2d456247e254424bf809">NetworkStatus</a> status)</td></tr>
-<tr class="memdesc:a091c1b1e49bda57cb32e70ba2a3e1e3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report the connection status with the NUGU server. <br /></td></tr>
+<tr class="memitem:a4a860cfb685ee8a060fe3977a3cdefdf"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#a4a860cfb685ee8a060fe3977a3cdefdf">onEventResult</a> (const char *msg_id, bool success, int code)</td></tr>
+<tr class="memdesc:a4a860cfb685ee8a060fe3977a3cdefdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report the result of sending an event from the server.  <a href="#a4a860cfb685ee8a060fe3977a3cdefdf">More...</a><br /></td></tr>
+<tr class="separator:a4a860cfb685ee8a060fe3977a3cdefdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b1882a77ffe8c804311dfd6d37caf4d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#a4b1882a77ffe8c804311dfd6d37caf4d">onEventSent</a> (const char *ename, const char *msg_id, const char *dialog_id, const char *referrer_id)</td></tr>
+<tr class="memdesc:a4b1882a77ffe8c804311dfd6d37caf4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report that an event has been sent to the server.  <a href="#a4b1882a77ffe8c804311dfd6d37caf4d">More...</a><br /></td></tr>
+<tr class="separator:a4b1882a77ffe8c804311dfd6d37caf4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a091c1b1e49bda57cb32e70ba2a3e1e3b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#a091c1b1e49bda57cb32e70ba2a3e1e3b">onStatusChanged</a> (<a class="el" href="group__NetworkManagerInterface.html#ga385a69cab88c2d456247e254424bf809">NetworkStatus</a> status)</td></tr>
+<tr class="memdesc:a091c1b1e49bda57cb32e70ba2a3e1e3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report the connection status with the NUGU server.  <a href="#a091c1b1e49bda57cb32e70ba2a3e1e3b">More...</a><br /></td></tr>
 <tr class="separator:a091c1b1e49bda57cb32e70ba2a3e1e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>network manager listener interface </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguClientKit_1_1INetworkManager.html" title="network manager interface ">INetworkManager</a> </dd></dl>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a091c1b1e49bda57cb32e70ba2a3e1e3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a091c1b1e49bda57cb32e70ba2a3e1e3b">&#9670;&nbsp;</a></span>onStatusChanged()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguClientKit::INetworkManagerListener::onStatusChanged </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__NetworkManagerInterface.html#ga385a69cab88c2d456247e254424bf809">NetworkStatus</a>&#160;</td>
+          <td class="paramname"><em>status</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Report the connection status with the NUGU server. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">status</td><td>network status </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af11a90bd687c8fb17ecb429fb64fe619"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af11a90bd687c8fb17ecb429fb64fe619">&#9670;&nbsp;</a></span>onError()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguClientKit::INetworkManagerListener::onError </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__NetworkManagerInterface.html#ga6aff79e2435c590ea44de8c43754e015">NetworkError</a>&#160;</td>
+          <td class="paramname"><em>error</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Report an error while communicating with the NUGU server. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">error</td><td>network error </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4b1882a77ffe8c804311dfd6d37caf4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b1882a77ffe8c804311dfd6d37caf4d">&#9670;&nbsp;</a></span>onEventSent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguClientKit::INetworkManagerListener::onEventSent </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>ename</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>msg_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>dialog_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>referrer_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Report that an event has been sent to the server. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ename</td><td>event name </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">msg_id</td><td>event message id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>event dialog request id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">referrer_id</td><td>event referrer dialog request id </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4a860cfb685ee8a060fe3977a3cdefdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a860cfb685ee8a060fe3977a3cdefdf">&#9670;&nbsp;</a></span>onEventResult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguClientKit::INetworkManagerListener::onEventResult </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>msg_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>success</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>code</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Report the result of sending an event from the server. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">msg_id</td><td>event message id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">success</td><td>event result </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">code</td><td>event result code (similar to http status code) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="network__manager__interface_8hh_source.html">network_manager_interface.hh</a></li>
 </ul>
 </div><!-- contents -->
@@ -116,7 +300,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">INetworkManagerListener</a></li>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:51 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

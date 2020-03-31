@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('group__Log.html','');});
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <center><table><tr><td><img src="group__Log.png" border="0" alt="" usemap="#group____Log"/>
 <map name="group____Log" id="group____Log">
-<area shape="rect" id="node2" href="group__SDKBase.html" title="SDK Base" alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node2" href="group__SDKBase.html" title="SDK Base" alt="" coords="5,5,89,32"/>
 </map>
 </td></tr></table></center>
 </div>
@@ -109,24 +109,93 @@ Macros</h2></td></tr>
 <tr class="memitem:ga5fccb4fc71e44089a1b1a77fc76c0b68"><td class="memItemLeft" align="right" valign="top"><a id="ga5fccb4fc71e44089a1b1a77fc76c0b68"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>__FILENAME__</b>&#160;&#160;&#160;__FILE__</td></tr>
 <tr class="separator:ga5fccb4fc71e44089a1b1a77fc76c0b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga18ee435e167d835f0e14fdd47aa2a498"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#ga18ee435e167d835f0e14fdd47aa2a498">error_nomem</a>()&#160;&#160;&#160;<a class="el" href="group__Log.html#ga18753f0675200fa2ceba7a7934211da1">nugu_error</a>(&quot;Not enough memory&quot;)</td></tr>
-<tr class="memdesc:ga18ee435e167d835f0e14fdd47aa2a498"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default error message for 'Not enough memory'.  <a href="#ga18ee435e167d835f0e14fdd47aa2a498">More...</a><br /></td></tr>
-<tr class="separator:ga18ee435e167d835f0e14fdd47aa2a498"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac4b90cda2a8f4049e44ced1fee365cb1"><td class="memItemLeft" align="right" valign="top"><a id="gac4b90cda2a8f4049e44ced1fee365cb1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_BLACK</b>&#160;&#160;&#160;&quot;\e[0;30m&quot;</td></tr>
+<tr class="separator:gac4b90cda2a8f4049e44ced1fee365cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4902d9374790c80a9a0f7e293e1f420f"><td class="memItemLeft" align="right" valign="top"><a id="ga4902d9374790c80a9a0f7e293e1f420f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_BLUE</b>&#160;&#160;&#160;&quot;\e[0;34m&quot;</td></tr>
+<tr class="separator:ga4902d9374790c80a9a0f7e293e1f420f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7d67db0dfa6606350d07007204a80dc8"><td class="memItemLeft" align="right" valign="top"><a id="ga7d67db0dfa6606350d07007204a80dc8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_BROWN</b>&#160;&#160;&#160;&quot;\e[0;33m&quot;</td></tr>
+<tr class="separator:ga7d67db0dfa6606350d07007204a80dc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga06ed753e9946392fe99db5a90fac744d"><td class="memItemLeft" align="right" valign="top"><a id="ga06ed753e9946392fe99db5a90fac744d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_CYAN</b>&#160;&#160;&#160;&quot;\e[0;36m&quot;</td></tr>
+<tr class="separator:ga06ed753e9946392fe99db5a90fac744d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0f0b9ef76cbc8c5700d0c437e7a9e107"><td class="memItemLeft" align="right" valign="top"><a id="ga0f0b9ef76cbc8c5700d0c437e7a9e107"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_DARKGRAY</b>&#160;&#160;&#160;&quot;\e[1;30m&quot;</td></tr>
+<tr class="separator:ga0f0b9ef76cbc8c5700d0c437e7a9e107"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad0a2da9659565a13c2eb166f504bef63"><td class="memItemLeft" align="right" valign="top"><a id="gad0a2da9659565a13c2eb166f504bef63"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_GREEN</b>&#160;&#160;&#160;&quot;\e[0;32m&quot;</td></tr>
+<tr class="separator:gad0a2da9659565a13c2eb166f504bef63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa502c0bd0217ada14ae95b00978b30ee"><td class="memItemLeft" align="right" valign="top"><a id="gaa502c0bd0217ada14ae95b00978b30ee"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_LIGHTBLUE</b>&#160;&#160;&#160;&quot;\e[1;34m&quot;</td></tr>
+<tr class="separator:gaa502c0bd0217ada14ae95b00978b30ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4320aecde2ea3015fe2a69bd6bac0430"><td class="memItemLeft" align="right" valign="top"><a id="ga4320aecde2ea3015fe2a69bd6bac0430"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_LIGHTCYAN</b>&#160;&#160;&#160;&quot;\e[1;36m&quot;</td></tr>
+<tr class="separator:ga4320aecde2ea3015fe2a69bd6bac0430"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga39be65416a4d5a0547cd37b7987ef223"><td class="memItemLeft" align="right" valign="top"><a id="ga39be65416a4d5a0547cd37b7987ef223"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_LIGHTGRAY</b>&#160;&#160;&#160;&quot;\e[0;37m&quot;</td></tr>
+<tr class="separator:ga39be65416a4d5a0547cd37b7987ef223"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1e18bce796ef8241c6514efdea244835"><td class="memItemLeft" align="right" valign="top"><a id="ga1e18bce796ef8241c6514efdea244835"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_LIGHTGREEN</b>&#160;&#160;&#160;&quot;\e[1;32m&quot;</td></tr>
+<tr class="separator:ga1e18bce796ef8241c6514efdea244835"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga64c44e8fef20e0c3fac05b4ea232dc90"><td class="memItemLeft" align="right" valign="top"><a id="ga64c44e8fef20e0c3fac05b4ea232dc90"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_LIGHTMAGENTA</b>&#160;&#160;&#160;&quot;\e[1;35m&quot;</td></tr>
+<tr class="separator:ga64c44e8fef20e0c3fac05b4ea232dc90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf5bf2c1955ffbbfcd549c8ffd3581e56"><td class="memItemLeft" align="right" valign="top"><a id="gaf5bf2c1955ffbbfcd549c8ffd3581e56"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_LIGHTRED</b>&#160;&#160;&#160;&quot;\e[1;31m&quot;</td></tr>
+<tr class="separator:gaf5bf2c1955ffbbfcd549c8ffd3581e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf6d9968a150cb4d90e965bede3c4d42e"><td class="memItemLeft" align="right" valign="top"><a id="gaf6d9968a150cb4d90e965bede3c4d42e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_MAGENTA</b>&#160;&#160;&#160;&quot;\e[0;35m&quot;</td></tr>
+<tr class="separator:gaf6d9968a150cb4d90e965bede3c4d42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga148e0c5830b551811018d8863cd3eb99"><td class="memItemLeft" align="right" valign="top"><a id="ga148e0c5830b551811018d8863cd3eb99"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_NORMAL</b>&#160;&#160;&#160;&quot;\e[0m&quot;</td></tr>
+<tr class="separator:ga148e0c5830b551811018d8863cd3eb99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga93dae7a7cd39bce31484794c08c3bcbb"><td class="memItemLeft" align="right" valign="top"><a id="ga93dae7a7cd39bce31484794c08c3bcbb"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_RECV</b>&#160;&#160;&#160;&quot;&quot;</td></tr>
+<tr class="separator:ga93dae7a7cd39bce31484794c08c3bcbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabaa78cde883167156fc4d4b2d6293f11"><td class="memItemLeft" align="right" valign="top"><a id="gabaa78cde883167156fc4d4b2d6293f11"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_RED</b>&#160;&#160;&#160;&quot;\e[0;31m&quot;</td></tr>
+<tr class="separator:gabaa78cde883167156fc4d4b2d6293f11"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga514aed6dda847b9f2da8c60ac99b807d"><td class="memItemLeft" align="right" valign="top"><a id="ga514aed6dda847b9f2da8c60ac99b807d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_SEND</b>&#160;&#160;&#160;&quot;&quot;</td></tr>
+<tr class="separator:ga514aed6dda847b9f2da8c60ac99b807d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga75258686737dd0bead83bd66b94b8585"><td class="memItemLeft" align="right" valign="top"><a id="ga75258686737dd0bead83bd66b94b8585"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_WHITE</b>&#160;&#160;&#160;&quot;\e[1;37m&quot;</td></tr>
+<tr class="separator:ga75258686737dd0bead83bd66b94b8585"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac852ef6b4a54bd7b83ca745537744e44"><td class="memItemLeft" align="right" valign="top"><a id="gac852ef6b4a54bd7b83ca745537744e44"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_YELLOW</b>&#160;&#160;&#160;&quot;\e[1;33m&quot;</td></tr>
+<tr class="separator:gac852ef6b4a54bd7b83ca745537744e44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga580acb78e69cd3ffc765928ce6c3ca79"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#ga580acb78e69cd3ffc765928ce6c3ca79">nugu_dbg</a>(fmt, ...)&#160;&#160;&#160;<a class="el" href="group__Log.html#gab4c65ebc9213bf184f51a33141292cb1">nugu_log</a>(<a class="el" href="group__Log.html#gaed05c0a3180d2066694482e90719724c">NUGU_LOG_MODULE</a>, <a class="el" href="group__Log.html#ggaa713331b2690e589ff6a29ea655d1e97a7f342990dc3f12645247f64fe83c4675">NUGU_LOG_LEVEL_DEBUG</a>, fmt, ##__VA_ARGS__)</td></tr>
 <tr class="memdesc:ga580acb78e69cd3ffc765928ce6c3ca79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Debug level error message.  <a href="#ga580acb78e69cd3ffc765928ce6c3ca79">More...</a><br /></td></tr>
 <tr class="separator:ga580acb78e69cd3ffc765928ce6c3ca79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga18753f0675200fa2ceba7a7934211da1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#ga18753f0675200fa2ceba7a7934211da1">nugu_error</a>(fmt, ...)&#160;&#160;&#160;<a class="el" href="group__Log.html#gab4c65ebc9213bf184f51a33141292cb1">nugu_log</a>(<a class="el" href="group__Log.html#gaed05c0a3180d2066694482e90719724c">NUGU_LOG_MODULE</a>, <a class="el" href="group__Log.html#ggaa713331b2690e589ff6a29ea655d1e97a6e5af10c147da8e2f62f0de31422a8e4">NUGU_LOG_LEVEL_ERROR</a>, fmt, ##__VA_ARGS__)</td></tr>
 <tr class="memdesc:ga18753f0675200fa2ceba7a7934211da1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Error level error message.  <a href="#ga18753f0675200fa2ceba7a7934211da1">More...</a><br /></td></tr>
 <tr class="separator:ga18753f0675200fa2ceba7a7934211da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1c71c4e0340507f2cbdae1a7c71845c5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#ga1c71c4e0340507f2cbdae1a7c71845c5">nugu_error_nomem</a>()&#160;&#160;&#160;<a class="el" href="group__Log.html#ga18753f0675200fa2ceba7a7934211da1">nugu_error</a>(&quot;Not enough memory&quot;)</td></tr>
+<tr class="memdesc:ga1c71c4e0340507f2cbdae1a7c71845c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default error message for 'Not enough memory'.  <a href="#ga1c71c4e0340507f2cbdae1a7c71845c5">More...</a><br /></td></tr>
+<tr class="separator:ga1c71c4e0340507f2cbdae1a7c71845c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaeb03d038a3c3fe4b9d118565dc071267"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#gaeb03d038a3c3fe4b9d118565dc071267">nugu_info</a>(fmt, ...)&#160;&#160;&#160;<a class="el" href="group__Log.html#gab4c65ebc9213bf184f51a33141292cb1">nugu_log</a>(<a class="el" href="group__Log.html#gaed05c0a3180d2066694482e90719724c">NUGU_LOG_MODULE</a>, <a class="el" href="group__Log.html#ggaa713331b2690e589ff6a29ea655d1e97a9916c36c6500e7bc0ef8cd8e5c45c3e8">NUGU_LOG_LEVEL_INFO</a>, fmt, ##__VA_ARGS__)</td></tr>
 <tr class="memdesc:gaeb03d038a3c3fe4b9d118565dc071267"><td class="mdescLeft">&#160;</td><td class="mdescRight">Information level error message.  <a href="#gaeb03d038a3c3fe4b9d118565dc071267">More...</a><br /></td></tr>
 <tr class="separator:gaeb03d038a3c3fe4b9d118565dc071267"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gab4c65ebc9213bf184f51a33141292cb1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#gab4c65ebc9213bf184f51a33141292cb1">nugu_log</a>(module,  level,  fmt, ...)</td></tr>
 <tr class="memdesc:gab4c65ebc9213bf184f51a33141292cb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convenient macro to fill file, function and line information.  <a href="#gab4c65ebc9213bf184f51a33141292cb1">More...</a><br /></td></tr>
 <tr class="separator:gab4c65ebc9213bf184f51a33141292cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0f4e65da8d54e62ed9eac7f96cad0ddf"><td class="memItemLeft" align="right" valign="top"><a id="ga0f4e65da8d54e62ed9eac7f96cad0ddf"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_LOG_MARK_RECV</b>&#160;&#160;&#160;&quot;&lt;-- &quot;</td></tr>
+<tr class="separator:ga0f4e65da8d54e62ed9eac7f96cad0ddf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae567b5073775c2214c0468e3ac0652d8"><td class="memItemLeft" align="right" valign="top"><a id="gae567b5073775c2214c0468e3ac0652d8"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_LOG_MARK_SEND</b>&#160;&#160;&#160;&quot;--&gt; &quot;</td></tr>
+<tr class="separator:gae567b5073775c2214c0468e3ac0652d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaed05c0a3180d2066694482e90719724c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#gaed05c0a3180d2066694482e90719724c">NUGU_LOG_MODULE</a>&#160;&#160;&#160;<a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a1f0adc296d7281462df6849a20e31e25">NUGU_LOG_MODULE_DEFAULT</a></td></tr>
 <tr class="memdesc:gaed05c0a3180d2066694482e90719724c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set default log module.  <a href="#gaed05c0a3180d2066694482e90719724c">More...</a><br /></td></tr>
 <tr class="separator:gaed05c0a3180d2066694482e90719724c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga39335f4c6713c854b1f6c1845eb033fa"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#ga39335f4c6713c854b1f6c1845eb033fa">nugu_log_protocol_recv</a>(level,  fmt, ...)</td></tr>
+<tr class="memdesc:ga39335f4c6713c854b1f6c1845eb033fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protocol log message for receiving.  <a href="#ga39335f4c6713c854b1f6c1845eb033fa">More...</a><br /></td></tr>
+<tr class="separator:ga39335f4c6713c854b1f6c1845eb033fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac74d5347971c2f592a7e713d5dd261d3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#gac74d5347971c2f592a7e713d5dd261d3">nugu_log_protocol_send</a>(level,  fmt, ...)</td></tr>
+<tr class="memdesc:gac74d5347971c2f592a7e713d5dd261d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Protocol log message for sending.  <a href="#gac74d5347971c2f592a7e713d5dd261d3">More...</a><br /></td></tr>
+<tr class="separator:gac74d5347971c2f592a7e713d5dd261d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7d80a96818b4b70a004d2f74228ca881"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#ga7d80a96818b4b70a004d2f74228ca881">nugu_warn</a>(fmt, ...)&#160;&#160;&#160;<a class="el" href="group__Log.html#gab4c65ebc9213bf184f51a33141292cb1">nugu_log</a>(<a class="el" href="group__Log.html#gaed05c0a3180d2066694482e90719724c">NUGU_LOG_MODULE</a>, <a class="el" href="group__Log.html#ggaa713331b2690e589ff6a29ea655d1e97a736cbbb36741a0d7bdda99f0303f796e">NUGU_LOG_LEVEL_WARNING</a>, fmt, ##__VA_ARGS__)</td></tr>
 <tr class="memdesc:ga7d80a96818b4b70a004d2f74228ca881"><td class="mdescLeft">&#160;</td><td class="mdescRight">Warning level error message.  <a href="#ga7d80a96818b4b70a004d2f74228ca881">More...</a><br /></td></tr>
 <tr class="separator:ga7d80a96818b4b70a004d2f74228ca881"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -150,9 +219,10 @@ Enumerations</h2></td></tr>
 &#160;&#160;<a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a1f0adc296d7281462df6849a20e31e25">NUGU_LOG_MODULE_DEFAULT</a> = 0x01, 
 <a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a1348ecae72b488b9659302edb664a335">NUGU_LOG_MODULE_NETWORK</a> = 0x02, 
 <a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a0e100a30d830e34705f7fce584c5fd9b">NUGU_LOG_MODULE_NETWORK_TRACE</a> = 0x04, 
-<a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1add078a62fcecb6824fffe689fc4c99ab">NUGU_LOG_MODULE_AUDIO</a> = 0x08, 
+<a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a">NUGU_LOG_MODULE_PROTOCOL</a> = 0x10, 
 <br />
-&#160;&#160;<a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1ac434ac7176e2d04c33b39173efc56df9">NUGU_LOG_MODULE_ALL</a> = 0xFF
+&#160;&#160;<a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1add078a62fcecb6824fffe689fc4c99ab">NUGU_LOG_MODULE_AUDIO</a> = 0x08, 
+<a class="el" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1ac434ac7176e2d04c33b39173efc56df9">NUGU_LOG_MODULE_ALL</a> = 0xFF
 <br />
  }<tr class="memdesc:gaf9fb527f66475b5f832571fe90940bd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">logging modules  <a href="group__Log.html#gaf9fb527f66475b5f832571fe90940bd1">More...</a><br /></td></tr>
 </td></tr>
@@ -185,15 +255,18 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga9d0a11dbeaf635b968133dbd15b80e52"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#ga9d0a11dbeaf635b968133dbd15b80e52">nugu_hexdump</a> (const uint8_t *data, size_t data_size)</td></tr>
-<tr class="memdesc:ga9d0a11dbeaf635b968133dbd15b80e52"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hexdump the specific data.  <a href="#ga9d0a11dbeaf635b968133dbd15b80e52">More...</a><br /></td></tr>
-<tr class="separator:ga9d0a11dbeaf635b968133dbd15b80e52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga12a34c7723f6eb5ad53b9e775f4c0cbd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#ga12a34c7723f6eb5ad53b9e775f4c0cbd">nugu_hexdump</a> (enum <a class="el" href="group__Log.html#gaf9fb527f66475b5f832571fe90940bd1">nugu_log_module</a> module, const uint8_t *data, size_t data_size, const char *header, const char *footer, const char *lineindent)</td></tr>
+<tr class="memdesc:ga12a34c7723f6eb5ad53b9e775f4c0cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hexdump the specific data to stderr.  <a href="#ga12a34c7723f6eb5ad53b9e775f4c0cbd">More...</a><br /></td></tr>
+<tr class="separator:ga12a34c7723f6eb5ad53b9e775f4c0cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaee99e7983d63c14b62399824b2aa549a"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#gaee99e7983d63c14b62399824b2aa549a">nugu_log_get_modules</a> (void)</td></tr>
 <tr class="memdesc:gaee99e7983d63c14b62399824b2aa549a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the bitset of modules.  <a href="#gaee99e7983d63c14b62399824b2aa549a">More...</a><br /></td></tr>
 <tr class="separator:gaee99e7983d63c14b62399824b2aa549a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafae3378cc5a0bb08288002898f9b6d99"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="group__Log.html#ga087457802942b6cddead13bf0e061851">nugu_log_prefix</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#gafae3378cc5a0bb08288002898f9b6d99">nugu_log_get_prefix_fields</a> (void)</td></tr>
 <tr class="memdesc:gafae3378cc5a0bb08288002898f9b6d99"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the additional information fields.  <a href="#gafae3378cc5a0bb08288002898f9b6d99">More...</a><br /></td></tr>
 <tr class="separator:gafae3378cc5a0bb08288002898f9b6d99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab9a26bf397d3e31d73a11a05f4cadcb2"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="group__Log.html#gab1725c99430be936620a19b430c3b402">nugu_log_system</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#gab9a26bf397d3e31d73a11a05f4cadcb2">nugu_log_get_system</a> (void)</td></tr>
+<tr class="memdesc:gab9a26bf397d3e31d73a11a05f4cadcb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get logging backend system.  <a href="#gab9a26bf397d3e31d73a11a05f4cadcb2">More...</a><br /></td></tr>
+<tr class="separator:gab9a26bf397d3e31d73a11a05f4cadcb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9dfe5ed26e2a83b98f8cda52a44d41cc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc">nugu_log_print</a> (enum <a class="el" href="group__Log.html#gaf9fb527f66475b5f832571fe90940bd1">nugu_log_module</a> module, enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97">nugu_log_level</a> level, const char *filename, const char *funcname, int line, const char *format,...)</td></tr>
 <tr class="memdesc:ga9dfe5ed26e2a83b98f8cda52a44d41cc"><td class="mdescLeft">&#160;</td><td class="mdescRight">logging function  <a href="#ga9dfe5ed26e2a83b98f8cda52a44d41cc">More...</a><br /></td></tr>
 <tr class="separator:ga9dfe5ed26e2a83b98f8cda52a44d41cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -444,14 +517,110 @@ enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" tit
 
 </div>
 </div>
-<a id="ga18ee435e167d835f0e14fdd47aa2a498"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga18ee435e167d835f0e14fdd47aa2a498">&#9670;&nbsp;</a></span>error_nomem</h2>
+<a id="gac74d5347971c2f592a7e713d5dd261d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gac74d5347971c2f592a7e713d5dd261d3">&#9670;&nbsp;</a></span>nugu_log_protocol_send</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define error_nomem</td>
+          <td class="memname">#define nugu_log_protocol_send</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">level, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">fmt, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><a class="code" href="group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc">nugu_log_print</a>(<a class="code" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a">NUGU_LOG_MODULE_PROTOCOL</a>, level, NULL, NULL, -1,        \</div><div class="line">                       NUGU_ANSI_COLOR_SEND NUGU_LOG_MARK_SEND fmt             \</div><div class="line">                               NUGU_ANSI_COLOR_NORMAL,                         \</div><div class="line">                       ##__VA_ARGS__)</div><div class="ttc" id="group__Log_html_ga9dfe5ed26e2a83b98f8cda52a44d41cc"><div class="ttname"><a href="group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc">nugu_log_print</a></div><div class="ttdeci">void nugu_log_print(enum nugu_log_module module, enum nugu_log_level level, const char *filename, const char *funcname, int line, const char *format,...)</div><div class="ttdoc">logging function </div></div>
+<div class="ttc" id="group__Log_html_ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a"><div class="ttname"><a href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a">NUGU_LOG_MODULE_PROTOCOL</a></div><div class="ttdef"><b>Definition:</b> nugu_log.h:175</div></div>
+</div><!-- fragment -->
+<p>Protocol log message for sending. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">level</td><td>logging level </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fmt</td><td>printf format string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc" title="logging function ">nugu_log_print()</a> </dd>
+<dd>
+enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" title="log levels. ">nugu_log_level</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga39335f4c6713c854b1f6c1845eb033fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga39335f4c6713c854b1f6c1845eb033fa">&#9670;&nbsp;</a></span>nugu_log_protocol_recv</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define nugu_log_protocol_recv</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">level, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">fmt, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line"><a class="code" href="group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc">nugu_log_print</a>(<a class="code" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a">NUGU_LOG_MODULE_PROTOCOL</a>, level, NULL, NULL, -1,        \</div><div class="line">                       NUGU_ANSI_COLOR_RECV NUGU_LOG_MARK_RECV fmt             \</div><div class="line">                               NUGU_ANSI_COLOR_NORMAL,                         \</div><div class="line">                       ##__VA_ARGS__)</div><div class="ttc" id="group__Log_html_ga9dfe5ed26e2a83b98f8cda52a44d41cc"><div class="ttname"><a href="group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc">nugu_log_print</a></div><div class="ttdeci">void nugu_log_print(enum nugu_log_module module, enum nugu_log_level level, const char *filename, const char *funcname, int line, const char *format,...)</div><div class="ttdoc">logging function </div></div>
+<div class="ttc" id="group__Log_html_ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a"><div class="ttname"><a href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a">NUGU_LOG_MODULE_PROTOCOL</a></div><div class="ttdef"><b>Definition:</b> nugu_log.h:175</div></div>
+</div><!-- fragment -->
+<p>Protocol log message for receiving. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">level</td><td>logging level </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">fmt</td><td>printf format string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc" title="logging function ">nugu_log_print()</a> </dd>
+<dd>
+enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" title="log levels. ">nugu_log_level</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga1c71c4e0340507f2cbdae1a7c71845c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1c71c4e0340507f2cbdae1a7c71845c5">&#9670;&nbsp;</a></span>nugu_error_nomem</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define nugu_error_nomem</td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td>&#160;&#160;&#160;<a class="el" href="group__Log.html#ga18753f0675200fa2ceba7a7934211da1">nugu_error</a>(&quot;Not enough memory&quot;)</td>
@@ -616,6 +785,8 @@ enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" tit
 </td></tr>
 <tr><td class="fieldname"><a id="ggaf9fb527f66475b5f832571fe90940bd1a0e100a30d830e34705f7fce584c5fd9b"></a>NUGU_LOG_MODULE_NETWORK_TRACE&#160;</td><td class="fielddoc"><p>Network trace module </p>
 </td></tr>
+<tr><td class="fieldname"><a id="ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a"></a>NUGU_LOG_MODULE_PROTOCOL&#160;</td><td class="fielddoc"><p>Protocol module </p>
+</td></tr>
 <tr><td class="fieldname"><a id="ggaf9fb527f66475b5f832571fe90940bd1add078a62fcecb6824fffe689fc4c99ab"></a>NUGU_LOG_MODULE_AUDIO&#160;</td><td class="fielddoc"><p>Audio module </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ggaf9fb527f66475b5f832571fe90940bd1ac434ac7176e2d04c33b39173efc56df9"></a>NUGU_LOG_MODULE_ALL&#160;</td><td class="fielddoc"><p>All modules </p>
@@ -720,6 +891,27 @@ enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" tit
 </div><div class="memdoc">
 
 <p>Set logging backend system. </p>
+<dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="group__Log.html#gab1725c99430be936620a19b430c3b402" title="Back-end system that supports log output. ">nugu_log_system</a> </dd></dl>
+
+</div>
+</div>
+<a id="gab9a26bf397d3e31d73a11a05f4cadcb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab9a26bf397d3e31d73a11a05f4cadcb2">&#9670;&nbsp;</a></span>nugu_log_get_system()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__Log.html#gab1725c99430be936620a19b430c3b402">nugu_log_system</a> nugu_log_get_system </td>
+          <td>(</td>
+          <td class="paramtype">void&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get logging backend system. </p>
 <dl class="section see"><dt>See also</dt><dd>enum <a class="el" href="group__Log.html#gab1725c99430be936620a19b430c3b402" title="Back-end system that supports log output. ">nugu_log_system</a> </dd></dl>
 
 </div>
@@ -860,8 +1052,8 @@ enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" tit
 
 </div>
 </div>
-<a id="ga9d0a11dbeaf635b968133dbd15b80e52"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga9d0a11dbeaf635b968133dbd15b80e52">&#9670;&nbsp;</a></span>nugu_hexdump()</h2>
+<a id="ga12a34c7723f6eb5ad53b9e775f4c0cbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga12a34c7723f6eb5ad53b9e775f4c0cbd">&#9670;&nbsp;</a></span>nugu_hexdump()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -869,6 +1061,12 @@ enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" tit
         <tr>
           <td class="memname">void nugu_hexdump </td>
           <td>(</td>
+          <td class="paramtype">enum <a class="el" href="group__Log.html#gaf9fb527f66475b5f832571fe90940bd1">nugu_log_module</a>&#160;</td>
+          <td class="paramname"><em>module</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype">const uint8_t *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
         </tr>
@@ -876,7 +1074,25 @@ enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" tit
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">size_t&#160;</td>
-          <td class="paramname"><em>data_size</em>&#160;</td>
+          <td class="paramname"><em>data_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>header</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>footer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>lineindent</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -886,11 +1102,15 @@ enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" tit
       </table>
 </div><div class="memdoc">
 
-<p>Hexdump the specific data. </p>
+<p>Hexdump the specific data to stderr. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">module</td><td>log module </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>memory address to hexdump </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">data_size</td><td>size </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">header</td><td>message to be printed at the top of hexdump </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">footer</td><td>message to be printed at the bottom of hexdump </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">lineindent</td><td>message to be printed at the beginning of each line </td></tr>
   </table>
   </dd>
 </dl>
@@ -902,7 +1122,7 @@ enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" tit
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:48 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

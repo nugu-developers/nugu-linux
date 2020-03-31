@@ -1,14 +1,13 @@
 var nugu__directive__sequencer_8h =
 [
-    [ "DirseqReturn", "group__nugu__dirseq.html#ga47f50161d557ebe3a6ccecd78f452585", null ],
-    [ "DirseqCallback", "group__nugu__dirseq.html#gab6e39a7f61f5787712e15bd07507cc9c", null ],
-    [ "dirseq_return", "group__nugu__dirseq.html#gafc8d30d39f8b4a472793023c49000566", [
-      [ "DIRSEQ_STOP_PROPAGATE", "group__nugu__dirseq.html#ggafc8d30d39f8b4a472793023c49000566a3deb3de0d304c06dcb69da28f7d2ee7c", null ],
-      [ "DIRSEQ_CONTINUE", "group__nugu__dirseq.html#ggafc8d30d39f8b4a472793023c49000566aa0ea6083d39b9b5a3ae6ee8c2f826d67", null ],
-      [ "DIRSEQ_REMOVE", "group__nugu__dirseq.html#ggafc8d30d39f8b4a472793023c49000566adc6148985ad5fd65a10d60f61f2a4c2c", null ]
+    [ "NuguDirseqReturn", "group__nugu__dirseq.html#gaf9128302889ddaf85d5021aec70e5e97", null ],
+    [ "NuguDirseqCallback", "group__nugu__dirseq.html#gae18dc3625b49dba55c5e8bce944e171f", null ],
+    [ "nugu_dirseq_return", "group__nugu__dirseq.html#ga14acd127aec76399f6d9644a9eda7df9", [
+      [ "NUGU_DIRSEQ_SUCCESS", "group__nugu__dirseq.html#gga14acd127aec76399f6d9644a9eda7df9a703f356cc2ddb8891078d42896ca57d3", null ],
+      [ "NUGU_DIRSEQ_FAILURE", "group__nugu__dirseq.html#gga14acd127aec76399f6d9644a9eda7df9afbecc7b8c851d2824affcf617710e1a6", null ]
     ] ],
-    [ "nugu_dirseq_add_callback", "group__nugu__dirseq.html#ga428b677830c7bdb858d8eaa9738eee80", null ],
-    [ "nugu_dirseq_remove_callback", "group__nugu__dirseq.html#ga4edd683c0926626c1f0dcc040cb8881a", null ],
+    [ "nugu_dirseq_set_callback", "group__nugu__dirseq.html#ga0c5c7f0db74c83ce2228f98a0a5c186e", null ],
+    [ "nugu_dirseq_unset_callback", "group__nugu__dirseq.html#ga2e4f0a5dd683042d7da1c77e28fc72d3", null ],
     [ "nugu_dirseq_push", "group__nugu__dirseq.html#ga9db4416f7fbae2d6ad856f157213703d", null ],
     [ "nugu_dirseq_find_by_msgid", "group__nugu__dirseq.html#ga4bcf5a3a9bece9195aa59d649c879733", null ],
     [ "nugu_dirseq_complete", "group__nugu__dirseq.html#gafac3e377f9cdb3188f264e0e1d9497c5", null ],

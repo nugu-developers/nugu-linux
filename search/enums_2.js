@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['decoder_5ftype',['decoder_type',['../group__NuguDecoderDriver.html#ga620edd0fe431577547eb1c2b73d37dac',1,'nugu_decoder.h']]],
-  ['dirseq_5freturn',['dirseq_return',['../group__nugu__dirseq.html#gafc8d30d39f8b4a472793023c49000566',1,'nugu_directive_sequencer.h']]]
+  ['listeningstate',['ListeningState',['../group__SpeechRecognizerInterface.html#gaae383c251ee0fa6e96e4c53b9f5d9a3a',1,'NuguClientKit']]]
 ];

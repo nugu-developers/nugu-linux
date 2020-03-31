@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -98,16 +98,16 @@ $(document).ready(function(){initNavTree('group__Buffer.html','');});
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <center><table><tr><td><img src="group__Buffer.png" border="0" alt="" usemap="#group____Buffer"/>
 <map name="group____Buffer" id="group____Buffer">
-<area shape="rect" id="node2" href="group__SDKBase.html" title="SDK Base" alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node2" href="group__SDKBase.html" title="SDK Base" alt="" coords="5,5,89,32"/>
 </map>
 </td></tr></table></center>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga33bfc1f995233887a0414369c36936b8"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga33bfc1f995233887a0414369c36936b8">NOT_FOUND</a>&#160;&#160;&#160;((size_t)-1)</td></tr>
-<tr class="memdesc:ga33bfc1f995233887a0414369c36936b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not found return type of <a class="el" href="group__Buffer.html#ga14ae6c47535a68b6fed00128432eadb1" title="Get the position of the data you want to find. ">nugu_buffer_find_byte()</a>  <a href="#ga33bfc1f995233887a0414369c36936b8">More...</a><br /></td></tr>
-<tr class="separator:ga33bfc1f995233887a0414369c36936b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga06a7db582786fb15f30593938661d999"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga06a7db582786fb15f30593938661d999">NUGU_BUFFER_NOT_FOUND</a>&#160;&#160;&#160;((size_t)-1)</td></tr>
+<tr class="memdesc:ga06a7db582786fb15f30593938661d999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not found return type of <a class="el" href="group__Buffer.html#ga14ae6c47535a68b6fed00128432eadb1" title="Get the position of the data you want to find. ">nugu_buffer_find_byte()</a>  <a href="#ga06a7db582786fb15f30593938661d999">More...</a><br /></td></tr>
+<tr class="separator:ga06a7db582786fb15f30593938661d999"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -161,14 +161,14 @@ Functions</h2></td></tr>
 <p>The Buffer object allocates and uses a single flat buffer inside, and adjusts its size flexibly as needed.</p>
 <p>The Buffer object is not thread safe. </p>
 <h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="ga33bfc1f995233887a0414369c36936b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga33bfc1f995233887a0414369c36936b8">&#9670;&nbsp;</a></span>NOT_FOUND</h2>
+<a id="ga06a7db582786fb15f30593938661d999"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga06a7db582786fb15f30593938661d999">&#9670;&nbsp;</a></span>NUGU_BUFFER_NOT_FOUND</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define NOT_FOUND&#160;&#160;&#160;((size_t)-1)</td>
+          <td class="memname">#define NUGU_BUFFER_NOT_FOUND&#160;&#160;&#160;((size_t)-1)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -409,8 +409,8 @@ Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>position. if fail, return NOT_FOUND </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Buffer.html#ga33bfc1f995233887a0414369c36936b8" title="Not found return type of nugu_buffer_find_byte() ">NOT_FOUND</a> </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>position. if fail, return NUGU_BUFFER_NOT_FOUND </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__Buffer.html#ga06a7db582786fb15f30593938661d999" title="Not found return type of nugu_buffer_find_byte() ">NUGU_BUFFER_NOT_FOUND</a> </dd></dl>
 
 </div>
 </div>
@@ -621,7 +621,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:48 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

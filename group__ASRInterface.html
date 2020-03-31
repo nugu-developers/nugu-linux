@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -82,6 +82,7 @@ $(document).ready(function(){initNavTree('group__ASRInterface.html','');});
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
 <div class="title">ASRInterface<div class="ingroups"><a class="el" href="group__SDKNuguCapability.html">NuguCapability</a></div></div>  </div>
@@ -97,7 +98,7 @@ $(document).ready(function(){initNavTree('group__ASRInterface.html','');});
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <center><table><tr><td><img src="group__ASRInterface.png" border="0" alt="" usemap="#group____ASRInterface"/>
 <map name="group____ASRInterface" id="group____ASRInterface">
-<area shape="rect" id="node1" href="group__SDKNuguCapability.html" title="NuguCapability" alt="" coords="5,5,128,32"/>
+<area shape="rect" id="node1" href="group__SDKNuguCapability.html" title="NuguCapability" alt="" coords="5,5,116,32"/>
 </map>
 </td></tr></table></center>
 </div>
@@ -113,6 +114,18 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IASRListener.html">NuguCapability::IASRListener</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ASR listener interface.  <a href="classNuguCapability_1_1IASRListener.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:ga77a3c02799354f9bd5e7217bc7a81841"><td class="memItemLeft" align="right" valign="top"><a id="ga77a3c02799354f9bd5e7217bc7a81841"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ASR_ENCODING</b>&#160;&#160;&#160;&quot;COMPLETE&quot; /** @def Receive asr result by complete sentence */</td></tr>
+<tr class="separator:ga77a3c02799354f9bd5e7217bc7a81841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5419ab10266ab89d5d5a405bf2f209cd"><td class="memItemLeft" align="right" valign="top"><a id="ga5419ab10266ab89d5d5a405bf2f209cd"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ASR_EPD_TYPE</b>&#160;&#160;&#160;&quot;CLIENT&quot; /** @def Use client end point detector */</td></tr>
+<tr class="separator:ga5419ab10266ab89d5d5a405bf2f209cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae425613eee5e6fac62f785e0bdb107aa"><td class="memItemLeft" align="right" valign="top"><a id="gae425613eee5e6fac62f785e0bdb107aa"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SERVER_RESPONSE_TIMEOUT_SEC</b>&#160;&#160;&#160;10 /** @def Set server response timeout about 10s */</td></tr>
+<tr class="separator:gae425613eee5e6fac62f785e0bdb107aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -164,7 +177,7 @@ Enumerations</h2></td></tr>
 </div><div class="memdoc">
 
 <p>ASR state list. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguCapability_1_1IASRListener.html#aa68af3c59f39bc9003e91ddd5869452a" title="Report to the user asr state changed. ">IASRListener::onState</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguCapability_1_1IASRListener.html#adf5f438140b02a9251d3488192ec14b8" title="Report to the user asr state changed. ">IASRListener::onState</a> </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggafe4f48f063bafec608e5060090a9543baa5daf7f2ebbba4975d61dab1c40188c7"></a>IDLE&#160;</td><td class="fielddoc"><p>No interaction with the user </p>
 </td></tr>
@@ -201,7 +214,7 @@ Enumerations</h2></td></tr>
 </div><div class="memdoc">
 
 <p>ASR error list. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguCapability_1_1IASRListener.html#ac831421406a00af5c984d2e2a82d157b" title="Report an error occurred during speech recognition to the user. ">IASRListener::onError</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguCapability_1_1IASRListener.html#a8a734c0362353a8e5a7a1694162e8004" title="Report an error occurred during speech recognition to the user. ">IASRListener::onError</a> </dd></dl>
 <table class="fieldtable">
 <tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga9aa11256d9ce8a3aa14ac9a24e1d8e21a0bc1f3f491e9717b6ff83103a014d496"></a>RESPONSE_TIMEOUT&#160;</td><td class="fielddoc"><p>This event occurs when audio streaming is sent but there is no response from the server for a certain time. </p>
 </td></tr>
@@ -222,7 +235,7 @@ Enumerations</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:49 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

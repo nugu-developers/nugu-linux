@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('classNuguCapability_1_1ITextListener.h
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classNuguCapability_1_1ITextListener__inherit__graph.png" border="0" usemap="#NuguCapability_1_1ITextListener_inherit__map" alt="Inheritance graph"/></div>
 <map name="NuguCapability_1_1ITextListener_inherit__map" id="NuguCapability_1_1ITextListener_inherit__map">
-<area shape="rect" id="node2" href="classNuguClientKit_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="16,5,207,47"/>
+<area shape="rect" id="node2" href="classNuguClientKit_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="16,5,189,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -109,29 +109,28 @@ $(document).ready(function(){initNavTree('classNuguCapability_1_1ITextListener.h
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classNuguCapability_1_1ITextListener__coll__graph.png" border="0" usemap="#NuguCapability_1_1ITextListener_coll__map" alt="Collaboration graph"/></div>
 <map name="NuguCapability_1_1ITextListener_coll__map" id="NuguCapability_1_1ITextListener_coll__map">
-<area shape="rect" id="node2" href="classNuguClientKit_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="16,5,207,47"/>
+<area shape="rect" id="node2" href="classNuguClientKit_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="16,5,189,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1870d3db8e718b583b975d73612e8e08"><td class="memItemLeft" align="right" valign="top"><a id="a1870d3db8e718b583b975d73612e8e08"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1ITextListener.html#a1870d3db8e718b583b975d73612e8e08">onComplete</a> ()=0</td></tr>
-<tr class="memdesc:a1870d3db8e718b583b975d73612e8e08"><td class="mdescLeft">&#160;</td><td class="mdescRight">When server processing for text input requests is completed. <br /></td></tr>
-<tr class="separator:a1870d3db8e718b583b975d73612e8e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c8c8a36581ee79cc10ed2f9d7c3a04c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1ITextListener.html#a0c8c8a36581ee79cc10ed2f9d7c3a04c">onError</a> (<a class="el" href="group__TextInterface.html#gab868b04fc95d19706ef1896699930bac">TextError</a> error)=0</td></tr>
-<tr class="memdesc:a0c8c8a36581ee79cc10ed2f9d7c3a04c"><td class="mdescLeft">&#160;</td><td class="mdescRight">An error occurred during requesting text input.  <a href="#a0c8c8a36581ee79cc10ed2f9d7c3a04c">More...</a><br /></td></tr>
-<tr class="separator:a0c8c8a36581ee79cc10ed2f9d7c3a04c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ef78fcfe78da04041ce2db694637e12"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1ITextListener.html#a2ef78fcfe78da04041ce2db694637e12">onState</a> (<a class="el" href="group__TextInterface.html#ga69b7f95a5985645bb3a5d3be597ad35a">TextState</a> state)=0</td></tr>
-<tr class="memdesc:a2ef78fcfe78da04041ce2db694637e12"><td class="mdescLeft">&#160;</td><td class="mdescRight">TextState changed.  <a href="#a2ef78fcfe78da04041ce2db694637e12">More...</a><br /></td></tr>
-<tr class="separator:a2ef78fcfe78da04041ce2db694637e12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b755a518de09ce32db5a5b1defdb131"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1ITextListener.html#a8b755a518de09ce32db5a5b1defdb131">onComplete</a> (const std::string &amp;dialog_id)=0</td></tr>
+<tr class="memdesc:a8b755a518de09ce32db5a5b1defdb131"><td class="mdescLeft">&#160;</td><td class="mdescRight">When server processing for text input requests is completed.  <a href="#a8b755a518de09ce32db5a5b1defdb131">More...</a><br /></td></tr>
+<tr class="separator:a8b755a518de09ce32db5a5b1defdb131"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54338d4a48a2d02c31b1447c896bca83"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1ITextListener.html#a54338d4a48a2d02c31b1447c896bca83">onError</a> (<a class="el" href="group__TextInterface.html#gab868b04fc95d19706ef1896699930bac">TextError</a> error, const std::string &amp;dialog_id)=0</td></tr>
+<tr class="memdesc:a54338d4a48a2d02c31b1447c896bca83"><td class="mdescLeft">&#160;</td><td class="mdescRight">An error occurred during requesting text input.  <a href="#a54338d4a48a2d02c31b1447c896bca83">More...</a><br /></td></tr>
+<tr class="separator:a54338d4a48a2d02c31b1447c896bca83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c9939d7e4f2a9c699b538eba5871c86"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1ITextListener.html#a3c9939d7e4f2a9c699b538eba5871c86">onState</a> (<a class="el" href="group__TextInterface.html#ga69b7f95a5985645bb3a5d3be597ad35a">TextState</a> state, const std::string &amp;dialog_id)=0</td></tr>
+<tr class="memdesc:a3c9939d7e4f2a9c699b538eba5871c86"><td class="mdescLeft">&#160;</td><td class="mdescRight">TextState changed.  <a href="#a3c9939d7e4f2a9c699b538eba5871c86">More...</a><br /></td></tr>
+<tr class="separator:a3c9939d7e4f2a9c699b538eba5871c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>text listener interface </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguCapability_1_1ITextHandler.html" title="text handler interface ">ITextHandler</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2ef78fcfe78da04041ce2db694637e12"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ef78fcfe78da04041ce2db694637e12">&#9670;&nbsp;</a></span>onState()</h2>
+<a id="a3c9939d7e4f2a9c699b538eba5871c86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c9939d7e4f2a9c699b538eba5871c86">&#9670;&nbsp;</a></span>onState()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -143,8 +142,18 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
           <td class="memname">virtual void NuguCapability::ITextListener::onState </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__TextInterface.html#ga69b7f95a5985645bb3a5d3be597ad35a">TextState</a>&#160;</td>
-          <td class="paramname"><em>state</em></td><td>)</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>dialog_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -158,15 +167,50 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>text state </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>dialog request id </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguCapability_1_1ITextHandler.html#a617e4d97b94acc5c6faacfaae078b9ac" title="Request NUGU services based on text input. ">ITextHandler::requestTextInput()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguCapability_1_1ITextHandler.html#a51fc0b7b9e2b4b6452a07de4a5819467" title="Request NUGU services based on text input. ">ITextHandler::requestTextInput()</a> </dd></dl>
 
 </div>
 </div>
-<a id="a0c8c8a36581ee79cc10ed2f9d7c3a04c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c8c8a36581ee79cc10ed2f9d7c3a04c">&#9670;&nbsp;</a></span>onError()</h2>
+<a id="a8b755a518de09ce32db5a5b1defdb131"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b755a518de09ce32db5a5b1defdb131">&#9670;&nbsp;</a></span>onComplete()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguCapability::ITextListener::onComplete </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>dialog_id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>When server processing for text input requests is completed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>dialog request id </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a54338d4a48a2d02c31b1447c896bca83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a54338d4a48a2d02c31b1447c896bca83">&#9670;&nbsp;</a></span>onError()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,8 +222,18 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
           <td class="memname">virtual void NuguCapability::ITextListener::onError </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__TextInterface.html#gab868b04fc95d19706ef1896699930bac">TextError</a>&#160;</td>
-          <td class="paramname"><em>error</em></td><td>)</td>
+          <td class="paramname"><em>error</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>dialog_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -193,6 +247,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">error</td><td>text error </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>dialog request id </td></tr>
   </table>
   </dd>
 </dl>
@@ -208,7 +263,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguCapability</b></li><li class="navelem"><a class="el" href="classNuguCapability_1_1ITextListener.html">ITextListener</a></li>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:50 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

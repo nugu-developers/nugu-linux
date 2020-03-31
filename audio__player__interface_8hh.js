@@ -11,5 +11,9 @@ var audio__player__interface_8hh =
       [ "NONE", "audio__player__interface_8hh.html#gga0cb2048ef5fb507017eb53ee3e52716dab50339a10e1de285ac99d4c3990b8693", null ],
       [ "ONE", "audio__player__interface_8hh.html#gga0cb2048ef5fb507017eb53ee3e52716dabc21e6484530fc9d0313cb816b733396", null ],
       [ "ALL", "audio__player__interface_8hh.html#gga0cb2048ef5fb507017eb53ee3e52716da5fb1f955b45e38e31789286a1790398d", null ]
+    ] ],
+    [ "ControlLyricsDirection", "audio__player__interface_8hh.html#ga981015a8d321936038813f3f1ea0bf0a", [
+      [ "PREVIOUS", "audio__player__interface_8hh.html#gga981015a8d321936038813f3f1ea0bf0aa315ba7a868d45a9cb131c8dca3166b51", null ],
+      [ "NEXT", "audio__player__interface_8hh.html#gga981015a8d321936038813f3f1ea0bf0aa47559fb833ff58321570e5e877b467f6", null ]
     ] ]
 ];

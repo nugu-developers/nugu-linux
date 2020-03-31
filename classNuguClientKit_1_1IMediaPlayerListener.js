@@ -1,5 +1,6 @@
 var classNuguClientKit_1_1IMediaPlayerListener =
 [
+    [ "~IMediaPlayerListener", "classNuguClientKit_1_1IMediaPlayerListener.html#a9d9742965e2d5bf911ecc3d8b602f2f2", null ],
     [ "mediaStateChanged", "classNuguClientKit_1_1IMediaPlayerListener.html#ac89057d0e7ae8cf435138c0510cf61a4", null ],
     [ "mediaEventReport", "classNuguClientKit_1_1IMediaPlayerListener.html#a964a8591d9ac1b981216e09a74d4950b", null ],
     [ "mediaChanged", "classNuguClientKit_1_1IMediaPlayerListener.html#a7a3835846590a14e39e136a296e44a6c", null ],

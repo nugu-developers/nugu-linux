@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['timeoutcallback',['timeoutCallback',['../group__NuguTimer.html#ga0dffec70d4c4f343e3c1fa1c9dd67f82',1,'nugu_timer.h']]]
+  ['timer_5fcallback',['timer_callback',['../classNuguClientKit_1_1INuguTimer.html#a679476e2b20249c383fb6905955093e0',1,'NuguClientKit::INuguTimer']]]
 ];

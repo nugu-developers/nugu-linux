@@ -1,4 +1,24 @@
 var searchData=
 [
-  ['listeningstate',['ListeningState',['../group__SpeechRecognizerInterface.html#gaae383c251ee0fa6e96e4c53b9f5d9a3a',1,'NuguClientKit']]]
+  ['networkerror',['NetworkError',['../group__NetworkManagerInterface.html#ga6aff79e2435c590ea44de8c43754e015',1,'NuguClientKit']]],
+  ['networkstatus',['NetworkStatus',['../group__NetworkManagerInterface.html#ga385a69cab88c2d456247e254424bf809',1,'NuguClientKit']]],
+  ['nugu_5faudio_5fformat',['nugu_audio_format',['../nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4ee',1,'nugu_audio.h']]],
+  ['nugu_5faudio_5fsample_5frate',['nugu_audio_sample_rate',['../nugu__audio_8h.html#a45142699425266966bf2e0eed6dad69c',1,'nugu_audio.h']]],
+  ['nugu_5fdecoder_5ftype',['nugu_decoder_type',['../group__NuguDecoderDriver.html#ga831d4d8e4fafb2482c0d429b5d904052',1,'nugu_decoder.h']]],
+  ['nugu_5fdirseq_5freturn',['nugu_dirseq_return',['../group__nugu__dirseq.html#ga14acd127aec76399f6d9644a9eda7df9',1,'nugu_directive_sequencer.h']]],
+  ['nugu_5fequeue_5ftype',['nugu_equeue_type',['../group__NuguEventQueue.html#ga54d0f533b2309e92861df75daaa6efcb',1,'nugu_equeue.h']]],
+  ['nugu_5fevent_5ftype',['nugu_event_type',['../group__NuguEvent.html#gad962955274c901710ed7946542f0cff4',1,'nugu_event.h']]],
+  ['nugu_5ffocus_5fresult',['nugu_focus_result',['../group__NuguFocus.html#gacd588728ba5e2fb00553891d177776aa',1,'nugu_focus.h']]],
+  ['nugu_5ffocus_5fsteal_5fresult',['nugu_focus_steal_result',['../group__NuguFocus.html#ga2b5b589097406fffaf94514485ba8129',1,'nugu_focus.h']]],
+  ['nugu_5ffocus_5ftype',['nugu_focus_type',['../group__NuguFocus.html#ga0ec64a82f624b9066219fbd0846e8f77',1,'nugu_focus.h']]],
+  ['nugu_5flog_5flevel',['nugu_log_level',['../group__Log.html#gaa713331b2690e589ff6a29ea655d1e97',1,'nugu_log.h']]],
+  ['nugu_5flog_5fmodule',['nugu_log_module',['../group__Log.html#gaf9fb527f66475b5f832571fe90940bd1',1,'nugu_log.h']]],
+  ['nugu_5flog_5fprefix',['nugu_log_prefix',['../group__Log.html#ga087457802942b6cddead13bf0e061851',1,'nugu_log.h']]],
+  ['nugu_5flog_5fsystem',['nugu_log_system',['../group__Log.html#gab1725c99430be936620a19b430c3b402',1,'nugu_log.h']]],
+  ['nugu_5fmedia_5fevent',['nugu_media_event',['../group__Media.html#ga19236934de86d6a021f96f8b671f52b4',1,'nugu_media.h']]],
+  ['nugu_5fmedia_5fstatus',['nugu_media_status',['../group__Media.html#gacaf0df5b33fcaf300816d0b7549576c1',1,'nugu_media.h']]],
+  ['nugu_5fnetwork_5fhandoff_5fstatus',['nugu_network_handoff_status',['../group__nugu__network.html#ga054a32d8fa42531f9768a32499142c93',1,'nugu_network_manager.h']]],
+  ['nugu_5fnetwork_5fprotocol',['nugu_network_protocol',['../group__nugu__network.html#ga0e9ac38f106f154eb4d0eb556b7f0921',1,'nugu_network_manager.h']]],
+  ['nugu_5fnetwork_5fstatus',['nugu_network_status',['../group__nugu__network.html#gab3b96f22ffa5e42cc058222a04a129c4',1,'nugu_network_manager.h']]],
+  ['nugu_5funfocus_5fmode',['nugu_unfocus_mode',['../group__NuguFocus.html#gaf6297bfab0130c7bc898d4d96e602b6e',1,'nugu_focus.h']]]
 ];

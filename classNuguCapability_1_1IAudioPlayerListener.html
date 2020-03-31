@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -99,8 +99,7 @@ $(document).ready(function(){initNavTree('classNuguCapability_1_1IAudioPlayerLis
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classNuguCapability_1_1IAudioPlayerListener__inherit__graph.png" border="0" usemap="#NuguCapability_1_1IAudioPlayerListener_inherit__map" alt="Inheritance graph"/></div>
 <map name="NuguCapability_1_1IAudioPlayerListener_inherit__map" id="NuguCapability_1_1IAudioPlayerListener_inherit__map">
-<area shape="rect" id="node2" href="classNuguCapability_1_1IDisplayListener.html" title="display listener interface " alt="" coords="19,95,202,136"/>
-<area shape="rect" id="node3" href="classNuguClientKit_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="15,5,206,47"/>
+<area shape="rect" id="node2" href="classNuguClientKit_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="15,5,189,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -110,8 +109,7 @@ $(document).ready(function(){initNavTree('classNuguCapability_1_1IAudioPlayerLis
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classNuguCapability_1_1IAudioPlayerListener__coll__graph.png" border="0" usemap="#NuguCapability_1_1IAudioPlayerListener_coll__map" alt="Collaboration graph"/></div>
 <map name="NuguCapability_1_1IAudioPlayerListener_coll__map" id="NuguCapability_1_1IAudioPlayerListener_coll__map">
-<area shape="rect" id="node2" href="classNuguCapability_1_1IDisplayListener.html" title="display listener interface " alt="" coords="19,95,202,136"/>
-<area shape="rect" id="node3" href="classNuguClientKit_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="15,5,206,47"/>
+<area shape="rect" id="node2" href="classNuguClientKit_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="15,5,189,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -120,53 +118,34 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a38701cf9b53fb056e7fee018c10a054b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IAudioPlayerListener.html#a38701cf9b53fb056e7fee018c10a054b">durationChanged</a> (int duration)=0</td></tr>
 <tr class="memdesc:a38701cf9b53fb056e7fee018c10a054b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The audio player reports the total duration of the content being played to the user.  <a href="#a38701cf9b53fb056e7fee018c10a054b">More...</a><br /></td></tr>
 <tr class="separator:a38701cf9b53fb056e7fee018c10a054b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78d5a03ebf76111f08c4fd7feef3a59a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IAudioPlayerListener.html#a78d5a03ebf76111f08c4fd7feef3a59a">favoriteChanged</a> (bool favorite)=0</td></tr>
-<tr class="memdesc:a78d5a03ebf76111f08c4fd7feef3a59a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The audio player reports to the user the current content's favorite setting changed.  <a href="#a78d5a03ebf76111f08c4fd7feef3a59a">More...</a><br /></td></tr>
-<tr class="separator:a78d5a03ebf76111f08c4fd7feef3a59a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf510ddbcb471bc48ab1b98acb9143e6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IAudioPlayerListener.html#abf510ddbcb471bc48ab1b98acb9143e6">mediaStateChanged</a> (<a class="el" href="group__AudioPlayerInterface.html#gadb28ffbfa534751260baf341f9819f94">AudioPlayerState</a> state)=0</td></tr>
-<tr class="memdesc:abf510ddbcb471bc48ab1b98acb9143e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report this to the user when the state of the audio player changes.  <a href="#abf510ddbcb471bc48ab1b98acb9143e6">More...</a><br /></td></tr>
-<tr class="separator:abf510ddbcb471bc48ab1b98acb9143e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b15b549b31d904f7f1da52302f2e1b6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IAudioPlayerListener.html#a3b15b549b31d904f7f1da52302f2e1b6">favoriteChanged</a> (bool favorite, const std::string &amp;dialog_id)=0</td></tr>
+<tr class="memdesc:a3b15b549b31d904f7f1da52302f2e1b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The audio player reports to the user the current content's favorite setting changed.  <a href="#a3b15b549b31d904f7f1da52302f2e1b6">More...</a><br /></td></tr>
+<tr class="separator:a3b15b549b31d904f7f1da52302f2e1b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ff59ee0c38aa3e6d45e01d99d090f68"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IAudioPlayerListener.html#a3ff59ee0c38aa3e6d45e01d99d090f68">mediaStateChanged</a> (<a class="el" href="group__AudioPlayerInterface.html#gadb28ffbfa534751260baf341f9819f94">AudioPlayerState</a> state, const std::string &amp;dialog_id)=0</td></tr>
+<tr class="memdesc:a3ff59ee0c38aa3e6d45e01d99d090f68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report this to the user when the state of the audio player changes.  <a href="#a3ff59ee0c38aa3e6d45e01d99d090f68">More...</a><br /></td></tr>
+<tr class="separator:a3ff59ee0c38aa3e6d45e01d99d090f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a635dda0c0b975a282611f543ff18b03b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IAudioPlayerListener.html#a635dda0c0b975a282611f543ff18b03b">positionChanged</a> (int position)=0</td></tr>
 <tr class="memdesc:a635dda0c0b975a282611f543ff18b03b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The audio player reports to the user the current playing time of the content being played.  <a href="#a635dda0c0b975a282611f543ff18b03b">More...</a><br /></td></tr>
 <tr class="separator:a635dda0c0b975a282611f543ff18b03b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ff7be0b40a8aa406c61b19cae642b37"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IAudioPlayerListener.html#a2ff7be0b40a8aa406c61b19cae642b37">repeatChanged</a> (<a class="el" href="group__AudioPlayerInterface.html#ga0cb2048ef5fb507017eb53ee3e52716d">RepeatType</a> repeat)=0</td></tr>
-<tr class="memdesc:a2ff7be0b40a8aa406c61b19cae642b37"><td class="mdescLeft">&#160;</td><td class="mdescRight">The audio player reports to the user the current content's repeat setting changed.  <a href="#a2ff7be0b40a8aa406c61b19cae642b37">More...</a><br /></td></tr>
-<tr class="separator:a2ff7be0b40a8aa406c61b19cae642b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b423b4e8a7f17c72f59d6dbf02fa72e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IAudioPlayerListener.html#a1b423b4e8a7f17c72f59d6dbf02fa72e">repeatChanged</a> (<a class="el" href="group__AudioPlayerInterface.html#ga0cb2048ef5fb507017eb53ee3e52716d">RepeatType</a> repeat, const std::string &amp;dialog_id)=0</td></tr>
+<tr class="memdesc:a1b423b4e8a7f17c72f59d6dbf02fa72e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The audio player reports to the user the current content's repeat setting changed.  <a href="#a1b423b4e8a7f17c72f59d6dbf02fa72e">More...</a><br /></td></tr>
+<tr class="separator:a1b423b4e8a7f17c72f59d6dbf02fa72e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a51c25f7996385873d137f64a83ff4c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IAudioPlayerListener.html#a5a51c25f7996385873d137f64a83ff4c">requestContentCache</a> (const std::string &amp;key, const std::string &amp;playurl)=0</td></tr>
 <tr class="memdesc:a5a51c25f7996385873d137f64a83ff4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The audio player request to the user to cache the content if possible.  <a href="#a5a51c25f7996385873d137f64a83ff4c">More...</a><br /></td></tr>
 <tr class="separator:a5a51c25f7996385873d137f64a83ff4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac52a698448360747e0d2eca1ae87ac00"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IAudioPlayerListener.html#ac52a698448360747e0d2eca1ae87ac00">requestToGetCachedContent</a> (const std::string &amp;key, std::string &amp;filepath)=0</td></tr>
 <tr class="memdesc:ac52a698448360747e0d2eca1ae87ac00"><td class="mdescLeft">&#160;</td><td class="mdescRight">The audio player request to the user to get the cached content.  <a href="#ac52a698448360747e0d2eca1ae87ac00">More...</a><br /></td></tr>
 <tr class="separator:ac52a698448360747e0d2eca1ae87ac00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad082bdd8b0c1457a18f112ba0e6a35f3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IAudioPlayerListener.html#ad082bdd8b0c1457a18f112ba0e6a35f3">shuffleChanged</a> (bool shuffle)=0</td></tr>
-<tr class="memdesc:ad082bdd8b0c1457a18f112ba0e6a35f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The audio player reports to the user the current content's shuffle setting changed.  <a href="#ad082bdd8b0c1457a18f112ba0e6a35f3">More...</a><br /></td></tr>
-<tr class="separator:ad082bdd8b0c1457a18f112ba0e6a35f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_classNuguCapability_1_1IDisplayListener"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classNuguCapability_1_1IDisplayListener')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classNuguCapability_1_1IDisplayListener.html">NuguCapability::IDisplayListener</a></td></tr>
-<tr class="memitem:a34ab149bdd1bd6a09bf4d10393c8cc19 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayListener.html#a34ab149bdd1bd6a09bf4d10393c8cc19">clearDisplay</a> (const std::string &amp;id, bool unconditionally)=0</td></tr>
-<tr class="memdesc:a34ab149bdd1bd6a09bf4d10393c8cc19 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="mdescLeft">&#160;</td><td class="mdescRight">The SDK will ask you to delete the rendered display on the display according to the service context maintenance policy.  <a href="classNuguCapability_1_1IDisplayListener.html#a34ab149bdd1bd6a09bf4d10393c8cc19">More...</a><br /></td></tr>
-<tr class="separator:a34ab149bdd1bd6a09bf4d10393c8cc19 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec2f2f50ebb3c1eaf95ff628f59203d8 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayListener.html#aec2f2f50ebb3c1eaf95ff628f59203d8">controlLyrics</a> (<a class="el" href="group__DisplayInterface.html#ga981015a8d321936038813f3f1ea0bf0a">ControlLyricsDirection</a> direction)=0</td></tr>
-<tr class="memdesc:aec2f2f50ebb3c1eaf95ff628f59203d8 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request to the user to control the lyrics page. (only use AudioPlayerAgent)  <a href="classNuguCapability_1_1IDisplayListener.html#aec2f2f50ebb3c1eaf95ff628f59203d8">More...</a><br /></td></tr>
-<tr class="separator:aec2f2f50ebb3c1eaf95ff628f59203d8 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b33120243e6e02216e291ead1bc93c8 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayListener.html#a4b33120243e6e02216e291ead1bc93c8">hideLyrics</a> ()=0</td></tr>
-<tr class="memdesc:a4b33120243e6e02216e291ead1bc93c8 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request to the user to hide the lyrics page. (only use AudioPlayerAgent)  <a href="classNuguCapability_1_1IDisplayListener.html#a4b33120243e6e02216e291ead1bc93c8">More...</a><br /></td></tr>
-<tr class="separator:a4b33120243e6e02216e291ead1bc93c8 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4c5cade51a8ab354845af12c54396e4 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayListener.html#ae4c5cade51a8ab354845af12c54396e4">renderDisplay</a> (const std::string &amp;id, const std::string &amp;type, const std::string &amp;json, const std::string &amp;dialog_id)=0</td></tr>
-<tr class="memdesc:ae4c5cade51a8ab354845af12c54396e4 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request rendering by passing metadata so that the device with the display can draw on the screen.  <a href="classNuguCapability_1_1IDisplayListener.html#ae4c5cade51a8ab354845af12c54396e4">More...</a><br /></td></tr>
-<tr class="separator:ae4c5cade51a8ab354845af12c54396e4 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a660b7f26f9cb711d53a135dc77a89211 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayListener.html#a660b7f26f9cb711d53a135dc77a89211">requestLyricsPageAvailable</a> (bool &amp;visible)=0</td></tr>
-<tr class="memdesc:a660b7f26f9cb711d53a135dc77a89211 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="mdescLeft">&#160;</td><td class="mdescRight">SDK request information about device's lyrics page available.  <a href="classNuguCapability_1_1IDisplayListener.html#a660b7f26f9cb711d53a135dc77a89211">More...</a><br /></td></tr>
-<tr class="separator:a660b7f26f9cb711d53a135dc77a89211 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7534e73dc4b27483e6f4d15b9ae55f5 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayListener.html#af7534e73dc4b27483e6f4d15b9ae55f5">showLyrics</a> ()=0</td></tr>
-<tr class="memdesc:af7534e73dc4b27483e6f4d15b9ae55f5 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request to the user to show the lyrics page. (only use AudioPlayerAgent)  <a href="classNuguCapability_1_1IDisplayListener.html#af7534e73dc4b27483e6f4d15b9ae55f5">More...</a><br /></td></tr>
-<tr class="separator:af7534e73dc4b27483e6f4d15b9ae55f5 inherit pub_methods_classNuguCapability_1_1IDisplayListener"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e9bc9503356606a4983d1a4a0055c78"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IAudioPlayerListener.html#a4e9bc9503356606a4983d1a4a0055c78">shuffleChanged</a> (bool shuffle, const std::string &amp;dialog_id)=0</td></tr>
+<tr class="memdesc:a4e9bc9503356606a4983d1a4a0055c78"><td class="mdescLeft">&#160;</td><td class="mdescRight">The audio player reports to the user the current content's shuffle setting changed.  <a href="#a4e9bc9503356606a4983d1a4a0055c78">More...</a><br /></td></tr>
+<tr class="separator:a4e9bc9503356606a4983d1a4a0055c78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>audioplayer listener interface </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguCapability_1_1IAudioPlayerHandler.html" title="audioplayer handler interface ">IAudioPlayerHandler</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="abf510ddbcb471bc48ab1b98acb9143e6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf510ddbcb471bc48ab1b98acb9143e6">&#9670;&nbsp;</a></span>mediaStateChanged()</h2>
+<a id="a3ff59ee0c38aa3e6d45e01d99d090f68"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ff59ee0c38aa3e6d45e01d99d090f68">&#9670;&nbsp;</a></span>mediaStateChanged()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,8 +157,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname">virtual void NuguCapability::IAudioPlayerListener::mediaStateChanged </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__AudioPlayerInterface.html#gadb28ffbfa534751260baf341f9819f94">AudioPlayerState</a>&#160;</td>
-          <td class="paramname"><em>state</em></td><td>)</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>dialog_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -193,6 +182,7 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>audioplayer's state </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>dialog request id </td></tr>
   </table>
   </dd>
 </dl>
@@ -267,8 +257,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a78d5a03ebf76111f08c4fd7feef3a59a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78d5a03ebf76111f08c4fd7feef3a59a">&#9670;&nbsp;</a></span>favoriteChanged()</h2>
+<a id="a3b15b549b31d904f7f1da52302f2e1b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b15b549b31d904f7f1da52302f2e1b6">&#9670;&nbsp;</a></span>favoriteChanged()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -280,8 +270,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname">virtual void NuguCapability::IAudioPlayerListener::favoriteChanged </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>favorite</em></td><td>)</td>
+          <td class="paramname"><em>favorite</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>dialog_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -295,14 +295,15 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">favorite</td><td>media content's favorite </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>dialog request id </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="ad082bdd8b0c1457a18f112ba0e6a35f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad082bdd8b0c1457a18f112ba0e6a35f3">&#9670;&nbsp;</a></span>shuffleChanged()</h2>
+<a id="a4e9bc9503356606a4983d1a4a0055c78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e9bc9503356606a4983d1a4a0055c78">&#9670;&nbsp;</a></span>shuffleChanged()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -314,8 +315,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname">virtual void NuguCapability::IAudioPlayerListener::shuffleChanged </td>
           <td>(</td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>shuffle</em></td><td>)</td>
+          <td class="paramname"><em>shuffle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>dialog_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -329,14 +340,15 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">shuffle</td><td>media content's shuffle </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>dialog request id </td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="a2ff7be0b40a8aa406c61b19cae642b37"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ff7be0b40a8aa406c61b19cae642b37">&#9670;&nbsp;</a></span>repeatChanged()</h2>
+<a id="a1b423b4e8a7f17c72f59d6dbf02fa72e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b423b4e8a7f17c72f59d6dbf02fa72e">&#9670;&nbsp;</a></span>repeatChanged()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -348,8 +360,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname">virtual void NuguCapability::IAudioPlayerListener::repeatChanged </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__AudioPlayerInterface.html#ga0cb2048ef5fb507017eb53ee3e52716d">RepeatType</a>&#160;</td>
-          <td class="paramname"><em>repeat</em></td><td>)</td>
+          <td class="paramname"><em>repeat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>dialog_id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -363,6 +385,7 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">repeat</td><td>media content's repeat </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>dialog request id </td></tr>
   </table>
   </dd>
 </dl>
@@ -469,7 +492,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguCapability</b></li><li class="navelem"><a class="el" href="classNuguCapability_1_1IAudioPlayerListener.html">IAudioPlayerListener</a></li>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:50 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

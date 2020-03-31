@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -122,21 +122,35 @@ virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class=
 <tr class="memitem:a23b8f9d9da272e20810c32337844af08"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a23b8f9d9da272e20810c32337844af08">makeContextInfo</a> (Json::Value &amp;ctx)=0</td></tr>
 <tr class="memdesc:a23b8f9d9da272e20810c32337844af08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get context info.  <a href="#a23b8f9d9da272e20810c32337844af08">More...</a><br /></td></tr>
 <tr class="separator:a23b8f9d9da272e20810c32337844af08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5337a0d2fbf740be01d803301f27ad90"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a5337a0d2fbf740be01d803301f27ad90">notifyEventResult</a> (const char *msg_id, bool success, int code)=0</td></tr>
+<tr class="memdesc:a5337a0d2fbf740be01d803301f27ad90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notify to send event result to CapabilityManager.  <a href="#a5337a0d2fbf740be01d803301f27ad90">More...</a><br /></td></tr>
+<tr class="separator:a5337a0d2fbf740be01d803301f27ad90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2d2f35b4521756f4f30e529e3f886ad"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#af2d2f35b4521756f4f30e529e3f886ad">releaseFocus</a> (const std::string &amp;fname)=0</td></tr>
 <tr class="memdesc:af2d2f35b4521756f4f30e529e3f886ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release focus.  <a href="#af2d2f35b4521756f4f30e529e3f886ad">More...</a><br /></td></tr>
 <tr class="separator:af2d2f35b4521756f4f30e529e3f886ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae7f50922fa0661663d407735c5fb6c6"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#aae7f50922fa0661663d407735c5fb6c6">removeFocus</a> (const std::string &amp;fname)=0</td></tr>
 <tr class="memdesc:aae7f50922fa0661663d407735c5fb6c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove focus.  <a href="#aae7f50922fa0661663d407735c5fb6c6">More...</a><br /></td></tr>
 <tr class="separator:aae7f50922fa0661663d407735c5fb6c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9588e1c419854bc2d76e340b822a5da"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#ae9588e1c419854bc2d76e340b822a5da">requestEventResult</a> (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *event)=0</td></tr>
+<tr class="memdesc:ae9588e1c419854bc2d76e340b822a5da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request to send event result via CapabilityManager.  <a href="#ae9588e1c419854bc2d76e340b822a5da">More...</a><br /></td></tr>
+<tr class="separator:ae9588e1c419854bc2d76e340b822a5da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73c65480432b57a1f67e24d2013d68ee"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a73c65480432b57a1f67e24d2013d68ee">requestFocus</a> (const std::string &amp;fname, void *event)=0</td></tr>
 <tr class="memdesc:a73c65480432b57a1f67e24d2013d68ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request focus.  <a href="#a73c65480432b57a1f67e24d2013d68ee">More...</a><br /></td></tr>
 <tr class="separator:a73c65480432b57a1f67e24d2013d68ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a408c45b8df4996455c70c1bde4625554"><td class="memItemLeft" align="right" valign="top"><a id="a408c45b8df4996455c70c1bde4625554"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a408c45b8df4996455c70c1bde4625554">restoreAll</a> ()=0</td></tr>
+<tr class="memdesc:a408c45b8df4996455c70c1bde4625554"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restore previous suspended capability action. <br /></td></tr>
+<tr class="separator:a408c45b8df4996455c70c1bde4625554"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54512cbef27fea4767501d2b186008ed"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a54512cbef27fea4767501d2b186008ed">sendCommand</a> (const std::string &amp;from, const std::string &amp;to, const std::string &amp;command, const std::string &amp;param)=0</td></tr>
 <tr class="memdesc:a54512cbef27fea4767501d2b186008ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send command between CapabilityAgents.  <a href="#a54512cbef27fea4767501d2b186008ed">More...</a><br /></td></tr>
 <tr class="separator:a54512cbef27fea4767501d2b186008ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03910a4b3b8b4b7bc35fc446c9d9da38"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a03910a4b3b8b4b7bc35fc446c9d9da38">setMute</a> (bool mute)=0</td></tr>
 <tr class="memdesc:a03910a4b3b8b4b7bc35fc446c9d9da38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set Audio Recorder mute/unmute.  <a href="#a03910a4b3b8b4b7bc35fc446c9d9da38">More...</a><br /></td></tr>
 <tr class="separator:a03910a4b3b8b4b7bc35fc446c9d9da38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48fdb6e7b6fed097591aea3b15379f3d"><td class="memItemLeft" align="right" valign="top"><a id="a48fdb6e7b6fed097591aea3b15379f3d"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a48fdb6e7b6fed097591aea3b15379f3d">suspendAll</a> ()=0</td></tr>
+<tr class="memdesc:a48fdb6e7b6fed097591aea3b15379f3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suspend all current capability action. <br /></td></tr>
+<tr class="separator:a48fdb6e7b6fed097591aea3b15379f3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>CapabilityHelper interface. </p>
@@ -228,6 +242,92 @@ virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class=
     <tr><td class="paramdir">[in]</td><td class="paramname">to</td><td>target CapabilityAgent </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">command</td><td>command </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">param</td><td>parameter </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ae9588e1c419854bc2d76e340b822a5da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9588e1c419854bc2d76e340b822a5da">&#9670;&nbsp;</a></span>requestEventResult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguClientKit::ICapabilityHelper::requestEventResult </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *&#160;</td>
+          <td class="paramname"><em>event</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Request to send event result via CapabilityManager. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">event</td><td>event for monitoring result </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5337a0d2fbf740be01d803301f27ad90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5337a0d2fbf740be01d803301f27ad90">&#9670;&nbsp;</a></span>notifyEventResult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguClientKit::ICapabilityHelper::notifyEventResult </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>msg_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>success</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>code</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Notify to send event result to CapabilityManager. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">msg_id</td><td>event message id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">success</td><td>event result </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">code</td><td>event result code (similar to http status code) </td></tr>
   </table>
   </dd>
 </dl>
@@ -580,7 +680,7 @@ virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class=
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">ICapabilityHelper</a></li>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:50 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -6,10 +6,9 @@ var group__NuguClient =
     ] ],
     [ "NuguClient", "classNuguClientKit_1_1NuguClient.html", [
       [ "CapabilityBuilder", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html", [
-        [ "CapabilityBuilder", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#a7a365d175004b7ccb19727db354154d2", null ],
-        [ "~CapabilityBuilder", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#ae05a685f2bf782ed2b70c94885fa54fa", null ],
         [ "add", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#a234a8b1a0eedb5d374aad7c92d98efa3", null ],
-        [ "construct", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#a5fa03281804df2c704003347666b84bc", null ]
+        [ "construct", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#a5fa03281804df2c704003347666b84bc", null ],
+        [ "NuguClient", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#a2f6f37eaa13f0d9d68ebe246eb7c34fd", null ]
       ] ],
       [ "NuguClient", "classNuguClientKit_1_1NuguClient.html#ab76e297d16ec30b63dc3b2140680aa46", null ],
       [ "~NuguClient", "classNuguClientKit_1_1NuguClient.html#a27631157bc56e59781c78f950ecdd17b", null ],
@@ -19,7 +18,6 @@ var group__NuguClient =
       [ "initialize", "classNuguClientKit_1_1NuguClient.html#aae1f4508ab77758bec29c5ef54f2736a", null ],
       [ "deInitialize", "classNuguClientKit_1_1NuguClient.html#a32def4bda93b3a706d6e7757c5e41220", null ],
       [ "getNuguCoreContainer", "classNuguClientKit_1_1NuguClient.html#a0ad308f320bd4431bcb3edae6e806972", null ],
-      [ "getCapabilityHandler", "classNuguClientKit_1_1NuguClient.html#ab789df431ad90492b494e30a8e19a2e2", null ],
       [ "getNetworkManager", "classNuguClientKit_1_1NuguClient.html#aa600061f3d9fd1f07eb933d10069ed81", null ]
     ] ]
 ];

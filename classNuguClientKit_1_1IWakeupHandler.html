@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -98,14 +98,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac5725f07b3b20a9ff39b18261df4280c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IWakeupHandler.html#ac5725f07b3b20a9ff39b18261df4280c">setListener</a> (<a class="el" href="classNuguClientKit_1_1IWakeupListener.html">IWakeupListener</a> *listener)=0</td></tr>
 <tr class="memdesc:ac5725f07b3b20a9ff39b18261df4280c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Listener object.  <a href="#ac5725f07b3b20a9ff39b18261df4280c">More...</a><br /></td></tr>
 <tr class="separator:ac5725f07b3b20a9ff39b18261df4280c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7bc36adfd4360f041e7e32888c24ec0"><td class="memItemLeft" align="right" valign="top"><a id="aa7bc36adfd4360f041e7e32888c24ec0"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IWakeupHandler.html#aa7bc36adfd4360f041e7e32888c24ec0">startWakeup</a> (void)=0</td></tr>
-<tr class="memdesc:aa7bc36adfd4360f041e7e32888c24ec0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the wakeup detection. <br /></td></tr>
-<tr class="separator:aa7bc36adfd4360f041e7e32888c24ec0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80b2fa6e7df5b7eb6be9213b0cc48183"><td class="memItemLeft" align="right" valign="top"><a id="a80b2fa6e7df5b7eb6be9213b0cc48183"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IWakeupHandler.html#a80b2fa6e7df5b7eb6be9213b0cc48183">stopWakeup</a> (void)=0</td></tr>
-<tr class="memdesc:a80b2fa6e7df5b7eb6be9213b0cc48183"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop the wakeup detection. <br /></td></tr>
-<tr class="separator:a80b2fa6e7df5b7eb6be9213b0cc48183"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af03bb635a82ec3143d534ca5b8f90413"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IWakeupHandler.html#af03bb635a82ec3143d534ca5b8f90413">startWakeup</a> ()=0</td></tr>
+<tr class="memdesc:af03bb635a82ec3143d534ca5b8f90413"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the wakeup detection.  <a href="#af03bb635a82ec3143d534ca5b8f90413">More...</a><br /></td></tr>
+<tr class="separator:af03bb635a82ec3143d534ca5b8f90413"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26800967ca4b90caa23359f629361acc"><td class="memItemLeft" align="right" valign="top"><a id="a26800967ca4b90caa23359f629361acc"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IWakeupHandler.html#a26800967ca4b90caa23359f629361acc">stopWakeup</a> ()=0</td></tr>
+<tr class="memdesc:a26800967ca4b90caa23359f629361acc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop the wakeup detection. <br /></td></tr>
+<tr class="separator:a26800967ca4b90caa23359f629361acc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Wakeup handler interface. </p>
@@ -146,6 +145,34 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
+<a id="af03bb635a82ec3143d534ca5b8f90413"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af03bb635a82ec3143d534ca5b8f90413">&#9670;&nbsp;</a></span>startWakeup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool NuguClientKit::IWakeupHandler::startWakeup </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Start the wakeup detection. </p>
+<dl class="section return"><dt>Returns</dt><dd>result of wakeup process </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="wakeup__interface_8hh_source.html">wakeup_interface.hh</a></li>
 </ul>
@@ -155,7 +182,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1IWakeupHandler.html">IWakeupHandler</a></li>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:51 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

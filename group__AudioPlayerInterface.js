@@ -2,16 +2,16 @@ var group__AudioPlayerInterface =
 [
     [ "IAudioPlayerHandler", "classNuguCapability_1_1IAudioPlayerHandler.html", [
       [ "~IAudioPlayerHandler", "classNuguCapability_1_1IAudioPlayerHandler.html#a7bf7ea8e947dcc92bd77ee42d6300f5c", null ],
-      [ "play", "classNuguCapability_1_1IAudioPlayerHandler.html#a4f1a0bc3f9681afeb4db937400d1d6af", null ],
-      [ "stop", "classNuguCapability_1_1IAudioPlayerHandler.html#a4084d6bc24faca81c31a541a0cf20faa", null ],
-      [ "next", "classNuguCapability_1_1IAudioPlayerHandler.html#ada62a5ee2ed53b07325e70173086926a", null ],
-      [ "prev", "classNuguCapability_1_1IAudioPlayerHandler.html#a1eacba8fba43dce47d2cf09ebed1a0a2", null ],
-      [ "pause", "classNuguCapability_1_1IAudioPlayerHandler.html#a883579ee7eb14934d11853a09ee00f89", null ],
-      [ "resume", "classNuguCapability_1_1IAudioPlayerHandler.html#a64aba5ba64617d724b0cd31fbedbfb75", null ],
+      [ "play", "classNuguCapability_1_1IAudioPlayerHandler.html#aa4061ca192c220fd9da77c4f338d9ce5", null ],
+      [ "stop", "classNuguCapability_1_1IAudioPlayerHandler.html#a42b1a9de19b70d3cf33978dfd8d0d43c", null ],
+      [ "next", "classNuguCapability_1_1IAudioPlayerHandler.html#afa2db72acbc6547483dc100fb5e43a51", null ],
+      [ "prev", "classNuguCapability_1_1IAudioPlayerHandler.html#ac4ebdbcffe07553cc44e71f78c7737ff", null ],
+      [ "pause", "classNuguCapability_1_1IAudioPlayerHandler.html#ac65e6b1dcd5793f22ae39846994440a2", null ],
+      [ "resume", "classNuguCapability_1_1IAudioPlayerHandler.html#a55bb1d45565f77bf03bc69de1315cc64", null ],
       [ "seek", "classNuguCapability_1_1IAudioPlayerHandler.html#ab1ec85922a4d9dadbd9a21b1cdcc0476", null ],
-      [ "setFavorite", "classNuguCapability_1_1IAudioPlayerHandler.html#af68d9f4d9730daf1510446d29c509956", null ],
-      [ "setRepeat", "classNuguCapability_1_1IAudioPlayerHandler.html#add37569ba7b007d66ea65ab863bc1d18", null ],
-      [ "setShuffle", "classNuguCapability_1_1IAudioPlayerHandler.html#afced7af54433a191b61e0c461a963e2c", null ],
+      [ "setFavorite", "classNuguCapability_1_1IAudioPlayerHandler.html#a1863a0527343390bc1f953ae07aca48f", null ],
+      [ "setRepeat", "classNuguCapability_1_1IAudioPlayerHandler.html#ad722a1bf3b725c5877732c58cd977da2", null ],
+      [ "setShuffle", "classNuguCapability_1_1IAudioPlayerHandler.html#ac43ea5e4dcd3cb5f0914e9a6452b8822", null ],
       [ "setVolume", "classNuguCapability_1_1IAudioPlayerHandler.html#a8d1cad1be71f251efd151a2c01bfaf77", null ],
       [ "setMute", "classNuguCapability_1_1IAudioPlayerHandler.html#a23671759937074658ad0efdfcfc91479", null ],
       [ "addListener", "classNuguCapability_1_1IAudioPlayerHandler.html#a746a6fdf707260c8db56b5b0b331053a", null ],
@@ -19,12 +19,12 @@ var group__AudioPlayerInterface =
     ] ],
     [ "IAudioPlayerListener", "classNuguCapability_1_1IAudioPlayerListener.html", [
       [ "~IAudioPlayerListener", "classNuguCapability_1_1IAudioPlayerListener.html#a8a8507a3cf44980bbc5005c066b20e16", null ],
-      [ "mediaStateChanged", "classNuguCapability_1_1IAudioPlayerListener.html#abf510ddbcb471bc48ab1b98acb9143e6", null ],
+      [ "mediaStateChanged", "classNuguCapability_1_1IAudioPlayerListener.html#a3ff59ee0c38aa3e6d45e01d99d090f68", null ],
       [ "durationChanged", "classNuguCapability_1_1IAudioPlayerListener.html#a38701cf9b53fb056e7fee018c10a054b", null ],
       [ "positionChanged", "classNuguCapability_1_1IAudioPlayerListener.html#a635dda0c0b975a282611f543ff18b03b", null ],
-      [ "favoriteChanged", "classNuguCapability_1_1IAudioPlayerListener.html#a78d5a03ebf76111f08c4fd7feef3a59a", null ],
-      [ "shuffleChanged", "classNuguCapability_1_1IAudioPlayerListener.html#ad082bdd8b0c1457a18f112ba0e6a35f3", null ],
-      [ "repeatChanged", "classNuguCapability_1_1IAudioPlayerListener.html#a2ff7be0b40a8aa406c61b19cae642b37", null ],
+      [ "favoriteChanged", "classNuguCapability_1_1IAudioPlayerListener.html#a3b15b549b31d904f7f1da52302f2e1b6", null ],
+      [ "shuffleChanged", "classNuguCapability_1_1IAudioPlayerListener.html#a4e9bc9503356606a4983d1a4a0055c78", null ],
+      [ "repeatChanged", "classNuguCapability_1_1IAudioPlayerListener.html#a1b423b4e8a7f17c72f59d6dbf02fa72e", null ],
       [ "requestContentCache", "classNuguCapability_1_1IAudioPlayerListener.html#a5a51c25f7996385873d137f64a83ff4c", null ],
       [ "requestToGetCachedContent", "classNuguCapability_1_1IAudioPlayerListener.html#ac52a698448360747e0d2eca1ae87ac00", null ]
     ] ],
@@ -39,5 +39,9 @@ var group__AudioPlayerInterface =
       [ "NONE", "group__AudioPlayerInterface.html#gga0cb2048ef5fb507017eb53ee3e52716dab50339a10e1de285ac99d4c3990b8693", null ],
       [ "ONE", "group__AudioPlayerInterface.html#gga0cb2048ef5fb507017eb53ee3e52716dabc21e6484530fc9d0313cb816b733396", null ],
       [ "ALL", "group__AudioPlayerInterface.html#gga0cb2048ef5fb507017eb53ee3e52716da5fb1f955b45e38e31789286a1790398d", null ]
+    ] ],
+    [ "ControlLyricsDirection", "group__AudioPlayerInterface.html#ga981015a8d321936038813f3f1ea0bf0a", [
+      [ "PREVIOUS", "group__AudioPlayerInterface.html#gga981015a8d321936038813f3f1ea0bf0aa315ba7a868d45a9cb131c8dca3166b51", null ],
+      [ "NEXT", "group__AudioPlayerInterface.html#gga981015a8d321936038813f3f1ea0bf0aa47559fb833ff58321570e5e877b467f6", null ]
     ] ]
 ];

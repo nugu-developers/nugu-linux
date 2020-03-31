@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -87,14 +87,16 @@ $(document).ready(function(){initNavTree('functions_d.html','');});
 : <a class="el" href="structnugu__decoder__driver__ops.html#a5bd3be120948e3175035215e6022b108">nugu_decoder_driver_ops</a>
 </li>
 <li>deInitialize()
-: <a class="el" href="classNuguClientKit_1_1NuguClient.html#a32def4bda93b3a706d6e7757c5e41220">NuguClientKit::NuguClient</a>
-</li>
-<li>delegate()
-: <a class="el" href="classNuguCapability_1_1IDelegationListener.html#aec19405aa59febe6d7faaec01324b239">NuguCapability::IDelegationListener</a>
+: <a class="el" href="classNuguClientKit_1_1Capability.html#afee63822ba755a9eb952fa4dc39bbdc8">NuguClientKit::Capability</a>
+, <a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html#a0d879121df664da92e9e9d39cf6132fe">NuguClientKit::ICapabilityInterface</a>
+, <a class="el" href="classNuguClientKit_1_1NuguClient.html#a32def4bda93b3a706d6e7757c5e41220">NuguClientKit::NuguClient</a>
 </li>
 <li>destroy
 : <a class="el" href="structnugu__decoder__driver__ops.html#a48bc82d59e17e36c6d694e96a9b51467">nugu_decoder_driver_ops</a>
 , <a class="el" href="structnugu__player__driver__ops.html#a7f9eb9522080d53fbe35bfa61bd1aee5">nugu_player_driver_ops</a>
+</li>
+<li>destroyDirective()
+: <a class="el" href="classNuguClientKit_1_1Capability.html#a7901005a3ff7a03d9b70987df17e816e">NuguClientKit::Capability</a>
 </li>
 <li>dialog_id
 : <a class="el" href="structNuguClientKit_1_1IPlaySyncManager_1_1DisplayRenderInfo.html#a7796c1b6e706cf646f28fb1dc7cf431d">NuguClientKit::IPlaySyncManager::DisplayRenderInfo</a>
@@ -103,17 +105,10 @@ $(document).ready(function(){initNavTree('functions_d.html','');});
 : <a class="el" href="classNuguCapability_1_1IMicHandler.html#a05563bd9964522a4ff906a4d0163d627">NuguCapability::IMicHandler</a>
 </li>
 <li>disconnect()
-: <a class="el" href="classNuguCapability_1_1ISystemHandler.html#ac0e9df99d961e7d1f57a4856a938553d">NuguCapability::ISystemHandler</a>
-, <a class="el" href="classNuguClientKit_1_1INetworkManager.html#a9349b575599e4be6ed03b2c53d9ce513">NuguClientKit::INetworkManager</a>
+: <a class="el" href="classNuguClientKit_1_1INetworkManager.html#a9349b575599e4be6ed03b2c53d9ce513">NuguClientKit::INetworkManager</a>
 </li>
 <li>display_id
 : <a class="el" href="structNuguClientKit_1_1IPlaySyncManager_1_1DisplayRenderer.html#a171847642cd60e7effcddf4c3ca251e5">NuguClientKit::IPlaySyncManager::DisplayRenderer</a>
-</li>
-<li>displayCleared()
-: <a class="el" href="classNuguCapability_1_1IDisplayHandler.html#a406f526d874a82adbb471f61a1dfef7f">NuguCapability::IDisplayHandler</a>
-</li>
-<li>displayRendered()
-: <a class="el" href="classNuguCapability_1_1IDisplayHandler.html#a86da394cf59bf45ea29e4c04bfe3ec20">NuguCapability::IDisplayHandler</a>
 </li>
 <li>duration()
 : <a class="el" href="classNuguClientKit_1_1IMediaPlayer.html#a97db3ca40157f51d7672629fbdd1756e">NuguClientKit::IMediaPlayer</a>
@@ -129,7 +124,7 @@ $(document).ready(function(){initNavTree('functions_d.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:51 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

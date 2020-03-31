@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -89,8 +89,8 @@ $(document).ready(function(){initNavTree('capability__interface_8hh.html','');})
 <div class="textblock"><code>#include &lt;json/json.h&gt;</code><br />
 <code>#include &lt;list&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
+<code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;<a class="el" href="nugu__directive_8h_source.html">base/nugu_directive.h</a>&gt;</code><br />
-<code>#include &lt;<a class="el" href="capability__observer_8hh_source.html">clientkit/capability_observer.hh</a>&gt;</code><br />
 <code>#include &lt;<a class="el" href="nugu__core__container__interface_8hh_source.html">clientkit/nugu_core_container_interface.hh</a>&gt;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for capability_interface.hh:</div>
@@ -99,16 +99,17 @@ $(document).ready(function(){initNavTree('capability__interface_8hh.html','');})
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="capability__interface_8hh__incl.png" border="0" usemap="#capability__interface_8hh" alt=""/></div>
 <map name="capability__interface_8hh" id="capability__interface_8hh">
-<area shape="rect" id="node5" href="nugu__directive_8h.html" title="base/nugu_directive.h" alt="" coords="1258,87,1423,114"/>
-<area shape="rect" id="node6" href="capability__observer_8hh.html" title="clientkit/capability\l_observer.hh" alt="" coords="1091,80,1233,121"/>
-<area shape="rect" id="node7" href="nugu__core__container__interface_8hh.html" title="clientkit/nugu_core\l_container_interface.hh" alt="" coords="635,80,809,121"/>
-<area shape="rect" id="node8" href="capability__helper__interface_8hh.html" title="clientkit/capability\l_helper_interface.hh" alt="" coords="139,169,294,211"/>
-<area shape="rect" id="node12" href="media__player__interface_8hh.html" title="clientkit/media_player\l_interface.hh" alt="" coords="715,259,883,300"/>
-<area shape="rect" id="node13" href="network__manager__interface_8hh.html" title="clientkit/network_manager\l_interface.hh" alt="" coords="833,169,1030,211"/>
-<area shape="rect" id="node14" href="speech__recognizer__interface_8hh.html" title="clientkit/speech_recognizer\l_interface.hh" alt="" coords="318,169,518,211"/>
-<area shape="rect" id="node15" href="wakeup__interface_8hh.html" title="clientkit/wakeup_interface.hh" alt="" coords="543,177,757,203"/>
-<area shape="rect" id="node9" href="nugu__focus_8h.html" title="base/nugu_focus.h" alt="" coords="385,266,528,293"/>
-<area shape="rect" id="node10" href="playsync__manager__interface_8hh.html" title="clientkit/playsync\l_manager_interface.hh" alt="" coords="189,259,361,300"/>
+<area shape="rect" id="node6" href="nugu__directive_8h.html" title="base/nugu_directive.h" alt="" coords="1317,87,1467,114"/>
+<area shape="rect" id="node7" href="nugu__core__container__interface_8hh.html" title="clientkit/nugu_core\l_container_interface.hh" alt="" coords="681,80,839,121"/>
+<area shape="rect" id="node8" href="capability__helper__interface_8hh.html" title="clientkit/capability\l_helper_interface.hh" alt="" coords="319,169,457,211"/>
+<area shape="rect" id="node13" href="media__player__interface_8hh.html" title="clientkit/media_player\l_interface.hh" alt="" coords="686,169,834,211"/>
+<area shape="rect" id="node14" href="network__manager__interface_8hh.html" title="clientkit/network_manager\l_interface.hh" alt="" coords="858,169,1033,211"/>
+<area shape="rect" id="node15" href="nugu__timer__interface_8hh.html" title="clientkit/nugu_timer\l_interface.hh" alt="" coords="1057,169,1191,211"/>
+<area shape="rect" id="node16" href="speech__recognizer__interface_8hh.html" title="clientkit/speech_recognizer\l_interface.hh" alt="" coords="482,169,662,211"/>
+<area shape="rect" id="node17" href="wakeup__interface_8hh.html" title="clientkit/wakeup_interface.hh" alt="" coords="103,177,294,203"/>
+<area shape="rect" id="node9" href="nugu__event_8h.html" title="base/nugu_event.h" alt="" coords="402,266,534,293"/>
+<area shape="rect" id="node10" href="nugu__focus_8h.html" title="base/nugu_focus.h" alt="" coords="558,266,690,293"/>
+<area shape="rect" id="node11" href="playsync__manager__interface_8hh.html" title="clientkit/playsync\l_manager_interface.hh" alt="" coords="223,259,377,300"/>
 </map>
 </div>
 </div><div class="textblock"><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -118,19 +119,16 @@ $(document).ready(function(){initNavTree('capability__interface_8hh.html','');})
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="capability__interface_8hh__dep__incl.png" border="0" usemap="#capability__interface_8hhdep" alt=""/></div>
 <map name="capability__interface_8hhdep" id="capability__interface_8hhdep">
-<area shape="rect" id="node2" href="asr__interface_8hh.html" title="asr_interface.hh" alt="" coords="5,80,132,107"/>
-<area shape="rect" id="node3" href="audio__player__interface_8hh.html" title="audio_player_interface.hh" alt="" coords="323,155,513,181"/>
-<area shape="rect" id="node4" href="capability__factory_8hh.html" title="capability_factory.hh" alt="" coords="207,80,365,107"/>
-<area shape="rect" id="node5" href="delegation__interface_8hh.html" title="delegation_interface.hh" alt="" coords="389,80,565,107"/>
-<area shape="rect" id="node6" href="display__interface_8hh.html" title="display_interface.hh" alt="" coords="589,80,743,107"/>
-<area shape="rect" id="node7" href="extension__interface_8hh.html" title="extension_interface.hh" alt="" coords="767,80,938,107"/>
-<area shape="rect" id="node8" href="location__interface_8hh.html" title="location_interface.hh" alt="" coords="963,80,1121,107"/>
-<area shape="rect" id="node9" href="mic__interface_8hh.html" title="mic_interface.hh" alt="" coords="1146,80,1277,107"/>
-<area shape="rect" id="node10" href="speaker__interface_8hh.html" title="speaker_interface.hh" alt="" coords="1301,80,1460,107"/>
-<area shape="rect" id="node11" href="system__interface_8hh.html" title="system_interface.hh" alt="" coords="1485,80,1639,107"/>
-<area shape="rect" id="node12" href="text__interface_8hh.html" title="text_interface.hh" alt="" coords="1663,80,1797,107"/>
-<area shape="rect" id="node13" href="tts__interface_8hh.html" title="tts_interface.hh" alt="" coords="1821,80,1945,107"/>
-<area shape="rect" id="node14" href="nugu__client_8hh.html" title="nugu_client.hh" alt="" coords="1970,80,2087,107"/>
+<area shape="rect" id="node2" href="asr__interface_8hh.html" title="asr_interface.hh" alt="" coords="5,80,120,107"/>
+<area shape="rect" id="node3" href="audio__player__interface_8hh.html" title="audio_player_interface.hh" alt="" coords="144,80,315,107"/>
+<area shape="rect" id="node4" href="capability__factory_8hh.html" title="capability_factory.hh" alt="" coords="339,80,482,107"/>
+<area shape="rect" id="node5" href="mic__interface_8hh.html" title="mic_interface.hh" alt="" coords="506,80,625,107"/>
+<area shape="rect" id="node6" href="speaker__interface_8hh.html" title="speaker_interface.hh" alt="" coords="649,80,791,107"/>
+<area shape="rect" id="node7" href="system__interface_8hh.html" title="system_interface.hh" alt="" coords="815,80,955,107"/>
+<area shape="rect" id="node8" href="text__interface_8hh.html" title="text_interface.hh" alt="" coords="979,80,1098,107"/>
+<area shape="rect" id="node9" href="tts__interface_8hh.html" title="tts_interface.hh" alt="" coords="1121,80,1233,107"/>
+<area shape="rect" id="node10" href="capability_8hh.html" title="capability.hh" alt="" coords="1258,80,1353,107"/>
+<area shape="rect" id="node11" href="nugu__client_8hh.html" title="nugu_client.hh" alt="" coords="1377,80,1484,107"/>
 </map>
 </div>
 </div>
@@ -144,9 +142,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">capability listener interface  <a href="classNuguClientKit_1_1ICapabilityListener.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityObservable.html">NuguClientKit::ICapabilityObservable</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">capability observer interface  <a href="classNuguClientKit_1_1ICapabilityObservable.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -154,7 +149,7 @@ Classes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_261219a980049fd8e6168264a7da95ca.html">clientkit</a></li><li class="navelem"><a class="el" href="capability__interface_8hh.html">capability_interface.hh</a></li>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:47 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -3,7 +3,7 @@ var classNuguClientKit_1_1IMediaPlayer =
     [ "~IMediaPlayer", "classNuguClientKit_1_1IMediaPlayer.html#a91b5f39704e7fd789b795def71d0a216", null ],
     [ "addListener", "classNuguClientKit_1_1IMediaPlayer.html#afa7eb30c96c86041ee7ceeb887436864", null ],
     [ "removeListener", "classNuguClientKit_1_1IMediaPlayer.html#a17aa13c2170e53af6f4076a90bae8e91", null ],
-    [ "setSource", "classNuguClientKit_1_1IMediaPlayer.html#a64a38612cb19b20932169aa5237d0536", null ],
+    [ "setSource", "classNuguClientKit_1_1IMediaPlayer.html#abf034391ffb88630549f108538fb9d34", null ],
     [ "play", "classNuguClientKit_1_1IMediaPlayer.html#a442cd3eb9b9cc42795a275203d1dd83f", null ],
     [ "stop", "classNuguClientKit_1_1IMediaPlayer.html#a2d73568f405fa85861a48b651646f5de", null ],
     [ "pause", "classNuguClientKit_1_1IMediaPlayer.html#a624cc048f4e50ed0278680ad39171e4b", null ],

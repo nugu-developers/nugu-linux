@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['delegation_5finterface_2ehh',['delegation_interface.hh',['../delegation__interface_8hh.html',1,'']]],
-  ['display_5finterface_2ehh',['display_interface.hh',['../display__interface_8hh.html',1,'']]]
+  ['media_5fplayer_5finterface_2ehh',['media_player_interface.hh',['../media__player__interface_8hh.html',1,'']]],
+  ['mic_5finterface_2ehh',['mic_interface.hh',['../mic__interface_8hh.html',1,'']]]
 ];

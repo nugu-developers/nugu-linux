@@ -1,6 +1,6 @@
 var group__Buffer =
 [
-    [ "NOT_FOUND", "group__Buffer.html#ga33bfc1f995233887a0414369c36936b8", null ],
+    [ "NUGU_BUFFER_NOT_FOUND", "group__Buffer.html#ga06a7db582786fb15f30593938661d999", null ],
     [ "NuguBuffer", "group__Buffer.html#ga065b515fc87d13912c156adb17456129", null ],
     [ "nugu_buffer_new", "group__Buffer.html#ga0b9004f84813282e2107c1e85c53dcf9", null ],
     [ "nugu_buffer_free", "group__Buffer.html#ga505b48bbb39128531e1ea281ac7dac44", null ],

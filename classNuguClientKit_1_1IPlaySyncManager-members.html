@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -93,17 +93,18 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1IPlaySyncManager
   <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#ae4be3c414a2e8aefbd2cab6c77975824">clearPendingContext</a>(const std::string &amp;ps_id)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a2741b98b7ba7b565b65fd894ac7026a5">getAllPlayStackItems</a>()=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#ac5ff65c0bbe2a75360f281c57dd9c2e4">getPlayStackItem</a>(const std::string &amp;cap_name)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a29f19a9ca95bb22a3a26c98a7c680513">onASRError</a>()=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a119b3e8302f73184abab232ab591e979">onMicOn</a>()=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a43dee763189abc56db16500a50a9ad2d">holdContext</a>()=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a29f19a9ca95bb22a3a26c98a7c680513">onASRError</a>()=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a918cc8a62c019ec260a7e54fe5011143">removeContext</a>(const std::string &amp;ps_id, const std::string &amp;cap_name, bool immediately=true)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#ab0c79740e5db310982a1a6cb5db5b551">setExpectSpeech</a>(bool expect_speech)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>~IPlaySyncManager</b>()=default (defined in <a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a>)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#aef69067a9c4d47b3a140720683d17df1">removeContextLater</a>(const std::string &amp;ps_id, const std::string &amp;cap_name, unsigned int sec)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#ab0c79740e5db310982a1a6cb5db5b551">setExpectSpeech</a>(bool expect_speech)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0"><td class="entry"><b>~IPlaySyncManager</b>()=default (defined in <a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a>)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:51 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

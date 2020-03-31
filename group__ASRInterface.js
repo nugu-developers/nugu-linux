@@ -7,21 +7,23 @@ var group__ASRInterface =
       [ "response_timeout", "structNuguCapability_1_1ASRAttribute.html#af9c89e2373e575694f5a756677ca782f", null ]
     ] ],
     [ "IASRHandler", "classNuguCapability_1_1IASRHandler.html", [
+      [ "AsrRecognizeCallback", "classNuguCapability_1_1IASRHandler.html#a255618276466f4faa8cd5167634fe795", null ],
       [ "~IASRHandler", "classNuguCapability_1_1IASRHandler.html#a41f13c7acf4e08a3400373c2c5438958", null ],
-      [ "startRecognition", "classNuguCapability_1_1IASRHandler.html#acf9be2060c63ad907ffaf7cb7e368e80", null ],
-      [ "stopRecognition", "classNuguCapability_1_1IASRHandler.html#ad3d2362c46b0e04d30ab22f0bfa63e5d", null ],
+      [ "startRecognition", "classNuguCapability_1_1IASRHandler.html#a0795f71908f1a093e732fff83b301a09", null ],
+      [ "stopRecognition", "classNuguCapability_1_1IASRHandler.html#aa34a87fcc0d03e9f3ebd0116f52dac14", null ],
       [ "addListener", "classNuguCapability_1_1IASRHandler.html#a36f354f3d51036495d0686723c55ce8c", null ],
       [ "removeListener", "classNuguCapability_1_1IASRHandler.html#ad4d340a3517a6f9d9ae6dba03574617e", null ],
-      [ "setAttribute", "classNuguCapability_1_1IASRHandler.html#a90ba983d4e72307c739b59d7c870b2de", null ]
+      [ "setAttribute", "classNuguCapability_1_1IASRHandler.html#a90ba983d4e72307c739b59d7c870b2de", null ],
+      [ "getEpdSilenceInterval", "classNuguCapability_1_1IASRHandler.html#a21ba6d6e3a66409370184ac4877e0612", null ]
     ] ],
     [ "IASRListener", "classNuguCapability_1_1IASRListener.html", [
       [ "~IASRListener", "classNuguCapability_1_1IASRListener.html#a0ed3468bba18f9c4a597061fe2ca3976", null ],
-      [ "onState", "classNuguCapability_1_1IASRListener.html#aa68af3c59f39bc9003e91ddd5869452a", null ],
-      [ "onNone", "classNuguCapability_1_1IASRListener.html#aac9c4ec5fbff34274a4947cfa58c47ec", null ],
-      [ "onPartial", "classNuguCapability_1_1IASRListener.html#a17d8c7db832f5a70ba725f5c7292984d", null ],
-      [ "onComplete", "classNuguCapability_1_1IASRListener.html#ae0ab5dfb965974d613b20e2733cb9a61", null ],
-      [ "onError", "classNuguCapability_1_1IASRListener.html#ac831421406a00af5c984d2e2a82d157b", null ],
-      [ "onCancel", "classNuguCapability_1_1IASRListener.html#a71eaa9385429d6f616853ba4214ea690", null ]
+      [ "onState", "classNuguCapability_1_1IASRListener.html#adf5f438140b02a9251d3488192ec14b8", null ],
+      [ "onNone", "classNuguCapability_1_1IASRListener.html#aba55f5cb3892f44a2c9c32ba70bd3723", null ],
+      [ "onPartial", "classNuguCapability_1_1IASRListener.html#a2395171f2c033b205f880f14b9a6646f", null ],
+      [ "onComplete", "classNuguCapability_1_1IASRListener.html#acd823bdf21a98bc80ed20207cfc88999", null ],
+      [ "onError", "classNuguCapability_1_1IASRListener.html#a8a734c0362353a8e5a7a1694162e8004", null ],
+      [ "onCancel", "classNuguCapability_1_1IASRListener.html#afd6df670314542e5bce36444921258f6", null ]
     ] ],
     [ "ASRState", "group__ASRInterface.html#gafe4f48f063bafec608e5060090a9543b", [
       [ "IDLE", "group__ASRInterface.html#ggafe4f48f063bafec608e5060090a9543baa5daf7f2ebbba4975d61dab1c40188c7", null ],

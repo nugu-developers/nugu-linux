@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -95,18 +95,22 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1ICapabilityHelpe
   <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#ab8bb6c82bc6661316bf36230be31392e">makeAllContextInfo</a>()=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a31e33344720c97b5490db39db112f95b">makeAllContextInfoStack</a>()=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a23b8f9d9da272e20810c32337844af08">makeContextInfo</a>(Json::Value &amp;ctx)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#af2d2f35b4521756f4f30e529e3f886ad">releaseFocus</a>(const std::string &amp;fname)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#aae7f50922fa0661663d407735c5fb6c6">removeFocus</a>(const std::string &amp;fname)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a5337a0d2fbf740be01d803301f27ad90">notifyEventResult</a>(const char *msg_id, bool success, int code)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#af2d2f35b4521756f4f30e529e3f886ad">releaseFocus</a>(const std::string &amp;fname)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#aae7f50922fa0661663d407735c5fb6c6">removeFocus</a>(const std::string &amp;fname)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#ae9588e1c419854bc2d76e340b822a5da">requestEventResult</a>(NuguEvent *event)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a73c65480432b57a1f67e24d2013d68ee">requestFocus</a>(const std::string &amp;fname, void *event)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a54512cbef27fea4767501d2b186008ed">sendCommand</a>(const std::string &amp;from, const std::string &amp;to, const std::string &amp;command, const std::string &amp;param)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a03910a4b3b8b4b7bc35fc446c9d9da38">setMute</a>(bool mute)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a408c45b8df4996455c70c1bde4625554">restoreAll</a>()=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a54512cbef27fea4767501d2b186008ed">sendCommand</a>(const std::string &amp;from, const std::string &amp;to, const std::string &amp;command, const std::string &amp;param)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a03910a4b3b8b4b7bc35fc446c9d9da38">setMute</a>(bool mute)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html#a48fdb6e7b6fed097591aea3b15379f3d">suspendAll</a>()=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
   <tr bgcolor="#f0f0f0"><td class="entry"><b>~ICapabilityHelper</b>()=default (defined in <a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a>)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:50 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

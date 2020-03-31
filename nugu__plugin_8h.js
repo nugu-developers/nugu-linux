@@ -14,6 +14,7 @@ var nugu__plugin_8h =
     [ "nugu_plugin_find", "group__NuguPlugin.html#ga878a6a31bb675c3d82b52ec5d1c317ed", null ],
     [ "nugu_plugin_set_data", "group__NuguPlugin.html#ga5c1e838b734979f94e6bfad152e69ed3", null ],
     [ "nugu_plugin_get_data", "group__NuguPlugin.html#ga22f9504ad974ca9140165483116dc3c5", null ],
+    [ "nugu_plugin_get_symbol", "group__NuguPlugin.html#ga785bff8a36596b933979a1ef935e40d8", null ],
     [ "nugu_plugin_get_description", "group__NuguPlugin.html#ga6757e7893948f0113cb5fd744ab6e561", null ],
     [ "nugu_plugin_load_directory", "group__NuguPlugin.html#gaae5f77ec394a07ddb7b8279cf30bc66f", null ],
     [ "nugu_plugin_initialize", "group__NuguPlugin.html#ga3a6216daee906383c161091be678fa61", null ],

@@ -1,0 +1,12 @@
+var classNuguClientKit_1_1CapabilityEvent =
+[
+    [ "CapabilityEvent", "classNuguClientKit_1_1CapabilityEvent.html#a5622838cc334d8baec81afdb8c9af32d", null ],
+    [ "~CapabilityEvent", "classNuguClientKit_1_1CapabilityEvent.html#a9ce10ea1e8307983853358bdd3ac7009", null ],
+    [ "getName", "classNuguClientKit_1_1CapabilityEvent.html#afe9da44f52de0c68b1b6dd52c03ab2ff", null ],
+    [ "getDialogRequestId", "classNuguClientKit_1_1CapabilityEvent.html#a8753500666d2f07f61acf8497d9a7487", null ],
+    [ "setDialogRequestId", "classNuguClientKit_1_1CapabilityEvent.html#af27155047a57dd5720218b515849d9e6", null ],
+    [ "setType", "classNuguClientKit_1_1CapabilityEvent.html#af8c710dcae336efecc912ad40b1a4dc7", null ],
+    [ "forceClose", "classNuguClientKit_1_1CapabilityEvent.html#ac02f80f01da658db759c118dec31cf55", null ],
+    [ "sendEvent", "classNuguClientKit_1_1CapabilityEvent.html#ae9eca3258e413f288a973a927e6f3f4b", null ],
+    [ "sendAttachmentEvent", "classNuguClientKit_1_1CapabilityEvent.html#a855cb351fa7f623a9d5c147d0c42c1d6", null ]
+];

@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -95,21 +95,21 @@ $(document).ready(function(){initNavTree('classNuguCapability_1_1CapabilityFacto
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a07cfdaea40f256ada837c9beeb706b1d"><td class="memTemplParams" colspan="2">template&lt;typename T , typename V , typename... Ts&gt; </td></tr>
-<tr class="memitem:a07cfdaea40f256ada837c9beeb706b1d"><td class="memTemplItemLeft" align="right" valign="top">static V *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1CapabilityFactory.html#a07cfdaea40f256ada837c9beeb706b1d">makeCapability</a> (Ts &amp;&amp;... params)</td></tr>
-<tr class="memdesc:a07cfdaea40f256ada837c9beeb706b1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create capability agent instance and return related capability handler.  <a href="#a07cfdaea40f256ada837c9beeb706b1d">More...</a><br /></td></tr>
-<tr class="separator:a07cfdaea40f256ada837c9beeb706b1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46d96b1bc96903f02905c92ba8794bf6"><td class="memTemplParams" colspan="2">template&lt;typename T , typename V &gt; </td></tr>
+<tr class="memitem:a46d96b1bc96903f02905c92ba8794bf6"><td class="memTemplItemLeft" align="right" valign="top">static V *&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1CapabilityFactory.html#a46d96b1bc96903f02905c92ba8794bf6">makeCapability</a> (<a class="el" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> *listener=nullptr)</td></tr>
+<tr class="memdesc:a46d96b1bc96903f02905c92ba8794bf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create capability agent instance and return related capability handler.  <a href="#a46d96b1bc96903f02905c92ba8794bf6">More...</a><br /></td></tr>
+<tr class="separator:a46d96b1bc96903f02905c92ba8794bf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classNuguCapability_1_1CapabilityFactory.html" title="CapabilityFactory. ">CapabilityFactory</a>. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a07cfdaea40f256ada837c9beeb706b1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07cfdaea40f256ada837c9beeb706b1d">&#9670;&nbsp;</a></span>makeCapability()</h2>
+<a id="a46d96b1bc96903f02905c92ba8794bf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46d96b1bc96903f02905c92ba8794bf6">&#9670;&nbsp;</a></span>makeCapability()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename V , typename... Ts&gt; </div>
+template&lt;typename T , typename V &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -117,8 +117,8 @@ template&lt;typename T , typename V , typename... Ts&gt; </div>
         <tr>
           <td class="memname">static V* NuguCapability::CapabilityFactory::makeCapability </td>
           <td>(</td>
-          <td class="paramtype">Ts &amp;&amp;...&#160;</td>
-          <td class="paramname"><em>params</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> *&#160;</td>
+          <td class="paramname"><em>listener</em> = <code>nullptr</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -134,7 +134,7 @@ template&lt;typename T , typename V , typename... Ts&gt; </div>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">T</td><td>capability agent class type </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">V</td><td>capability handler class type </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">Ts</td><td>parameters which are forwarded to capability constructor </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">listener</td><td>capability listener instance </td></tr>
   </table>
   </dd>
 </dl>
@@ -150,7 +150,7 @@ template&lt;typename T , typename V , typename... Ts&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguCapability</b></li><li class="navelem"><a class="el" href="classNuguCapability_1_1CapabilityFactory.html">CapabilityFactory</a></li>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:49 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

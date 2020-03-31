@@ -5,6 +5,10 @@ var group__CapabilityHelperInterface =
       [ "getPlaySyncManager", "classNuguClientKit_1_1ICapabilityHelper.html#a9135f5c0e2b5963f14a9fb233e7404e0", null ],
       [ "setMute", "classNuguClientKit_1_1ICapabilityHelper.html#a03910a4b3b8b4b7bc35fc446c9d9da38", null ],
       [ "sendCommand", "classNuguClientKit_1_1ICapabilityHelper.html#a54512cbef27fea4767501d2b186008ed", null ],
+      [ "requestEventResult", "classNuguClientKit_1_1ICapabilityHelper.html#ae9588e1c419854bc2d76e340b822a5da", null ],
+      [ "notifyEventResult", "classNuguClientKit_1_1ICapabilityHelper.html#a5337a0d2fbf740be01d803301f27ad90", null ],
+      [ "suspendAll", "classNuguClientKit_1_1ICapabilityHelper.html#a48fdb6e7b6fed097591aea3b15379f3d", null ],
+      [ "restoreAll", "classNuguClientKit_1_1ICapabilityHelper.html#a408c45b8df4996455c70c1bde4625554", null ],
       [ "getCapabilityProperty", "classNuguClientKit_1_1ICapabilityHelper.html#a9878c9ed46f88f234b3fe1fe0f4bd5b9", null ],
       [ "getCapabilityProperties", "classNuguClientKit_1_1ICapabilityHelper.html#a79fce0957412096aa675388bbb82596b", null ],
       [ "addFocus", "classNuguClientKit_1_1ICapabilityHelper.html#ac37fffae514dfc7e13aef238adf4dac6", null ],
@@ -18,8 +22,8 @@ var group__CapabilityHelperInterface =
     ] ],
     [ "IFocusListener", "classNuguClientKit_1_1IFocusListener.html", [
       [ "~IFocusListener", "classNuguClientKit_1_1IFocusListener.html#a2c3acb9a563f7108128c5ea18fb6d7d5", null ],
-      [ "onFocus", "classNuguClientKit_1_1IFocusListener.html#ad3a02578dbaea8f79f22468e17aa3b8c", null ],
-      [ "onUnfocus", "classNuguClientKit_1_1IFocusListener.html#a9b230e863080cce989f2a0291be6718b", null ],
+      [ "onFocus", "classNuguClientKit_1_1IFocusListener.html#ad056550add5afc077938b4b241874f87", null ],
+      [ "onUnfocus", "classNuguClientKit_1_1IFocusListener.html#a13ac07833eaa1d252fcf9fe2f3040852", null ],
       [ "onStealRequest", "classNuguClientKit_1_1IFocusListener.html#afdb287abd415363339af7fcb181d0cb8", null ]
     ] ]
 ];

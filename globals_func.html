@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -126,13 +126,13 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 : <a class="el" href="group__NuguDecoderDriver.html#gae5fd62b9f1bbe24126d9f9ce16331607">nugu_decoder.h</a>
 </li>
 <li>nugu_decoder_driver_find_bytype()
-: <a class="el" href="group__NuguDecoderDriver.html#gad46ab0001eafc215fc2ebb01ee8a8a92">nugu_decoder.h</a>
+: <a class="el" href="group__NuguDecoderDriver.html#ga70aacf7ee07565397006e82249763ee1">nugu_decoder.h</a>
 </li>
 <li>nugu_decoder_driver_free()
 : <a class="el" href="group__NuguDecoderDriver.html#ga8c6a33ed06375855a7c839aa3ac685c3">nugu_decoder.h</a>
 </li>
 <li>nugu_decoder_driver_new()
-: <a class="el" href="group__NuguDecoderDriver.html#ga4f92c30ca43ab40b7fdd6044dc3386f5">nugu_decoder.h</a>
+: <a class="el" href="group__NuguDecoderDriver.html#ga59a6228244422329856504222deee2b4">nugu_decoder.h</a>
 </li>
 <li>nugu_decoder_driver_register()
 : <a class="el" href="group__NuguDecoderDriver.html#gad2ad9db2d8f87ab33169b6868d2151be">nugu_decoder.h</a>
@@ -177,10 +177,13 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 : <a class="el" href="group__NuguDirective.html#ga2cf2d7ec9d5ed9b7c7eb36ef48ccc2db">nugu_directive.h</a>
 </li>
 <li>nugu_directive_new()
-: <a class="el" href="group__NuguDirective.html#ga76d6ba975fc3532ccd31bacc90379556">nugu_directive.h</a>
+: <a class="el" href="group__NuguDirective.html#gab87fd19b47ca52db5db2e73232c8ec7a">nugu_directive.h</a>
 </li>
 <li>nugu_directive_peek_dialog_id()
 : <a class="el" href="group__NuguDirective.html#gafa496e6f3d54bde4d13145b816f100b7">nugu_directive.h</a>
+</li>
+<li>nugu_directive_peek_groups()
+: <a class="el" href="group__NuguDirective.html#ga6c9a91401969407f7b7290a2a598991c">nugu_directive.h</a>
 </li>
 <li>nugu_directive_peek_json()
 : <a class="el" href="group__NuguDirective.html#ga8bec3442ca9b12e8f5e3a162195237a3">nugu_directive.h</a>
@@ -213,16 +216,13 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 : <a class="el" href="group__NuguDirective.html#ga702da3c3ced0c3877befccd329664c00">nugu_directive.h</a>
 </li>
 <li>nugu_directive_set_data_callback()
-: <a class="el" href="group__NuguDirective.html#gaf31a1ebabe1c2a1b78304d5e603c21b0">nugu_directive.h</a>
+: <a class="el" href="group__NuguDirective.html#gabd2cba337252d647492bdb3b7e758ed5">nugu_directive.h</a>
 </li>
 <li>nugu_directive_set_media_type()
 : <a class="el" href="group__NuguDirective.html#gad021258775a6b0215783c285fe187e39">nugu_directive.h</a>
 </li>
 <li>nugu_directive_unref()
 : <a class="el" href="group__NuguDirective.html#ga7aff4a16e9087dc7911dedb5be6c9ca5">nugu_directive.h</a>
-</li>
-<li>nugu_dirseq_add_callback()
-: <a class="el" href="group__nugu__dirseq.html#ga428b677830c7bdb858d8eaa9738eee80">nugu_directive_sequencer.h</a>
 </li>
 <li>nugu_dirseq_complete()
 : <a class="el" href="group__nugu__dirseq.html#gafac3e377f9cdb3188f264e0e1d9497c5">nugu_directive_sequencer.h</a>
@@ -236,8 +236,11 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 <li>nugu_dirseq_push()
 : <a class="el" href="group__nugu__dirseq.html#ga9db4416f7fbae2d6ad856f157213703d">nugu_directive_sequencer.h</a>
 </li>
-<li>nugu_dirseq_remove_callback()
-: <a class="el" href="group__nugu__dirseq.html#ga4edd683c0926626c1f0dcc040cb8881a">nugu_directive_sequencer.h</a>
+<li>nugu_dirseq_set_callback()
+: <a class="el" href="group__nugu__dirseq.html#ga0c5c7f0db74c83ce2228f98a0a5c186e">nugu_directive_sequencer.h</a>
+</li>
+<li>nugu_dirseq_unset_callback()
+: <a class="el" href="group__nugu__dirseq.html#ga2e4f0a5dd683042d7da1c77e28fc72d3">nugu_directive_sequencer.h</a>
 </li>
 <li>nugu_equeue_deinitialize()
 : <a class="el" href="group__NuguEventQueue.html#ga0ab09322d09d2adb9ed219212e8011fc">nugu_equeue.h</a>
@@ -329,17 +332,23 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 <li>nugu_focus_release()
 : <a class="el" href="group__NuguFocus.html#ga9d5a3ecdefe8f9ef18360478464e9950">nugu_focus.h</a>
 </li>
+<li>nugu_focus_release_all()
+: <a class="el" href="group__NuguFocus.html#gab50eca3184d75c5879ff123c1d4ee88d">nugu_focus.h</a>
+</li>
 <li>nugu_focus_request()
 : <a class="el" href="group__NuguFocus.html#ga8550978ab546788eec9e365c484701cf">nugu_focus.h</a>
 </li>
 <li>nugu_hexdump()
-: <a class="el" href="group__Log.html#ga9d0a11dbeaf635b968133dbd15b80e52">nugu_log.h</a>
+: <a class="el" href="group__Log.html#ga12a34c7723f6eb5ad53b9e775f4c0cbd">nugu_log.h</a>
 </li>
 <li>nugu_log_get_modules()
 : <a class="el" href="group__Log.html#gaee99e7983d63c14b62399824b2aa549a">nugu_log.h</a>
 </li>
 <li>nugu_log_get_prefix_fields()
 : <a class="el" href="group__Log.html#gafae3378cc5a0bb08288002898f9b6d99">nugu_log.h</a>
+</li>
+<li>nugu_log_get_system()
+: <a class="el" href="group__Log.html#gab9a26bf397d3e31d73a11a05f4cadcb2">nugu_log.h</a>
 </li>
 <li>nugu_log_print()
 : <a class="el" href="group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc">nugu_log.h</a>
@@ -387,13 +396,19 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 : <a class="el" href="group__nugu__network.html#ga146c04f3badde8f76fcdd0469e1ac329">nugu_network_manager.h</a>
 </li>
 <li>nugu_network_manager_send_event()
-: <a class="el" href="group__nugu__network.html#ga93d037f96f08bd7de3b8e32c637319e7">nugu_network_manager.h</a>
+: <a class="el" href="group__nugu__network.html#gadfd7f5ce83fe0afc18e1a3bbd4dedc59">nugu_network_manager.h</a>
 </li>
 <li>nugu_network_manager_send_event_data()
 : <a class="el" href="group__nugu__network.html#gac8a5a41821ad77b0e964dd79a218ac41">nugu_network_manager.h</a>
 </li>
+<li>nugu_network_manager_set_event_result_callback()
+: <a class="el" href="group__nugu__network.html#ga4e685244e26f4ad8e0bba02b12f063f7">nugu_network_manager.h</a>
+</li>
+<li>nugu_network_manager_set_event_send_notify_callback()
+: <a class="el" href="group__nugu__network.html#gacff241f4be3a3f2c0a12960abe370c99">nugu_network_manager.h</a>
+</li>
 <li>nugu_network_manager_set_handoff_status_callback()
-: <a class="el" href="group__nugu__network.html#gaec898854506f84a0d44157ac92ee340c">nugu_network_manager.h</a>
+: <a class="el" href="group__nugu__network.html#ga8e910e53a0d4d5ab941dd5b866e16fa6">nugu_network_manager.h</a>
 </li>
 <li>nugu_network_manager_set_registry_url()
 : <a class="el" href="group__nugu__network.html#ga14fd663ca182334cf98f916b6e2ce2e8">nugu_network_manager.h</a>
@@ -402,7 +417,7 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 : <a class="el" href="group__nugu__network.html#ga43e79f0c044fd2848987f0953cfcb930">nugu_network_manager.h</a>
 </li>
 <li>nugu_network_manager_set_status_callback()
-: <a class="el" href="group__nugu__network.html#gaf9728e928ce2d66536b371b93e4affc7">nugu_network_manager.h</a>
+: <a class="el" href="group__nugu__network.html#gae060d4d9e14848b79bb941f0889b50dc">nugu_network_manager.h</a>
 </li>
 <li>nugu_network_manager_set_token()
 : <a class="el" href="group__nugu__network.html#gafa7ede456c6ef64cc2e20916aebc101e">nugu_network_manager.h</a>
@@ -455,6 +470,12 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 <li>nugu_pcm_get_data_size()
 : <a class="el" href="group__NuguPcm.html#ga305d40cfa636f94a6a685edbf926c431">nugu_pcm.h</a>
 </li>
+<li>nugu_pcm_get_duration()
+: <a class="el" href="group__NuguPcm.html#ga8c4619c14fa8c92c3117c6ca31cc2ee7">nugu_pcm.h</a>
+</li>
+<li>nugu_pcm_get_position()
+: <a class="el" href="group__NuguPcm.html#gaa5007693a5a305a36ae100e7b6149796">nugu_pcm.h</a>
+</li>
 <li>nugu_pcm_get_status()
 : <a class="el" href="group__NuguPcm.html#ga064023536db57aa38110130d3959067f">nugu_pcm.h</a>
 </li>
@@ -486,13 +507,13 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 : <a class="el" href="group__NuguPcm.html#gaf6f874df1d927d3871de1d52cad7c7b6">nugu_pcm.h</a>
 </li>
 <li>nugu_pcm_set_event_callback()
-: <a class="el" href="group__NuguPcm.html#ga94bdd9bfb18f485ebb06557f1a44b3eb">nugu_pcm.h</a>
+: <a class="el" href="group__NuguPcm.html#ga1b768b885e48b939c6311b7bfa740712">nugu_pcm.h</a>
 </li>
 <li>nugu_pcm_set_property()
 : <a class="el" href="group__NuguPcm.html#ga5b5e444b5a0d4ca678545419587381f0">nugu_pcm.h</a>
 </li>
 <li>nugu_pcm_set_status_callback()
-: <a class="el" href="group__NuguPcm.html#gaec573f151413a31d05eefa5625a5c579">nugu_pcm.h</a>
+: <a class="el" href="group__NuguPcm.html#ga7c9845c663257296513d3b431b5686c7">nugu_pcm.h</a>
 </li>
 <li>nugu_pcm_set_userdata()
 : <a class="el" href="group__NuguPcm.html#gaa6906ed7729c4d59e89cf421e635708d">nugu_pcm.h</a>
@@ -570,13 +591,13 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 : <a class="el" href="group__NuguPlayer.html#ga3a7e59d98319717bb48849655333bb08">nugu_player.h</a>
 </li>
 <li>nugu_player_set_event_callback()
-: <a class="el" href="group__NuguPlayer.html#ga8b8ac6c1aea7a0368cdcedceeaab5c78">nugu_player.h</a>
+: <a class="el" href="group__NuguPlayer.html#ga0de7e004054bc6b61d0fb850e9ef14ee">nugu_player.h</a>
 </li>
 <li>nugu_player_set_source()
 : <a class="el" href="group__NuguPlayer.html#ga81b9abbfe8ee2b91d9db239035bea839">nugu_player.h</a>
 </li>
 <li>nugu_player_set_status_callback()
-: <a class="el" href="group__NuguPlayer.html#gac6b278a6b80c6b72b18653cea4111eee">nugu_player.h</a>
+: <a class="el" href="group__NuguPlayer.html#gafee35c5f80fa823200395dc10477814f">nugu_player.h</a>
 </li>
 <li>nugu_player_set_volume()
 : <a class="el" href="group__NuguPlayer.html#gaf91b1f651e212259dfe427970c24ab72">nugu_player.h</a>
@@ -604,6 +625,9 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 </li>
 <li>nugu_plugin_get_description()
 : <a class="el" href="group__NuguPlugin.html#ga6757e7893948f0113cb5fd744ab6e561">nugu_plugin.h</a>
+</li>
+<li>nugu_plugin_get_symbol()
+: <a class="el" href="group__NuguPlugin.html#ga785bff8a36596b933979a1ef935e40d8">nugu_plugin.h</a>
 </li>
 <li>nugu_plugin_initialize()
 : <a class="el" href="group__NuguPlugin.html#ga3a6216daee906383c161091be678fa61">nugu_plugin.h</a>
@@ -728,6 +752,9 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 <li>nugu_timer_delete()
 : <a class="el" href="group__NuguTimer.html#ga9b94911aaaf3be16ecee5a1eb56e1fd7">nugu_timer.h</a>
 </li>
+<li>nugu_timer_get_count()
+: <a class="el" href="group__NuguTimer.html#ga47d60ac015cbeec5711052953a65a661">nugu_timer.h</a>
+</li>
 <li>nugu_timer_get_interval()
 : <a class="el" href="group__NuguTimer.html#gac2bfc033a765fd2927cba4cf9aa8c483">nugu_timer.h</a>
 </li>
@@ -738,7 +765,7 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 : <a class="el" href="group__NuguTimer.html#gaca16827b4906793cd3b2b34eb4d8a3a3">nugu_timer.h</a>
 </li>
 <li>nugu_timer_set_callback()
-: <a class="el" href="group__NuguTimer.html#ga47af6943433405e7ad92298b9d12e417">nugu_timer.h</a>
+: <a class="el" href="group__NuguTimer.html#ga3439d4c2af68342057b1e6b0f46cd0b1">nugu_timer.h</a>
 </li>
 <li>nugu_timer_set_interval()
 : <a class="el" href="group__NuguTimer.html#ga2a63d0ad8391b9a779fbef5cd8468d37">nugu_timer.h</a>
@@ -776,7 +803,7 @@ $(document).ready(function(){initNavTree('globals_func.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:52 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

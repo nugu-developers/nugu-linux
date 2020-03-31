@@ -7,7 +7,7 @@ var searchData=
   ['textinterface',['TextInterface',['../group__TextInterface.html',1,'']]],
   ['textstate',['TextState',['../group__TextInterface.html#ga69b7f95a5985645bb3a5d3be597ad35a',1,'NuguCapability']]],
   ['timeout',['TIMEOUT',['../group__SpeechRecognizerInterface.html#ggaae383c251ee0fa6e96e4c53b9f5d9a3aa070a0fb40f6c308ab544b227660aadff',1,'NuguClientKit']]],
-  ['timeoutcallback',['timeoutCallback',['../group__NuguTimer.html#ga0dffec70d4c4f343e3c1fa1c9dd67f82',1,'nugu_timer.h']]],
+  ['timer_5fcallback',['timer_callback',['../classNuguClientKit_1_1INuguTimer.html#a679476e2b20249c383fb6905955093e0',1,'NuguClientKit::INuguTimer']]],
   ['token',['token',['../structNuguClientKit_1_1IPlaySyncManager_1_1DisplayRenderInfo.html#a1d1c7f9122a9aeb4f857f3158dac0c0b',1,'NuguClientKit::IPlaySyncManager::DisplayRenderInfo']]],
   ['token_5ferror',['TOKEN_ERROR',['../group__NetworkManagerInterface.html#gga6aff79e2435c590ea44de8c43754e015ade5fb169ea8d8790ec07c79a01246313',1,'NuguClientKit']]],
   ['tts_5fengine',['tts_engine',['../structNuguCapability_1_1TTSAttribute.html#a3d27107d98ea2fbdff928b47ffa7c432',1,'NuguCapability::TTSAttribute']]],

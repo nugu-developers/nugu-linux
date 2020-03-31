@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -97,27 +97,30 @@ $(document).ready(function(){initNavTree('group__NuguTimer.html','');});
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <center><table><tr><td><img src="group__NuguTimer.png" border="0" alt="" usemap="#group____NuguTimer"/>
 <map name="group____NuguTimer" id="group____NuguTimer">
-<area shape="rect" id="node1" href="group__SDKBase.html" title="SDK Base" alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node1" href="group__SDKBase.html" title="SDK Base" alt="" coords="5,5,89,32"/>
 </map>
 </td></tr></table></center>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:ga72cf38b517d8c38750825d74f0e86985"><td class="memItemLeft" align="right" valign="top"><a id="ga72cf38b517d8c38750825d74f0e86985"></a>
+typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga72cf38b517d8c38750825d74f0e86985">NuguTimeoutCallback</a>) (void *userdata)</td></tr>
+<tr class="memdesc:ga72cf38b517d8c38750825d74f0e86985"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback prototype for timeout. <br /></td></tr>
+<tr class="separator:ga72cf38b517d8c38750825d74f0e86985"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga55228b917136cf8e8705703673e80e6e"><td class="memItemLeft" align="right" valign="top"><a id="ga55228b917136cf8e8705703673e80e6e"></a>
 typedef struct _nugu_timer&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a></td></tr>
 <tr class="memdesc:ga55228b917136cf8e8705703673e80e6e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Timer object. <br /></td></tr>
 <tr class="separator:ga55228b917136cf8e8705703673e80e6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0dffec70d4c4f343e3c1fa1c9dd67f82"><td class="memItemLeft" align="right" valign="top"><a id="ga0dffec70d4c4f343e3c1fa1c9dd67f82"></a>
-typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga0dffec70d4c4f343e3c1fa1c9dd67f82">timeoutCallback</a>) (void *userdata)</td></tr>
-<tr class="memdesc:ga0dffec70d4c4f343e3c1fa1c9dd67f82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback prototype for timeout. <br /></td></tr>
-<tr class="separator:ga0dffec70d4c4f343e3c1fa1c9dd67f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:ga9b94911aaaf3be16ecee5a1eb56e1fd7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga9b94911aaaf3be16ecee5a1eb56e1fd7">nugu_timer_delete</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer)</td></tr>
 <tr class="memdesc:ga9b94911aaaf3be16ecee5a1eb56e1fd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the timer object.  <a href="#ga9b94911aaaf3be16ecee5a1eb56e1fd7">More...</a><br /></td></tr>
 <tr class="separator:ga9b94911aaaf3be16ecee5a1eb56e1fd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga47d60ac015cbeec5711052953a65a661"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga47d60ac015cbeec5711052953a65a661">nugu_timer_get_count</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer)</td></tr>
+<tr class="memdesc:ga47d60ac015cbeec5711052953a65a661"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get timeout count.  <a href="#ga47d60ac015cbeec5711052953a65a661">More...</a><br /></td></tr>
+<tr class="separator:ga47d60ac015cbeec5711052953a65a661"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac2bfc033a765fd2927cba4cf9aa8c483"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#gac2bfc033a765fd2927cba4cf9aa8c483">nugu_timer_get_interval</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer)</td></tr>
 <tr class="memdesc:gac2bfc033a765fd2927cba4cf9aa8c483"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get interval.  <a href="#gac2bfc033a765fd2927cba4cf9aa8c483">More...</a><br /></td></tr>
 <tr class="separator:gac2bfc033a765fd2927cba4cf9aa8c483"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -127,9 +130,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaca16827b4906793cd3b2b34eb4d8a3a3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#gaca16827b4906793cd3b2b34eb4d8a3a3">nugu_timer_new</a> (long interval, int repeat)</td></tr>
 <tr class="memdesc:gaca16827b4906793cd3b2b34eb4d8a3a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new timer object.  <a href="#gaca16827b4906793cd3b2b34eb4d8a3a3">More...</a><br /></td></tr>
 <tr class="separator:gaca16827b4906793cd3b2b34eb4d8a3a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga47af6943433405e7ad92298b9d12e417"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga47af6943433405e7ad92298b9d12e417">nugu_timer_set_callback</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer, <a class="el" href="group__NuguTimer.html#ga0dffec70d4c4f343e3c1fa1c9dd67f82">timeoutCallback</a> callback, void *userdata)</td></tr>
-<tr class="memdesc:ga47af6943433405e7ad92298b9d12e417"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set timeout callback.  <a href="#ga47af6943433405e7ad92298b9d12e417">More...</a><br /></td></tr>
-<tr class="separator:ga47af6943433405e7ad92298b9d12e417"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3439d4c2af68342057b1e6b0f46cd0b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga3439d4c2af68342057b1e6b0f46cd0b1">nugu_timer_set_callback</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer, <a class="el" href="group__NuguTimer.html#ga72cf38b517d8c38750825d74f0e86985">NuguTimeoutCallback</a> callback, void *userdata)</td></tr>
+<tr class="memdesc:ga3439d4c2af68342057b1e6b0f46cd0b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set timeout callback.  <a href="#ga3439d4c2af68342057b1e6b0f46cd0b1">More...</a><br /></td></tr>
+<tr class="separator:ga3439d4c2af68342057b1e6b0f46cd0b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2a63d0ad8391b9a779fbef5cd8468d37"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga2a63d0ad8391b9a779fbef5cd8468d37">nugu_timer_set_interval</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer, long interval)</td></tr>
 <tr class="memdesc:ga2a63d0ad8391b9a779fbef5cd8468d37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interval.  <a href="#ga2a63d0ad8391b9a779fbef5cd8468d37">More...</a><br /></td></tr>
 <tr class="separator:ga2a63d0ad8391b9a779fbef5cd8468d37"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -343,6 +346,33 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga47d60ac015cbeec5711052953a65a661"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga47d60ac015cbeec5711052953a65a661">&#9670;&nbsp;</a></span>nugu_timer_get_count()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int nugu_timer_get_count </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *&#160;</td>
+          <td class="paramname"><em>timer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get timeout count. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">timer</td><td>timer object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>timeout count </dd></dl>
+
+</div>
+</div>
 <a id="gafc6167fa33146c874a63199b722c8ef8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gafc6167fa33146c874a63199b722c8ef8">&#9670;&nbsp;</a></span>nugu_timer_start()</h2>
 
@@ -397,8 +427,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga47af6943433405e7ad92298b9d12e417"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga47af6943433405e7ad92298b9d12e417">&#9670;&nbsp;</a></span>nugu_timer_set_callback()</h2>
+<a id="ga3439d4c2af68342057b1e6b0f46cd0b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3439d4c2af68342057b1e6b0f46cd0b1">&#9670;&nbsp;</a></span>nugu_timer_set_callback()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -412,7 +442,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__NuguTimer.html#ga0dffec70d4c4f343e3c1fa1c9dd67f82">timeoutCallback</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__NuguTimer.html#ga72cf38b517d8c38750825d74f0e86985">NuguTimeoutCallback</a>&#160;</td>
           <td class="paramname"><em>callback</em>, </td>
         </tr>
         <tr>
@@ -446,7 +476,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:49 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.6.0</span>
+   &#160;<span id="projectnumber">0.7.0</span>
    </div>
   </td>
  </tr>
@@ -95,9 +95,9 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1ISpeechRecognize
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9278324389988c610669986693a78c4e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ISpeechRecognizerListener.html#a9278324389988c610669986693a78c4e">onListeningState</a> (<a class="el" href="group__SpeechRecognizerInterface.html#gaae383c251ee0fa6e96e4c53b9f5d9a3a">ListeningState</a> state)=0</td></tr>
-<tr class="memdesc:a9278324389988c610669986693a78c4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report to the user listening state changed.  <a href="#a9278324389988c610669986693a78c4e">More...</a><br /></td></tr>
-<tr class="separator:a9278324389988c610669986693a78c4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3294d285c7d8b72b678a20c415abba42"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ISpeechRecognizerListener.html#a3294d285c7d8b72b678a20c415abba42">onListeningState</a> (<a class="el" href="group__SpeechRecognizerInterface.html#gaae383c251ee0fa6e96e4c53b9f5d9a3a">ListeningState</a> state, const std::string &amp;id)=0</td></tr>
+<tr class="memdesc:a3294d285c7d8b72b678a20c415abba42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report to the user listening state changed.  <a href="#a3294d285c7d8b72b678a20c415abba42">More...</a><br /></td></tr>
+<tr class="separator:a3294d285c7d8b72b678a20c415abba42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5f1316c6f5043860b1de11a08bc81fc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ISpeechRecognizerListener.html#ac5f1316c6f5043860b1de11a08bc81fc">onRecordData</a> (unsigned char *buf, int length)=0</td></tr>
 <tr class="memdesc:ac5f1316c6f5043860b1de11a08bc81fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current audio input stream.  <a href="#ac5f1316c6f5043860b1de11a08bc81fc">More...</a><br /></td></tr>
 <tr class="separator:ac5f1316c6f5043860b1de11a08bc81fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -106,8 +106,8 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>SpeechRecognizer listener interface. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguClientKit_1_1ISpeechRecognizer.html" title="SpeechRecognizer interface. ">ISpeechRecognizer</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9278324389988c610669986693a78c4e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9278324389988c610669986693a78c4e">&#9670;&nbsp;</a></span>onListeningState()</h2>
+<a id="a3294d285c7d8b72b678a20c415abba42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3294d285c7d8b72b678a20c415abba42">&#9670;&nbsp;</a></span>onListeningState()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -119,8 +119,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname">virtual void NuguClientKit::ISpeechRecognizerListener::onListeningState </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="group__SpeechRecognizerInterface.html#gaae383c251ee0fa6e96e4c53b9f5d9a3a">ListeningState</a>&#160;</td>
-          <td class="paramname"><em>state</em></td><td>)</td>
+          <td class="paramname"><em>state</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>id</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -134,6 +144,7 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>listening state </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>listening id </td></tr>
   </table>
   </dd>
 </dl>
@@ -194,7 +205,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1ISpeechRecognizerListener.html">ISpeechRecognizerListener</a></li>
-    <li class="footer">Generated on Mon Feb 10 2020 02:38:51 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Mar 31 2020 18:23:43 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

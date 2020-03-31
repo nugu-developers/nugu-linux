@@ -3,15 +3,15 @@ var group__SpeakerInterface =
     [ "ISpeakerHandler", "classNuguCapability_1_1ISpeakerHandler.html", [
       [ "~ISpeakerHandler", "classNuguCapability_1_1ISpeakerHandler.html#a1524cc6961afc43518efafa04e57dd66", null ],
       [ "setSpeakerInfo", "classNuguCapability_1_1ISpeakerHandler.html#aff93ab110dc3ecda3a3dd2764158a862", null ],
-      [ "informVolumeSucceeded", "classNuguCapability_1_1ISpeakerHandler.html#ac0426571c701a48666d72b31e822c562", null ],
-      [ "informVolumeFailed", "classNuguCapability_1_1ISpeakerHandler.html#a69c93b2636cf8f56d1b86f96d0a9c889", null ],
-      [ "informMuteSucceeded", "classNuguCapability_1_1ISpeakerHandler.html#ad7f26ec7c55e7c73b6e50417f817b987", null ],
-      [ "informMuteFailed", "classNuguCapability_1_1ISpeakerHandler.html#a245689ff9c42cae4bcd59b287dc7958a", null ]
+      [ "informVolumeChanged", "classNuguCapability_1_1ISpeakerHandler.html#a3289a6daa4464d99675303bb0da4fd82", null ],
+      [ "informMuteChanged", "classNuguCapability_1_1ISpeakerHandler.html#ab8aa239ae64615cdd181d9bfe9c8a317", null ],
+      [ "sendEventVolumeChanged", "classNuguCapability_1_1ISpeakerHandler.html#a4ba62477fd01bc191de5639e3f49d883", null ],
+      [ "sendEventMuteChanged", "classNuguCapability_1_1ISpeakerHandler.html#a26a953062b0188c0ee304494067d2a7e", null ]
     ] ],
     [ "ISpeakerListener", "classNuguCapability_1_1ISpeakerListener.html", [
       [ "~ISpeakerListener", "classNuguCapability_1_1ISpeakerListener.html#ac9f7782ba3cea869009776bbd4257453", null ],
-      [ "requestSetVolume", "classNuguCapability_1_1ISpeakerListener.html#a8d9a3cfd1e98a616de597c3f4180c130", null ],
-      [ "requestSetMute", "classNuguCapability_1_1ISpeakerListener.html#afe877e0e5ff853256dbbb43079df23ca", null ]
+      [ "requestSetVolume", "classNuguCapability_1_1ISpeakerListener.html#a013bf290edda5c65dcc142511892efd7", null ],
+      [ "requestSetMute", "classNuguCapability_1_1ISpeakerListener.html#abe5ab9acd0a38ee430f89697fa4da9eb", null ]
     ] ],
     [ "SpeakerInfo", "classNuguCapability_1_1SpeakerInfo.html", [
       [ "SpeakerInfo", "classNuguCapability_1_1SpeakerInfo.html#a53f65a71541cdcc46779652320c10708", null ],
