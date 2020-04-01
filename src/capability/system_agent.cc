@@ -75,6 +75,8 @@ void SystemAgent::initialize()
         sendEventUserInactivityReport(DEFAULT_INACTIVITY_TIMEOUT);
     });
 
+    addReferrerEvents("SynchronizeState", "UpdateState");
+
     initialized = true;
 }
 
@@ -271,6 +273,8 @@ void SystemAgent::parsingTurnOff(const char* message)
 void SystemAgent::parsingUpdateState(const char* message)
 {
     sendEventSynchronizeState();
+    // reset referrer dialog request id
+    setReferrerDialogRequestId("SynchronizeState", "");
 }
 
 void SystemAgent::parsingException(const char* message)
