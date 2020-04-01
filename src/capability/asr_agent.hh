@@ -47,6 +47,7 @@ public:
     void deInitialize() override;
     void suspend() override;
 
+    void startRecognition(unsigned int power_noise, unsigned int power_speech, AsrRecognizeCallback callback = nullptr) override;
     void startRecognition(AsrRecognizeCallback callback = nullptr) override;
     void startRecognition(bool expected);
     void stopRecognition() override;
@@ -94,6 +95,7 @@ private:
     // parsing directive
     void parsingExpectSpeech(const char* message);
     void parsingNotifyResult(const char* message);
+    void parsingCancelRecognize(const char* message);
 
     void releaseASRFocus(bool is_cancel, ASRError error, bool release_focus = true);
 
@@ -116,6 +118,9 @@ private:
     std::string epd_type;
     std::string asr_encoding;
     int response_timeout;
+
+    unsigned int wakeup_power_noise;
+    unsigned int wakeup_power_speech;
 };
 
 } // NuguCapability

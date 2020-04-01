@@ -49,7 +49,7 @@ void WakeupHandler::stopWakeup()
     wakeup_detector->stopWakeup();
 }
 
-void WakeupHandler::onWakeupState(WakeupState state, const std::string& id)
+void WakeupHandler::onWakeupState(WakeupState state, const std::string& id, unsigned int noise, unsigned int speech)
 {
     if (request_wakeup_id != id) {
         nugu_warn("[id: %s] ignore [id: %s]'s state %d", request_wakeup_id.c_str(), id.c_str(), state);
@@ -61,20 +61,20 @@ void WakeupHandler::onWakeupState(WakeupState state, const std::string& id)
         nugu_dbg("[id: %s] WakeupState::FAIL", id.c_str());
 
         if (listener)
-            listener->onWakeupState(WakeupDetectState::WAKEUP_FAIL);
+            listener->onWakeupState(WakeupDetectState::WAKEUP_FAIL, noise, speech);
 
         break;
     case WakeupState::DETECTING:
         nugu_dbg("[id: %s] WakeupState::DETECTING", id.c_str());
 
         if (listener)
-            listener->onWakeupState(WakeupDetectState::WAKEUP_DETECTING);
+            listener->onWakeupState(WakeupDetectState::WAKEUP_DETECTING, noise, speech);
         break;
     case WakeupState::DETECTED:
         nugu_dbg("[id: %s] WakeupState::DETECTED", id.c_str());
 
         if (listener)
-            listener->onWakeupState(WakeupDetectState::WAKEUP_DETECTED);
+            listener->onWakeupState(WakeupDetectState::WAKEUP_DETECTED, noise, speech);
         break;
     case WakeupState::DONE:
         nugu_dbg("[id: %s] WakeupState::DONE", id.c_str());

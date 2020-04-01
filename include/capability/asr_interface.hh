@@ -142,6 +142,14 @@ public:
     virtual ~IASRHandler() = default;
 
     /**
+     * @brief Turn on the microphone and start speech recognition (support multi-wakeup)
+     * @param[in] power_noise min wakeup power value
+     * @param[in] power_speech max wakeup power value
+     * @param[in] callback asr recognize callback
+     */
+    virtual void startRecognition(unsigned int power_noise, unsigned int power_speech, AsrRecognizeCallback callback = nullptr) = 0;
+
+    /**
      * @brief Turn on the microphone and start speech recognition
      * @param[in] callback asr recognize callback
      */

@@ -150,6 +150,8 @@ ASRAgent::ASRAgent()
     , epd_type(NUGU_ASR_EPD_TYPE)
     , asr_encoding(NUGU_ASR_ENCODING)
     , response_timeout(NUGU_SERVER_RESPONSE_TIMEOUT_SEC)
+    , wakeup_power_noise(0)
+    , wakeup_power_speech(0)
 {
 }
 
@@ -232,6 +234,13 @@ void ASRAgent::suspend()
     stopRecognition();
 }
 
+void ASRAgent::startRecognition(unsigned int power_noise, unsigned int power_speech, AsrRecognizeCallback callback)
+{
+    wakeup_power_noise = power_noise;
+    wakeup_power_speech = power_speech;
+    startRecognition(std::move(callback));
+}
+
 void ASRAgent::startRecognition(AsrRecognizeCallback callback)
 {
     if (callback != nullptr)
@@ -271,6 +280,8 @@ void ASRAgent::parsingDirective(const char* dname, const char* message)
         parsingExpectSpeech(message);
     else if (!strcmp(dname, "NotifyResult"))
         parsingNotifyResult(message);
+    else if (!strcmp(dname, "CancelRecognize"))
+        parsingCancelRecognize(message);
     else
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
 }
@@ -363,6 +374,14 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
     root["language"] = "KOR";
     root["endpointing"] = epd_type;
     root["encoding"] = asr_encoding;
+
+    if (wakeup_power_noise && wakeup_power_speech) {
+        Json::Value power;
+        power["noise"] = wakeup_power_noise;
+        power["speech"] = wakeup_power_speech;
+
+        root["wakeup"] = power;
+    }
 
     if (es_attr.is_handle) {
         root["sessionId"] = es_attr.session_id;
@@ -519,6 +538,30 @@ void ASRAgent::parsingNotifyResult(const char* message)
     }
 }
 
+void ASRAgent::parsingCancelRecognize(const char* message)
+{
+    Json::Value root;
+    Json::Reader reader;
+    std::string cause;
+
+    if (!reader.parse(message, root)) {
+        nugu_error("parsing error");
+        return;
+    }
+
+    cause = root["cause"].asString();
+    if (cause.size() == 0) {
+        nugu_error("There is no mandatory data in directive message");
+        return;
+    }
+
+    clearResponseTimeout();
+    nugu_warn("CancelRecognize.cause => %s", cause.c_str());
+
+    if (cause == "WAKEUP_POWER")
+        releaseASRFocus(true, ASRError::UNKNOWN, true);
+}
+
 void ASRAgent::onListeningState(ListeningState state, const std::string& id)
 {
     switch (state) {
@@ -537,6 +580,8 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
         sendEventRecognize(NULL, 0, false, [&](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {
             nugu_dbg("receive %s.%s(%s) result %d(code:%d)", getName().c_str(), ename.c_str(), msg_id.c_str(), success, code);
         });
+        wakeup_power_noise = 0;
+        wakeup_power_speech = 0;
 
         std::string id = getRecognizeDialogId();
         nugu_dbg("user request dialog id: %s", id.c_str());

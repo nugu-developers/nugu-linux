@@ -50,9 +50,11 @@ public:
     /**
      * @brief Report to the user wakeup detection state changed.
      * @param[in] state wakeup detection state
+     * @param[in] power_noise min power value
+     * @param[in] power_speech max power value
      * @see IWakeupHandler::startWakeup()
      */
-    virtual void onWakeupState(WakeupDetectState state) = 0;
+    virtual void onWakeupState(WakeupDetectState state, unsigned int power_noise, unsigned int power_speech) = 0;
 };
 
 /**
