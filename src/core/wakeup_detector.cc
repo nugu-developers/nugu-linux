@@ -17,6 +17,7 @@
 #ifdef ENABLE_VENDOR_LIBRARY
 #include <keyword_detector.h>
 #endif
+#include <cstring>
 
 #include "base/nugu_log.h"
 #include "nugu_timer.hh"
@@ -45,7 +46,7 @@ WakeupDetector::WakeupDetector(Attribute&& attribute)
     initialize(std::move(attribute));
 }
 
-void WakeupDetector::sendWakeupEvent(WakeupState state, const std::string& id)
+void WakeupDetector::sendWakeupEvent(WakeupState state, const std::string& id, unsigned int noise, unsigned int speech)
 {
     if (!listener)
         return;
@@ -53,7 +54,7 @@ void WakeupDetector::sendWakeupEvent(WakeupState state, const std::string& id)
     mutex.lock();
     AudioInputProcessor::sendEvent([=] {
         if (listener)
-            listener->onWakeupState(state, id);
+            listener->onWakeupState(state, id, noise, speech);
     });
     mutex.unlock();
 }
@@ -72,6 +73,9 @@ void WakeupDetector::initialize(Attribute&& attribute)
     model_path = !attribute.model_path.empty() ? attribute.model_path : MODEL_PATH;
 
     AudioInputProcessor::init("kwd", sample, format, channel);
+
+    std::memset(power_speech, 0, sizeof(power_speech));
+    std::memset(power_noise, 0, sizeof(power_noise));
 }
 
 #ifdef ENABLE_VENDOR_LIBRARY
@@ -159,8 +163,14 @@ void WakeupDetector::loop()
                 break;
             }
 
+            setPower((unsigned int)kwd_get_power());
             if (kwd_put_audio((short*)pcm_buf, pcm_size) == 1) {
-                sendWakeupEvent(WakeupState::DETECTED, id);
+                unsigned int noise, speech;
+                getPower(noise, speech);
+                sendWakeupEvent(WakeupState::DETECTED, id, noise, speech);
+                std::memset(power_speech, 0, sizeof(power_speech));
+                std::memset(power_noise, 0, sizeof(power_noise));
+                power_index = 0;
                 break;
             }
         }
@@ -224,6 +234,34 @@ bool WakeupDetector::startWakeup(const std::string& id)
 void WakeupDetector::stopWakeup()
 {
     AudioInputProcessor::stop();
+}
+
+void WakeupDetector::setPower(unsigned int power)
+{
+    power_noise[power_index%POWER_NOISE_PERIOD] = power;
+    power_speech[power_index%POWER_SPEECH_PERIOD] = power;
+    power_index++;
+}
+
+void WakeupDetector::getPower(unsigned int& noise, unsigned int& speech)
+{
+    noise = speech = 0;
+
+    unsigned int min = 1000;
+    for (auto n : power_noise) {
+        if (n && min > n)
+            min = n;
+    }
+    if (min != 1000)
+        noise = min;
+
+    unsigned int max = 0;
+    for (auto s : power_speech) {
+        if (s && max < s)
+            max = s;
+    }
+    if (max)
+        speech = max;
 }
 
 } // NuguCore

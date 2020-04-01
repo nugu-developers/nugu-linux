@@ -73,17 +73,17 @@ void error(const std::string& message)
 }
 }
 
-void SpeechOperator::onWakeupState(WakeupDetectState state)
+void SpeechOperator::onWakeupState(WakeupDetectState state, unsigned int power_noise, unsigned int power_speech)
 {
     switch (state) {
     case WakeupDetectState::WAKEUP_DETECTING:
         msg::wakeup::state("wakeup detecting...");
         break;
     case WakeupDetectState::WAKEUP_DETECTED:
-        msg::wakeup::state("wakeup detected");
+        msg::wakeup::state("wakeup detected (power: " + std::to_string(power_noise) + ", " + std::to_string(power_speech) + ")");
 
         stopWakeup();
-        startListening();
+        startListening(power_noise, power_speech);
 
         break;
     case WakeupDetectState::WAKEUP_FAIL:
@@ -116,7 +116,7 @@ void SpeechOperator::startListeningWithWakeup()
     startWakeup();
 }
 
-void SpeechOperator::startListening()
+void SpeechOperator::startListening(unsigned int noise, unsigned int speech)
 {
     stopListening();
 
@@ -125,9 +125,15 @@ void SpeechOperator::startListening()
         return;
     }
 
-    asr_handler->startRecognition([&](const std::string& dialog_id) {
-        msg::asr::callback(__FUNCTION__, dialog_id, "startRecognition callback");
-    });
+    if (noise && speech) {
+        asr_handler->startRecognition(noise, speech, [&](const std::string& dialog_id) {
+            msg::asr::callback(__FUNCTION__, dialog_id, "startRecognition callback");
+        });
+    } else {
+        asr_handler->startRecognition([&](const std::string& dialog_id) {
+            msg::asr::callback(__FUNCTION__, dialog_id, "startRecognition callback");
+        });
+    }
 }
 
 void SpeechOperator::stopListeningAndWakeup()
