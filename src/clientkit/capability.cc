@@ -252,7 +252,6 @@ void Capability::processDirective(NuguDirective* ndir)
     if (ndir) {
         const char* dname;
         const char* message;
-        const char* dref_id;
 
         message = nugu_directive_peek_json(ndir);
         dname = nugu_directive_peek_name(ndir);
@@ -264,10 +263,6 @@ void Capability::processDirective(NuguDirective* ndir)
             destroyDirective(ndir);
             return;
         }
-
-        dref_id = nugu_directive_peek_referrer_id(ndir);
-        if (!dref_id || !strlen(dref_id))
-            dref_id = nugu_directive_peek_dialog_id(ndir);
 
         setReferrerDialogRequestId(nugu_directive_peek_name(ndir), nugu_directive_peek_dialog_id(ndir));
 
