@@ -87,6 +87,12 @@ void AudioPlayerAgent::initialize()
     addReferrerEvents("HideLyricsFailed", "HideLyrics");
     addReferrerEvents("ControlLyricsPageSucceeded", "ControlLyricsPage");
     addReferrerEvents("ControlLyricsPageFailed", "ControlLyricsPage");
+    addReferrerEvents("RequestPlayCommandIssued", "RequestPlayCommand");
+    addReferrerEvents("RequestResumeCommandIssued", "RequestResumeCommand");
+    addReferrerEvents("RequestNextCommandIssued", "RequestNextCommand");
+    addReferrerEvents("RequestPreviousCommandIssued", "RequestPreviousCommand");
+    addReferrerEvents("RequestPauseCommandIssued", "RequestPauseCommand");
+    addReferrerEvents("RequestStopCommandIssued", "RequestStopCommand");
 
     initialized = true;
 }
