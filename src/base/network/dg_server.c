@@ -190,6 +190,7 @@ static int _send_v2_events_attachment(DGServer *server, NuguEvent *nev,
 				      unsigned char *data)
 {
 	V2Events *e;
+	char *msg_id;
 
 	/* find an active event from pending list */
 	e = g_hash_table_lookup(server->pending_events,
@@ -199,7 +200,10 @@ static int _send_v2_events_attachment(DGServer *server, NuguEvent *nev,
 		return -1;
 	}
 
-	v2_events_send_binary(e, nugu_event_get_seq(nev), is_end, length, data);
+	msg_id = nugu_uuid_generate_time();
+	v2_events_send_binary(e, msg_id, nugu_event_get_seq(nev), is_end,
+			      length, data);
+	free(msg_id);
 
 	if (is_end == 0)
 		return 0;

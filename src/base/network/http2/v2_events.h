@@ -31,8 +31,8 @@ void v2_events_free(V2Events *event);
 int v2_events_set_info(V2Events *event, const char *msg_id,
 		       const char *dialog_id);
 int v2_events_send_json(V2Events *event, const char *data, size_t length);
-int v2_events_send_binary(V2Events *event, int seq, int is_end, size_t length,
-			  unsigned char *data);
+int v2_events_send_binary(V2Events *event, const char *msgid, int seq,
+			  int is_end, size_t length, unsigned char *data);
 int v2_events_send_done(V2Events *event);
 
 #ifdef __cplusplus
