@@ -59,6 +59,7 @@ static struct _log_level_info {
 	char mark;
 	int syslog_level;
 } _log_level_map[] = {
+	/* [level] = { mark, syslog_level } */
 	[NUGU_LOG_LEVEL_ERROR] = { 'E', LOG_ERR },
 	[NUGU_LOG_LEVEL_WARNING] = { 'W', LOG_WARNING },
 	[NUGU_LOG_LEVEL_INFO] = { 'I', LOG_INFO },
@@ -77,6 +78,9 @@ static void _log_check_override_system(void)
 	if (!strncasecmp(env, "stderr", 7)) {
 		_log_override_enabled = 1;
 		_log_system = NUGU_LOG_SYSTEM_STDERR;
+	} else if (!strncasecmp(env, "stdout", 7)) {
+		_log_override_enabled = 1;
+		_log_system = NUGU_LOG_SYSTEM_STDOUT;
 	} else if (!strncasecmp(env, "syslog", 7)) {
 		_log_override_enabled = 1;
 		_log_system = NUGU_LOG_SYSTEM_SYSLOG;
@@ -190,8 +194,8 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 		if (len > 0 && pid != 0 && pid != tid)
 #endif
 			len += snprintf(prefix + len, 18,
-					NUGU_ANSI_COLOR_DARKGRAY
-					FMT_TID NUGU_ANSI_COLOR_NORMAL,
+					NUGU_ANSI_COLOR_DARKGRAY FMT_TID
+						NUGU_ANSI_COLOR_NORMAL,
 					tid);
 		else
 			len += snprintf(prefix + len, 7, FMT_TID, tid);
@@ -276,45 +280,62 @@ static void _log_formatted(enum nugu_log_module module,
 {
 	char prefix[4096] = { 0 };
 	int len = 0;
+	FILE *fp = NULL;
 
 	if (_log_prefix_fields > NUGU_LOG_PREFIX_NONE)
 		len = _log_make_prefix(prefix, level, filename, funcname, line);
 
-	if (_log_system == NUGU_LOG_SYSTEM_STDERR) {
-		pthread_mutex_lock(&_log_mutex);
-		if (len > 0)
-			fprintf(stderr, "%s ", prefix);
-#ifdef NUGU_LOG_USE_ANSICOLOR
-		switch (level) {
-		case NUGU_LOG_LEVEL_DEBUG:
-			break;
-		case NUGU_LOG_LEVEL_INFO:
-			fputs(NUGU_ANSI_COLOR_LIGHTBLUE, stderr);
-			break;
-		case NUGU_LOG_LEVEL_WARNING:
-			fputs(NUGU_ANSI_COLOR_LIGHTGRAY, stderr);
-			break;
-		case NUGU_LOG_LEVEL_ERROR:
-			fputs(NUGU_ANSI_COLOR_LIGHTRED, stderr);
-			break;
-		default:
-			break;
-		}
-#endif
-		vfprintf(stderr, format, arg);
-#ifdef NUGU_LOG_USE_ANSICOLOR
-		fputs(NUGU_ANSI_COLOR_NORMAL, stderr);
-#endif
-		fputc('\n', stderr);
-		fflush(stderr);
-		pthread_mutex_unlock(&_log_mutex);
-	} else if (_log_system == NUGU_LOG_SYSTEM_CUSTOM && _log_handler) {
+	if (_log_system == NUGU_LOG_SYSTEM_STDERR)
+		fp = stderr;
+	else if (_log_system == NUGU_LOG_SYSTEM_STDOUT)
+		fp = stdout;
+	else if (_log_system == NUGU_LOG_SYSTEM_CUSTOM && _log_handler) {
 		char msg[4096];
 
 		vsnprintf(msg, 4096, format, arg);
 		_log_handler(module, level, prefix, msg,
 			     _log_handler_user_data);
+
+		return;
 	}
+
+	if (fp == NULL)
+		return;
+
+	pthread_mutex_lock(&_log_mutex);
+
+	if (len > 0)
+		fprintf(fp, "%s ", prefix);
+
+#ifdef NUGU_LOG_USE_ANSICOLOR
+	switch (level) {
+	case NUGU_LOG_LEVEL_DEBUG:
+		break;
+	case NUGU_LOG_LEVEL_INFO:
+		fputs(NUGU_ANSI_COLOR_LIGHTBLUE, fp);
+		break;
+	case NUGU_LOG_LEVEL_WARNING:
+		fputs(NUGU_ANSI_COLOR_LIGHTGRAY, fp);
+		break;
+	case NUGU_LOG_LEVEL_ERROR:
+		fputs(NUGU_ANSI_COLOR_LIGHTRED, fp);
+		break;
+	default:
+		break;
+	}
+#endif
+
+	vfprintf(fp, format, arg);
+
+#ifdef NUGU_LOG_USE_ANSICOLOR
+	fputs(NUGU_ANSI_COLOR_NORMAL, fp);
+#endif
+
+	/* new line */
+	fputc('\n', fp);
+	fflush(fp);
+
+	pthread_mutex_unlock(&_log_mutex);
 }
 
 EXPORT_API void nugu_log_print(enum nugu_log_module module,
@@ -347,6 +368,7 @@ EXPORT_API void nugu_log_print(enum nugu_log_module module,
 		break;
 
 	case NUGU_LOG_SYSTEM_STDERR:
+	case NUGU_LOG_SYSTEM_STDOUT:
 	case NUGU_LOG_SYSTEM_CUSTOM:
 		va_start(arg, format);
 		_log_formatted(module, level, filename, funcname, line, format,
@@ -452,12 +474,13 @@ EXPORT_API unsigned int nugu_log_get_modules(void)
 }
 
 EXPORT_API void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
-		  size_t data_size, const char *header, const char *footer,
-		  const char *lineindent)
+			     size_t data_size, const char *header,
+			     const char *footer, const char *lineindent)
 {
 	size_t i;
 	size_t j;
 	char linebuf[HEXDUMP_LINE_BUFSIZE];
+	FILE *fp = NULL;
 
 	g_return_if_fail(data != NULL);
 	g_return_if_fail(data_size > 0);
@@ -472,12 +495,19 @@ EXPORT_API void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
 		return;
 	}
 
+	if (_log_system == NUGU_LOG_SYSTEM_STDERR)
+		fp = stderr;
+	else if (_log_system == NUGU_LOG_SYSTEM_STDOUT)
+		fp = stdout;
+	else
+		return;
+
 	if (header)
-		fprintf(stderr, "%s", header);
+		fprintf(fp, "%s", header);
 
 	for (i = 0; i < data_size; i += HEXDUMP_COLUMN_SIZE) {
 		int col = snprintf(linebuf, HEXDUMP_LINE_BUFSIZE,
-			       "0x%04X: ", (unsigned int)i);
+				   "0x%04X: ", (unsigned int)i);
 
 		/* hex */
 		for (j = i; j < i + HEXDUMP_COLUMN_SIZE; j++) {
@@ -524,16 +554,16 @@ EXPORT_API void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
 		linebuf[col++] = '\0';
 
 		if (lineindent)
-			fprintf(stderr, "%s%s", lineindent, linebuf);
+			fprintf(fp, "%s%s", lineindent, linebuf);
 		else
-			fprintf(stderr, "%s", linebuf);
+			fprintf(fp, "%s", linebuf);
 	}
 
 	if (i % HEXDUMP_COLUMN_SIZE != 0)
-		fputc('\n', stderr);
+		fputc('\n', fp);
 
 	if (footer)
-		fprintf(stderr, "%s", footer);
+		fprintf(fp, "%s", footer);
 
 	pthread_mutex_unlock(&_log_mutex);
 }
