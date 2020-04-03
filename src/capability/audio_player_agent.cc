@@ -276,16 +276,13 @@ std::string AudioPlayerAgent::setFavorite(bool favorite)
     std::string payload = "";
     Json::StyledWriter writer;
     Json::Value root;
-    long offset = cur_player->position() * 1000;
 
-    if (offset < 0 && cur_token.size() == 0) {
+    if (ps_id.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
         return "";
     }
 
-    root["token"] = cur_token;
     root["playServiceId"] = ps_id;
-    root["offsetInMilliseconds"] = std::to_string(offset);
     root["favorite"] = favorite;
     payload = writer.write(root);
 
@@ -300,16 +297,13 @@ std::string AudioPlayerAgent::setRepeat(RepeatType repeat)
     std::string payload = "";
     Json::StyledWriter writer;
     Json::Value root;
-    long offset = cur_player->position() * 1000;
 
-    if (offset < 0 && cur_token.size() == 0) {
+    if (ps_id.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
         return "";
     }
 
-    root["token"] = cur_token;
     root["playServiceId"] = ps_id;
-    root["offsetInMilliseconds"] = std::to_string(offset);
     switch (repeat) {
     case RepeatType::ONE:
         root["repeat"] = "ONE";
@@ -334,16 +328,13 @@ std::string AudioPlayerAgent::setShuffle(bool shuffle)
     std::string payload = "";
     Json::StyledWriter writer;
     Json::Value root;
-    long offset = cur_player->position() * 1000;
 
-    if (offset < 0 && cur_token.size() == 0) {
+    if (ps_id.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
         return "";
     }
 
-    root["token"] = cur_token;
     root["playServiceId"] = ps_id;
-    root["offsetInMilliseconds"] = std::to_string(offset);
     root["shuffle"] = shuffle;
     payload = writer.write(root);
 
@@ -489,32 +480,107 @@ void AudioPlayerAgent::sendEventPlaybackResumed(EventResultCallback cb)
 
 void AudioPlayerAgent::sendEventShowLyricsSucceeded(EventResultCallback cb)
 {
-    sendEventCommon("ShowLyricsSucceeded", std::move(cb));
+    std::string ename = "ShowLyricsSucceeded";
+    std::string payload = "";
+    Json::StyledWriter writer;
+    Json::Value root;
+
+    if (ps_id.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
+        return;
+    }
+
+    root["playServiceId"] = ps_id;
+    payload = writer.write(root);
+
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void AudioPlayerAgent::sendEventShowLyricsFailed(EventResultCallback cb)
 {
-    sendEventCommon("EventShowLyricsFailed", std::move(cb));
+    std::string ename = "EventShowLyricsFailed";
+    std::string payload = "";
+    Json::StyledWriter writer;
+    Json::Value root;
+
+    root["playServiceId"] = ps_id;
+    payload = writer.write(root);
+
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void AudioPlayerAgent::sendEventHideLyricsSucceeded(EventResultCallback cb)
 {
-    sendEventCommon("HideLyricsSucceeded", std::move(cb));
+    std::string ename = "HideLyricsSucceeded";
+    std::string payload = "";
+    Json::StyledWriter writer;
+    Json::Value root;
+
+    if (ps_id.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
+        return;
+    }
+
+    root["playServiceId"] = ps_id;
+    payload = writer.write(root);
+
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void AudioPlayerAgent::sendEventHideLyricsFailed(EventResultCallback cb)
 {
-    sendEventCommon("HideLyricsFailed", std::move(cb));
+    std::string ename = "HideLyricsFailed";
+    std::string payload = "";
+    Json::StyledWriter writer;
+    Json::Value root;
+
+    if (ps_id.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
+        return;
+    }
+
+    root["playServiceId"] = ps_id;
+    payload = writer.write(root);
+
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventControlLyricsPageSucceeded(EventResultCallback cb)
+void AudioPlayerAgent::sendEventControlLyricsPageSucceeded(const std::string& direction, EventResultCallback cb)
 {
-    sendEventCommon("ControlLyricsPageSucceeded", std::move(cb));
+    std::string ename = "ControlLyricsPageSucceeded";
+    std::string payload = "";
+    Json::StyledWriter writer;
+    Json::Value root;
+
+    if (ps_id.size() == 0 || direction.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
+        return;
+    }
+
+    root["playServiceId"] = ps_id;
+    root["direction"] = direction;
+    payload = writer.write(root);
+
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventControlLyricsPageFailed(EventResultCallback cb)
+void AudioPlayerAgent::sendEventControlLyricsPageFailed(const std::string& direction, EventResultCallback cb)
 {
-    sendEventCommon("ControlLyricsPageFailed", std::move(cb));
+    std::string ename = "ControlLyricsPageFailed";
+    std::string payload = "";
+    Json::StyledWriter writer;
+    Json::Value root;
+
+    if (ps_id.size() == 0 || direction.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
+        return;
+    }
+
+    root["playServiceId"] = ps_id;
+    root["direction"] = direction;
+    payload = writer.write(root);
+
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void AudioPlayerAgent::sendEventRequestPlayCommandIssued(const std::string& dname, const std::string& payload, EventResultCallback cb)
@@ -537,19 +603,19 @@ void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::str
     Json::Value root;
     long offset = cur_player->position() * 1000;
 
-    if (offset < 0 && cur_token.size() == 0) {
-        nugu_error("there is something wrong ");
+    if (offset < 0 || cur_token.size() == 0 || ps_id.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
         return;
     }
 
     root["token"] = cur_token;
     root["playServiceId"] = ps_id;
     root["offsetInMilliseconds"] = std::to_string(offset);
-    root["error.type"] = playbackError(err);
-    root["error.message"] = reason;
-    root["currentPlaybackState.token"] = cur_token;
-    root["currentPlaybackState.offsetInMilliseconds"] = std::to_string(offset);
-    root["currentPlaybackState.playActivity"] = playerActivity(cur_aplayer_state);
+    root["error"]["type"] = playbackError(err);
+    root["error"]["message"] = reason;
+    root["currentPlaybackState"]["token"] = cur_token;
+    root["currentPlaybackState"]["offsetInMilliseconds"] = std::to_string(offset);
+    root["currentPlaybackState"]["playActivity"] = playerActivity(cur_aplayer_state);
     payload = writer.write(root);
 
     sendEvent(ename, getContextInfo(), payload, std::move(cb));
@@ -579,7 +645,7 @@ std::string AudioPlayerAgent::sendEventCommon(const std::string& ename, EventRes
     Json::Value root;
     long offset = cur_player->position() * 1000;
 
-    if (offset < 0 && cur_token.size() == 0) {
+    if (offset < 0 || cur_token.size() == 0 || ps_id.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
         return "";
     }
@@ -944,6 +1010,10 @@ void AudioPlayerAgent::parsingControlLyricsPage(const char* message)
         nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
         return;
     }
+
+    // TBD
+    // sendEventControlLyricsPageSucceeded(direction);
+    // sendEventControlLyricsPageFailed(direction);
 }
 
 void AudioPlayerAgent::parsingRequestPlayCommand(const char* dname, const char* message)

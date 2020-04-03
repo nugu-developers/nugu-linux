@@ -83,8 +83,8 @@ public:
     void sendEventShowLyricsFailed(EventResultCallback cb = nullptr);
     void sendEventHideLyricsSucceeded(EventResultCallback cb = nullptr);
     void sendEventHideLyricsFailed(EventResultCallback cb = nullptr);
-    void sendEventControlLyricsPageSucceeded(EventResultCallback cb = nullptr);
-    void sendEventControlLyricsPageFailed(EventResultCallback cb = nullptr);
+    void sendEventControlLyricsPageSucceeded(const std::string& direction, EventResultCallback cb = nullptr);
+    void sendEventControlLyricsPageFailed(const std::string& direction, EventResultCallback cb = nullptr);
     void sendEventByRequestDirective(const std::string& dname, EventResultCallback cb = nullptr);
     void sendEventRequestPlayCommandIssued(const std::string& dname, const std::string& payload, EventResultCallback cb = nullptr);
 
