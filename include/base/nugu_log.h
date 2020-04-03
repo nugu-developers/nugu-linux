@@ -133,7 +133,8 @@ enum nugu_log_level {
  * @see nugu_log_set_handler()
  */
 enum nugu_log_system {
-	NUGU_LOG_SYSTEM_STDERR, /**< Standard error output */
+	NUGU_LOG_SYSTEM_STDERR, /**< Standard error */
+	NUGU_LOG_SYSTEM_STDOUT, /**< Standard output */
 	NUGU_LOG_SYSTEM_SYSLOG, /**< syslog */
 	NUGU_LOG_SYSTEM_NONE, /**< no log */
 	NUGU_LOG_SYSTEM_CUSTOM /**< custom log handler by log_set_handler() */
