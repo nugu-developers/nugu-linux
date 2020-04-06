@@ -48,7 +48,7 @@ public:
 
     void setWakeupWord(const std::string& word);
 
-    std::string makeContextInfo(Json::Value& ctx);
+    std::string makeContextInfo(const std::string& cname, Json::Value& ctx);
     std::string makeAllContextInfo();
     std::string makeAllContextInfoStack();
 

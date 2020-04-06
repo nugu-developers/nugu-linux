@@ -201,7 +201,7 @@ void Capability::addReferrerEvents(const std::string& ename, const std::string& 
 
 std::string Capability::getReferrerDialogRequestId(const std::string& ename)
 {
-    if (pimpl->referrer_events.find(ename)==pimpl->referrer_events.end())
+    if (pimpl->referrer_events.find(ename) == pimpl->referrer_events.end())
         return "";
 
     return pimpl->referrer_dirs[pimpl->referrer_events[ename]];
@@ -322,7 +322,7 @@ void Capability::sendEvent(CapabilityEvent* event, const std::string& context, c
     if (cb == nullptr)
         addEventResultCallback(ename, [&](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {
             nugu_warn("The %sAgent ignore the %s result %d(code:%d)", getName().c_str(), ename.c_str(), success, code);
-    });
+        });
     else
         addEventResultCallback(ename, std::move(cb));
 
@@ -378,7 +378,7 @@ std::string Capability::getContextInfo()
     Json::Value ctx;
     updateInfoForContext(ctx);
 
-    return capa_helper->makeContextInfo(ctx);
+    return capa_helper->makeContextInfo(getName(), ctx);
 }
 
 ICapabilityHelper* Capability::getCapabilityHelper()

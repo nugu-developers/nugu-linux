@@ -48,7 +48,7 @@ public:
     bool isFocusOn(NuguFocusType type) override;
 
     // about context
-    std::string makeContextInfo(Json::Value& ctx) override;
+    std::string makeContextInfo(const std::string& cname, Json::Value& ctx) override;
     std::string makeAllContextInfo() override;
     std::string makeAllContextInfoStack() override;
 
