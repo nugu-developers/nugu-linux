@@ -156,10 +156,10 @@ void CapabilityManager::reportEventResult(const char* msg_id, int success, int c
     std::string temp = events[msg_id];
     std::string cname = std::strtok((char*)temp.c_str(), ".");
     std::string desc = events[msg_id]
-                            .append(".")
-                            .append(std::to_string(success))
-                            .append(".")
-                            .append(std::to_string(code));
+                           .append(".")
+                           .append(std::to_string(success))
+                           .append(".")
+                           .append(std::to_string(code));
 
     nugu_dbg("report event result - %s", cname.c_str(), desc.c_str());
 
@@ -184,11 +184,23 @@ ICapabilityInterface* CapabilityManager::findCapability(const std::string& cname
     return caps[cname];
 }
 
-std::string CapabilityManager::makeContextInfo(Json::Value& ctx)
+std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::Value& ctx)
 {
     Json::StyledWriter writer;
     Json::Value root;
     Json::Value client;
+
+    for (auto cap : caps) {
+        ICapabilityInterface* icap = cap.second;
+        if (icap->getName() == cname)
+            continue;
+
+        // The delegation interface is supported by v1.1 or higher.
+        if (icap->getName() == "Delegation" && icap->getVersion() == "1.0")
+            continue;
+
+        ctx[icap->getName()]["version"] = icap->getVersion();
+    }
 
     root["supportedInterfaces"] = ctx;
     client["wakeupWord"] = wword;

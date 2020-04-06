@@ -172,9 +172,10 @@ public:
 
     /**
      * @brief Get context info.
+     * @param[in] cname The name of the capability requesting the context
      * @param[in] ctx reference object for storing context info
      */
-    virtual std::string makeContextInfo(Json::Value& ctx) = 0;
+    virtual std::string makeContextInfo(const std::string& cname, Json::Value& ctx) = 0;
 
     /**
      * @brief Get context info from All CapabilityAgents.

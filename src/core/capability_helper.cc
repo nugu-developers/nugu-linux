@@ -117,9 +117,9 @@ bool CapabilityHelper::isFocusOn(NuguFocusType type)
     return CapabilityManager::getInstance()->isFocusOn(type);
 }
 
-std::string CapabilityHelper::makeContextInfo(Json::Value& ctx)
+std::string CapabilityHelper::makeContextInfo(const std::string& cname, Json::Value& ctx)
 {
-    return CapabilityManager::getInstance()->makeContextInfo(ctx);
+    return CapabilityManager::getInstance()->makeContextInfo(cname, ctx);
 }
 
 std::string CapabilityHelper::makeAllContextInfo()
