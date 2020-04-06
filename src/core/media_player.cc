@@ -289,6 +289,8 @@ bool MediaPlayer::seek(int sec)
     if (nugu_player_seek(d->player, sec) < 0)
         return false;
 
+    setPositionWithSeek(sec);
+
     return true;
 }
 
@@ -311,6 +313,13 @@ bool MediaPlayer::setPosition(int position)
     for (auto l : d->listeners)
         l->positionChanged(d->position);
     return true;
+}
+
+void MediaPlayer::setPositionWithSeek(int position)
+{
+    // Seek position is set in advance only when a seek request is sent to the media player before playback.
+    if (state() == MediaPlayerState::PREPARE)
+        d->position = position;
 }
 
 int MediaPlayer::duration()

@@ -66,6 +66,8 @@ public:
     std::string url() override;
 
 private:
+    void setPositionWithSeek(int position);
+
     MediaPlayerPrivate* d;
 };
 
