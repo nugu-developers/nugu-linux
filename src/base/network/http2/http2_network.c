@@ -183,6 +183,31 @@ static int _process_resume(HTTP2Network *net, struct request_item *item)
 	return -1;
 }
 
+static void _process_async_queue(HTTP2Network *net)
+{
+	while (g_async_queue_length(net->requests) > 0) {
+		struct request_item *item;
+
+		item = g_async_queue_try_pop(net->requests);
+		if (!item)
+			break;
+
+		if (item->type == REQUEST_ADD) {
+			_process_add(net, item);
+			_request_item_free(item);
+		} else if (item->type == REQUEST_REMOVE) {
+			_process_remove(net, item);
+			if (item->sync)
+				thread_sync_signal(item->sync);
+			else
+				_request_item_free(item);
+		} else if (item->type == REQUEST_RESUME) {
+			_process_resume(net, item);
+			_request_item_free(item);
+		}
+	}
+}
+
 static void *_loop(void *data)
 {
 	HTTP2Network *net = data;
@@ -264,24 +289,7 @@ static void *_loop(void *data)
 				break;
 			}
 
-			while (g_async_queue_length(net->requests) > 0) {
-				struct request_item *item;
-
-				item = g_async_queue_try_pop(net->requests);
-				if (!item)
-					break;
-
-				if (item->type == REQUEST_ADD) {
-					_process_add(net, item);
-					_request_item_free(item);
-				} else if (item->type == REQUEST_REMOVE) {
-					_process_remove(net, item);
-					thread_sync_signal(item->sync);
-				} else if (item->type == REQUEST_RESUME) {
-					_process_resume(net, item);
-					_request_item_free(item);
-				}
-			}
+			_process_async_queue(net);
 		}
 	}
 
@@ -456,6 +464,28 @@ int http2_network_remove_request_sync(HTTP2Network *net, HTTP2Request *req)
 	}
 
 	_request_item_free(item);
+
+	return 0;
+}
+
+int http2_network_remove_request(HTTP2Network *net, HTTP2Request *req)
+{
+	struct request_item *item;
+
+	g_return_val_if_fail(net != NULL, -1);
+	g_return_val_if_fail(req != NULL, -1);
+
+	if (thread_sync_check(net->sync_init) == 0) {
+		nugu_error("network is not started");
+		return -1;
+	}
+
+	item = _request_item_new(REQUEST_REMOVE, req, FALSE);
+	if (!item)
+		return -1;
+
+	g_async_queue_push(net->requests, item);
+	http2_network_wakeup(net);
 
 	return 0;
 }
