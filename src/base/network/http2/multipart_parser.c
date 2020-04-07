@@ -24,6 +24,62 @@
 
 #include "multipart_parser.h"
 
+/**
+ * Multipart syntax
+ * - RFC1341 section 7.2
+ * - RFC2049 Appendix
+ *
+ * multipart-body := preamble 1*encapsulation
+ *                   close-delimiter epilogue
+ *
+ * encapsulation := delimiter CRLF body-part
+ *
+ * delimiter := CRLF "--" boundary     ; taken from Content-Type field.
+ *                                     ; when content-type is multipart
+ *                                     ; There must be no space
+ *                                     ; between "--" and boundary.
+ *
+ * close-delimiter := delimiter "--"   ; Again, no space before "--"
+ *
+ * preamble := *text                   ; to be ignored upon receipt.
+ *
+ * epilogue := *text                   ; to be ignored upon receipt.
+ *
+ * body-part = <"message" as defined in RFC 822,
+ *          with all header fields optional, and with the
+ *          specified delimiter not occurring anywhere in
+ *          the message body, either on a line by itself
+ *          or as a substring anywhere.  Note that the
+ *          semantics of a part differ from the semantics
+ *          of a message, as described in the text.>
+ *
+ * Examples:
+ *
+ *   Content-Type: multipart/mixed; boundary=unique-boundary-1
+ *
+ *   This is the preamble area of a multipart message.
+ *   Mail readers that understand multipart format
+ *   should ignore this preamble.
+ *
+ *   If you are reading this text, you might want to
+ *   consider changing to a mail reader that understands
+ *   how to properly display multipart messages.
+ *
+ *   --unique-boundary-1
+ *
+ *   ... Some text appears here ...
+ *
+ *   --unique-boundary-1
+ *   Content-type: text/plain; charset=US-ASCII
+ *
+ *   This could have been part of the previous part, but
+ *   illustrates explicit versus implicit typing of body
+ *   parts.
+ *
+ *   --unique-boundary-1--
+ *
+ */
+
 #define MARK_CR '\r'
 #define MARK_LF '\n'
 #define MARK_HYPHEN '-'

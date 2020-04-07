@@ -31,6 +31,10 @@
 #include "v2_events.h"
 
 #define CRLF "\r\n"
+#define HYPHEN "--"
+
+#define U_CRLF ((unsigned char *)CRLF)
+#define U_HYPHEN ((unsigned char *)HYPHEN)
 
 #define PART_HEADER_JSON                                                       \
 	"Content-Disposition: form-data; name=\"event\"" CRLF                  \
@@ -44,7 +48,8 @@
 
 struct _v2_events {
 	HTTP2Request *req;
-	char *boundary;
+	unsigned char *boundary;
+	size_t b_len;
 	int sync;
 	HTTP2Network *net;
 };
@@ -186,7 +191,9 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync)
 	nugu_uuid_convert_base16(buf, sizeof(buf), boundary, sizeof(boundary));
 	boundary[16] = '\0';
 
-	event->boundary = g_strdup_printf("%s--%s", CRLF, boundary);
+	event->boundary =
+		(unsigned char *)g_strdup_printf("%s--%s", CRLF, boundary);
+	event->b_len = strlen((char *)event->boundary);
 	event->sync = is_sync;
 	event->net = net;
 
@@ -205,6 +212,10 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync)
 	http2_request_set_body_callback(event->req, _on_body, parser);
 	http2_request_set_finish_callback(event->req, _on_finish, NULL);
 	http2_request_set_destroy_callback(event->req, _on_destroy, parser);
+
+	/* Boundary (no preamble data) */
+	http2_request_add_send_data(event->req, event->boundary, event->b_len);
+	http2_request_add_send_data(event->req, U_CRLF, 2);
 
 	ret = http2_network_add_request(event->net, event->req);
 	if (ret < 0) {
@@ -243,22 +254,53 @@ int v2_events_set_info(V2Events *event, const char *msg_id,
 	return 0;
 }
 
+int v2_events_send_single_json(V2Events *event, const char *data, size_t length)
+{
+	g_return_val_if_fail(event != NULL, -1);
+
+	http2_request_lock_send_data(event->req);
+
+	/* Body header */
+	http2_request_add_send_data(event->req,
+				    (unsigned char *)PART_HEADER_JSON,
+				    strlen(PART_HEADER_JSON));
+
+	/* Body */
+	http2_request_add_send_data(event->req, (unsigned char *)data, length);
+	http2_request_add_send_data(event->req, U_CRLF, 2);
+
+	/* Boundary */
+	http2_request_add_send_data(event->req, event->boundary, event->b_len);
+	http2_request_add_send_data(event->req, U_HYPHEN, 2);
+	http2_request_add_send_data(event->req, U_CRLF, 2);
+
+	http2_request_close_send_data(event->req);
+	http2_request_unlock_send_data(event->req);
+	http2_network_resume_request(event->net, event->req);
+
+	return 0;
+}
+
 int v2_events_send_json(V2Events *event, const char *data, size_t length)
 {
 	g_return_val_if_fail(event != NULL, -1);
 
 	http2_request_lock_send_data(event->req);
-	http2_request_add_send_data(event->req,
-				    (unsigned char *)event->boundary,
-				    strlen(event->boundary));
-	http2_request_add_send_data(event->req, (unsigned char *)CRLF, 2);
+
+	/* Body header */
 	http2_request_add_send_data(event->req,
 				    (unsigned char *)PART_HEADER_JSON,
 				    strlen(PART_HEADER_JSON));
-	http2_request_add_send_data(event->req, (unsigned char *)data, length);
-	http2_request_add_send_data(event->req, (unsigned char *)CRLF, 2);
-	http2_request_unlock_send_data(event->req);
 
+	/* Body */
+	http2_request_add_send_data(event->req, (unsigned char *)data, length);
+	http2_request_add_send_data(event->req, U_CRLF, 2);
+
+	/* Boundary */
+	http2_request_add_send_data(event->req, event->boundary, event->b_len);
+	http2_request_add_send_data(event->req, U_CRLF, 2);
+
+	http2_request_unlock_send_data(event->req);
 	http2_network_resume_request(event->net, event->req);
 
 	return 0;
@@ -276,26 +318,40 @@ int v2_events_send_binary(V2Events *event, const char *msgid, int seq,
 				      length, msgid);
 
 	http2_request_lock_send_data(event->req);
-	http2_request_add_send_data(event->req,
-				    (unsigned char *)event->boundary,
-				    strlen(event->boundary));
-	http2_request_add_send_data(event->req, (unsigned char *)CRLF, 2);
+
+	/* Body header */
 	http2_request_add_send_data(event->req, (unsigned char *)part_header,
 				    strlen(part_header));
+	g_free(part_header);
 
+	/* Body */
 	if (data != NULL && length > 0) {
 		http2_request_add_send_data(event->req, data, length);
-		http2_request_add_send_data(event->req, (unsigned char *)CRLF,
-					    2);
+		http2_request_add_send_data(event->req, U_CRLF, 2);
+	}
+
+	/* Boundary */
+	http2_request_add_send_data(event->req, event->boundary, event->b_len);
+
+	if (is_end == 0)
+		http2_request_add_send_data(event->req, U_CRLF, 2);
+	else {
+		/* End boundary */
+		http2_request_add_send_data(event->req, U_HYPHEN, 2);
+		http2_request_add_send_data(event->req, U_CRLF, 2);
+		http2_request_close_send_data(event->req);
 	}
 
 	http2_request_unlock_send_data(event->req);
-
-	g_free(part_header);
-
 	http2_network_resume_request(event->net, event->req);
 
 	return 0;
+}
+
+/* invoked in a thread loop */
+static void _on_send_done(HTTP2Request *req, void *userdata)
+{
+	nugu_dbg("send all data (%p)", req);
 }
 
 int v2_events_send_done(V2Events *event)
@@ -308,16 +364,18 @@ int v2_events_send_done(V2Events *event)
 		sync = thread_sync_new();
 
 	http2_request_set_finish_callback(event->req, _on_finish, sync);
+	http2_request_set_send_complete_callback(event->req, _on_send_done,
+						 event->net);
 
 	http2_request_lock_send_data(event->req);
-	http2_request_add_send_data(event->req,
-				    (unsigned char *)event->boundary,
-				    strlen(event->boundary));
-	http2_request_add_send_data(event->req, (unsigned char *)"--", 2);
-	http2_request_add_send_data(event->req, (unsigned char *)CRLF, 2);
+
+	/* End boundary */
+	http2_request_add_send_data(event->req, event->boundary, event->b_len);
+	http2_request_add_send_data(event->req, U_HYPHEN, 2);
+	http2_request_add_send_data(event->req, U_CRLF, 2);
+
 	http2_request_close_send_data(event->req);
 	http2_request_unlock_send_data(event->req);
-
 	http2_network_resume_request(event->net, event->req);
 
 	if (sync) {
