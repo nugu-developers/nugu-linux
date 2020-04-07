@@ -320,9 +320,10 @@ void Capability::sendEvent(CapabilityEvent* event, const std::string& context, c
 
     std::string ename = event->getName();
     if (cb == nullptr)
-        addEventResultCallback(ename, [&](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {
-            nugu_warn("The %sAgent ignore the %s result %d(code:%d)", getName().c_str(), ename.c_str(), success, code);
-        });
+        addEventResultCallback(ename,
+            [&](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {
+                nugu_warn("receive %s.%s(%s) result %d(code:%d) - ignored", getName().c_str(), ename.c_str(), msg_id.c_str(), success, code);
+            });
     else
         addEventResultCallback(ename, std::move(cb));
 
