@@ -71,6 +71,11 @@ class SpeakerAgent;
 class MicAgent;
 
 /**
+ * @brief SoundAgent
+ */
+class SoundAgent;
+
+/**
  * @brief CapabilityFactory
  */
 class CapabilityFactory {

@@ -127,6 +127,15 @@ void CapabilityCollection::composeCapabilityFactory()
 
         return mic_handler.get();
     });
+    factories.emplace("Sound", [&]() {
+        if (!sound_handler) {
+            sound_listener = std::make_shared<SoundListener>();
+            sound_handler = makeCapability<SoundAgent, ISoundHandler>(sound_listener.get());
+            sound_listener->setSoundHandler(sound_handler.get());
+        }
+
+        return sound_handler.get();
+    });
 }
 
 SpeakerInfo CapabilityCollection::makeSpeakerInfo(SpeakerType type, bool can_control)
