@@ -147,6 +147,9 @@ static int _process_remove(HTTP2Network *net, struct request_item *item)
 
 	net->hlist = g_list_remove(net->hlist, req);
 
+	nugu_dbg("removed req(%p) (code=%d)", item->req,
+		 http2_request_get_response_code(item->req));
+	http2_request_emit_finished((item->req));
 	http2_request_unref(item->req);
 
 	return 0;
@@ -229,7 +232,7 @@ static void *_loop(void *data)
 			nugu_dbg("completed req(%p) (code=%d)", fake_p,
 				 http2_request_get_response_code(
 					 (HTTP2Request *)fake_p));
-			http2_request_emit_completed((HTTP2Request *)fake_p);
+			http2_request_emit_finished((HTTP2Request *)fake_p);
 			http2_request_unref((HTTP2Request *)fake_p);
 		}
 

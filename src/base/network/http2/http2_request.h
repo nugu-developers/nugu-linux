@@ -50,6 +50,8 @@ typedef size_t (*ResponseBodyCallback)(HTTP2Request *req, char *buffer,
 				       void *userdata);
 typedef void (*ResponseFinishCallback)(HTTP2Request *req, void *userdata);
 
+typedef void (*RequestSendCompleteCallback)(HTTP2Request *req, void *userdata);
+
 typedef void (*HTTP2DestroyCallback)(HTTP2Request *req, void *userdata);
 
 HTTP2Request *http2_request_new();
@@ -118,6 +120,10 @@ int http2_request_close_send_data(HTTP2Request *req);
 void http2_request_lock_send_data(HTTP2Request *req);
 void http2_request_unlock_send_data(HTTP2Request *req);
 
+int http2_request_set_send_complete_callback(HTTP2Request *req,
+					     RequestSendCompleteCallback cb,
+					     void *userdata);
+
 void *http2_request_get_handle(HTTP2Request *req);
 
 /* Response header callback */
@@ -133,7 +139,7 @@ int http2_request_set_body_callback(HTTP2Request *req, ResponseBodyCallback cb,
 int http2_request_set_finish_callback(HTTP2Request *req,
 				      ResponseFinishCallback cb,
 				      void *userdata);
-void http2_request_emit_completed(HTTP2Request *req);
+void http2_request_emit_finished(HTTP2Request *req);
 
 /* Response information */
 NuguBuffer *http2_request_peek_response_body(HTTP2Request *req);
