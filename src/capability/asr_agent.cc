@@ -62,10 +62,8 @@ void ASRFocusListener::onFocus(void* event)
     agent->setListeningId(id);
     speech_recognizer->startListening(id);
 
-    if (agent->isExpectSpeechState()) {
-        agent->resetExpectSpeechState();
+    if (agent->isExpectSpeechState())
         agent->getCapabilityHelper()->releaseFocus("expect");
-    }
 }
 
 NuguFocusResult ASRFocusListener::onUnfocus(void* event, NuguUnFocusMode mode)
