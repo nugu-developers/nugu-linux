@@ -26,12 +26,11 @@ extern "C" {
 typedef struct _dir_parser DirParser;
 
 DirParser *dir_parser_new(void);
-void dir_parser_free(DirParser *parser);
+void dir_parser_free(DirParser *dp);
 
-int dir_parser_add_header(DirParser *parser, const char *buffer,
-			  size_t buffer_len);
-
-int dir_parser_parse(DirParser *parser, const char *buffer, size_t buffer_len);
+int dir_parser_add_header(DirParser *dp, const char *buffer, size_t buffer_len);
+int dir_parser_parse(DirParser *dp, const char *buffer, size_t buffer_len);
+int dir_parser_set_debug_message(DirParser *dp, const char *msg);
 
 #ifdef __cplusplus
 }

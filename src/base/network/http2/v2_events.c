@@ -178,6 +178,10 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync)
 		return NULL;
 	}
 
+	tmp = g_strdup_printf(" (%p)", event->req);
+	dir_parser_set_debug_message(parser, tmp);
+	g_free(tmp);
+
 	nugu_uuid_fill_random(buf, sizeof(buf));
 	nugu_uuid_convert_base16(buf, sizeof(buf), boundary, sizeof(boundary));
 	boundary[16] = '\0';

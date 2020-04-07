@@ -56,12 +56,14 @@ struct _dir_parser {
     char* parent_msg_id;
     int is_end;
     size_t body_size;
+
+    char* debug_msg;
 };
 
 static void on_parsing_header(MultipartParser* parser, const char* data,
     size_t length, void* userdata)
 {
-    struct _dir_parser* dp = (struct _dir_parser*)multipart_parser_get_data(parser);
+    struct _dir_parser* dp;
     const char* pos;
     const char* start = data;
     const char* end = data + length;
@@ -69,6 +71,10 @@ static void on_parsing_header(MultipartParser* parser, const char* data,
     std::string key;
     std::string value;
     bool found = false;
+
+    dp = (struct _dir_parser*)multipart_parser_get_data(parser);
+    if (!dp)
+        return;
 
     nugu_log_print(NUGU_LOG_MODULE_NETWORK_TRACE, NUGU_LOG_LEVEL_INFO, NULL,
         NULL, -1, "body header: %s", data);
@@ -131,7 +137,7 @@ static void on_parsing_header(MultipartParser* parser, const char* data,
     }
 }
 
-static void _body_json(const char* data, size_t length)
+static void _body_json(DirParser* dp, const char* data, size_t length)
 {
     Json::Value root;
     Json::Value dir_list;
@@ -147,7 +153,8 @@ static void _body_json(const char* data, size_t length)
     }
 
     dump = writer.write(root);
-    nugu_log_protocol_recv(NUGU_LOG_LEVEL_INFO, "Directives\n%s", dump.c_str());
+    nugu_log_protocol_recv(NUGU_LOG_LEVEL_INFO, "Directives%s\n%s",
+        (dp->debug_msg) ? dp->debug_msg : "", dump.c_str());
 
     dir_list = root["directives"];
 
@@ -197,8 +204,8 @@ static void _body_json(const char* data, size_t length)
     }
 }
 
-static void _body_opus(const char* parent_msg_id, int is_end, const char* data,
-    size_t length)
+static void _body_opus(DirParser* dp, const char* parent_msg_id, int is_end,
+    const char* data, size_t length)
 {
     struct equeue_data_attachment* item;
 
@@ -216,8 +223,8 @@ static void _body_opus(const char* parent_msg_id, int is_end, const char* data,
     memcpy(item->data, data, length);
 
     nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG, NULL,
-        NULL, -1, "<-- Attachment: parent=%s (%zd bytes, is_end=%d)",
-        parent_msg_id, length, is_end);
+        NULL, -1, "<-- Attachment: parent=%s (%zd bytes, is_end=%d)%s",
+        parent_msg_id, length, is_end, (dp->debug_msg) ? dp->debug_msg : "");
 
     nugu_equeue_push(NUGU_EQUEUE_TYPE_NEW_ATTACHMENT, item);
 }
@@ -232,53 +239,57 @@ static void _on_parsing_body(MultipartParser* parser, const char* data,
         return;
 
     if (dp->ctype == CONTENT_TYPE_JSON)
-        _body_json(data, length);
+        _body_json(dp, data, length);
     else if (dp->ctype == CONTENT_TYPE_OPUS)
-        _body_opus(dp->parent_msg_id, dp->is_end, data, length);
+        _body_opus(dp, dp->parent_msg_id, dp->is_end, data, length);
 }
 
 DirParser* dir_parser_new(void)
 {
-    DirParser* parser;
+    DirParser* dp;
 
-    parser = (struct _dir_parser*)calloc(1, sizeof(struct _dir_parser));
-    if (!parser) {
+    dp = (struct _dir_parser*)calloc(1, sizeof(struct _dir_parser));
+    if (!dp) {
         nugu_error_nomem();
         return NULL;
     }
 
-    parser->m_parser = multipart_parser_new();
-    if (!parser->m_parser) {
+    dp->m_parser = multipart_parser_new();
+    if (!dp->m_parser) {
         nugu_error_nomem();
-        free(parser);
+        free(dp);
         return NULL;
     }
 
-    parser->ctype = CONTENT_TYPE_UNKNOWN;
+    dp->ctype = CONTENT_TYPE_UNKNOWN;
+    dp->debug_msg = NULL;
 
-    multipart_parser_set_data(parser->m_parser, parser);
+    multipart_parser_set_data(dp->m_parser, dp);
 
-    return parser;
+    return dp;
 }
 
-void dir_parser_free(DirParser* parser)
+void dir_parser_free(DirParser* dp)
 {
-    g_return_if_fail(parser != NULL);
+    g_return_if_fail(dp != NULL);
 
-    multipart_parser_free(parser->m_parser);
+    multipart_parser_free(dp->m_parser);
 
-    if (parser->parent_msg_id)
-        free(parser->parent_msg_id);
+    if (dp->debug_msg)
+        free(dp->debug_msg);
 
-    free(parser);
+    if (dp->parent_msg_id)
+        free(dp->parent_msg_id);
+
+    free(dp);
 }
 
-int dir_parser_add_header(DirParser* parser, const char* buffer,
+int dir_parser_add_header(DirParser* dp, const char* buffer,
     size_t buffer_len)
 {
     const char* pos;
 
-    g_return_val_if_fail(parser != NULL, -1);
+    g_return_val_if_fail(dp != NULL, -1);
     g_return_val_if_fail(buffer != NULL, -1);
 
     if (buffer_len == 0)
@@ -290,21 +301,36 @@ int dir_parser_add_header(DirParser* parser, const char* buffer,
     pos = buffer + strlen(FILTER_CONTENT_TYPE);
 
     /* strlen(pos) - 2('\r\n') */
-    multipart_parser_set_boundary(parser->m_parser, pos, strlen(pos) - 2);
+    multipart_parser_set_boundary(dp->m_parser, pos, strlen(pos) - 2);
 
     return 0;
 }
 
-int dir_parser_parse(DirParser* parser, const char* buffer, size_t buffer_len)
+int dir_parser_parse(DirParser* dp, const char* buffer, size_t buffer_len)
 {
-    g_return_val_if_fail(parser != NULL, -1);
+    g_return_val_if_fail(dp != NULL, -1);
     g_return_val_if_fail(buffer != NULL, -1);
 
     if (buffer_len == 0)
         return 0;
 
-    multipart_parser_parse(parser->m_parser, buffer, buffer_len,
+    multipart_parser_parse(dp->m_parser, buffer, buffer_len,
         on_parsing_header, _on_parsing_body, NULL);
+
+    return 0;
+}
+
+int dir_parser_set_debug_message(DirParser* dp, const char* msg)
+{
+    g_return_val_if_fail(dp != NULL, -1);
+
+    if (dp->debug_msg) {
+        free(dp->debug_msg);
+        dp->debug_msg = NULL;
+    }
+
+    if (msg)
+        dp->debug_msg = strdup(msg);
 
     return 0;
 }
