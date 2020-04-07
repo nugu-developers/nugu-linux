@@ -43,6 +43,8 @@ struct _http2_request {
 	NuguBuffer *send_body;
 	pthread_mutex_t lock_send_body;
 	int send_body_closed;
+	RequestSendCompleteCallback send_complete_cb;
+	void *send_complete_cb_userdata;
 
 	NuguBuffer *response_header;
 	ResponseHeaderCallback header_cb;
@@ -54,6 +56,7 @@ struct _http2_request {
 
 	ResponseFinishCallback finish_cb;
 	void *finish_cb_userdata;
+	int finished;
 
 	HTTP2DestroyCallback destroy_cb;
 	void *destroy_cb_userdata;
@@ -150,6 +153,10 @@ static size_t _request_body_cb(char *buffer, size_t size, size_t nitems,
 		/* There is no more data to send. */
 		http2_request_unlock_send_data(req);
 
+		if (req->send_complete_cb)
+			req->send_complete_cb(req,
+					      req->send_complete_cb_userdata);
+
 		return 0;
 	}
 
@@ -161,15 +168,15 @@ static size_t _request_body_cb(char *buffer, size_t size, size_t nitems,
 		if (length < size * nitems)
 			buffer[length] = '\0';
 
-		nugu_log_protocol_send(NUGU_LOG_LEVEL_INFO, "Event\n%s",
-				       buffer);
+		nugu_log_protocol_send(NUGU_LOG_LEVEL_INFO, "Event (%p)\n%s",
+				       req, buffer);
 
 	} else if (req->type == HTTP2_REQUEST_CONTENT_TYPE_MULTIPART) {
 		if (length < size * nitems)
 			buffer[length] = '\0';
 
 		nugu_log_protocol_send(NUGU_LOG_LEVEL_INFO,
-				       "Event (multipart)\n%s", buffer);
+				       "Event multipart (%p)\n%s", req, buffer);
 	}
 
 	nugu_buffer_shift_left(req->send_body, length);
@@ -362,6 +369,18 @@ void http2_request_unlock_send_data(HTTP2Request *req)
 	pthread_mutex_unlock(&req->lock_send_body);
 }
 
+int http2_request_set_send_complete_callback(HTTP2Request *req,
+					     RequestSendCompleteCallback cb,
+					     void *userdata)
+{
+	g_return_val_if_fail(req != NULL, -1);
+
+	req->send_complete_cb = cb;
+	req->send_complete_cb_userdata = userdata;
+
+	return 0;
+}
+
 int http2_request_set_method(HTTP2Request *req,
 			     enum http2_request_method method)
 {
@@ -515,12 +534,19 @@ int http2_request_set_destroy_callback(HTTP2Request *req,
 }
 
 /* invoked in a thread loop */
-void http2_request_emit_completed(HTTP2Request *req)
+void http2_request_emit_finished(HTTP2Request *req)
 {
 	g_return_if_fail(req != NULL);
 
+	if (req->finished) {
+		nugu_warn("already finished");
+		return;
+	}
+
 	if (req->finish_cb)
 		req->finish_cb(req, req->finish_cb_userdata);
+
+	req->finished = 1;
 }
 
 NuguBuffer *http2_request_peek_response_body(HTTP2Request *req)
