@@ -24,12 +24,10 @@
 #include "base/nugu_uuid.h"
 
 #include "http2/http2_network.h"
-#include "http2/v1_directives.h"
 #include "http2/v1_event.h"
 #include "http2/v1_event_attachment.h"
+#include "http2/v1_directives.h"
 #include "http2/v1_ping.h"
-#include "http2/v1_policies.h"
-#include "http2/v1_events.h"
 #include "http2/v2_events.h"
 
 #include "dg_server.h"
@@ -68,37 +66,6 @@ static int _send_v1_event(DGServer *server, NuguEvent *nev, const char *payload,
 			  nugu_event_peek_dialog_id(nev));
 	v1_event_set_json(e, payload, strlen(payload));
 	v1_event_send_with_free(e, server->net);
-
-	return 0;
-}
-
-static int _send_v1_events(DGServer *server, NuguEvent *nev,
-			   const char *payload, int is_sync)
-{
-	V1Events *e;
-
-	e = v1_events_new(server->host, server->net, is_sync);
-	if (!e)
-		return -1;
-
-	v1_events_set_info(e, nugu_event_peek_msg_id(nev),
-			   nugu_event_peek_dialog_id(nev));
-	v1_events_send_json(e, payload, strlen(payload));
-
-	if (nugu_event_get_type(nev) == NUGU_EVENT_TYPE_DEFAULT) {
-		v1_events_send_done(e);
-		v1_events_free(e);
-		return 0;
-	}
-
-	if (server->pending_events == NULL) {
-		nugu_error("pending_events is NULL");
-		return -1;
-	}
-
-	/* add to pending list for use in sending attachments */
-	g_hash_table_insert(server->pending_events,
-			    g_strdup(nugu_event_peek_msg_id(nev)), e);
 
 	return 0;
 }
@@ -157,33 +124,6 @@ static int _send_v1_attachment(DGServer *server, NuguEvent *nev, int is_end,
 	v1_event_attachment_set_data(ea, data, length);
 
 	return v1_event_attachment_send_with_free(ea, server->net);
-}
-
-static int _send_v1_events_attachment(DGServer *server, NuguEvent *nev,
-				      int is_end, size_t length,
-				      unsigned char *data)
-{
-	V1Events *e;
-
-	/* find an active event from pending list */
-	e = g_hash_table_lookup(server->pending_events,
-				nugu_event_peek_msg_id(nev));
-	if (!e) {
-		nugu_error("invalid attachment (can't find an event)");
-		return -1;
-	}
-
-	v1_events_send_binary(e, nugu_event_get_seq(nev), is_end, length, data);
-
-	if (is_end == 0)
-		return 0;
-
-	v1_events_send_done(e);
-
-	g_hash_table_remove(server->pending_events,
-			    nugu_event_peek_msg_id(nev));
-
-	return 0;
 }
 
 static int _send_v2_events_attachment(DGServer *server, NuguEvent *nev,
@@ -256,38 +196,23 @@ DGServer *dg_server_new(const NuguNetworkServerPolicy *policy)
 	server->host = tmp;
 	server->type = DG_SERVER_TYPE_NORMAL;
 	server->retry_count = 0;
-	server->api_version = 1;
-	server->use_events = 0;
-	server->send_event = _send_v1_event;
-	server->send_attachment = _send_v1_attachment;
+	server->api_version = 2;
+	server->use_events = 1;
+	server->send_event = _send_v2_events;
+	server->send_attachment = _send_v2_events_attachment;
+	server->pending_events =
+		g_hash_table_new_full(g_str_hash, g_str_equal, g_free,
+				      (GDestroyNotify)v2_events_free);
 
-#ifdef NUGU_ENV_NETWORK_USE_V2
-	tmp = getenv(NUGU_ENV_NETWORK_USE_V2);
+#ifdef NUGU_ENV_NETWORK_USE_V1
+	tmp = getenv(NUGU_ENV_NETWORK_USE_V1);
 	if (tmp) {
 		if (tmp[0] == '1') {
-			nugu_dbg("use /v2/events (multipart)");
-			server->api_version = 2;
-			server->use_events = 1;
-			server->send_event = _send_v2_events;
-			server->send_attachment = _send_v2_events_attachment;
-			server->pending_events = g_hash_table_new_full(
-				g_str_hash, g_str_equal, g_free,
-				(GDestroyNotify)v2_events_free);
-		}
-	}
-#endif
-
-#ifdef NUGU_ENV_NETWORK_USE_EVENTS
-	tmp = getenv(NUGU_ENV_NETWORK_USE_EVENTS);
-	if (tmp) {
-		if (tmp[0] == '1') {
-			nugu_dbg("use /v1/events (multipart)");
-			server->use_events = 1;
-			server->send_event = _send_v1_events;
-			server->send_attachment = _send_v1_events_attachment;
-			server->pending_events = g_hash_table_new_full(
-				g_str_hash, g_str_equal, g_free,
-				(GDestroyNotify)v1_events_free);
+			nugu_error("use /v1/event (deprecated)");
+			server->api_version = 1;
+			server->use_events = 0;
+			server->send_event = _send_v1_event;
+			server->send_attachment = _send_v1_attachment;
 		}
 	}
 #endif
@@ -492,10 +417,7 @@ int dg_server_force_close_event(DGServer *server, NuguEvent *nev)
 		return -1;
 	}
 
-	if (server->api_version == 1)
-		v1_events_send_done(e);
-	else if (server->api_version == 2)
-		v2_events_send_done(e);
+	v2_events_send_done(e);
 
 	g_hash_table_remove(server->pending_events,
 			    nugu_event_peek_msg_id(nev));
