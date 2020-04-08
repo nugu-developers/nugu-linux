@@ -43,6 +43,7 @@ public:
     void sendEventSynchronizeState(EventResultCallback cb = nullptr);
     void sendEventUserInactivityReport(int seconds, EventResultCallback cb = nullptr);
     void sendEventEcho(EventResultCallback cb = nullptr);
+    void sendEventDisconnect(EventResultCallback cb = nullptr);
 
 private:
     // parsing directive
@@ -53,6 +54,7 @@ private:
     void parsingException(const char* message);
     void parsingNoDirectives(const char* message);
     void parsingRevoke(const char* message);
+    void parsingNoop(const char* message);
 
     ISystemListener* system_listener;
     INuguTimer* timer;

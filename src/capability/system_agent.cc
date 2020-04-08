@@ -108,6 +108,8 @@ void SystemAgent::parsingDirective(const char* dname, const char* message)
         parsingNoDirectives(message);
     else if (!strcmp(dname, "Revoke"))
         parsingRevoke(message);
+    else if (!strcmp(dname, "Noop"))
+        parsingNoop(message);
     else
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
 }
@@ -167,6 +169,11 @@ void SystemAgent::sendEventUserInactivityReport(int seconds, EventResultCallback
     std::string payload = "";
     char buf[64];
 
+    if (seconds <= 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
+        return;
+    }
+
     snprintf(buf, 64, "{\"inactiveTimeInSeconds\": %d}", seconds);
     payload = buf;
 
@@ -176,6 +183,14 @@ void SystemAgent::sendEventUserInactivityReport(int seconds, EventResultCallback
 void SystemAgent::sendEventEcho(EventResultCallback cb)
 {
     std::string ename = "Echo";
+    std::string payload = "";
+
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
+}
+
+void SystemAgent::sendEventDisconnect(EventResultCallback cb)
+{
+    std::string ename = "Disconnect";
     std::string payload = "";
 
     sendEvent(ename, getContextInfo(), payload, std::move(cb));
@@ -358,4 +373,8 @@ void SystemAgent::parsingRevoke(const char* message)
     }
 }
 
+void SystemAgent::parsingNoop(const char* message)
+{
+    // ignore directive
+}
 } // NuguCapability
