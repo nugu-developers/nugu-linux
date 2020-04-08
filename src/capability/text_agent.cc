@@ -147,6 +147,11 @@ std::string TextAgent::requestTextInput(std::string text)
         return "";
     }
 
+    if (text.size() == 0) {
+        nugu_error("The mandatory data is not exist.");
+        return "";
+    }
+
     if (timer)
         timer->start();
 
