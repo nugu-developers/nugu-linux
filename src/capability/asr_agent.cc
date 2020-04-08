@@ -376,11 +376,8 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
     root["encoding"] = asr_encoding;
 
     if (wakeup_power_noise && wakeup_power_speech) {
-        Json::Value power;
-        power["noise"] = wakeup_power_noise;
-        power["speech"] = wakeup_power_speech;
-
-        root["wakeup"] = power;
+        root["wakeup"]["power"]["noise"] = wakeup_power_noise;
+        root["wakeup"]["power"]["speech"] = wakeup_power_speech;
     }
 
     if (es_attr.is_handle) {
