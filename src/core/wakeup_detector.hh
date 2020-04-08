@@ -39,7 +39,7 @@ public:
     virtual ~IWakeupDetectorListener() = default;
 
     /* The callback is invoked in the main context. */
-    virtual void onWakeupState(WakeupState state, const std::string& id, unsigned int noise = 0, unsigned int speech = 0) = 0;
+    virtual void onWakeupState(WakeupState state, const std::string& id, float noise = 0, float speech = 0) = 0;
 };
 
 class WakeupDetector : public AudioInputProcessor {
@@ -63,16 +63,16 @@ public:
 private:
     void initialize(Attribute&& attribute);
     void loop() override;
-    void sendWakeupEvent(WakeupState state, const std::string& id, unsigned int noise = 0, unsigned int speech = 0);
-    void setPower(unsigned int power);
-    void getPower(unsigned int& noise, unsigned int& speech);
+    void sendWakeupEvent(WakeupState state, const std::string& id, float noise = 0, float speech = 0);
+    void setPower(float power);
+    void getPower(float& noise, float& speech);
 
     IWakeupDetectorListener* listener = nullptr;
 
     // attribute
     std::string model_path = "";
-    unsigned int power_speech[POWER_SPEECH_PERIOD];
-    unsigned int power_noise[POWER_NOISE_PERIOD];
+    float power_speech[POWER_SPEECH_PERIOD];
+    float power_noise[POWER_NOISE_PERIOD];
     int power_index = 0;
 };
 

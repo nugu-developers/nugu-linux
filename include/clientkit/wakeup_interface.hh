@@ -54,7 +54,7 @@ public:
      * @param[in] power_speech max power value
      * @see IWakeupHandler::startWakeup()
      */
-    virtual void onWakeupState(WakeupDetectState state, unsigned int power_noise, unsigned int power_speech) = 0;
+    virtual void onWakeupState(WakeupDetectState state, float power_noise, float power_speech) = 0;
 };
 
 /**

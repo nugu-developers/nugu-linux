@@ -46,7 +46,7 @@ WakeupDetector::WakeupDetector(Attribute&& attribute)
     initialize(std::move(attribute));
 }
 
-void WakeupDetector::sendWakeupEvent(WakeupState state, const std::string& id, unsigned int noise, unsigned int speech)
+void WakeupDetector::sendWakeupEvent(WakeupState state, const std::string& id, float noise, float speech)
 {
     if (!listener)
         return;
@@ -163,9 +163,9 @@ void WakeupDetector::loop()
                 break;
             }
 
-            setPower((unsigned int)kwd_get_power());
+            setPower(kwd_get_power());
             if (kwd_put_audio((short*)pcm_buf, pcm_size) == 1) {
-                unsigned int noise, speech;
+                float noise, speech;
                 getPower(noise, speech);
                 sendWakeupEvent(WakeupState::DETECTED, id, noise, speech);
                 std::memset(power_speech, 0, sizeof(power_speech));
@@ -236,28 +236,28 @@ void WakeupDetector::stopWakeup()
     AudioInputProcessor::stop();
 }
 
-void WakeupDetector::setPower(unsigned int power)
+void WakeupDetector::setPower(float power)
 {
     power_noise[power_index%POWER_NOISE_PERIOD] = power;
     power_speech[power_index%POWER_SPEECH_PERIOD] = power;
     power_index++;
 }
 
-void WakeupDetector::getPower(unsigned int& noise, unsigned int& speech)
+void WakeupDetector::getPower(float& noise, float& speech)
 {
     noise = speech = 0;
 
-    unsigned int min = 1000;
+    float min = 1000;
     for (auto n : power_noise) {
-        if (n && min > n)
+        if (n > 0 && min > n)
             min = n;
     }
     if (min != 1000)
         noise = min;
 
-    unsigned int max = 0;
+    float max = 0;
     for (auto s : power_speech) {
-        if (s && max < s)
+        if (s > 0 && max < s)
             max = s;
     }
     if (max)
