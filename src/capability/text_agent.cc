@@ -242,6 +242,10 @@ void TextAgent::parsingTextSource(const char* message)
         return;
     }
 
+    // if application consume text command, it's not process anymore.
+    if (text_listener && text_listener->handleTextCommand(text, token))
+        return;
+
     if (timer)
         timer->start();
 

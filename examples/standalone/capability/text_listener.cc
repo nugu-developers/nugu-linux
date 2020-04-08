@@ -53,3 +53,11 @@ void TextListener::onError(TextError error, const std::string& dialog_id)
         break;
     }
 }
+
+bool TextListener::handleTextCommand(const std::string& text, const std::string& token)
+{
+    std::cout << "[Text] text command = " << text << " (not consume)" << std::endl;
+
+    // return true if it consume text command
+    return false;
+}
