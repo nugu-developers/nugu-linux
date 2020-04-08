@@ -83,6 +83,7 @@ void SpeakerAgent::updateInfoForContext(Json::Value& ctx)
         volume["volume"] = sinfo->volume;
         volume["minVolume"] = sinfo->min;
         volume["maxVolume"] = sinfo->max;
+        volume["defaultVolumeStep"] = sinfo->init;
         volume["muted"] = sinfo->mute;
 
         speaker["volumes"].append(volume);
@@ -110,6 +111,7 @@ void SpeakerAgent::setSpeakerInfo(std::map<SpeakerType, SpeakerInfo*> info)
         sinfo->type = container.second->type;
         sinfo->min = container.second->min;
         sinfo->max = container.second->max;
+        sinfo->init = container.second->init;
         sinfo->volume = container.second->volume;
         sinfo->mute = container.second->mute;
         sinfo->can_control = container.second->can_control;
@@ -183,9 +185,6 @@ bool SpeakerAgent::getSpeakerType(const std::string& name, SpeakerType& type)
     } else if (name == "ALARM") {
         type = SpeakerType::ALARM;
         return true;
-    } else if (name == "EXTERNAL") {
-        type = SpeakerType::EXTERNAL;
-        return true;
     }
     return false;
 }
@@ -196,8 +195,6 @@ std::string SpeakerAgent::getSpeakerName(SpeakerType& type)
         return "CALL";
     else if (type == SpeakerType::ALARM)
         return "ALARM";
-    else if (type == SpeakerType::EXTERNAL)
-        return "EXTERNAL";
     else
         return "NUGU";
 }
@@ -227,6 +224,11 @@ void SpeakerAgent::sendEventCommon(const std::string& ps_id, const std::string& 
     std::string payload = "";
     Json::Value root;
     Json::StyledWriter writer;
+
+    if (ps_id.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
+        return;
+    }
 
     root["playServiceId"] = ps_id;
     payload = writer.write(root);

@@ -44,8 +44,7 @@ using namespace NuguClientKit;
 enum class SpeakerType {
     NUGU, /**< General NUGU Speaker type */
     CALL, /**< Call type */
-    ALARM, /**< Alarm type */
-    EXTERNAL /**< External type */
+    ALARM /**< Alarm type */
 };
 
 /**
@@ -60,6 +59,7 @@ public:
     int min = NUGU_SPEAKER_MIN_VOLUME; /**< Speaker min volume  */
     int max = NUGU_SPEAKER_MAX_VOLUME; /**< Speaker max volume  */
     int volume = NUGU_SPEAKER_DEFAULT_VOLUME; /**< Speaker current volume  */
+    int init = NUGU_SPEAKER_DEFAULT_VOLUME; /**< Speaker default volume  */
     bool mute = false; /**< Speaker mute state  */
     bool can_control = false; /**< Speaker controllability */
 };

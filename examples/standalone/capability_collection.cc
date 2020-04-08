@@ -88,13 +88,11 @@ void CapabilityCollection::composeCapabilityFactory()
             SpeakerInfo nugu_speaker = makeSpeakerInfo(SpeakerType::NUGU, true);
             SpeakerInfo call_speaker = makeSpeakerInfo(SpeakerType::CALL);
             SpeakerInfo alarm_speaker = makeSpeakerInfo(SpeakerType::ALARM);
-            SpeakerInfo external_speaker = makeSpeakerInfo(SpeakerType::EXTERNAL);
 
             std::map<SpeakerType, SpeakerInfo*> speakers = {
                 { SpeakerType::NUGU, &nugu_speaker },
                 { SpeakerType::CALL, &call_speaker },
                 { SpeakerType::ALARM, &alarm_speaker },
-                { SpeakerType::EXTERNAL, &external_speaker },
             };
 
             speaker_handler->setSpeakerInfo(speakers);
