@@ -47,6 +47,7 @@ public:
     void reportEventResult(const char* msg_id, int success, int code);
 
     void setWakeupWord(const std::string& word);
+    std::string getWakeupWord();
 
     std::string makeContextInfo(Json::Value& ctx);
     std::string makeAllContextInfo();

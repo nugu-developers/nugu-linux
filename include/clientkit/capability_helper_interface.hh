@@ -122,6 +122,11 @@ public:
     virtual void restoreAll() = 0;
 
     /**
+     * @brief Get wakeup keyword for detection
+     */
+    virtual std::string getWakeupWord() = 0;
+
+    /**
      * @brief Get property from CapabilityAgent.
      * @param[in] cap CapabilityAgent
      * @param[in] property property key

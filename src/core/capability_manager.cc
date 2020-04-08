@@ -176,6 +176,11 @@ void CapabilityManager::setWakeupWord(const std::string& word)
         wword = word;
 }
 
+std::string CapabilityManager::getWakeupWord()
+{
+    return wword;
+}
+
 ICapabilityInterface* CapabilityManager::findCapability(const std::string& cname)
 {
     if (caps.find(cname) == caps.end())
