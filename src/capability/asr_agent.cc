@@ -232,7 +232,7 @@ void ASRAgent::suspend()
     stopRecognition();
 }
 
-void ASRAgent::startRecognition(unsigned int power_noise, unsigned int power_speech, AsrRecognizeCallback callback)
+void ASRAgent::startRecognition(float power_noise, float power_speech, AsrRecognizeCallback callback)
 {
     wakeup_power_noise = power_noise;
     wakeup_power_speech = power_speech;

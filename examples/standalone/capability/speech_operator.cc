@@ -73,7 +73,7 @@ void error(const std::string& message)
 }
 }
 
-void SpeechOperator::onWakeupState(WakeupDetectState state, unsigned int power_noise, unsigned int power_speech)
+void SpeechOperator::onWakeupState(WakeupDetectState state, float power_noise, float power_speech)
 {
     switch (state) {
     case WakeupDetectState::WAKEUP_DETECTING:
@@ -116,7 +116,7 @@ void SpeechOperator::startListeningWithWakeup()
     startWakeup();
 }
 
-void SpeechOperator::startListening(unsigned int noise, unsigned int speech)
+void SpeechOperator::startListening(float noise, float speech)
 {
     stopListening();
 

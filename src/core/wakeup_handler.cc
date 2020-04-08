@@ -49,7 +49,7 @@ void WakeupHandler::stopWakeup()
     wakeup_detector->stopWakeup();
 }
 
-void WakeupHandler::onWakeupState(WakeupState state, const std::string& id, unsigned int noise, unsigned int speech)
+void WakeupHandler::onWakeupState(WakeupState state, const std::string& id, float noise, float speech)
 {
     if (request_wakeup_id != id) {
         nugu_warn("[id: %s] ignore [id: %s]'s state %d", request_wakeup_id.c_str(), id.c_str(), state);

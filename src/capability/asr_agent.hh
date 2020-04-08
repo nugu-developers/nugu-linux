@@ -47,7 +47,7 @@ public:
     void deInitialize() override;
     void suspend() override;
 
-    void startRecognition(unsigned int power_noise, unsigned int power_speech, AsrRecognizeCallback callback = nullptr) override;
+    void startRecognition(float power_noise, float power_speech, AsrRecognizeCallback callback = nullptr) override;
     void startRecognition(AsrRecognizeCallback callback = nullptr) override;
     void startRecognition(bool expected);
     void stopRecognition() override;
@@ -119,8 +119,8 @@ private:
     std::string asr_encoding;
     int response_timeout;
 
-    unsigned int wakeup_power_noise;
-    unsigned int wakeup_power_speech;
+    float wakeup_power_noise;
+    float wakeup_power_speech;
 };
 
 } // NuguCapability

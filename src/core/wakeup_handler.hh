@@ -37,7 +37,7 @@ public:
     void setListener(IWakeupListener* listener) override;
     bool startWakeup() override;
     void stopWakeup() override;
-    void onWakeupState(WakeupState state, const std::string& id, unsigned int noise, unsigned int speech) override;
+    void onWakeupState(WakeupState state, const std::string& id, float noise, float speech) override;
 
     void setWakeupId(const std::string& id);
 
