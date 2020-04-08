@@ -55,6 +55,7 @@ struct gst_handle {
 	GstElement *volume;
 	GstDiscoverer *discoverer;
 	gboolean is_live;
+	gboolean is_file;
 	gboolean seekable;
 	gboolean seek_done;
 	int seek_reserve;
@@ -92,6 +93,7 @@ void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
 {
 	const gchar *discoverer_uri = NULL;
 	GstDiscovererResult discoverer_result;
+	GstState state;
 
 	discoverer_uri = gst_discoverer_info_get_uri(info);
 	discoverer_result = gst_discoverer_info_get_result(info);
@@ -128,11 +130,18 @@ void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
 		break;
 	}
 
+	gst_element_get_state(gh->pipeline, &state, NULL, GST_CLOCK_TIME_NONE);
 	if (discoverer_result != GST_DISCOVERER_OK) {
 		if (gh->status == NUGU_MEDIA_STATUS_PLAYING) {
 			nugu_dbg("Gstreamer is already played!!");
 			return;
 		}
+
+		if (state != GST_STATE_READY) {
+			nugu_dbg("Gstreamer is not ready gst_state(%d)", state);
+			return;
+		}
+
 		if (discoverer_result == GST_DISCOVERER_URI_INVALID) {
 			NOTIFY_EVENT(NUGU_MEDIA_EVENT_MEDIA_INVALID);
 		} else {
@@ -140,6 +149,7 @@ void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
 		}
 
 		nugu_dbg("This URI cannot be played");
+		gst_element_set_state(gh->pipeline, GST_STATE_NULL);
 		return;
 	}
 
@@ -151,11 +161,6 @@ void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
 
 	nugu_dbg("[gstreamer]Duration: %" GST_TIME_FORMAT "",
 		 GST_TIME_ARGS(gst_discoverer_info_get_duration(info)));
-
-	if (gh->status == NUGU_MEDIA_STATUS_STOPPED)
-		NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_READY);
-
-	NOTIFY_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOADED);
 }
 
 void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
@@ -164,11 +169,16 @@ void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 	case GST_MESSAGE_ERROR: {
 		GError *err;
 		gchar *debug;
+		GstState state;
+
+		gst_element_get_state(gh->pipeline, &state, NULL,
+				      GST_CLOCK_TIME_NONE);
 
 		gst_message_parse_error(msg, &err, &debug);
-		nugu_dbg("GST_MESSAGE_ERROR: %s", err->message);
+		nugu_dbg("GST_MESSAGE_ERROR: %s, gst_state: %d", err->message,
+			 state);
 
-		if (gh->status != NUGU_MEDIA_STATUS_STOPPED) {
+		if (state == GST_STATE_READY) {
 			NOTIFY_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOAD_FAILED);
 			NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_STOPPED);
 		}
@@ -176,7 +186,7 @@ void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 		g_error_free(err);
 		g_free(debug);
 
-		gst_element_set_state(gh->pipeline, GST_STATE_READY);
+		gst_element_set_state(gh->pipeline, GST_STATE_NULL);
 		break;
 	}
 	case GST_MESSAGE_STATE_CHANGED: {
@@ -253,6 +263,14 @@ void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 		/* Get a new clock */
 		gst_element_set_state(gh->pipeline, GST_STATE_PAUSED);
 		gst_element_set_state(gh->pipeline, GST_STATE_PLAYING);
+		break;
+
+	case GST_MESSAGE_STREAM_START:
+		nugu_dbg("GST_MESSAGE_STREAM_START");
+		if (gh->status == NUGU_MEDIA_STATUS_STOPPED)
+			NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_READY);
+
+		NOTIFY_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOADED);
 		break;
 
 	default:
@@ -381,6 +399,7 @@ void *_create(NuguPlayer *player)
 	}
 
 	gh->is_live = FALSE;
+	gh->is_file = FALSE;
 	gh->seekable = FALSE;
 	gh->seek_done = FALSE;
 	gh->seek_reserve = 0;
@@ -464,6 +483,7 @@ int _set_source(void *device, NuguPlayer *player, const char *url)
 	gh = (GstreamerHandle *)device;
 
 	gh->is_live = FALSE;
+	gh->is_file = FALSE;
 	gh->seekable = FALSE;
 	gh->seek_done = FALSE;
 	gh->seek_reserve = 0;
@@ -476,6 +496,9 @@ int _set_source(void *device, NuguPlayer *player, const char *url)
 	gh->playurl = g_malloc0(strlen(url) + 1);
 	memcpy(gh->playurl, url, strlen(url));
 	nugu_dbg("playurl:%s", gh->playurl);
+
+	if (!strncmp("file://", gh->playurl, 7))
+		gh->is_file = TRUE;
 
 	nugu_player_emit_event(player, NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
 	_stop(device, player);
@@ -493,15 +516,19 @@ int _start(void *device, NuguPlayer *player)
 
 	gh = (GstreamerHandle *)device;
 
-	/* Start the discoverer process (nothing to do yet) */
-	gst_discoverer_stop(gh->discoverer);
-	gst_discoverer_start(gh->discoverer);
+	if (!gh->is_file) {
+		/* Start the discoverer process (nothing to do yet) */
+		gst_discoverer_stop(gh->discoverer);
+		gst_discoverer_start(gh->discoverer);
 
-	/* Add a request to process asynchronously the URI passed
+		/* Add a request to process asynchronously the URI passed
 	 * through the command line
 	 */
-	if (!gst_discoverer_discover_uri_async(gh->discoverer, gh->playurl))
-		nugu_dbg("Failed to start discovering URI '%s'", gh->playurl);
+		if (!gst_discoverer_discover_uri_async(gh->discoverer,
+						       gh->playurl))
+			nugu_dbg("Failed to start discovering URI '%s'",
+				 gh->playurl);
+	}
 
 	g_object_set(gh->audio_src, "uri", gh->playurl, NULL);
 
@@ -532,7 +559,8 @@ int _stop(void *device, NuguPlayer *player)
 	if (gh->pipeline == NULL)
 		nugu_dbg("pipeline is not valid!!");
 	else {
-		gst_discoverer_stop(gh->discoverer);
+		if (!gh->is_file)
+			gst_discoverer_stop(gh->discoverer);
 
 		ret = gst_element_set_state(gh->pipeline, GST_STATE_NULL);
 		if (ret == GST_STATE_CHANGE_FAILURE) {
@@ -668,11 +696,23 @@ int _set_volume(void *device, NuguPlayer *player, int vol)
 int _get_duration(void *device, NuguPlayer *player)
 {
 	GstreamerHandle *gh;
+	gint64 current;
 
 	g_return_val_if_fail(device != NULL, -1);
 	g_return_val_if_fail(player != NULL, -1);
 
 	gh = (GstreamerHandle *)device;
+
+	if (gh->duration <= 0) {
+		/* Query the current position of the stream */
+		if (!gst_element_query_duration(gh->pipeline, GST_FORMAT_TIME,
+						&current)) {
+			nugu_error("Could not query current position!!");
+			return -1;
+		}
+		gh->duration = GST_TIME_AS_SECONDS(current);
+	}
+
 	return gh->duration;
 }
 
