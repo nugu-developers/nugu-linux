@@ -46,6 +46,10 @@ struct _http2_request {
 	RequestSendCompleteCallback send_complete_cb;
 	void *send_complete_cb_userdata;
 
+	ResponseCodeCallback code_cb;
+	void *code_cb_userdata;
+	int code;
+
 	NuguBuffer *response_header;
 	ResponseHeaderCallback header_cb;
 	void *header_cb_userdata;
@@ -204,6 +208,25 @@ static size_t _response_header_cb(char *buffer, size_t size, size_t nmemb,
 {
 	HTTP2Request *req = userdata;
 
+	if (req->code == -1) {
+		long code = 0;
+
+		/**
+		 * The stored value will be zero if no server
+		 * response code has been received.
+		 */
+		curl_easy_getinfo(req->easy, CURLINFO_RESPONSE_CODE, &code);
+		if (code != 0) {
+			req->code = (int)code;
+
+			nugu_dbg("got response_code: %d", req->code);
+
+			if (req->code_cb)
+				req->code_cb(req, req->code,
+					     req->code_cb_userdata);
+		}
+	}
+
 	if (req->header_cb)
 		req->header_cb(req, buffer, size, nmemb,
 			       req->header_cb_userdata);
@@ -224,6 +247,7 @@ HTTP2Request *http2_request_new()
 	}
 
 	req->ref_count = 1;
+	req->code = -1;
 	req->response_header = nugu_buffer_new(0);
 	req->response_body = nugu_buffer_new(0);
 	req->send_body = nugu_buffer_new(0);
@@ -487,6 +511,17 @@ void *http2_request_get_handle(HTTP2Request *req)
 	g_return_val_if_fail(req != NULL, NULL);
 
 	return req->easy;
+}
+
+int http2_request_set_code_callback(HTTP2Request *req, ResponseCodeCallback cb,
+				    void *userdata)
+{
+	g_return_val_if_fail(req != NULL, -1);
+
+	req->code_cb = cb;
+	req->code_cb_userdata = userdata;
+
+	return 0;
 }
 
 int http2_request_set_header_callback(HTTP2Request *req,

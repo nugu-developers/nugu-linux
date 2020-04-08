@@ -49,6 +49,8 @@ typedef size_t (*ResponseBodyCallback)(HTTP2Request *req, char *buffer,
 				       size_t size, size_t nitems,
 				       void *userdata);
 typedef void (*ResponseFinishCallback)(HTTP2Request *req, void *userdata);
+typedef void (*ResponseCodeCallback)(HTTP2Request *req, int code,
+				     void *userdata);
 
 typedef void (*RequestSendCompleteCallback)(HTTP2Request *req, void *userdata);
 
@@ -125,6 +127,10 @@ int http2_request_set_send_complete_callback(HTTP2Request *req,
 					     void *userdata);
 
 void *http2_request_get_handle(HTTP2Request *req);
+
+/* Response code callback */
+int http2_request_set_code_callback(HTTP2Request *req, ResponseCodeCallback cb,
+				    void *userdata);
 
 /* Response header callback */
 int http2_request_set_header_callback(HTTP2Request *req,

@@ -92,13 +92,8 @@ static void _emit_send_result(int code, HTTP2Request *req)
 }
 
 /* invoked in a thread loop */
-static size_t _on_header(HTTP2Request *req, char *buffer, size_t size,
-			 size_t nitems, void *userdata)
+static void _on_code(HTTP2Request *req, int code, void *userdata)
 {
-	int buffer_len = size * nitems;
-	int code;
-
-	code = http2_request_get_response_code(req);
 	if (code != HTTP2_RESPONSE_OK) {
 		nugu_error("code = %d", code);
 		http2_request_set_header_callback(req, NULL, NULL);
@@ -108,8 +103,17 @@ static size_t _on_header(HTTP2Request *req, char *buffer, size_t size,
 		    code == HTTP2_RESPONSE_FORBIDDEN)
 			nugu_equeue_push(NUGU_EQUEUE_TYPE_INVALID_TOKEN, NULL);
 
-		return buffer_len;
+		return;
 	}
+
+	_emit_send_result(code, req);
+}
+
+/* invoked in a thread loop */
+static size_t _on_header(HTTP2Request *req, char *buffer, size_t size,
+			 size_t nitems, void *userdata)
+{
+	int buffer_len = size * nitems;
 
 	if (dir_parser_add_header(userdata, buffer, size * nitems) < 0)
 		return buffer_len;
@@ -129,17 +133,8 @@ static size_t _on_body(HTTP2Request *req, char *buffer, size_t size,
 /* invoked in a thread loop */
 static void _on_finish(HTTP2Request *req, void *userdata)
 {
-	int code;
-
 	if (userdata)
 		thread_sync_signal(userdata);
-
-	code = http2_request_get_response_code(req);
-
-	_emit_send_result(code, req);
-
-	if (code == HTTP2_RESPONSE_AUTHFAIL || code == HTTP2_RESPONSE_FORBIDDEN)
-		nugu_equeue_push(NUGU_EQUEUE_TYPE_INVALID_TOKEN, NULL);
 }
 
 /* invoked in a thread loop */
@@ -208,6 +203,7 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync)
 	http2_request_set_url(event->req, tmp);
 	g_free(tmp);
 
+	http2_request_set_code_callback(event->req, _on_code, NULL);
 	http2_request_set_header_callback(event->req, _on_header, parser);
 	http2_request_set_body_callback(event->req, _on_body, parser);
 	http2_request_set_finish_callback(event->req, _on_finish, NULL);
