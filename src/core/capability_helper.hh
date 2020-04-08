@@ -37,6 +37,7 @@ public:
     void notifyEventResult(const char* msg_id, bool success, int code) override;
     void suspendAll() override;
     void restoreAll() override;
+    std::string getWakeupWord() override;
     void getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value) override;
     void getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values) override;
 

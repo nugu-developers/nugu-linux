@@ -82,6 +82,11 @@ void CapabilityHelper::restoreAll()
     CapabilityManager::getInstance()->restoreAll();
 }
 
+std::string CapabilityHelper::getWakeupWord()
+{
+    return CapabilityManager::getInstance()->getWakeupWord();
+}
+
 void CapabilityHelper::getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value)
 {
     CapabilityManager::getInstance()->getCapabilityProperty(cap, property, value);
