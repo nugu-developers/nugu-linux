@@ -86,6 +86,14 @@ public:
      * @param[in] dialog_id dialog request id
      */
     virtual void onError(TextError error, const std::string& dialog_id) = 0;
+
+    /**
+     * @brief Handle text command and return whether consumed.
+     * @param[in] text text command
+     * @param[in] token received token
+     * @return whether text command is consumed or not
+     */
+    virtual bool handleTextCommand(const std::string& text, const std::string& token) = 0;
 };
 
 /**
