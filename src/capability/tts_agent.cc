@@ -215,7 +215,9 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
 {
     Json::Value tts;
 
-    tts["engine"] = tts_engine;
+    if (tts_engine.size())
+        tts["engine"] = tts_engine;
+
     tts["version"] = getVersion();
     switch (cur_state) {
     case MediaPlayerState::IDLE:
@@ -271,8 +273,10 @@ std::string TTSAgent::sendEventSpeechPlay(const std::string& token, const std::s
     Json::Value root;
     std::string skml = text;
 
-    if (text.size() == 0)
+    if (text.size() == 0 || token.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
         return "";
+    }
 
     if (text.find("<skml", 0) == std::string::npos)
         skml = "<skml domain=\"general\">" + text + "</skml>";
@@ -295,8 +299,14 @@ void TTSAgent::sendEventCommon(const std::string& ename, const std::string& toke
     Json::StyledWriter writer;
     Json::Value root;
 
+    if (token.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
+        return;
+    }
+
     root["token"] = token;
-    root["playServiceId"] = ps_id;
+    if (ps_id.size())
+        root["playServiceId"] = ps_id;
     payload = writer.write(root);
 
     sendEvent(ename, getContextInfo(), payload, std::move(cb));
@@ -361,8 +371,6 @@ void TTSAgent::parsingStop(const char* message)
     }
 
     token = root["token"].asString();
-    ps_id = root["playServiceId"].asString();
-
     if (token.size() == 0) {
         nugu_error("There is no mandatory data in directive message");
         return;
@@ -372,6 +380,9 @@ void TTSAgent::parsingStop(const char* message)
         nugu_error("the token(%s) is not valid", token.c_str());
         return;
     }
+
+    if (!root["playServiceId"].empty())
+        ps_id = root["playServiceId"].asString();
 
     stopTTS();
 }
