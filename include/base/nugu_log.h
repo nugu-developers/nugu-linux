@@ -173,8 +173,9 @@ enum nugu_log_module {
 	NUGU_LOG_MODULE_DEFAULT = 0x01, /**< Default module */
 	NUGU_LOG_MODULE_NETWORK = 0x02, /**< Network module */
 	NUGU_LOG_MODULE_NETWORK_TRACE = 0x04, /**< Network trace module */
-	NUGU_LOG_MODULE_PROTOCOL = 0x10, /**< Protocol module */
 	NUGU_LOG_MODULE_AUDIO = 0x08, /**< Audio module */
+	NUGU_LOG_MODULE_PROTOCOL = 0x10, /**< Protocol module */
+	NUGU_LOG_MODULE_PROFILING = 0x20, /**< Profiling module */
 	NUGU_LOG_MODULE_ALL = 0xFF /**< All modules */
 };
 

@@ -22,6 +22,7 @@
 #include "base/nugu_log.h"
 #include "base/nugu_event.h"
 #include "base/nugu_uuid.h"
+#include "base/nugu_prof.h"
 
 #include "http2/http2_network.h"
 #include "http2/v1_directives.h"
@@ -33,6 +34,13 @@
 #include "http2/v2_events.h"
 
 #include "dg_server.h"
+
+#define TPL_PROFILING_ATTACHMENT                                               \
+	"{\n"                                                                  \
+	" \"seq\": %d,\n"                                                      \
+	" \"isEnd\": %s,\n"                                                    \
+	" \"parentMessageId\": \"%s\"\n"                                       \
+	"}"
 
 struct _dg_server {
 	HTTP2Network *net;
@@ -192,6 +200,7 @@ static int _send_v2_events_attachment(DGServer *server, NuguEvent *nev,
 {
 	V2Events *e;
 	char *msg_id;
+	char *prof_data;
 
 	/* find an active event from pending list */
 	e = g_hash_table_lookup(server->pending_events,
@@ -202,6 +211,15 @@ static int _send_v2_events_attachment(DGServer *server, NuguEvent *nev,
 	}
 
 	msg_id = nugu_uuid_generate_time();
+
+	prof_data = g_strdup_printf(TPL_PROFILING_ATTACHMENT,
+				    nugu_event_get_seq(nev),
+				    (is_end == 1) ? "true" : "false",
+				    nugu_event_peek_msg_id(nev));
+	nugu_prof_mark_data(NUGU_PROF_TYPE_NETWORK_EVENT_ATTACHMENT_REQUEST,
+			    nugu_event_peek_dialog_id(nev), msg_id, prof_data);
+	free(prof_data);
+
 	v2_events_send_binary(e, msg_id, nugu_event_get_seq(nev), is_end,
 			      length, data);
 	free(msg_id);
@@ -439,6 +457,10 @@ int dg_server_send_event(DGServer *server, NuguEvent *nev, int is_sync)
 		nugu_error("send_event function is invalid");
 		return -1;
 	}
+
+	nugu_prof_mark_data(NUGU_PROF_TYPE_NETWORK_EVENT_REQUEST,
+			    nugu_event_peek_dialog_id(nev),
+			    nugu_event_peek_msg_id(nev), payload);
 
 	ret = server->send_event(server, nev, payload, is_sync);
 	g_free(payload);

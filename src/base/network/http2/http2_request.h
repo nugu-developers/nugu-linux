@@ -94,6 +94,9 @@ int http2_request_set_msgid(HTTP2Request *req, const char *msgid);
 const char *http2_request_peek_msgid(HTTP2Request *req);
 int http2_request_set_dialogid(HTTP2Request *req, const char *dialogid);
 const char *http2_request_peek_dialogid(HTTP2Request *req);
+int http2_request_set_profiling_contents(HTTP2Request *req,
+					 const char *contents);
+const char *http2_request_peek_profiling_contents(HTTP2Request *req);
 
 /* Destroy notify callback */
 int http2_request_set_destroy_callback(HTTP2Request *req,

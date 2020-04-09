@@ -16,6 +16,7 @@
 
 #include <iostream>
 
+#include <base/nugu_prof.h>
 #include <clientkit/nugu_client.hh>
 
 #include "capability_collection.hh"
@@ -190,6 +191,8 @@ int main(int argc, char** argv)
 
             msg_info("de-initialization done");
         });
+
+    nugu_prof_dump(NUGU_PROF_TYPE_SDK_CREATED, NUGU_PROF_TYPE_MAX);
 
     return EXIT_SUCCESS;
 }
