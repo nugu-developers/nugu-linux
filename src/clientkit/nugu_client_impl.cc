@@ -21,6 +21,7 @@
 #include "base/nugu_equeue.h"
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
+#include "base/nugu_prof.h"
 #include "capability/system_interface.hh"
 
 #include "nugu_client_impl.hh"
@@ -32,6 +33,9 @@ using namespace NuguCapability;
 
 NuguClientImpl::NuguClientImpl()
 {
+    nugu_prof_clear();
+    nugu_prof_mark(NUGU_PROF_TYPE_SDK_CREATED);
+
     nugu_equeue_initialize();
 
     nugu_core_container = std::unique_ptr<NuguCoreContainer>(new NuguCoreContainer());
@@ -131,11 +135,14 @@ bool NuguClientImpl::initialize(void)
         return true;
     }
 
+    nugu_prof_mark(NUGU_PROF_TYPE_SDK_PLUGIN_INIT_START);
+
     if (nugu_plugin_load_directory(NUGU_PLUGIN_DIR) < 0) {
         nugu_error("Fail to load nugu_plugin");
     }
 
     nugu_plugin_initialize();
+    nugu_prof_mark(NUGU_PROF_TYPE_SDK_PLUGIN_INIT_DONE);
 
     nugu_core_container->createAudioRecorderManager();
 
@@ -150,6 +157,8 @@ bool NuguClientImpl::initialize(void)
         capability.second->initialize();
         nugu_dbg("'%s' capability initialized", cname.c_str());
     }
+
+    nugu_prof_mark(NUGU_PROF_TYPE_SDK_INIT_DONE);
 
     if (listener)
         listener->onInitialized(this);

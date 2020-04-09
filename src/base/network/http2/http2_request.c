@@ -73,6 +73,7 @@ struct _http2_request {
 	/* Optional information */
 	char *msg_id;
 	char *dialog_id;
+	char *profiling_contents;
 };
 
 static int _debug_callback(CURL *handle, curl_infotype type, char *data,
@@ -293,6 +294,9 @@ static void http2_request_free(HTTP2Request *req)
 
 	if (req->dialog_id)
 		free(req->dialog_id);
+
+	if (req->profiling_contents)
+		free(req->profiling_contents);
 
 	if (strlen(req->curl_errbuf) > 0)
 		nugu_error("CURL ERROR: %s", req->curl_errbuf);
@@ -695,4 +699,27 @@ const char *http2_request_peek_dialogid(HTTP2Request *req)
 	g_return_val_if_fail(req != NULL, NULL);
 
 	return req->dialog_id;
+}
+
+int http2_request_set_profiling_contents(HTTP2Request *req,
+					 const char *contents)
+{
+	g_return_val_if_fail(req != NULL, -1);
+
+	if (req->profiling_contents)
+		free(req->profiling_contents);
+
+	if (contents)
+		req->profiling_contents = strdup(contents);
+	else
+		req->profiling_contents = NULL;
+
+	return 0;
+}
+
+const char *http2_request_peek_profiling_contents(HTTP2Request *req)
+{
+	g_return_val_if_fail(req != NULL, NULL);
+
+	return req->profiling_contents;
 }

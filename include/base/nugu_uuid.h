@@ -45,9 +45,14 @@ extern "C" {
 #define NUGU_BASE_TIMESTAMP_MSEC 1546300800000
 
 /**
- * @brief Maximum UUID size not base16 encoded.
+ * @brief Maximum byte array UUID size
  */
 #define NUGU_MAX_UUID_SIZE 16
+
+/**
+ * @brief Maximum base16 encoded UUID string size
+ */
+#define NUGU_MAX_UUID_STRING_SIZE (NUGU_MAX_UUID_SIZE * 2)
 
 /**
  * @brief Generate time based UUID

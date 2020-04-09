@@ -123,6 +123,8 @@ static void _log_check_override_module(void)
 			bitset = bitset | NUGU_LOG_MODULE_NETWORK_TRACE;
 		if (!strncasecmp(modules[i], "protocol", 9))
 			bitset = bitset | NUGU_LOG_MODULE_PROTOCOL;
+		if (!strncasecmp(modules[i], "profiling", 10))
+			bitset = bitset | NUGU_LOG_MODULE_PROFILING;
 		if (!strncasecmp(modules[i], "audio", 6))
 			bitset = bitset | NUGU_LOG_MODULE_AUDIO;
 	}

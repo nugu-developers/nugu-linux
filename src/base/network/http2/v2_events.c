@@ -22,6 +22,7 @@
 #include "base/nugu_log.h"
 #include "base/nugu_equeue.h"
 #include "base/nugu_uuid.h"
+#include "base/nugu_prof.h"
 
 #include "dg_types.h"
 
@@ -99,12 +100,22 @@ static void _on_code(HTTP2Request *req, int code, void *userdata)
 		http2_request_set_header_callback(req, NULL, NULL);
 		http2_request_set_body_callback(req, NULL, NULL);
 
+		nugu_prof_mark_data(NUGU_PROF_TYPE_NETWORK_EVENT_FAILED,
+				    http2_request_peek_dialogid(req),
+				    http2_request_peek_msgid(req),
+				    http2_request_peek_profiling_contents(req));
+
 		if (code == HTTP2_RESPONSE_AUTHFAIL ||
 		    code == HTTP2_RESPONSE_FORBIDDEN)
 			nugu_equeue_push(NUGU_EQUEUE_TYPE_INVALID_TOKEN, NULL);
 
 		return;
 	}
+
+	nugu_prof_mark_data(NUGU_PROF_TYPE_NETWORK_EVENT_RESPONSE,
+			    http2_request_peek_dialogid(req),
+			    http2_request_peek_msgid(req),
+			    http2_request_peek_profiling_contents(req));
 
 	_emit_send_result(code, req);
 }
@@ -256,6 +267,8 @@ int v2_events_send_single_json(V2Events *event, const char *data, size_t length)
 
 	http2_request_lock_send_data(event->req);
 
+	http2_request_set_profiling_contents(event->req, data);
+
 	/* Body header */
 	http2_request_add_send_data(event->req,
 				    (unsigned char *)PART_HEADER_JSON,
@@ -282,6 +295,8 @@ int v2_events_send_json(V2Events *event, const char *data, size_t length)
 	g_return_val_if_fail(event != NULL, -1);
 
 	http2_request_lock_send_data(event->req);
+
+	http2_request_set_profiling_contents(event->req, data);
 
 	/* Body header */
 	http2_request_add_send_data(event->req,
