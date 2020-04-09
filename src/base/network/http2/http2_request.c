@@ -36,6 +36,8 @@
 
 struct _http2_request {
 	CURL *easy;
+	enum http2_result result;
+
 	struct curl_slist *headers;
 	enum http2_request_content_type type;
 	char curl_errbuf[CURL_ERROR_SIZE];
@@ -342,6 +344,22 @@ int http2_request_unref(HTTP2Request *req)
 	http2_request_free(req);
 
 	return 0;
+}
+
+int http2_request_set_result(HTTP2Request *req, enum http2_result result)
+{
+	g_return_val_if_fail(req != NULL, -1);
+
+	req->result = result;
+
+	return 0;
+}
+
+enum http2_result http2_request_get_result(HTTP2Request *req)
+{
+	g_return_val_if_fail(req != NULL, HTTP2_RESULT_UNKNOWN);
+
+	return req->result;
 }
 
 int http2_request_add_header(HTTP2Request *req, const char *header)

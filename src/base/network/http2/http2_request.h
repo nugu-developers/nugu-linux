@@ -40,6 +40,17 @@ enum http2_request_content_type {
 	HTTP2_REQUEST_CONTENT_TYPE_MULTIPART
 };
 
+enum http2_result {
+	HTTP2_RESULT_OK,
+	HTTP2_RESULT_PROXY_FAIL,
+	HTTP2_RESULT_DNS_FAIL,
+	HTTP2_RESULT_CONNECT_FAIL,
+	HTTP2_RESULT_SSL_FAIL,
+	HTTP2_RESULT_HTTP_FAIL,
+	HTTP2_RESULT_HTTP2_FAIL,
+	HTTP2_RESULT_UNKNOWN
+};
+
 typedef struct _http2_request HTTP2Request;
 
 typedef size_t (*ResponseHeaderCallback)(HTTP2Request *req, char *buffer,
@@ -60,6 +71,9 @@ HTTP2Request *http2_request_new();
 
 int http2_request_ref(HTTP2Request *req);
 int http2_request_unref(HTTP2Request *req);
+
+int http2_request_set_result(HTTP2Request *req, enum http2_result result);
+enum http2_result http2_request_get_result(HTTP2Request *req);
 
 /* Configuration */
 int http2_request_disable_verify_peer(HTTP2Request *req);
