@@ -74,6 +74,59 @@ struct _http2_network {
 	ThreadSync *sync_init;
 };
 
+static void _curl_code_to_result(HTTP2Request *req, CURLcode code)
+{
+	enum http2_result result;
+
+	if (!req)
+		return;
+
+	switch (code) {
+	case CURLE_OK:
+		result = HTTP2_RESULT_OK;
+		break;
+	case CURLE_COULDNT_RESOLVE_PROXY:
+		result = HTTP2_RESULT_PROXY_FAIL;
+		break;
+	case CURLE_COULDNT_RESOLVE_HOST:
+		result = HTTP2_RESULT_DNS_FAIL;
+		break;
+	case CURLE_COULDNT_CONNECT:
+		result = HTTP2_RESULT_CONNECT_FAIL;
+		break;
+	case CURLE_SSL_ENGINE_NOTFOUND:
+	case CURLE_SSL_ENGINE_SETFAILED:
+	case CURLE_SSL_CERTPROBLEM:
+	case CURLE_SSL_CIPHER:
+	case CURLE_PEER_FAILED_VERIFICATION:
+	case CURLE_USE_SSL_FAILED:
+	case CURLE_SSL_ENGINE_INITFAILED:
+	case CURLE_SSL_CACERT_BADFILE:
+	case CURLE_SSL_SHUTDOWN_FAILED:
+	case CURLE_SSL_CRL_BADFILE:
+	case CURLE_SSL_ISSUER_ERROR:
+	case CURLE_SSL_PINNEDPUBKEYNOTMATCH:
+	case CURLE_SSL_INVALIDCERTSTATUS:
+		result = HTTP2_RESULT_SSL_FAIL;
+		break;
+	case CURLE_HTTP_RETURNED_ERROR:
+		result = HTTP2_RESULT_HTTP_FAIL;
+		break;
+	case CURLE_HTTP2:
+	case CURLE_HTTP2_STREAM:
+		result = HTTP2_RESULT_HTTP2_FAIL;
+		break;
+	default:
+		result = HTTP2_RESULT_UNKNOWN;
+		break;
+	}
+
+	if (code != CURLE_OK)
+		nugu_error("convert curl-%d error code to %d", code, result);
+
+	http2_request_set_result(req, result);
+}
+
 static struct request_item *
 _request_item_new(enum request_type type, HTTP2Request *req, gboolean is_sync)
 {
@@ -248,6 +301,9 @@ static void *_loop(void *data)
 
 			curl_easy_getinfo(curl_message->easy_handle,
 					  CURLINFO_PRIVATE, &fake_p);
+
+			_curl_code_to_result((HTTP2Request *)fake_p,
+					     curl_message->data.result);
 
 			curl_multi_remove_handle(net->handle,
 						 curl_message->easy_handle);
