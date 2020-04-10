@@ -503,6 +503,8 @@ int _set_source(void *device, NuguPlayer *player, const char *url)
 	nugu_player_emit_event(player, NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
 	_stop(device, player);
 
+	g_object_set(gh->audio_src, "uri", gh->playurl, NULL);
+
 	return 0;
 }
 
@@ -529,8 +531,6 @@ int _start(void *device, NuguPlayer *player)
 			nugu_dbg("Failed to start discovering URI '%s'",
 				 gh->playurl);
 	}
-
-	g_object_set(gh->audio_src, "uri", gh->playurl, NULL);
 
 	ret = gst_element_set_state(gh->pipeline, GST_STATE_PLAYING);
 	if (ret == GST_STATE_CHANGE_FAILURE) {
