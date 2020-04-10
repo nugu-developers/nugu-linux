@@ -196,8 +196,8 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync)
 	http2_request_set_content_type(
 		event->req, HTTP2_REQUEST_CONTENT_TYPE_MULTIPART, boundary);
 
-	/* Set maximum timeout to 20 seconds */
-	http2_request_set_timeout(event->req, 20);
+	/* Set maximum timeout to 5 minutes */
+	http2_request_set_timeout(event->req, 5 * 60);
 
 	tmp = g_strdup_printf("%s/v2/events", host);
 	http2_request_set_url(event->req, tmp);
