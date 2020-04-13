@@ -870,8 +870,6 @@ void AudioPlayerAgent::parsingStop(const char* message)
 
         if (!stacked_ps_id.empty() && playstackctl_ps_id != stacked_ps_id)
             return;
-        else if (stacked_ps_id.empty())
-            capa_helper->releaseFocus("cap_audio");
 
         if (speak_dir) {
             nugu_directive_set_data_callback(speak_dir, NULL, NULL);
@@ -884,6 +882,9 @@ void AudioPlayerAgent::parsingStop(const char* message)
             nugu_error("stop media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
         }
+
+        if (stacked_ps_id.empty())
+            capa_helper->releaseFocus("cap_audio");
     }
 }
 
