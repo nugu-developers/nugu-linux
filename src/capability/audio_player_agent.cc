@@ -22,7 +22,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "AudioPlayer";
-static const char* CAPABILITY_VERSION = "1.2";
+static const char* CAPABILITY_VERSION = "1.3";
 
 AudioPlayerAgent::AudioPlayerAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -397,7 +397,7 @@ void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
         || !strcmp(dname, "RequestPreviousCommand")
         || !strcmp(dname, "RequestPauseCommand")
         || !strcmp(dname, "RequestStopCommand"))
-        sendEventByRequestDirective(dname);
+        parsingRequestOthersCommand(dname, message);
     else
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
 }
@@ -589,10 +589,26 @@ void AudioPlayerAgent::sendEventRequestPlayCommandIssued(const std::string& dnam
     sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventByRequestDirective(const std::string& dname, EventResultCallback cb)
+void AudioPlayerAgent::sendEventByRequestOthersDirective(const std::string& dname, EventResultCallback cb)
 {
     std::string ename = dname + "Issued";
     sendEventCommon(ename, std::move(cb));
+}
+
+void AudioPlayerAgent::sendEventRequestCommandFailed(const std::string& dname, const std::string& play_service_id, const std::string& type, const std::string& reason, EventResultCallback cb)
+{
+    std::string ename = "RequestCommandFailed";
+    std::string payload = "";
+    Json::StyledWriter writer;
+    Json::Value root;
+
+    root["token"] = cur_token;
+    root["playServiceId"] = play_service_id;
+    root["error"]["type"] = type;
+    root["error"]["message"] = reason;
+    payload = writer.write(root);
+
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::string& reason, EventResultCallback cb)
@@ -1037,6 +1053,64 @@ void AudioPlayerAgent::parsingRequestPlayCommand(const char* dname, const char* 
 
     payload = message;
     sendEventRequestPlayCommandIssued(dname, payload);
+}
+
+void AudioPlayerAgent::parsingRequestOthersCommand(const char* dname, const char* message)
+{
+    Json::Value root;
+    Json::Reader reader;
+    std::string play_service_id;
+    std::string err_type;
+    std::string err_reason;
+    long offset = cur_player->position() * 1000;
+
+    if (!reader.parse(message, root)) {
+        nugu_error("parsing error");
+        return;
+    }
+
+    play_service_id = root["playServiceId"].asString();
+    if (play_service_id.size() == 0) {
+        err_type = "UNKNOWN";
+        err_reason = "playServiceId is null or empty";
+        nugu_error("Error type: %s, reason: %s", err_type.c_str(), err_reason.c_str());
+        sendEventRequestCommandFailed(dname, play_service_id, err_type, err_reason);
+        return;
+    }
+
+    if (play_service_id != ps_id) {
+        err_type = "NO_MATCH_PLAY_SERVICE";
+        err_reason = "current playServiceId: " + ps_id;
+        nugu_error("Error type: %s, reason: %s", err_type.c_str(), err_reason.c_str());
+        sendEventRequestCommandFailed(dname, play_service_id, err_type, err_reason);
+        return;
+    }
+
+    if (cur_aplayer_state == AudioPlayerState::IDLE || cur_aplayer_state == AudioPlayerState::STOPPED) {
+        err_type = "NOT_ALLOWED_STATE";
+        err_reason = "current state: " + playerActivity(cur_aplayer_state);
+        nugu_error("Error type: %s, reason: %s", err_type.c_str(), err_reason.c_str());
+        sendEventRequestCommandFailed(dname, play_service_id, err_type, err_reason);
+        return;
+    }
+
+    if (cur_token.size() == 0) {
+        err_type = "UNKNOWN";
+        err_reason = "token is null or empty";
+        nugu_error("Error type: %s, reason: %s", err_type.c_str(), err_reason.c_str());
+        sendEventRequestCommandFailed(dname, play_service_id, err_type, err_reason);
+        return;
+    }
+
+    if (offset < 0) {
+        err_type = "UNKNOWN";
+        err_reason = "offsetInMilliseconds is null";
+        nugu_error("Error type: %s, reason: %s", err_type.c_str(), err_reason.c_str());
+        sendEventRequestCommandFailed(dname, play_service_id, err_type, err_reason);
+        return;
+    }
+
+    sendEventByRequestOthersDirective(dname);
 }
 
 std::string AudioPlayerAgent::playbackError(PlaybackError error)
