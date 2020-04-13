@@ -270,6 +270,32 @@ void nugu_log_set_modules(unsigned int bitset);
 unsigned int nugu_log_get_modules(void);
 
 /**
+ * @brief Set minimum log level(debug, info, warning, error)
+ * For example, if set the level to info, debug is discarded, and only logs
+ * with info, warning, and error levels are displayed.
+ * @param[in] level log level
+ */
+void nugu_log_set_level(enum nugu_log_level level);
+
+/**
+ * @brief Get log level
+ * @return log level
+ */
+enum nugu_log_level nugu_log_get_level(void);
+
+/**
+ * @brief Set the maximum length of each protocol log line
+ * @param[in] length line length. -1 means unlimited.
+ */
+void nugu_log_set_protocol_line_limit(int length);
+
+/**
+ * @brief Get the maximum length of each protocol log line
+ * @return line length. -1 means unlimited.
+ */
+int nugu_log_get_protocol_line_limit(void);
+
+/**
  * @brief Hexdump the specific data to stderr
  * @param[in] module log module
  * @param[in] data memory address to hexdump
