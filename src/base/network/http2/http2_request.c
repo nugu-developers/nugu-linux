@@ -141,6 +141,7 @@ static size_t _request_body_cb(char *buffer, size_t size, size_t nitems,
 {
 	HTTP2Request *req = userdata;
 	size_t length;
+	size_t buffer_max = size * nitems;
 
 	if (!req->send_body)
 		return 0;
@@ -148,8 +149,8 @@ static size_t _request_body_cb(char *buffer, size_t size, size_t nitems,
 	http2_request_lock_send_data(req);
 
 	length = nugu_buffer_get_size(req->send_body);
-	if (length >= size * nitems)
-		length = size * nitems;
+	if (length >= buffer_max)
+		length = buffer_max;
 	else if (length == 0) {
 		if (req->send_body_closed == 0) {
 			/* Pause the current uploading */
@@ -172,19 +173,42 @@ static size_t _request_body_cb(char *buffer, size_t size, size_t nitems,
 
 	nugu_dbg("Sent req(%p) %d bytes", req, length);
 
-	if (req->type == HTTP2_REQUEST_CONTENT_TYPE_JSON) {
-		if (length < size * nitems)
-			buffer[length] = '\0';
+	if ((nugu_log_get_modules() & NUGU_LOG_MODULE_PROTOCOL) != 0) {
+		int limit = nugu_log_get_protocol_line_limit();
+		const char *multipart;
+		const char *too_long = "";
+		char backup = 0;
+		int backup_pos = -1;
 
-		nugu_log_protocol_send(NUGU_LOG_LEVEL_INFO, "Event (%p)\n%s",
-				       req, buffer);
+		if (req->type == HTTP2_REQUEST_CONTENT_TYPE_MULTIPART)
+			multipart = "multipart ";
 
-	} else if (req->type == HTTP2_REQUEST_CONTENT_TYPE_MULTIPART) {
-		if (length < size * nitems)
+		if (limit > 0 && length > (size_t)limit) {
+			backup_pos = limit;
+			too_long = "<...too long...>";
+		}
+
+		/*
+		 * Temporarily replace the last data with '\0' when
+		 * the buffer is full.
+		 */
+		if (length == buffer_max)
+			backup_pos = length - 1;
+
+		if (backup_pos >= 0) {
+			backup = buffer[backup_pos];
+			buffer[backup_pos] = '\0';
+		} else {
+			/* Just add the '\0' */
 			buffer[length] = '\0';
+		}
 
 		nugu_log_protocol_send(NUGU_LOG_LEVEL_INFO,
-				       "Event multipart (%p)\n%s", req, buffer);
+				       "Event %s(%p)\n%s%s", multipart, req,
+				       buffer, too_long);
+
+		if (backup_pos >= 0)
+			buffer[backup_pos] = backup;
 	}
 
 	nugu_buffer_shift_left(req->send_body, length);
@@ -515,6 +539,7 @@ int http2_request_set_connection_timeout(HTTP2Request *req, int timeout)
 {
 	g_return_val_if_fail(req != NULL, -1);
 
+	nugu_dbg("req(%p) set connect-timeout: %d secs", req, timeout);
 	curl_easy_setopt(req->easy, CURLOPT_CONNECTTIMEOUT, timeout);
 
 	return 0;
@@ -524,6 +549,7 @@ int http2_request_set_timeout(HTTP2Request *req, int timeout_secs)
 {
 	g_return_val_if_fail(req != NULL, -1);
 
+	nugu_dbg("req(%p) set timeout: %d secs", req, timeout_secs);
 	curl_easy_setopt(req->easy, CURLOPT_TIMEOUT, timeout_secs);
 
 	return 0;
@@ -613,6 +639,7 @@ void http2_request_emit_finished(HTTP2Request *req)
 		break;
 	case HTTP2_RESULT_HTTP_FAIL:
 	case HTTP2_RESULT_HTTP2_FAIL:
+	case HTTP2_RESULT_TIMEOUT:
 	case HTTP2_RESULT_UNKNOWN:
 		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_INTERNAL_ERROR);
 		break;

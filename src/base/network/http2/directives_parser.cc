@@ -143,7 +143,6 @@ static void _body_json(DirParser* dp, const char* data, size_t length)
     Json::Value dir_list;
     Json::Reader reader;
     Json::StyledWriter writer;
-    std::string dump;
     std::string group;
     char group_buf[32];
 
@@ -152,9 +151,21 @@ static void _body_json(DirParser* dp, const char* data, size_t length)
         return;
     }
 
-    dump = writer.write(root);
-    nugu_log_protocol_recv(NUGU_LOG_LEVEL_INFO, "Directives%s\n%s",
-        (dp->debug_msg) ? dp->debug_msg : "", dump.c_str());
+    if ((nugu_log_get_modules() & NUGU_LOG_MODULE_PROTOCOL) != 0) {
+        std::string dump;
+        int limit;
+
+        dump = writer.write(root);
+
+        limit = nugu_log_get_protocol_line_limit();
+        if (limit > 0 && dump.length() > (size_t)limit) {
+            dump.resize(limit);
+            dump.append("<...too long...>");
+        }
+
+        nugu_log_protocol_recv(NUGU_LOG_LEVEL_INFO, "Directives%s\n%s",
+            (dp->debug_msg) ? dp->debug_msg : "", dump.c_str());
+    }
 
     dir_list = root["directives"];
 

@@ -116,6 +116,9 @@ static void _curl_code_to_result(HTTP2Request *req, CURLcode code)
 	case CURLE_HTTP2_STREAM:
 		result = HTTP2_RESULT_HTTP2_FAIL;
 		break;
+	case CURLE_OPERATION_TIMEDOUT:
+		result = HTTP2_RESULT_TIMEOUT;
+		break;
 	default:
 		result = HTTP2_RESULT_UNKNOWN;
 		break;

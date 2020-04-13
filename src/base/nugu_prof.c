@@ -54,7 +54,7 @@ static const struct nugu_prof_hints _hints[NUGU_PROF_TYPE_MAX + 1] = {
 	{ "Directive closed", NUGU_PROF_TYPE_MAX },
 	{ "DNS failed", NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST },
 	{ "SSL failed", NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST },
-	{ "Internal network error", NUGU_PROF_TYPE_MAX },
+	{ "Internal net-error", NUGU_PROF_TYPE_MAX },
 	{ "Invalid token", NUGU_PROF_TYPE_MAX },
 
 	/* /v2/ping */

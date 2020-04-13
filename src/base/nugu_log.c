@@ -47,13 +47,18 @@
 
 static enum nugu_log_system _log_system = NUGU_LOG_SYSTEM_STDERR;
 static enum nugu_log_prefix _log_prefix_fields = NUGU_LOG_PREFIX_DEFAULT;
-static nugu_log_handler _log_handler;
-static void *_log_handler_user_data;
-static int _log_override_enabled;
-static int _log_override_checked;
-static pthread_mutex_t _log_mutex = PTHREAD_MUTEX_INITIALIZER;
+static enum nugu_log_level _log_level = NUGU_LOG_LEVEL_DEBUG;
 static unsigned int _log_module_bitset =
 	NUGU_LOG_MODULE_ALL & (~NUGU_LOG_MODULE_NETWORK_TRACE);
+static int _log_line_limit = -1;
+
+static nugu_log_handler _log_handler;
+static void *_log_handler_user_data;
+
+static int _log_override_enabled;
+static int _log_override_checked;
+
+static pthread_mutex_t _log_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static struct _log_level_info {
 	char mark;
@@ -88,6 +93,28 @@ static void _log_check_override_system(void)
 		_log_override_enabled = 1;
 		_log_system = NUGU_LOG_SYSTEM_NONE;
 	}
+}
+#endif
+
+#ifdef NUGU_ENV_LOG_LEVEL
+static void _log_check_override_level(void)
+{
+	const char *env;
+
+	env = getenv(NUGU_ENV_LOG_LEVEL);
+	if (!env)
+		return;
+
+	if (!strncasecmp(env, "debug", 6))
+		_log_level = NUGU_LOG_LEVEL_DEBUG;
+	else if (!strncasecmp(env, "info", 5))
+		_log_level = NUGU_LOG_LEVEL_INFO;
+	else if (!strncasecmp(env, "warning", 8))
+		_log_level = NUGU_LOG_LEVEL_WARNING;
+	else if (!strncasecmp(env, "error", 6))
+		_log_level = NUGU_LOG_LEVEL_ERROR;
+	else
+		_log_level = NUGU_LOG_LEVEL_DEBUG;
 }
 #endif
 
@@ -134,6 +161,24 @@ static void _log_check_override_module(void)
 }
 #endif
 
+#ifdef NUGU_ENV_LOG_PROTOCOL_LINE_LIMIT
+static void _log_check_override_line_limit(void)
+{
+	const char *env;
+	int value;
+
+	env = getenv(NUGU_ENV_LOG_PROTOCOL_LINE_LIMIT);
+	if (!env)
+		return;
+
+	value = atoi(env);
+	if (value <= 0)
+		_log_line_limit = -1;
+	else
+		_log_line_limit = value;
+}
+#endif
+
 static void _log_check_override(void)
 {
 	if (_log_override_checked)
@@ -145,8 +190,16 @@ static void _log_check_override(void)
 	_log_check_override_system();
 #endif
 
+#ifdef NUGU_ENV_LOG_LEVEL
+	_log_check_override_level();
+#endif
+
 #ifdef NUGU_ENV_LOG_MODULE
 	_log_check_override_module();
+#endif
+
+#ifdef NUGU_ENV_LOG_PROTOCOL_LINE_LIMIT
+	_log_check_override_line_limit();
 #endif
 }
 
@@ -358,6 +411,11 @@ EXPORT_API void nugu_log_print(enum nugu_log_module module,
 		return;
 	}
 
+	if (level > _log_level) {
+		pthread_mutex_unlock(&_log_mutex);
+		return;
+	}
+
 	log_system = _log_system;
 
 	pthread_mutex_unlock(&_log_mutex);
@@ -475,6 +533,45 @@ EXPORT_API unsigned int nugu_log_get_modules(void)
 	return tmp;
 }
 
+EXPORT_API void nugu_log_set_level(enum nugu_log_level level)
+{
+	pthread_mutex_lock(&_log_mutex);
+	_log_level = level;
+	pthread_mutex_unlock(&_log_mutex);
+}
+
+EXPORT_API enum nugu_log_level nugu_log_get_level(void)
+{
+	enum nugu_log_level tmp;
+
+	pthread_mutex_lock(&_log_mutex);
+	tmp = _log_level;
+	pthread_mutex_unlock(&_log_mutex);
+
+	return tmp;
+}
+
+EXPORT_API void nugu_log_set_protocol_line_limit(int length)
+{
+	pthread_mutex_lock(&_log_mutex);
+	if (length <= 0)
+		_log_line_limit = -1;
+	else
+		_log_line_limit = length;
+	pthread_mutex_unlock(&_log_mutex);
+}
+
+EXPORT_API int nugu_log_get_protocol_line_limit(void)
+{
+	int tmp;
+
+	pthread_mutex_lock(&_log_mutex);
+	tmp = _log_line_limit;
+	pthread_mutex_unlock(&_log_mutex);
+
+	return tmp;
+}
+
 EXPORT_API void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
 			     size_t data_size, const char *header,
 			     const char *footer, const char *lineindent)
@@ -501,8 +598,10 @@ EXPORT_API void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
 		fp = stderr;
 	else if (_log_system == NUGU_LOG_SYSTEM_STDOUT)
 		fp = stdout;
-	else
+	else {
+		pthread_mutex_unlock(&_log_mutex);
 		return;
+	}
 
 	if (header)
 		fprintf(fp, "%s", header);
