@@ -129,6 +129,9 @@ enum nugu_prof_type {
 	NUGU_PROF_TYPE_ASR_LISTENING_STARTED,
 	/**< ASR listening started */
 
+	NUGU_PROF_TYPE_ASR_RECOGNIZE,
+	/**< ASR.Recognize event */
+
 	NUGU_PROF_TYPE_ASR_RECOGNIZING_STARTED,
 	/**< ASR recognizing started */
 

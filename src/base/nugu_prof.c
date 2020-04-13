@@ -80,12 +80,13 @@ static const struct nugu_prof_hints _hints[NUGU_PROF_TYPE_MAX + 1] = {
 
 	/* ASR */
 	{ "Listening started", NUGU_PROF_TYPE_WAKEUP_KEYWORD_DETECTED },
+	{ "ASR.Recognize", NUGU_PROF_TYPE_ASR_LISTENING_STARTED },
 	{ "Recognizing", NUGU_PROF_TYPE_ASR_LISTENING_STARTED },
 	{ "End detected", NUGU_PROF_TYPE_ASR_RECOGNIZING_STARTED },
 	{ "Timeout", NUGU_PROF_TYPE_ASR_LISTENING_STARTED },
 	{ "First attachment", NUGU_PROF_TYPE_ASR_RECOGNIZING_STARTED },
 	{ "Last attachment", NUGU_PROF_TYPE_ASR_FIRST_ATTACHMENT },
-	{ "ASR Result", NUGU_PROF_TYPE_ASR_RECOGNIZING_STARTED },
+	{ "ASR Result", NUGU_PROF_TYPE_ASR_RECOGNIZE },
 
 	/* TTS */
 	{ "TTS started", NUGU_PROF_TYPE_ASR_RESULT },
@@ -333,15 +334,82 @@ EXPORT_API int nugu_prof_get_diff_msec(const struct nugu_prof_data *prof1,
 						&prof2->timestamp);
 }
 
+static void _fill_timeunit(int msec, char *dest, size_t dest_len)
+{
+	int value;
+	const char *unit = "msec";
+	char number[13]; /* '-2147483648 ' */
+
+	g_return_if_fail(dest != NULL);
+	g_return_if_fail(dest_len > 10);
+
+	value = msec;
+	if (value > 9999) {
+		value = value / 1000;
+		unit = "sec ";
+
+		if (value > 9999) {
+			value = value / 60;
+			unit = "min ";
+
+			if (value > 9999) {
+				value = value / 60;
+				unit = "hour";
+			}
+		}
+	}
+
+	snprintf(number, sizeof(number), "%5d ", value);
+
+	/* set to '  --  ' to big number */
+	if (number[6] != '\0') {
+		number[0] = ' ';
+		number[1] = ' ';
+		number[2] = '-';
+		number[3] = '-';
+		number[4] = ' ';
+		number[5] = ' ';
+		number[6] = '\0';
+	}
+
+	memcpy(dest, number, 6);
+	memcpy(dest + 6, unit, 4);
+	dest[10] = '\0';
+}
+
+static void _fill_relative_part(enum nugu_prof_type type, char *dest,
+				size_t dest_len)
+{
+	enum nugu_prof_type rel;
+	int diff;
+	char buf[11];
+
+	if (dest == NULL || dest_len < 22)
+		return;
+
+	rel = _hints[type].relative_type;
+	if (rel == NUGU_PROF_TYPE_MAX) {
+		memset(dest, ' ', dest_len - 1);
+		dest[dest_len - 1] = '\0';
+		return;
+	}
+
+	diff = nugu_prof_get_diff_msec(&_prof_data[rel], &_prof_data[type]);
+
+	_fill_timeunit(diff, buf, sizeof(buf));
+
+	snprintf(dest, dest_len, "[%2d ~ %2d]: %s", rel, type, buf);
+}
+
 EXPORT_API void nugu_prof_dump(enum nugu_prof_type from, enum nugu_prof_type to)
 {
 	enum nugu_prof_type cur;
-	enum nugu_prof_type rel;
-	const char *hint;
-	char timestr[255];
-	char relstr[22];
-	int diff_from;
-	int diff_rel;
+	char ts_str[255];
+	char relative_part[22];
+	char time_from[11];
+
+	if ((nugu_log_get_modules() & NUGU_LOG_MODULE_PROFILING) == 0)
+		return;
 
 	nugu_log_print(NUGU_LOG_MODULE_PROFILING, NUGU_LOG_LEVEL_DEBUG, NULL,
 		       NULL, -1, "--------------------------");
@@ -350,40 +418,31 @@ EXPORT_API void nugu_prof_dump(enum nugu_prof_type from, enum nugu_prof_type to)
 		       NULL, -1, "Profiling: %d(%s) ~ %d(%s)", from,
 		       _hints[from].text, to, _hints[to].text);
 
-	for (cur = from; cur <= to; cur++) {
-		const struct timespec *ts;
+	pthread_mutex_lock(&_lock);
 
-		ts = &_prof_data[cur].timestamp;
-		if (ts->tv_sec == 0)
+	/**
+	 * output format:
+	 *  type text: <timestamp> time [rel-part] [dialog-id] [message-id]
+	 */
+	for (cur = from; cur <= to; cur++) {
+		const struct nugu_prof_data *prof;
+
+		prof = &_prof_data[cur];
+		if (prof->timestamp.tv_sec == 0)
 			continue;
 
-		_fill_timestr(timestr, sizeof(timestr), ts);
-
-		diff_from = nugu_prof_get_diff_msec(&_prof_data[from],
-						    &_prof_data[cur]);
-
-		if (_hints[cur].text)
-			hint = _hints[cur].text;
-		else
-			hint = "";
-
-		rel = _hints[cur].relative_type;
-		if (rel != NUGU_PROF_TYPE_MAX) {
-			diff_rel = nugu_prof_get_diff_msec(&_prof_data[rel],
-							   &_prof_data[cur]);
-			snprintf(relstr, sizeof(relstr),
-				 "[%2d ~ %2d]: %5d msec", rel, cur, diff_rel);
-		} else {
-			memset(relstr, ' ', sizeof(relstr) - 1);
-		}
+		_fill_timestr(ts_str, sizeof(ts_str), &prof->timestamp);
+		_fill_timeunit(nugu_prof_get_diff_msec(&_prof_data[from], prof),
+			       time_from, sizeof(time_from));
+		_fill_relative_part(cur, relative_part, sizeof(relative_part));
 
 		nugu_log_print(NUGU_LOG_MODULE_PROFILING, NUGU_LOG_LEVEL_DEBUG,
-			       NULL, NULL, -1,
-			       "[%2d] %20s: <%s> %5d msec %s %s %s", cur, hint,
-			       timestr, diff_from, relstr,
-			       _prof_data[cur].dialog_id,
-			       _prof_data[cur].msg_id);
+			       NULL, NULL, -1, "[%2d] %20s: <%s> %s %s %s %s",
+			       cur, _hints[cur].text, ts_str, time_from,
+			       relative_part, prof->dialog_id, prof->msg_id);
 	}
+
+	pthread_mutex_unlock(&_lock);
 
 	nugu_log_print(NUGU_LOG_MODULE_PROFILING, NUGU_LOG_LEVEL_DEBUG, NULL,
 		       NULL, -1, "--------------------------");

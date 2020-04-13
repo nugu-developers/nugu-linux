@@ -21,6 +21,7 @@
 
 #include "base/nugu_log.h"
 #include "base/nugu_equeue.h"
+#include "base/nugu_prof.h"
 
 #include "http2_request.h"
 #include "v1_ping.h"
@@ -94,8 +95,10 @@ static void _on_finish(HTTP2Request *req, void *userdata)
 	int code;
 
 	code = http2_request_get_response_code(req);
-	if (code == HTTP2_RESPONSE_OK)
+	if (code == HTTP2_RESPONSE_OK) {
+		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_PING_RESPONSE);
 		return;
+	}
 
 	nugu_error("ping send failed: %d", code);
 
@@ -124,6 +127,8 @@ static gboolean _on_timeout(gpointer userdata)
 	/* Set maximum timeout */
 	http2_request_set_timeout(req,
 				  ping->policy.health_check_timeout_ms / 1000);
+
+	nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_PING_REQUEST);
 
 	ret = http2_network_add_request(ping->network, req);
 	if (ret < 0)

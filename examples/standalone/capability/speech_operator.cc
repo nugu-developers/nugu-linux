@@ -16,6 +16,8 @@
 
 #include <iostream>
 
+#include <base/nugu_prof.h>
+
 #include "speech_operator.hh"
 
 namespace msg {
@@ -173,6 +175,7 @@ void SpeechOperator::onState(ASRState state, const std::string& dialog_id)
     switch (state) {
     case ASRState::IDLE: {
         msg::asr::state(dialog_id, "IDLE");
+        nugu_prof_dump(NUGU_PROF_TYPE_ASR_LISTENING_STARTED, NUGU_PROF_TYPE_ASR_RESULT);
         break;
     }
     case ASRState::EXPECTING_SPEECH: {

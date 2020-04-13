@@ -18,6 +18,7 @@
 
 #include "audio_player_agent.hh"
 #include "base/nugu_log.h"
+#include "base/nugu_prof.h"
 
 namespace NuguCapability {
 
@@ -178,6 +179,8 @@ void AudioPlayerAgent::onFocus(void* event)
                 "player can't resume media");
         }
     } else {
+        nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_STARTED);
+
         if (!cur_player->play()) {
             nugu_error("play media(%s) failed", type.c_str());
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
@@ -196,6 +199,7 @@ void AudioPlayerAgent::onFocus(void* event)
 NuguFocusResult AudioPlayerAgent::onUnfocus(void* event, NuguUnFocusMode mode)
 {
     if (mode == NUGU_UNFOCUS_FORCE) {
+        nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_FINISHED);
         cur_player->stop();
         return NUGU_FOCUS_REMOVE;
     }
@@ -776,6 +780,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         if (pre_ref_dialog_id.size())
             setReferrerDialogRequestId(dname, pre_ref_dialog_id);
 
+        nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_FINISHED);
         if (!cur_player->stop()) {
             nugu_error("stop media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
@@ -879,6 +884,7 @@ void AudioPlayerAgent::parsingStop(const char* message)
             speak_dir = nullptr;
         }
 
+        nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_FINISHED);
         cur_dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
         if (!cur_player->stop()) {
             nugu_error("stop media failed");

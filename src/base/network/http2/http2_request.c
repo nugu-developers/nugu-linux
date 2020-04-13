@@ -25,6 +25,7 @@
 #include "curl/curl.h"
 
 #include "base/nugu_log.h"
+#include "base/nugu_prof.h"
 
 #include "http2_request.h"
 
@@ -594,6 +595,30 @@ int http2_request_set_destroy_callback(HTTP2Request *req,
 void http2_request_emit_finished(HTTP2Request *req)
 {
 	g_return_if_fail(req != NULL);
+
+	switch (req->result) {
+	case HTTP2_RESULT_OK:
+		break;
+	case HTTP2_RESULT_PROXY_FAIL:
+		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_INTERNAL_ERROR);
+		break;
+	case HTTP2_RESULT_DNS_FAIL:
+		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_DNS_FAILED);
+		break;
+	case HTTP2_RESULT_CONNECT_FAIL:
+		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_INTERNAL_ERROR);
+		break;
+	case HTTP2_RESULT_SSL_FAIL:
+		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_SSL_FAILED);
+		break;
+	case HTTP2_RESULT_HTTP_FAIL:
+	case HTTP2_RESULT_HTTP2_FAIL:
+	case HTTP2_RESULT_UNKNOWN:
+		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_INTERNAL_ERROR);
+		break;
+	default:
+		break;
+	}
 
 	if (req->finished) {
 		nugu_warn("already finished");
