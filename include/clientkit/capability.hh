@@ -66,6 +66,12 @@ public:
     std::string getDialogRequestId();
 
     /**
+     * @brief Get message id
+     * @return message id
+     */
+    std::string getMessageId();
+
+    /**
      * @brief Set dialog request id.
      * @param[in] id dialog request id
      */

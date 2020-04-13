@@ -160,6 +160,15 @@ static int _send_v2_events_attachment(DGServer *server, NuguEvent *nev,
 			    nugu_event_peek_dialog_id(nev), msg_id, prof_data);
 	free(prof_data);
 
+	if (is_end == 1)
+		nugu_prof_mark_data(NUGU_PROF_TYPE_ASR_LAST_ATTACHMENT,
+				    nugu_event_peek_dialog_id(nev), msg_id,
+				    NULL);
+	else if (nugu_event_get_seq(nev) == 0)
+		nugu_prof_mark_data(NUGU_PROF_TYPE_ASR_FIRST_ATTACHMENT,
+				    nugu_event_peek_dialog_id(nev), msg_id,
+				    NULL);
+
 	v2_events_send_binary(e, msg_id, nugu_event_get_seq(nev), is_end,
 			      length, data);
 	free(msg_id);

@@ -22,6 +22,7 @@
 
 #include "base/nugu_equeue.h"
 #include "base/nugu_log.h"
+#include "base/nugu_prof.h"
 
 #include "directives_parser.h"
 #include "http2_request.h"
@@ -39,6 +40,8 @@ struct _v1_directives {
 static size_t _on_body(HTTP2Request *req, char *buffer, size_t size,
 		       size_t nitems, void *userdata)
 {
+	nugu_prof_mark(NUGU_PROF_TYPE_LAST_SERVER_INITIATIVE_DATA);
+
 	dir_parser_parse(userdata, buffer, size * nitems);
 
 	return size * nitems;

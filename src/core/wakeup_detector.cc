@@ -20,6 +20,8 @@
 #include <cstring>
 
 #include "base/nugu_log.h"
+#include "base/nugu_prof.h"
+
 #include "nugu_timer.hh"
 #include "wakeup_detector.hh"
 
@@ -166,6 +168,8 @@ void WakeupDetector::loop()
             setPower(kwd_get_power());
             if (kwd_put_audio((short*)pcm_buf, pcm_size) == 1) {
                 float noise, speech;
+
+                nugu_prof_mark(NUGU_PROF_TYPE_WAKEUP_KEYWORD_DETECTED);
                 getPower(noise, speech);
                 sendWakeupEvent(WakeupState::DETECTED, id, noise, speech);
                 std::memset(power_speech, 0, sizeof(power_speech));

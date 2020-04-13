@@ -66,6 +66,11 @@ std::string CapabilityEvent::getDialogRequestId()
     return pimpl->dialog_id;
 }
 
+std::string CapabilityEvent::getMessageId()
+{
+    return nugu_event_peek_msg_id(pimpl->event);
+}
+
 void CapabilityEvent::setDialogRequestId(const std::string& id)
 {
     pimpl->dialog_id = id;

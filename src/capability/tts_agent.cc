@@ -17,6 +17,7 @@
 #include <string.h>
 
 #include "base/nugu_log.h"
+#include "base/nugu_prof.h"
 #include "base/nugu_uuid.h"
 
 #include "tts_agent.hh"
@@ -121,16 +122,30 @@ void TTSAgent::onFocus(void* event)
 {
     player->play();
 
-    if (nugu_directive_get_data_size(speak_dir) > 0)
-        getAttachmentData(speak_dir, this);
+    if (speak_dir) {
+        nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_STARTED,
+            nugu_directive_peek_dialog_id(speak_dir),
+            nugu_directive_peek_msg_id(speak_dir), NULL);
 
-    if (speak_dir)
+        if (nugu_directive_get_data_size(speak_dir) > 0)
+            getAttachmentData(speak_dir, this);
+
         nugu_directive_set_data_callback(speak_dir, directiveDataCallback, this);
+    } else {
+        nugu_prof_mark(NUGU_PROF_TYPE_TTS_STARTED);
+    }
 }
 
 NuguFocusResult TTSAgent::onUnfocus(void* event, NuguUnFocusMode mode)
 {
     MediaPlayerState pre_state = cur_state;
+
+    if (speak_dir)
+        nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_FINISHED,
+            nugu_directive_peek_dialog_id(speak_dir),
+            nugu_directive_peek_msg_id(speak_dir), NULL);
+    else
+        nugu_prof_mark(NUGU_PROF_TYPE_TTS_FINISHED);
 
     player->stop();
 

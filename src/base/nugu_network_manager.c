@@ -31,6 +31,7 @@
 #include "base/nugu_equeue.h"
 #include "base/nugu_directive_sequencer.h"
 #include "base/nugu_network_manager.h"
+#include "base/nugu_prof.h"
 
 #include "network/dg_registry.h"
 #include "network/dg_server.h"
@@ -126,8 +127,18 @@ static void on_attachment(enum nugu_equeue_type type, void *data,
 	if (!ndir)
 		return;
 
-	if (item->is_end)
+	if (nugu_directive_get_data_size(ndir) == 0)
+		nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_FIRST_ATTACHMENT,
+				    nugu_directive_peek_dialog_id(ndir),
+				    nugu_directive_peek_msg_id(ndir), NULL);
+
+	if (item->is_end) {
+		nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_LAST_ATTACHMENT,
+				    nugu_directive_peek_dialog_id(ndir),
+				    nugu_directive_peek_msg_id(ndir), NULL);
+
 		nugu_directive_close_data(ndir);
+	}
 
 	nugu_directive_set_media_type(ndir, item->media_type);
 	nugu_directive_add_data(ndir, item->length, item->data);
@@ -221,6 +232,8 @@ static int _start_registry(NetworkManager *nm)
 
 	nm->step = STEP_IDLE;
 	nm->registry = dg_registry_new();
+
+	nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_REGISTRY_REQUEST);
 
 	if (dg_registry_request(nm->registry) < 0) {
 		dg_registry_free(nm->registry);
@@ -421,6 +434,7 @@ static void _process_connecting(NetworkManager *nm,
 		break;
 
 	case STEP_SERVER_CONNECTING:
+		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_SERVER_ESTABLISH_REQUEST);
 		if (nm->handoff)
 			_try_connect_to_handoff(nm);
 		else {
@@ -456,6 +470,7 @@ static void _process_connecting(NetworkManager *nm,
 		break;
 
 	case STEP_SERVER_FAILED:
+		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_SERVER_ESTABLISH_FAILED);
 		nugu_dbg("retry connection");
 		_process_connecting(nm, STEP_SERVER_CONNECTING);
 		break;
@@ -495,6 +510,8 @@ static void on_receive_registry_servers(enum nugu_equeue_type type, void *data,
 {
 	NetworkManager *nm = userdata;
 
+	nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_REGISTRY_RESPONSE);
+
 	if (nm->server_list)
 		g_list_free_full(nm->server_list, free);
 
@@ -505,10 +522,12 @@ static void on_receive_registry_servers(enum nugu_equeue_type type, void *data,
 }
 
 static void on_directives_closed(enum nugu_equeue_type type, void *data,
-					void *userdata)
+				 void *userdata)
 {
 	NetworkManager *nm = userdata;
 	struct timespec spec;
+
+	nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_DIRECTIVES_CLOSED);
 
 	if (nm->server == NULL) {
 		nugu_info("no connected servers");
@@ -541,14 +560,17 @@ static void on_event(enum nugu_equeue_type type, void *data, void *userdata)
 	switch (type) {
 	case NUGU_EQUEUE_TYPE_INVALID_TOKEN:
 		nugu_dbg("received invalid token event");
+		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_INVALID_TOKEN);
 		_process_connecting(userdata, STEP_INVALID_TOKEN);
 		break;
 	case NUGU_EQUEUE_TYPE_REGISTRY_FAILED:
 		nugu_dbg("received registry failed event");
+		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_REGISTRY_FAILED);
 		_process_connecting(userdata, STEP_REGISTRY_FAILED);
 		break;
 	case NUGU_EQUEUE_TYPE_SEND_PING_FAILED:
 		nugu_dbg("received send ping failed event");
+		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_PING_FAILED);
 		dg_server_stop_health_check(nm->server);
 		_process_connecting(userdata, STEP_SERVER_FAILED);
 		break;
@@ -558,6 +580,9 @@ static void on_event(enum nugu_equeue_type type, void *data, void *userdata)
 		break;
 	case NUGU_EQUEUE_TYPE_SERVER_CONNECTED:
 		nugu_dbg("received server connected event");
+		nugu_prof_mark(
+			NUGU_PROF_TYPE_NETWORK_SERVER_ESTABLISH_RESPONSE);
+		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_CONNECTED);
 		clock_gettime(CLOCK_REALTIME, &nm->ts_connected);
 		_process_connecting(userdata, STEP_SERVER_CONNECTED);
 		break;
@@ -707,6 +732,8 @@ EXPORT_API int nugu_network_manager_connect(void)
 		nugu_dbg("already connected");
 		return 0;
 	}
+
+	nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST);
 
 	return _start_registry(_network);
 }

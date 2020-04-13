@@ -17,8 +17,10 @@
 #include <chrono>
 #include <string.h>
 
-#include "asr_agent.hh"
 #include "base/nugu_log.h"
+#include "base/nugu_prof.h"
+
+#include "asr_agent.hh"
 
 namespace NuguCapability {
 
@@ -395,9 +397,14 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
     dialog_id = rec_event->getDialogRequestId();
     setReferrerDialogRequestId("ASRAgent.sendEventRecognize", dialog_id);
 
-    if (!is_end && (length == 0 || data == nullptr))
+    if (!is_end && (length == 0 || data == nullptr)) {
+        nugu_prof_mark_data(NUGU_PROF_TYPE_ASR_RECOGNIZE,
+            dialog_id.c_str(),
+            rec_event->getMessageId().c_str(),
+            payload.c_str());
+
         sendEvent(rec_event, all_context_info, payload, std::move(cb));
-    else
+    } else
         sendAttachmentEvent(rec_event, is_end, length, data);
 }
 
@@ -515,6 +522,8 @@ void ASRAgent::parsingNotifyResult(const char* message)
         nugu_error("There is no mandatory data in directive message");
         return;
     }
+
+    nugu_prof_mark(NUGU_PROF_TYPE_ASR_RESULT);
 
     clearResponseTimeout();
 

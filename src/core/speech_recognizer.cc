@@ -19,6 +19,8 @@
 #endif
 
 #include "base/nugu_log.h"
+#include "base/nugu_prof.h"
+
 #include "nugu_timer.hh"
 #include "speech_recognizer.hh"
 
@@ -203,16 +205,19 @@ void SpeechRecognizer::loop()
 
             switch (epd_ret) {
             case EPD_END_DETECTED:
+                nugu_prof_mark(NUGU_PROF_TYPE_ASR_END_POINT_DETECTED);
                 sendListeningEvent(ListeningState::SPEECH_END, id);
                 is_epd_end = true;
                 break;
             case EPD_END_DETECTING:
             case EPD_START_DETECTED:
                 if (prev_epd_ret == EPD_START_DETECTING) {
+                    nugu_prof_mark(NUGU_PROF_TYPE_ASR_RECOGNIZING_STARTED);
                     sendListeningEvent(ListeningState::SPEECH_START, id);
                 }
                 break;
             case EPD_TIMEOUT:
+                nugu_prof_mark(NUGU_PROF_TYPE_ASR_TIMEOUT);
                 sendListeningEvent(ListeningState::TIMEOUT, id);
                 is_epd_end = true;
                 break;
@@ -281,6 +286,7 @@ void SpeechRecognizer::loop()
 bool SpeechRecognizer::startListening(const std::string& id)
 {
     listening_id = id;
+    nugu_prof_mark(NUGU_PROF_TYPE_ASR_LISTENING_STARTED);
     return AudioInputProcessor::start([&] {
         epd_ret = 0;
     });
