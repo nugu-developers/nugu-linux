@@ -253,6 +253,7 @@ bool TTSPlayer::setSource(const std::string& url)
 bool TTSPlayer::play()
 {
     nugu_dbg("request to play mediaplayer.attachment");
+    StopB4Start();
     return (nugu_pcm_start(d->player) >= 0);
 }
 
@@ -469,6 +470,16 @@ void TTSPlayer::clearContent()
 {
     d->position = d->duration = 0;
     d->seek_time = d->seek_size = 0;
+}
+
+void TTSPlayer::StopB4Start()
+{
+    // stop without reporting state changed
+    MediaPlayerState prev_state = state();
+
+    d->state = MediaPlayerState::STOPPED;
+    nugu_pcm_stop(d->player);
+    d->state = prev_state;
 }
 
 } // NuguCore
