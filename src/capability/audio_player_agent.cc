@@ -773,9 +773,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     std::string dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
     std::string dname = nugu_directive_peek_name(getNuguDirective());
     // Different tokens mean different media play requests.
-    if (token != cur_token
-        /* Temporary add condition: Service(keyword news) is always same token on 2020/03/12 */
-        || has_attachment) {
+    if (token != cur_token) {
 
         if (pre_ref_dialog_id.size())
             setReferrerDialogRequestId(dname, pre_ref_dialog_id);

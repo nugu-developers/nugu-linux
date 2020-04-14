@@ -70,6 +70,7 @@ public:
 
 private:
     void clearContent();
+    void StopB4Start();
 
     TTSPlayerPrivate* d;
 };
