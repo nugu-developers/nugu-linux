@@ -54,6 +54,7 @@ public:
 
 private:
     void sendEventCommon(const std::string& ename, const std::string& token, EventResultCallback cb = nullptr);
+    void sendEventCommon(CapabilityEvent *event, const std::string& token, EventResultCallback cb = nullptr);
     // parsing directive
     void parsingSpeak(const char* message);
     void parsingStop(const char* message);

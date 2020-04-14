@@ -89,10 +89,11 @@ static const struct nugu_prof_hints _hints[NUGU_PROF_TYPE_MAX + 1] = {
 	{ "ASR Result", NUGU_PROF_TYPE_ASR_RECOGNIZE },
 
 	/* TTS */
-	{ "TTS started", NUGU_PROF_TYPE_ASR_RESULT },
-	{ "TTS first data", NUGU_PROF_TYPE_ASR_RESULT },
+	{ "TTS Speak directive", NUGU_PROF_TYPE_MAX },
+	{ "TTS started", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
+	{ "TTS first data", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
 	{ "TTS last data", NUGU_PROF_TYPE_TTS_FIRST_ATTACHMENT },
-	{ "TTS finished", NUGU_PROF_TYPE_ASR_RESULT },
+	{ "TTS finished", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
 
 	/* Audio */
 	{ "Audio started", NUGU_PROF_TYPE_ASR_RESULT },

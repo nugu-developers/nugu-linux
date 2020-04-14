@@ -123,29 +123,16 @@ void TTSAgent::onFocus(void* event)
     player->play();
 
     if (speak_dir) {
-        nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_STARTED,
-            nugu_directive_peek_dialog_id(speak_dir),
-            nugu_directive_peek_msg_id(speak_dir), NULL);
-
         if (nugu_directive_get_data_size(speak_dir) > 0)
             getAttachmentData(speak_dir, this);
 
         nugu_directive_set_data_callback(speak_dir, directiveDataCallback, this);
-    } else {
-        nugu_prof_mark(NUGU_PROF_TYPE_TTS_STARTED);
     }
 }
 
 NuguFocusResult TTSAgent::onUnfocus(void* event, NuguUnFocusMode mode)
 {
     MediaPlayerState pre_state = cur_state;
-
-    if (speak_dir)
-        nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_FINISHED,
-            nugu_directive_peek_dialog_id(speak_dir),
-            nugu_directive_peek_msg_id(speak_dir), NULL);
-    else
-        nugu_prof_mark(NUGU_PROF_TYPE_TTS_FINISHED);
 
     player->stop();
 
@@ -262,8 +249,15 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
 
 void TTSAgent::sendEventSpeechStarted(const std::string& token, EventResultCallback cb)
 {
-    if (ps_id.size())
-        sendEventCommon("SpeechStarted", token, std::move(cb));
+    if (ps_id.size()) {
+        CapabilityEvent event("SpeechStarted", this);
+
+        sendEventCommon(&event, token, std::move(cb));
+
+        nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_STARTED,
+            event.getDialogRequestId().c_str(),
+            event.getMessageId().c_str(), NULL);
+    }
 
     if (tts_listener)
         tts_listener->onTTSState(TTSState::TTS_SPEECH_START, dialog_id);
@@ -271,8 +265,15 @@ void TTSAgent::sendEventSpeechStarted(const std::string& token, EventResultCallb
 
 void TTSAgent::sendEventSpeechFinished(const std::string& token, EventResultCallback cb)
 {
-    if (ps_id.size())
-        sendEventCommon("SpeechFinished", token, std::move(cb));
+    if (ps_id.size()) {
+        CapabilityEvent event("SpeechFinished", this);
+
+        sendEventCommon(&event, token, std::move(cb));
+
+        nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_FINISHED,
+            event.getDialogRequestId().c_str(),
+            event.getMessageId().c_str(), NULL);
+    }
 
     if (tts_listener)
         tts_listener->onTTSState(TTSState::TTS_SPEECH_FINISH, dialog_id);
@@ -331,6 +332,30 @@ void TTSAgent::sendEventCommon(const std::string& ename, const std::string& toke
     sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
+void TTSAgent::sendEventCommon(CapabilityEvent *event, const std::string& token, EventResultCallback cb)
+{
+    std::string payload = "";
+    Json::StyledWriter writer;
+    Json::Value root;
+
+    if (!event) {
+        nugu_error("event is NULL");
+        return;
+    }
+
+    if (token.size() == 0) {
+        nugu_error("there is something wrong [%s]", event->getName().c_str());
+        return;
+    }
+
+    root["token"] = token;
+    if (ps_id.size())
+        root["playServiceId"] = ps_id;
+    payload = writer.write(root);
+
+    sendEvent(event, getContextInfo(), payload, std::move(cb));
+}
+
 void TTSAgent::parsingSpeak(const char* message)
 {
     Json::Value root;
@@ -366,11 +391,14 @@ void TTSAgent::parsingSpeak(const char* message)
     }
 
     cur_token = token;
-    dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
     ps_id = play_service_id;
 
     is_finished = false;
     speak_dir = getNuguDirective();
+    dialog_id = nugu_directive_peek_dialog_id(speak_dir);
+
+    nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE, dialog_id.c_str(),
+        nugu_directive_peek_msg_id(speak_dir), NULL);
 
     capa_helper->requestFocus("cap_tts", NULL);
 
