@@ -150,6 +150,9 @@ enum nugu_prof_type {
 	NUGU_PROF_TYPE_ASR_RESULT,
 	/**< ASR result received */
 
+	NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE,
+	/**< TTS.Speak directive received */
+
 	NUGU_PROF_TYPE_TTS_STARTED,
 	/**< TTS started */
 

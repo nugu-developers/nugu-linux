@@ -16,6 +16,8 @@
 
 #include <iostream>
 
+#include <base/nugu_prof.h>
+
 #include "tts_listener.hh"
 
 void TTSListener::onTTSState(TTSState state, const std::string& dialog_id)
@@ -29,6 +31,7 @@ void TTSListener::onTTSState(TTSState state, const std::string& dialog_id)
 
     case TTSState::TTS_SPEECH_FINISH:
         std::cout << "PLAYING FINISHED\n";
+        nugu_prof_dump(NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE, NUGU_PROF_TYPE_TTS_FINISHED);
         break;
     }
 }
