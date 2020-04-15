@@ -38,6 +38,7 @@ extern "C" {
  * @brief Predefined focus types by priority
  */
 enum nugu_focus_type {
+	NUGU_FOCUS_TYPE_CALL, /**< Call */
 	NUGU_FOCUS_TYPE_ALERT, /**< Alerts */
 	NUGU_FOCUS_TYPE_ASR, /**< ASR */
 	NUGU_FOCUS_TYPE_TTS, /**< TTS */

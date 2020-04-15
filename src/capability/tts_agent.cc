@@ -159,9 +159,13 @@ NuguFocusResult TTSAgent::onUnfocus(void* event, NuguUnFocusMode mode)
 
 NuguFocusStealResult TTSAgent::onStealRequest(void* event, NuguFocusType target_type)
 {
-    if (target_type <= NUGU_FOCUS_TYPE_TTS)
+    if (target_type <= NUGU_FOCUS_TYPE_TTS) {
+        // When the tts is about call, it just reject for finishing current tts speak.
+        if (target_type == NUGU_FOCUS_TYPE_CALL && playsync_manager->getLayerType(playstackctl_ps_id) == PlaysyncLayer::Call)
+            return NUGU_FOCUS_STEAL_REJECT;
+
         return NUGU_FOCUS_STEAL_ALLOW;
-    else
+    } else
         return NUGU_FOCUS_STEAL_REJECT;
 }
 
@@ -191,7 +195,7 @@ std::string TTSAgent::requestTTS(const std::string& text, const std::string& pla
     token = uuid;
     free(uuid);
 
-    if(referrer_id.size())
+    if (referrer_id.size())
         setReferrerDialogRequestId("TTSAgent.requestTTS", referrer_id);
 
     std::string id = sendEventSpeechPlay(token, text, play_service_id);

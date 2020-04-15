@@ -39,6 +39,7 @@ public:
     void clearPendingContext(const std::string& ps_id) override;
     std::vector<std::string> getAllPlayStackItems() override;
     std::string getPlayStackItem(const std::string& cap_name) override;
+    PlaysyncLayer getLayerType(const std::string& ps_id) override;
 
     void setExpectSpeech(bool expect_speech) override;
     void holdContext() override;
@@ -50,13 +51,6 @@ public:
     using ContextMap = std::map<std::string, std::vector<std::string>>;
 
 private:
-    enum class Layer {
-        Info,
-        Media,
-        Alert,
-        Call
-    };
-
     class LongTimer final : public NUGUTimer {
     public:
         explicit LongTimer(int interval, int repeat = 0);
@@ -84,7 +78,7 @@ private:
     std::vector<std::string> getKeyOfMap(const std::map<T, V>& map);
 
     using RendererMap = std::map<std::string, DisplayRenderer>;
-    using LayerMap = std::map<std::string, Layer>;
+    using LayerMap = std::map<std::string, PlaysyncLayer>;
 
     ContextMap context_map;
     std::vector<std::string> context_stack;
@@ -94,7 +88,7 @@ private:
     NUGUTimer* timer = nullptr;
     LongTimer* long_timer = nullptr;
     bool is_expect_speech = false;
-    Layer layer = Layer::Info;
+    PlaysyncLayer layer = PlaysyncLayer::Info;
 };
 } // NuguCore
 
