@@ -34,6 +34,16 @@ namespace NuguClientKit {
  */
 
 /**
+ * @brief Playsync Layer Type
+ */
+enum class PlaysyncLayer {
+    Info, /**< Info Layer */
+    Media, /**< Media Layer */
+    Alert, /**< Alert Layer */
+    Call /**< Call Layer */
+};
+
+/**
  * @brief PlayerSyncManagerListener interface
  * @see IPlaySyncManager
  */
@@ -119,14 +129,23 @@ public:
 
     /**
      * @brief Get all play service id list which exist in context stack.
+     * @return play service id list
      */
     virtual std::vector<std::string> getAllPlayStackItems() = 0;
 
     /**
      * @brief Get play service id of specific CapabilityAgent.
      * @param[in] cap_name CapabilityAgent name
+     * @return play service id about cap_name
      */
     virtual std::string getPlayStackItem(const std::string& cap_name) = 0;
+
+    /**
+     * @brief Get PlaysyncLayer type about play service id.
+     * @param[in] ps_id play service id
+     * @return PlaysyncLayer type
+     */
+    virtual PlaysyncLayer getLayerType(const std::string& ps_id) = 0;
 
     /**
      * @brief Set whether current ASR is expect speech situation.

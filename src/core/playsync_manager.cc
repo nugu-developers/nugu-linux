@@ -179,7 +179,7 @@ void PlaySyncManager::removeContext(const std::string& ps_id, const std::string&
     // reset or stop pending long timer if exist
     if (long_timer && long_timer->hasPending() && !is_expect_speech) {
         try {
-            if (layer_map.at(ps_id) == Layer::Media)
+            if (layer_map.at(ps_id) == PlaysyncLayer::Media)
                 long_timer->stop();
             else
                 long_timer->start();
@@ -252,6 +252,15 @@ std::string PlaySyncManager::getPlayStackItem(const std::string& cap_name)
     }
 
     return "";
+}
+
+PlaysyncLayer PlaySyncManager::getLayerType(const std::string& ps_id)
+{
+    try {
+        return layer_map.at(ps_id);
+    } catch (std::out_of_range& exception) {
+        return PlaysyncLayer::Info; // It return Info layer defaults
+    }
 }
 
 void PlaySyncManager::addStackElement(const std::string& ps_id, const std::string& cap_name)
@@ -363,14 +372,13 @@ void PlaySyncManager::onASRError()
 
 void PlaySyncManager::setDirectiveGroups(const std::string& groups)
 {
-    if (groups.empty()) {
-        layer = Layer::Info;
-        return;
-    }
-
     if (groups.find("AudioPlayer") != std::string::npos)
-        layer = Layer::Media;
+        layer = PlaysyncLayer::Media;
+    else if (groups.find("NuguCall") != std::string::npos)
+        layer = PlaysyncLayer::Call;
+    else if (groups.find("Alerts") != std::string::npos)
+        layer = PlaysyncLayer::Alert;
     else
-        layer = Layer::Info;
+        layer = PlaysyncLayer::Info;
 }
 } // NuguCore
