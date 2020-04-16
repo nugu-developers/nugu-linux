@@ -1,3 +1,21 @@
+nugu (0.8.0ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed gstreamer bugs
+  * Fixed AudioPlayer interface bugs
+  * Fixed ASR interface bugs
+  * Added Sound interface v1.0
+  * Added profiling
+  * Added call focus
+  * Updated RDRID(Referrer Request Dialog Id)
+  * Updated ASR interface v1.1 spec
+  * Updated Text interface v1.1 spec
+  * Updated System interface v1.1 spec
+  * Updated TTS interface v1.0 spec
+  * Upgraded network v2
+  * Upgraded nugu log
+
+ -- nugulinux <nugulinux@gmail.com>  Thu, 16 Apr 2020 13:30:00 +0900
+
 nugu (0.7.0ubuntu1~bionic) bionic; urgency=medium
 
   * Fixed build scripts
