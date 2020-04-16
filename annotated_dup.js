@@ -9,6 +9,8 @@ var annotated_dup =
       [ "IAudioPlayerListener", "classNuguCapability_1_1IAudioPlayerListener.html", "classNuguCapability_1_1IAudioPlayerListener" ],
       [ "IMicHandler", "classNuguCapability_1_1IMicHandler.html", "classNuguCapability_1_1IMicHandler" ],
       [ "IMicListener", "classNuguCapability_1_1IMicListener.html", "classNuguCapability_1_1IMicListener" ],
+      [ "ISoundHandler", "classNuguCapability_1_1ISoundHandler.html", "classNuguCapability_1_1ISoundHandler" ],
+      [ "ISoundListener", "classNuguCapability_1_1ISoundListener.html", "classNuguCapability_1_1ISoundListener" ],
       [ "ISpeakerHandler", "classNuguCapability_1_1ISpeakerHandler.html", "classNuguCapability_1_1ISpeakerHandler" ],
       [ "ISpeakerListener", "classNuguCapability_1_1ISpeakerListener.html", "classNuguCapability_1_1ISpeakerListener" ],
       [ "ISystemHandler", "classNuguCapability_1_1ISystemHandler.html", "classNuguCapability_1_1ISystemHandler" ],
@@ -50,5 +52,6 @@ var annotated_dup =
     [ "nugu_pcm_driver_ops", "structnugu__pcm__driver__ops.html", "structnugu__pcm__driver__ops" ],
     [ "nugu_player_driver_ops", "structnugu__player__driver__ops.html", "structnugu__player__driver__ops" ],
     [ "nugu_plugin_desc", "structnugu__plugin__desc.html", "structnugu__plugin__desc" ],
+    [ "nugu_prof_data", "structnugu__prof__data.html", "structnugu__prof__data" ],
     [ "nugu_recorder_driver_ops", "structnugu__recorder__driver__ops.html", "structnugu__recorder__driver__ops" ]
 ];

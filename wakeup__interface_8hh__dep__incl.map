@@ -1,14 +1,15 @@
 <map id="wakeup_interface.hh" name="wakeup_interface.hh">
-<area shape="rect" id="node2" href="$nugu__core__container__interface_8hh.html" title="nugu_core_container\l_interface.hh" alt="" coords="870,80,1013,121"/>
-<area shape="rect" id="node3" href="$capability__interface_8hh.html" title="capability_interface.hh" alt="" coords="809,169,961,196"/>
-<area shape="rect" id="node13" href="$nugu__client_8hh.html" title="nugu_client.hh" alt="" coords="1377,244,1484,271"/>
+<area shape="rect" id="node2" href="$nugu__core__container__interface_8hh.html" title="nugu_core_container\l_interface.hh" alt="" coords="1093,80,1235,121"/>
+<area shape="rect" id="node3" href="$capability__interface_8hh.html" title="capability_interface.hh" alt="" coords="883,169,1035,196"/>
+<area shape="rect" id="node14" href="$nugu__client_8hh.html" title="nugu_client.hh" alt="" coords="1533,244,1640,271"/>
 <area shape="rect" id="node4" href="$asr__interface_8hh.html" title="asr_interface.hh" alt="" coords="5,244,120,271"/>
 <area shape="rect" id="node5" href="$audio__player__interface_8hh.html" title="audio_player_interface.hh" alt="" coords="144,244,315,271"/>
 <area shape="rect" id="node6" href="$capability__factory_8hh.html" title="capability_factory.hh" alt="" coords="339,244,482,271"/>
 <area shape="rect" id="node7" href="$mic__interface_8hh.html" title="mic_interface.hh" alt="" coords="506,244,625,271"/>
-<area shape="rect" id="node8" href="$speaker__interface_8hh.html" title="speaker_interface.hh" alt="" coords="649,244,791,271"/>
-<area shape="rect" id="node9" href="$system__interface_8hh.html" title="system_interface.hh" alt="" coords="815,244,955,271"/>
-<area shape="rect" id="node10" href="$text__interface_8hh.html" title="text_interface.hh" alt="" coords="979,244,1098,271"/>
-<area shape="rect" id="node11" href="$tts__interface_8hh.html" title="tts_interface.hh" alt="" coords="1121,244,1233,271"/>
-<area shape="rect" id="node12" href="$capability_8hh.html" title="capability.hh" alt="" coords="1258,244,1353,271"/>
+<area shape="rect" id="node8" href="$sound__interface_8hh.html" title="sound_interface.hh" alt="" coords="649,244,781,271"/>
+<area shape="rect" id="node9" href="$speaker__interface_8hh.html" title="speaker_interface.hh" alt="" coords="805,244,947,271"/>
+<area shape="rect" id="node10" href="$system__interface_8hh.html" title="system_interface.hh" alt="" coords="971,244,1111,271"/>
+<area shape="rect" id="node11" href="$text__interface_8hh.html" title="text_interface.hh" alt="" coords="1135,244,1254,271"/>
+<area shape="rect" id="node12" href="$tts__interface_8hh.html" title="tts_interface.hh" alt="" coords="1277,244,1389,271"/>
+<area shape="rect" id="node13" href="$capability_8hh.html" title="capability.hh" alt="" coords="1414,244,1509,271"/>
 </map>

@@ -31,6 +31,7 @@ var searchData=
   ['nuguplayer',['NuguPlayer',['../group__NuguPlayer.html#ga7ab0d860f47f6eb63bf7fd687031d21b',1,'nugu_player.h']]],
   ['nuguplayerdriver',['NuguPlayerDriver',['../group__NuguPlayerDriver.html#ga15cb8fec369bcead493bd0f7e2d739c1',1,'nugu_player.h']]],
   ['nuguplugin',['NuguPlugin',['../group__NuguPlugin.html#ga902899332433a0695927c4085cb12664',1,'nugu_plugin.h']]],
+  ['nuguprofcallback',['NuguProfCallback',['../group__Profiling.html#ga67b444ebdce684b4b878b02aaffc5268',1,'nugu_prof.h']]],
   ['nugurecorder',['NuguRecorder',['../group__NuguRecorder.html#gab144bbb8210d85955f0a7543c9b846af',1,'nugu_recorder.h']]],
   ['nugurecorderdriver',['NuguRecorderDriver',['../group__NuguRecorderDriver.html#gaf831b376e0fedb07e417052dd138ca45',1,'nugu_recorder.h']]],
   ['nuguringbuffer',['NuguRingBuffer',['../group__NuguRingBuffer.html#ga57173888361d6a882a2eb2929877115e',1,'nugu_ringbuffer.h']]],

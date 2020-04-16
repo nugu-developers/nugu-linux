@@ -25,5 +25,5 @@ var searchData=
   ['onttstext',['onTTSText',['../classNuguCapability_1_1ITTSListener.html#a0eee1cd379ef2adde22bfcc0e63c1c62',1,'NuguCapability::ITTSListener']]],
   ['onturnoff',['onTurnOff',['../classNuguCapability_1_1ISystemListener.html#ad0bfa36857445d27c0fcd434730543df',1,'NuguCapability::ISystemListener']]],
   ['onunfocus',['onUnfocus',['../classNuguClientKit_1_1IFocusListener.html#a13ac07833eaa1d252fcf9fe2f3040852',1,'NuguClientKit::IFocusListener']]],
-  ['onwakeupstate',['onWakeupState',['../classNuguClientKit_1_1IWakeupListener.html#a697a2a4d080f5299d96246d2d95c116e',1,'NuguClientKit::IWakeupListener']]]
+  ['onwakeupstate',['onWakeupState',['../classNuguClientKit_1_1IWakeupListener.html#a1d622bddce42ade2425524dc534b6929',1,'NuguClientKit::IWakeupListener']]]
 ];

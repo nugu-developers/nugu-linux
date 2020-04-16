@@ -24,6 +24,7 @@ var group__PlaySyncManagerInterface =
       [ "clearPendingContext", "classNuguClientKit_1_1IPlaySyncManager.html#ae4be3c414a2e8aefbd2cab6c77975824", null ],
       [ "getAllPlayStackItems", "classNuguClientKit_1_1IPlaySyncManager.html#a2741b98b7ba7b565b65fd894ac7026a5", null ],
       [ "getPlayStackItem", "classNuguClientKit_1_1IPlaySyncManager.html#ac5ff65c0bbe2a75360f281c57dd9c2e4", null ],
+      [ "getLayerType", "classNuguClientKit_1_1IPlaySyncManager.html#a98ff6622d7f60b4be63ae2ae2cd022cf", null ],
       [ "setExpectSpeech", "classNuguClientKit_1_1IPlaySyncManager.html#ab0c79740e5db310982a1a6cb5db5b551", null ],
       [ "holdContext", "classNuguClientKit_1_1IPlaySyncManager.html#a43dee763189abc56db16500a50a9ad2d", null ],
       [ "clearContextHold", "classNuguClientKit_1_1IPlaySyncManager.html#a8ea760cfad427e27309b3a3d335e7b31", null ],
@@ -33,5 +34,11 @@ var group__PlaySyncManagerInterface =
       [ "~IPlaySyncManagerListener", "classNuguClientKit_1_1IPlaySyncManagerListener.html#afa13820115fa84e0b55f04b48a66ef43", null ],
       [ "onSyncDisplayContext", "classNuguClientKit_1_1IPlaySyncManagerListener.html#ae33fd298d996a22466625955d5df3dff", null ],
       [ "onReleaseDisplayContext", "classNuguClientKit_1_1IPlaySyncManagerListener.html#a7195604a610c009862c908e3f786c0d4", null ]
+    ] ],
+    [ "PlaysyncLayer", "group__PlaySyncManagerInterface.html#gaaeadf40cf038c0983ce0de96a4d32d53", [
+      [ "Info", "group__PlaySyncManagerInterface.html#ggaaeadf40cf038c0983ce0de96a4d32d53a4059b0251f66a18cb56f544728796875", null ],
+      [ "Media", "group__PlaySyncManagerInterface.html#ggaaeadf40cf038c0983ce0de96a4d32d53a3b563524fdb17b4a86590470d40bef74", null ],
+      [ "Alert", "group__PlaySyncManagerInterface.html#ggaaeadf40cf038c0983ce0de96a4d32d53ab92071d61c88498171928745ca53078b", null ],
+      [ "Call", "group__PlaySyncManagerInterface.html#ggaaeadf40cf038c0983ce0de96a4d32d53ac3755e61202abd74da5885d2e9c9160e", null ]
     ] ]
 ];

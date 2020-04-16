@@ -9,6 +9,7 @@ var group__NuguFocus =
     [ "NuguUnfocusCallback", "group__NuguFocus.html#gab4338c8fd1441257a2af195ab69dcd5d", null ],
     [ "NuguStealfocusCallback", "group__NuguFocus.html#ga259fcd51521192e03c51965306765c39", null ],
     [ "nugu_focus_type", "group__NuguFocus.html#ga0ec64a82f624b9066219fbd0846e8f77", [
+      [ "NUGU_FOCUS_TYPE_CALL", "group__NuguFocus.html#gga0ec64a82f624b9066219fbd0846e8f77ad8c74c1b67d3cc103d074843db99accd", null ],
       [ "NUGU_FOCUS_TYPE_ALERT", "group__NuguFocus.html#gga0ec64a82f624b9066219fbd0846e8f77ade252fadd891cd89a05524ad98a605d9", null ],
       [ "NUGU_FOCUS_TYPE_ASR", "group__NuguFocus.html#gga0ec64a82f624b9066219fbd0846e8f77acf3858a86ad256c9eb159ac16579edff", null ],
       [ "NUGU_FOCUS_TYPE_TTS", "group__NuguFocus.html#gga0ec64a82f624b9066219fbd0846e8f77a83d6b6637fd3b8b4e13d08d71d09379e", null ],

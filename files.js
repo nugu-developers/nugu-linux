@@ -28,15 +28,14 @@ var files =
     [ "nugu_pcm.h", "nugu__pcm_8h.html", "nugu__pcm_8h" ],
     [ "nugu_player.h", "nugu__player_8h.html", "nugu__player_8h" ],
     [ "nugu_plugin.h", "nugu__plugin_8h.html", "nugu__plugin_8h" ],
+    [ "nugu_prof.h", "nugu__prof_8h.html", "nugu__prof_8h" ],
     [ "nugu_recorder.h", "nugu__recorder_8h.html", "nugu__recorder_8h" ],
     [ "nugu_ringbuffer.h", "nugu__ringbuffer_8h.html", "nugu__ringbuffer_8h" ],
     [ "nugu_timer.h", "nugu__timer_8h.html", "nugu__timer_8h" ],
     [ "nugu_timer_interface.hh", "nugu__timer__interface_8hh.html", "nugu__timer__interface_8hh" ],
     [ "nugu_uuid.h", "nugu__uuid_8h.html", "nugu__uuid_8h" ],
-    [ "playsync_manager_interface.hh", "playsync__manager__interface_8hh.html", [
-      [ "DisplayRenderer", "structNuguClientKit_1_1IPlaySyncManager_1_1DisplayRenderer.html", "structNuguClientKit_1_1IPlaySyncManager_1_1DisplayRenderer" ],
-      [ "DisplayRenderInfo", "structNuguClientKit_1_1IPlaySyncManager_1_1DisplayRenderInfo.html", "structNuguClientKit_1_1IPlaySyncManager_1_1DisplayRenderInfo" ]
-    ] ],
+    [ "playsync_manager_interface.hh", "playsync__manager__interface_8hh.html", "playsync__manager__interface_8hh" ],
+    [ "sound_interface.hh", "sound__interface_8hh.html", "sound__interface_8hh" ],
     [ "speaker_interface.hh", "speaker__interface_8hh.html", "speaker__interface_8hh" ],
     [ "speech_recognizer_interface.hh", "speech__recognizer__interface_8hh.html", "speech__recognizer__interface_8hh" ],
     [ "system_interface.hh", "system__interface_8hh.html", "system__interface_8hh" ],

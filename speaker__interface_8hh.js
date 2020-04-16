@@ -6,7 +6,6 @@ var speaker__interface_8hh =
     [ "SpeakerType", "speaker__interface_8hh.html#ga8601f6be80368c9d1a7c7b346c99a698", [
       [ "NUGU", "speaker__interface_8hh.html#gga8601f6be80368c9d1a7c7b346c99a698a5cf2406ff6ad128f4d2ebd67ca595b0f", null ],
       [ "CALL", "speaker__interface_8hh.html#gga8601f6be80368c9d1a7c7b346c99a698aca3547acb9162b49fb4a6594ed9b3030", null ],
-      [ "ALARM", "speaker__interface_8hh.html#gga8601f6be80368c9d1a7c7b346c99a698a9de6d0a670ae5a0dee31a6318aa00e8d", null ],
-      [ "EXTERNAL", "speaker__interface_8hh.html#gga8601f6be80368c9d1a7c7b346c99a698a3932d629fb5e2be9d09b3a4485b3cc9d", null ]
+      [ "ALARM", "speaker__interface_8hh.html#gga8601f6be80368c9d1a7c7b346c99a698a9de6d0a670ae5a0dee31a6318aa00e8d", null ]
     ] ]
 ];

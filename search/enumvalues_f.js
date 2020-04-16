@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['wakeup_5fdetected',['WAKEUP_DETECTED',['../group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a414bbfd491b2bcc1fe2538cff08c2c28',1,'NuguClientKit']]],
-  ['wakeup_5fdetecting',['WAKEUP_DETECTING',['../group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119aaa5bf1ece51d36575b3f26c570899008',1,'NuguClientKit']]],
-  ['wakeup_5ffail',['WAKEUP_FAIL',['../group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a7b2e84d7ac904c69cc66b63252822dbe',1,'NuguClientKit']]]
+  ['unauthorized_5frequest_5fexception',['UNAUTHORIZED_REQUEST_EXCEPTION',['../group__SystemInterface.html#ggae95aa9037a85a223126f51c1efcbe671a073b62332ae9f9b319a9d1867ccdcf90',1,'NuguCapability']]],
+  ['unknown',['UNKNOWN',['../group__ASRInterface.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21a696b031073e74bf2cb98e5ef201d4aa3',1,'NuguCapability::UNKNOWN()'],['../group__NetworkManagerInterface.html#gga6aff79e2435c590ea44de8c43754e015a696b031073e74bf2cb98e5ef201d4aa3',1,'NuguClientKit::UNKNOWN()']]]
 ];

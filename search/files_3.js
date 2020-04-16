@@ -18,6 +18,7 @@ var searchData=
   ['nugu_5fpcm_2eh',['nugu_pcm.h',['../nugu__pcm_8h.html',1,'']]],
   ['nugu_5fplayer_2eh',['nugu_player.h',['../nugu__player_8h.html',1,'']]],
   ['nugu_5fplugin_2eh',['nugu_plugin.h',['../nugu__plugin_8h.html',1,'']]],
+  ['nugu_5fprof_2eh',['nugu_prof.h',['../nugu__prof_8h.html',1,'']]],
   ['nugu_5frecorder_2eh',['nugu_recorder.h',['../nugu__recorder_8h.html',1,'']]],
   ['nugu_5fringbuffer_2eh',['nugu_ringbuffer.h',['../nugu__ringbuffer_8h.html',1,'']]],
   ['nugu_5ftimer_2eh',['nugu_timer.h',['../nugu__timer_8h.html',1,'']]],

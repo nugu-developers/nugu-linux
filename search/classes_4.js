@@ -6,6 +6,7 @@ var searchData=
   ['nugu_5fpcm_5fdriver_5fops',['nugu_pcm_driver_ops',['../structnugu__pcm__driver__ops.html',1,'']]],
   ['nugu_5fplayer_5fdriver_5fops',['nugu_player_driver_ops',['../structnugu__player__driver__ops.html',1,'']]],
   ['nugu_5fplugin_5fdesc',['nugu_plugin_desc',['../structnugu__plugin__desc.html',1,'']]],
+  ['nugu_5fprof_5fdata',['nugu_prof_data',['../structnugu__prof__data.html',1,'']]],
   ['nugu_5frecorder_5fdriver_5fops',['nugu_recorder_driver_ops',['../structnugu__recorder__driver__ops.html',1,'']]],
   ['nuguclient',['NuguClient',['../classNuguClientKit_1_1NuguClient.html',1,'NuguClientKit']]]
 ];

@@ -9,6 +9,7 @@ var group__CapabilityHelperInterface =
       [ "notifyEventResult", "classNuguClientKit_1_1ICapabilityHelper.html#a5337a0d2fbf740be01d803301f27ad90", null ],
       [ "suspendAll", "classNuguClientKit_1_1ICapabilityHelper.html#a48fdb6e7b6fed097591aea3b15379f3d", null ],
       [ "restoreAll", "classNuguClientKit_1_1ICapabilityHelper.html#a408c45b8df4996455c70c1bde4625554", null ],
+      [ "getWakeupWord", "classNuguClientKit_1_1ICapabilityHelper.html#a807b1ca12dd3b9424c6f20ac410bffe5", null ],
       [ "getCapabilityProperty", "classNuguClientKit_1_1ICapabilityHelper.html#a9878c9ed46f88f234b3fe1fe0f4bd5b9", null ],
       [ "getCapabilityProperties", "classNuguClientKit_1_1ICapabilityHelper.html#a79fce0957412096aa675388bbb82596b", null ],
       [ "addFocus", "classNuguClientKit_1_1ICapabilityHelper.html#ac37fffae514dfc7e13aef238adf4dac6", null ],
@@ -16,7 +17,7 @@ var group__CapabilityHelperInterface =
       [ "releaseFocus", "classNuguClientKit_1_1ICapabilityHelper.html#af2d2f35b4521756f4f30e529e3f886ad", null ],
       [ "requestFocus", "classNuguClientKit_1_1ICapabilityHelper.html#a73c65480432b57a1f67e24d2013d68ee", null ],
       [ "isFocusOn", "classNuguClientKit_1_1ICapabilityHelper.html#ad03dadfe020c6393884f5092e812a916", null ],
-      [ "makeContextInfo", "classNuguClientKit_1_1ICapabilityHelper.html#a23b8f9d9da272e20810c32337844af08", null ],
+      [ "makeContextInfo", "classNuguClientKit_1_1ICapabilityHelper.html#ad0ad702511967625952dce147e81e14f", null ],
       [ "makeAllContextInfo", "classNuguClientKit_1_1ICapabilityHelper.html#ab8bb6c82bc6661316bf36230be31392e", null ],
       [ "makeAllContextInfoStack", "classNuguClientKit_1_1ICapabilityHelper.html#a31e33344720c97b5490db39db112f95b", null ]
     ] ],

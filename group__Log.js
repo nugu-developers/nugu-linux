@@ -18,6 +18,7 @@ var group__Log =
     ] ],
     [ "nugu_log_system", "group__Log.html#gab1725c99430be936620a19b430c3b402", [
       [ "NUGU_LOG_SYSTEM_STDERR", "group__Log.html#ggab1725c99430be936620a19b430c3b402aa8856c024d8392947a6317f3466d784b", null ],
+      [ "NUGU_LOG_SYSTEM_STDOUT", "group__Log.html#ggab1725c99430be936620a19b430c3b402ab87123993f356cc0d91731d4547c798d", null ],
       [ "NUGU_LOG_SYSTEM_SYSLOG", "group__Log.html#ggab1725c99430be936620a19b430c3b402acf37c60f439af34844348d35514efb7e", null ],
       [ "NUGU_LOG_SYSTEM_NONE", "group__Log.html#ggab1725c99430be936620a19b430c3b402a495e07be5871586febee3cff70d7b966", null ],
       [ "NUGU_LOG_SYSTEM_CUSTOM", "group__Log.html#ggab1725c99430be936620a19b430c3b402a8651102d8578a7788a7e0dabc36b7446", null ]
@@ -39,8 +40,9 @@ var group__Log =
       [ "NUGU_LOG_MODULE_DEFAULT", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a1f0adc296d7281462df6849a20e31e25", null ],
       [ "NUGU_LOG_MODULE_NETWORK", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a1348ecae72b488b9659302edb664a335", null ],
       [ "NUGU_LOG_MODULE_NETWORK_TRACE", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a0e100a30d830e34705f7fce584c5fd9b", null ],
-      [ "NUGU_LOG_MODULE_PROTOCOL", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a", null ],
       [ "NUGU_LOG_MODULE_AUDIO", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1add078a62fcecb6824fffe689fc4c99ab", null ],
+      [ "NUGU_LOG_MODULE_PROTOCOL", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a", null ],
+      [ "NUGU_LOG_MODULE_PROFILING", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1aea28249dc595a96495a8965a5aea8d71", null ],
       [ "NUGU_LOG_MODULE_ALL", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1ac434ac7176e2d04c33b39173efc56df9", null ]
     ] ],
     [ "nugu_log_print", "group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc", null ],
@@ -51,5 +53,9 @@ var group__Log =
     [ "nugu_log_get_prefix_fields", "group__Log.html#gafae3378cc5a0bb08288002898f9b6d99", null ],
     [ "nugu_log_set_modules", "group__Log.html#ga47696b2ab4e09c4575cfae8eef78fb2d", null ],
     [ "nugu_log_get_modules", "group__Log.html#gaee99e7983d63c14b62399824b2aa549a", null ],
+    [ "nugu_log_set_level", "group__Log.html#gaa8560c53d3e0e8d34a0398ea0d9b9cb7", null ],
+    [ "nugu_log_get_level", "group__Log.html#ga7576f1eda95eb27cf81eff9d7c1fa7d3", null ],
+    [ "nugu_log_set_protocol_line_limit", "group__Log.html#gafb90c795bcc8e4f695df9c60576c1ceb", null ],
+    [ "nugu_log_get_protocol_line_limit", "group__Log.html#ga860e8aea9bbff532c81e4acbc1f7504e", null ],
     [ "nugu_hexdump", "group__Log.html#ga12a34c7723f6eb5ad53b9e775f4c0cbd", null ]
 ];

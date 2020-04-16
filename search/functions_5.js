@@ -11,6 +11,8 @@ var searchData=
   ['getepdpauselength',['getEpdPauseLength',['../classNuguClientKit_1_1ISpeechRecognizer.html#a2175d92758fc274694885a82fc4e5140',1,'NuguClientKit::ISpeechRecognizer']]],
   ['getepdsilenceinterval',['getEpdSilenceInterval',['../classNuguCapability_1_1IASRHandler.html#a21ba6d6e3a66409370184ac4877e0612',1,'NuguCapability::IASRHandler']]],
   ['getinterval',['getInterval',['../classNuguClientKit_1_1INuguTimer.html#a8c2a292628296eae6f9a96441c777484',1,'NuguClientKit::INuguTimer']]],
+  ['getlayertype',['getLayerType',['../classNuguClientKit_1_1IPlaySyncManager.html#a98ff6622d7f60b4be63ae2ae2cd022cf',1,'NuguClientKit::IPlaySyncManager']]],
+  ['getmessageid',['getMessageId',['../classNuguClientKit_1_1CapabilityEvent.html#a589299abc9711ae593c493f15e1da456',1,'NuguClientKit::CapabilityEvent']]],
   ['getname',['getName',['../classNuguClientKit_1_1CapabilityEvent.html#afe9da44f52de0c68b1b6dd52c03ab2ff',1,'NuguClientKit::CapabilityEvent::getName()'],['../classNuguClientKit_1_1Capability.html#a2242903bb83c781ae5cc12d5fb52cd00',1,'NuguClientKit::Capability::getName()'],['../classNuguClientKit_1_1ICapabilityInterface.html#aa5d512ebf9c13ab2eabbfd5709698fb5',1,'NuguClientKit::ICapabilityInterface::getName()']]],
   ['getnetworkmanager',['getNetworkManager',['../classNuguClientKit_1_1NuguClient.html#aa600061f3d9fd1f07eb933d10069ed81',1,'NuguClientKit::NuguClient']]],
   ['getnugucorecontainer',['getNuguCoreContainer',['../classNuguClientKit_1_1NuguClient.html#a0ad308f320bd4431bcb3edae6e806972',1,'NuguClientKit::NuguClient']]],
@@ -22,5 +24,6 @@ var searchData=
   ['getproperty',['getProperty',['../classNuguClientKit_1_1Capability.html#a8a79e49ff3d05c9a64c353d8101a4f77',1,'NuguClientKit::Capability::getProperty()'],['../classNuguClientKit_1_1ICapabilityInterface.html#a8c18074d60950775190d52b18b31192d',1,'NuguClientKit::ICapabilityInterface::getProperty()']]],
   ['getreferrerdialogrequestid',['getReferrerDialogRequestId',['../classNuguClientKit_1_1Capability.html#a816360cdb2cf20e61a22bcbab592cc10',1,'NuguClientKit::Capability']]],
   ['getrepeat',['getRepeat',['../classNuguClientKit_1_1INuguTimer.html#accfecfc5b1f9d89c5706c0d3d51e1712',1,'NuguClientKit::INuguTimer']]],
-  ['getversion',['getVersion',['../classNuguClientKit_1_1Capability.html#a0ec8b1adcf68e5f86a8fca679b02aa3b',1,'NuguClientKit::Capability::getVersion()'],['../classNuguClientKit_1_1ICapabilityInterface.html#a5165192ab427d8115df899323ee482c0',1,'NuguClientKit::ICapabilityInterface::getVersion()']]]
+  ['getversion',['getVersion',['../classNuguClientKit_1_1Capability.html#a0ec8b1adcf68e5f86a8fca679b02aa3b',1,'NuguClientKit::Capability::getVersion()'],['../classNuguClientKit_1_1ICapabilityInterface.html#a5165192ab427d8115df899323ee482c0',1,'NuguClientKit::ICapabilityInterface::getVersion()']]],
+  ['getwakeupword',['getWakeupWord',['../classNuguClientKit_1_1ICapabilityHelper.html#a807b1ca12dd3b9424c6f20ac410bffe5',1,'NuguClientKit::ICapabilityHelper']]]
 ];

@@ -4,6 +4,7 @@ var group__SDKNuguCapability =
     [ "AudioPlayerInterface", "group__AudioPlayerInterface.html", "group__AudioPlayerInterface" ],
     [ "CapabilityFactory", "group__CapabilityFactory.html", "group__CapabilityFactory" ],
     [ "MicInterface", "group__MicInterface.html", "group__MicInterface" ],
+    [ "SoundInterface", "group__SoundInterface.html", "group__SoundInterface" ],
     [ "SpeakerInterface", "group__SpeakerInterface.html", "group__SpeakerInterface" ],
     [ "SystemInterface", "group__SystemInterface.html", "group__SystemInterface" ],
     [ "TextInterface", "group__TextInterface.html", "group__TextInterface" ],

@@ -13,6 +13,7 @@ var group__SDKBase =
     [ "PCM manipulation", "group__NuguPcm.html", "group__NuguPcm" ],
     [ "Media player", "group__NuguPlayer.html", "group__NuguPlayer" ],
     [ "Plugin", "group__NuguPlugin.html", "group__NuguPlugin" ],
+    [ "Profiling", "group__Profiling.html", "group__Profiling" ],
     [ "Voice recorder", "group__NuguRecorder.html", "group__NuguRecorder" ],
     [ "RingBuffer", "group__NuguRingBuffer.html", "group__NuguRingBuffer" ],
     [ "Timer", "group__NuguTimer.html", "group__NuguTimer" ],

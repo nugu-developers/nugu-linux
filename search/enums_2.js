@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['listeningstate',['ListeningState',['../group__SpeechRecognizerInterface.html#gaae383c251ee0fa6e96e4c53b9f5d9a3a',1,'NuguClientKit']]]
+  ['controllyricsdirection',['ControlLyricsDirection',['../group__AudioPlayerInterface.html#ga981015a8d321936038813f3f1ea0bf0a',1,'NuguCapability']]]
 ];

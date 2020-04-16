@@ -18,5 +18,5 @@ var searchData=
   ['ttsattribute',['TTSAttribute',['../structNuguCapability_1_1TTSAttribute.html',1,'NuguCapability']]],
   ['ttsinterface',['TTSInterface',['../group__TTSInterface.html',1,'']]],
   ['ttsstate',['TTSState',['../group__TTSInterface.html#ga7d4f4423b5757b9a2b029a5ce5fbcccf',1,'NuguCapability']]],
-  ['type',['type',['../classNuguCapability_1_1SpeakerInfo.html#ae8a602ed2f1acabfe439030ac269061c',1,'NuguCapability::SpeakerInfo::type()'],['../structNuguClientKit_1_1IPlaySyncManager_1_1DisplayRenderInfo.html#a116fd075372f33e86e9e24a90c50cbaa',1,'NuguClientKit::IPlaySyncManager::DisplayRenderInfo::type()']]]
+  ['type',['type',['../structnugu__prof__data.html#a062ca9707171a1f9ffce1efc0682e06f',1,'nugu_prof_data::type()'],['../classNuguCapability_1_1SpeakerInfo.html#ae8a602ed2f1acabfe439030ac269061c',1,'NuguCapability::SpeakerInfo::type()'],['../structNuguClientKit_1_1IPlaySyncManager_1_1DisplayRenderInfo.html#a116fd075372f33e86e9e24a90c50cbaa',1,'NuguClientKit::IPlaySyncManager::DisplayRenderInfo::type()']]]
 ];

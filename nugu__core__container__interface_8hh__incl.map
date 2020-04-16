@@ -1,5 +1,5 @@
 <map id="nugu_core_container_interface.hh" name="nugu_core_container_interface.hh">
-<area shape="rect" id="node2" href="$capability__helper__interface_8hh.html" title="clientkit/capability\l_helper_interface.hh" alt="" coords="217,95,356,136"/>
+<area shape="rect" id="node2" href="$capability__helper__interface_8hh.html" title="clientkit/capability\l_helper_interface.hh" alt="" coords="179,95,317,136"/>
 <area shape="rect" id="node10" href="$media__player__interface_8hh.html" title="clientkit/media_player\l_interface.hh" alt="" coords="385,95,533,136"/>
 <area shape="rect" id="node11" href="$network__manager__interface_8hh.html" title="clientkit/network_manager\l_interface.hh" alt="" coords="557,95,731,136"/>
 <area shape="rect" id="node12" href="$nugu__timer__interface_8hh.html" title="clientkit/nugu_timer\l_interface.hh" alt="" coords="755,95,890,136"/>

@@ -19,6 +19,8 @@ var searchData=
   ['inugutimer',['INuguTimer',['../classNuguClientKit_1_1INuguTimer.html',1,'NuguClientKit']]],
   ['iplaysyncmanager',['IPlaySyncManager',['../classNuguClientKit_1_1IPlaySyncManager.html',1,'NuguClientKit']]],
   ['iplaysyncmanagerlistener',['IPlaySyncManagerListener',['../classNuguClientKit_1_1IPlaySyncManagerListener.html',1,'NuguClientKit']]],
+  ['isoundhandler',['ISoundHandler',['../classNuguCapability_1_1ISoundHandler.html',1,'NuguCapability']]],
+  ['isoundlistener',['ISoundListener',['../classNuguCapability_1_1ISoundListener.html',1,'NuguCapability']]],
   ['ispeakerhandler',['ISpeakerHandler',['../classNuguCapability_1_1ISpeakerHandler.html',1,'NuguCapability']]],
   ['ispeakerlistener',['ISpeakerListener',['../classNuguCapability_1_1ISpeakerListener.html',1,'NuguCapability']]],
   ['ispeechrecognizer',['ISpeechRecognizer',['../classNuguClientKit_1_1ISpeechRecognizer.html',1,'NuguClientKit']]],

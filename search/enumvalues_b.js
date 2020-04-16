@@ -1,8 +1,10 @@
 var searchData=
 [
-  ['ready',['READY',['../group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317ea2baa69eafc7204f3bd8648eba580c489',1,'NuguClientKit::READY()'],['../group__SpeechRecognizerInterface.html#ggaae383c251ee0fa6e96e4c53b9f5d9a3aa2baa69eafc7204f3bd8648eba580c489',1,'NuguClientKit::READY()']]],
-  ['recognize_5ferror',['RECOGNIZE_ERROR',['../group__ASRInterface.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21ab7bc01e941b272a54a236e1303aed2a1',1,'NuguCapability']]],
-  ['recognizing',['RECOGNIZING',['../group__ASRInterface.html#ggafe4f48f063bafec608e5060090a9543ba437f3cbaf966fe37c60ee219ecb23576',1,'NuguCapability']]],
-  ['response_5ftimeout',['RESPONSE_TIMEOUT',['../group__ASRInterface.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21a0bc1f3f491e9717b6ff83103a014d496',1,'NuguCapability::RESPONSE_TIMEOUT()'],['../group__TextInterface.html#ggab868b04fc95d19706ef1896699930baca0bc1f3f491e9717b6ff83103a014d496',1,'NuguCapability::RESPONSE_TIMEOUT()']]],
-  ['revoked_5fdevice',['REVOKED_DEVICE',['../group__SystemInterface.html#gga210ca95bced11e44b9558947bb31a2eba64553a0f7f0768e2fc75f89f901ec790',1,'NuguCapability']]]
+  ['pause',['PAUSE',['../classNuguClientKit_1_1ICapabilityInterface.html#a15d8782f9a3ea99381f64fe5d159a2f2a291554596c183e837f0a6bec3767c891',1,'NuguClientKit::ICapabilityInterface']]],
+  ['paused',['PAUSED',['../group__AudioPlayerInterface.html#ggadb28ffbfa534751260baf341f9819f94a99b2439e63f73ad515f7ab2447a80673',1,'NuguCapability::PAUSED()'],['../group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317ea99b2439e63f73ad515f7ab2447a80673',1,'NuguClientKit::PAUSED()']]],
+  ['play_5frouter_5fprocessing_5fexception',['PLAY_ROUTER_PROCESSING_EXCEPTION',['../group__SystemInterface.html#ggae95aa9037a85a223126f51c1efcbe671ae868122b754c03f37fef7f17455997a5',1,'NuguCapability']]],
+  ['playing',['PLAYING',['../group__AudioPlayerInterface.html#ggadb28ffbfa534751260baf341f9819f94a50366a49630a416ab3ccaa004196027e',1,'NuguCapability::PLAYING()'],['../group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317ea50366a49630a416ab3ccaa004196027e',1,'NuguClientKit::PLAYING()']]],
+  ['playing_5fmedia_5ffinished',['PLAYING_MEDIA_FINISHED',['../group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca8aa89e3b945415649b8fa48f74865763',1,'NuguClientKit']]],
+  ['prepare',['PREPARE',['../group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317eab205205bc58adbefd02d8ba357b9c57f',1,'NuguClientKit']]],
+  ['previous',['PREVIOUS',['../group__AudioPlayerInterface.html#gga981015a8d321936038813f3f1ea0bf0aa315ba7a868d45a9cb131c8dca3166b51',1,'NuguCapability']]]
 ];
