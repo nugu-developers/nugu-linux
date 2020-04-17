@@ -184,7 +184,7 @@ void PlaySyncManager::removeContext(const std::string& ps_id, const std::string&
             else
                 long_timer->start();
         } catch (std::out_of_range& exception) {
-            nugu_error(exception.what());
+            nugu_warn(exception.what());
         }
     }
 
@@ -267,8 +267,10 @@ void PlaySyncManager::addStackElement(const std::string& ps_id, const std::strin
 {
     auto& stack_elements = context_map[ps_id];
 
-    if (std::find(stack_elements.begin(), stack_elements.end(), cap_name) == stack_elements.end())
+    if (std::find(stack_elements.begin(), stack_elements.end(), cap_name) == stack_elements.end()) {
         stack_elements.emplace_back(cap_name);
+        layer_map[ps_id] = layer;
+    }
 }
 
 bool PlaySyncManager::removeStackElement(const std::string& ps_id, const std::string& cap_name)
@@ -316,7 +318,7 @@ int PlaySyncManager::getRendererInterval(const std::string& ps_id)
         try {
             duration_time = DURATION_MAP.at(renderer_map.at(ps_id).duration);
         } catch (std::out_of_range& exception) {
-            nugu_error(exception.what());
+            nugu_warn(exception.what());
         }
     }
 
