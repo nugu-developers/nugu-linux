@@ -165,8 +165,9 @@ public:
 
     /**
      * @brief Notify error occurred when ASR.
+     * @param[in] expect_speech whether expect speech situation or not
      */
-    virtual void onASRError() = 0;
+    virtual void onASRError(bool expect_speech) = 0;
 };
 
 /**

@@ -657,11 +657,12 @@ void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error, bool release_focu
             asr_listener->onError(error, getRecognizeDialogId());
     }
 
+    playsync_manager->onASRError(isExpectSpeechState());
+
     if (release_focus) {
         nugu_dbg("request to release focus");
         capa_helper->releaseFocus("asr");
     }
-    playsync_manager->onASRError();
 }
 
 bool ASRAgent::isExpectSpeechState()

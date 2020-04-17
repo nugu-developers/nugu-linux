@@ -44,7 +44,7 @@ public:
     void setExpectSpeech(bool expect_speech) override;
     void holdContext() override;
     void clearContextHold() override;
-    void onASRError() override;
+    void onASRError(bool expect_speech) override;
 
     void setDirectiveGroups(const std::string& groups);
 
