@@ -115,7 +115,7 @@ void PlaySyncManager::addContext(const std::string& ps_id, const std::string& ca
 void PlaySyncManager::addContext(const std::string& ps_id, const std::string& cap_name, DisplayRenderer&& renderer)
 {
     if (ps_id.empty()) {
-        nugu_error("Invalid PlayServiceId.");
+        nugu_warn("Invalid PlayServiceId.");
         return;
     }
 
@@ -172,7 +172,7 @@ void PlaySyncManager::removeContextAction(const std::string& ps_id, bool immedia
 void PlaySyncManager::removeContext(const std::string& ps_id, const std::string& cap_name, bool immediately)
 {
     if (ps_id.empty()) {
-        nugu_error("Invalid PlayServiceId.");
+        nugu_warn("Invalid PlayServiceId.");
         return;
     }
 
@@ -194,7 +194,12 @@ void PlaySyncManager::removeContext(const std::string& ps_id, const std::string&
 void PlaySyncManager::removeContextInnerly(const std::string& ps_id, const std::string& cap_name, bool immediately)
 {
     if (ps_id.empty()) {
-        nugu_error("Invalid PlayServiceId.");
+        nugu_warn("Invalid PlayServiceId.");
+        return;
+    }
+
+    if (context_map.find(ps_id) == context_map.end()) {
+        nugu_warn("There are not exist matched context.");
         return;
     }
 
@@ -360,12 +365,12 @@ void PlaySyncManager::clearContextHold()
         timer->start();
 }
 
-void PlaySyncManager::onASRError()
+void PlaySyncManager::onASRError(bool expect_speech)
 {
     is_expect_speech = false;
 
     if (!context_stack.empty())
-        removeContextInnerly(context_stack.back(), "TTS", false);
+        removeContextInnerly(context_stack.back(), "TTS", expect_speech);
 
     // reset pending long timer if exists
     if (long_timer && long_timer->hasPending())
