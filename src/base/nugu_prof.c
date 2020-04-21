@@ -90,9 +90,11 @@ static const struct nugu_prof_hints _hints[NUGU_PROF_TYPE_MAX + 1] = {
 
 	/* TTS */
 	{ "TTS Speak directive", NUGU_PROF_TYPE_MAX },
+	{ "TTS failed", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
 	{ "TTS started", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
 	{ "TTS first data", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
 	{ "TTS last data", NUGU_PROF_TYPE_TTS_FIRST_ATTACHMENT },
+	{ "TTS stopped", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
 	{ "TTS finished", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
 
 	/* Audio */
@@ -137,6 +139,8 @@ EXPORT_API void nugu_prof_clear(void)
 	pthread_mutex_lock(&_lock);
 	memset(_prof_data, 0, sizeof(_prof_data));
 	pthread_mutex_unlock(&_lock);
+
+	nugu_dbg("clear profiling cache %d bytes", sizeof(_prof_data));
 }
 
 EXPORT_API void nugu_prof_enable_tracelog(void)

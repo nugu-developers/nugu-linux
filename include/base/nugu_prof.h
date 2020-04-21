@@ -153,6 +153,9 @@ enum nugu_prof_type {
 	NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE,
 	/**< TTS.Speak directive received */
 
+	NUGU_PROF_TYPE_TTS_FAILED,
+	/**< TTS play failed */
+
 	NUGU_PROF_TYPE_TTS_STARTED,
 	/**< TTS started */
 
@@ -161,6 +164,9 @@ enum nugu_prof_type {
 
 	NUGU_PROF_TYPE_TTS_LAST_ATTACHMENT,
 	/**< TTS receive last attachment */
+
+	NUGU_PROF_TYPE_TTS_STOPPED,
+	/**< TTS stopped */
 
 	NUGU_PROF_TYPE_TTS_FINISHED,
 	/**< TTS finished */

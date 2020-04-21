@@ -43,6 +43,8 @@ void TTSListener::onTTSText(const std::string& text, const std::string& dialog_i
 
 void TTSListener::onTTSCancel(const std::string& dialog_id)
 {
+    nugu_prof_dump(NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE, NUGU_PROF_TYPE_TTS_STOPPED);
+
     std::cout << "[TTS][id:" << dialog_id << "] CANCEL... " << std::endl;
 }
 

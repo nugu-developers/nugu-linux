@@ -115,12 +115,25 @@ void TTSAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
         tts->player->write_done();
         tts->destroyDirective(ndir);
         tts->speak_dir = NULL;
+
+        nugu_dbg("tts player state: %d", tts->player->state());
+        if (tts->player->state() == MediaPlayerState::IDLE) {
+            nugu_warn("TTS play fails, force release the focus");
+            tts->capa_helper->releaseFocus("cap_tts");
+        }
     }
 }
 
 void TTSAgent::onFocus(void* event)
 {
-    player->play();
+    if (!player->play()) {
+        nugu_error("play() failed");
+        if (speak_dir) {
+            nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_FAILED,
+                nugu_directive_peek_dialog_id(speak_dir),
+                nugu_directive_peek_msg_id(speak_dir), NULL);
+        }
+    }
 
     if (speak_dir) {
         if (nugu_directive_get_data_size(speak_dir) > 0)
@@ -134,7 +147,8 @@ NuguFocusResult TTSAgent::onUnfocus(void* event, NuguUnFocusMode mode)
 {
     MediaPlayerState pre_state = cur_state;
 
-    player->stop();
+    if (!player->stop())
+        nugu_error("stop() failed");
 
     playsync_manager->removeContext(playstackctl_ps_id, getName(), !is_finished);
 
@@ -281,8 +295,15 @@ void TTSAgent::sendEventSpeechFinished(const std::string& token, EventResultCall
 
 void TTSAgent::sendEventSpeechStopped(const std::string& token, EventResultCallback cb)
 {
-    if (ps_id.size())
-        sendEventCommon("SpeechStopped", token, std::move(cb));
+    if (ps_id.size()) {
+        CapabilityEvent event("SpeechStopped", this);
+
+        sendEventCommon(&event, token, std::move(cb));
+
+        nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_STOPPED,
+            event.getDialogRequestId().c_str(),
+            event.getMessageId().c_str(), NULL);
+    }
 }
 
 std::string TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id, EventResultCallback cb)
@@ -311,25 +332,6 @@ std::string TTSAgent::sendEventSpeechPlay(const std::string& token, const std::s
     payload = writer.write(root);
 
     return sendEvent(ename, getContextInfo(), payload, std::move(cb));
-}
-
-void TTSAgent::sendEventCommon(const std::string& ename, const std::string& token, EventResultCallback cb)
-{
-    std::string payload = "";
-    Json::StyledWriter writer;
-    Json::Value root;
-
-    if (token.size() == 0) {
-        nugu_error("there is something wrong [%s]", ename.c_str());
-        return;
-    }
-
-    root["token"] = token;
-    if (ps_id.size())
-        root["playServiceId"] = ps_id;
-    payload = writer.write(root);
-
-    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void TTSAgent::sendEventCommon(CapabilityEvent *event, const std::string& token, EventResultCallback cb)
