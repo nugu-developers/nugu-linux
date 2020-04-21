@@ -21,7 +21,6 @@
 
 #include "capability_collection.hh"
 #include "nugu_sample_manager.hh"
-#include "speech_operator.hh"
 
 using namespace NuguClientKit;
 
@@ -35,22 +34,15 @@ std::unique_ptr<T> make_unique(Ts&&... params)
     return std::unique_ptr<T>(new T(std::forward<Ts>(params)...));
 }
 
-void msg_error(const std::string& message)
+void msg_error(std::string&& message)
 {
     NuguSampleManager::error(message);
 }
 
-void msg_info(const std::string& message)
+void msg_info(std::string&& message)
 {
     NuguSampleManager::info(message);
 }
-
-class NuguClientListener : public INuguClientListener {
-public:
-    void onInitialized(void* userdata)
-    {
-    }
-};
 
 class NetworkManagerListener : public INetworkManagerListener {
 public:
@@ -90,17 +82,33 @@ public:
 
     void onEventSent(const char* ename, const char* msg_id, const char* dialog_id, const char* referrer_id)
     {
-        std::string msg = "send event(" + std::string(ename) + ") msg_id - " + std::string(msg_id);
-        msg += "\n\tdialog_id: " + std::string(dialog_id);
+        std::string msg;
+        msg.append("send event(")
+            .append(ename)
+            .append(") msg_id - ")
+            .append(msg_id)
+            .append("\n\tdialog_id: ")
+            .append(dialog_id);
+
         if (referrer_id)
-            msg += ", referrer_id: " + std::string(referrer_id);
-        msg_info(msg);
+            msg.append(", referrer_id: ")
+                .append(referrer_id);
+
+        msg_info(std::move(msg));
     }
 
     void onEventResult(const char* msg_id, bool success, int code)
     {
-        std::string msg = "result event - " + std::string(msg_id) + "(" + std::to_string(success) + ", code: " + std::to_string(code) + ")";
-        msg_info(msg);
+        std::string msg;
+        msg.append("result event - ")
+            .append(msg_id)
+            .append("(")
+            .append(std::to_string(success))
+            .append(", code: ")
+            .append(std::to_string(code))
+            .append(")");
+
+        msg_info(std::move(msg));
     }
 };
 
@@ -143,12 +151,9 @@ int main(int argc, char** argv)
 
     nugu_sample_manager->prepare();
 
-    auto nugu_client_listener(make_unique<NuguClientListener>());
-    auto network_manager_listener(make_unique<NetworkManagerListener>());
-
     nugu_client = make_unique<NuguClient>();
-    nugu_client->setListener(nugu_client_listener.get());
     capa_collection = make_unique<CapabilityCollection>();
+    auto network_manager_listener(make_unique<NetworkManagerListener>());
 
     registerCapabilities();
 
@@ -168,10 +173,12 @@ int main(int argc, char** argv)
     }
 
     auto nugu_core_container(nugu_client->getNuguCoreContainer());
-    auto wakeup_handler(nugu_core_container->createWakeupHandler(nugu_sample_manager->getModelPath()));
-    auto speech_operator(capa_collection->getSpeechOperator());
+    auto wakeup_handler(std::unique_ptr<IWakeupHandler>(
+        nugu_core_container->createWakeupHandler(nugu_sample_manager->getModelPath())));
 
-    speech_operator->setWakeupHandler(wakeup_handler);
+    auto speech_operator(capa_collection->getSpeechOperator());
+    speech_operator->setWakeupHandler(wakeup_handler.get());
+
     nugu_sample_manager->setSpeechOperator(speech_operator)
         ->setNetworkCallback(NuguSampleManager::NetworkCallback {
             [&]() { return network_manager->connect(); },
@@ -183,11 +190,7 @@ int main(int argc, char** argv)
             msg_info("de-initialization start");
 
             // release resource
-            if (wakeup_handler) {
-                delete wakeup_handler;
-                wakeup_handler = nullptr;
-            }
-
+            wakeup_handler.reset();
             nugu_client->deInitialize();
 
             msg_info("de-initialization done");
