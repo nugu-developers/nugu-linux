@@ -10,7 +10,9 @@ SET(VERSION_MINOR 8)
 SET(VERSION_PATCH 0)
 SET(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
-SET(NUGU_USERAGENT "OpenSDK/1.0.0 (Linux) Client/${VERSION}")
+# OpenSDK/{sdk-version} ({platform}) Client/{app-version} [additional-info]
+SET(NUGU_USERAGENT_FORMAT "OpenSDK/${VERSION} (Linux) Client/%s %s")
+
 SET(NUGU_REGISTRY_URL "https://reg-http.sktnugu.com")
 
 SET(version ${VERSION})

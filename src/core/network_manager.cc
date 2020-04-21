@@ -152,9 +152,9 @@ bool NetworkManager::setRegistryUrl(std::string url)
     return true;
 }
 
-bool NetworkManager::setUserAgent(std::string uagent)
+bool NetworkManager::setUserAgent(std::string app_version, std::string additional_info)
 {
-    if (nugu_network_manager_set_useragent(uagent.c_str()) < 0) {
+    if (nugu_network_manager_set_useragent(app_version.c_str(), additional_info.c_str()) < 0) {
         nugu_error("network set useragent failed");
         return false;
     }

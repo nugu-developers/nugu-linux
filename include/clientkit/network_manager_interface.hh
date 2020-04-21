@@ -104,28 +104,47 @@ public:
 
     /**
      * @brief Request a connection with the NUGU server.
+     * @return result
+     * @retval 0 success
+     * @retval -1 failure
      */
     virtual bool connect() = 0;
 
     /**
      * @brief Request a disconnection with the NUGU server.
+     * @return result
+     * @retval 0 success
+     * @retval -1 failure
      */
     virtual bool disconnect() = 0;
 
     /**
      * @brief Set the access token value.
+     * @param[in] token access token
+     * @return result
+     * @retval 0 success
+     * @retval -1 failure
      */
     virtual bool setToken(std::string token) = 0;
 
     /**
      * @brief Set the device gateway registry url.
+     * @param[in] registry url
+     * @return result
+     * @retval 0 success
+     * @retval -1 failure
      */
     virtual bool setRegistryUrl(std::string url) = 0;
 
     /**
      * @brief Set the HTTP header UserAgent information.
+     * @param[in] app_version application version (e.g. "0.1.0")
+     * @param[in] additional_info additional information or ""
+     * @return result
+     * @retval 0 success
+     * @retval -1 failure
      */
-    virtual bool setUserAgent(std::string uagent) = 0;
+    virtual bool setUserAgent(std::string app_version, std::string additional_info = "") = 0;
 };
 
 /**
