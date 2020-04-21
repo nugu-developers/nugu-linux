@@ -698,7 +698,7 @@ EXPORT_API int nugu_network_manager_initialize(void)
 		return -1;
 
 	nugu_network_manager_set_registry_url(NUGU_REGISTRY_URL);
-	nugu_network_manager_set_useragent(NUGU_USERAGENT);
+	nugu_network_manager_set_useragent("0.1.0", NULL);
 
 	return 0;
 }
@@ -1012,33 +1012,40 @@ EXPORT_API const char *nugu_network_manager_peek_registry_url(void)
 	return _network->registry_url;
 }
 
-EXPORT_API int nugu_network_manager_set_useragent(const char *uagent)
+EXPORT_API int nugu_network_manager_set_useragent(const char *app_version,
+						  const char *additional_info)
 {
 #ifdef NUGU_ENV_NETWORK_USERAGENT
 	char *override_value;
 #endif
+	const char *more_info = "";
 
 	if (!_network) {
 		nugu_error("network manager not initialized");
 		return -1;
 	}
 
-	if (!uagent) {
-		nugu_error("urlname is NULL");
+	if (!app_version) {
+		nugu_error("app_version is NULL");
 		return -1;
 	}
 
 	if (_network->useragent)
 		free(_network->useragent);
 
+	if (additional_info != NULL)
+		more_info = additional_info;
+
 #ifdef NUGU_ENV_NETWORK_USERAGENT
 	override_value = getenv(NUGU_ENV_NETWORK_USERAGENT);
 	if (override_value)
 		_network->useragent = strdup(override_value);
 	else
-		_network->useragent = strdup(uagent);
+		_network->useragent = g_strdup_printf(NUGU_USERAGENT_FORMAT,
+						      app_version, more_info);
 #else
-	_network->useragent = strdup(uagent);
+	_network->useragent =
+		g_strdup_printf(NUGU_USERAGENT_FORMAT, app_version, more_info);
 #endif
 
 	return 0;

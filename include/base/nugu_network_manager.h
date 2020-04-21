@@ -311,12 +311,14 @@ const char *nugu_network_manager_peek_registry_url(void);
 
 /**
  * @brief Set the HTTP header UserAgent information.
- * @param[in] uagent UserAgent information
+ * @param[in] app_version application version (e.g. "0.1.0")
+ * @param[in] additional_info additional information or NULL
  * @return result
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_network_manager_set_useragent(const char *uagent);
+int nugu_network_manager_set_useragent(const char *app_version,
+				       const char *additional_info);
 
 /**
  * @brief Get the UserAgent information.

@@ -155,6 +155,7 @@ int main(int argc, char** argv)
     auto network_manager(nugu_client->getNetworkManager());
     network_manager->addListener(network_manager_listener.get());
     network_manager->setToken(getenv("NUGU_TOKEN"));
+    network_manager->setUserAgent("0.2.0");
 
     if (!network_manager->connect()) {
         msg_error("< Cannot connect to NUGU Platform.");
