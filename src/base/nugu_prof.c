@@ -236,34 +236,41 @@ static void _emit_callback(enum nugu_prof_type type, const char *contents)
 	g_idle_add(_emit_in_idle, data);
 }
 
+static void _set_timestamp_with_emit(enum nugu_prof_type type,
+				     const char *contents)
+{
+	clock_gettime(CLOCK_REALTIME, &_prof_data[type].timestamp);
+	_prof_data[type].type = type;
+
+	if ((nugu_log_get_modules() & NUGU_LOG_MODULE_PROFILING) != 0)
+		nugu_log_print(NUGU_LOG_MODULE_PROFILING, NUGU_LOG_LEVEL_INFO,
+			       NULL, NULL, -1, "profiling: %d (%s) %s %s", type,
+			       _hints[type].text, _prof_data[type].dialog_id,
+			       _prof_data[type].msg_id);
+
+	if (_callback != NULL || _trace)
+		_emit_callback(type, contents);
+}
+
 EXPORT_API int nugu_prof_mark_data(enum nugu_prof_type type,
 				   const char *dialog_id, const char *msg_id,
 				   const char *contents)
 {
-	struct nugu_prof_data *tmp;
-
 	g_return_val_if_fail(type < NUGU_PROF_TYPE_MAX, -1);
-
-	tmp = &_prof_data[type];
 
 	pthread_mutex_lock(&_lock);
 
-	memset(tmp, 0, sizeof(struct nugu_prof_data));
-	clock_gettime(CLOCK_REALTIME, &tmp->timestamp);
-	tmp->type = type;
+	memset(&_prof_data[type], 0, sizeof(struct nugu_prof_data));
 
 	if (dialog_id)
-		memcpy(tmp->dialog_id, dialog_id, NUGU_MAX_UUID_STRING_SIZE);
-	else
-		memset(tmp->dialog_id, 0, NUGU_MAX_UUID_STRING_SIZE);
+		memcpy(_prof_data[type].dialog_id, dialog_id,
+		       NUGU_MAX_UUID_STRING_SIZE);
 
 	if (msg_id)
-		memcpy(tmp->msg_id, msg_id, NUGU_MAX_UUID_STRING_SIZE);
-	else
-		memset(tmp->msg_id, 0, NUGU_MAX_UUID_STRING_SIZE);
+		memcpy(_prof_data[type].msg_id, msg_id,
+		       NUGU_MAX_UUID_STRING_SIZE);
 
-	if (_callback != NULL || _trace)
-		_emit_callback(type, contents);
+	_set_timestamp_with_emit(type, contents);
 
 	pthread_mutex_unlock(&_lock);
 
@@ -275,14 +282,8 @@ EXPORT_API int nugu_prof_mark(enum nugu_prof_type type)
 	g_return_val_if_fail(type < NUGU_PROF_TYPE_MAX, -1);
 
 	pthread_mutex_lock(&_lock);
-
 	memset(&_prof_data[type], 0, sizeof(struct nugu_prof_data));
-	clock_gettime(CLOCK_REALTIME, &_prof_data[type].timestamp);
-	_prof_data[type].type = type;
-
-	if (_callback != NULL || _trace)
-		_emit_callback(type, NULL);
-
+	_set_timestamp_with_emit(type, NULL);
 	pthread_mutex_unlock(&_lock);
 
 	return 0;
@@ -416,10 +417,10 @@ EXPORT_API void nugu_prof_dump(enum nugu_prof_type from, enum nugu_prof_type to)
 	if ((nugu_log_get_modules() & NUGU_LOG_MODULE_PROFILING) == 0)
 		return;
 
-	nugu_log_print(NUGU_LOG_MODULE_PROFILING, NUGU_LOG_LEVEL_DEBUG, NULL,
+	nugu_log_print(NUGU_LOG_MODULE_PROFILING, NUGU_LOG_LEVEL_INFO, NULL,
 		       NULL, -1, "--------------------------");
 
-	nugu_log_print(NUGU_LOG_MODULE_PROFILING, NUGU_LOG_LEVEL_DEBUG, NULL,
+	nugu_log_print(NUGU_LOG_MODULE_PROFILING, NUGU_LOG_LEVEL_INFO, NULL,
 		       NULL, -1, "Profiling: %d(%s) ~ %d(%s)", from,
 		       _hints[from].text, to, _hints[to].text);
 
@@ -441,7 +442,7 @@ EXPORT_API void nugu_prof_dump(enum nugu_prof_type from, enum nugu_prof_type to)
 			       time_from, sizeof(time_from));
 		_fill_relative_part(cur, relative_part, sizeof(relative_part));
 
-		nugu_log_print(NUGU_LOG_MODULE_PROFILING, NUGU_LOG_LEVEL_DEBUG,
+		nugu_log_print(NUGU_LOG_MODULE_PROFILING, NUGU_LOG_LEVEL_INFO,
 			       NULL, NULL, -1, "[%2d] %20s: <%s> %s %s %s %s",
 			       cur, _hints[cur].text, ts_str, time_from,
 			       relative_part, prof->dialog_id, prof->msg_id);
@@ -449,6 +450,6 @@ EXPORT_API void nugu_prof_dump(enum nugu_prof_type from, enum nugu_prof_type to)
 
 	pthread_mutex_unlock(&_lock);
 
-	nugu_log_print(NUGU_LOG_MODULE_PROFILING, NUGU_LOG_LEVEL_DEBUG, NULL,
+	nugu_log_print(NUGU_LOG_MODULE_PROFILING, NUGU_LOG_LEVEL_INFO, NULL,
 		       NULL, -1, "--------------------------");
 }
