@@ -48,8 +48,7 @@
 static enum nugu_log_system _log_system = NUGU_LOG_SYSTEM_STDERR;
 static enum nugu_log_prefix _log_prefix_fields = NUGU_LOG_PREFIX_DEFAULT;
 static enum nugu_log_level _log_level = NUGU_LOG_LEVEL_DEBUG;
-static unsigned int _log_module_bitset =
-	NUGU_LOG_MODULE_ALL & (~NUGU_LOG_MODULE_NETWORK_TRACE);
+static unsigned int _log_module_bitset = NUGU_LOG_MODULE_PRESET_DEFAULT;
 static int _log_line_limit = -1;
 
 static nugu_log_handler _log_handler;
@@ -142,17 +141,21 @@ static void _log_check_override_module(void)
 			break;
 		}
 
-		if (!strncasecmp(modules[i], "default", 8))
+		if (!strncasecmp(modules[i], "preset_default", 15))
+			bitset = bitset | NUGU_LOG_MODULE_PRESET_DEFAULT;
+		else if (!strncasecmp(modules[i], "preset_network", 15))
+			bitset = bitset | NUGU_LOG_MODULE_PRESET_NETWORK;
+		else if (!strncasecmp(modules[i], "default", 8))
 			bitset = bitset | NUGU_LOG_MODULE_DEFAULT;
-		if (!strncasecmp(modules[i], "network", 8))
+		else if (!strncasecmp(modules[i], "network", 8))
 			bitset = bitset | NUGU_LOG_MODULE_NETWORK;
-		if (!strncasecmp(modules[i], "network_trace", 14))
+		else if (!strncasecmp(modules[i], "network_trace", 14))
 			bitset = bitset | NUGU_LOG_MODULE_NETWORK_TRACE;
-		if (!strncasecmp(modules[i], "protocol", 9))
+		else if (!strncasecmp(modules[i], "protocol", 9))
 			bitset = bitset | NUGU_LOG_MODULE_PROTOCOL;
-		if (!strncasecmp(modules[i], "profiling", 10))
+		else if (!strncasecmp(modules[i], "profiling", 10))
 			bitset = bitset | NUGU_LOG_MODULE_PROFILING;
-		if (!strncasecmp(modules[i], "audio", 6))
+		else if (!strncasecmp(modules[i], "audio", 6))
 			bitset = bitset | NUGU_LOG_MODULE_AUDIO;
 	}
 
