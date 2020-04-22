@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+#include <algorithm>
+#include <iostream>
 #include <string.h>
 #include <unistd.h>
-
-#include <iostream>
 
 #include "base/nugu_log.h"
 #include "nugu.h"
@@ -31,10 +31,60 @@ const char* NuguSampleManager::C_CYAN = "\033[1;96m";
 const char* NuguSampleManager::C_WHITE = "\033[1;97m";
 const char* NuguSampleManager::C_RESET = "\033[0m";
 
-NuguSampleManager::Commander NuguSampleManager::commander = { false, 0, { nullptr, nullptr }, { nullptr, nullptr }, nullptr, nullptr, nullptr };
-bool NuguSampleManager::is_show_prompt = true;
+const NuguSampleManager::CommandKey NuguSampleManager::COMMAND_KEYS {
+    "w", "l", "s", "t", "m", "sa", "ra", "c", "d", "q"
+};
 
-void NuguSampleManager::error(const std::string& message)
+const NuguSampleManager::CommandMap NuguSampleManager::COMMAND_MAP {
+    { "w", { "start listening with wakeup", [](NuguSampleManager* ns_mgr) {
+                if (ns_mgr->commander.speech_operator)
+                    ns_mgr->commander.speech_operator->startListeningWithWakeup();
+            } } },
+    { "l", { "start listening", [](NuguSampleManager* ns_mgr) {
+                if (ns_mgr->commander.speech_operator)
+                    ns_mgr->commander.speech_operator->startListening();
+            } } },
+    { "s", { "stop listening/wakeup", [](NuguSampleManager* ns_mgr) {
+                if (ns_mgr->commander.speech_operator)
+                    ns_mgr->commander.speech_operator->stopListeningAndWakeup();
+            } } },
+    { "t", { "text input", [](NuguSampleManager* ns_mgr) {
+                ns_mgr->commander.text_input = 1;
+                ns_mgr->showPrompt();
+            } } },
+    { "m", { "set mic mute", [](NuguSampleManager* ns_mgr) {
+                static bool mute = false;
+                mute = !mute;
+                !mute ? ns_mgr->commander.mic_handler->enable() : ns_mgr->commander.mic_handler->disable();
+                ns_mgr->showPrompt();
+            } } },
+    { "sa", { "suspend all", [](NuguSampleManager* ns_mgr) {
+                 if (ns_mgr->commander.action_callback.suspend_all_func)
+                     ns_mgr->commander.action_callback.suspend_all_func();
+             } } },
+    { "ra", { "restore all", [](NuguSampleManager* ns_mgr) {
+                 if (ns_mgr->commander.action_callback.restore_all_func)
+                     ns_mgr->commander.action_callback.restore_all_func();
+             } } },
+    { "c", { "connect", [](NuguSampleManager* ns_mgr) {
+                if (ns_mgr->commander.is_connected) {
+                    info("It's already connected.");
+                    ns_mgr->showPrompt();
+                } else {
+                    if (ns_mgr->commander.network_callback.connect)
+                        ns_mgr->commander.network_callback.connect();
+                }
+            } } },
+    { "d", { "disconnect", [](NuguSampleManager* ns_mgr) {
+                if (ns_mgr->commander.network_callback.disconnect && ns_mgr->commander.network_callback.disconnect())
+                    ns_mgr->commander.is_connected = false;
+            } } },
+    { "q", { "quit", [](NuguSampleManager* ns_mgr) {
+                ns_mgr->quit();
+            } } }
+};
+
+void NuguSampleManager::error(std::string&& message)
 {
     std::cout << C_RED
               << message
@@ -43,7 +93,7 @@ void NuguSampleManager::error(const std::string& message)
     std::cout.flush();
 }
 
-void NuguSampleManager::info(const std::string& message)
+void NuguSampleManager::info(std::string&& message)
 {
     std::cout << C_CYAN
               << message
@@ -86,6 +136,11 @@ void NuguSampleManager::prepare()
     std::cout << "User Application (SDK Version: " << NUGU_VERSION << ")\n";
     std::cout << " - Model path: " << model_path << std::endl;
     std::cout << "=======================================================\n";
+
+    // compose command text
+    const CommandKeyIterator& command_pivot = std::find(COMMAND_KEYS.cbegin(), COMMAND_KEYS.cend(), "c");
+    command_text.first = composeCommand(COMMAND_KEYS.cbegin(), command_pivot);
+    command_text.second = composeCommand(command_pivot, COMMAND_KEYS.cend());
 
     context = g_main_context_default();
     loop = g_main_loop_new(context, FALSE);
@@ -184,36 +239,48 @@ void NuguSampleManager::showPrompt(void)
                   << "=======================================================\n"
                   << C_BLUE;
 
-        if (commander.is_connected)
-            std::cout << " w : start listening with wakeup\n"
-                      << " l : start listening\n"
-                      << " s : stop listening/wakeup\n"
-                      << " t : text input\n"
-                      << " m : set mic mute\n"
-                      << "sa : suspend all\n"
-                      << "ra : restore all\n"
+        // display commands about nugu control
+        if (commander.is_connected) {
+            std::cout << command_text.first
                       << C_YELLOW
                       << "-------------------------------------------------------\n"
                       << C_BLUE;
+        }
 
-        std::cout
-            << " c : connect\n"
-            << " d : disconnect\n"
-            << " q : quit\n"
-            << C_YELLOW
-            << "-------------------------------------------------------\n"
-            << C_WHITE
-            << "Select Command > "
-            << C_RESET;
+        // display commands about netowrk, quit
+        std::cout << command_text.second
+                  << C_YELLOW
+                  << "-------------------------------------------------------\n"
+                  << C_WHITE
+                  << "Select Command > "
+                  << C_RESET;
     }
 
     fflush(stdout);
 }
 
+std::string NuguSampleManager::composeCommand(const CommandKeyIterator& begin, const CommandKeyIterator& end)
+{
+    std::string composed_command;
+
+    std::for_each(begin, end, [&](const std::string& key) {
+        try {
+            composed_command.append(key)
+                .append(" : ")
+                .append(COMMAND_MAP.at(key).first)
+                .append("\n");
+        } catch (const std::out_of_range& oor) {
+            // skip silently
+        }
+    });
+
+    return composed_command;
+}
+
 gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpointer userdata)
 {
     char keybuf[4096];
-    NuguSampleManager* mgr = static_cast<NuguSampleManager*>(userdata);
+    NuguSampleManager* ns_mgr = static_cast<NuguSampleManager*>(userdata);
 
     if (fgets(keybuf, 4096, stdin) == NULL)
         return TRUE;
@@ -224,68 +291,35 @@ gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpoint
     }
 
     if (strlen(keybuf) < 1) {
-        showPrompt();
+        ns_mgr->showPrompt();
         return TRUE;
     }
 
     // handle case when NuguClient is disconnected
-    if (!commander.is_connected) {
+    if (!ns_mgr->commander.is_connected) {
         if (g_strcmp0(keybuf, "q") != 0 && g_strcmp0(keybuf, "c") != 0 && g_strcmp0(keybuf, "d") != 0) {
             error("invalid input");
-            showPrompt();
+            ns_mgr->showPrompt();
             return TRUE;
         }
     }
 
-    if (commander.text_input) {
-        commander.text_input = 0;
+    if (ns_mgr->commander.text_input) {
+        ns_mgr->commander.text_input = 0;
 
         std::string id;
-        if (commander.text_handler)
-            id = commander.text_handler->requestTextInput(keybuf);
+
+        if (ns_mgr->commander.text_handler)
+            id = ns_mgr->commander.text_handler->requestTextInput(keybuf);
+
         std::cout << "[Text][id:" << id << "] requestTextInput" << std::endl;
-    } else if (g_strcmp0(keybuf, "w") == 0) {
-        if (commander.speech_operator)
-            commander.speech_operator->startListeningWithWakeup();
-    } else if (g_strcmp0(keybuf, "l") == 0) {
-        if (commander.speech_operator)
-            commander.speech_operator->startListening();
-    } else if (g_strcmp0(keybuf, "s") == 0) {
-        if (commander.speech_operator)
-            commander.speech_operator->stopListeningAndWakeup();
-    } else if (g_strcmp0(keybuf, "t") == 0) {
-        commander.text_input = 1;
-        showPrompt();
-    } else if (g_strcmp0(keybuf, "m") == 0) {
-        static bool mute = false;
-        mute = !mute;
-        if (!mute)
-            commander.mic_handler->enable();
-        else
-            commander.mic_handler->disable();
-        showPrompt();
-    } else if (g_strcmp0(keybuf, "c") == 0) {
-        if (commander.is_connected) {
-            info("It's already connected.");
-            showPrompt();
-        } else {
-            if (commander.network_callback.connect)
-                commander.network_callback.connect();
-        }
-    } else if (g_strcmp0(keybuf, "d") == 0) {
-        if (commander.network_callback.disconnect && commander.network_callback.disconnect())
-            commander.is_connected = false;
-    } else if (g_strcmp0(keybuf, "sa") == 0) {
-        if (commander.action_callback.suspend_all_func)
-            commander.action_callback.suspend_all_func();
-    } else if (g_strcmp0(keybuf, "ra") == 0) {
-        if (commander.action_callback.restore_all_func)
-            commander.action_callback.restore_all_func();
-    } else if (g_strcmp0(keybuf, "q") == 0) {
-        mgr->quit();
     } else {
-        error("invalid input");
-        showPrompt();
+        try {
+            // It has to send ns_mgr (NuguSampleManager* instance) parameter mandatorily
+            COMMAND_MAP.at(std::string { keybuf }).second(ns_mgr);
+        } catch (const std::out_of_range& oor) {
+            error("No command exist!");
+        }
     }
 
     return TRUE;

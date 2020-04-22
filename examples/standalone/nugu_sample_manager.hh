@@ -18,9 +18,11 @@
 #define __NUGU_SAMPLE_MANAGER_H__
 
 #include <functional>
-#include <string>
-
 #include <glib.h>
+#include <iterator>
+#include <map>
+#include <string>
+#include <vector>
 
 #include <capability/mic_interface.hh>
 #include <capability/text_interface.hh>
@@ -51,8 +53,8 @@ public:
         IMicHandler* mic_handler;
     };
 
-    static void error(const std::string& message);
-    static void info(const std::string& message);
+    static void error(std::string&& message);
+    static void info(std::string&& message);
 
     bool handleArguments(const int& argc, char** argv);
     void prepare();
@@ -69,7 +71,13 @@ public:
     void handleNetworkResult(bool is_connected, bool is_show_cmd = true);
 
 private:
-    static void showPrompt(void);
+    using CommandMap = std::map<std::string, std::pair<std::string, std::function<void(NuguSampleManager*)>>>;
+    using CommandKey = std::vector<std::string>;
+    using CommandText = std::pair<std::string, std::string>;
+    using CommandKeyIterator = std::vector<std::string>::const_iterator;
+
+    void showPrompt(void);
+    std::string composeCommand(const CommandKeyIterator& begin, const CommandKeyIterator& end);
     static gboolean onKeyInput(GIOChannel* src, GIOCondition con, gpointer userdata);
 
     static const char* C_RED;
@@ -78,8 +86,12 @@ private:
     static const char* C_CYAN;
     static const char* C_WHITE;
     static const char* C_RESET;
-    static Commander commander;
-    static bool is_show_prompt;
+    static const CommandKey COMMAND_KEYS;
+    static const CommandMap COMMAND_MAP;
+
+    Commander commander {};
+    CommandText command_text {};
+    bool is_show_prompt = true;
 
     GMainLoop* loop;
     GMainContext* context = nullptr;
