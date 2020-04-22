@@ -36,12 +36,12 @@ std::unique_ptr<T> make_unique(Ts&&... params)
 
 void msg_error(std::string&& message)
 {
-    NuguSampleManager::error(message);
+    NuguSampleManager::error(std::move(message));
 }
 
 void msg_info(std::string&& message)
 {
-    NuguSampleManager::info(message);
+    NuguSampleManager::info(std::move(message));
 }
 
 class NetworkManagerListener : public INetworkManagerListener {
