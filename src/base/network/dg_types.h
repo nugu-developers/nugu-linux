@@ -38,6 +38,7 @@ struct equeue_data_attachment {
 	size_t length;
 	char *parent_msg_id;
 	char *media_type;
+	int seq;
 	int is_end;
 };
 

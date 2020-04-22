@@ -82,10 +82,13 @@ enum nugu_prof_type {
 	/**< HTTP/2 /v2/directives stream closed by server */
 
 	NUGU_PROF_TYPE_NETWORK_DNS_FAILED,
-	/**< DNS Resolving failed */
+	/**< Network DNS Resolving failed */
 
 	NUGU_PROF_TYPE_NETWORK_SSL_FAILED,
-	/**< SSL failed */
+	/**< Network SSL failed */
+
+	NUGU_PROF_TYPE_NETWORK_TIMEOUT,
+	/**< Network timeout */
 
 	NUGU_PROF_TYPE_NETWORK_INTERNAL_ERROR,
 	/**< Network internal error */
@@ -114,11 +117,11 @@ enum nugu_prof_type {
 	NUGU_PROF_TYPE_NETWORK_EVENT_ATTACHMENT_REQUEST,
 	/**< HTTP/2 Request for POST /v2/events attachment */
 
-	NUGU_PROF_TYPE_NETWORK_EVENT_ATTACHMENT_RESPONSE,
-	/**< HTTP/2 Response for POST /v2/events attachment */
+	NUGU_PROF_TYPE_NETWORK_EVENT_DIRECTIVE_RESPONSE,
+	/**< HTTP/2 Directive response for POST /v2/events */
 
-	NUGU_PROF_TYPE_NETWORK_EVENT_ATTACHMENT_FAILED,
-	/**< HTTP/2 Failed for POST /v2/events attachment */
+	NUGU_PROF_TYPE_NETWORK_EVENT_DIRECTIVE_TIMEOUT,
+	/**< HTTP/2 Directive timeout for POST /v2/events */
 
 	NUGU_PROF_TYPE_LAST_SERVER_INITIATIVE_DATA,
 	/**< Last received data from /v2/directives */

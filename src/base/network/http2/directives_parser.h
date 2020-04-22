@@ -23,9 +23,14 @@
 extern "C" {
 #endif
 
+enum dir_parser_type {
+	DIR_PARSER_TYPE_SERVER_INITIATIVE,
+	DIR_PARSER_TYPE_EVENT_RESPONSE
+};
+
 typedef struct _dir_parser DirParser;
 
-DirParser *dir_parser_new(void);
+DirParser *dir_parser_new(enum dir_parser_type type);
 void dir_parser_free(DirParser *dp);
 
 int dir_parser_add_header(DirParser *dp, const char *buffer, size_t buffer_len);

@@ -637,9 +637,11 @@ void http2_request_emit_finished(HTTP2Request *req)
 	case HTTP2_RESULT_SSL_FAIL:
 		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_SSL_FAILED);
 		break;
+	case HTTP2_RESULT_TIMEOUT:
+		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_TIMEOUT);
+		break;
 	case HTTP2_RESULT_HTTP_FAIL:
 	case HTTP2_RESULT_HTTP2_FAIL:
-	case HTTP2_RESULT_TIMEOUT:
 	case HTTP2_RESULT_UNKNOWN:
 		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_INTERNAL_ERROR);
 		break;

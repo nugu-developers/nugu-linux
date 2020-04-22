@@ -83,19 +83,19 @@ static int _send_v2_events(DGServer *server, NuguEvent *nev,
 {
 	V2Events *e;
 
-	e = v2_events_new(server->host, server->net, is_sync);
+	e = v2_events_new(server->host, server->net, is_sync,
+			  nugu_event_get_type(nev));
 	if (!e)
 		return -1;
 
 	v2_events_set_info(e, nugu_event_peek_msg_id(nev),
 			   nugu_event_peek_dialog_id(nev));
 
+	v2_events_send_json(e, payload, strlen(payload));
+
 	if (nugu_event_get_type(nev) == NUGU_EVENT_TYPE_DEFAULT) {
-		v2_events_send_single_json(e, payload, strlen(payload));
 		v2_events_free(e);
 		return 0;
-	} else {
-		v2_events_send_json(e, payload, strlen(payload));
 	}
 
 	if (server->pending_events == NULL) {

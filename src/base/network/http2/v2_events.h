@@ -25,14 +25,12 @@ extern "C" {
 
 typedef struct _v2_events V2Events;
 
-V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync);
+V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync,
+			enum nugu_event_type type);
 void v2_events_free(V2Events *event);
 
 int v2_events_set_info(V2Events *event, const char *msg_id,
 		       const char *dialog_id);
-
-int v2_events_send_single_json(V2Events *event, const char *data,
-			       size_t length);
 
 int v2_events_send_json(V2Events *event, const char *data, size_t length);
 int v2_events_send_binary(V2Events *event, const char *msgid, int seq,
