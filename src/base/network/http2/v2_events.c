@@ -23,6 +23,7 @@
 #include "base/nugu_equeue.h"
 #include "base/nugu_uuid.h"
 #include "base/nugu_prof.h"
+#include "base/nugu_event.h"
 
 #include "dg_types.h"
 
@@ -53,6 +54,7 @@ struct _v2_events {
 	size_t b_len;
 	int sync;
 	HTTP2Network *net;
+	enum nugu_event_type type;
 };
 
 static void _emit_send_result(int code, HTTP2Request *req)
@@ -144,6 +146,14 @@ static size_t _on_body(HTTP2Request *req, char *buffer, size_t size,
 /* invoked in a thread loop */
 static void _on_finish(HTTP2Request *req, void *userdata)
 {
+	if (http2_request_get_result(req) == HTTP2_RESULT_TIMEOUT) {
+		nugu_error("receive timeout error");
+		nugu_prof_mark_data(
+			NUGU_PROF_TYPE_NETWORK_EVENT_DIRECTIVE_TIMEOUT,
+			http2_request_peek_dialogid(req),
+			http2_request_peek_msgid(req), NULL);
+	}
+
 	if (userdata)
 		thread_sync_signal(userdata);
 }
@@ -157,7 +167,8 @@ static void _on_destroy(HTTP2Request *req, void *userdata)
 	dir_parser_free(userdata);
 }
 
-V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync)
+V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync,
+			enum nugu_event_type type)
 {
 	char *tmp;
 	struct _v2_events *event;
@@ -182,7 +193,7 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync)
 		return NULL;
 	}
 
-	parser = dir_parser_new();
+	parser = dir_parser_new(DIR_PARSER_TYPE_EVENT_RESPONSE);
 	if (!parser) {
 		nugu_error_nomem();
 		v2_events_free(event);
@@ -202,13 +213,17 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync)
 	event->b_len = strlen((char *)event->boundary);
 	event->sync = is_sync;
 	event->net = net;
+	event->type = type;
 
 	http2_request_set_method(event->req, HTTP2_REQUEST_METHOD_POST);
 	http2_request_set_content_type(
 		event->req, HTTP2_REQUEST_CONTENT_TYPE_MULTIPART, boundary);
 
-	/* Set maximum timeout to 5 minutes */
-	http2_request_set_timeout(event->req, 5 * 60);
+	/* Set maximum timeout to 10 secs or 5 minutes */
+	if (event->type == NUGU_EVENT_TYPE_DEFAULT)
+		http2_request_set_timeout(event->req, 10);
+	else if (event->type == NUGU_EVENT_TYPE_WITH_ATTACHMENT)
+		http2_request_set_timeout(event->req, 5 * 60);
 
 	tmp = g_strdup_printf("%s/v2/events", host);
 	http2_request_set_url(event->req, tmp);
@@ -261,35 +276,6 @@ int v2_events_set_info(V2Events *event, const char *msg_id,
 	return 0;
 }
 
-int v2_events_send_single_json(V2Events *event, const char *data, size_t length)
-{
-	g_return_val_if_fail(event != NULL, -1);
-
-	http2_request_lock_send_data(event->req);
-
-	http2_request_set_profiling_contents(event->req, data);
-
-	/* Body header */
-	http2_request_add_send_data(event->req,
-				    (unsigned char *)PART_HEADER_JSON,
-				    strlen(PART_HEADER_JSON));
-
-	/* Body */
-	http2_request_add_send_data(event->req, (unsigned char *)data, length);
-	http2_request_add_send_data(event->req, U_CRLF, 2);
-
-	/* Boundary */
-	http2_request_add_send_data(event->req, event->boundary, event->b_len);
-	http2_request_add_send_data(event->req, U_HYPHEN, 2);
-	http2_request_add_send_data(event->req, U_CRLF, 2);
-
-	http2_request_close_send_data(event->req);
-	http2_request_unlock_send_data(event->req);
-	http2_network_resume_request(event->net, event->req);
-
-	return 0;
-}
-
 int v2_events_send_json(V2Events *event, const char *data, size_t length)
 {
 	g_return_val_if_fail(event != NULL, -1);
@@ -309,7 +295,14 @@ int v2_events_send_json(V2Events *event, const char *data, size_t length)
 
 	/* Boundary */
 	http2_request_add_send_data(event->req, event->boundary, event->b_len);
+
+	if (event->type == NUGU_EVENT_TYPE_DEFAULT)
+		http2_request_add_send_data(event->req, U_HYPHEN, 2);
+
 	http2_request_add_send_data(event->req, U_CRLF, 2);
+
+	if (event->type == NUGU_EVENT_TYPE_DEFAULT)
+		http2_request_close_send_data(event->req);
 
 	http2_request_unlock_send_data(event->req);
 	http2_network_resume_request(event->net, event->req);

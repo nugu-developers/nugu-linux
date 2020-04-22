@@ -40,8 +40,6 @@ struct _v1_directives {
 static size_t _on_body(HTTP2Request *req, char *buffer, size_t size,
 		       size_t nitems, void *userdata)
 {
-	nugu_prof_mark(NUGU_PROF_TYPE_LAST_SERVER_INITIATIVE_DATA);
-
 	dir_parser_parse(userdata, buffer, size * nitems);
 
 	return size * nitems;
@@ -154,7 +152,7 @@ int v1_directives_establish(V1Directives *dir, HTTP2Network *net)
 	g_return_val_if_fail(dir != NULL, -1);
 	g_return_val_if_fail(net != NULL, -1);
 
-	parser = dir_parser_new();
+	parser = dir_parser_new(DIR_PARSER_TYPE_SERVER_INITIATIVE);
 	if (!parser) {
 		nugu_error_nomem();
 		return -1;

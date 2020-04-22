@@ -25,6 +25,7 @@
 #include "base/nugu_directive.h"
 #include "base/nugu_equeue.h"
 #include "base/nugu_log.h"
+#include "base/nugu_prof.h"
 
 #include "dg_types.h"
 
@@ -52,8 +53,10 @@ enum kvstatus {
 struct _dir_parser {
     MultipartParser* m_parser;
 
+    enum dir_parser_type type;
     enum content_type ctype;
     char* parent_msg_id;
+    int seq;
     int is_end;
     size_t body_size;
 
@@ -125,6 +128,7 @@ static void on_parsing_header(MultipartParser* parser, const char* data,
                 free(dp->parent_msg_id);
             dp->parent_msg_id = strdup(value.c_str());
         } else if (key.compare("Filename") == 0) {
+            dp->seq = std::stoi(value);
             if (value.find("end") != std::string::npos)
                 dp->is_end = 1;
             else
@@ -208,6 +212,15 @@ static void _body_json(DirParser* dp, const char* data, size_t length)
         if (!ndir)
             continue;
 
+        if (dp->type == DIR_PARSER_TYPE_SERVER_INITIATIVE)
+            nugu_prof_mark_data(NUGU_PROF_TYPE_LAST_SERVER_INITIATIVE_DATA,
+                nugu_directive_peek_dialog_id(ndir),
+                nugu_directive_peek_msg_id(ndir), NULL);
+        else if (dp->type == DIR_PARSER_TYPE_EVENT_RESPONSE)
+            nugu_prof_mark_data(NUGU_PROF_TYPE_NETWORK_EVENT_DIRECTIVE_RESPONSE,
+                nugu_directive_peek_dialog_id(ndir),
+                nugu_directive_peek_msg_id(ndir), NULL);
+
         if (nugu_equeue_push(NUGU_EQUEUE_TYPE_NEW_DIRECTIVE, ndir) < 0) {
             nugu_error("nugu_equeue_push() failed.");
             nugu_directive_unref(ndir);
@@ -215,8 +228,8 @@ static void _body_json(DirParser* dp, const char* data, size_t length)
     }
 }
 
-static void _body_opus(DirParser* dp, const char* parent_msg_id, int is_end,
-    const char* data, size_t length)
+static void _body_opus(DirParser* dp, const char* parent_msg_id, int seq,
+    int is_end, const char* data, size_t length)
 {
     struct equeue_data_attachment* item;
 
@@ -228,14 +241,16 @@ static void _body_opus(DirParser* dp, const char* parent_msg_id, int is_end,
 
     item->parent_msg_id = strdup(parent_msg_id);
     item->media_type = strdup("audio/opus");
+    item->seq = seq;
     item->is_end = is_end;
     item->length = length;
     item->data = (unsigned char*)malloc(length);
     memcpy(item->data, data, length);
 
     nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG, NULL,
-        NULL, -1, "<-- Attachment: parent=%s (%zd bytes, is_end=%d)%s",
-        parent_msg_id, length, is_end, (dp->debug_msg) ? dp->debug_msg : "");
+        NULL, -1, "<-- Attachment: parent=%s (%zd bytes, seq=%d, is_end=%d)%s",
+        parent_msg_id, length, seq, is_end,
+        (dp->debug_msg) ? dp->debug_msg : "");
 
     nugu_equeue_push(NUGU_EQUEUE_TYPE_NEW_ATTACHMENT, item);
 }
@@ -252,10 +267,10 @@ static void _on_parsing_body(MultipartParser* parser, const char* data,
     if (dp->ctype == CONTENT_TYPE_JSON)
         _body_json(dp, data, length);
     else if (dp->ctype == CONTENT_TYPE_OPUS)
-        _body_opus(dp, dp->parent_msg_id, dp->is_end, data, length);
+        _body_opus(dp, dp->parent_msg_id, dp->seq, dp->is_end, data, length);
 }
 
-DirParser* dir_parser_new(void)
+DirParser* dir_parser_new(enum dir_parser_type type)
 {
     DirParser* dp;
 
@@ -272,6 +287,7 @@ DirParser* dir_parser_new(void)
         return NULL;
     }
 
+    dp->type = type;
     dp->ctype = CONTENT_TYPE_UNKNOWN;
     dp->debug_msg = NULL;
 

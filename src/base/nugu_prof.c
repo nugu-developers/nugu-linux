@@ -54,6 +54,7 @@ static const struct nugu_prof_hints _hints[NUGU_PROF_TYPE_MAX + 1] = {
 	{ "Directive closed", NUGU_PROF_TYPE_MAX },
 	{ "DNS failed", NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST },
 	{ "SSL failed", NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST },
+	{ "Network timeout", NUGU_PROF_TYPE_MAX },
 	{ "Internal net-error", NUGU_PROF_TYPE_MAX },
 	{ "Invalid token", NUGU_PROF_TYPE_MAX },
 
@@ -69,8 +70,10 @@ static const struct nugu_prof_hints _hints[NUGU_PROF_TYPE_MAX + 1] = {
 
 	/* /v2/events attachment */
 	{ "Attachment request", NUGU_PROF_TYPE_MAX },
-	{ "Attachment response", NUGU_PROF_TYPE_NETWORK_EVENT_REQUEST },
-	{ "Attachment failed", NUGU_PROF_TYPE_NETWORK_EVENT_REQUEST },
+
+	/* /v2/events directive */
+	{ "Directive response", NUGU_PROF_TYPE_NETWORK_EVENT_REQUEST },
+	{ "Directive timeout", NUGU_PROF_TYPE_NETWORK_EVENT_REQUEST },
 
 	/* /v2/directives */
 	{ "Last push-data", NUGU_PROF_TYPE_MAX },

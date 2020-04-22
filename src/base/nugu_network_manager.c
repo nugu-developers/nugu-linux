@@ -127,7 +127,7 @@ static void on_attachment(enum nugu_equeue_type type, void *data,
 	if (!ndir)
 		return;
 
-	if (nugu_directive_get_data_size(ndir) == 0)
+	if (item->seq == 0)
 		nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_FIRST_ATTACHMENT,
 				    nugu_directive_peek_dialog_id(ndir),
 				    nugu_directive_peek_msg_id(ndir), NULL);
