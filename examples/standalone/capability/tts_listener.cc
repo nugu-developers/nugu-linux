@@ -50,23 +50,25 @@ void TTSListener::onTTSCancel(const std::string& dialog_id)
 
 std::string TTSListener::extractText(std::string raw_text)
 {
-    if (raw_text.empty())
-        return raw_text;
+    // remove '< ~ >' tag
+    std::string extracted_text;
+    bool is_skip = false;
 
-    size_t first_tag_pos = raw_text.find_first_of('>');
+    for (const auto& character : raw_text) {
+        if (character == '<')
+            is_skip = true;
+        else if (character == '>')
+            is_skip = false;
 
-    if (first_tag_pos == std::string::npos)
-        return raw_text;
+        if (!is_skip && character != '>')
+            extracted_text.push_back(character);
+    }
 
-    size_t last_tag_pose = raw_text.find_last_of('<');
+    // replace '{W}' tag to wakeup word
+    std::size_t wakeup_tag_found = extracted_text.find(WAKEUP_WORD_TAG);
 
-    if (last_tag_pose == std::string::npos)
-        return raw_text;
+    if (wakeup_tag_found != std::string::npos)
+        extracted_text.replace(wakeup_tag_found, WAKEUP_WORD_TAG.length(), WAKEUP_WORD);
 
-    int text_count = last_tag_pose - first_tag_pos - 1;
-
-    if (text_count <= 0)
-        return raw_text;
-
-    return raw_text.substr(first_tag_pos + 1, text_count);
+    return extracted_text;
 }
