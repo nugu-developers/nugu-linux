@@ -135,7 +135,7 @@ void MicAgent::parsingSetMic(const char* message)
         return;
     }
 
-    control(mic_status == "ON", true);
+    control((mic_status == "ON" || mic_status == "on"), true);
 }
 
 void MicAgent::control(bool enable, bool send_event)
