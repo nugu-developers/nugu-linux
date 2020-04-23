@@ -33,8 +33,6 @@
 #define CT_OCTET "Content-Type: application/octet-stream"
 #define CT_MULTIPART "Content-Type: multipart/form-data; boundary=%s"
 
-#define SHOW_VERBOSE 0
-
 struct _http2_request {
 	CURL *easy;
 	enum http2_result result;
@@ -77,61 +75,106 @@ struct _http2_request {
 	char *profiling_contents;
 };
 
+enum curl_log_type {
+	CURL_LOG_TYPE_TEXT,
+	CURL_LOG_TYPE_HEADER,
+	CURL_LOG_TYPE_DATA
+};
+
+enum curl_log_dir {
+	CURL_LOG_DIR_NONE, /* no direction */
+	CURL_LOG_DIR_RECV,
+	CURL_LOG_DIR_SEND
+};
+
+static void _network_curl_log(enum curl_log_type type, enum curl_log_dir dir,
+			      const char *msg, size_t size, char *data)
+{
+	const char *color = "";
+	const char *dir_hint = "";
+
+	/* Stream closed */
+	if (size == 0) {
+		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_WARNING,
+			       NULL, NULL, -1, "[CURL] %s: 0 bytes", msg);
+		return;
+	}
+
+	if (dir == CURL_LOG_DIR_RECV) {
+		color = NUGU_ANSI_COLOR_RECV;
+		dir_hint = NUGU_LOG_MARK_RECV;
+	} else if (dir == CURL_LOG_DIR_SEND) {
+		color = NUGU_ANSI_COLOR_SEND;
+		dir_hint = NUGU_LOG_MARK_SEND;
+	}
+
+	if (type == CURL_LOG_TYPE_DATA) {
+		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
+			       NULL, NULL, -1,
+			       "[CURL] %s: %s%zd bytes" NUGU_ANSI_COLOR_NORMAL,
+			       msg, color, size);
+	} else {
+		int flag = 0;
+
+		/* temporary remove a last new-line code */
+		if (data[size - 1] == '\n') {
+			data[size - 1] = '\0';
+			flag = 1;
+		}
+
+		if (type == CURL_LOG_TYPE_TEXT)
+			/* Curl information text */
+			nugu_log_print(NUGU_LOG_MODULE_NETWORK,
+				       NUGU_LOG_LEVEL_DEBUG, NULL, NULL, -1,
+				       "[CURL] %s", data);
+		else
+			/* header */
+			nugu_log_print(NUGU_LOG_MODULE_NETWORK,
+				       NUGU_LOG_LEVEL_DEBUG, NULL, NULL, -1,
+				       "[CURL] %s: %s%s" NUGU_ANSI_COLOR_NORMAL,
+				       msg, color, data);
+
+		if (flag)
+			data[size - 1] = '\n';
+	}
+
+	/* hexdump for header and data */
+	if (type != CURL_LOG_TYPE_TEXT)
+		nugu_hexdump(NUGU_LOG_MODULE_NETWORK_TRACE, (uint8_t *)data,
+			     size, color, NUGU_ANSI_COLOR_NORMAL, dir_hint);
+}
+
 static int _debug_callback(CURL *handle, curl_infotype type, char *data,
 			   size_t size, void *userptr)
 {
-	int flag = 0;
-
-	if (size > 0 && data[size - 1] == '\n') {
-		data[size - 1] = '\0';
-		flag = 1;
-	}
-
 	switch (type) {
 	case CURLINFO_TEXT:
-		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
-			       NULL, NULL, -1, "[CURL] %s", data);
+		_network_curl_log(CURL_LOG_TYPE_TEXT, CURL_LOG_DIR_NONE, NULL,
+				  size, data);
 		break;
 	case CURLINFO_HEADER_OUT:
-		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
-			       NULL, NULL, -1, "[CURL] Send header: %s", data);
-		nugu_hexdump(NUGU_LOG_MODULE_NETWORK_TRACE, (uint8_t *)data,
-			     size, NUGU_ANSI_COLOR_SEND, NUGU_ANSI_COLOR_NORMAL,
-			     NUGU_LOG_MARK_SEND);
+		_network_curl_log(CURL_LOG_TYPE_HEADER, CURL_LOG_DIR_SEND,
+				  "Send header", size, data);
 		break;
 	case CURLINFO_DATA_OUT:
-		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
-			       NULL, NULL, -1, "[CURL] Send data: %d bytes",
-			       size);
-		nugu_hexdump(NUGU_LOG_MODULE_NETWORK_TRACE, (uint8_t *)data,
-			     size, NUGU_ANSI_COLOR_SEND, NUGU_ANSI_COLOR_NORMAL,
-			     NUGU_LOG_MARK_SEND);
+		_network_curl_log(CURL_LOG_TYPE_DATA, CURL_LOG_DIR_SEND,
+				  "Send data", size, data);
 		break;
 	case CURLINFO_SSL_DATA_OUT:
 		break;
 	case CURLINFO_HEADER_IN:
-		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
-			       NULL, NULL, -1, "[CURL] Recv header: %s", data);
-		nugu_hexdump(NUGU_LOG_MODULE_NETWORK_TRACE, (uint8_t *)data,
-			     size, NUGU_ANSI_COLOR_RECV, NUGU_ANSI_COLOR_NORMAL,
-			     NUGU_LOG_MARK_RECV);
+		_network_curl_log(CURL_LOG_TYPE_HEADER, CURL_LOG_DIR_RECV,
+				  "Recv header", size, data);
 		break;
 	case CURLINFO_DATA_IN:
-		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
-			       NULL, NULL, -1, "[CURL] Recv data: %d bytes",
-			       size);
-		nugu_hexdump(NUGU_LOG_MODULE_NETWORK_TRACE, (uint8_t *)data,
-			     size, NUGU_ANSI_COLOR_RECV, NUGU_ANSI_COLOR_NORMAL,
-			     NUGU_LOG_MARK_RECV);
+		_network_curl_log(CURL_LOG_TYPE_DATA, CURL_LOG_DIR_RECV,
+				  "Recv data", size, data);
 		break;
 	case CURLINFO_SSL_DATA_IN:
 		break;
 	default:
 		break;
 	}
-
-	if (flag)
-		data[size - 1] = '\n';
 
 	return 0;
 }
