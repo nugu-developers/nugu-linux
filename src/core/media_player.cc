@@ -151,6 +151,11 @@ MediaPlayer::MediaPlayer(int volume)
             for (auto l : d->listeners)
                 l->mediaEventReport(MediaPlayerEvent::PLAYING_MEDIA_FINISHED);
             break;
+        case NUGU_MEDIA_EVENT_MEDIA_UNDERRUN:
+            for (auto l : d->listeners)
+                l->mediaEventReport(MediaPlayerEvent::PLAYING_MEDIA_UNDERRUN);
+            break;
+
         default:
             break;
         }

@@ -28,6 +28,7 @@ public:
 
     // implements IAudioPlayerListener
     void mediaStateChanged(AudioPlayerState state, const std::string& dialog_id) override;
+    void mediaEventReport(AudioPlayerEvent event, const std::string& dialog_id) override;
     void durationChanged(int duration) override;
     void positionChanged(int position) override;
     void favoriteChanged(bool favorite, const std::string& dialog_id) override;
