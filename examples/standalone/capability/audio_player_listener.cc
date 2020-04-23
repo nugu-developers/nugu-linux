@@ -40,6 +40,27 @@ void AudioPlayerListener::mediaStateChanged(AudioPlayerState state, const std::s
     }
 }
 
+void AudioPlayerListener::mediaEventReport(AudioPlayerEvent event, const std::string& dialog_id)
+{
+    std::cout << "[AudioPlayer][id:" << dialog_id << "] ";
+    switch (event) {
+    case AudioPlayerEvent::UNDERRUN:
+        std::cout << "UNDERRUN\n";
+        break;
+    case AudioPlayerEvent::LOAD_FAILED:
+        std::cout << "LOAD_FAILED\n";
+        break;
+    case AudioPlayerEvent::LOAD_DONE:
+        std::cout << "LOAD_DONE\n";
+        break;
+    case AudioPlayerEvent::INVALID_URL:
+        std::cout << "INVALID_URL\n";
+        break;
+    default:
+        break;
+    }
+}
+
 void AudioPlayerListener::durationChanged(int duration)
 {
     std::cout << "[AudioPlayer] - duration: " << duration << std::endl;

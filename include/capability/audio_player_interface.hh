@@ -47,6 +47,16 @@ enum class AudioPlayerState {
 };
 
 /**
+ * @brief AudioPlayerEvent
+ */
+enum class AudioPlayerEvent {
+    UNDERRUN, /**< This event is occurred when the content is reloaded because of bad quailty network */
+    LOAD_FAILED, /**< This event is occurred when the content is not loaded successfully */
+    LOAD_DONE, /**< This event is occurred when the content is loaded successfully */
+    INVALID_URL /**< This event is occurred when the content is not valid url */
+};
+
+/**
  * @brief RepeatType
  */
 enum class RepeatType {
@@ -77,6 +87,11 @@ public:
      * @param[in] dialog_id dialog request id
      */
     virtual void mediaStateChanged(AudioPlayerState state, const std::string& dialog_id) = 0;
+
+    /**
+     * @brief The audio player reports player's event being played to the user.
+     */
+    virtual void mediaEventReport(AudioPlayerEvent event, const std::string& dialog_id) = 0;
 
     /**
      * @brief The audio player reports the total duration of the content being played to the user.

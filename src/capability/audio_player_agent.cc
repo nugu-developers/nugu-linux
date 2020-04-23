@@ -1155,10 +1155,16 @@ void AudioPlayerAgent::mediaEventReport(MediaPlayerEvent event)
     case MediaPlayerEvent::INVALID_MEDIA_URL:
         nugu_warn("INVALID_MEDIA_URL");
         sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INVALID_REQUEST, "media source is wrong");
+
+        for (auto aplayer_listener : aplayer_listeners)
+            aplayer_listener->mediaEventReport(AudioPlayerEvent::INVALID_URL, cur_dialog_id);
         break;
     case MediaPlayerEvent::LOADING_MEDIA_FAILED:
         nugu_warn("LOADING_MEDIA_FAILED");
-        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_SERVICE_UNAVAILABLE, "player can't play the media");
+        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_SERVICE_UNAVAILABLE, "player can't load the media");
+
+        for (auto aplayer_listener : aplayer_listeners)
+            aplayer_listener->mediaEventReport(AudioPlayerEvent::LOAD_FAILED, cur_dialog_id);
         break;
     case MediaPlayerEvent::LOADING_MEDIA_SUCCESS:
         nugu_dbg("LOADING_MEDIA_SUCCESS");
@@ -1168,6 +1174,11 @@ void AudioPlayerAgent::mediaEventReport(MediaPlayerEvent event)
         is_finished = true;
         mediaStateChanged(MediaPlayerState::STOPPED);
         capa_helper->releaseFocus("cap_audio");
+        break;
+    case MediaPlayerEvent::PLAYING_MEDIA_UNDERRUN:
+        for (auto aplayer_listener : aplayer_listeners) {
+            aplayer_listener->mediaEventReport(AudioPlayerEvent::UNDERRUN, cur_dialog_id);
+        }
         break;
     default:
         break;

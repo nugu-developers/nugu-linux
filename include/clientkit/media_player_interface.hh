@@ -51,7 +51,8 @@ enum class MediaPlayerEvent {
     INVALID_MEDIA_URL, /**< Invalid media content url */
     LOADING_MEDIA_FAILED, /**< Loading of media content failed */
     LOADING_MEDIA_SUCCESS, /**< Loading of media content success */
-    PLAYING_MEDIA_FINISHED /**< Playing media content to the end */
+    PLAYING_MEDIA_FINISHED, /**< Playing media content to the end */
+    PLAYING_MEDIA_UNDERRUN  /**< Playing media content underrun */
 };
 
 /**
