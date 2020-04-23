@@ -51,11 +51,6 @@ NuguClient::~NuguClient()
     }
 }
 
-void NuguClient::setListener(INuguClientListener* listener)
-{
-    impl->setListener(listener);
-}
-
 void NuguClient::setWakeupWord(const std::string& wakeup_word)
 {
     impl->setWakeupWord(wakeup_word);

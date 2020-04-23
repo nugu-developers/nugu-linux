@@ -51,16 +51,6 @@ NuguClientImpl::~NuguClientImpl()
     nugu_equeue_deinitialize();
 }
 
-void NuguClientImpl::setListener(INuguClientListener* listener)
-{
-    this->listener = listener;
-}
-
-INuguClientListener* NuguClientImpl::getListener()
-{
-    return listener;
-}
-
 void NuguClientImpl::setWakeupWord(const std::string& wakeup_word)
 {
     if (!wakeup_word.empty())
@@ -159,9 +149,6 @@ bool NuguClientImpl::initialize(void)
     }
 
     nugu_prof_mark(NUGU_PROF_TYPE_SDK_INIT_DONE);
-
-    if (listener)
-        listener->onInitialized(this);
 
     initialized = true;
 
