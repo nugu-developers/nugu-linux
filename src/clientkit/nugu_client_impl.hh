@@ -21,7 +21,6 @@
 #include <memory>
 
 #include "clientkit/capability_interface.hh"
-#include "clientkit/nugu_client_listener.hh"
 #include "core/nugu_core_container.hh"
 
 namespace NuguClientKit {
@@ -33,8 +32,6 @@ public:
     NuguClientImpl();
     virtual ~NuguClientImpl();
 
-    void setListener(INuguClientListener* listener);
-    INuguClientListener* getListener();
     void setWakeupWord(const std::string& wakeup_word);
     void registerCapability(ICapabilityInterface* capability);
     int create(void);
@@ -55,7 +52,6 @@ private:
     using CapabilityMap = std::map<std::string, ICapabilityInterface*>;
 
     CapabilityMap icapability_map;
-    INuguClientListener* listener = nullptr;
     std::unique_ptr<INetworkManager> network_manager = nullptr;
     std::unique_ptr<NuguCoreContainer> nugu_core_container = nullptr;
     bool initialized = false;

@@ -21,7 +21,6 @@
 #include <string>
 
 #include <clientkit/capability_interface.hh>
-#include <clientkit/nugu_client_listener.hh>
 #include <clientkit/nugu_core_container_interface.hh>
 
 namespace NuguClientKit {
@@ -75,12 +74,6 @@ public:
 
     NuguClient();
     ~NuguClient();
-
-    /**
-     * @brief Set the listener object
-     * @param[in] clistener listener
-     */
-    void setListener(INuguClientListener* listener);
 
     /**
      * @brief Set wakeup word
