@@ -45,12 +45,19 @@ IWakeupHandler* NuguCoreContainer::createWakeupHandler(const std::string& model_
     return new WakeupHandler(model_path);
 }
 
-ISpeechRecognizer* NuguCoreContainer::createSpeechRecognizer(const std::string& model_path)
+ISpeechRecognizer* NuguCoreContainer::createSpeechRecognizer(const std::string& model_path, const EpdAttribute& epd_attr)
 {
     // TODO : It needs guarantee related plugin is loaded.
 
     SpeechRecognizer::Attribute sr_attribute;
+
     sr_attribute.model_path = model_path;
+
+    if (epd_attr.epd_timeout > 0)
+        sr_attribute.epd_timeout = epd_attr.epd_timeout;
+
+    if (epd_attr.epd_max_duration > 0)
+        sr_attribute.epd_max_duration = epd_attr.epd_max_duration;
 
     return new SpeechRecognizer(std::move(sr_attribute));
 }

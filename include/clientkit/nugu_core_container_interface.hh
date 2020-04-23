@@ -53,8 +53,9 @@ public:
     /**
      * @brief Create SpeechRecognizer instance
      * @param[in] model_path required model file path
+     * @param[in] epd_attr epd attribute like timeout, max duration
      */
-    virtual ISpeechRecognizer* createSpeechRecognizer(const std::string& model_path = "") = 0;
+    virtual ISpeechRecognizer* createSpeechRecognizer(const std::string& model_path = "", const EpdAttribute& epd_attr = {}) = 0;
 
     /**
      * @brief Create MediaPlayer instance

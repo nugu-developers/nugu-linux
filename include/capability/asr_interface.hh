@@ -73,6 +73,8 @@ typedef struct {
     std::string epd_type; /**< Epd type : CLIENT, SERVER */
     std::string asr_encoding; /**< Asr encoding type : PARTIAL, COMPLETE */
     int response_timeout; /**< Server response timeout about speech */
+    int epd_timeout; /**< epd timeout sec */
+    int epd_max_duration; /**< epd max duration sec */
 } ASRAttribute;
 
 /**
@@ -136,7 +138,7 @@ public:
      * @brief ASR recognize callback for user request and response mapping
      * @param[in] dialog_id event request dialog id
      */
-    using AsrRecognizeCallback = std::function <void(const std::string& dialog_id)>;
+    using AsrRecognizeCallback = std::function<void(const std::string& dialog_id)>;
 
 public:
     virtual ~IASRHandler() = default;
