@@ -37,6 +37,7 @@ using namespace NuguClientKit;
 #define NUGU_SPEAKER_MIN_VOLUME 0 /** @def Set speaker minimum volume to 0 */
 #define NUGU_SPEAKER_MAX_VOLUME 100 /** @def Set speaker maximum volume to 100 */
 #define NUGU_SPEAKER_DEFAULT_VOLUME 50 /** @def Set speaker default volume to 50 */
+#define NUGU_SPEAKER_DEFAULT_STEP 10 /** @def Set speaker default volume step to 10 */
 
 /**
  * @brief SpeakerType
@@ -59,7 +60,7 @@ public:
     int min = NUGU_SPEAKER_MIN_VOLUME; /**< Speaker min volume  */
     int max = NUGU_SPEAKER_MAX_VOLUME; /**< Speaker max volume  */
     int volume = NUGU_SPEAKER_DEFAULT_VOLUME; /**< Speaker current volume  */
-    int init = NUGU_SPEAKER_DEFAULT_VOLUME; /**< Speaker default volume  */
+    int step = NUGU_SPEAKER_DEFAULT_STEP; /**< Speaker default volume step  */
     bool mute = false; /**< Speaker mute state  */
     bool can_control = false; /**< Speaker controllability */
 };

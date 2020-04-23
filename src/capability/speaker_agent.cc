@@ -83,7 +83,7 @@ void SpeakerAgent::updateInfoForContext(Json::Value& ctx)
         volume["volume"] = sinfo->volume;
         volume["minVolume"] = sinfo->min;
         volume["maxVolume"] = sinfo->max;
-        volume["defaultVolumeStep"] = sinfo->init;
+        volume["defaultVolumeStep"] = sinfo->step;
         volume["muted"] = sinfo->mute;
 
         speaker["volumes"].append(volume);
@@ -111,7 +111,7 @@ void SpeakerAgent::setSpeakerInfo(std::map<SpeakerType, SpeakerInfo*> info)
         sinfo->type = container.second->type;
         sinfo->min = container.second->min;
         sinfo->max = container.second->max;
-        sinfo->init = container.second->init;
+        sinfo->step = container.second->step;
         sinfo->volume = container.second->volume;
         sinfo->mute = container.second->mute;
         sinfo->can_control = container.second->can_control;
