@@ -46,6 +46,14 @@ enum class ListeningState {
 };
 
 /**
+ * @brief Attributes about epd.
+ */
+typedef struct {
+    int epd_timeout; /**< epd timeout sec */
+    int epd_max_duration; /**< epd max duration sec */
+} EpdAttribute;
+
+/**
  * @brief SpeechRecognizer listener interface
  * @see ISpeechRecognizer
  */

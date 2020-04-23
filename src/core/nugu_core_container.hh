@@ -31,7 +31,7 @@ public:
 
     // implements INuguCoreContainer
     IWakeupHandler* createWakeupHandler(const std::string& model_path = "") override;
-    ISpeechRecognizer* createSpeechRecognizer(const std::string& model_path = "") override;
+    ISpeechRecognizer* createSpeechRecognizer(const std::string& model_path = "", const EpdAttribute& epd_attr = {}) override;
     IMediaPlayer* createMediaPlayer() override;
     ITTSPlayer* createTTSPlayer() override;
     ICapabilityHelper* getCapabilityHelper() override;

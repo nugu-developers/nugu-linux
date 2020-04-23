@@ -150,6 +150,7 @@ ASRAgent::ASRAgent()
     , epd_type(NUGU_ASR_EPD_TYPE)
     , asr_encoding(NUGU_ASR_ENCODING)
     , response_timeout(NUGU_SERVER_RESPONSE_TIMEOUT_SEC)
+    , epd_attribute({})
     , wakeup_power_noise(0)
     , wakeup_power_speech(0)
 {
@@ -172,6 +173,10 @@ void ASRAgent::setAttribute(ASRAttribute&& attribute)
 
     if (attribute.response_timeout > 0)
         response_timeout = attribute.response_timeout;
+
+    // It just bypass, because the validation is checked in createSpeechRecognizer().
+    epd_attribute.epd_timeout = attribute.epd_timeout;
+    epd_attribute.epd_max_duration = attribute.epd_max_duration;
 }
 
 void ASRAgent::initialize()
@@ -181,7 +186,7 @@ void ASRAgent::initialize()
         return;
     }
 
-    speech_recognizer = std::unique_ptr<ISpeechRecognizer>(core_container->createSpeechRecognizer(model_path));
+    speech_recognizer = std::unique_ptr<ISpeechRecognizer>(core_container->createSpeechRecognizer(model_path, epd_attribute));
     speech_recognizer->setListener(this);
 
     timer = core_container->createNuguTimer();

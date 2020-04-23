@@ -118,6 +118,7 @@ private:
     std::string epd_type;
     std::string asr_encoding;
     int response_timeout;
+    EpdAttribute epd_attribute;
 
     float wakeup_power_noise;
     float wakeup_power_speech;
