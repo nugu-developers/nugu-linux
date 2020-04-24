@@ -128,7 +128,7 @@ void AudioInputProcessor::sendEvent(const std::function<void()>& action)
     g_return_if_fail(action != nullptr);
 
     SyncEvent* data = new SyncEvent;
-    data->action = std::move(action);
+    data->action = action;
 
     g_idle_add(invoke_event, (void*)data);
 }

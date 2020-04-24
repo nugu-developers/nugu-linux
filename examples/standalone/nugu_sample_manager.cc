@@ -31,10 +31,12 @@ const char* NuguSampleManager::C_CYAN = "\033[1;96m";
 const char* NuguSampleManager::C_WHITE = "\033[1;97m";
 const char* NuguSampleManager::C_RESET = "\033[0m";
 
+// NOLINTNEXTLINE (cert-err58-cpp)
 const NuguSampleManager::CommandKey NuguSampleManager::COMMAND_KEYS {
     "w", "l", "s", "t", "m", "sa", "ra", "c", "d", "q"
 };
 
+// NOLINTNEXTLINE (cert-err58-cpp)
 const NuguSampleManager::CommandMap NuguSampleManager::COMMAND_MAP {
     { "w", { "start listening with wakeup", [](NuguSampleManager* ns_mgr) {
                 if (ns_mgr->commander.speech_operator)
