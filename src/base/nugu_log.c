@@ -174,7 +174,7 @@ static void _log_check_override_line_limit(void)
 	if (!env)
 		return;
 
-	value = atoi(env);
+	value = strtol(env, NULL, 10);
 	if (value <= 0)
 		_log_line_limit = -1;
 	else

@@ -182,6 +182,8 @@ MediaPlayer::MediaPlayer(int volume)
     };
     d->timeout = g_timeout_add(POSITION_POLLING_TIMEOUT_500MS, tfunc, this);
     d->mp_map[this] = d;
+
+    // NOLINTNEXTLINE (clang-analyzer-optin.cplusplus.VirtualCall)
     setVolume(volume);
 }
 

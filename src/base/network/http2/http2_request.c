@@ -218,7 +218,7 @@ static size_t _request_body_cb(char *buffer, size_t size, size_t nitems,
 
 	if ((nugu_log_get_modules() & NUGU_LOG_MODULE_PROTOCOL) != 0) {
 		int limit = nugu_log_get_protocol_line_limit();
-		const char *multipart;
+		const char *multipart = "";
 		const char *too_long = "";
 		char backup = 0;
 		int backup_pos = -1;
