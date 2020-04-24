@@ -85,14 +85,10 @@ void CapabilityCollection::composeCapabilityFactory()
             speaker_handler = makeCapability<SpeakerAgent, ISpeakerHandler>(speaker_listener.get());
 
             // compose SpeakerInfo
-            SpeakerInfo nugu_speaker = makeSpeakerInfo(SpeakerType::NUGU, true);
-            SpeakerInfo call_speaker = makeSpeakerInfo(SpeakerType::CALL);
-            SpeakerInfo alarm_speaker = makeSpeakerInfo(SpeakerType::ALARM);
-
-            std::map<SpeakerType, SpeakerInfo*> speakers = {
-                { SpeakerType::NUGU, &nugu_speaker },
-                { SpeakerType::CALL, &call_speaker },
-                { SpeakerType::ALARM, &alarm_speaker },
+            std::map<SpeakerType, SpeakerInfo> speakers {
+                { SpeakerType::NUGU, makeSpeakerInfo(SpeakerType::NUGU, true) },
+                { SpeakerType::CALL, makeSpeakerInfo(SpeakerType::CALL) },
+                { SpeakerType::ALARM, makeSpeakerInfo(SpeakerType::ALARM) },
             };
 
             speaker_handler->setSpeakerInfo(speakers);

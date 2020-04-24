@@ -105,7 +105,7 @@ public:
      * @brief Set speaker information in SDK to be controlled by application.
      * @param[in] info speaker's information map
      */
-    virtual void setSpeakerInfo(std::map<SpeakerType, SpeakerInfo*> info) = 0;
+    virtual void setSpeakerInfo(const std::map<SpeakerType, SpeakerInfo>& info) = 0;
     /**
      * @brief Inform volume changed by application to the SDK
      * @param[in] type speaker type

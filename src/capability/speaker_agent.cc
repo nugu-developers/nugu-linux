@@ -32,9 +32,6 @@ SpeakerAgent::SpeakerAgent()
 
 SpeakerAgent::~SpeakerAgent()
 {
-    for (auto container : speakers)
-        delete container.second;
-
     speakers.clear();
 }
 
@@ -73,8 +70,8 @@ void SpeakerAgent::updateInfoForContext(Json::Value& ctx)
     Json::Value volumes;
 
     speaker["version"] = getVersion();
-    for (auto container : speakers) {
-        SpeakerInfo* sinfo = container.second;
+    for (const auto& container : speakers) {
+        SpeakerInfo* sinfo = container.second.get();
         if (!sinfo->can_control)
             continue;
 
@@ -97,28 +94,16 @@ void SpeakerAgent::setCapabilityListener(ICapabilityListener* clistener)
         speaker_listener = dynamic_cast<ISpeakerListener*>(clistener);
 }
 
-void SpeakerAgent::setSpeakerInfo(std::map<SpeakerType, SpeakerInfo*> info)
+void SpeakerAgent::setSpeakerInfo(const std::map<SpeakerType, SpeakerInfo>& info)
 {
     if (info.size() == 0)
         return;
 
-    for (auto container : speakers)
-        delete container.second;
+    for (const auto& container : info) {
+        speakers.emplace(container.second.type, std::unique_ptr<SpeakerInfo>(new SpeakerInfo(container.second)));
 
-    for (auto container : info) {
-        SpeakerInfo* sinfo = new SpeakerInfo();
-
-        sinfo->type = container.second->type;
-        sinfo->min = container.second->min;
-        sinfo->max = container.second->max;
-        sinfo->step = container.second->step;
-        sinfo->volume = container.second->volume;
-        sinfo->mute = container.second->mute;
-        sinfo->can_control = container.second->can_control;
-
-        speakers[sinfo->type] = sinfo;
-
-        nugu_dbg("speaker - %s %d[%d - %d], can_control: %d", getSpeakerName(sinfo->type).c_str(), sinfo->volume, sinfo->min, sinfo->max, sinfo->can_control);
+        nugu_dbg("speaker - %s %d[%d - %d], can_control: %d",
+            getSpeakerName(container.second.type).c_str(), container.second.volume, container.second.min, container.second.max, container.second.can_control);
     }
 }
 
@@ -154,8 +139,8 @@ void SpeakerAgent::sendEventMuteChanged(const std::string& ps_id, bool result)
 
 void SpeakerAgent::updateSpeakerVolume(SpeakerType type, int volume)
 {
-    for (auto container : speakers) {
-        SpeakerInfo* sinfo = container.second;
+    for (const auto& container : speakers) {
+        SpeakerInfo* sinfo = container.second.get();
         if (sinfo->type == type) {
             sinfo->volume = volume;
             break;
@@ -165,8 +150,8 @@ void SpeakerAgent::updateSpeakerVolume(SpeakerType type, int volume)
 
 void SpeakerAgent::updateSpeakerMute(SpeakerType type, bool mute)
 {
-    for (auto container : speakers) {
-        SpeakerInfo* sinfo = container.second;
+    for (const auto& container : speakers) {
+        SpeakerInfo* sinfo = container.second.get();
         if (sinfo->type == type) {
             sinfo->mute = mute;
             break;
@@ -189,7 +174,7 @@ bool SpeakerAgent::getSpeakerType(const std::string& name, SpeakerType& type)
     return false;
 }
 
-std::string SpeakerAgent::getSpeakerName(SpeakerType& type)
+std::string SpeakerAgent::getSpeakerName(const SpeakerType& type)
 {
     if (type == SpeakerType::CALL)
         return "CALL";

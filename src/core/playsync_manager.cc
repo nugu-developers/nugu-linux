@@ -84,23 +84,13 @@ PlaySyncManager::PlaySyncManager()
         { "MID", HOLD_TIME_MID },
         { "LONG", HOLD_TIME_LONG },
         { "LONGEST", HOLD_TIME_LONGEST } })
+    , timer(std::unique_ptr<NUGUTimer>(new NUGUTimer(DEFAULT_HOLD_TIME * NUGU_TIMER_UNIT_SEC, 1)))
+    , long_timer(std::unique_ptr<LongTimer>(new LongTimer(HOLD_TIME_LONGEST * NUGU_TIMER_UNIT_SEC, 1)))
 {
-    timer = new NUGUTimer(DEFAULT_HOLD_TIME * NUGU_TIMER_UNIT_SEC, 1);
-    long_timer = new LongTimer(HOLD_TIME_LONGEST * NUGU_TIMER_UNIT_SEC, 1);
 }
 
 PlaySyncManager::~PlaySyncManager()
 {
-    if (timer) {
-        delete timer;
-        timer = nullptr;
-    }
-
-    if (long_timer) {
-        delete long_timer;
-        long_timer = nullptr;
-    }
-
     renderer_map.clear();
     context_map.clear();
     context_stack.clear();
