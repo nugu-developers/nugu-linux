@@ -698,7 +698,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
 
     audio_item = root["audioItem"];
     if (audio_item.empty()) {
-        nugu_error("directive message syntex error");
+        nugu_error("directive message syntax error");
         return;
     }
     play_service_id = root["playServiceId"].asString();
@@ -707,7 +707,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     source_type = root["sourceType"].asString();
     stream = audio_item["stream"];
     if (stream.empty()) {
-        nugu_error("directive message syntex error");
+        nugu_error("directive message syntax error");
         return;
     }
 
@@ -915,7 +915,7 @@ void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
     }
 
     if (root["metadata"].empty() || root["metadata"]["template"].empty() || root["metadata"]["template"]["settings"].empty()) {
-        nugu_error("directive message syntex error");
+        nugu_error("directive message syntax error");
         return;
     }
 

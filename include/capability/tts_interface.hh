@@ -69,7 +69,7 @@ public:
 
     /**
      * @brief Report the speech sentence to the User.
-     * @param[in] text sentense
+     * @param[in] text sentence
      * @param[in] dialog_id dialog request id
      */
     virtual void onTTSText(const std::string& text, const std::string& dialog_id) = 0;
@@ -96,7 +96,7 @@ public:
 
     /**
      * @brief request the sentence to speech.
-     * @param[in] text sentense
+     * @param[in] text sentence
      * @param[in] play_service_id received from server
      * @param[in] referrer_id referrer request dialog id for analysis
      */

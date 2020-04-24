@@ -50,7 +50,7 @@ enum class AudioPlayerState {
  * @brief AudioPlayerEvent
  */
 enum class AudioPlayerEvent {
-    UNDERRUN, /**< This event is occurred when the content is reloaded because of bad quailty network */
+    UNDERRUN, /**< This event is occurred when the content is reloaded because of bad quality network */
     LOAD_FAILED, /**< This event is occurred when the content is not loaded successfully */
     LOAD_DONE, /**< This event is occurred when the content is loaded successfully */
     INVALID_URL /**< This event is occurred when the content is not valid url */
