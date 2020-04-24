@@ -19,6 +19,7 @@
 
 #include <functional>
 #include <map>
+#include <memory>
 
 #include "clientkit/playsync_manager_interface.hh"
 #include "nugu_timer.hh"
@@ -85,8 +86,9 @@ private:
     RendererMap renderer_map;
     LayerMap layer_map;
 
-    NUGUTimer* timer = nullptr;
-    LongTimer* long_timer = nullptr;
+    std::unique_ptr<NUGUTimer> timer = nullptr;
+    std::unique_ptr<LongTimer> long_timer = nullptr;
+
     bool is_expect_speech = false;
     PlaysyncLayer layer = PlaysyncLayer::Info;
 };

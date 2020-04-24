@@ -17,8 +17,8 @@
 #ifndef __NUGU_SPEAKER_AGENT_H__
 #define __NUGU_SPEAKER_AGENT_H__
 
-#include "clientkit/capability.hh"
 #include "capability/speaker_interface.hh"
+#include "clientkit/capability.hh"
 
 namespace NuguCapability {
 
@@ -34,7 +34,7 @@ public:
     void updateInfoForContext(Json::Value& ctx) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
-    void setSpeakerInfo(std::map<SpeakerType, SpeakerInfo*> info) override;
+    void setSpeakerInfo(const std::map<SpeakerType, SpeakerInfo>& info) override;
 
     void informVolumeChanged(SpeakerType type, int volume) override;
     void informMuteChanged(SpeakerType type, bool mute) override;
@@ -55,9 +55,9 @@ private:
     void updateSpeakerVolume(SpeakerType type, int volume);
     void updateSpeakerMute(SpeakerType type, bool mute);
     bool getSpeakerType(const std::string& name, SpeakerType& type);
-    std::string getSpeakerName(SpeakerType& type);
+    std::string getSpeakerName(const SpeakerType& type);
 
-    std::map<SpeakerType, SpeakerInfo*> speakers;
+    std::map<SpeakerType, std::unique_ptr<SpeakerInfo>> speakers;
     ISpeakerListener* speaker_listener;
 };
 
