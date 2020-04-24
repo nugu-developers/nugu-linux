@@ -169,16 +169,12 @@ void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 	case GST_MESSAGE_ERROR: {
 		GError *err;
 		gchar *debug;
-		GstState state;
-
-		gst_element_get_state(gh->pipeline, &state, NULL,
-				      GST_CLOCK_TIME_NONE);
 
 		gst_message_parse_error(msg, &err, &debug);
 		nugu_dbg("GST_MESSAGE_ERROR: %s, gst_state: %d", err->message,
-			 state);
+			 gh->last_state);
 
-		if (state == GST_STATE_READY) {
+		if (gh->last_state == GST_STATE_READY) {
 			NOTIFY_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOAD_FAILED);
 			NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_STOPPED);
 		}
