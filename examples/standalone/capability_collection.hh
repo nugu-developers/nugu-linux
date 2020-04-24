@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NUGU_CAPABILITY_COLLECTAION_H__
-#define __NUGU_CAPABILITY_COLLECTAION_H__
+#ifndef __NUGU_CAPABILITY_COLLECTION_H__
+#define __NUGU_CAPABILITY_COLLECTION_H__
 
 #include <functional>
 #include <map>
@@ -73,4 +73,4 @@ private:
     std::map<std::string, std::function<ICapabilityInterface*()>> factories;
 };
 
-#endif /* __NUGU_CAPABILITY_COLLECTAION_H__ */
+#endif /* __NUGU_CAPABILITY_COLLECTION_H__ */

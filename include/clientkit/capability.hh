@@ -163,7 +163,7 @@ public:
     void removeEventResultCallback(const std::string& ename) override;
 
     /**
-     * @brief Notift event result
+     * @brief Notify event result
      * @param[in] event_desc event result description (format: 'cname.ename.msgid.dialogid.success.code')
      */
     void notifyEventResult(const std::string& event_desc) override;
@@ -280,14 +280,14 @@ public:
 
     /**
      * @brief It is possible to share own property value among objects.
-     * @param[in] property calability property
+     * @param[in] property capability property
      * @param[in] values capability property value
      */
     void getProperty(const std::string& property, std::string& value) override;
 
     /**
      * @brief It is possible to share own property values among objects.
-     * @param[in] property calability property
+     * @param[in] property capability property
      * @param[in] values capability property values
      */
     void getProperties(const std::string& property, std::list<std::string>& values) override;

@@ -247,7 +247,7 @@ void NuguSampleManager::showPrompt(void)
                       << C_BLUE;
         }
 
-        // display commands about netowrk, quit
+        // display commands about network, quit
         std::cout << command_text.second
                   << C_YELLOW
                   << "-------------------------------------------------------\n"

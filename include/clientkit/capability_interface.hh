@@ -17,10 +17,10 @@
 #ifndef __NUGU_CAPABILITY_INTERFACE_H__
 #define __NUGU_CAPABILITY_INTERFACE_H__
 
+#include <functional>
 #include <json/json.h>
 #include <list>
 #include <string>
-#include <functional>
 
 #include <base/nugu_directive.h>
 #include <clientkit/nugu_core_container_interface.hh>
@@ -121,7 +121,7 @@ public:
     virtual void removeEventResultCallback(const std::string& ename) = 0;
 
     /**
-     * @brief Notift event result
+     * @brief Notify event result
      * @param[in] event_desc event result description (format: 'cname.ename.msgid.dialogid.success.code')
      */
     virtual void notifyEventResult(const std::string& event_desc) = 0;
@@ -167,14 +167,14 @@ public:
 
     /**
      * @brief It is possible to share own property value among objects.
-     * @param[in] property calability property
+     * @param[in] property capability property
      * @param[in] values capability property value
      */
     virtual void getProperty(const std::string& property, std::string& value) = 0;
 
     /**
      * @brief It is possible to share own property values among objects.
-     * @param[in] property calability property
+     * @param[in] property capability property
      * @param[in] values capability property values
      */
     virtual void getProperties(const std::string& property, std::list<std::string>& values) = 0;

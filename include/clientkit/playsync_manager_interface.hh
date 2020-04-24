@@ -122,7 +122,7 @@ public:
     virtual void removeContextLater(const std::string& ps_id, const std::string& cap_name, unsigned int sec) = 0;
 
     /**
-     * @brief Clear pendind play service id from context stack.
+     * @brief Clear pending play service id from context stack.
      * @param[in] ps_id play service id
      */
     virtual void clearPendingContext(const std::string& ps_id) = 0;
