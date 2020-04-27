@@ -837,17 +837,16 @@ void AudioPlayerAgent::parsingPause(const char* message)
         // hold context about 10m' and remove it, if there are no action.
         playsync_manager->removeContextLater(playserviceid, getName(), PAUSE_CONTEXT_HOLD_TIME);
 
-        if (cur_player->state() == MediaPlayerState::PAUSED && cur_aplayer_state == AudioPlayerState::PAUSED)
-            sendEventPlaybackPaused();
-        else {
-            cur_dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
-            if (!cur_player->pause()) {
-                nugu_error("pause media failed");
-                sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't pause");
-            }
+        cur_dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
+        if (!cur_player->pause()) {
+            nugu_error("pause media failed");
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't pause");
         }
-
-        capa_helper->releaseFocus("cap_audio");
+        if (prev_aplayer_state != AudioPlayerState::PAUSED) {
+            nugu_dbg("audio player state is paused!!");
+            prev_aplayer_state = cur_aplayer_state = AudioPlayerState::PAUSED;
+            sendEventPlaybackPaused();
+        }
     }
 }
 
@@ -1141,7 +1140,7 @@ void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
     for (auto aplayer_listener : aplayer_listeners)
         aplayer_listener->mediaStateChanged(cur_aplayer_state, cur_dialog_id);
 
-    if (is_paused && cur_aplayer_state == AudioPlayerState::PAUSED) {
+    if ((is_paused || is_steal_focus) && cur_aplayer_state == AudioPlayerState::PAUSED) {
         nugu_info("[audioplayer state] skip to save prev_aplayer_state");
         return;
     }
