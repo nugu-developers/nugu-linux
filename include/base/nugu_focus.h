@@ -43,6 +43,7 @@ enum nugu_focus_type {
 	NUGU_FOCUS_TYPE_ASR, /**< ASR */
 	NUGU_FOCUS_TYPE_TTS, /**< TTS */
 	NUGU_FOCUS_TYPE_ASR_EXPECT, /**< ASR Expect speech */
+	NUGU_FOCUS_TYPE_MEDIA_LOCK, /**< Media lock control */
 	NUGU_FOCUS_TYPE_MEDIA, /**< Media player */
 	NUGU_FOCUS_TYPE_CUSTOM /**< Custom type */
 };

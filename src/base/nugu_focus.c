@@ -22,8 +22,11 @@
 #include "base/nugu_log.h"
 #include "base/nugu_focus.h"
 
-static const char *const _type_str[] = { "CALL",       "ALERT", "ASR",   "TTS",
-					 "ASR_EXPECT", "MEDIA", "CUSTOM" };
+static const char *const _type_str[] = {
+	/* focus type string */
+	"CALL",	      "ALERT",	    "ASR",   "TTS",
+	"ASR_EXPECT", "MEDIA_LOCK", "MEDIA", "CUSTOM"
+};
 
 struct _nugu_focus {
 	char *name;
