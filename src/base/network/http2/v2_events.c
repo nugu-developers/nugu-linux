@@ -83,13 +83,51 @@ static void _emit_send_result(int code, HTTP2Request *req)
 			   event->msg_id);
 	}
 
-	if (nugu_equeue_push(NUGU_EQUEUE_TYPE_SEND_EVENT_RESULT, event) < 0) {
+	if (nugu_equeue_push(NUGU_EQUEUE_TYPE_EVENT_SEND_RESULT, event) < 0) {
 		nugu_error("nugu_equeue_push failed");
 
 		if (event->dialog_id)
 			free(event->dialog_id);
 		if (event->msg_id)
 			free(event->msg_id);
+		free(event);
+	}
+}
+
+static void _emit_directive_response(HTTP2Request *req, const char *json)
+{
+	struct equeue_data_event_response *event;
+
+	event = calloc(1, sizeof(struct equeue_data_event_response));
+	if (!event) {
+		nugu_error_nomem();
+		return;
+	}
+
+	if (http2_request_get_result(req) == HTTP2_RESULT_OK)
+		event->success = 1;
+	else
+		event->success = 0;
+
+	if (http2_request_peek_msgid(req))
+		event->event_msg_id = strdup(http2_request_peek_msgid(req));
+
+	if (http2_request_peek_dialogid(req))
+		event->event_dialog_id =
+			strdup(http2_request_peek_dialogid(req));
+
+	if (json)
+		event->json = strdup(json);
+
+	if (nugu_equeue_push(NUGU_EQUEUE_TYPE_EVENT_RESPONSE, event) < 0) {
+		nugu_error("nugu_equeue_push failed");
+
+		if (event->event_dialog_id)
+			free(event->event_dialog_id);
+		if (event->event_msg_id)
+			free(event->event_msg_id);
+		if (event->json)
+			free(event->json);
 		free(event);
 	}
 }
@@ -146,6 +184,12 @@ static size_t _on_body(HTTP2Request *req, char *buffer, size_t size,
 /* invoked in a thread loop */
 static void _on_finish(HTTP2Request *req, void *userdata)
 {
+	if (userdata)
+		thread_sync_signal(userdata);
+
+	if (http2_request_get_result(req) == HTTP2_RESULT_OK)
+		return;
+
 	if (http2_request_get_result(req) == HTTP2_RESULT_TIMEOUT) {
 		nugu_error("receive timeout error");
 		nugu_prof_mark_data(
@@ -154,8 +198,7 @@ static void _on_finish(HTTP2Request *req, void *userdata)
 			http2_request_peek_msgid(req), NULL);
 	}
 
-	if (userdata)
-		thread_sync_signal(userdata);
+	_emit_directive_response(req, NULL);
 }
 
 /* invoked in a thread loop */
@@ -195,7 +238,7 @@ static void _end_cb(DirParser *dp, void *userdata)
 
 	json = nugu_buffer_pop(buf, 0);
 	if (json) {
-		nugu_dbg("Response directives: %s", json);
+		_emit_directive_response(userdata, json);
 		free(json);
 	}
 }

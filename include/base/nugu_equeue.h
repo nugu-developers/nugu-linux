@@ -46,7 +46,10 @@ enum nugu_equeue_type {
 	NUGU_EQUEUE_TYPE_INVALID_TOKEN, /**< received invalid token response */
 
 	NUGU_EQUEUE_TYPE_SEND_PING_FAILED, /**< failed to send ping request */
-	NUGU_EQUEUE_TYPE_SEND_EVENT_RESULT, /**< result of event request */
+
+	NUGU_EQUEUE_TYPE_EVENT_SEND_RESULT, /**< result of event sent */
+	NUGU_EQUEUE_TYPE_EVENT_RESPONSE,
+	/**< directive response of event request */
 
 	NUGU_EQUEUE_TYPE_REGISTRY_HEALTH, /**< received health check policy */
 	NUGU_EQUEUE_TYPE_REGISTRY_SERVERS, /**< received server list */

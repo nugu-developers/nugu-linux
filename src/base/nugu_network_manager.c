@@ -94,9 +94,13 @@ struct _nugu_network {
 	NuguNetworkManagerEventSendNotifyCallback event_send_callback;
 	void *event_send_callback_userdata;
 
-	/* Event result */
+	/* Event send result */
 	NuguNetworkManagerEventResultCallback event_result_callback;
 	void *event_result_callback_userdata;
+
+	/* Event response */
+	NuguNetworkManagerEventResponseCallback event_response_callback;
+	void *event_response_callback_userdata;
 
 	/* Status & Callback */
 	NuguNetworkStatus cur_status;
@@ -187,6 +191,40 @@ static void on_event_send_result(enum nugu_equeue_type type, void *data,
 	nm->event_result_callback(item->success, item->msg_id, item->dialog_id,
 				  item->code,
 				  nm->event_result_callback_userdata);
+}
+
+static void on_destroy_event_response(void *data)
+{
+	struct equeue_data_event_response *item = data;
+
+	if (item->event_msg_id)
+		free(item->event_msg_id);
+
+	if (item->event_dialog_id)
+		free(item->event_dialog_id);
+
+	if (item->json)
+		free(item->json);
+
+	free(item);
+}
+
+static void on_event_response(enum nugu_equeue_type type, void *data,
+			      void *userdata)
+{
+	struct equeue_data_event_response *item = data;
+	NetworkManager *nm = userdata;
+
+	if (item->success == 0)
+		nugu_error("event response failed: event msg_id=%s",
+			   item->event_msg_id);
+
+	if (nm->event_response_callback == NULL)
+		return;
+
+	nm->event_response_callback(item->success, item->event_msg_id,
+				    item->event_dialog_id, item->json,
+				    nm->event_response_callback_userdata);
 }
 
 static void _update_status(NetworkManager *nm, NuguNetworkStatus new_status)
@@ -609,9 +647,12 @@ static NetworkManager *nugu_network_manager_new(void)
 				on_destroy_attachment, nm);
 
 	/* Result of sending event request */
-	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_SEND_EVENT_RESULT,
+	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_EVENT_SEND_RESULT,
 				on_event_send_result,
 				on_destroy_event_send_result, nm);
+	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_EVENT_RESPONSE,
+				on_event_response,
+				on_destroy_event_response, nm);
 
 	/* Received registry policy */
 	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_REGISTRY_HEALTH,
@@ -815,6 +856,18 @@ EXPORT_API int nugu_network_manager_set_event_result_callback(
 
 	_network->event_result_callback = callback;
 	_network->event_result_callback_userdata = userdata;
+
+	return 0;
+}
+
+EXPORT_API int nugu_network_manager_set_event_response_callback(
+	NuguNetworkManagerEventResponseCallback callback, void *userdata)
+{
+	if (!_network)
+		return -1;
+
+	_network->event_response_callback = callback;
+	_network->event_response_callback_userdata = userdata;
 
 	return 0;
 }

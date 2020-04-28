@@ -79,7 +79,15 @@ public:
      * @param[in] success event result
      * @param[in] code event result code (similar to http status code)
      */
-    virtual void onEventResult(const char* msg_id, bool success, int code);
+    virtual void onEventSendResult(const char* msg_id, bool success, int code);
+
+    /**
+     * @brief Report the response data received from the server.
+     * @param[in] msg_id event message id
+     * @param[in] json response json data
+     * @param[in] success event result
+     */
+    virtual void onEventResponse(const char* msg_id, const char* json, bool success);
 };
 
 /**
