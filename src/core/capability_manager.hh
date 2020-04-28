@@ -45,6 +45,7 @@ public:
 
     void requestEventResult(NuguEvent* event);
     void reportEventResult(const char* msg_id, int success, int code);
+    void reportEventResponse(const char* msg_id, const char* json, bool success);
 
     void setWakeupWord(const std::string& word);
     std::string getWakeupWord();

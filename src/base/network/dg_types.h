@@ -49,6 +49,13 @@ struct equeue_data_request_result {
 	int code;
 };
 
+struct equeue_data_event_response {
+	int success;
+	char *event_dialog_id;
+	char *event_msg_id;
+	char *json;
+};
+
 #ifdef __cplusplus
 }
 #endif

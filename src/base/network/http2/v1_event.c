@@ -121,7 +121,7 @@ static void _emit_send_result(int code, HTTP2Request *req)
 			   event->msg_id);
 	}
 
-	if (nugu_equeue_push(NUGU_EQUEUE_TYPE_SEND_EVENT_RESULT, event) < 0) {
+	if (nugu_equeue_push(NUGU_EQUEUE_TYPE_EVENT_SEND_RESULT, event) < 0) {
 		nugu_error("nugu_equeue_push failed");
 
 		if (event->dialog_id)

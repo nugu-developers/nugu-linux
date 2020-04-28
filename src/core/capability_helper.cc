@@ -72,6 +72,11 @@ void CapabilityHelper::notifyEventResult(const char* msg_id, bool success, int c
     CapabilityManager::getInstance()->reportEventResult(msg_id, success, code);
 }
 
+void CapabilityHelper::notifyEventResponse(const char* msg_id, const char* json, bool success)
+{
+    CapabilityManager::getInstance()->reportEventResponse(msg_id, json, success);
+}
+
 void CapabilityHelper::suspendAll()
 {
     CapabilityManager::getInstance()->suspendAll();

@@ -106,6 +106,15 @@ typedef void (*NuguNetworkManagerEventResultCallback)(int success,
 						      int code, void *userdata);
 
 /**
+ * @brief Callback prototype for directive response of event request.
+ * @see nugu_network_manager_send_event()
+ * @see nugu_network_manager_set_event_response_callback()
+ */
+typedef void (*NuguNetworkManagerEventResponseCallback)(
+	int success, const char *event_msg_id, const char *event_dialog_id,
+	const char *json, void *userdata);
+
+/**
  * @brief network protocols
  */
 enum nugu_network_protocol {
@@ -166,7 +175,7 @@ int nugu_network_manager_set_event_send_notify_callback(
 	NuguNetworkManagerEventSendNotifyCallback callback, void *userdata);
 
 /**
- * @brief Set event result callback
+ * @brief Set event send result callback
  * @param[in] callback callback function
  * @param[in] userdata data to pass to the user callback
  * @return result
@@ -175,6 +184,17 @@ int nugu_network_manager_set_event_send_notify_callback(
  */
 int nugu_network_manager_set_event_result_callback(
 	NuguNetworkManagerEventResultCallback callback, void *userdata);
+
+/**
+ * @brief Set event response callback
+ * @param[in] callback callback function
+ * @param[in] userdata data to pass to the user callback
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_network_manager_set_event_response_callback(
+	NuguNetworkManagerEventResponseCallback callback, void *userdata);
 
 /**
  * @brief Set the current network status

@@ -80,7 +80,7 @@ static void eventSendNotifyCallback(NuguEvent* event, void* userdata)
     }
 }
 
-static void eventResultCallback(int success, const char* msg_id, const char* dialog_id, int code, void* userdata)
+static void eventSendResultCallback(int success, const char* msg_id, const char* dialog_id, int code, void* userdata)
 {
     if (msg_id == NULL || dialog_id == NULL || userdata == NULL) {
         nugu_error("parameter is null value");
@@ -91,7 +91,24 @@ static void eventResultCallback(int success, const char* msg_id, const char* dia
     auto listeners = instance->getListener();
     for (auto listener : listeners) {
         bool result = success == 1 ? true : false;
-        listener->onEventResult(msg_id, result, code);
+        listener->onEventSendResult(msg_id, result, code);
+    }
+}
+
+static void eventResponseCallback(int success,
+    const char* event_msg_id, const char* event_dialog_id,
+    const char* json, void* userdata)
+{
+    if (event_msg_id == NULL || event_dialog_id == NULL || userdata == NULL) {
+        nugu_error("parameter is null value");
+        return;
+    }
+
+    NetworkManager* instance = static_cast<NetworkManager*>(userdata);
+    auto listeners = instance->getListener();
+    for (auto listener : listeners) {
+        bool result = success == 1 ? true : false;
+        listener->onEventResponse(event_msg_id, json, result);
     }
 }
 
@@ -100,7 +117,8 @@ NetworkManager::NetworkManager()
     nugu_network_manager_initialize();
     nugu_network_manager_set_status_callback(_status, this);
     nugu_network_manager_set_event_send_notify_callback(eventSendNotifyCallback, this);
-    nugu_network_manager_set_event_result_callback(eventResultCallback, this);
+    nugu_network_manager_set_event_result_callback(eventSendResultCallback, this);
+    nugu_network_manager_set_event_response_callback(eventResponseCallback, this);
 }
 
 NetworkManager::~NetworkManager()
@@ -108,6 +126,7 @@ NetworkManager::~NetworkManager()
     nugu_network_manager_set_status_callback(NULL, NULL);
     nugu_network_manager_set_event_send_notify_callback(NULL, NULL);
     nugu_network_manager_set_event_result_callback(NULL, NULL);
+    nugu_network_manager_set_event_response_callback(NULL, this);
     nugu_network_manager_deinitialize();
 
     listeners.clear();

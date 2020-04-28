@@ -20,6 +20,7 @@ namespace NuguClientKit {
 void INetworkManagerListener::onStatusChanged(NetworkStatus status) {}
 void INetworkManagerListener::onError(NetworkError error) {}
 void INetworkManagerListener::onEventSent(const char* ename, const char* msg_id, const char* dialog_id, const char* referrer_id) {}
-void INetworkManagerListener::onEventResult(const char* msg_id, bool success, int code) {}
+void INetworkManagerListener::onEventSendResult(const char* msg_id, bool success, int code) {}
+void INetworkManagerListener::onEventResponse(const char* msg_id, const char* json, bool success) {}
 
 } //NuguClientKit

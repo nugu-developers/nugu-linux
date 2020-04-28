@@ -170,6 +170,14 @@ void CapabilityManager::reportEventResult(const char* msg_id, int success, int c
     events.erase(msg_id);
 }
 
+void CapabilityManager::reportEventResponse(const char* msg_id, const char* json, bool success)
+{
+    if (success)
+        nugu_dbg("receive event response: event msg_id=%s, json=%s", msg_id, json);
+    else
+        nugu_error("can't receive event response: msg_id=%s", msg_id);
+}
+
 void CapabilityManager::setWakeupWord(const std::string& word)
 {
     if (word.size())

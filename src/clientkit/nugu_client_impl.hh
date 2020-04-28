@@ -44,7 +44,8 @@ public:
 
     // overriding INetworkManagerListener
     void onStatusChanged(NetworkStatus status) override;
-    void onEventResult(const char* msg_id, bool success, int code) override;
+    void onEventSendResult(const char* msg_id, bool success, int code) override;
+    void onEventResponse(const char* msg_id, const char* json, bool success) override;
 
 private:
     int createCapabilities(void);
