@@ -161,10 +161,43 @@ static void _on_finish(HTTP2Request *req, void *userdata)
 /* invoked in a thread loop */
 static void _on_destroy(HTTP2Request *req, void *userdata)
 {
+	NuguBuffer *buf;
+
 	if (!userdata)
 		return;
 
+	buf = dir_parser_get_json_buffer(userdata);
+	if (buf) {
+		dir_parser_set_json_buffer(userdata, NULL);
+
+		nugu_buffer_free(buf, TRUE);
+	}
+
 	dir_parser_free(userdata);
+}
+
+/* invoked in a thread loop */
+static void _directive_cb(DirParser *dp, NuguDirective *ndir, void *userdata)
+{
+	nugu_prof_mark_data(NUGU_PROF_TYPE_NETWORK_EVENT_DIRECTIVE_RESPONSE,
+			    nugu_directive_peek_dialog_id(ndir),
+			    nugu_directive_peek_msg_id(ndir), NULL);
+}
+
+static void _end_cb(DirParser *dp, void *userdata)
+{
+	NuguBuffer *buf;
+	char *json;
+
+	buf = dir_parser_get_json_buffer(dp);
+	if (!buf)
+		return;
+
+	json = nugu_buffer_pop(buf, 0);
+	if (json) {
+		nugu_dbg("Response directives: %s", json);
+		free(json);
+	}
 }
 
 V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync,
@@ -176,6 +209,7 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync,
 	unsigned char buf[8];
 	char boundary[17];
 	DirParser *parser;
+	NuguBuffer *buffer;
 
 	g_return_val_if_fail(host != NULL, NULL);
 	g_return_val_if_fail(net != NULL, NULL);
@@ -203,6 +237,13 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync,
 	tmp = g_strdup_printf(" (%p)", event->req);
 	dir_parser_set_debug_message(parser, tmp);
 	g_free(tmp);
+
+	buffer = nugu_buffer_new(0);
+	if (buffer)
+		dir_parser_set_json_buffer(parser, buffer);
+
+	dir_parser_set_directive_callback(parser, _directive_cb, event->req);
+	dir_parser_set_end_callback(parser, _end_cb, event->req);
 
 	nugu_uuid_fill_random(buf, sizeof(buf));
 	nugu_uuid_convert_base16(buf, sizeof(buf), boundary, sizeof(boundary));

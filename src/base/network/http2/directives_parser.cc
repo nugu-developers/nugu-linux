@@ -22,10 +22,8 @@
 
 #include "json/json.h"
 
-#include "base/nugu_directive.h"
 #include "base/nugu_equeue.h"
 #include "base/nugu_log.h"
-#include "base/nugu_prof.h"
 
 #include "dg_types.h"
 
@@ -59,6 +57,16 @@ struct _dir_parser {
     int seq;
     int is_end;
     size_t body_size;
+
+    DirParserDirectiveCallback directive_cb;
+    void* directive_cb_userdata;
+
+    DirParserJsonCallback json_cb;
+    void* json_cb_userdata;
+    NuguBuffer* json_buffer;
+
+    DirParserEndCallback end_cb;
+    void* end_cb_userdata;
 
     char* debug_msg;
 };
@@ -145,6 +153,7 @@ static void _body_json(DirParser* dp, const char* data, size_t length)
 {
     Json::Value root;
     Json::Value dir_list;
+    Json::ArrayIndex list_size;
     Json::Reader reader;
     Json::StyledWriter writer;
     std::string group;
@@ -154,6 +163,18 @@ static void _body_json(DirParser* dp, const char* data, size_t length)
         nugu_error("parsing error: '%s'", data);
         return;
     }
+
+    if (dp->json_buffer) {
+        if (nugu_buffer_get_size(dp->json_buffer) == 0)
+            nugu_buffer_add(dp->json_buffer, "[", 1);
+        else
+            nugu_buffer_add(dp->json_buffer, ",", 1);
+
+        nugu_buffer_add(dp->json_buffer, data, length);
+    }
+
+    if (dp->json_cb)
+        dp->json_cb(dp, data, dp->json_cb_userdata);
 
     if ((nugu_log_get_modules() & NUGU_LOG_MODULE_PROTOCOL) != 0) {
         std::string dump;
@@ -172,9 +193,10 @@ static void _body_json(DirParser* dp, const char* data, size_t length)
     }
 
     dir_list = root["directives"];
+    list_size = dir_list.size();
 
     group = "{ \"directives\": [";
-    for (Json::ArrayIndex i = 0; i < dir_list.size(); ++i) {
+    for (Json::ArrayIndex i = 0; i < list_size; ++i) {
         Json::Value dir = dir_list[i];
         Json::Value h;
 
@@ -189,9 +211,10 @@ static void _body_json(DirParser* dp, const char* data, size_t length)
     }
     group.append("] }");
 
-    nugu_dbg("group=%s", group.c_str());
+    if (list_size > 1)
+        nugu_dbg("group=%s", group.c_str());
 
-    for (Json::ArrayIndex i = 0; i < dir_list.size(); ++i) {
+    for (Json::ArrayIndex i = 0; i < list_size; ++i) {
         Json::Value dir = dir_list[i];
         Json::Value h;
         NuguDirective* ndir;
@@ -212,14 +235,8 @@ static void _body_json(DirParser* dp, const char* data, size_t length)
         if (!ndir)
             continue;
 
-        if (dp->type == DIR_PARSER_TYPE_SERVER_INITIATIVE)
-            nugu_prof_mark_data(NUGU_PROF_TYPE_LAST_SERVER_INITIATIVE_DATA,
-                nugu_directive_peek_dialog_id(ndir),
-                nugu_directive_peek_msg_id(ndir), NULL);
-        else if (dp->type == DIR_PARSER_TYPE_EVENT_RESPONSE)
-            nugu_prof_mark_data(NUGU_PROF_TYPE_NETWORK_EVENT_DIRECTIVE_RESPONSE,
-                nugu_directive_peek_dialog_id(ndir),
-                nugu_directive_peek_msg_id(ndir), NULL);
+        if (dp->directive_cb)
+            dp->directive_cb(dp, ndir, dp->directive_cb_userdata);
 
         if (nugu_equeue_push(NUGU_EQUEUE_TYPE_NEW_DIRECTIVE, ndir) < 0) {
             nugu_error("nugu_equeue_push() failed.");
@@ -268,6 +285,23 @@ static void _on_parsing_body(MultipartParser* parser, const char* data,
         _body_json(dp, data, length);
     else if (dp->ctype == CONTENT_TYPE_OPUS)
         _body_opus(dp, dp->parent_msg_id, dp->seq, dp->is_end, data, length);
+}
+
+static void _on_parsing_end_boundary(MultipartParser* parser, void* userdata)
+{
+    struct _dir_parser* dp;
+
+    dp = (struct _dir_parser*)multipart_parser_get_data(parser);
+    if (!dp)
+        return;
+
+    if (dp->json_buffer) {
+        if (nugu_buffer_get_size(dp->json_buffer) > 0)
+            nugu_buffer_add(dp->json_buffer, "]", 1);
+    }
+
+    if (dp->end_cb)
+        dp->end_cb(dp, dp->end_cb_userdata);
 }
 
 DirParser* dir_parser_new(enum dir_parser_type type)
@@ -342,7 +376,7 @@ int dir_parser_parse(DirParser* dp, const char* buffer, size_t buffer_len)
         return 0;
 
     multipart_parser_parse(dp->m_parser, buffer, buffer_len,
-        on_parsing_header, _on_parsing_body, NULL);
+        on_parsing_header, _on_parsing_body, _on_parsing_end_boundary, NULL);
 
     return 0;
 }
@@ -360,4 +394,53 @@ int dir_parser_set_debug_message(DirParser* dp, const char* msg)
         dp->debug_msg = strdup(msg);
 
     return 0;
+}
+
+int dir_parser_set_directive_callback(DirParser* dp, DirParserDirectiveCallback cb,
+    void* userdata)
+{
+    g_return_val_if_fail(dp != NULL, -1);
+
+    dp->directive_cb = cb;
+    dp->directive_cb_userdata = userdata;
+
+    return 0;
+}
+
+int dir_parser_set_json_callback(DirParser* dp, DirParserJsonCallback cb,
+    void* userdata)
+{
+    g_return_val_if_fail(dp != NULL, -1);
+
+    dp->json_cb = cb;
+    dp->json_cb_userdata = userdata;
+
+    return 0;
+}
+
+int dir_parser_set_end_callback(DirParser* dp, DirParserEndCallback cb,
+    void* userdata)
+{
+    g_return_val_if_fail(dp != NULL, -1);
+
+    dp->end_cb = cb;
+    dp->end_cb_userdata = userdata;
+
+    return 0;
+}
+
+int dir_parser_set_json_buffer(DirParser* dp, NuguBuffer* buf)
+{
+    g_return_val_if_fail(dp != NULL, -1);
+
+    dp->json_buffer = buf;
+
+    return 0;
+}
+
+NuguBuffer* dir_parser_get_json_buffer(DirParser* dp)
+{
+    g_return_val_if_fail(dp != NULL, NULL);
+
+    return dp->json_buffer;
 }

@@ -195,7 +195,8 @@ void multipart_parser_set_boundary(MultipartParser *parser, const char *src,
 
 int multipart_parser_parse(MultipartParser *parser, const char *src,
 			   size_t length, ParserCallback onFoundHeader,
-			   ParserCallback onFoundBody, void *userdata)
+			   ParserCallback onFoundBody,
+			   ParserEndCallback onEndBoundary, void *userdata)
 {
 	const char *pos;
 	const char *end;
@@ -316,9 +317,14 @@ int multipart_parser_parse(MultipartParser *parser, const char *src,
 				nugu_buffer_add(parser->header, pos, 1);
 				parser->step = STEP_CONTENT_START;
 			}
-			onFoundHeader(parser, nugu_buffer_peek(parser->header),
-				      nugu_buffer_get_size(parser->header),
-				      userdata);
+
+			if (onFoundHeader)
+				onFoundHeader(
+					parser,
+					nugu_buffer_peek(parser->header),
+					nugu_buffer_get_size(parser->header),
+					userdata);
+
 			nugu_buffer_clear(parser->header);
 			parser->step = STEP_BODY;
 			break;
@@ -364,9 +370,13 @@ int multipart_parser_parse(MultipartParser *parser, const char *src,
 					parser->body,
 					nugu_buffer_get_size(parser->body) - 4);
 			}
-			onFoundBody(parser, nugu_buffer_peek(parser->body),
-				    nugu_buffer_get_size(parser->body),
-				    userdata);
+
+			if (onFoundBody)
+				onFoundBody(parser,
+					    nugu_buffer_peek(parser->body),
+					    nugu_buffer_get_size(parser->body),
+					    userdata);
+
 			nugu_buffer_clear(parser->body);
 			break;
 
@@ -374,8 +384,12 @@ int multipart_parser_parse(MultipartParser *parser, const char *src,
 			break;
 		}
 
-		if (parser->step == STEP_FINISH)
+		if (parser->step == STEP_FINISH) {
+			if (onEndBoundary)
+				onEndBoundary(parser, userdata);
+
 			break;
+		}
 	}
 
 	return 0;
