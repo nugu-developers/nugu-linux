@@ -87,8 +87,9 @@ enum curl_log_dir {
 	CURL_LOG_DIR_SEND
 };
 
-static void _network_curl_log(enum curl_log_type type, enum curl_log_dir dir,
-			      const char *msg, size_t size, char *data)
+static void _network_curl_log(HTTP2Request *req, enum curl_log_type type,
+			      enum curl_log_dir dir, const char *msg,
+			      size_t size, char *data)
 {
 	const char *color = "";
 	const char *dir_hint = "";
@@ -96,7 +97,8 @@ static void _network_curl_log(enum curl_log_type type, enum curl_log_dir dir,
 	/* Stream closed */
 	if (size == 0) {
 		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_WARNING,
-			       NULL, NULL, -1, "[CURL] %s: 0 bytes", msg);
+			       NULL, NULL, -1, "[CURL] (%p) %s: 0 bytes", req,
+			       msg);
 		return;
 	}
 
@@ -109,10 +111,11 @@ static void _network_curl_log(enum curl_log_type type, enum curl_log_dir dir,
 	}
 
 	if (type == CURL_LOG_TYPE_DATA) {
-		nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
-			       NULL, NULL, -1,
-			       "[CURL] %s: %s%zd bytes" NUGU_ANSI_COLOR_NORMAL,
-			       msg, color, size);
+		nugu_log_print(
+			NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG, NULL,
+			NULL, -1,
+			"[CURL] (%p) %s: %s%zd bytes" NUGU_ANSI_COLOR_NORMAL,
+			req, msg, color, size);
 	} else {
 		int flag = 0;
 
@@ -126,13 +129,14 @@ static void _network_curl_log(enum curl_log_type type, enum curl_log_dir dir,
 			/* Curl information text */
 			nugu_log_print(NUGU_LOG_MODULE_NETWORK,
 				       NUGU_LOG_LEVEL_DEBUG, NULL, NULL, -1,
-				       "[CURL] %s", data);
+				       "[CURL] (%p) %s", req, data);
 		else
 			/* header */
-			nugu_log_print(NUGU_LOG_MODULE_NETWORK,
-				       NUGU_LOG_LEVEL_DEBUG, NULL, NULL, -1,
-				       "[CURL] %s: %s%s" NUGU_ANSI_COLOR_NORMAL,
-				       msg, color, data);
+			nugu_log_print(
+				NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG,
+				NULL, NULL, -1,
+				"[CURL] (%p) %s: %s%s" NUGU_ANSI_COLOR_NORMAL,
+				req, msg, color, data);
 
 		if (flag)
 			data[size - 1] = '\n';
@@ -149,26 +153,26 @@ static int _debug_callback(CURL *handle, curl_infotype type, char *data,
 {
 	switch (type) {
 	case CURLINFO_TEXT:
-		_network_curl_log(CURL_LOG_TYPE_TEXT, CURL_LOG_DIR_NONE, NULL,
-				  size, data);
+		_network_curl_log(userptr, CURL_LOG_TYPE_TEXT,
+				  CURL_LOG_DIR_NONE, NULL, size, data);
 		break;
 	case CURLINFO_HEADER_OUT:
-		_network_curl_log(CURL_LOG_TYPE_HEADER, CURL_LOG_DIR_SEND,
-				  "Send header", size, data);
+		_network_curl_log(userptr, CURL_LOG_TYPE_HEADER,
+				  CURL_LOG_DIR_SEND, "Send header", size, data);
 		break;
 	case CURLINFO_DATA_OUT:
-		_network_curl_log(CURL_LOG_TYPE_DATA, CURL_LOG_DIR_SEND,
-				  "Send data", size, data);
+		_network_curl_log(userptr, CURL_LOG_TYPE_DATA,
+				  CURL_LOG_DIR_SEND, "Send data", size, data);
 		break;
 	case CURLINFO_SSL_DATA_OUT:
 		break;
 	case CURLINFO_HEADER_IN:
-		_network_curl_log(CURL_LOG_TYPE_HEADER, CURL_LOG_DIR_RECV,
-				  "Recv header", size, data);
+		_network_curl_log(userptr, CURL_LOG_TYPE_HEADER,
+				  CURL_LOG_DIR_RECV, "Recv header", size, data);
 		break;
 	case CURLINFO_DATA_IN:
-		_network_curl_log(CURL_LOG_TYPE_DATA, CURL_LOG_DIR_RECV,
-				  "Recv data", size, data);
+		_network_curl_log(userptr, CURL_LOG_TYPE_DATA,
+				  CURL_LOG_DIR_RECV, "Recv data", size, data);
 		break;
 	case CURLINFO_SSL_DATA_IN:
 		break;
@@ -329,6 +333,7 @@ HTTP2Request *http2_request_new()
 			 CURL_HTTP_VERSION_2_0);
 	curl_easy_setopt(req->easy, CURLOPT_ERRORBUFFER, req->curl_errbuf);
 	curl_easy_setopt(req->easy, CURLOPT_DEBUGFUNCTION, _debug_callback);
+	curl_easy_setopt(req->easy, CURLOPT_DEBUGDATA, req);
 
 	curl_easy_setopt(req->easy, CURLOPT_PRIVATE, req);
 	curl_easy_setopt(req->easy, CURLOPT_FOLLOWLOCATION, 1L);
