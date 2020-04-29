@@ -106,6 +106,18 @@ static void _on_destroy(HTTP2Request *req, void *userdata)
 	dir_parser_free(userdata);
 }
 
+/* invoked in a thread loop */
+static void _directive_cb(DirParser *dp, NuguDirective *ndir, void *userdata)
+{
+	nugu_dbg("receive directive: msg_id: %d, dialog_id: %s",
+		 nugu_directive_peek_msg_id(ndir),
+		 nugu_directive_peek_dialog_id(ndir));
+
+	nugu_prof_mark_data(NUGU_PROF_TYPE_LAST_SERVER_INITIATIVE_DATA,
+			    nugu_directive_peek_dialog_id(ndir),
+			    nugu_directive_peek_msg_id(ndir), NULL);
+}
+
 V1Directives *v1_directives_new(const char *host, int api_version,
 				int connection_timeout_secs)
 {
@@ -166,6 +178,8 @@ int v1_directives_establish(V1Directives *dir, HTTP2Network *net)
 	}
 
 	dir->network = net;
+
+	dir_parser_set_directive_callback(parser, _directive_cb, NULL);
 
 	http2_request_set_url(req, dir->url);
 	http2_request_set_method(req, HTTP2_REQUEST_METHOD_GET);

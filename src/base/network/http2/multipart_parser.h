@@ -25,6 +25,7 @@ typedef struct _multipart_parser MultipartParser;
 
 typedef void (*ParserCallback)(MultipartParser *parser, const char *data,
 			       size_t length, void *userdata);
+typedef void (*ParserEndCallback)(MultipartParser *parser, void *userdata);
 
 MultipartParser *multipart_parser_new();
 void multipart_parser_free(MultipartParser *parser);
@@ -33,7 +34,8 @@ void multipart_parser_set_boundary(MultipartParser *parser, const char *src,
 				   size_t length);
 int multipart_parser_parse(MultipartParser *parser, const char *src,
 			   size_t length, ParserCallback onFoundHeader,
-			   ParserCallback onFoundBody, void *userdata);
+			   ParserCallback onFoundBody,
+			   ParserEndCallback onEndBoundary, void *userdata);
 void multipart_parser_reset(MultipartParser *parser);
 
 void multipart_parser_set_data(MultipartParser *parser, void *data);
