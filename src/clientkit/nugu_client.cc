@@ -61,6 +61,16 @@ NuguClient::CapabilityBuilder* NuguClient::getCapabilityBuilder()
     return cap_builder;
 }
 
+bool NuguClient::loadPlugins(const std::string& path)
+{
+    return impl->loadPlugins(path);
+}
+
+void NuguClient::unloadPlugins(void)
+{
+    impl->unloadPlugins();
+}
+
 bool NuguClient::initialize(void)
 {
     return impl->initialize();

@@ -33,6 +33,8 @@ using namespace NuguCapability;
 
 NuguClientImpl::NuguClientImpl()
 {
+    nugu_info("NUGU SDK v%s", NUGU_VERSION);
+
     nugu_prof_clear();
     nugu_prof_mark(NUGU_PROF_TYPE_SDK_CREATED);
 
@@ -47,6 +49,9 @@ NuguClientImpl::NuguClientImpl()
 NuguClientImpl::~NuguClientImpl()
 {
     nugu_core_container->destroyInstance();
+
+    if (plugin_loaded)
+        unloadPlugins();
 
     nugu_equeue_deinitialize();
 }
@@ -118,6 +123,57 @@ int NuguClientImpl::createCapabilities(void)
     return icapability_map.size();
 }
 
+bool NuguClientImpl::loadPlugins(const std::string& path)
+{
+    int result;
+
+    if (plugin_loaded) {
+        nugu_info("plugin already loaded.");
+        return true;
+    }
+
+    nugu_prof_mark(NUGU_PROF_TYPE_SDK_PLUGIN_INIT_START);
+
+    if (path.size() > 0) {
+        nugu_dbg("load plugins from directory(%s)", path.c_str());
+        result = nugu_plugin_load_directory(path.c_str());
+    } else {
+        nugu_dbg("load plugins from default directory(%s)", NUGU_PLUGIN_DIR);
+        result = nugu_plugin_load_directory(NUGU_PLUGIN_DIR);
+    }
+
+    if (result < 0) {
+        nugu_error("Fail to load directory");
+        return false;
+    }
+
+    plugin_loaded = true;
+
+    if (result == 0) {
+        nugu_info("no plugins");
+        nugu_prof_mark(NUGU_PROF_TYPE_SDK_PLUGIN_INIT_DONE);
+        return true;
+    }
+
+    result = nugu_plugin_initialize();
+    nugu_info("loaded %d plugins", result);
+    nugu_prof_mark(NUGU_PROF_TYPE_SDK_PLUGIN_INIT_DONE);
+
+    return true;
+}
+
+void NuguClientImpl::unloadPlugins(void)
+{
+    if (!plugin_loaded) {
+        nugu_info("plugin already unloaded");
+        return;
+    }
+
+    nugu_plugin_deinitialize();
+
+    plugin_loaded = false;
+}
+
 bool NuguClientImpl::initialize(void)
 {
     if (initialized) {
@@ -125,14 +181,8 @@ bool NuguClientImpl::initialize(void)
         return true;
     }
 
-    nugu_prof_mark(NUGU_PROF_TYPE_SDK_PLUGIN_INIT_START);
-
-    if (nugu_plugin_load_directory(NUGU_PLUGIN_DIR) < 0) {
-        nugu_error("Fail to load nugu_plugin");
-    }
-
-    nugu_plugin_initialize();
-    nugu_prof_mark(NUGU_PROF_TYPE_SDK_PLUGIN_INIT_DONE);
+     if (!plugin_loaded)
+        loadPlugins();
 
     nugu_core_container->createAudioRecorderManager();
 
@@ -148,6 +198,8 @@ bool NuguClientImpl::initialize(void)
         nugu_dbg("'%s' capability initialized", cname.c_str());
     }
 
+    nugu_info("initialized %d capabilities", icapability_map.size());
+
     nugu_prof_mark(NUGU_PROF_TYPE_SDK_INIT_DONE);
 
     initialized = true;
@@ -157,6 +209,11 @@ bool NuguClientImpl::initialize(void)
 
 void NuguClientImpl::deInitialize(void)
 {
+    if (!initialized) {
+        nugu_info("already de-initialized");
+        return;
+    }
+
     // release capabilities
     for (auto& capability : icapability_map) {
         std::string cname = capability.second->getName();
@@ -172,9 +229,6 @@ void NuguClientImpl::deInitialize(void)
     icapability_map.clear();
 
     nugu_core_container->destoryAudioRecorderManager();
-
-    // deinitialize core component
-    nugu_plugin_deinitialize();
 
     nugu_dbg("NuguClientImpl deInitialize success.");
     initialized = false;

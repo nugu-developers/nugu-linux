@@ -198,7 +198,10 @@ EXPORT_API int nugu_plugin_load_directory(const char *dirpath)
 	// NOLINTNEXTLINE (clang-analyzer-unix.Malloc)
 	g_dir_close(dir);
 
-	return 0;
+	if (!_plugin_list)
+		return 0;
+	else
+		return g_list_length(_plugin_list);
 }
 
 static gint _sort_priority_cmp(gconstpointer a, gconstpointer b)
@@ -207,9 +210,12 @@ static gint _sort_priority_cmp(gconstpointer a, gconstpointer b)
 	       ((NuguPlugin *)b)->desc->priority;
 }
 
-EXPORT_API void nugu_plugin_initialize(void)
+EXPORT_API int nugu_plugin_initialize(void)
 {
 	GList *cur;
+
+	if (!_plugin_list)
+		return 0;
 
 	_plugin_list = g_list_sort(_plugin_list, _sort_priority_cmp);
 
@@ -236,6 +242,11 @@ EXPORT_API void nugu_plugin_initialize(void)
 
 		cur = _plugin_list = g_list_remove_link(_plugin_list, cur);
 	}
+
+	if (!_plugin_list)
+		return 0;
+	else
+		return g_list_length(_plugin_list);
 }
 
 EXPORT_API void nugu_plugin_deinitialize(void)

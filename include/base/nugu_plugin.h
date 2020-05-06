@@ -200,16 +200,16 @@ const struct nugu_plugin_desc *nugu_plugin_get_description(NuguPlugin *p);
 /**
  * @brief Load all plugin files from directory
  * @param[in] dirpath directory path
- * @return result
- * @retval 0 success
+ * @return Number of plugins loaded
  * @retval -1 failure
  */
 int nugu_plugin_load_directory(const char *dirpath);
 
 /**
  * @brief Initialize plugin
+ * @return Number of plugins initialized
  */
-void nugu_plugin_initialize(void);
+int nugu_plugin_initialize(void);
 
 /**
  * @brief De-initialize plugin

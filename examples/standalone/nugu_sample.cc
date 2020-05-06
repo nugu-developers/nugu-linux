@@ -153,10 +153,15 @@ int main(int argc, char** argv)
 
     nugu_client = make_unique<NuguClient>();
     capa_collection = make_unique<CapabilityCollection>();
-    auto network_manager_listener(make_unique<NetworkManagerListener>());
 
     registerCapabilities();
 
+    if (!nugu_client->initialize()) {
+        msg_error("< It failed to initialize NUGU SDK. Please Check authorization.");
+        return EXIT_FAILURE;
+    }
+
+    auto network_manager_listener(make_unique<NetworkManagerListener>());
     auto network_manager(nugu_client->getNetworkManager());
     network_manager->addListener(network_manager_listener.get());
     network_manager->setToken(getenv("NUGU_TOKEN"));
@@ -164,11 +169,6 @@ int main(int argc, char** argv)
 
     if (!network_manager->connect()) {
         msg_error("< Cannot connect to NUGU Platform.");
-        return EXIT_FAILURE;
-    }
-
-    if (!nugu_client->initialize()) {
-        msg_error("< It failed to initialize NUGU SDK. Please Check authorization.");
         return EXIT_FAILURE;
     }
 
