@@ -31,8 +31,8 @@ namespace NuguClientKit {
  * @ingroup SDKNuguClientKit
  * @brief Nugu Client
  *
- * The nugu client has access to the capability builder, config management,
- * and handler for each capability agent, making it easier to use the nugu sdk.
+ * The NUGU client has access to the capability builder, config management,
+ * and handler for each capability agent, making it easier to use the NUGU SDK.
  *
  * @{
  */
@@ -88,12 +88,24 @@ public:
     CapabilityBuilder* getCapabilityBuilder();
 
     /**
-     * @brief Request nugu sdk initialization
+     * @brief Request NUGU SDK to load all plugins from directory.
+     * If this function is not called directly, it is called automatically by initialize().
+     * @param[in] path Plugin directory path. If empty, the default directory is used.
+     */
+    bool loadPlugins(const std::string& path = "");
+
+    /**
+     * @brief Request NUGU SDK to unload all plugins
+     */
+    void unloadPlugins(void);
+
+    /**
+     * @brief Request NUGU SDK initialization
      */
     bool initialize(void);
 
     /**
-     * @brief Request nugu sdk deinitialization
+     * @brief Request NUGU SDK deinitialization
      */
     void deInitialize(void);
 

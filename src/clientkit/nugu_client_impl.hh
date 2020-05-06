@@ -35,6 +35,8 @@ public:
     void setWakeupWord(const std::string& wakeup_word);
     void registerCapability(ICapabilityInterface* capability);
     int create(void);
+    bool loadPlugins(const std::string& path = "");
+    void unloadPlugins(void);
     bool initialize(void);
     void deInitialize(void);
 
@@ -56,6 +58,7 @@ private:
     std::unique_ptr<INetworkManager> network_manager = nullptr;
     std::unique_ptr<NuguCoreContainer> nugu_core_container = nullptr;
     bool initialized = false;
+    bool plugin_loaded = false;
 };
 
 } // NuguClientKit
