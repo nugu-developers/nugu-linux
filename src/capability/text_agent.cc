@@ -116,7 +116,9 @@ void TextAgent::receiveCommandAll(const std::string& command, const std::string&
     convert_command.resize(command.size());
     std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
 
-    if (convert_command == "directive_dialog_id" && param == cur_dialog_id) {
+    if (convert_command == "receive_directive_group") {
+        dir_groups = param;
+    } else if (convert_command == "directive_dialog_id" && param == cur_dialog_id) {
         nugu_dbg("process receive command => directive_dialog_id(%s)", param.c_str());
 
         if (timer)
@@ -129,6 +131,7 @@ void TextAgent::receiveCommandAll(const std::string& command, const std::string&
         if (text_listener)
             text_listener->onState(cur_state, cur_dialog_id);
 
+        capa_helper->checkAndReleaseASRFocus(dir_groups, cur_dialog_id);
         cur_dialog_id = "";
     }
 }
@@ -162,6 +165,10 @@ std::string TextAgent::requestTextInput(std::string text)
     sendEventTextInput(text, "");
 
     nugu_dbg("user request id: %s", cur_dialog_id.c_str());
+    if (text_listener)
+        text_listener->onState(cur_state, cur_dialog_id);
+
+    capa_helper->sendCommand("Text", "ASR", "cancel", "");
 
     return cur_dialog_id;
 }
@@ -261,6 +268,8 @@ void TextAgent::parsingTextSource(const char* message)
 
     if (text_listener)
         text_listener->onState(cur_state, cur_dialog_id);
+
+    capa_helper->sendCommand("Text", "ASR", "cancel", "");
 }
 
 } // NuguCapability
