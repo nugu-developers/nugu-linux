@@ -106,10 +106,10 @@ void AudioInputProcessor::stop()
         return;
     }
 
+    is_running = false;
+
     if (recorder)
         recorder->stop();
-
-    is_running = false;
 }
 
 static gboolean invoke_event(gpointer userdata)

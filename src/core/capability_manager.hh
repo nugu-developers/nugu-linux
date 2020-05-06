@@ -54,6 +54,7 @@ public:
     std::string makeAllContextInfo();
     std::string makeAllContextInfoStack();
 
+    void checkAndReleaseASRFocus(const std::string& groups, const std::string& dialog_id);
     void preprocessDirective(NuguDirective* ndir);
     bool isSupportDirectiveVersion(const std::string& version, ICapabilityInterface* cap);
 

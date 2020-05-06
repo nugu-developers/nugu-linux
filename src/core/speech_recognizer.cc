@@ -184,7 +184,8 @@ void SpeechRecognizer::loop()
 
             if (pcm_size == 0) {
                 nugu_error("pcm_size result is 0");
-                sendListeningEvent(ListeningState::FAILED, id);
+                if (is_running)
+                    sendListeningEvent(ListeningState::FAILED, id);
                 break;
             }
 

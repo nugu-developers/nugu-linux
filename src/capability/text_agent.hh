@@ -49,6 +49,7 @@ private:
     INuguTimer* timer_msec;
     TextState cur_state;
     std::string cur_dialog_id;
+    std::string dir_groups;
 
     // attribute
     int response_timeout;

@@ -39,6 +39,7 @@ public:
     void suspendAll() override;
     void restoreAll() override;
     std::string getWakeupWord() override;
+    void checkAndReleaseASRFocus(const std::string& groups, const std::string& dialog_id) override;
     void getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value) override;
     void getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values) override;
 

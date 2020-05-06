@@ -263,12 +263,24 @@ std::string CapabilityManager::makeAllContextInfoStack()
     return writer.write(root);
 }
 
+void CapabilityManager::checkAndReleaseASRFocus(const std::string& groups, const std::string& dialog_id)
+{
+    nugu_info("Check ASR Focus Release: %s", groups.c_str());
+    if (groups.find("TTS") == std::string::npos && groups.find("AudioPlayer") == std::string::npos) {
+        nugu_info("ASR Focus Release by CapabilityManager");
+        sendCommand("CapabilityManager", "ASR", "releaseFocus", dialog_id);
+    } else {
+        nugu_info("ASR Focus Release by TTS or AudioPlayer");
+    }
+}
+
 void CapabilityManager::preprocessDirective(NuguDirective* ndir)
 {
     std::string name_space = nugu_directive_peek_namespace(ndir);
     std::string dname = nugu_directive_peek_name(ndir);
     std::string groups = nugu_directive_peek_groups(ndir);
 
+    sendCommandAll("receive_directive_group", groups);
     sendCommandAll("directive_dialog_id", nugu_directive_peek_dialog_id(ndir));
     playsync_manager->setDirectiveGroups(groups);
 
@@ -277,14 +289,7 @@ void CapabilityManager::preprocessDirective(NuguDirective* ndir)
         asr_dialog_id = nugu_directive_peek_dialog_id(ndir);
     } else {
         if (check_asr_focus_release && asr_dialog_id == nugu_directive_peek_dialog_id(ndir)) {
-            nugu_info("Check ASR Focus Release: %s", groups.c_str());
-            if (groups.find("TTS") == std::string::npos && groups.find("AudioPlayer") == std::string::npos) {
-                nugu_info("ASR Focus Release by CapabilityManager");
-                sendCommand("CapabilityManager", "ASR", "releasefocus", asr_dialog_id);
-            } else {
-                nugu_info("ASR Focus Release by TTS or AudioPlayer");
-            }
-
+            checkAndReleaseASRFocus(groups, asr_dialog_id);
             check_asr_focus_release = false;
         }
     }

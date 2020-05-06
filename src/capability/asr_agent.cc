@@ -146,6 +146,7 @@ ASRAgent::ASRAgent()
     , asr_focus_listener(nullptr)
     , expect_focus_listener(nullptr)
     , cur_state(ASRState::IDLE)
+    , asr_cancel(false)
     , model_path("")
     , epd_type(NUGU_ASR_EPD_TYPE)
     , asr_encoding(NUGU_ASR_ENCODING)
@@ -267,6 +268,7 @@ void ASRAgent::startRecognition(bool expected)
 
     saveAllContextInfo();
     capa_helper->requestFocus("asr", NULL);
+    asr_cancel = false;
 }
 
 void ASRAgent::stopRecognition()
@@ -277,6 +279,14 @@ void ASRAgent::stopRecognition()
         resetExpectSpeechState();
     }
     capa_helper->releaseFocus("asr");
+    asr_cancel = false;
+}
+
+void ASRAgent::cancelRecognition()
+{
+    nugu_dbg("cancelRecognition()");
+    asr_cancel = true;
+    speech_recognizer->stopListening();
 }
 
 void ASRAgent::parsingDirective(const char* dname, const char* message)
@@ -310,14 +320,12 @@ void ASRAgent::receiveCommand(const std::string& from, const std::string& comman
     convert_command.resize(command.size());
     std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
 
-    if (!convert_command.compare("releasefocus")) {
-        if (from == "System" || from == "CapabilityManager") {
-            if (dialog_id == param)
-                capa_helper->releaseFocus("asr");
-        } else {
-            capa_helper->releaseFocus("asr");
-        }
-    }
+    nugu_dbg("receive command(%s) from %s", command.c_str(), from.c_str());
+
+    if (!convert_command.compare("releasefocus"))
+        stopRecognition();
+    else if (!convert_command.compare("cancel"))
+        cancelRecognition();
 }
 
 void ASRAgent::getProperty(const std::string& property, std::string& value)
@@ -618,6 +626,18 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
         break;
     case ListeningState::DONE:
         nugu_dbg("[%s] ListeningState::DONE", id.c_str());
+
+        if (asr_cancel) {
+            nugu_dbg("ASR cancel");
+            setASRState(ASRState::IDLE);
+            if (rec_event) {
+                rec_event->forceClose();
+                delete rec_event;
+                rec_event = nullptr;
+            }
+            break;
+        }
+
         if (prev_listening_state == ListeningState::READY || prev_listening_state == ListeningState::LISTENING) {
             nugu_dbg("PrevListeningState::%s", prev_listening_state == ListeningState::READY ? "READY" : "LISTENING");
             releaseASRFocus(true, ASRError::UNKNOWN, (request_listening_id == id));

@@ -98,6 +98,7 @@ private:
     void parsingCancelRecognize(const char* message);
 
     void releaseASRFocus(bool is_cancel, ASRError error, bool release_focus = true);
+    void cancelRecognition();
 
     ExpectSpeechAttr es_attr;
     CapabilityEvent* rec_event;
@@ -112,6 +113,7 @@ private:
     AsrRecognizeCallback rec_callback;
     ASRState cur_state;
     std::string request_listening_id;
+    bool asr_cancel;
 
     // attribute
     std::string model_path;
