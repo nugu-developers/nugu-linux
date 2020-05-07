@@ -67,6 +67,7 @@ struct gst_handle {
 	enum nugu_media_status status;
 };
 
+static int _seek_action(GstreamerHandle *gh, int sec);
 static void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
 			   GError *err, GstreamerHandle *gh);
 static void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh);
@@ -88,6 +89,20 @@ static int _get_position(void *device, NuguPlayer *player);
 static NuguPlayerDriver *driver;
 static int _uniq_id;
 static const gdouble VOLUME_ZERO = 0.0000001;
+
+int _seek_action(GstreamerHandle *gh, int sec)
+{
+	if (!gst_element_seek_simple(gh->pipeline, GST_FORMAT_TIME,
+				     (GstSeekFlags)(GST_SEEK_FLAG_FLUSH |
+						    GST_SEEK_FLAG_KEY_UNIT),
+				     sec * GST_SECOND)) {
+		nugu_error("seek is failed. status: %d", gh->status);
+		return -1;
+	}
+
+	nugu_dbg("seek is success. status: %d", gh->status);
+	return 0;
+}
 
 void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
 		    GError *err, GstreamerHandle *gh)
@@ -187,7 +202,6 @@ void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 	}
 	case GST_MESSAGE_STATE_CHANGED: {
 		GstState old_state, new_state, pending_state;
-		gboolean need_seek = FALSE;
 
 		gst_message_parse_state_changed(msg, &old_state, &new_state,
 						&pending_state);
@@ -200,37 +214,23 @@ void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 			 gst_element_state_get_name(old_state),
 			 gst_element_state_get_name(new_state));
 
-		if (new_state == GST_STATE_PLAYING) {
-			if (gh->status == NUGU_MEDIA_STATUS_READY ||
-			    gh->status == NUGU_MEDIA_STATUS_STOPPED ||
-			    gh->status == NUGU_MEDIA_STATUS_PAUSED) {
-				NOTIFY_STATUS_CHANGED(
-					NUGU_MEDIA_STATUS_PLAYING);
+		if (new_state != GST_STATE_PLAYING)
+			break;
 
-				if (gh->seek_reserve)
-					need_seek = TRUE;
-			} else if (gh->status == NUGU_MEDIA_STATUS_PAUSED &&
-				   gh->seek_done) {
-				gst_element_set_state(gh->pipeline,
-						      GST_STATE_PAUSED);
-				gh->seek_done = FALSE;
-			}
+		if (gh->status == NUGU_MEDIA_STATUS_PAUSED && gh->seek_done) {
+			nugu_dbg("player is paused...");
+			gst_element_set_state(gh->pipeline, GST_STATE_PAUSED);
+			gh->seek_done = FALSE;
+			break;
 		}
 
-		if (need_seek) {
-			if (gst_element_seek_simple(
-				    gh->pipeline, GST_FORMAT_TIME,
-				    (GstSeekFlags)(GST_SEEK_FLAG_FLUSH |
-						   GST_SEEK_FLAG_KEY_UNIT),
-				    gh->seek_reserve * GST_SECOND))
-				nugu_dbg("seek is success. status: %d",
-					 gh->status);
-			else
-				nugu_dbg("seek is failed. status: %d",
-					 gh->status);
-
+		if (gh->seek_reserve) {
+			nugu_dbg("seek(%d sec) action", gh->seek_reserve);
+			_seek_action(gh, gh->seek_reserve);
 			gh->seek_reserve = 0;
 		}
+
+		NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_PLAYING);
 		break;
 	}
 	case GST_MESSAGE_EOS:
@@ -662,16 +662,9 @@ int _seek(void *device, NuguPlayer *player, int sec)
 			return -1;
 		}
 
-		if (!gst_element_seek_simple(
-			    gh->pipeline, GST_FORMAT_TIME,
-			    (GstSeekFlags)(GST_SEEK_FLAG_FLUSH |
-					   GST_SEEK_FLAG_KEY_UNIT),
-			    sec * GST_SECOND)) {
-			nugu_dbg("seek is failed. status: %d", gh->status);
+		if (_seek_action(gh, sec) != 0)
 			return -1;
-		}
 
-		nugu_dbg("seek is success. status: %d", gh->status);
 		/* seek & pause */
 		gh->seek_done = TRUE;
 	}
