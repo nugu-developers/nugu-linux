@@ -87,8 +87,8 @@ EXPORT_API NuguEvent *nugu_event_new(const char *name_space, const char *name,
 
 	nev->name_space = strdup(name_space);
 	nev->name = strdup(name);
-	nev->msg_id = nugu_uuid_generate_time();
 	nev->dialog_id = nugu_uuid_generate_time();
+	nev->msg_id = nugu_uuid_generate_time();
 	nev->referrer_id = NULL;
 	nev->seq = 0;
 	nev->version = strdup(version);
