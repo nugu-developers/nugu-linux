@@ -1,3 +1,17 @@
+nugu (0.9.0ubuntu1~xenial) xenial; urgency=medium
+
+  * Fixed AudioPlayerAgent
+  * Fixed AudioPlayer
+  * Fixed profiling
+  * Fixed network user-agent
+  * Fixed example applications
+  * Fixed MediaPlayer and Speaker volume
+  * Fixed EPD attribute control
+  * Added Gstreamer underrun control
+  * Removed NuguClientListener
+
+ -- nugulinux <nugulinux@gmail.com>  Thu, 07 May 2020 11:16:35 +0900
+
 nugu (0.8.0ubuntu1~xenial) xenial; urgency=medium
 
   * Fixed gstreamer bugs
