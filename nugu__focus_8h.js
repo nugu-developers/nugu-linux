@@ -14,6 +14,7 @@ var nugu__focus_8h =
       [ "NUGU_FOCUS_TYPE_ASR", "group__NuguFocus.html#gga0ec64a82f624b9066219fbd0846e8f77acf3858a86ad256c9eb159ac16579edff", null ],
       [ "NUGU_FOCUS_TYPE_TTS", "group__NuguFocus.html#gga0ec64a82f624b9066219fbd0846e8f77a83d6b6637fd3b8b4e13d08d71d09379e", null ],
       [ "NUGU_FOCUS_TYPE_ASR_EXPECT", "group__NuguFocus.html#gga0ec64a82f624b9066219fbd0846e8f77a10777b85ff492a76d8690815862339f7", null ],
+      [ "NUGU_FOCUS_TYPE_MEDIA_LOCK", "group__NuguFocus.html#gga0ec64a82f624b9066219fbd0846e8f77a732725c127fcb37e744f670f7d8b0e2a", null ],
       [ "NUGU_FOCUS_TYPE_MEDIA", "group__NuguFocus.html#gga0ec64a82f624b9066219fbd0846e8f77a1441052265bfc505b95091212df42bab", null ],
       [ "NUGU_FOCUS_TYPE_CUSTOM", "group__NuguFocus.html#gga0ec64a82f624b9066219fbd0846e8f77aecf64dce4650c2de80969abe2a253621", null ]
     ] ],

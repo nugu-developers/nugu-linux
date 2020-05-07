@@ -15,9 +15,10 @@ var searchData=
   ['asrattribute',['ASRAttribute',['../structNuguCapability_1_1ASRAttribute.html',1,'NuguCapability']]],
   ['asrerror',['ASRError',['../group__ASRInterface.html#ga9aa11256d9ce8a3aa14ac9a24e1d8e21',1,'NuguCapability']]],
   ['asrinterface',['ASRInterface',['../group__ASRInterface.html',1,'']]],
-  ['asrrecognizecallback',['AsrRecognizeCallback',['../classNuguCapability_1_1IASRHandler.html#a255618276466f4faa8cd5167634fe795',1,'NuguCapability::IASRHandler']]],
+  ['asrrecognizecallback',['AsrRecognizeCallback',['../classNuguCapability_1_1IASRHandler.html#ad49e6bf6b6f66c6ab0ed3dcfbede937f',1,'NuguCapability::IASRHandler']]],
   ['asrstate',['ASRState',['../group__ASRInterface.html#gafe4f48f063bafec608e5060090a9543b',1,'NuguCapability']]],
   ['audio_5fplayer_5finterface_2ehh',['audio_player_interface.hh',['../audio__player__interface_8hh.html',1,'']]],
+  ['audioplayerevent',['AudioPlayerEvent',['../group__AudioPlayerInterface.html#ga7e30478d0a2b8276e02040b468c32910',1,'NuguCapability']]],
   ['audioplayerinterface',['AudioPlayerInterface',['../group__AudioPlayerInterface.html',1,'']]],
   ['audioplayerstate',['AudioPlayerState',['../group__AudioPlayerInterface.html#gadb28ffbfa534751260baf341f9819f94',1,'NuguCapability']]],
   ['audio_20recorder_20driver',['Audio recorder driver',['../group__NuguRecorderDriver.html',1,'']]]

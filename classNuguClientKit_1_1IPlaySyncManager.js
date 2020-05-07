@@ -14,5 +14,5 @@ var classNuguClientKit_1_1IPlaySyncManager =
     [ "setExpectSpeech", "classNuguClientKit_1_1IPlaySyncManager.html#ab0c79740e5db310982a1a6cb5db5b551", null ],
     [ "holdContext", "classNuguClientKit_1_1IPlaySyncManager.html#a43dee763189abc56db16500a50a9ad2d", null ],
     [ "clearContextHold", "classNuguClientKit_1_1IPlaySyncManager.html#a8ea760cfad427e27309b3a3d335e7b31", null ],
-    [ "onASRError", "classNuguClientKit_1_1IPlaySyncManager.html#a29f19a9ca95bb22a3a26c98a7c680513", null ]
+    [ "onASRError", "classNuguClientKit_1_1IPlaySyncManager.html#a226b8bbcb6199883e07f146724527fcc", null ]
 ];

@@ -1,10 +1,10 @@
 var searchData=
 [
   ['network_5fmanager_5finterface_2ehh',['network_manager_interface.hh',['../network__manager__interface_8hh.html',1,'']]],
+  ['nugu_2eh',['nugu.h',['../nugu_8h.html',1,'']]],
   ['nugu_5faudio_2eh',['nugu_audio.h',['../nugu__audio_8h.html',1,'']]],
   ['nugu_5fbuffer_2eh',['nugu_buffer.h',['../nugu__buffer_8h.html',1,'']]],
   ['nugu_5fclient_2ehh',['nugu_client.hh',['../nugu__client_8hh.html',1,'']]],
-  ['nugu_5fclient_5flistener_2ehh',['nugu_client_listener.hh',['../nugu__client__listener_8hh.html',1,'']]],
   ['nugu_5fcore_5fcontainer_5finterface_2ehh',['nugu_core_container_interface.hh',['../nugu__core__container__interface_8hh.html',1,'']]],
   ['nugu_5fdecoder_2eh',['nugu_decoder.h',['../nugu__decoder_8h.html',1,'']]],
   ['nugu_5fdirective_2eh',['nugu_directive.h',['../nugu__directive_8h.html',1,'']]],

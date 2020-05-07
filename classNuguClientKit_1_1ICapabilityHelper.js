@@ -6,6 +6,7 @@ var classNuguClientKit_1_1ICapabilityHelper =
     [ "sendCommand", "classNuguClientKit_1_1ICapabilityHelper.html#a54512cbef27fea4767501d2b186008ed", null ],
     [ "requestEventResult", "classNuguClientKit_1_1ICapabilityHelper.html#ae9588e1c419854bc2d76e340b822a5da", null ],
     [ "notifyEventResult", "classNuguClientKit_1_1ICapabilityHelper.html#a5337a0d2fbf740be01d803301f27ad90", null ],
+    [ "notifyEventResponse", "classNuguClientKit_1_1ICapabilityHelper.html#ae8d2260c15f5cd361a7765f68cc20900", null ],
     [ "suspendAll", "classNuguClientKit_1_1ICapabilityHelper.html#a48fdb6e7b6fed097591aea3b15379f3d", null ],
     [ "restoreAll", "classNuguClientKit_1_1ICapabilityHelper.html#a408c45b8df4996455c70c1bde4625554", null ],
     [ "getWakeupWord", "classNuguClientKit_1_1ICapabilityHelper.html#a807b1ca12dd3b9424c6f20ac410bffe5", null ],

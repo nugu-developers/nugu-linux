@@ -7,5 +7,5 @@ var classNuguClientKit_1_1INetworkManager =
     [ "disconnect", "classNuguClientKit_1_1INetworkManager.html#a9349b575599e4be6ed03b2c53d9ce513", null ],
     [ "setToken", "classNuguClientKit_1_1INetworkManager.html#a95bb7392fbef8bc4c2a9cafaa3a078fc", null ],
     [ "setRegistryUrl", "classNuguClientKit_1_1INetworkManager.html#a0f2221ebbd39373de657dda5c2e987ca", null ],
-    [ "setUserAgent", "classNuguClientKit_1_1INetworkManager.html#a29dbae7e3e8e3ce8e66cb77472c07ea9", null ]
+    [ "setUserAgent", "classNuguClientKit_1_1INetworkManager.html#a20304db96bb82f1fa9b7df5c41c35c81", null ]
 ];

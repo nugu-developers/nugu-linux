@@ -26,6 +26,7 @@ var annotated_dup =
     [ "NuguClientKit", null, [
       [ "Capability", "classNuguClientKit_1_1Capability.html", "classNuguClientKit_1_1Capability" ],
       [ "CapabilityEvent", "classNuguClientKit_1_1CapabilityEvent.html", "classNuguClientKit_1_1CapabilityEvent" ],
+      [ "EpdAttribute", "structNuguClientKit_1_1EpdAttribute.html", "structNuguClientKit_1_1EpdAttribute" ],
       [ "ICapabilityHelper", "classNuguClientKit_1_1ICapabilityHelper.html", "classNuguClientKit_1_1ICapabilityHelper" ],
       [ "ICapabilityInterface", "classNuguClientKit_1_1ICapabilityInterface.html", "classNuguClientKit_1_1ICapabilityInterface" ],
       [ "ICapabilityListener", "classNuguClientKit_1_1ICapabilityListener.html", "classNuguClientKit_1_1ICapabilityListener" ],
@@ -34,7 +35,6 @@ var annotated_dup =
       [ "IMediaPlayerListener", "classNuguClientKit_1_1IMediaPlayerListener.html", "classNuguClientKit_1_1IMediaPlayerListener" ],
       [ "INetworkManager", "classNuguClientKit_1_1INetworkManager.html", "classNuguClientKit_1_1INetworkManager" ],
       [ "INetworkManagerListener", "classNuguClientKit_1_1INetworkManagerListener.html", "classNuguClientKit_1_1INetworkManagerListener" ],
-      [ "INuguClientListener", "classNuguClientKit_1_1INuguClientListener.html", "classNuguClientKit_1_1INuguClientListener" ],
       [ "INuguCoreContainer", "classNuguClientKit_1_1INuguCoreContainer.html", "classNuguClientKit_1_1INuguCoreContainer" ],
       [ "INuguTimer", "classNuguClientKit_1_1INuguTimer.html", "classNuguClientKit_1_1INuguTimer" ],
       [ "IPlaySyncManager", "classNuguClientKit_1_1IPlaySyncManager.html", "classNuguClientKit_1_1IPlaySyncManager" ],

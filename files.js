@@ -9,12 +9,12 @@ var files =
     [ "media_player_interface.hh", "media__player__interface_8hh.html", "media__player__interface_8hh" ],
     [ "mic_interface.hh", "mic__interface_8hh.html", "mic__interface_8hh" ],
     [ "network_manager_interface.hh", "network__manager__interface_8hh.html", "network__manager__interface_8hh" ],
+    [ "nugu.h", "nugu_8h.html", "nugu_8h" ],
     [ "nugu_audio.h", "nugu__audio_8h.html", "nugu__audio_8h" ],
     [ "nugu_buffer.h", "nugu__buffer_8h.html", "nugu__buffer_8h" ],
     [ "nugu_client.hh", "nugu__client_8hh.html", [
       [ "CapabilityBuilder", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder" ]
     ] ],
-    [ "nugu_client_listener.hh", "nugu__client__listener_8hh.html", null ],
     [ "nugu_core_container_interface.hh", "nugu__core__container__interface_8hh.html", null ],
     [ "nugu_decoder.h", "nugu__decoder_8h.html", "nugu__decoder_8h" ],
     [ "nugu_directive.h", "nugu__directive_8h.html", "nugu__directive_8h" ],

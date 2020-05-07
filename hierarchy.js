@@ -6,6 +6,7 @@ var hierarchy =
     [ "NuguCapability::CapabilityFactory", "classNuguCapability_1_1CapabilityFactory.html", null ],
     [ "NuguClientKit::IPlaySyncManager::DisplayRenderer", "structNuguClientKit_1_1IPlaySyncManager_1_1DisplayRenderer.html", null ],
     [ "NuguClientKit::IPlaySyncManager::DisplayRenderInfo", "structNuguClientKit_1_1IPlaySyncManager_1_1DisplayRenderInfo.html", null ],
+    [ "NuguClientKit::EpdAttribute", "structNuguClientKit_1_1EpdAttribute.html", null ],
     [ "NuguClientKit::ICapabilityHelper", "classNuguClientKit_1_1ICapabilityHelper.html", null ],
     [ "NuguClientKit::ICapabilityInterface", "classNuguClientKit_1_1ICapabilityInterface.html", [
       [ "NuguCapability::IASRHandler", "classNuguCapability_1_1IASRHandler.html", null ],
@@ -35,7 +36,6 @@ var hierarchy =
     [ "NuguClientKit::IMediaPlayerListener", "classNuguClientKit_1_1IMediaPlayerListener.html", null ],
     [ "NuguClientKit::INetworkManager", "classNuguClientKit_1_1INetworkManager.html", null ],
     [ "NuguClientKit::INetworkManagerListener", "classNuguClientKit_1_1INetworkManagerListener.html", null ],
-    [ "NuguClientKit::INuguClientListener", "classNuguClientKit_1_1INuguClientListener.html", null ],
     [ "NuguClientKit::INuguCoreContainer", "classNuguClientKit_1_1INuguCoreContainer.html", null ],
     [ "NuguClientKit::INuguTimer", "classNuguClientKit_1_1INuguTimer.html", null ],
     [ "NuguClientKit::IPlaySyncManager", "classNuguClientKit_1_1IPlaySyncManager.html", null ],

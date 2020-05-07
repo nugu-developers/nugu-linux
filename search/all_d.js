@@ -12,6 +12,7 @@ var searchData=
   ['play_5frouter_5fprocessing_5fexception',['PLAY_ROUTER_PROCESSING_EXCEPTION',['../group__SystemInterface.html#ggae95aa9037a85a223126f51c1efcbe671ae868122b754c03f37fef7f17455997a5',1,'NuguCapability']]],
   ['playing',['PLAYING',['../group__AudioPlayerInterface.html#ggadb28ffbfa534751260baf341f9819f94a50366a49630a416ab3ccaa004196027e',1,'NuguCapability::PLAYING()'],['../group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317ea50366a49630a416ab3ccaa004196027e',1,'NuguClientKit::PLAYING()']]],
   ['playing_5fmedia_5ffinished',['PLAYING_MEDIA_FINISHED',['../group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca8aa89e3b945415649b8fa48f74865763',1,'NuguClientKit']]],
+  ['playing_5fmedia_5funderrun',['PLAYING_MEDIA_UNDERRUN',['../group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28cafdba45ec1356247b452fb7c37ab7f72d',1,'NuguClientKit']]],
   ['playsync_5fmanager',['playsync_manager',['../classNuguClientKit_1_1Capability.html#a1d89744b57d7a967d6e06dc7592acc5b',1,'NuguClientKit::Capability']]],
   ['playsync_5fmanager_5finterface_2ehh',['playsync_manager_interface.hh',['../playsync__manager__interface_8hh.html',1,'']]],
   ['playsynclayer',['PlaysyncLayer',['../group__PlaySyncManagerInterface.html#gaaeadf40cf038c0983ce0de96a4d32d53',1,'NuguClientKit']]],

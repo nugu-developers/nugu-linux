@@ -43,6 +43,8 @@ var group__Log =
       [ "NUGU_LOG_MODULE_AUDIO", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1add078a62fcecb6824fffe689fc4c99ab", null ],
       [ "NUGU_LOG_MODULE_PROTOCOL", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a", null ],
       [ "NUGU_LOG_MODULE_PROFILING", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1aea28249dc595a96495a8965a5aea8d71", null ],
+      [ "NUGU_LOG_MODULE_PRESET_DEFAULT", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a94feddcf6f18486b8841ee7d584e83e0", null ],
+      [ "NUGU_LOG_MODULE_PRESET_NETWORK", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1aeaf5bbfc892f605c63ea69784ecb7168", null ],
       [ "NUGU_LOG_MODULE_ALL", "group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1ac434ac7176e2d04c33b39173efc56df9", null ]
     ] ],
     [ "nugu_log_print", "group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc", null ],

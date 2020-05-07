@@ -1,6 +1,7 @@
 var searchData=
 [
   ['networkmanagerinterface',['NetworkManagerInterface',['../group__NetworkManagerInterface.html',1,'']]],
+  ['nugu_20sdk_20information',['NUGU SDK information',['../group__nugu.html',1,'']]],
   ['networkmanager',['NetworkManager',['../group__nugu__network.html',1,'']]],
   ['nuguclient',['NuguClient',['../group__NuguClient.html',1,'']]],
   ['nugucorecontainerinterface',['NuguCoreContainerInterface',['../group__NuguCoreContainerInterface.html',1,'']]],

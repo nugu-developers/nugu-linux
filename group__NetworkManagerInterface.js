@@ -8,14 +8,15 @@ var group__NetworkManagerInterface =
       [ "disconnect", "classNuguClientKit_1_1INetworkManager.html#a9349b575599e4be6ed03b2c53d9ce513", null ],
       [ "setToken", "classNuguClientKit_1_1INetworkManager.html#a95bb7392fbef8bc4c2a9cafaa3a078fc", null ],
       [ "setRegistryUrl", "classNuguClientKit_1_1INetworkManager.html#a0f2221ebbd39373de657dda5c2e987ca", null ],
-      [ "setUserAgent", "classNuguClientKit_1_1INetworkManager.html#a29dbae7e3e8e3ce8e66cb77472c07ea9", null ]
+      [ "setUserAgent", "classNuguClientKit_1_1INetworkManager.html#a20304db96bb82f1fa9b7df5c41c35c81", null ]
     ] ],
     [ "INetworkManagerListener", "classNuguClientKit_1_1INetworkManagerListener.html", [
       [ "~INetworkManagerListener", "classNuguClientKit_1_1INetworkManagerListener.html#a5a7b463d5094b0a1a28e4d84bab7221f", null ],
       [ "onStatusChanged", "classNuguClientKit_1_1INetworkManagerListener.html#a091c1b1e49bda57cb32e70ba2a3e1e3b", null ],
       [ "onError", "classNuguClientKit_1_1INetworkManagerListener.html#af11a90bd687c8fb17ecb429fb64fe619", null ],
       [ "onEventSent", "classNuguClientKit_1_1INetworkManagerListener.html#a4b1882a77ffe8c804311dfd6d37caf4d", null ],
-      [ "onEventResult", "classNuguClientKit_1_1INetworkManagerListener.html#a4a860cfb685ee8a060fe3977a3cdefdf", null ]
+      [ "onEventSendResult", "classNuguClientKit_1_1INetworkManagerListener.html#adb7599cc95ff466c0b61ef4a8e1203c0", null ],
+      [ "onEventResponse", "classNuguClientKit_1_1INetworkManagerListener.html#a6d712937eb61bd3c20e5098ffaacf27d", null ]
     ] ],
     [ "NetworkStatus", "group__NetworkManagerInterface.html#ga385a69cab88c2d456247e254424bf809", [
       [ "DISCONNECTED", "group__NetworkManagerInterface.html#gga385a69cab88c2d456247e254424bf809a99c8ce56e7ab246445d3b134724428f3", null ],

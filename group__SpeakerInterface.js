@@ -2,7 +2,7 @@ var group__SpeakerInterface =
 [
     [ "ISpeakerHandler", "classNuguCapability_1_1ISpeakerHandler.html", [
       [ "~ISpeakerHandler", "classNuguCapability_1_1ISpeakerHandler.html#a1524cc6961afc43518efafa04e57dd66", null ],
-      [ "setSpeakerInfo", "classNuguCapability_1_1ISpeakerHandler.html#ae95e6bb708e114e1455b688ad53e158d", null ],
+      [ "setSpeakerInfo", "classNuguCapability_1_1ISpeakerHandler.html#a731a6b85f9f3e1d741f2b1c776ccf1c3", null ],
       [ "informVolumeChanged", "classNuguCapability_1_1ISpeakerHandler.html#a3289a6daa4464d99675303bb0da4fd82", null ],
       [ "informMuteChanged", "classNuguCapability_1_1ISpeakerHandler.html#ab8aa239ae64615cdd181d9bfe9c8a317", null ],
       [ "sendEventVolumeChanged", "classNuguCapability_1_1ISpeakerHandler.html#a4ba62477fd01bc191de5639e3f49d883", null ],
@@ -20,7 +20,7 @@ var group__SpeakerInterface =
       [ "min", "classNuguCapability_1_1SpeakerInfo.html#a4018769b0894b03683ea2bee22e3735f", null ],
       [ "max", "classNuguCapability_1_1SpeakerInfo.html#a63a909bad5c32807cf6a3a79f3cae003", null ],
       [ "volume", "classNuguCapability_1_1SpeakerInfo.html#a0a685f90c6301b521cdd111a31f96b61", null ],
-      [ "init", "classNuguCapability_1_1SpeakerInfo.html#ae94608838d2cd3155f404e624a59a951", null ],
+      [ "step", "classNuguCapability_1_1SpeakerInfo.html#a52d930f9837c4a31c72ad49abe8b6044", null ],
       [ "mute", "classNuguCapability_1_1SpeakerInfo.html#a8130e7a45265650f1dd40287e2719253", null ],
       [ "can_control", "classNuguCapability_1_1SpeakerInfo.html#abb9c5ec9b7f9d6aeaf285fe91a16505e", null ]
     ] ],

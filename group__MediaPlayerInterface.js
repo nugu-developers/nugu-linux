@@ -53,6 +53,7 @@ var group__MediaPlayerInterface =
       [ "INVALID_MEDIA_URL", "group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca8c30cba168f5791d184af6ed7643b0d1", null ],
       [ "LOADING_MEDIA_FAILED", "group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca1b5b0ec7563b006b267a82a514bcbb8b", null ],
       [ "LOADING_MEDIA_SUCCESS", "group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca0d42d3f5ee2bf7356d33b623cfa12dfd", null ],
-      [ "PLAYING_MEDIA_FINISHED", "group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca8aa89e3b945415649b8fa48f74865763", null ]
+      [ "PLAYING_MEDIA_FINISHED", "group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca8aa89e3b945415649b8fa48f74865763", null ],
+      [ "PLAYING_MEDIA_UNDERRUN", "group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28cafdba45ec1356247b452fb7c37ab7f72d", null ]
     ] ]
 ];

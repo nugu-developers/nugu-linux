@@ -1,6 +1,7 @@
 var searchData=
 [
   ['next',['next',['../classNuguCapability_1_1IAudioPlayerHandler.html#afa2db72acbc6547483dc100fb5e43a51',1,'NuguCapability::IAudioPlayerHandler']]],
+  ['notifyeventresponse',['notifyEventResponse',['../classNuguClientKit_1_1ICapabilityHelper.html#ae8d2260c15f5cd361a7765f68cc20900',1,'NuguClientKit::ICapabilityHelper']]],
   ['notifyeventresult',['notifyEventResult',['../classNuguClientKit_1_1Capability.html#a18ce0d2af5dac89e35d0bc57e8c0f739',1,'NuguClientKit::Capability::notifyEventResult()'],['../classNuguClientKit_1_1ICapabilityHelper.html#a5337a0d2fbf740be01d803301f27ad90',1,'NuguClientKit::ICapabilityHelper::notifyEventResult()'],['../classNuguClientKit_1_1ICapabilityInterface.html#a1a5b19dd2a2a20cd4a6a3b69386d2931',1,'NuguClientKit::ICapabilityInterface::notifyEventResult()']]],
   ['nugu_5fbuffer_5fadd',['nugu_buffer_add',['../group__Buffer.html#gaacefd9e2f61220e4b88a519c6c34be05',1,'nugu_buffer.h']]],
   ['nugu_5fbuffer_5fclear',['nugu_buffer_clear',['../group__Buffer.html#ga019669c66b35ae928ffb750914473ae8',1,'nugu_buffer.h']]],
@@ -112,6 +113,7 @@ var searchData=
   ['nugu_5fnetwork_5fmanager_5fpeek_5fuseragent',['nugu_network_manager_peek_useragent',['../group__nugu__network.html#ga146c04f3badde8f76fcdd0469e1ac329',1,'nugu_network_manager.h']]],
   ['nugu_5fnetwork_5fmanager_5fsend_5fevent',['nugu_network_manager_send_event',['../group__nugu__network.html#gadfd7f5ce83fe0afc18e1a3bbd4dedc59',1,'nugu_network_manager.h']]],
   ['nugu_5fnetwork_5fmanager_5fsend_5fevent_5fdata',['nugu_network_manager_send_event_data',['../group__nugu__network.html#gac8a5a41821ad77b0e964dd79a218ac41',1,'nugu_network_manager.h']]],
+  ['nugu_5fnetwork_5fmanager_5fset_5fevent_5fresponse_5fcallback',['nugu_network_manager_set_event_response_callback',['../group__nugu__network.html#gac699526be5f9cc9f9f333ba188be1787',1,'nugu_network_manager.h']]],
   ['nugu_5fnetwork_5fmanager_5fset_5fevent_5fresult_5fcallback',['nugu_network_manager_set_event_result_callback',['../group__nugu__network.html#ga4e685244e26f4ad8e0bba02b12f063f7',1,'nugu_network_manager.h']]],
   ['nugu_5fnetwork_5fmanager_5fset_5fevent_5fsend_5fnotify_5fcallback',['nugu_network_manager_set_event_send_notify_callback',['../group__nugu__network.html#gacff241f4be3a3f2c0a12960abe370c99',1,'nugu_network_manager.h']]],
   ['nugu_5fnetwork_5fmanager_5fset_5fhandoff_5fstatus_5fcallback',['nugu_network_manager_set_handoff_status_callback',['../group__nugu__network.html#ga8e910e53a0d4d5ab941dd5b866e16fa6',1,'nugu_network_manager.h']]],
@@ -119,7 +121,7 @@ var searchData=
   ['nugu_5fnetwork_5fmanager_5fset_5fstatus',['nugu_network_manager_set_status',['../group__nugu__network.html#ga43e79f0c044fd2848987f0953cfcb930',1,'nugu_network_manager.h']]],
   ['nugu_5fnetwork_5fmanager_5fset_5fstatus_5fcallback',['nugu_network_manager_set_status_callback',['../group__nugu__network.html#gae060d4d9e14848b79bb941f0889b50dc',1,'nugu_network_manager.h']]],
   ['nugu_5fnetwork_5fmanager_5fset_5ftoken',['nugu_network_manager_set_token',['../group__nugu__network.html#gafa7ede456c6ef64cc2e20916aebc101e',1,'nugu_network_manager.h']]],
-  ['nugu_5fnetwork_5fmanager_5fset_5fuseragent',['nugu_network_manager_set_useragent',['../group__nugu__network.html#ga9ffc10af4f0430841706d6d8b80dc996',1,'nugu_network_manager.h']]],
+  ['nugu_5fnetwork_5fmanager_5fset_5fuseragent',['nugu_network_manager_set_useragent',['../group__nugu__network.html#gad996b56722f2aeade89d5591d76f4d22',1,'nugu_network_manager.h']]],
   ['nugu_5fpcm_5fadd',['nugu_pcm_add',['../group__NuguPcm.html#ga9915e8bdc21996bc344df7019d66c03a',1,'nugu_pcm.h']]],
   ['nugu_5fpcm_5fclear_5fbuffer',['nugu_pcm_clear_buffer',['../group__NuguPcm.html#ga92393f021fd14b66a040b659855acfb5',1,'nugu_pcm.h']]],
   ['nugu_5fpcm_5fdriver_5ffind',['nugu_pcm_driver_find',['../group__NuguPcmDriver.html#ga07a738d821c1d3f7573651e5610f6479',1,'nugu_pcm.h']]],

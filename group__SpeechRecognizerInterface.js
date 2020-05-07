@@ -1,5 +1,9 @@
 var group__SpeechRecognizerInterface =
 [
+    [ "EpdAttribute", "structNuguClientKit_1_1EpdAttribute.html", [
+      [ "epd_timeout", "structNuguClientKit_1_1EpdAttribute.html#a4fcdc24866b9e347447d5bc8212c2943", null ],
+      [ "epd_max_duration", "structNuguClientKit_1_1EpdAttribute.html#a51bf6dd5f5034a36f557aafb67c23be4", null ]
+    ] ],
     [ "ISpeechRecognizer", "classNuguClientKit_1_1ISpeechRecognizer.html", [
       [ "~ISpeechRecognizer", "classNuguClientKit_1_1ISpeechRecognizer.html#a7184f25acabf26bc98effd6a80e67aab", null ],
       [ "setListener", "classNuguClientKit_1_1ISpeechRecognizer.html#a3590f5f5a2ce772209118b62ddaa8ea4", null ],

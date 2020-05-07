@@ -7,6 +7,7 @@ var nugu__network__manager_8h =
     [ "NuguNetworkManagerHandoffStatusCallback", "group__nugu__network.html#ga0f14153574656e566c68d26295a33916", null ],
     [ "NuguNetworkManagerEventSendNotifyCallback", "group__nugu__network.html#ga1d74a13221968b12acbc256af5aa115b", null ],
     [ "NuguNetworkManagerEventResultCallback", "group__nugu__network.html#ga453e0c8dda9435ad1cc5c31cdd0dbf9a", null ],
+    [ "NuguNetworkManagerEventResponseCallback", "group__nugu__network.html#ga0a64654ecf6ef2e8ed4e7f26ffec4121", null ],
     [ "NuguNetworkServerPolicy", "group__nugu__network.html#gaf7107d354bbaa909bcc0a45e16c4138c", null ],
     [ "nugu_network_status", "group__nugu__network.html#gab3b96f22ffa5e42cc058222a04a129c4", [
       [ "NUGU_NETWORK_DISCONNECTED", "group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4ab0ae183c7eb1cbe7496b59f796f11d08", null ],
@@ -28,6 +29,7 @@ var nugu__network__manager_8h =
     [ "nugu_network_manager_set_handoff_status_callback", "group__nugu__network.html#ga8e910e53a0d4d5ab941dd5b866e16fa6", null ],
     [ "nugu_network_manager_set_event_send_notify_callback", "group__nugu__network.html#gacff241f4be3a3f2c0a12960abe370c99", null ],
     [ "nugu_network_manager_set_event_result_callback", "group__nugu__network.html#ga4e685244e26f4ad8e0bba02b12f063f7", null ],
+    [ "nugu_network_manager_set_event_response_callback", "group__nugu__network.html#gac699526be5f9cc9f9f333ba188be1787", null ],
     [ "nugu_network_manager_set_status", "group__nugu__network.html#ga43e79f0c044fd2848987f0953cfcb930", null ],
     [ "nugu_network_manager_get_status", "group__nugu__network.html#gae092f03eddf78dbc7b4138fdfccf67ae", null ],
     [ "nugu_network_manager_send_event", "group__nugu__network.html#gadfd7f5ce83fe0afc18e1a3bbd4dedc59", null ],
@@ -42,6 +44,6 @@ var nugu__network__manager_8h =
     [ "nugu_network_manager_peek_token", "group__nugu__network.html#gac0813acb55cf09115cbe20655c4ad04a", null ],
     [ "nugu_network_manager_set_registry_url", "group__nugu__network.html#ga14fd663ca182334cf98f916b6e2ce2e8", null ],
     [ "nugu_network_manager_peek_registry_url", "group__nugu__network.html#ga72a662214e4e9a073e6911295599d5a1", null ],
-    [ "nugu_network_manager_set_useragent", "group__nugu__network.html#ga9ffc10af4f0430841706d6d8b80dc996", null ],
+    [ "nugu_network_manager_set_useragent", "group__nugu__network.html#gad996b56722f2aeade89d5591d76f4d22", null ],
     [ "nugu_network_manager_peek_useragent", "group__nugu__network.html#ga146c04f3badde8f76fcdd0469e1ac329", null ]
 ];
