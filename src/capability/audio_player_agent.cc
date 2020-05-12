@@ -759,7 +759,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     is_steal_focus = false;
 
     if (speak_dir) {
-        nugu_directive_set_data_callback(speak_dir, NULL, NULL);
+        nugu_directive_remove_data_callback(speak_dir);
         destroyDirective(speak_dir);
         speak_dir = nullptr;
     }
@@ -874,7 +874,7 @@ void AudioPlayerAgent::parsingStop(const char* message)
             return;
 
         if (speak_dir) {
-            nugu_directive_set_data_callback(speak_dir, NULL, NULL);
+            nugu_directive_remove_data_callback(speak_dir);
             destroyDirective(speak_dir);
             speak_dir = nullptr;
         }
