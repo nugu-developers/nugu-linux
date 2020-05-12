@@ -74,7 +74,7 @@ void TTSAgent::initialize()
 void TTSAgent::deInitialize()
 {
     if (speak_dir) {
-        nugu_directive_set_data_callback(speak_dir, NULL, NULL);
+        nugu_directive_remove_data_callback(speak_dir);
         destroyDirective(speak_dir);
         speak_dir = NULL;
     }
@@ -175,7 +175,7 @@ void TTSAgent::stopTTS()
     MediaPlayerState pre_state = cur_state;
 
     if (speak_dir) {
-        nugu_directive_set_data_callback(speak_dir, NULL, NULL);
+        nugu_directive_remove_data_callback(speak_dir);
         destroyDirective(speak_dir);
         speak_dir = NULL;
     }
