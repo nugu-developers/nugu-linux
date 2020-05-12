@@ -123,19 +123,35 @@ void AudioPlayerAgent::deInitialize()
 
 void AudioPlayerAgent::suspend()
 {
-    if (suspend_policy == SuspendPolicy::PAUSE) {
-        if (cur_aplayer_state == AudioPlayerState::PLAYING)
-            capa_helper->releaseFocus("cap_audio");
-    } else {
-        if (cur_aplayer_state == AudioPlayerState::PLAYING || cur_aplayer_state == AudioPlayerState::PAUSED)
-            stop();
+    if (suspended) {
+        nugu_dbg("already do suspend action");
+        return;
     }
+
+    nugu_dbg("suspend_policy[%d], cur_aplayer_state => %d, ", suspend_policy, cur_aplayer_state);
+    if (suspend_policy == SuspendPolicy::STOP && (cur_aplayer_state == AudioPlayerState::PLAYING || cur_aplayer_state == AudioPlayerState::PAUSED)) {
+        nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_FINISHED);
+        if (!cur_player->stop()) {
+            nugu_error("stop media failed");
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
+        }
+    }
+    capa_helper->releaseFocus("cap_audio");
+    suspended = true;
 }
 
 void AudioPlayerAgent::restore()
 {
-    if (suspend_policy == SuspendPolicy::PAUSE && cur_aplayer_state == AudioPlayerState::PAUSED)
+    if (!suspended) {
+        nugu_dbg("do not suspend action yet");
+        return;
+    }
+
+    nugu_dbg("suspend_policy[%d], cur_aplayer_state => %d, cur_player->state(): %d", suspend_policy, cur_aplayer_state, cur_player->state());
+    if (cur_player->state() != MediaPlayerState::IDLE)
         capa_helper->requestFocus("cap_audio", NULL);
+
+    suspended = false;
 }
 
 void AudioPlayerAgent::directiveDataCallback(NuguDirective* ndir, void* userdata)
@@ -198,6 +214,8 @@ void AudioPlayerAgent::onFocus(void* event)
 
 NuguFocusResult AudioPlayerAgent::onUnfocus(void* event, NuguUnFocusMode mode)
 {
+    nugu_dbg("is_finished: %d, cur_player->state(): %d", is_finished, cur_player->state());
+
     if (mode == NUGU_UNFOCUS_FORCE) {
         nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_FINISHED);
         cur_player->stop();
@@ -378,6 +396,8 @@ void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
     nugu_dbg("message: %s", message);
 
     is_paused = strcmp(dname, "Pause") == 0;
+    // if the agent receive the directive after requesting suspend, unset suspended flag
+    suspended = false;
 
     // directive name check
     if (!strcmp(dname, "Play"))

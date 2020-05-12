@@ -230,7 +230,8 @@ void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 			gh->seek_reserve = 0;
 		}
 
-		NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_PLAYING);
+		if (gh->status != NUGU_MEDIA_STATUS_PAUSED)
+			NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_PLAYING);
 		break;
 	}
 	case GST_MESSAGE_EOS:

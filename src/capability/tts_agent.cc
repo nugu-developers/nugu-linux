@@ -90,8 +90,16 @@ void TTSAgent::deInitialize()
 
 void TTSAgent::suspend()
 {
-    if (cur_state == MediaPlayerState::PLAYING)
+    nugu_dbg("suspend_policy[%d], cur_state => %d, speak_dir => %p", suspend_policy, cur_state, speak_dir);
+    if (cur_state == MediaPlayerState::PLAYING) {
+        if (speak_dir) {
+            nugu_directive_remove_data_callback(speak_dir);
+            destroyDirective(speak_dir);
+            speak_dir = NULL;
+        }
+        // TODO: need to manage the context
         capa_helper->releaseFocus("cap_tts");
+    }
 }
 
 void TTSAgent::directiveDataCallback(NuguDirective* ndir, void* userdata)
