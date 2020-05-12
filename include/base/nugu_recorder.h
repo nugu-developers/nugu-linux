@@ -160,20 +160,23 @@ int nugu_recorder_clear(NuguRecorder *rec);
 int nugu_recorder_is_recording(NuguRecorder *rec);
 
 /**
- * @brief Set private userdata for driver
+ * @brief Set custom data for driver
  * @param[in] rec recorder object
- * @param[in] userdata userdata managed by driver
- * @see nugu_recorder_get_userdata()
+ * @param[in] data custom data managed by driver
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ * @see nugu_recorder_get_driver_data()
  */
-void nugu_recorder_set_userdata(NuguRecorder *rec, void *userdata);
+int nugu_recorder_set_driver_data(NuguRecorder *rec, void *data);
 
 /**
- * @brief Get private userdata for driver
+ * @brief Get custom data for driver
  * @param[in] rec recorder object
- * @return userdata
- * @see nugu_recorder_set_userdata()
+ * @return data
+ * @see nugu_recorder_set_driver_data()
  */
-void *nugu_recorder_get_userdata(NuguRecorder *rec);
+void *nugu_recorder_get_driver_data(NuguRecorder *rec);
 
 /**
  * @brief Get frame size

@@ -40,7 +40,7 @@ static int _decoder_create(NuguDecoderDriver *driver, NuguDecoder *dec)
 	if (fd < 0)
 		return -1;
 
-	nugu_decoder_set_userdata(dec, GINT_TO_POINTER(fd));
+	nugu_decoder_set_driver_data(dec, GINT_TO_POINTER(fd));
 
 	return 0;
 }
@@ -50,7 +50,7 @@ static int _decoder_decode(NuguDecoderDriver *driver, NuguDecoder *dec,
 {
 	int fd;
 
-	fd = GPOINTER_TO_INT(nugu_decoder_get_userdata(dec));
+	fd = GPOINTER_TO_INT(nugu_decoder_get_driver_data(dec));
 	if (write(fd, data, data_len) < 0)
 		return -1;
 
@@ -61,7 +61,7 @@ static int _decoder_destroy(NuguDecoderDriver *driver, NuguDecoder *dec)
 {
 	int fd;
 
-	fd = GPOINTER_TO_INT(nugu_decoder_get_userdata(dec));
+	fd = GPOINTER_TO_INT(nugu_decoder_get_driver_data(dec));
 	close(fd);
 
 	return 0;
@@ -94,7 +94,7 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm)
 
 	nugu_dbg("pcm filedump open: name=%s, fd=%d", buf, fd);
 
-	nugu_pcm_set_userdata(pcm, GINT_TO_POINTER(fd));
+	nugu_pcm_set_driver_data(pcm, GINT_TO_POINTER(fd));
 
 	return 0;
 }
@@ -104,7 +104,7 @@ static int _pcm_push_data(NuguPcmDriver *driver, NuguPcm *pcm, const char *data,
 {
 	int fd;
 
-	fd = GPOINTER_TO_INT(nugu_pcm_get_userdata(pcm));
+	fd = GPOINTER_TO_INT(nugu_pcm_get_driver_data(pcm));
 
 	if (data != NULL && size > 0) {
 		if (write(fd, data, size) < 0)
@@ -118,7 +118,7 @@ static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 {
 	int fd;
 
-	fd = GPOINTER_TO_INT(nugu_pcm_get_userdata(pcm));
+	fd = GPOINTER_TO_INT(nugu_pcm_get_driver_data(pcm));
 
 	nugu_dbg("pcm filedump close: fd=%d", fd);
 

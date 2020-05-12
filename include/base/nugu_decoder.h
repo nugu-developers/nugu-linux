@@ -85,23 +85,23 @@ int nugu_decoder_free(NuguDecoder *dec);
 int nugu_decoder_play(NuguDecoder *dec, const void *data, size_t data_len);
 
 /**
- * @brief Set private userdata for driver
+ * @brief Set custom data for driver
  * @param[in] dec decoder object
- * @param[in] userdata userdata managed by driver
+ * @param[in] data custom data managed by driver
  * @return result
  * @retval 0 success
  * @retval -1 failure
- * @see nugu_decoder_get_userdata()
+ * @see nugu_decoder_get_driver_data()
  */
-int nugu_decoder_set_userdata(NuguDecoder *dec, void *userdata);
+int nugu_decoder_set_driver_data(NuguDecoder *dec, void *data);
 
 /**
- * @brief Get private userdata for driver
+ * @brief Get custom data for driver
  * @param[in] dec decoder object
- * @return userdata
- * @see nugu_decoder_set_userdata()
+ * @return data
+ * @see nugu_decoder_set_driver_data()
  */
-void *nugu_decoder_get_userdata(NuguDecoder *dec);
+void *nugu_decoder_get_driver_data(NuguDecoder *dec);
 
 /**
  * @brief Decode the encoded data

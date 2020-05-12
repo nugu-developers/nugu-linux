@@ -38,10 +38,11 @@ struct _nugu_recorder_driver {
 struct _nugu_recorder {
 	char *name;
 	NuguRecorderDriver *driver;
+	void *driver_data;
+
 	NuguAudioProperty property;
 	NuguRingBuffer *buf;
 	int is_recording;
-	void *userdata;
 	pthread_cond_t cond;
 	pthread_mutex_t lock;
 #ifdef RECORDER_FILE_DUMP
@@ -322,18 +323,20 @@ EXPORT_API int nugu_recorder_is_recording(NuguRecorder *rec)
 	return rec->is_recording;
 }
 
-EXPORT_API void nugu_recorder_set_userdata(NuguRecorder *rec, void *userdata)
+EXPORT_API int nugu_recorder_set_driver_data(NuguRecorder *rec, void *data)
 {
-	g_return_if_fail(rec != NULL);
+	g_return_val_if_fail(rec != NULL, -1);
 
-	rec->userdata = userdata;
+	rec->driver_data = data;
+
+	return 0;
 }
 
-EXPORT_API void *nugu_recorder_get_userdata(NuguRecorder *rec)
+EXPORT_API void *nugu_recorder_get_driver_data(NuguRecorder *rec)
 {
 	g_return_val_if_fail(rec != NULL, NULL);
 
-	return rec->userdata;
+	return rec->driver_data;
 }
 
 EXPORT_API int nugu_recorder_get_frame_size(NuguRecorder *rec, int *size,

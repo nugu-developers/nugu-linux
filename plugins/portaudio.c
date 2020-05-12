@@ -224,8 +224,7 @@ static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 {
 	PaStreamParameters input_param;
 	PaError err = paNoError;
-	struct pa_audio_param *rec_param =
-		(struct pa_audio_param *)nugu_recorder_get_userdata(rec);
+	struct pa_audio_param *rec_param = nugu_recorder_get_driver_data(rec);
 	int rec_5sec;
 	int rec_100ms;
 
@@ -281,7 +280,7 @@ static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 		return -1;
 	}
 
-	nugu_recorder_set_userdata(rec, rec_param);
+	nugu_recorder_set_driver_data(rec, rec_param);
 
 	nugu_dbg("start done");
 	return 0;
@@ -290,8 +289,7 @@ static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 static int _rec_stop(NuguRecorderDriver *driver, NuguRecorder *rec)
 {
 	PaError err = paNoError;
-	struct pa_audio_param *rec_param =
-		(struct pa_audio_param *)nugu_recorder_get_userdata(rec);
+	struct pa_audio_param *rec_param = nugu_recorder_get_driver_data(rec);
 
 	if (rec_param == NULL) {
 		nugu_dbg("already stop");
@@ -307,7 +305,7 @@ static int _rec_stop(NuguRecorderDriver *driver, NuguRecorder *rec)
 		nugu_error("Pa_CloseStream return fail");
 
 	g_free(rec_param);
-	nugu_recorder_set_userdata(rec, NULL);
+	nugu_recorder_set_driver_data(rec, NULL);
 
 	nugu_dbg("stop done");
 
@@ -359,7 +357,7 @@ static int _pcm_create(NuguPcmDriver *driver, NuguPcm *pcm,
 		return -1;
 	}
 
-	nugu_pcm_set_userdata(pcm, pcm_param);
+	nugu_pcm_set_driver_data(pcm, pcm_param);
 
 	return 0;
 }
@@ -367,14 +365,14 @@ static int _pcm_create(NuguPcmDriver *driver, NuguPcm *pcm,
 static void _pcm_destroy(NuguPcmDriver *driver, NuguPcm *pcm)
 {
 	PaError err = paNoError;
-	struct pa_audio_param *pcm_param = nugu_pcm_get_userdata(pcm);
+	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
 
 	err = Pa_CloseStream(pcm_param->stream);
 	if (err != paNoError)
 		nugu_error("Pa_CloseStream return fail(%d)", err);
 
 	free(pcm_param);
-	nugu_pcm_set_userdata(pcm, NULL);
+	nugu_pcm_set_driver_data(pcm, NULL);
 
 #ifdef DEBUG_PCM
 	nugu_info("#### pcm(%p) param is destroyed(%p) ####", pcm, pcm_param);
@@ -384,8 +382,7 @@ static void _pcm_destroy(NuguPcmDriver *driver, NuguPcm *pcm)
 static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm)
 {
 	PaError err = paNoError;
-	struct pa_audio_param *pcm_param =
-		(struct pa_audio_param *)nugu_pcm_get_userdata(pcm);
+	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
 #ifdef DUMP_PCM
 	char buf[255] = DECODER_FILENAME_TPL;
 #endif
@@ -435,8 +432,7 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm)
 static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 {
 	PaError err = paNoError;
-	struct pa_audio_param *pcm_param =
-		(struct pa_audio_param *)nugu_pcm_get_userdata(pcm);
+	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
 
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -476,7 +472,7 @@ static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 
 static int _pcm_pause(NuguPcmDriver *driver, NuguPcm *pcm)
 {
-	struct pa_audio_param *pcm_param = nugu_pcm_get_userdata(pcm);
+	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
 
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -500,7 +496,7 @@ static int _pcm_pause(NuguPcmDriver *driver, NuguPcm *pcm)
 
 static int _pcm_resume(NuguPcmDriver *driver, NuguPcm *pcm)
 {
-	struct pa_audio_param *pcm_param = nugu_pcm_get_userdata(pcm);
+	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
 
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -524,7 +520,7 @@ static int _pcm_resume(NuguPcmDriver *driver, NuguPcm *pcm)
 
 static int _pcm_get_position(NuguPcmDriver *driver, NuguPcm *pcm)
 {
-	struct pa_audio_param *pcm_param =nugu_pcm_get_userdata(pcm);
+	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
 
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -559,8 +555,7 @@ static void snd_error_log(const char *file, int line, const char *function,
 static int _pcm_push_data(NuguPcmDriver *driver, NuguPcm *pcm, const char *data,
 			  size_t size, int is_last)
 {
-	struct pa_audio_param *pcm_param =
-		(struct pa_audio_param *)nugu_pcm_get_userdata(pcm);
+	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
 
 	if (pcm_param == NULL)
 		nugu_error("pcm is not started");

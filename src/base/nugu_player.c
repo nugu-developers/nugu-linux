@@ -32,6 +32,8 @@ struct _nugu_player_driver {
 struct _nugu_player {
 	char *name;
 	NuguPlayerDriver *driver;
+	void *driver_data;
+
 	enum nugu_media_status status;
 	char *playurl;
 	int volume;
@@ -39,7 +41,6 @@ struct _nugu_player {
 	NuguMediaStatusCallback scb;
 	void *eud; /* user data for event callback */
 	void *sud; /* user data for status callback */
-	void *device;
 };
 
 static GList *_players;
@@ -169,15 +170,17 @@ EXPORT_API NuguPlayer *nugu_player_new(const char *name,
 
 	player->name = g_strdup(name);
 	player->driver = driver;
-	player->ecb = NULL;
-	player->scb = NULL;
-	player->eud = NULL;
-	player->sud = NULL;
-	player->playurl = NULL;
 	player->volume = NUGU_SET_VOLUME_DEFAULT;
-	player->driver->ref_count++;
-	player->device = player->driver->ops->create(player);
 	player->status = NUGU_MEDIA_STATUS_STOPPED;
+
+	if (player->driver->ops->create(player->driver, player) < 0) {
+		nugu_error("can't create nugu_player");
+		g_free(player->name);
+		g_free(player);
+		return NULL;
+	}
+
+	player->driver->ref_count++;
 
 	return player;
 }
@@ -190,7 +193,7 @@ EXPORT_API void nugu_player_free(NuguPlayer *player)
 	g_return_if_fail(player->driver->ops->destroy != NULL);
 
 	player->driver->ref_count--;
-	player->driver->ops->destroy(player->device, player);
+	player->driver->ops->destroy(player->driver, player);
 
 	g_free(player->playurl);
 	g_free(player->name);
@@ -259,7 +262,7 @@ EXPORT_API int nugu_player_set_source(NuguPlayer *player, const char *url)
 
 	player->playurl = g_strdup(url);
 
-	return player->driver->ops->set_source(player->device, player, url);
+	return player->driver->ops->set_source(player->driver, player, url);
 }
 
 EXPORT_API int nugu_player_start(NuguPlayer *player)
@@ -274,7 +277,7 @@ EXPORT_API int nugu_player_start(NuguPlayer *player)
 	if (nugu_player_set_volume(player, player->volume) != 0)
 		return -1;
 
-	return player->driver->ops->start(player->device, player);
+	return player->driver->ops->start(player->driver, player);
 }
 
 EXPORT_API int nugu_player_stop(NuguPlayer *player)
@@ -286,7 +289,7 @@ EXPORT_API int nugu_player_stop(NuguPlayer *player)
 		nugu_error("Not supported");
 		return -1;
 	}
-	return player->driver->ops->stop(player->device, player);
+	return player->driver->ops->stop(player->driver, player);
 }
 
 EXPORT_API int nugu_player_pause(NuguPlayer *player)
@@ -299,7 +302,7 @@ EXPORT_API int nugu_player_pause(NuguPlayer *player)
 		return -1;
 	}
 
-	return player->driver->ops->pause(player->device, player);
+	return player->driver->ops->pause(player->driver, player);
 }
 
 EXPORT_API int nugu_player_resume(NuguPlayer *player)
@@ -312,7 +315,7 @@ EXPORT_API int nugu_player_resume(NuguPlayer *player)
 		return -1;
 	}
 
-	return player->driver->ops->resume(player->device, player);
+	return player->driver->ops->resume(player->driver, player);
 }
 
 EXPORT_API int nugu_player_seek(NuguPlayer *player, int sec)
@@ -325,7 +328,7 @@ EXPORT_API int nugu_player_seek(NuguPlayer *player, int sec)
 		return -1;
 	}
 
-	return player->driver->ops->seek(player->device, player, sec);
+	return player->driver->ops->seek(player->driver, player, sec);
 }
 
 EXPORT_API int nugu_player_set_volume(NuguPlayer *player, int vol)
@@ -345,7 +348,7 @@ EXPORT_API int nugu_player_set_volume(NuguPlayer *player, int vol)
 	else
 		player->volume = vol;
 
-	return player->driver->ops->set_volume(player->device, player,
+	return player->driver->ops->set_volume(player->driver, player,
 					       player->volume);
 }
 
@@ -365,7 +368,7 @@ EXPORT_API int nugu_player_get_duration(NuguPlayer *player)
 		nugu_error("Not supported");
 		return -1;
 	}
-	return player->driver->ops->get_duration(player->device, player);
+	return player->driver->ops->get_duration(player->driver, player);
 }
 
 EXPORT_API int nugu_player_get_position(NuguPlayer *player)
@@ -378,7 +381,7 @@ EXPORT_API int nugu_player_get_position(NuguPlayer *player)
 		return -1;
 	}
 
-	return player->driver->ops->get_position(player->device, player);
+	return player->driver->ops->get_position(player->driver, player);
 }
 
 EXPORT_API enum nugu_media_status nugu_player_get_status(NuguPlayer *player)
@@ -438,4 +441,20 @@ EXPORT_API void nugu_player_emit_event(NuguPlayer *player,
 
 	if (player->ecb != NULL)
 		player->ecb(event, player->eud);
+}
+
+EXPORT_API int nugu_player_set_driver_data(NuguPlayer *player, void *data)
+{
+	g_return_val_if_fail(player != NULL, -1);
+
+	player->driver_data = data;
+
+	return 0;
+}
+
+EXPORT_API void *nugu_player_get_driver_data(NuguPlayer *player)
+{
+	g_return_val_if_fail(player != NULL, NULL);
+
+	return player->driver_data;
 }
