@@ -339,6 +339,9 @@ protected:
     /** @brief whether has attachment */
     bool has_attachment = false;
 
+    /** @brief whether capability suspend */
+    bool suspended = false;
+
     /** @brief INuguCoreContainer instance for using NuguCore functions */
     INuguCoreContainer* core_container = nullptr;
 
