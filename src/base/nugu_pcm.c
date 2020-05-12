@@ -33,13 +33,14 @@ struct _nugu_pcm_driver {
 struct _nugu_pcm {
 	char *name;
 	NuguPcmDriver *driver;
+	void *driver_data;
+
 	enum nugu_media_status status;
 	NuguAudioProperty property;
 	NuguMediaEventCallback ecb;
 	NuguMediaStatusCallback scb;
 	void *eud; /* user data for event callback */
 	void *sud; /* user data for status callback */
-	void *dud; /* user data for driver */
 	NuguBuffer *buf;
 	int is_last;
 	int volume;
@@ -194,7 +195,7 @@ EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver,
 	pcm->ecb = NULL;
 	pcm->sud = NULL;
 	pcm->eud = NULL;
-	pcm->dud = NULL;
+	pcm->driver_data = NULL;
 	pcm->status = NUGU_MEDIA_STATUS_STOPPED;
 	pcm->volume = NUGU_SET_VOLUME_MAX;
 	pcm->total_size = 0;
@@ -449,18 +450,20 @@ EXPORT_API void nugu_pcm_emit_event(NuguPcm *pcm, enum nugu_media_event event)
 		pcm->ecb(event, pcm->eud);
 }
 
-EXPORT_API void nugu_pcm_set_userdata(NuguPcm *pcm, void *userdata)
+EXPORT_API int nugu_pcm_set_driver_data(NuguPcm *pcm, void *data)
 {
-	g_return_if_fail(pcm != NULL);
+	g_return_val_if_fail(pcm != NULL, -1);
 
-	pcm->dud = userdata;
+	pcm->driver_data = data;
+
+	return 0;
 }
 
-EXPORT_API void *nugu_pcm_get_userdata(NuguPcm *pcm)
+EXPORT_API void *nugu_pcm_get_driver_data(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, NULL);
 
-	return pcm->dud;
+	return pcm->driver_data;
 }
 
 EXPORT_API void nugu_pcm_clear_buffer(NuguPcm *pcm)

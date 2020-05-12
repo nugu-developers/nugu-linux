@@ -52,19 +52,24 @@ static const char *_playurl;
 #define DUMMY_SEEK_ONE_THIRD (DUMMY_DURATION / 3)
 #define DUMMY_VOLUME NUGU_SET_VOLUME_MAX
 
-static void *dummy_create(NuguPlayer *player)
+static int dummy_create(NuguPlayerDriver *driver, NuguPlayer *player)
 {
+	(void)driver;
 	(void)player;
-	return NULL;
+
+	return 0;
 }
-static void dummy_destroy(void *device, NuguPlayer *player)
+
+static void dummy_destroy(NuguPlayerDriver *driver, NuguPlayer *player)
 {
-	(void)device;
+	(void)driver;
 	(void)player;
 }
-static int dummy_start(void *device, NuguPlayer *player)
+
+static int dummy_start(NuguPlayerDriver *driver, NuguPlayer *player)
 {
-	(void)device;
+	(void)driver;
+
 	if (g_strcmp0(_playurl, WRONG_PLAYURL) == 0)
 		nugu_player_emit_event(player,
 				       NUGU_MEDIA_EVENT_MEDIA_LOAD_FAILED);
@@ -72,31 +77,42 @@ static int dummy_start(void *device, NuguPlayer *player)
 		nugu_player_emit_event(player, NUGU_MEDIA_EVENT_MEDIA_LOADED);
 		nugu_player_emit_status(player, NUGU_MEDIA_STATUS_PLAYING);
 	}
+
 	_seek_pos = 0;
 	_position = 0;
+
 	return 0;
 }
-static int dummy_stop(void *device, NuguPlayer *player)
+
+static int dummy_stop(NuguPlayerDriver *driver, NuguPlayer *player)
 {
-	(void)device;
+	(void)driver;
+
 	nugu_player_emit_status(player, NUGU_MEDIA_STATUS_STOPPED);
+
 	return 0;
 }
-static int dummy_pause(void *device, NuguPlayer *player)
+
+static int dummy_pause(NuguPlayerDriver *driver, NuguPlayer *player)
 {
-	(void)device;
+	(void)driver;
+
 	nugu_player_emit_status(player, NUGU_MEDIA_STATUS_PAUSED);
 	return 0;
 }
-static int dummy_resume(void *device, NuguPlayer *player)
+
+static int dummy_resume(NuguPlayerDriver *driver, NuguPlayer *player)
 {
-	(void)device;
+	(void)driver;
+
 	nugu_player_emit_status(player, NUGU_MEDIA_STATUS_PLAYING);
+
 	return 0;
 }
-static int dummy_seek(void *device, NuguPlayer *player, int sec)
+
+static int dummy_seek(NuguPlayerDriver *driver, NuguPlayer *player, int sec)
 {
-	(void)device;
+	(void)driver;
 
 	_seek_pos += sec;
 
@@ -109,26 +125,32 @@ static int dummy_seek(void *device, NuguPlayer *player, int sec)
 
 	return 0;
 }
-static int dummy_set_source(void *device, NuguPlayer *player, const char *url)
+static int dummy_set_source(NuguPlayerDriver *driver, NuguPlayer *player,
+			    const char *url)
 {
 	nugu_player_emit_event(player, NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
-	dummy_stop(device, player);
+	dummy_stop(driver, player);
 
 	_playurl = url;
+
 	return 0;
 }
-static int dummy_set_volume(void *device, NuguPlayer *player, int vol)
+static int dummy_set_volume(NuguPlayerDriver *driver, NuguPlayer *player,
+			    int vol)
 {
-	(void)device;
+	(void)driver;
 	(void)player;
+
 	g_assert(vol == _volume);
+
 	return 0;
 }
 
-static int dummy_get_duration(void *device, NuguPlayer *player)
+static int dummy_get_duration(NuguPlayerDriver *driver, NuguPlayer *player)
 {
-	(void)device;
+	(void)driver;
 	(void)player;
+
 	if (_status == NUGU_MEDIA_STATUS_STOPPED)
 		_duration = -1;
 	else
@@ -137,10 +159,11 @@ static int dummy_get_duration(void *device, NuguPlayer *player)
 	return _duration;
 }
 
-static int dummy_get_position(void *device, NuguPlayer *player)
+static int dummy_get_position(NuguPlayerDriver *driver, NuguPlayer *player)
 {
-	(void)device;
+	(void)driver;
 	(void)player;
+
 	if (_status == NUGU_MEDIA_STATUS_STOPPED)
 		_position = -1;
 	else if (_seek_pos)

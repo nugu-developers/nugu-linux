@@ -220,20 +220,23 @@ void nugu_pcm_set_event_callback(NuguPcm *pcm, NuguMediaEventCallback cb,
 void nugu_pcm_emit_event(NuguPcm *pcm, enum nugu_media_event event);
 
 /**
- * @brief Set private userdata for driver
+ * @brief Set custom data for driver
  * @param[in] pcm pcm object
- * @param[in] userdata userdata managed by driver
- * @see nugu_pcm_get_userdata()
+ * @param[in] data custom data managed by driver
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ * @see nugu_pcm_get_driver_data()
  */
-void nugu_pcm_set_userdata(NuguPcm *pcm, void *userdata);
+int nugu_pcm_set_driver_data(NuguPcm *pcm, void *data);
 
 /**
- * @brief Get private userdata for driver
+ * @brief Get custom data for driver
  * @param[in] pcm pcm object
- * @return userdata
- * @see nugu_pcm_set_userdata()
+ * @return data
+ * @see nugu_pcm_set_driver_data()
  */
-void *nugu_pcm_get_userdata(NuguPcm *pcm);
+void *nugu_pcm_get_driver_data(NuguPcm *pcm);
 
 /**
  * @brief Clear pcm buffer

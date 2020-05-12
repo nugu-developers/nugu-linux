@@ -27,9 +27,10 @@
 
 struct _nugu_decoder {
 	NuguDecoderDriver *driver;
+	void *driver_data;
+
 	NuguPcm *pcm;
 	NuguBuffer *buf;
-	void *userdata;
 };
 
 struct _nugu_decoder_driver {
@@ -146,6 +147,7 @@ EXPORT_API NuguDecoder *nugu_decoder_new(NuguDecoderDriver *driver,
 	dec->driver = driver;
 	dec->pcm = sink;
 	dec->buf = nugu_buffer_new(DEFAULT_DECODE_BUFFER_SIZE);
+	dec->driver_data = NULL;
 
 	driver->ref_count++;
 
@@ -259,18 +261,18 @@ EXPORT_API void *nugu_decoder_decode(NuguDecoder *dec, const void *data,
 	return out;
 }
 
-EXPORT_API int nugu_decoder_set_userdata(NuguDecoder *dec, void *userdata)
+EXPORT_API int nugu_decoder_set_driver_data(NuguDecoder *dec, void *data)
 {
 	g_return_val_if_fail(dec != NULL, -1);
 
-	dec->userdata = userdata;
+	dec->driver_data = data;
 
 	return 0;
 }
 
-EXPORT_API void *nugu_decoder_get_userdata(NuguDecoder *dec)
+EXPORT_API void *nugu_decoder_get_driver_data(NuguDecoder *dec)
 {
 	g_return_val_if_fail(dec != NULL, NULL);
 
-	return dec->userdata;
+	return dec->driver_data;
 }

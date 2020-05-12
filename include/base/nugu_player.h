@@ -238,6 +238,26 @@ void nugu_player_set_event_callback(NuguPlayer *player,
  */
 void nugu_player_emit_event(NuguPlayer *player, enum nugu_media_event event);
 
+
+/**
+ * @brief Set custom data for driver
+ * @param[in] player player object
+ * @param[in] data custom data managed by driver
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ * @see nugu_player_get_driver_data()
+ */
+int nugu_player_set_driver_data(NuguPlayer *player, void *data);
+
+/**
+ * @brief Get custom data for driver
+ * @param[in] player player object
+ * @return data
+ * @see nugu_player_set_driver_data()
+ */
+void *nugu_player_get_driver_data(NuguPlayer *player);
+
 /**
  * @}
  */
@@ -262,67 +282,69 @@ struct nugu_player_driver_ops {
 	 * @brief Called when player is created
 	 * @see nugu_player_new()
 	 */
-	void *(*create)(NuguPlayer *player);
+	int (*create)(NuguPlayerDriver *driver, NuguPlayer *player);
 
 	/**
 	 * @brief Called when player is destroyed
 	 * @see nugu_player_free()
 	 */
-	void (*destroy)(void *device, NuguPlayer *player);
+	void (*destroy)(NuguPlayerDriver *driver, NuguPlayer *player);
 
 	/**
 	 * @brief Called when set the player source
 	 * @see nugu_player_set_source()
 	 */
-	int (*set_source)(void *device, NuguPlayer *player, const char *url);
+	int (*set_source)(NuguPlayerDriver *driver, NuguPlayer *player,
+			  const char *url);
 
 	/**
 	 * @brief Called when player is started
 	 * @see nugu_player_start()
 	 */
-	int (*start)(void *device, NuguPlayer *player);
+	int (*start)(NuguPlayerDriver *driver, NuguPlayer *player);
 
 	/**
 	 * @brief Called when player is stopped
 	 * @see nugu_player_stop()
 	 */
-	int (*stop)(void *device, NuguPlayer *player);
+	int (*stop)(NuguPlayerDriver *driver, NuguPlayer *player);
 
 	/**
 	 * @brief Called when player is paused
 	 * @see nugu_player_pause()
 	 */
-	int (*pause)(void *device, NuguPlayer *player);
+	int (*pause)(NuguPlayerDriver *driver, NuguPlayer *player);
 
 	/**
 	 * @brief Called when player is resumed
 	 * @see nugu_player_resume()
 	 */
-	int (*resume)(void *device, NuguPlayer *player);
+	int (*resume)(NuguPlayerDriver *driver, NuguPlayer *player);
 
 	/**
 	 * @brief Called when playback position is changed by seek
 	 * @see nugu_player_seek()
 	 */
-	int (*seek)(void *device, NuguPlayer *player, int sec);
+	int (*seek)(NuguPlayerDriver *driver, NuguPlayer *player, int sec);
 
 	/**
 	 * @brief Called when volume is changed
 	 * @see nugu_player_set_volume()
 	 */
-	int (*set_volume)(void *device, NuguPlayer *player, int vol);
+	int (*set_volume)(NuguPlayerDriver *driver, NuguPlayer *player,
+			  int vol);
 
 	/**
 	 * @brief Called when a playback duration is requested.
 	 * @see nugu_player_get_duration()
 	 */
-	int (*get_duration)(void *device, NuguPlayer *player);
+	int (*get_duration)(NuguPlayerDriver *driver, NuguPlayer *player);
 
 	/**
 	 * @brief Called when a playback position is requested.
 	 * @see nugu_player_get_position()
 	 */
-	int (*get_position)(void *device, NuguPlayer *player);
+	int (*get_position)(NuguPlayerDriver *driver, NuguPlayer *player);
 };
 
 /**

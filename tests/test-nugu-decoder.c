@@ -139,16 +139,16 @@ static void test_decoder_default(void)
 	g_assert(nugu_decoder_new(NULL, NULL) == NULL);
 	g_assert(nugu_decoder_decode(NULL, NULL, 0, NULL) == NULL);
 	g_assert(nugu_decoder_decode(NULL, "", 0, NULL) == NULL);
-	g_assert(nugu_decoder_set_userdata(NULL, NULL) < 0);
-	g_assert(nugu_decoder_get_userdata(NULL) == NULL);
+	g_assert(nugu_decoder_set_driver_data(NULL, NULL) < 0);
+	g_assert(nugu_decoder_get_driver_data(NULL) == NULL);
 
 	dec = nugu_decoder_new(driver, NULL);
 	g_assert(dec != NULL);
 	g_assert(nugu_decoder_driver_free(driver) == -1);
 
 	g_assert(nugu_decoder_get_pcm(dec) == NULL);
-	g_assert(nugu_decoder_set_userdata(dec, mydata) == 0);
-	g_assert(nugu_decoder_get_userdata(dec) == mydata);
+	g_assert(nugu_decoder_set_driver_data(dec, mydata) == 0);
+	g_assert(nugu_decoder_get_driver_data(dec) == mydata);
 
 	g_assert(nugu_decoder_decode(dec, NULL, 0, &result_length) == NULL);
 	g_assert(result_length == 999);

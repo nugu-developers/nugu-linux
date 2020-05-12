@@ -67,30 +67,11 @@ struct gst_handle {
 	enum nugu_media_status status;
 };
 
-static int _seek_action(GstreamerHandle *gh, int sec);
-static void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
-			   GError *err, GstreamerHandle *gh);
-static void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh);
-static void _connect_message_to_pipeline(GstreamerHandle *gh);
-static void _pad_added_handler(GstElement *src, GstPad *new_src_pad,
-			       GstreamerHandle *gh);
-static void *_create(NuguPlayer *player);
-static void _destroy(void *device, NuguPlayer *player);
-static int _set_source(void *device, NuguPlayer *player, const char *url);
-static int _start(void *device, NuguPlayer *player);
-static int _stop(void *device, NuguPlayer *player);
-static int _pause(void *device, NuguPlayer *player);
-static int _resume(void *device, NuguPlayer *player);
-static int _seek(void *device, NuguPlayer *player, int sec);
-static int _set_volume(void *device, NuguPlayer *player, int vol);
-static int _get_duration(void *device, NuguPlayer *player);
-static int _get_position(void *device, NuguPlayer *player);
-
 static NuguPlayerDriver *driver;
 static int _uniq_id;
 static const gdouble VOLUME_ZERO = 0.0000001;
 
-int _seek_action(GstreamerHandle *gh, int sec)
+static int _seek_action(GstreamerHandle *gh, int sec)
 {
 	if (!gst_element_seek_simple(gh->pipeline, GST_FORMAT_TIME,
 				     (GstSeekFlags)(GST_SEEK_FLAG_FLUSH |
@@ -104,7 +85,7 @@ int _seek_action(GstreamerHandle *gh, int sec)
 	return 0;
 }
 
-void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
+static void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
 		    GError *err, GstreamerHandle *gh)
 {
 	const gchar *discoverer_uri = NULL;
@@ -178,7 +159,7 @@ void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
 		 GST_TIME_ARGS(gst_discoverer_info_get_duration(info)));
 }
 
-void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
+static void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 {
 	switch (GST_MESSAGE_TYPE(msg)) {
 	case GST_MESSAGE_ERROR: {
@@ -293,7 +274,7 @@ void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 	}
 }
 
-void _connect_message_to_pipeline(GstreamerHandle *gh)
+static void _connect_message_to_pipeline(GstreamerHandle *gh)
 {
 	GstBus *bus = gst_element_get_bus(gh->pipeline);
 
@@ -303,7 +284,7 @@ void _connect_message_to_pipeline(GstreamerHandle *gh)
 	gst_object_unref(bus);
 }
 
-void _pad_added_handler(GstElement *src, GstPad *new_src_pad,
+static void _pad_added_handler(GstElement *src, GstPad *new_src_pad,
 			GstreamerHandle *gh)
 {
 	GstPad *sink_pad =
@@ -346,7 +327,7 @@ void _pad_added_handler(GstElement *src, GstPad *new_src_pad,
 	gst_object_unref(sink_pad);
 }
 
-void *_create(NuguPlayer *player)
+static int _create(NuguPlayerDriver *driver, NuguPlayer *player)
 {
 	GstreamerHandle *gh;
 	char caps_filter[128];
@@ -358,7 +339,7 @@ void *_create(NuguPlayer *player)
 	char pipeline[128];
 	GError *err;
 
-	g_return_val_if_fail(player != NULL, NULL);
+	g_return_val_if_fail(player != NULL, -1);
 
 	g_snprintf(caps_filter, 128, "caps_filter#%d", _uniq_id);
 	g_snprintf(audio_source, 128, "audio_source#%d", _uniq_id);
@@ -371,7 +352,7 @@ void *_create(NuguPlayer *player)
 	gh = (GstreamerHandle *)g_malloc0(sizeof(GstreamerHandle));
 	if (!gh) {
 		nugu_error_nomem();
-		return NULL;
+		return -1;
 	}
 
 	nugu_dbg("create pipeline(%s)", pipeline);
@@ -437,12 +418,14 @@ void *_create(NuguPlayer *player)
 	g_signal_connect(gh->discoverer, "discovered",
 			 G_CALLBACK(_discovered_cb), gh);
 
+	nugu_player_set_driver_data(player, gh);
+
 	_uniq_id++;
-	return gh;
+	return 0;
 
 error_out:
 	if (!gh)
-		return NULL;
+		return -1;
 
 	if (gh->audio_src)
 		g_object_unref(gh->audio_src);
@@ -460,78 +443,22 @@ error_out:
 
 	memset(gh, 0, sizeof(GstreamerHandle));
 	g_free(gh);
-	return NULL;
+
+	return -1;
 }
 
-void _destroy(void *device, NuguPlayer *player)
-{
-	GstreamerHandle *gh;
-
-	g_return_if_fail(device != NULL);
-
-	gh = (GstreamerHandle *)device;
-
-	if (player == gh->player)
-		_stop(gh, gh->player);
-
-	if (gh->playurl)
-		g_free(gh->playurl);
-
-	if (gh->discoverer)
-		g_object_unref(gh->discoverer);
-
-	if (gh->pipeline)
-		g_object_unref(gh->pipeline);
-
-	memset(gh, 0, sizeof(GstreamerHandle));
-	g_free(gh);
-}
-
-int _set_source(void *device, NuguPlayer *player, const char *url)
-{
-	GstreamerHandle *gh;
-
-	g_return_val_if_fail(device != NULL, -1);
-	g_return_val_if_fail(player != NULL, -1);
-	g_return_val_if_fail(url != NULL, -1);
-
-	gh = (GstreamerHandle *)device;
-
-	gh->is_buffering = FALSE;
-	gh->is_live = FALSE;
-	gh->is_file = FALSE;
-	gh->seekable = FALSE;
-	gh->seek_done = FALSE;
-	gh->seek_reserve = 0;
-	gh->duration = -1;
-
-	if (gh->playurl)
-		g_free(gh->playurl);
-
-	gh->playurl = g_malloc0(strlen(url) + 1);
-	memcpy(gh->playurl, url, strlen(url));
-	nugu_dbg("playurl:%s", gh->playurl);
-
-	if (!strncmp("file://", gh->playurl, 7))
-		gh->is_file = TRUE;
-
-	nugu_player_emit_event(player, NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
-	_stop(device, player);
-
-	g_object_set(gh->audio_src, "uri", gh->playurl, NULL);
-
-	return 0;
-}
-
-int _start(void *device, NuguPlayer *player)
+static int _start(NuguPlayerDriver *driver, NuguPlayer *player)
 {
 	GstreamerHandle *gh;
 	GstStateChangeReturn ret;
 
-	g_return_val_if_fail(device != NULL, -1);
 	g_return_val_if_fail(player != NULL, -1);
 
-	gh = (GstreamerHandle *)device;
+	gh = nugu_player_get_driver_data(player);
+	if (!gh) {
+		nugu_error("invalid player (no driver data)");
+		return -1;
+	}
 
 	if (!gh->is_file) {
 		/* Start the discoverer process (nothing to do yet) */
@@ -559,15 +486,19 @@ int _start(void *device, NuguPlayer *player)
 	return 0;
 }
 
-int _stop(void *device, NuguPlayer *player)
+static int _stop(NuguPlayerDriver *driver, NuguPlayer *player)
 {
 	GstreamerHandle *gh;
 	GstStateChangeReturn ret;
 
-	g_return_val_if_fail(device != NULL, -1);
 	g_return_val_if_fail(player != NULL, -1);
 
-	gh = (GstreamerHandle *)device;
+	gh = nugu_player_get_driver_data(player);
+	if (!gh) {
+		nugu_error("invalid player (no driver data)");
+		return -1;
+	}
+
 	gh->is_buffering = FALSE;
 	gh->is_live = FALSE;
 
@@ -589,15 +520,86 @@ int _stop(void *device, NuguPlayer *player)
 	return 0;
 }
 
-int _pause(void *device, NuguPlayer *player)
+static int _set_source(NuguPlayerDriver *driver, NuguPlayer *player,
+		       const char *url)
+{
+	GstreamerHandle *gh;
+
+	g_return_val_if_fail(player != NULL, -1);
+	g_return_val_if_fail(url != NULL, -1);
+
+	gh = nugu_player_get_driver_data(player);
+	if (!gh) {
+		nugu_error("invalid player (no driver data)");
+		return -1;
+	}
+
+	gh->is_buffering = FALSE;
+	gh->is_live = FALSE;
+	gh->is_file = FALSE;
+	gh->seekable = FALSE;
+	gh->seek_done = FALSE;
+	gh->seek_reserve = 0;
+	gh->duration = -1;
+
+	if (gh->playurl)
+		g_free(gh->playurl);
+
+	gh->playurl = g_malloc0(strlen(url) + 1);
+	memcpy(gh->playurl, url, strlen(url));
+	nugu_dbg("playurl:%s", gh->playurl);
+
+	if (!strncmp("file://", gh->playurl, 7))
+		gh->is_file = TRUE;
+
+	nugu_player_emit_event(player, NUGU_MEDIA_EVENT_MEDIA_SOURCE_CHANGED);
+	_stop(driver, player);
+
+	g_object_set(gh->audio_src, "uri", gh->playurl, NULL);
+
+	return 0;
+}
+
+static void _destroy(NuguPlayerDriver *driver, NuguPlayer *player)
+{
+	GstreamerHandle *gh;
+
+	g_return_if_fail(player != NULL);
+
+	gh = nugu_player_get_driver_data(player);
+	if (!gh) {
+		nugu_error("invalid player (no driver data)");
+		return;
+	}
+
+	if (player == gh->player)
+		_stop(driver, gh->player);
+
+	if (gh->playurl)
+		g_free(gh->playurl);
+
+	if (gh->discoverer)
+		g_object_unref(gh->discoverer);
+
+	if (gh->pipeline)
+		g_object_unref(gh->pipeline);
+
+	memset(gh, 0, sizeof(GstreamerHandle));
+	g_free(gh);
+}
+
+static int _pause(NuguPlayerDriver *driver, NuguPlayer *player)
 {
 	GstreamerHandle *gh;
 	GstStateChangeReturn ret;
 
-	g_return_val_if_fail(device != NULL, -1);
 	g_return_val_if_fail(player != NULL, -1);
 
-	gh = (GstreamerHandle *)device;
+	gh = nugu_player_get_driver_data(player);
+	if (!gh) {
+		nugu_error("invalid player (no driver data)");
+		return -1;
+	}
 
 	if (gh->pipeline == NULL) {
 		nugu_error("pipeline is not valid!!");
@@ -615,15 +617,18 @@ int _pause(void *device, NuguPlayer *player)
 	return 0;
 }
 
-int _resume(void *device, NuguPlayer *player)
+static int _resume(NuguPlayerDriver *driver, NuguPlayer *player)
 {
 	GstreamerHandle *gh;
 	GstStateChangeReturn ret;
 
-	g_return_val_if_fail(device != NULL, -1);
 	g_return_val_if_fail(player != NULL, -1);
 
-	gh = (GstreamerHandle *)device;
+	gh = nugu_player_get_driver_data(player);
+	if (!gh) {
+		nugu_error("invalid player (no driver data)");
+		return -1;
+	}
 
 	if (gh->pipeline == NULL) {
 		nugu_error("pipeline is not valid!!");
@@ -641,14 +646,18 @@ int _resume(void *device, NuguPlayer *player)
 	return 0;
 }
 
-int _seek(void *device, NuguPlayer *player, int sec)
+static int _seek(NuguPlayerDriver *driver, NuguPlayer *player, int sec)
 {
 	GstreamerHandle *gh;
 
-	g_return_val_if_fail(device != NULL, -1);
 	g_return_val_if_fail(player != NULL, -1);
 
-	gh = (GstreamerHandle *)device;
+	gh = nugu_player_get_driver_data(player);
+	if (!gh) {
+		nugu_error("invalid player (no driver data)");
+		return -1;
+	}
+
 	gh->is_buffering = FALSE;
 
 	if (gh->pipeline == NULL) {
@@ -677,16 +686,19 @@ int _seek(void *device, NuguPlayer *player, int sec)
 	return 0;
 }
 
-int _set_volume(void *device, NuguPlayer *player, int vol)
+static int _set_volume(NuguPlayerDriver *driver, NuguPlayer *player, int vol)
 {
 	GstreamerHandle *gh;
 	gdouble volume;
 
-	g_return_val_if_fail(device != NULL, -1);
 	g_return_val_if_fail(player != NULL, -1);
 	g_return_val_if_fail(vol >= 0, -1);
 
-	gh = (GstreamerHandle *)device;
+	gh = nugu_player_get_driver_data(player);
+	if (!gh) {
+		nugu_error("invalid player (no driver data)");
+		return -1;
+	}
 
 	volume = (gdouble)vol * (GST_SET_VOLUME_MAX - GST_SET_VOLUME_MIN) /
 		 (NUGU_SET_VOLUME_MAX - NUGU_SET_VOLUME_MIN);
@@ -701,15 +713,18 @@ int _set_volume(void *device, NuguPlayer *player, int vol)
 	return 0;
 }
 
-int _get_duration(void *device, NuguPlayer *player)
+static int _get_duration(NuguPlayerDriver *driver, NuguPlayer *player)
 {
 	GstreamerHandle *gh;
 	gint64 current;
 
-	g_return_val_if_fail(device != NULL, -1);
 	g_return_val_if_fail(player != NULL, -1);
 
-	gh = (GstreamerHandle *)device;
+	gh = nugu_player_get_driver_data(player);
+	if (!gh) {
+		nugu_error("invalid player (no driver data)");
+		return -1;
+	}
 
 	if (gh->duration <= 0) {
 		/* Query the current position of the stream */
@@ -724,15 +739,18 @@ int _get_duration(void *device, NuguPlayer *player)
 	return gh->duration;
 }
 
-int _get_position(void *device, NuguPlayer *player)
+static int _get_position(NuguPlayerDriver *driver, NuguPlayer *player)
 {
 	GstreamerHandle *gh;
 	gint64 current;
 
-	g_return_val_if_fail(device != NULL, -1);
 	g_return_val_if_fail(player != NULL, -1);
 
-	gh = (GstreamerHandle *)device;
+	gh = nugu_player_get_driver_data(player);
+	if (!gh) {
+		nugu_error("invalid player (no driver data)");
+		return -1;
+	}
 
 	if (gh->pipeline == NULL) {
 		nugu_error("pipeline is not valid!!");

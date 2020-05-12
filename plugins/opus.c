@@ -67,7 +67,7 @@ static int _decoder_create(NuguDecoderDriver *driver, NuguDecoder *dec)
 		return -1;
 	}
 
-	nugu_decoder_set_userdata(dec, handle);
+	nugu_decoder_set_driver_data(dec, handle);
 
 	nugu_dbg("new opus 22K decoder (16bit mono pcm) created");
 
@@ -95,7 +95,7 @@ static int _decoder_decode(NuguDecoderDriver *driver, NuguDecoder *dec,
 	char plain_pcm[PCM_SAMPLES * CHANNELS * 2];
 	int i;
 
-	handle = nugu_decoder_get_userdata(dec);
+	handle = nugu_decoder_get_driver_data(dec);
 
 	/**
 	 * opus 1 frame
@@ -152,7 +152,7 @@ static int _decoder_destroy(NuguDecoderDriver *driver, NuguDecoder *dec)
 {
 	OpusDecoder *handle;
 
-	handle = nugu_decoder_get_userdata(dec);
+	handle = nugu_decoder_get_driver_data(dec);
 
 	opus_decoder_destroy(handle);
 
