@@ -254,6 +254,10 @@ void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 		if (percent == 100) {
 			gh->is_buffering = FALSE;
 			nugu_dbg("Buffering Done!! (%3d%%)", percent);
+			if (gh->status == NUGU_MEDIA_STATUS_PAUSED) {
+				nugu_dbg("player is paused...");
+				break;
+			}
 			gst_element_set_state(gh->pipeline, GST_STATE_PLAYING);
 		} else {
 			if (!gh->is_buffering &&
