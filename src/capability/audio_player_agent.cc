@@ -128,7 +128,7 @@ void AudioPlayerAgent::suspend()
         return;
     }
 
-    nugu_dbg("suspend_policy[%d], cur_aplayer_state => %d, ", suspend_policy, cur_aplayer_state);
+    nugu_dbg("suspend_policy[%d], cur_aplayer_state => %d", suspend_policy, cur_aplayer_state);
     if (suspend_policy == SuspendPolicy::STOP && (cur_aplayer_state == AudioPlayerState::PLAYING || cur_aplayer_state == AudioPlayerState::PAUSED)) {
         nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_FINISHED);
         if (!cur_player->stop()) {
@@ -396,8 +396,6 @@ void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
     nugu_dbg("message: %s", message);
 
     is_paused = strcmp(dname, "Pause") == 0;
-    // if the agent receive the directive after requesting suspend, unset suspended flag
-    suspended = false;
 
     // directive name check
     if (!strcmp(dname, "Play"))
@@ -833,6 +831,12 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "can't seek");
         return;
     }
+
+    if (suspended && suspend_policy == SuspendPolicy::STOP) {
+        nugu_dbg("AudioPlayer is suspended!!");
+        return;
+    }
+
     capa_helper->requestFocus("cap_audio", NULL);
 }
 
