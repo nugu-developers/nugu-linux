@@ -107,6 +107,11 @@ void NuguCoreContainer::destroyInstance()
     CapabilityManager::destroyInstance();
 }
 
+INetworkManagerListener* NuguCoreContainer::getNetworkManagerListener()
+{
+    return dynamic_cast<INetworkManagerListener*>(CapabilityManager::getInstance());
+}
+
 void NuguCoreContainer::createAudioRecorderManager()
 {
     AudioRecorderManager::getInstance();
