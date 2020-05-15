@@ -42,6 +42,7 @@ public:
     void addCapability(const std::string& cname, ICapabilityInterface* cap);
     void removeCapability(const std::string& cname);
     void destroyInstance();
+    INetworkManagerListener* getNetworkManagerListener();
 
     // wrapping AudioRecorderManager functions
     void createAudioRecorderManager();

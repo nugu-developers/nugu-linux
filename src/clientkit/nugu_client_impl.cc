@@ -32,6 +32,7 @@ using namespace NuguCore;
 using namespace NuguCapability;
 
 NuguClientImpl::NuguClientImpl()
+    : nugu_core_container(std::unique_ptr<NuguCoreContainer>(new NuguCoreContainer()))
 {
     nugu_info("NUGU SDK v%s", NUGU_VERSION);
 
@@ -40,9 +41,8 @@ NuguClientImpl::NuguClientImpl()
 
     nugu_equeue_initialize();
 
-    nugu_core_container = std::unique_ptr<NuguCoreContainer>(new NuguCoreContainer());
-
     network_manager = std::unique_ptr<INetworkManager>(nugu_core_container->createNetworkManager());
+    network_manager->addListener(nugu_core_container->getNetworkManagerListener());
     network_manager->addListener(this);
 }
 
@@ -181,7 +181,7 @@ bool NuguClientImpl::initialize(void)
         return true;
     }
 
-     if (!plugin_loaded)
+    if (!plugin_loaded)
         loadPlugins();
 
     nugu_core_container->createAudioRecorderManager();
@@ -243,16 +243,6 @@ void NuguClientImpl::onStatusChanged(NetworkStatus status)
 
     if (sys_handler)
         sys_handler->synchronizeState();
-}
-
-void NuguClientImpl::onEventSendResult(const char* msg_id, bool success, int code)
-{
-    nugu_core_container->getCapabilityHelper()->notifyEventResult(msg_id, success, code);
-}
-
-void NuguClientImpl::onEventResponse(const char* msg_id, const char* json, bool success)
-{
-    nugu_core_container->getCapabilityHelper()->notifyEventResponse(msg_id, json, success);
 }
 
 INetworkManager* NuguClientImpl::getNetworkManager()

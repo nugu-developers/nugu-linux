@@ -28,7 +28,7 @@
 
 namespace NuguCore {
 
-class CapabilityManager {
+class CapabilityManager : public INetworkManagerListener {
 private:
     CapabilityManager();
     virtual ~CapabilityManager();
@@ -44,8 +44,10 @@ public:
     void removeCapability(const std::string& cname);
 
     void requestEventResult(NuguEvent* event);
-    void reportEventResult(const char* msg_id, int success, int code);
-    void reportEventResponse(const char* msg_id, const char* json, bool success);
+
+    // overriding INetworkManagerListener
+    void onEventSendResult(const char* msg_id, bool success, int code) override;
+    void onEventResponse(const char* msg_id, const char* json, bool success) override;
 
     void setWakeupWord(const std::string& word);
     std::string getWakeupWord();

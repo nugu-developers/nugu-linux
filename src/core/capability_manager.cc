@@ -16,10 +16,8 @@
 
 #include <cmath>
 #include <cstring>
-#include <iostream>
 
 #include "base/nugu_log.h"
-#include "base/nugu_network_manager.h"
 #include "capability_manager.hh"
 
 namespace NuguCore {
@@ -146,7 +144,7 @@ void CapabilityManager::requestEventResult(NuguEvent* event)
     nugu_dbg("request event[%s] result - %s", msg_id, event_desc.c_str());
 }
 
-void CapabilityManager::reportEventResult(const char* msg_id, int success, int code)
+void CapabilityManager::onEventSendResult(const char* msg_id, bool success, int code)
 {
     if (events.find(msg_id) == events.end()) {
         nugu_warn("event[%s] is not monitoring target", msg_id);
@@ -170,7 +168,7 @@ void CapabilityManager::reportEventResult(const char* msg_id, int success, int c
     events.erase(msg_id);
 }
 
-void CapabilityManager::reportEventResponse(const char* msg_id, const char* json, bool success)
+void CapabilityManager::onEventResponse(const char* msg_id, const char* json, bool success)
 {
     if (success)
         nugu_dbg("receive event response: event msg_id=%s, json=%s", msg_id, json);
