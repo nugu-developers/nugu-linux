@@ -25,7 +25,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "TTS";
-static const char* CAPABILITY_VERSION = "1.0";
+static const char* CAPABILITY_VERSION = "1.1";
 
 TTSAgent::TTSAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -427,21 +427,11 @@ void TTSAgent::parsingStop(const char* message)
         return;
     }
 
-    token = root["token"].asString();
-    if (token.size() == 0) {
-        nugu_error("There is no mandatory data in directive message");
-        return;
-    }
-
-    if (cur_token.compare(token)) {
-        nugu_error("the token(%s) is not valid", token.c_str());
-        return;
-    }
-
     if (!root["playServiceId"].empty())
         ps_id = root["playServiceId"].asString();
 
     stopTTS();
+    capa_helper->releaseFocus("cap_tts");
 }
 
 void TTSAgent::setCapabilityListener(ICapabilityListener* clistener)
