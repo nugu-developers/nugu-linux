@@ -31,6 +31,8 @@ struct Capability::Impl {
     NuguDirective* cur_ndir = nullptr;
     std::map<std::string, std::string> referrer_events;
     std::map<std::string, std::string> referrer_dirs;
+
+    bool parseEventResultDesc(const std::string& desc, std::string& ename, std::string& msg_id, std::string& dialog_id, bool& success, int& code);
 };
 
 struct CapabilityEvent::Impl {
@@ -190,7 +192,7 @@ void Capability::notifyEventResult(const std::string& event_desc)
     bool success;
     int code;
 
-    if (parseEventResultDesc(event_desc, ename, msg_id, dialog_id, success, code)) {
+    if (pimpl->parseEventResultDesc(event_desc, ename, msg_id, dialog_id, success, code)) {
         if (event_result_cbs.find(ename) == event_result_cbs.end())
             nugu_warn("%s is not match in event result callback", ename.c_str());
         else
@@ -346,7 +348,7 @@ void Capability::sendAttachmentEvent(CapabilityEvent* event, bool is_end, size_t
     event->sendAttachmentEvent(is_end, size, data);
 }
 
-bool Capability::parseEventResultDesc(const std::string& desc, std::string& ename, std::string& msg_id, std::string& dialog_id, bool& success, int& code)
+bool Capability::Impl::parseEventResultDesc(const std::string& desc, std::string& ename, std::string& msg_id, std::string& dialog_id, bool& success, int& code)
 {
     char* temp = (char*)desc.c_str();
     char* _cname = std::strtok(temp, ".");
