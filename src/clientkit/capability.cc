@@ -15,7 +15,6 @@
  */
 
 #include <cstring>
-#include <iostream>
 #include <string.h>
 
 #include "base/nugu_directive_sequencer.h"
@@ -197,6 +196,10 @@ void Capability::notifyEventResult(const std::string& event_desc)
         else
             event_result_cbs[ename](ename, msg_id, dialog_id, success, code);
     }
+}
+
+void Capability::notifyEventResponse(const char* msg_id, const char* json, bool success)
+{
 }
 
 void Capability::addReferrerEvents(const std::string& ename, const std::string& dname)

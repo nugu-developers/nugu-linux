@@ -169,6 +169,14 @@ public:
     void notifyEventResult(const std::string& event_desc) override;
 
     /**
+     * @brief Notify event response info.
+     * @param[in] msg_id message id which is sent with event
+     * @param[in] json raw data which is received from server about event
+     * @param[in] success whether receive event response
+     */
+    void notifyEventResponse(const char* msg_id, const char* json, bool success);
+
+    /**
      * @brief Add event name and directive name for referred dialog request id.
      * @param[in] ename event name
      * @param[in] dname directive name

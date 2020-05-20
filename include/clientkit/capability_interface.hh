@@ -127,6 +127,14 @@ public:
     virtual void notifyEventResult(const std::string& event_desc) = 0;
 
     /**
+     * @brief Notify event response info.
+     * @param[in] msg_id message id which is sent with event
+     * @param[in] json raw data which is received from server about event
+     * @param[in] success whether receive event response
+     */
+    virtual void notifyEventResponse(const char* msg_id, const char* json, bool success) = 0;
+
+    /**
      * @brief Get the capability name of the current object.
      * @return capability name of the object
      */
