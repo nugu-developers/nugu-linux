@@ -80,6 +80,7 @@ private:
     std::map<std::string, ICapabilityInterface*> caps;
     std::map<std::string, NuguFocus*> focusmap;
     std::map<std::string, std::string> events;
+    std::map<std::string, std::string> events_cname_map;
     std::string wword;
     std::unique_ptr<PlaySyncManager> playsync_manager = nullptr;
     bool check_asr_focus_release = false;

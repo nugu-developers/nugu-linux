@@ -61,6 +61,7 @@ CapabilityManager::~CapabilityManager()
     caps.clear();
     focusmap.clear();
     events.clear();
+    events_cname_map.clear();
 
     nugu_dirseq_unset_callback();
 }
@@ -140,6 +141,7 @@ void CapabilityManager::requestEventResult(NuguEvent* event)
                                  .append(dialog_id);
 
     events[msg_id] = event_desc;
+    events_cname_map.emplace(msg_id, name_space);
 
     nugu_dbg("request event[%s] result - %s", msg_id, event_desc.c_str());
 }
@@ -170,10 +172,19 @@ void CapabilityManager::onEventSendResult(const char* msg_id, bool success, int 
 
 void CapabilityManager::onEventResponse(const char* msg_id, const char* json, bool success)
 {
-    if (success)
-        nugu_dbg("receive event response: event msg_id=%s, json=%s", msg_id, json);
-    else
+    if (!success)
         nugu_error("can't receive event response: msg_id=%s", msg_id);
+
+    try {
+        ICapabilityInterface* cap = findCapability(events_cname_map.at(msg_id));
+
+        if (cap)
+            cap->notifyEventResponse(msg_id, json, success);
+
+        events_cname_map.erase(msg_id);
+    } catch (std::out_of_range& exception) {
+        nugu_warn("There is no agent which is mapping with the msg_id.");
+    }
 }
 
 void CapabilityManager::setWakeupWord(const std::string& word)
