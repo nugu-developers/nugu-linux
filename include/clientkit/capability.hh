@@ -275,18 +275,6 @@ public:
     void sendAttachmentEvent(CapabilityEvent* event, bool is_end, size_t size, unsigned char* data);
 
     /**
-     * @brief Parse the event result description.
-     * @param[in] desc event result description (format: 'cname.ename.msgid.dialogid.success.code')
-     * @param[out] ename event name
-     * @param[out] msg_id event message id
-     * @param[out] dialog_id event request dialog id
-     * @param[out] success event result
-     * @param[out] code event result code (similar to http status code)
-     * @return parsing result
-     */
-    bool parseEventResultDesc(const std::string& desc, std::string& ename, std::string& msg_id, std::string& dialog_id, bool& success, int& code);
-
-    /**
      * @brief It is possible to share own property value among objects.
      * @param[in] property capability property
      * @param[in] values capability property value
