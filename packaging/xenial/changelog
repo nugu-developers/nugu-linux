@@ -1,3 +1,16 @@
+nugu (0.10.0ubuntu1~xenial) xenial; urgency=medium
+
+  * Added event response to Capability
+  * Updated TTS interface v1.1 spec
+  * Refactoring network calling handler
+  * Fixed AudioPlayerAgent
+  * Fixed gstreamer bugs
+  * Added cancel to ASRAgent
+  * Added simple media play example
+  * Plugin initialization was separated
+
+ -- nugulinux <nugulinux@gmail.com>  Thu, 21 May 2020 11:54:00 +0900
+
 nugu (0.9.0ubuntu1~xenial) xenial; urgency=medium
 
   * Fixed AudioPlayerAgent
