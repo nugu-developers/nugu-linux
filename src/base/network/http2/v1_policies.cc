@@ -164,7 +164,8 @@ static int _parse_health_policy(const Json::Value& root)
 static void _on_finish(HTTP2Request* req, void* userdata)
 {
     int code;
-    char* message = (char*)nugu_buffer_peek(http2_request_peek_response_body(req));
+    NuguBuffer *buf = http2_request_peek_response_body(req);
+    char* message = (char*)nugu_buffer_peek(buf);
     Json::Value root;
     Json::Reader reader;
     std::string dump;
@@ -187,7 +188,7 @@ static void _on_finish(HTTP2Request* req, void* userdata)
         return;
     }
 
-    if (!reader.parse(message, root)) {
+    if (!reader.parse(std::string(message, nugu_buffer_get_size(buf)), root)) {
         nugu_error("parsing error: '%s'", message);
         nugu_equeue_push(NUGU_EQUEUE_TYPE_REGISTRY_FAILED, NULL);
         return;
