@@ -40,6 +40,7 @@ DEFAULT_JSON_OAUTH = """{
 
 authorization_base_url = OAUTH2_URL + '/v1/auth/oauth/authorize'
 token_url = OAUTH2_URL + '/v1/auth/oauth/token'
+revoke_url = OAUTH2_URL + '/v1/auth/oauth/revoke'
 redirect_uri = 'http://localhost:8080/callback'
 
 app = Flask(__name__)
@@ -117,6 +118,55 @@ def refresh():
     return redirect(url_for('index'))
 
 
+@app.route('/revoke', methods=['POST'])
+def revoke():
+    print '\n\033[1mRevoke the access_token\033[0m'
+    data = {
+        'token' : request.form['token'],
+        'client_id':  request.form['clientId'],
+        'client_secret':  request.form['clientSecret'],
+    }
+    print data
+
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": ("application/x-www-form-urlencoded;charset=UTF-8"),
+    }
+    print headers
+
+    nugu = OAuth2Session(request.form['clientId'])
+    resp = nugu.post(revoke_url, data=data, headers=headers)
+    print resp
+
+    if resp.status_code == 200:
+        with open(CONFIG_PATH_AUTH, 'w') as writer:
+            writer.write(DEFAULT_JSON_AUTH)
+
+        session.clear()
+
+    return """<!DOCTYPE HTML>
+<html>
+    <head>
+    </head>
+    <body>
+        <h1>Revoke</h1>
+        <table>
+        <tr>
+            <td>Response code</td>
+            <td>{code}</td>
+        </tr>
+        <tr>
+            <td>Response message</td>
+            <td>${msg}</td>
+        </tr>
+        </table>
+        <p>
+        <a href="/">Back to main</a>
+        </p>
+    </body>
+</html>""".format(code=resp.status_code, msg=resp.text)
+
+
 @app.route('/logout')
 def logout():
     session.clear()
@@ -127,6 +177,13 @@ def logout():
 def index():
     with open(CONFIG_PATH_OAUTH, 'r') as reader:
         oauthinfo = json.load(reader)
+    with open(CONFIG_PATH_AUTH, 'r') as reader:
+        authinfo = json.load(reader)
+
+    if 'access_token' in authinfo:
+        issuedToken = authinfo['access_token']
+    else:
+        issuedToken = ''
 
     if 'pocId' in oauthinfo:
         pocId = oauthinfo['pocId']
@@ -150,6 +207,7 @@ def index():
 
     if 'token' in session:
         token = session['token']
+        issuedToken = token['access_token']
         if 'refresh_token' in token:
             refresh_token=token['refresh_token']
         else:
@@ -222,8 +280,32 @@ def index():
                 </table>
             </fieldset>
         </form>
+        <form method=post action='/revoke'>
+            <fieldset>
+                <legend>Revoke</legend>
+                <table width=100%>
+                    <tr>
+                        <th>access_token</th>
+                        <td width=100%><input style="width:100%;" type=text name=token value="{issuedToken}"/></td>
+                    </tr>
+                    <tr>
+                        <th>client_id</th>
+                        <td width=100%><input style="width:100%;" type=text name=clientId value="{clientId}"/></td>
+                    </tr>
+                    <tr>
+                        <th>client_secret</th>
+                        <td width=100%><input style="width:100%;" type=text name=clientSecret value="{clientSecret}"/></td>
+                    </tr>
+                    <tr>
+                        <td colspan=2 align=center>
+                            <input type=submit value="Revoke"/>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </form>
     </body>
-</html>""".format(loginForm=loginForm, pocId=pocId, clientId=clientId, clientSecret=clientSecret, serial=serial)
+</html>""".format(loginForm=loginForm, pocId=pocId, issuedToken=issuedToken, clientId=clientId, clientSecret=clientSecret, serial=serial)
 
 
 @app.route('/login')
@@ -243,7 +325,6 @@ def login():
 
     session['oauth_state'] = state
     return redirect(authorization_url)
-
 
 @app.route('/callback')
 def callback():
