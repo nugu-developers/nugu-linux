@@ -143,6 +143,8 @@ static void _log_check_override_module(void)
 
 		if (!strncasecmp(modules[i], "preset_default", 15))
 			bitset = bitset | NUGU_LOG_MODULE_PRESET_DEFAULT;
+		else if (!strncasecmp(modules[i], "preset_sdk", 11))
+			bitset = bitset | NUGU_LOG_MODULE_PRESET_SDK_DEFAULT;
 		else if (!strncasecmp(modules[i], "preset_network", 15))
 			bitset = bitset | NUGU_LOG_MODULE_PRESET_NETWORK;
 		else if (!strncasecmp(modules[i], "default", 8))
@@ -157,6 +159,8 @@ static void _log_check_override_module(void)
 			bitset = bitset | NUGU_LOG_MODULE_PROFILING;
 		else if (!strncasecmp(modules[i], "audio", 6))
 			bitset = bitset | NUGU_LOG_MODULE_AUDIO;
+		else if (!strncasecmp(modules[i], "application", 12))
+			bitset = bitset | NUGU_LOG_MODULE_APPLICATION;
 	}
 
 	_log_module_bitset = bitset;
