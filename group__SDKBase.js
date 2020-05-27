@@ -17,6 +17,5 @@ var group__SDKBase =
     [ "Voice recorder", "group__NuguRecorder.html", "group__NuguRecorder" ],
     [ "RingBuffer", "group__NuguRingBuffer.html", "group__NuguRingBuffer" ],
     [ "Timer", "group__NuguTimer.html", "group__NuguTimer" ],
-    [ "UUID", "group__uuid.html", "group__uuid" ],
-    [ "NUGU SDK information", "group__nugu.html", null ]
+    [ "UUID", "group__uuid.html", "group__uuid" ]
 ];

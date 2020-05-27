@@ -1,13 +1,13 @@
 <map id="NuguClientKit" name="NuguClientKit">
-<area shape="rect" id="node1" href="$group__NuguClient.html" title="Nugu Client. " alt="" coords="221,5,316,32"/>
-<area shape="rect" id="node2" href="$group__PlaySyncManagerInterface.html" title="PlaySyncManager Interface. " alt="" coords="171,56,366,83"/>
-<area shape="rect" id="node3" href="$group__Capability.html" title="base capability class " alt="" coords="225,107,313,133"/>
-<area shape="rect" id="node4" href="$group__CapabilityHelperInterface.html" title="CapabilityHelper Interface. " alt="" coords="174,157,363,184"/>
-<area shape="rect" id="node5" href="$group__CapabilityInterface.html" title="capability interface " alt="" coords="195,208,342,235"/>
-<area shape="rect" id="node6" href="$group__NuguCoreContainerInterface.html" title="NuguCoreContainer Interface. " alt="" coords="165,259,372,285"/>
-<area shape="rect" id="node7" href="$group__SpeechRecognizerInterface.html" title="Speech Recognizer Interface. " alt="" coords="169,309,368,336"/>
-<area shape="rect" id="node8" href="$group__MediaPlayerInterface.html" title="Media Player Interface. " alt="" coords="189,360,349,387"/>
-<area shape="rect" id="node9" href="$group__NuguTimerInterface.html" title="NUGU Timer Interface. " alt="" coords="193,411,345,437"/>
-<area shape="rect" id="node10" href="$group__WakeupInterface.html" title="Wakeup interface. " alt="" coords="203,461,335,488"/>
-<area shape="rect" id="node12" href="$group__NetworkManagerInterface.html" title="Network Manager interface. " alt="" coords="173,512,364,539"/>
+<area shape="rect" id="node1" href="$group__NuguClient.html" title="Nugu Client. " alt="" coords="207,5,293,32"/>
+<area shape="rect" id="node2" href="$group__PlaySyncManagerInterface.html" title="PlaySyncManager Interface. " alt="" coords="161,56,339,83"/>
+<area shape="rect" id="node3" href="$group__Capability.html" title="base capability class " alt="" coords="210,107,290,133"/>
+<area shape="rect" id="node4" href="$group__CapabilityHelperInterface.html" title="CapabilityHelper Interface. " alt="" coords="165,157,335,184"/>
+<area shape="rect" id="node5" href="$group__CapabilityInterface.html" title="capability interface " alt="" coords="185,208,315,235"/>
+<area shape="rect" id="node6" href="$group__NuguCoreContainerInterface.html" title="NuguCoreContainer Interface. " alt="" coords="156,259,344,285"/>
+<area shape="rect" id="node7" href="$group__SpeechRecognizerInterface.html" title="Speech Recognizer Interface. " alt="" coords="159,309,341,336"/>
+<area shape="rect" id="node8" href="$group__MediaPlayerInterface.html" title="Media Player Interface. " alt="" coords="177,360,323,387"/>
+<area shape="rect" id="node9" href="$group__NuguTimerInterface.html" title="NUGU Timer Interface. " alt="" coords="181,411,319,437"/>
+<area shape="rect" id="node10" href="$group__WakeupInterface.html" title="Wakeup interface. " alt="" coords="189,461,311,488"/>
+<area shape="rect" id="node12" href="$group__NetworkManagerInterface.html" title="Network Manager interface. " alt="" coords="164,512,336,539"/>
 </map>

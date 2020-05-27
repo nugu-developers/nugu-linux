@@ -1,8 +1,8 @@
 var searchData=
 [
   ['next',['next',['../classNuguCapability_1_1IAudioPlayerHandler.html#afa2db72acbc6547483dc100fb5e43a51',1,'NuguCapability::IAudioPlayerHandler']]],
-  ['notifyeventresponse',['notifyEventResponse',['../classNuguClientKit_1_1ICapabilityHelper.html#ae8d2260c15f5cd361a7765f68cc20900',1,'NuguClientKit::ICapabilityHelper']]],
-  ['notifyeventresult',['notifyEventResult',['../classNuguClientKit_1_1Capability.html#a18ce0d2af5dac89e35d0bc57e8c0f739',1,'NuguClientKit::Capability::notifyEventResult()'],['../classNuguClientKit_1_1ICapabilityHelper.html#a5337a0d2fbf740be01d803301f27ad90',1,'NuguClientKit::ICapabilityHelper::notifyEventResult()'],['../classNuguClientKit_1_1ICapabilityInterface.html#a1a5b19dd2a2a20cd4a6a3b69386d2931',1,'NuguClientKit::ICapabilityInterface::notifyEventResult()']]],
+  ['notifyeventresponse',['notifyEventResponse',['../classNuguClientKit_1_1Capability.html#acfe2eef6d72c9fc30153b454f5bf3213',1,'NuguClientKit::Capability::notifyEventResponse()'],['../classNuguClientKit_1_1ICapabilityInterface.html#a437ce7c036e2d1a2090bfb6d684b81c0',1,'NuguClientKit::ICapabilityInterface::notifyEventResponse()']]],
+  ['notifyeventresult',['notifyEventResult',['../classNuguClientKit_1_1Capability.html#a18ce0d2af5dac89e35d0bc57e8c0f739',1,'NuguClientKit::Capability::notifyEventResult()'],['../classNuguClientKit_1_1ICapabilityInterface.html#a1a5b19dd2a2a20cd4a6a3b69386d2931',1,'NuguClientKit::ICapabilityInterface::notifyEventResult()']]],
   ['nugu_5fbuffer_5fadd',['nugu_buffer_add',['../group__Buffer.html#gaacefd9e2f61220e4b88a519c6c34be05',1,'nugu_buffer.h']]],
   ['nugu_5fbuffer_5fclear',['nugu_buffer_clear',['../group__Buffer.html#ga019669c66b35ae928ffb750914473ae8',1,'nugu_buffer.h']]],
   ['nugu_5fbuffer_5fclear_5ffrom',['nugu_buffer_clear_from',['../group__Buffer.html#gad80f1cc9f7ba8b332a1c4c55fc156aaa',1,'nugu_buffer.h']]],
@@ -190,7 +190,7 @@ var searchData=
   ['nugu_5fplugin_5fget_5fdata',['nugu_plugin_get_data',['../group__NuguPlugin.html#ga22f9504ad974ca9140165483116dc3c5',1,'nugu_plugin.h']]],
   ['nugu_5fplugin_5fget_5fdescription',['nugu_plugin_get_description',['../group__NuguPlugin.html#ga6757e7893948f0113cb5fd744ab6e561',1,'nugu_plugin.h']]],
   ['nugu_5fplugin_5fget_5fsymbol',['nugu_plugin_get_symbol',['../group__NuguPlugin.html#ga785bff8a36596b933979a1ef935e40d8',1,'nugu_plugin.h']]],
-  ['nugu_5fplugin_5finitialize',['nugu_plugin_initialize',['../group__NuguPlugin.html#ga3a6216daee906383c161091be678fa61',1,'nugu_plugin.h']]],
+  ['nugu_5fplugin_5finitialize',['nugu_plugin_initialize',['../group__NuguPlugin.html#ga90501f96849ed8aa65cf93fcb148adf4',1,'nugu_plugin.h']]],
   ['nugu_5fplugin_5fload_5fdirectory',['nugu_plugin_load_directory',['../group__NuguPlugin.html#gaae5f77ec394a07ddb7b8279cf30bc66f',1,'nugu_plugin.h']]],
   ['nugu_5fplugin_5fnew',['nugu_plugin_new',['../group__NuguPlugin.html#ga7247bb64c4cd7bb1a0a316dce40ade6d',1,'nugu_plugin.h']]],
   ['nugu_5fplugin_5fnew_5ffrom_5ffile',['nugu_plugin_new_from_file',['../group__NuguPlugin.html#gabe0f43e389ff146df074281699d0dfc5',1,'nugu_plugin.h']]],

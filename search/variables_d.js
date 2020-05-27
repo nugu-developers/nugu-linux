@@ -6,5 +6,6 @@ var searchData=
   ['start',['start',['../structnugu__pcm__driver__ops.html#ae4f5b84424ffbf8cdf289654ddea3b9c',1,'nugu_pcm_driver_ops::start()'],['../structnugu__player__driver__ops.html#a63458076892c8df1b9ab4983db29e0e9',1,'nugu_player_driver_ops::start()'],['../structnugu__recorder__driver__ops.html#a1a89476c8c76a299c2ba3597f811174f',1,'nugu_recorder_driver_ops::start()']]],
   ['step',['step',['../classNuguCapability_1_1SpeakerInfo.html#a52d930f9837c4a31c72ad49abe8b6044',1,'NuguCapability::SpeakerInfo']]],
   ['stop',['stop',['../structnugu__pcm__driver__ops.html#aa9db3490a746778e56f6a704100f3f2f',1,'nugu_pcm_driver_ops::stop()'],['../structnugu__player__driver__ops.html#ae499d2a649991dedb80cb0e2ad369efc',1,'nugu_player_driver_ops::stop()'],['../structnugu__recorder__driver__ops.html#a252bdbed8526702b04666bf0d402e15d',1,'nugu_recorder_driver_ops::stop()']]],
-  ['suspend_5fpolicy',['suspend_policy',['../classNuguClientKit_1_1Capability.html#a55e1b7727b78c2e7cf57c2cebc6f195a',1,'NuguClientKit::Capability']]]
+  ['suspend_5fpolicy',['suspend_policy',['../classNuguClientKit_1_1Capability.html#a55e1b7727b78c2e7cf57c2cebc6f195a',1,'NuguClientKit::Capability']]],
+  ['suspended',['suspended',['../classNuguClientKit_1_1Capability.html#ace9c6353b965699b775b78e9aae40718',1,'NuguClientKit::Capability']]]
 ];

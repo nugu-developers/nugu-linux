@@ -3,7 +3,6 @@ var searchData=
   ['pcm_20manipulation',['PCM manipulation',['../group__NuguPcm.html',1,'']]],
   ['pcm_20driver',['PCM driver',['../group__NuguPcmDriver.html',1,'']]],
   ['plugin',['Plugin',['../group__NuguPlugin.html',1,'']]],
-  ['parseeventresultdesc',['parseEventResultDesc',['../classNuguClientKit_1_1Capability.html#a4fbd549c351ac72df03d2fe8e091fdf1',1,'NuguClientKit::Capability']]],
   ['parsingdirective',['parsingDirective',['../classNuguClientKit_1_1Capability.html#a3289c47ce9c38309540d111e3fad4998',1,'NuguClientKit::Capability']]],
   ['pause',['PAUSE',['../classNuguClientKit_1_1ICapabilityInterface.html#a15d8782f9a3ea99381f64fe5d159a2f2a291554596c183e837f0a6bec3767c891',1,'NuguClientKit::ICapabilityInterface::PAUSE()'],['../structnugu__pcm__driver__ops.html#a9b180e1e77c43f3404ff062a31d73205',1,'nugu_pcm_driver_ops::pause()'],['../structnugu__player__driver__ops.html#aef55bbbf41b0a46cbb0a275e5077eec7',1,'nugu_player_driver_ops::pause()'],['../classNuguCapability_1_1IAudioPlayerHandler.html#ac65e6b1dcd5793f22ae39846994440a2',1,'NuguCapability::IAudioPlayerHandler::pause()'],['../classNuguClientKit_1_1IMediaPlayer.html#a624cc048f4e50ed0278680ad39171e4b',1,'NuguClientKit::IMediaPlayer::pause()']]],
   ['paused',['PAUSED',['../group__AudioPlayerInterface.html#ggadb28ffbfa534751260baf341f9819f94a99b2439e63f73ad515f7ab2447a80673',1,'NuguCapability::PAUSED()'],['../group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317ea99b2439e63f73ad515f7ab2447a80673',1,'NuguClientKit::PAUSED()']]],

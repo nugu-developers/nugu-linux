@@ -1,7 +1,6 @@
 var searchData=
 [
   ['network_5fmanager_5finterface_2ehh',['network_manager_interface.hh',['../network__manager__interface_8hh.html',1,'']]],
-  ['nugu_2eh',['nugu.h',['../nugu_8h.html',1,'']]],
   ['nugu_5faudio_2eh',['nugu_audio.h',['../nugu__audio_8h.html',1,'']]],
   ['nugu_5fbuffer_2eh',['nugu_buffer.h',['../nugu__buffer_8h.html',1,'']]],
   ['nugu_5fclient_2ehh',['nugu_client.hh',['../nugu__client_8hh.html',1,'']]],

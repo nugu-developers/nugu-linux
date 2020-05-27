@@ -25,6 +25,6 @@ var group__NuguPlugin =
     [ "nugu_plugin_get_symbol", "group__NuguPlugin.html#ga785bff8a36596b933979a1ef935e40d8", null ],
     [ "nugu_plugin_get_description", "group__NuguPlugin.html#ga6757e7893948f0113cb5fd744ab6e561", null ],
     [ "nugu_plugin_load_directory", "group__NuguPlugin.html#gaae5f77ec394a07ddb7b8279cf30bc66f", null ],
-    [ "nugu_plugin_initialize", "group__NuguPlugin.html#ga3a6216daee906383c161091be678fa61", null ],
+    [ "nugu_plugin_initialize", "group__NuguPlugin.html#ga90501f96849ed8aa65cf93fcb148adf4", null ],
     [ "nugu_plugin_deinitialize", "group__NuguPlugin.html#ga317d4b64fb2a1cc2f7270b7a9688bf6c", null ]
 ];

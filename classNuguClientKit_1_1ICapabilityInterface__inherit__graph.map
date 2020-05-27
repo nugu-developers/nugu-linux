@@ -1,11 +1,11 @@
 <map id="NuguClientKit::ICapabilityInterface" name="NuguClientKit::ICapabilityInterface">
-<area shape="rect" id="node2" href="$classNuguCapability_1_1IASRHandler.html" title="ASR handler interface. " alt="" coords="255,5,466,32"/>
-<area shape="rect" id="node3" href="$classNuguCapability_1_1IAudioPlayerHandler.html" title="audioplayer handler interface " alt="" coords="255,57,466,98"/>
-<area shape="rect" id="node4" href="$classNuguCapability_1_1IMicHandler.html" title="mic handler interface " alt="" coords="257,123,464,149"/>
-<area shape="rect" id="node5" href="$classNuguCapability_1_1ISoundHandler.html" title="sound handler interface " alt="" coords="249,173,473,200"/>
-<area shape="rect" id="node6" href="$classNuguCapability_1_1ISpeakerHandler.html" title="speaker handler interface " alt="" coords="267,225,454,266"/>
-<area shape="rect" id="node7" href="$classNuguCapability_1_1ISystemHandler.html" title="system handler interface " alt="" coords="244,291,477,317"/>
-<area shape="rect" id="node8" href="$classNuguCapability_1_1ITextHandler.html" title="text handler interface " alt="" coords="255,341,466,368"/>
-<area shape="rect" id="node9" href="$classNuguCapability_1_1ITTSHandler.html" title="tts handler interface " alt="" coords="257,392,465,419"/>
-<area shape="rect" id="node10" href="$classNuguClientKit_1_1Capability.html" title="Capability. " alt="" coords="267,443,454,469"/>
+<area shape="rect" id="node2" href="$classNuguCapability_1_1IASRHandler.html" title="ASR handler interface. " alt="" coords="235,5,431,32"/>
+<area shape="rect" id="node3" href="$classNuguCapability_1_1IAudioPlayerHandler.html" title="audioplayer handler interface " alt="" coords="237,57,430,98"/>
+<area shape="rect" id="node4" href="$classNuguCapability_1_1IMicHandler.html" title="mic handler interface " alt="" coords="239,123,428,149"/>
+<area shape="rect" id="node5" href="$classNuguCapability_1_1ISoundHandler.html" title="sound handler interface " alt="" coords="231,173,436,200"/>
+<area shape="rect" id="node6" href="$classNuguCapability_1_1ISpeakerHandler.html" title="speaker handler interface " alt="" coords="248,225,419,266"/>
+<area shape="rect" id="node7" href="$classNuguCapability_1_1ISystemHandler.html" title="system handler interface " alt="" coords="227,291,440,317"/>
+<area shape="rect" id="node8" href="$classNuguCapability_1_1ITextHandler.html" title="text handler interface " alt="" coords="236,341,431,368"/>
+<area shape="rect" id="node9" href="$classNuguCapability_1_1ITTSHandler.html" title="tts handler interface " alt="" coords="237,392,430,419"/>
+<area shape="rect" id="node10" href="$classNuguClientKit_1_1Capability.html" title="Capability. " alt="" coords="249,443,418,469"/>
 </map>

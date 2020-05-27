@@ -15,6 +15,7 @@ var classNuguClientKit_1_1ICapabilityInterface =
     [ "addEventResultCallback", "classNuguClientKit_1_1ICapabilityInterface.html#a9db9736a6bcf43bebb286a210572af9d", null ],
     [ "removeEventResultCallback", "classNuguClientKit_1_1ICapabilityInterface.html#a74de074a2cac62173930545fecf1f370", null ],
     [ "notifyEventResult", "classNuguClientKit_1_1ICapabilityInterface.html#a1a5b19dd2a2a20cd4a6a3b69386d2931", null ],
+    [ "notifyEventResponse", "classNuguClientKit_1_1ICapabilityInterface.html#a437ce7c036e2d1a2090bfb6d684b81c0", null ],
     [ "getName", "classNuguClientKit_1_1ICapabilityInterface.html#aa5d512ebf9c13ab2eabbfd5709698fb5", null ],
     [ "getVersion", "classNuguClientKit_1_1ICapabilityInterface.html#a5165192ab427d8115df899323ee482c0", null ],
     [ "processDirective", "classNuguClientKit_1_1ICapabilityInterface.html#a32b3c3172d411f9d4b87c172f2066078", null ],
