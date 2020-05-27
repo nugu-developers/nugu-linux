@@ -1,3 +1,11 @@
+nugu (0.10.1ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed AudioPlayerAgent bug
+  * Fixed network bug
+  * Added revoke in oob_server
+
+ -- nugulinux <nugulinux@gmail.com>  Wed, 27 May 2020 15:30:00 +0900
+
 nugu (0.10.0ubuntu1~bionic) bionic; urgency=medium
 
   * Added event response to Capability
