@@ -162,11 +162,17 @@ enum nugu_prof_type {
 	NUGU_PROF_TYPE_TTS_STARTED,
 	/**< TTS started */
 
+	NUGU_PROF_TYPE_TTS_NET_FIRST_ATTACHMENT,
+	/**< TTS receive first attachment in network module */
+
 	NUGU_PROF_TYPE_TTS_FIRST_ATTACHMENT,
 	/**< TTS receive first attachment */
 
 	NUGU_PROF_TYPE_TTS_LAST_ATTACHMENT,
 	/**< TTS receive last attachment */
+
+	NUGU_PROF_TYPE_TTS_FIRST_PCM_WRITE,
+	/**< TTS PCM write */
 
 	NUGU_PROF_TYPE_TTS_STOPPED,
 	/**< TTS stopped */

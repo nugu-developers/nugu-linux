@@ -27,6 +27,7 @@
 #include "base/nugu_plugin.h"
 #include "base/nugu_recorder.h"
 #include "base/nugu_pcm.h"
+#include "base/nugu_prof.h"
 
 #define PLUGIN_DRIVER_NAME "portaudio"
 #define SAMPLE_SILENCE (0.0f)
@@ -50,6 +51,7 @@ struct pa_audio_param {
 	int done;
 	size_t write_data;
 	void *data;
+	int is_first;
 #ifdef DUMP_PCM
 	int fd;
 #endif
@@ -194,6 +196,11 @@ static int _playbackCallback(const void *inputBuffer, void *outputBuffer,
 		return finished;
 
 	if (nugu_pcm_get_data_size(pcm) > 0) {
+		if (param->is_first) {
+			nugu_prof_mark(NUGU_PROF_TYPE_TTS_FIRST_PCM_WRITE);
+			param->is_first = 0;
+		}
+
 		nugu_pcm_get_data(pcm, buf, buf_size);
 		param->write_data += buf_size;
 	} else if (nugu_pcm_receive_is_last_data(pcm)) {
@@ -371,6 +378,7 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm,
 
 	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_READY);
 
+	pcm_param->is_first = 1;
 	pcm_param->pause = 0;
 	pcm_param->stop = 0;
 	pcm_param->write_data = 0;
