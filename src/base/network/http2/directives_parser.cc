@@ -24,6 +24,7 @@
 
 #include "base/nugu_equeue.h"
 #include "base/nugu_log.h"
+#include "base/nugu_prof.h"
 
 #include "dg_types.h"
 
@@ -263,6 +264,9 @@ static void _body_opus(DirParser* dp, const char* parent_msg_id, int seq,
     item->length = length;
     item->data = (unsigned char*)malloc(length);
     memcpy(item->data, data, length);
+
+    if (item->seq == 0)
+        nugu_prof_mark(NUGU_PROF_TYPE_TTS_NET_FIRST_ATTACHMENT);
 
     nugu_log_print(NUGU_LOG_MODULE_NETWORK, NUGU_LOG_LEVEL_DEBUG, NULL,
         NULL, -1, "<-- Attachment: parent=%s (%zd bytes, seq=%d, is_end=%d)%s",
