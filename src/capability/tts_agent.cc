@@ -25,7 +25,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "TTS";
-static const char* CAPABILITY_VERSION = "1.1";
+static const char* CAPABILITY_VERSION = "1.2";
 
 TTSAgent::TTSAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -265,6 +265,9 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
 
     if (is_finished)
         tts["ttsActivity"] = "FINISHED";
+
+    if (cur_token.size())
+        tts["token"] = cur_token;
 
     ctx[getName()] = tts;
 }
