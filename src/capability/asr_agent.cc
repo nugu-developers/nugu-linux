@@ -25,7 +25,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "ASR";
-static const char* CAPABILITY_VERSION = "1.1";
+static const char* CAPABILITY_VERSION = "1.2";
 
 class ASRFocusListener : public IFocusListener {
 public:
@@ -334,8 +334,6 @@ void ASRAgent::getProperty(const std::string& property, std::string& value)
 
     if (property == "es.playServiceId") {
         value = es_attr.play_service_id;
-    } else if (property == "es.sessionId") {
-        value = es_attr.session_id;
     } else if (property == "es.asrContext") {
         if (!es_attr.asr_context.empty()) {
             Json::StyledWriter writer;
@@ -394,7 +392,6 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
     }
 
     if (es_attr.is_handle) {
-        root["sessionId"] = es_attr.session_id;
         if (es_attr.play_service_id.size())
             root["playServiceId"] = es_attr.play_service_id;
         if (!es_attr.domain_types.empty())
@@ -497,14 +494,13 @@ void ASRAgent::parsingExpectSpeech(const char* message)
         return;
     }
 
-    if (root["sessionId"].asString().empty() || root["timeoutInMilliseconds"].empty()) {
+    if (root["timeoutInMilliseconds"].empty()) {
         nugu_error("There is no mandatory data in directive message");
         return;
     }
 
     es_attr.is_handle = true;
     es_attr.timeout = root["timeoutInMilliseconds"].asString();
-    es_attr.session_id = root["sessionId"].asString();
     es_attr.play_service_id = root["playServiceId"].asString();
     es_attr.domain_types = root["domainTypes"];
     es_attr.asr_context = root["asrContext"];
