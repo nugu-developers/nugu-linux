@@ -49,7 +49,8 @@ enum class SystemException {
  * @brief RevokeReason
  */
 enum class RevokeReason {
-    REVOKED_DEVICE /**< Revoked device reason  */
+    REVOKED_DEVICE, /**< Token revoke due to device removal */
+    WITHDRAWN_USER /**< Token revoke due to user withdrawal */
 };
 
 /**
