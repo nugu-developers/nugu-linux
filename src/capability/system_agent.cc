@@ -27,7 +27,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "System";
-static const char* CAPABILITY_VERSION = "1.1";
+static const char* CAPABILITY_VERSION = "1.2";
 
 SystemAgent::SystemAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -368,6 +368,9 @@ void SystemAgent::parsingRevoke(const char* message)
     if (reason.compare("REVOKED_DEVICE") == 0) {
         if (system_listener)
             system_listener->onRevoke(RevokeReason::REVOKED_DEVICE);
+    } else if (reason.compare("WITHDRAWN_USER") == 0) {
+        if (system_listener)
+            system_listener->onRevoke(RevokeReason::WITHDRAWN_USER);
     } else {
         nugu_error("invalid reason");
     }
