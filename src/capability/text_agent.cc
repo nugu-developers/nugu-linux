@@ -22,7 +22,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "Text";
-static const char* CAPABILITY_VERSION = "1.1";
+static const char* CAPABILITY_VERSION = "1.2";
 
 TextAgent::TextAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -191,13 +191,11 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
     Json::Value root;
     std::string ps_id = "";
     std::string property = "";
-    std::string session_id = "";
     std::string asr_context = "";
     std::list<std::string> domainTypes;
 
     capa_helper->getCapabilityProperty("ASR", "es.playServiceId", ps_id);
     capa_helper->getCapabilityProperty("ASR", "es.property", property);
-    capa_helper->getCapabilityProperty("ASR", "es.sessionId", session_id);
     capa_helper->getCapabilityProperty("ASR", "es.asrContext", asr_context);
     capa_helper->getCapabilityProperties("ASR", "es.domainTypes", domainTypes);
 
@@ -208,8 +206,6 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
         root["playServiceId"] = ps_id;
     if (property.size())
         root["property"] = property;
-    if (session_id.size())
-        root["sessionId"] = session_id;
     if (asr_context.size())
         root["asrContext"] = asr_context;
     if (domainTypes.size()) {
