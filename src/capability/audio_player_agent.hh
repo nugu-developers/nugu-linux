@@ -85,8 +85,9 @@ public:
     void sendEventHideLyricsFailed(EventResultCallback cb = nullptr);
     void sendEventControlLyricsPageSucceeded(const std::string& direction, EventResultCallback cb = nullptr);
     void sendEventControlLyricsPageFailed(const std::string& direction, EventResultCallback cb = nullptr);
-    void sendEventByRequestDirective(const std::string& dname, EventResultCallback cb = nullptr);
+    void sendEventByRequestOthersDirective(const std::string& dname, EventResultCallback cb = nullptr);
     void sendEventRequestPlayCommandIssued(const std::string& dname, const std::string& payload, EventResultCallback cb = nullptr);
+    void sendEventRequestCommandFailed(const std::string& play_service_id, const std::string& type, const std::string& reason, EventResultCallback cb = nullptr);
 
     void mediaStateChanged(MediaPlayerState state) override;
     void mediaEventReport(MediaPlayerEvent event) override;
@@ -102,8 +103,6 @@ public:
 private:
     std::string sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);
 
-    AudioPlayerState audioPlayerState();
-
     bool isContentCached(const std::string& key, std::string& playurl);
     void parsingPlay(const char* message);
     void parsingPause(const char* message);
@@ -113,6 +112,7 @@ private:
     void parsingHideLyrics(const char* message);
     void parsingControlLyricsPage(const char* message);
     void parsingRequestPlayCommand(const char* dname, const char* message);
+    void parsingRequestOthersCommand(const char* dname, const char* message);
 
     std::string playbackError(PlaybackError error);
     std::string playerActivity(AudioPlayerState state);
@@ -128,6 +128,7 @@ private:
     ITTSPlayer* tts_player;
     NuguDirective* speak_dir;
     bool is_tts_activate;
+    bool is_next_play;
 
     AudioPlayerState cur_aplayer_state;
     AudioPlayerState prev_aplayer_state;
