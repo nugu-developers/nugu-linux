@@ -224,8 +224,10 @@ std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::V
         ctx[icap->getName()]["version"] = icap->getVersion();
     }
 
-    root["supportedInterfaces"] = ctx;
     client["wakeupWord"] = wword;
+    client["os"] = "Linux";
+
+    root["supportedInterfaces"] = ctx;
     root["client"] = client;
 
     return writer.write(root);
@@ -241,8 +243,10 @@ std::string CapabilityManager::makeAllContextInfo()
     for (auto iter : caps)
         iter.second->updateInfoForContext(ctx);
 
-    root["supportedInterfaces"] = ctx;
     client["wakeupWord"] = wword;
+    client["os"] = "Linux";
+
+    root["supportedInterfaces"] = ctx;
     root["client"] = client;
 
     return writer.write(root);
@@ -258,8 +262,8 @@ std::string CapabilityManager::makeAllContextInfoStack()
     for (auto iter : caps)
         iter.second->updateInfoForContext(ctx);
 
-    root["supportedInterfaces"] = ctx;
     client["wakeupWord"] = wword;
+    client["os"] = "Linux";
 
     auto play_stack = playsync_manager->getAllPlayStackItems();
 
@@ -267,6 +271,7 @@ std::string CapabilityManager::makeAllContextInfoStack()
         client["playStack"].append(element);
     }
 
+    root["supportedInterfaces"] = ctx;
     root["client"] = client;
 
     return writer.write(root);
