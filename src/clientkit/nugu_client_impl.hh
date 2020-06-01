@@ -27,7 +27,7 @@ namespace NuguClientKit {
 
 using namespace NuguCore;
 
-class NuguClientImpl : public INetworkManagerListener {
+class NuguClientImpl {
 public:
     NuguClientImpl();
     virtual ~NuguClientImpl();
@@ -43,9 +43,6 @@ public:
     ICapabilityInterface* getCapabilityHandler(const std::string& cname);
     INuguCoreContainer* getNuguCoreContainer();
     INetworkManager* getNetworkManager();
-
-    // overriding INetworkManagerListener
-    void onStatusChanged(NetworkStatus status) override;
 
 private:
     int createCapabilities(void);
