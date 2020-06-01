@@ -22,14 +22,12 @@
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
 #include "base/nugu_prof.h"
-#include "capability/system_interface.hh"
 
 #include "nugu_client_impl.hh"
 
 namespace NuguClientKit {
 
 using namespace NuguCore;
-using namespace NuguCapability;
 
 NuguClientImpl::NuguClientImpl()
     : nugu_core_container(std::unique_ptr<NuguCoreContainer>(new NuguCoreContainer()))
@@ -43,7 +41,6 @@ NuguClientImpl::NuguClientImpl()
 
     network_manager = std::unique_ptr<INetworkManager>(nugu_core_container->createNetworkManager());
     network_manager->addListener(nugu_core_container->getNetworkManagerListener());
-    network_manager->addListener(this);
 }
 
 NuguClientImpl::~NuguClientImpl()
@@ -232,17 +229,6 @@ void NuguClientImpl::deInitialize(void)
 
     nugu_dbg("NuguClientImpl deInitialize success.");
     initialized = false;
-}
-
-void NuguClientImpl::onStatusChanged(NetworkStatus status)
-{
-    if (status != NetworkStatus::CONNECTED)
-        return;
-
-    ISystemHandler* sys_handler = dynamic_cast<ISystemHandler*>(getCapabilityHandler("System"));
-
-    if (sys_handler)
-        sys_handler->synchronizeState();
 }
 
 INetworkManager* NuguClientImpl::getNetworkManager()
