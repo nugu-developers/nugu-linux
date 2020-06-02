@@ -130,6 +130,12 @@ void CapabilityCollection::composeCapabilityFactory()
 
         return sound_handler.get();
     });
+    factories.emplace("Session", [&]() {
+        if (!session_handler)
+            session_handler = makeCapability<SessionAgent, ISessionHandler>(nullptr);
+
+        return session_handler.get();
+    });
 }
 
 SpeakerInfo CapabilityCollection::makeSpeakerInfo(SpeakerType type, bool can_control)
