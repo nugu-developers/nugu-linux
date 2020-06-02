@@ -77,13 +77,13 @@ TTSPlayer::TTSPlayer(int volume)
     d->player_name = MEDIA_PLAYER_NAME + std::to_string(uniq_id++);
     nugu_dbg("player's name: %s", d->player_name.c_str());
 
-    d->player = nugu_pcm_new(d->player_name.c_str(), nugu_pcm_driver_get_default());
+    d->player = nugu_pcm_new(d->player_name.c_str(), nugu_pcm_driver_get_default(),
+        (NuguAudioProperty) { NUGU_AUDIO_SAMPLE_RATE_22K, NUGU_AUDIO_FORMAT_S16_LE, 1 });
     if (!d->player) {
         nugu_error("couldn't create tts player");
         return;
     }
     nugu_pcm_add(d->player);
-    nugu_pcm_set_property(d->player, (NuguAudioProperty) { NUGU_AUDIO_SAMPLE_RATE_22K, NUGU_AUDIO_FORMAT_S16_LE, 1 });
 
     d->decoder = nugu_decoder_new(nugu_decoder_driver_find("opus"), d->player);
 

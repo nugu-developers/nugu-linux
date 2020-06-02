@@ -160,12 +160,18 @@ EXPORT_API NuguPcmDriver *nugu_pcm_driver_find(const char *name)
 	return NULL;
 }
 
-EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver)
+EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver,
+				 NuguAudioProperty property)
 {
 	NuguPcm *pcm;
 
 	g_return_val_if_fail(name != NULL, NULL);
 	g_return_val_if_fail(driver != NULL, NULL);
+
+	if (driver->ops->create == NULL) {
+		nugu_error("Not supported");
+		return NULL;
+	}
 
 	pcm = g_malloc0(sizeof(struct _nugu_pcm));
 	if (!pcm) {
@@ -174,8 +180,15 @@ EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver)
 	}
 
 	pcm->name = g_strdup(name);
-	pcm->driver = driver;
 	pcm->buf = nugu_buffer_new(0);
+	if (pcm->buf == NULL) {
+		nugu_error("nugu_buffer_new() failed");
+		g_free(pcm->name);
+		free(pcm);
+		return NULL;
+	}
+
+	pcm->driver = driver;
 	pcm->is_last = 0;
 	pcm->scb = NULL;
 	pcm->ecb = NULL;
@@ -185,17 +198,19 @@ EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver)
 	pcm->status = NUGU_MEDIA_STATUS_STOPPED;
 	pcm->volume = NUGU_SET_VOLUME_MAX;
 	pcm->total_size = 0;
+	memcpy(&pcm->property, &property, sizeof(NuguAudioProperty));
 
-	if (pcm->buf == NULL) {
-		nugu_error("buffer new is internal error");
+	pthread_mutex_init(&pcm->mutex, NULL);
+
+	if (pcm->driver->ops->create(pcm->driver, pcm, pcm->property) < 0) {
+		nugu_error("pcm create failed");
 		g_free(pcm->name);
-		free(pcm);
+		nugu_buffer_free(pcm->buf, 1);
+		g_free(pcm);
 		return NULL;
 	}
 
 	pcm->driver->ref_count++;
-
-	pthread_mutex_init(&pcm->mutex, NULL);
 
 	return pcm;
 }
@@ -204,6 +219,9 @@ EXPORT_API void nugu_pcm_free(NuguPcm *pcm)
 {
 	g_return_if_fail(pcm != NULL);
 	g_return_if_fail(pcm->driver != NULL);
+
+	if (pcm->driver->ops->destroy)
+		pcm->driver->ops->destroy(pcm->driver, pcm);
 
 	pcm->driver->ref_count--;
 
@@ -260,15 +278,6 @@ EXPORT_API NuguPcm *nugu_pcm_find(const char *name)
 	return NULL;
 }
 
-EXPORT_API int nugu_pcm_set_property(NuguPcm *pcm, NuguAudioProperty property)
-{
-	g_return_val_if_fail(pcm != NULL, -1);
-
-	memcpy(&pcm->property, &property, sizeof(NuguAudioProperty));
-
-	return 0;
-}
-
 EXPORT_API int nugu_pcm_start(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
@@ -280,7 +289,7 @@ EXPORT_API int nugu_pcm_start(NuguPcm *pcm)
 	}
 	nugu_pcm_clear_buffer(pcm);
 
-	return pcm->driver->ops->start(pcm->driver, pcm, pcm->property);
+	return pcm->driver->ops->start(pcm->driver, pcm);
 }
 
 EXPORT_API int nugu_pcm_stop(NuguPcm *pcm)
