@@ -51,6 +51,7 @@ struct pa_audio_param {
 	int done;
 	size_t write_data;
 	void *data;
+	int is_start;
 	int is_first;
 #ifdef DUMP_PCM
 	int fd;
@@ -313,26 +314,14 @@ static int _rec_stop(NuguRecorderDriver *driver, NuguRecorder *rec)
 	return 0;
 }
 
-static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm,
-		      NuguAudioProperty prop)
+static int _pcm_create(NuguPcmDriver *driver, NuguPcm *pcm,
+		       NuguAudioProperty prop)
 {
 	PaStreamParameters output_param;
 	PaError err = paNoError;
-	struct pa_audio_param *pcm_param =
-		(struct pa_audio_param *)nugu_pcm_get_userdata(pcm);
-#ifdef DUMP_PCM
-	char buf[255] = DECODER_FILENAME_TPL;
-#endif
+	struct pa_audio_param *pcm_param;
 
-	g_return_val_if_fail(pcm != NULL, -1);
-
-	if (pcm_param) {
-		nugu_dbg("already start");
-		return 0;
-	}
-
-	pcm_param = (struct pa_audio_param *)g_malloc0(
-		sizeof(struct pa_audio_param));
+	pcm_param = g_malloc0(sizeof(struct pa_audio_param));
 
 #ifdef DEBUG_PCM
 	nugu_info("#### pcm(%p) param is created(%p) ####", pcm, pcm_param);
@@ -345,13 +334,6 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm,
 
 	pcm_param->data = (void *)pcm;
 
-#ifdef DUMP_PCM
-	pcm_param->fd = g_mkstemp(buf);
-	if (pcm_param->fd < 0)
-		nugu_error("pcm filedump create failed");
-	else
-		nugu_info("pcm filedump create %s success", buf);
-#endif
 	/* default output device */
 	output_param.device = Pa_GetDefaultOutputDevice();
 	if (output_param.device == paNoDevice) {
@@ -359,6 +341,7 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm,
 		g_free(pcm_param);
 		return -1;
 	}
+
 	output_param.channelCount = pcm_param->channel;
 	output_param.sampleFormat = pcm_param->format;
 	output_param.suggestedLatency =
@@ -376,20 +359,72 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm,
 		return -1;
 	}
 
+	nugu_pcm_set_userdata(pcm, pcm_param);
+
+	return 0;
+}
+
+static void _pcm_destroy(NuguPcmDriver *driver, NuguPcm *pcm)
+{
+	PaError err = paNoError;
+	struct pa_audio_param *pcm_param = nugu_pcm_get_userdata(pcm);
+
+	err = Pa_CloseStream(pcm_param->stream);
+	if (err != paNoError)
+		nugu_error("Pa_CloseStream return fail(%d)", err);
+
+	free(pcm_param);
+	nugu_pcm_set_userdata(pcm, NULL);
+
+#ifdef DEBUG_PCM
+	nugu_info("#### pcm(%p) param is destroyed(%p) ####", pcm, pcm_param);
+#endif
+}
+
+static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm)
+{
+	PaError err = paNoError;
+	struct pa_audio_param *pcm_param =
+		(struct pa_audio_param *)nugu_pcm_get_userdata(pcm);
+#ifdef DUMP_PCM
+	char buf[255] = DECODER_FILENAME_TPL;
+#endif
+
+	g_return_val_if_fail(pcm != NULL, -1);
+
+	if (pcm_param == NULL) {
+		nugu_error("internal error");
+		return -1;
+	}
+
+	if (pcm_param->is_start) {
+		nugu_dbg("already started");
+		return 0;
+	}
+
+#ifdef DUMP_PCM
+	pcm_param->fd = g_mkstemp(buf);
+	if (pcm_param->fd < 0)
+		nugu_error("pcm filedump create failed");
+	else
+		nugu_info("pcm filedump create %s success", buf);
+#endif
+
 	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_READY);
 
+	pcm_param->is_start = 1;
 	pcm_param->is_first = 1;
 	pcm_param->pause = 0;
 	pcm_param->stop = 0;
 	pcm_param->write_data = 0;
+	pcm_param->done = 0;
+
 	err = Pa_StartStream(pcm_param->stream);
 	if (err != paNoError) {
 		nugu_error("Pa_OpenStream return fail");
 		g_free(pcm_param);
 		return -1;
 	}
-
-	nugu_pcm_set_userdata(pcm, pcm_param);
 
 	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_PLAYING);
 
@@ -406,7 +441,12 @@ static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 	g_return_val_if_fail(pcm != NULL, -1);
 
 	if (pcm_param == NULL) {
-		nugu_dbg("already stop");
+		nugu_error("internal error");
+		return -1;
+	}
+
+	if (pcm_param->is_start == 0) {
+		nugu_dbg("already stopped");
 		return 0;
 	}
 
@@ -415,22 +455,18 @@ static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 	while (Pa_IsStreamActive(pcm_param->stream) == 1)
 		Pa_Sleep(10);
 
-	err = Pa_CloseStream(pcm_param->stream);
-	if (err != paNoError)
-		nugu_error("Pa_CloseStream return fail");
-
 #ifdef DUMP_PCM
 	if (pcm_param->fd >= 0)
 		close(pcm_param->fd);
 #endif
 
-#ifdef DEBUG_PCM
-	nugu_info("#### pcm(%p) param is destroyed(%p) ####", pcm, pcm_param);
-#endif
+	err = Pa_StopStream(pcm_param->stream);
+	if (err != paNoError && err != paStreamIsStopped) {
+		nugu_error("Pa_StopStream return fail(%d)", err);
+		return -1;
+	}
 
-	free(pcm_param);
-	nugu_pcm_set_userdata(pcm, NULL);
-
+	pcm_param->is_start = 0;
 	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_STOPPED);
 
 	nugu_dbg("stop done");
@@ -440,14 +476,13 @@ static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 
 static int _pcm_pause(NuguPcmDriver *driver, NuguPcm *pcm)
 {
-	struct pa_audio_param *pcm_param =
-		(struct pa_audio_param *)nugu_pcm_get_userdata(pcm);
+	struct pa_audio_param *pcm_param = nugu_pcm_get_userdata(pcm);
 
 	g_return_val_if_fail(pcm != NULL, -1);
 
 	if (pcm_param == NULL) {
-		nugu_dbg("pcm is already stopped");
-		return 0;
+		nugu_error("internal error");
+		return -1;
 	}
 
 	if (pcm_param->pause) {
@@ -465,14 +500,13 @@ static int _pcm_pause(NuguPcmDriver *driver, NuguPcm *pcm)
 
 static int _pcm_resume(NuguPcmDriver *driver, NuguPcm *pcm)
 {
-	struct pa_audio_param *pcm_param =
-		(struct pa_audio_param *)nugu_pcm_get_userdata(pcm);
+	struct pa_audio_param *pcm_param = nugu_pcm_get_userdata(pcm);
 
 	g_return_val_if_fail(pcm != NULL, -1);
 
 	if (pcm_param == NULL) {
-		nugu_dbg("pcm is already stopped");
-		return 0;
+		nugu_error("internal error");
+		return -1;
 	}
 
 	if (!pcm_param->pause) {
@@ -490,12 +524,16 @@ static int _pcm_resume(NuguPcmDriver *driver, NuguPcm *pcm)
 
 static int _pcm_get_position(NuguPcmDriver *driver, NuguPcm *pcm)
 {
-	struct pa_audio_param *pcm_param =
-		(struct pa_audio_param *)nugu_pcm_get_userdata(pcm);
+	struct pa_audio_param *pcm_param =nugu_pcm_get_userdata(pcm);
 
 	g_return_val_if_fail(pcm != NULL, -1);
 
 	if (pcm_param == NULL) {
+		nugu_error("internal error");
+		return -1;
+	}
+
+	if (pcm_param->is_start == 0) {
 		nugu_error("pcm is not started");
 		return -1;
 	}
@@ -540,6 +578,8 @@ static struct nugu_recorder_driver_ops rec_ops = {
 };
 
 static struct nugu_pcm_driver_ops pcm_ops = {
+	.create = _pcm_create,
+	.destroy = _pcm_destroy,
 	.start = _pcm_start,
 	.stop = _pcm_stop,
 	.pause = _pcm_pause,

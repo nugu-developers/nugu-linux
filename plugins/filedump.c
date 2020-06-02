@@ -73,8 +73,17 @@ static struct nugu_decoder_driver_ops decoder_ops = {
 	.destroy = _decoder_destroy
 };
 
-static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm,
-		      NuguAudioProperty prop)
+static int _pcm_create(NuguPcmDriver *driver, NuguPcm *pcm,
+		     NuguAudioProperty prop)
+{
+	return 0;
+}
+
+static void _pcm_destroy(NuguPcmDriver *driver, NuguPcm *pcm)
+{
+}
+
+static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm)
 {
 	int fd;
 	char buf[255] = PCM_FILENAME_TPL;
@@ -119,6 +128,8 @@ static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 }
 
 static struct nugu_pcm_driver_ops pcm_ops = {
+	.create = _pcm_create,
+	.destroy = _pcm_destroy,
 	.start = _pcm_start,
 	.push_data = _pcm_push_data,
 	.stop = _pcm_stop

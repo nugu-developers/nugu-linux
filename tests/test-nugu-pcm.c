@@ -45,8 +45,17 @@ static enum nugu_media_event _event2;
 		_event2 = e;                                                   \
 	}
 
-static int dummy_start(NuguPcmDriver *driver, NuguPcm *pcm,
-		       NuguAudioProperty prop)
+static int dummy_create(NuguPcmDriver *driver, NuguPcm *pcm,
+		      NuguAudioProperty prop)
+{
+	return 0;
+}
+
+static void dummy_destroy(NuguPcmDriver *driver, NuguPcm *pcm)
+{
+}
+
+static int dummy_start(NuguPcmDriver *driver, NuguPcm *pcm)
 {
 	if (pcm == nugu_pcm_find("pcm2")) {
 		nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_READY);
@@ -64,8 +73,13 @@ static int dummy_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 	return 0;
 }
 
-static struct nugu_pcm_driver_ops dummy_driver_ops = { .start = dummy_start,
-						       .stop = dummy_stop };
+static struct nugu_pcm_driver_ops dummy_driver_ops = {
+	/* pcm driver callbacks */
+	.create = dummy_create,
+	.destroy = dummy_destroy,
+	.start = dummy_start,
+	.stop = dummy_stop
+};
 
 static void pcm_status_callback(enum nugu_media_status status, void *userdata)
 {
@@ -104,16 +118,15 @@ static void test_pcm_default(void)
 	g_assert(driver != NULL);
 	g_assert(nugu_pcm_driver_register(driver) == 0);
 
-	pcm = nugu_pcm_new("tts", driver);
+	prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_22K;
+	prop.format = NUGU_AUDIO_FORMAT_S16_LE;
+	prop.channel = 1;
+
+	pcm = nugu_pcm_new("tts", driver, prop);
 	g_assert(nugu_pcm_add(pcm) == 0);
 
 	nugu_pcm_set_status_callback(pcm, pcm_status_callback, NULL);
 	nugu_pcm_set_event_callback(pcm, pcm_event_callback, NULL);
-
-	prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_22K;
-	prop.format = NUGU_AUDIO_FORMAT_S16_LE;
-	prop.channel = 1;
-	g_assert(nugu_pcm_set_property(pcm, prop) == 0);
 
 	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOADED);
 	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
@@ -157,8 +170,12 @@ static void test_pcm_multiple(void)
 	g_assert(driver != NULL);
 	g_assert(nugu_pcm_driver_register(driver) == 0);
 
-	pcm1 = nugu_pcm_new("pcm1", driver);
-	pcm2 = nugu_pcm_new("pcm2", driver);
+	prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_22K;
+	prop.format = NUGU_AUDIO_FORMAT_S16_LE;
+	prop.channel = 1;
+
+	pcm1 = nugu_pcm_new("pcm1", driver, prop);
+	pcm2 = nugu_pcm_new("pcm2", driver, prop);
 
 	g_assert(nugu_pcm_add(pcm1) == 0);
 	g_assert(nugu_pcm_add(pcm2) == 0);
@@ -168,11 +185,6 @@ static void test_pcm_multiple(void)
 
 	nugu_pcm_set_status_callback(pcm2, pcm_status_callback2, NULL);
 	nugu_pcm_set_event_callback(pcm2, pcm_event_callback2, NULL);
-
-	prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_22K;
-	prop.format = NUGU_AUDIO_FORMAT_S16_LE;
-	prop.channel = 1;
-	g_assert(nugu_pcm_set_property(pcm1, prop) == 0);
 
 	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
 	g_assert(nugu_pcm_start(pcm1) == 0);

@@ -54,12 +54,14 @@ typedef struct _nugu_pcm_driver NuguPcmDriver;
  * @brief Create new pcm object
  * @param[in] name pcm name
  * @param[in] driver driver object
+ * @param[in] property audio property
  * @return pcm object
  * @see nugu_pcm_driver_find()
  * @see nugu_pcm_driver_get_default()
  * @see nugu_pcm_free()
  */
-NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver);
+NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver,
+		      NuguAudioProperty property);
 
 /**
  * @brief Destroy the pcm object
@@ -98,16 +100,6 @@ int nugu_pcm_remove(NuguPcm *pcm);
  * @see nugu_pcm_remove()
  */
 NuguPcm *nugu_pcm_find(const char *name);
-
-/**
- * @brief Set property to pcm object
- * @param[in] pcm pcm object
- * @param[in] property property
- * @return result
- * @retval 0 success
- * @retval -1 failure
- */
-int nugu_pcm_set_property(NuguPcm *pcm, NuguAudioProperty property);
 
 /**
  * @brief Start pcm playback
@@ -320,11 +312,23 @@ int nugu_pcm_receive_is_last_data(NuguPcm *pcm);
  */
 struct nugu_pcm_driver_ops {
 	/**
+	 * @brief Called when pcm is created
+	 * @see nugu_pcm_new()
+	 */
+	int (*create)(NuguPcmDriver *driver, NuguPcm *pcm,
+		NuguAudioProperty property);
+
+	/**
+	 * @brief Called when pcm is destroyed
+	 * @see nugu_pcm_free()
+	 */
+	void (*destroy)(NuguPcmDriver *driver, NuguPcm *pcm);
+
+	/**
 	 * @brief Called when pcm is started
 	 * @see nugu_pcm_start()
 	 */
-	int (*start)(NuguPcmDriver *driver, NuguPcm *pcm,
-		     NuguAudioProperty property);
+	int (*start)(NuguPcmDriver *driver, NuguPcm *pcm);
 
 	/**
 	 * @brief Called when a pcm data is pushed to pcm object
