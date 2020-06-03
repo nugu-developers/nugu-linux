@@ -22,6 +22,8 @@
 
 #include "base/nugu_log.h"
 #include "base/nugu_directive_sequencer.h"
+#include "base/nugu_network_manager.h"
+#include "base/nugu_prof.h"
 
 static GList *list_dir;
 static NuguDirseqCallback _callback;
@@ -114,8 +116,51 @@ static void _free_directive(gpointer data)
 	nugu_dirseq_complete(data);
 }
 
-void nugu_dirseq_deinitialize(void)
+static void _directive_cb(NuguDirective *ndir, void *userdata)
 {
+	nugu_dirseq_push(ndir);
+}
+
+static void _attachment_cb(const char *parent_msg_id, int seq, int is_end,
+			   const char *media_type, size_t length,
+			   const void *data, void *userdata)
+{
+	NuguDirective *ndir;
+
+	ndir = nugu_dirseq_find_by_msgid(parent_msg_id);
+	if (!ndir)
+		return;
+
+	if (seq == 0)
+		nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_FIRST_ATTACHMENT,
+				    nugu_directive_peek_dialog_id(ndir),
+				    nugu_directive_peek_msg_id(ndir), NULL);
+
+	if (is_end) {
+		nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_LAST_ATTACHMENT,
+				    nugu_directive_peek_dialog_id(ndir),
+				    nugu_directive_peek_msg_id(ndir), NULL);
+
+		nugu_directive_close_data(ndir);
+	}
+
+	nugu_directive_set_media_type(ndir, media_type);
+	nugu_directive_add_data(ndir, length, data);
+}
+
+EXPORT_API int nugu_dirseq_initialize(void)
+{
+	nugu_network_manager_set_directive_callback(_directive_cb, NULL);
+	nugu_network_manager_set_attachment_callback(_attachment_cb, NULL);
+
+	return 0;
+}
+
+EXPORT_API void nugu_dirseq_deinitialize(void)
+{
+	nugu_network_manager_set_directive_callback(NULL, NULL);
+	nugu_network_manager_set_attachment_callback(NULL, NULL);
+
 	_callback = NULL;
 	_callback_userdata = NULL;
 

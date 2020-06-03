@@ -94,6 +94,14 @@ NuguDirective *nugu_dirseq_find_by_msgid(const char *msgid);
 int nugu_dirseq_complete(NuguDirective *ndir);
 
 /**
+ * @brief Initialize the directive sequencer
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_dirseq_initialize(void);
+
+/**
  * @brief Remove all the directives in the sequencer
  */
 void nugu_dirseq_deinitialize(void);

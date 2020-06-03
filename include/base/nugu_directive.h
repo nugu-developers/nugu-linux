@@ -175,7 +175,7 @@ int nugu_directive_set_active(NuguDirective *ndir, int flag);
  * @see nugu_directive_get_data_size()
  */
 int nugu_directive_add_data(NuguDirective *ndir, size_t length,
-			    unsigned char *data);
+			    const unsigned char *data);
 
 /**
  * @brief Set the attachment data status to "Received all data"

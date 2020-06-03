@@ -29,7 +29,6 @@
 #include "base/nugu_log.h"
 #include "base/nugu_uuid.h"
 #include "base/nugu_equeue.h"
-#include "base/nugu_directive_sequencer.h"
 #include "base/nugu_network_manager.h"
 #include "base/nugu_prof.h"
 
@@ -106,14 +105,27 @@ struct _nugu_network {
 	NuguNetworkStatus cur_status;
 	NuguNetworkManagerStatusCallback status_callback;
 	void *status_callback_userdata;
+
+	/* Directive callback */
+	NuguNetworkManagerDirectiveCallback directive_callback;
+	void *directive_callback_userdata;
+
+	/* Attachment callback */
+	NuguNetworkManagerAttachmentCallback attachment_callback;
+	void *attachment_callback_userdata;
 };
 
 typedef struct _nugu_network NetworkManager;
 
 static void on_directive(enum nugu_equeue_type type, void *data, void *userdata)
 {
+	NetworkManager *nm = userdata;
+
+	if (nm->directive_callback == NULL)
+		return;
+
 	nugu_directive_ref(data);
-	nugu_dirseq_push(data);
+	nm->directive_callback(data, nm->directive_callback_userdata);
 }
 
 static void on_destroy_directive(void *data)
@@ -124,28 +136,15 @@ static void on_destroy_directive(void *data)
 static void on_attachment(enum nugu_equeue_type type, void *data,
 			  void *userdata)
 {
-	NuguDirective *ndir;
+	NetworkManager *nm = userdata;
 	struct equeue_data_attachment *item = data;
 
-	ndir = nugu_dirseq_find_by_msgid(item->parent_msg_id);
-	if (!ndir)
+	if (nm->attachment_callback == NULL)
 		return;
 
-	if (item->seq == 0)
-		nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_FIRST_ATTACHMENT,
-				    nugu_directive_peek_dialog_id(ndir),
-				    nugu_directive_peek_msg_id(ndir), NULL);
-
-	if (item->is_end) {
-		nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_LAST_ATTACHMENT,
-				    nugu_directive_peek_dialog_id(ndir),
-				    nugu_directive_peek_msg_id(ndir), NULL);
-
-		nugu_directive_close_data(ndir);
-	}
-
-	nugu_directive_set_media_type(ndir, item->media_type);
-	nugu_directive_add_data(ndir, item->length, item->data);
+	nm->attachment_callback(item->parent_msg_id, item->seq, item->is_end,
+				item->media_type, item->length, item->data,
+				nm->attachment_callback_userdata);
 }
 
 static void on_destroy_attachment(void *data)
@@ -753,8 +752,6 @@ EXPORT_API void nugu_network_manager_deinitialize(void)
 	nugu_network_manager_free(_network);
 	_network = NULL;
 
-	nugu_dirseq_deinitialize();
-
 	curl_global_cleanup();
 
 	nugu_info("network manager de-initialized");
@@ -868,6 +865,30 @@ EXPORT_API int nugu_network_manager_set_event_response_callback(
 
 	_network->event_response_callback = callback;
 	_network->event_response_callback_userdata = userdata;
+
+	return 0;
+}
+
+EXPORT_API int nugu_network_manager_set_directive_callback(
+	NuguNetworkManagerDirectiveCallback callback, void *userdata)
+{
+	if (!_network)
+		return -1;
+
+	_network->directive_callback = callback;
+	_network->directive_callback_userdata = userdata;
+
+	return 0;
+}
+
+EXPORT_API int nugu_network_manager_set_attachment_callback(
+	NuguNetworkManagerAttachmentCallback callback, void *userdata)
+{
+	if (!_network)
+		return -1;
+
+	_network->attachment_callback = callback;
+	_network->attachment_callback_userdata = userdata;
 
 	return 0;
 }
