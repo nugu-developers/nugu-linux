@@ -18,6 +18,7 @@
 #define __NUGU_NETWORK_MANAGER_H__
 
 #include <base/nugu_event.h>
+#include <base/nugu_directive.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -115,6 +116,21 @@ typedef void (*NuguNetworkManagerEventResponseCallback)(
 	const char *json, void *userdata);
 
 /**
+ * @brief Callback prototype for receiving directive.
+ * @see nugu_network_manager_set_directive_callback()
+ */
+typedef void (*NuguNetworkManagerDirectiveCallback)(NuguDirective *ndir,
+						    void *userdata);
+
+/**
+ * @brief Callback prototype for receiving directive attachment.
+ * @see nugu_network_manager_set_attachment_callback()
+ */
+typedef void (*NuguNetworkManagerAttachmentCallback)(
+	const char *parent_msg_id, int seq, int is_end, const char *media_type,
+	size_t length, const void *data, void *userdata);
+
+/**
  * @brief network protocols
  */
 enum nugu_network_protocol {
@@ -195,6 +211,28 @@ int nugu_network_manager_set_event_result_callback(
  */
 int nugu_network_manager_set_event_response_callback(
 	NuguNetworkManagerEventResponseCallback callback, void *userdata);
+
+/**
+ * @brief Set directive receive callback
+ * @param[in] callback callback function
+ * @param[in] userdata data to pass to the user callback
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_network_manager_set_directive_callback(
+	NuguNetworkManagerDirectiveCallback callback, void *userdata);
+
+/**
+ * @brief Set attachment of directive receive callback
+ * @param[in] callback callback function
+ * @param[in] userdata data to pass to the user callback
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_network_manager_set_attachment_callback(
+	NuguNetworkManagerAttachmentCallback callback, void *userdata);
 
 /**
  * @brief Set the current network status
