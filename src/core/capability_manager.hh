@@ -26,6 +26,7 @@
 #include "clientkit/capability_interface.hh"
 #include "focus_manager.hh"
 #include "playsync_manager.hh"
+#include "session_manager.hh"
 
 namespace NuguCore {
 
@@ -40,6 +41,7 @@ public:
 
     PlaySyncManager* getPlaySyncManager();
     FocusManager* getFocusManager();
+    SessionManager* getSessionManager();
 
     static NuguDirseqReturn dirseqCallback(NuguDirective* ndir, void* userdata);
 
@@ -87,6 +89,7 @@ private:
     std::string wword;
     std::unique_ptr<PlaySyncManager> playsync_manager = nullptr;
     std::unique_ptr<FocusManager> focus_manager = nullptr;
+    std::unique_ptr<SessionManager> session_manager = nullptr;
     bool check_asr_focus_release = false;
     std::string asr_dialog_id;
 };

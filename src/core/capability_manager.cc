@@ -55,6 +55,7 @@ CapabilityManager::CapabilityManager()
     wword = WAKEUP_WORD;
     playsync_manager = std::unique_ptr<PlaySyncManager>(new PlaySyncManager());
     focus_manager = std::unique_ptr<FocusManager>(new FocusManager());
+    session_manager = std::unique_ptr<SessionManager>(new SessionManager());
 }
 
 CapabilityManager::~CapabilityManager()
@@ -445,6 +446,11 @@ PlaySyncManager* CapabilityManager::getPlaySyncManager()
 FocusManager* CapabilityManager::getFocusManager()
 {
     return focus_manager.get();
+}
+
+SessionManager* CapabilityManager::getSessionManager()
+{
+    return session_manager.get();
 }
 
 } // NuguCore
