@@ -52,6 +52,11 @@ IPlaySyncManager* CapabilityHelper::getPlaySyncManager()
     return CapabilityManager::getInstance()->getPlaySyncManager();
 }
 
+IFocusManager* CapabilityHelper::getFocusManager()
+{
+    return CapabilityManager::getInstance()->getFocusManager();
+}
+
 bool CapabilityHelper::setMute(bool mute)
 {
     return AudioRecorderManager::getInstance()->setMute(mute);

@@ -347,6 +347,9 @@ protected:
     /** @brief IPlaySyncManager instance for using play context sync */
     IPlaySyncManager* playsync_manager = nullptr;
 
+    /** @brief IFocusManager instance for using audio focus */
+    IFocusManager* focus_manager = nullptr;
+
     /** @brief SuspendPolicy variable for deciding suspend action (default:STOP) */
     SuspendPolicy suspend_policy = SuspendPolicy::STOP;
 

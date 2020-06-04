@@ -24,6 +24,7 @@
 #include "base/nugu_event.h"
 #include "base/nugu_focus.h"
 #include "clientkit/capability_interface.hh"
+#include "focus_manager.hh"
 #include "playsync_manager.hh"
 
 namespace NuguCore {
@@ -36,7 +37,9 @@ private:
 public:
     static CapabilityManager* getInstance();
     static void destroyInstance();
+
     PlaySyncManager* getPlaySyncManager();
+    FocusManager* getFocusManager();
 
     static NuguDirseqReturn dirseqCallback(NuguDirective* ndir, void* userdata);
 
@@ -83,6 +86,7 @@ private:
     std::map<std::string, std::string> events_cname_map;
     std::string wword;
     std::unique_ptr<PlaySyncManager> playsync_manager = nullptr;
+    std::unique_ptr<FocusManager> focus_manager = nullptr;
     bool check_asr_focus_release = false;
     std::string asr_dialog_id;
 };

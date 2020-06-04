@@ -30,6 +30,7 @@ public:
 
     // implements ICapabilityHelper
     IPlaySyncManager* getPlaySyncManager() override;
+    IFocusManager* getFocusManager() override;
 
     bool setMute(bool mute) override;
     void sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param) override;
