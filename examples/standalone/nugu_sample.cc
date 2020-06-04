@@ -44,6 +44,27 @@ void msg_info(std::string&& message)
     NuguSampleManager::info(std::move(message));
 }
 
+class FocusManagerObserver : public IFocusManagerObserver {
+public:
+    void onFocusChanged(const FocusConfiguration& configuration, FocusState state, const std::string& name)
+    {
+        auto focus_manager(nugu_client->getFocusManager());
+        std::string msg;
+
+        msg.append("==================================================\n[")
+            .append(configuration.type)
+            .append(" - ")
+            .append(name)
+            .append("] ")
+            .append(focus_manager->getStateString(state))
+            .append(" (priority: ")
+            .append(std::to_string(configuration.priority))
+            .append(")\n==================================================");
+
+        msg_info(std::move(msg));
+    }
+};
+
 class NetworkManagerListener : public INetworkManagerListener {
 public:
     void onStatusChanged(NetworkStatus status)
@@ -160,6 +181,10 @@ int main(int argc, char** argv)
         msg_error("< It failed to initialize NUGU SDK. Please Check authorization.");
         return EXIT_FAILURE;
     }
+
+    auto focus_manager(nugu_client->getFocusManager());
+    auto focus_manager_observer(make_unique<FocusManagerObserver>());
+    focus_manager->addObserver(focus_manager_observer.get());
 
     auto network_manager_listener(make_unique<NetworkManagerListener>());
     auto network_manager(nugu_client->getNetworkManager());

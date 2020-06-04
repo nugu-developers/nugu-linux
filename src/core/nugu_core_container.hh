@@ -34,8 +34,9 @@ public:
     ISpeechRecognizer* createSpeechRecognizer(const std::string& model_path = "", const EpdAttribute& epd_attr = {}) override;
     IMediaPlayer* createMediaPlayer() override;
     ITTSPlayer* createTTSPlayer() override;
-    ICapabilityHelper* getCapabilityHelper() override;
     INuguTimer* createNuguTimer() override;
+    ICapabilityHelper* getCapabilityHelper() override;
+    IFocusManager* getFocusManager() override;
 
     // wrapping CapabilityManager functions
     void setWakeupWord(const std::string& wakeup_word);

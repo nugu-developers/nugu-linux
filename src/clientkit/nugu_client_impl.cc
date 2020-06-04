@@ -99,6 +99,11 @@ INuguCoreContainer* NuguClientImpl::getNuguCoreContainer()
     return nugu_core_container.get();
 }
 
+IFocusManager* NuguClientImpl::getFocusManager()
+{
+    return nugu_core_container->getFocusManager();
+}
+
 int NuguClientImpl::create(void)
 {
     if (createCapabilities() <= 0) {

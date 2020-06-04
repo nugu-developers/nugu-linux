@@ -86,6 +86,11 @@ ICapabilityHelper* NuguCoreContainer::getCapabilityHelper()
     return CapabilityHelper::getInstance();
 }
 
+IFocusManager* NuguCoreContainer::getFocusManager()
+{
+    return CapabilityManager::getInstance()->getFocusManager();
+}
+
 void NuguCoreContainer::setWakeupWord(const std::string& wakeup_word)
 {
     if (!wakeup_word.empty())

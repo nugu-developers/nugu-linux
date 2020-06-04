@@ -18,6 +18,7 @@
 #define __NUGU_CORE_CONTAINER_INTERFACE_H__
 
 #include <clientkit/capability_helper_interface.hh>
+#include <clientkit/focus_manager_interface.hh>
 #include <clientkit/media_player_interface.hh>
 #include <clientkit/network_manager_interface.hh>
 #include <clientkit/nugu_timer_interface.hh>
@@ -76,6 +77,11 @@ public:
      * @brief Get CapabilityHelper instance
      */
     virtual ICapabilityHelper* getCapabilityHelper() = 0;
+
+    /**
+     * @brief Get FocusManager instance
+     */
+    virtual IFocusManager* getFocusManager() = 0;
 };
 
 /**
