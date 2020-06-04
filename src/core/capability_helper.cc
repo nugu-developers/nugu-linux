@@ -57,6 +57,11 @@ IFocusManager* CapabilityHelper::getFocusManager()
     return CapabilityManager::getInstance()->getFocusManager();
 }
 
+ISessionManager* CapabilityHelper::getSessionManager()
+{
+    return CapabilityManager::getInstance()->getSessionManager();
+}
+
 bool CapabilityHelper::setMute(bool mute)
 {
     return AudioRecorderManager::getInstance()->setMute(mute);

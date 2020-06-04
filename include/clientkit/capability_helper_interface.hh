@@ -24,6 +24,7 @@
 #include <base/nugu_focus.h>
 #include <clientkit/focus_manager_interface.hh>
 #include <clientkit/playsync_manager_interface.hh>
+#include <clientkit/session_manager_interface.hh>
 
 namespace NuguClientKit {
 /**
@@ -89,6 +90,12 @@ public:
      * @return IFocusManager instance
      */
     virtual IFocusManager* getFocusManager() = 0;
+
+    /**
+     * @brief Get ISessionManager instance
+     * @return ISessionManager instance
+     */
+    virtual ISessionManager* getSessionManager() = 0;
 
     /**
      * @brief Set Audio Recorder mute/unmute

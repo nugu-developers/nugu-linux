@@ -350,6 +350,9 @@ protected:
     /** @brief IFocusManager instance for using audio focus */
     IFocusManager* focus_manager = nullptr;
 
+    /** @brief ISessionManager instance for using session management */
+    ISessionManager* session_manager = nullptr;
+
     /** @brief SuspendPolicy variable for deciding suspend action (default:STOP) */
     SuspendPolicy suspend_policy = SuspendPolicy::STOP;
 
