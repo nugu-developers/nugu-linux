@@ -28,6 +28,7 @@ namespace NuguCapability {
 
 typedef struct expect_speech_attr {
     bool is_handle;
+    std::string dialog_id;
     std::string timeout;
     std::string play_service_id;
     Json::Value domain_types;
@@ -83,6 +84,7 @@ public:
     void setASRState(ASRState state);
     ASRState getASRState();
     void setListeningId(const std::string& id);
+    void syncSession();
 
 private:
     void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);

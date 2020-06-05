@@ -32,10 +32,12 @@ SessionAgent::SessionAgent()
 void SessionAgent::updateInfoForContext(Json::Value& ctx)
 {
     Json::Value session;
+    Json::Value session_list = session_manager->getSyncedSessionInfo();
 
     session["version"] = getVersion();
 
-    // TODO : implements session management flow
+    if (!session_list.empty())
+        session["list"] = session_list;
 
     ctx[getName()] = session;
 }
@@ -74,7 +76,8 @@ void SessionAgent::parsingSet(const char* message)
         return;
     }
 
-    // TODO : implements session management flow
+    session_manager->set(nugu_directive_peek_dialog_id(getNuguDirective()),
+        Session { session_id, play_service_id });
 }
 
 } // NuguCapability

@@ -121,6 +121,8 @@ ExpectFocusListener::~ExpectFocusListener()
 void ExpectFocusListener::onFocus(void* event)
 {
     nugu_dbg("ExpectFocusListener::onFocus");
+
+    agent->syncSession();
     agent->startRecognition(true);
 }
 
@@ -505,6 +507,9 @@ void ASRAgent::parsingExpectSpeech(const char* message)
     es_attr.domain_types = root["domainTypes"];
     es_attr.asr_context = root["asrContext"];
 
+    // set dialog request id about current directive
+    es_attr.dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
+
     nugu_dbg("Parsing ExpectSpeech directive");
     playsync_manager->setExpectSpeech(true);
     setASRState(ASRState::EXPECTING_SPEECH);
@@ -701,6 +706,9 @@ ListeningState ASRAgent::getListeningState()
 
 void ASRAgent::resetExpectSpeechState()
 {
+    if (!es_attr.dialog_id.empty())
+        session_manager->release(es_attr.dialog_id);
+
     if (es_attr.is_handle)
         es_attr = {};
 }
@@ -735,5 +743,15 @@ void ASRAgent::setListeningId(const std::string& id)
 {
     request_listening_id = id;
     nugu_dbg("startListening with new id(%s)", request_listening_id.c_str());
+}
+
+void ASRAgent::syncSession()
+{
+    if (es_attr.dialog_id.empty()) {
+        nugu_error("The dialog request ID is empty.");
+        return;
+    }
+
+    session_manager->sync(es_attr.dialog_id);
 }
 } // NuguCapability
