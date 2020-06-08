@@ -85,7 +85,7 @@ TTSPlayer::TTSPlayer(int volume)
     }
     nugu_pcm_add(d->player);
 
-    d->decoder = nugu_decoder_new(nugu_decoder_driver_find("opus"), d->player);
+    d->decoder = nugu_decoder_new(nugu_decoder_driver_find_bytype(NUGU_DECODER_TYPE_OPUS), d->player);
 
     NuguMediaStatusCallback scb = [](enum nugu_media_status status, void* userdata) {
         TTSPlayer* tplayer = static_cast<TTSPlayer*>(userdata);

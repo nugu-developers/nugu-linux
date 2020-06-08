@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-#include <unistd.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <time.h>
+#include <fcntl.h>
+#include <errno.h>
 
 #include <glib.h>
 #include <opus.h>
@@ -33,11 +38,12 @@
 	(((unsigned int)v[0] << 24) | ((unsigned int)v[1] << 16) |             \
 	 ((unsigned int)v[2] << 8) | (unsigned int)v[3])
 
-static NuguDecoderDriver *driver;
+struct opus_data {
+	OpusDecoder *handle;
+	int dump_fd;
+};
 
-#ifdef DECODER_FILE_DUMP
-static Pcm *_tmp_filedump;
-#endif
+static NuguDecoderDriver *driver;
 
 static char *opus_error_defines[] = {
 	"OK",
@@ -56,28 +62,68 @@ static void dump_opus_error(int error_code)
 		  opus_error_defines[error_code * -1]);
 }
 
+static int _dumpfile_open(const char *path, const char *prefix)
+{
+	char ymd[9];
+	char hms[7];
+	time_t now;
+	struct tm now_tm;
+	char *buf = NULL;
+	int fd;
+
+	if (!path)
+		return -1;
+
+	now = time(NULL);
+	localtime_r(&now, &now_tm);
+
+	snprintf(ymd, 9, "%04d%02d%02d", now_tm.tm_year + 1900,
+		 now_tm.tm_mon + 1, now_tm.tm_mday);
+	snprintf(hms, 7, "%02d%02d%02d", now_tm.tm_hour, now_tm.tm_min,
+		 now_tm.tm_sec);
+
+	buf = g_strdup_printf("%s/%s_%s_%s.dat", path, prefix, ymd, hms);
+
+	fd = open(buf, O_CREAT | O_WRONLY, 0644);
+	if (fd < 0)
+		nugu_error("open(%s) failed: %s", buf, strerror(errno));
+
+	nugu_dbg("%s filedump to '%s' (fd=%d)", prefix, buf, fd);
+
+	free(buf);
+
+	return fd;
+}
+
 static int _decoder_create(NuguDecoderDriver *driver, NuguDecoder *dec)
 {
-	OpusDecoder *handle;
+	struct opus_data *od;
 	int err = 0;
 
-	handle = opus_decoder_create(SAMPLING_RATES, CHANNELS, &err);
-	if (err != OPUS_OK) {
-		nugu_error("opus_decoder_create() failed. (%d)", err);
+	od = malloc(sizeof(struct opus_data));
+	if (!od) {
+		nugu_error_nomem();
 		return -1;
 	}
 
-	nugu_decoder_set_driver_data(dec, handle);
+	od->handle = opus_decoder_create(SAMPLING_RATES, CHANNELS, &err);
+	if (err != OPUS_OK) {
+		nugu_error("opus_decoder_create() failed. (%d)", err);
+		free(od);
+		return -1;
+	}
+
+#ifdef NUGU_ENV_DUMP_PATH_DECODER
+	od->dump_fd =
+		_dumpfile_open(getenv(NUGU_ENV_DUMP_PATH_DECODER), "opus");
+#else
+	od->dump_fd = -1;
+#endif
+
+	nugu_decoder_set_driver_data(dec, od);
 
 	nugu_dbg("new opus 22K decoder (16bit mono pcm) created");
 
-#ifdef DECODER_FILE_DUMP
-	if (_tmp_filedump)
-		nugu_pcm_free(_tmp_filedump);
-
-	_tmp_filedump = nugu_pcm_new("filedump", pcm_driver_find("filedump"));
-	nugu_pcm_start(_tmp_filedump);
-#endif
 	return 0;
 }
 
@@ -85,7 +131,7 @@ static int _decoder_decode(NuguDecoderDriver *driver, NuguDecoder *dec,
 			   const void *data, size_t data_len,
 			   NuguBuffer *out_buf)
 {
-	OpusDecoder *handle;
+	struct opus_data *od;
 	const unsigned char *packet = data;
 	int nsamples;
 	int len;
@@ -95,7 +141,12 @@ static int _decoder_decode(NuguDecoderDriver *driver, NuguDecoder *dec,
 	char plain_pcm[PCM_SAMPLES * CHANNELS * 2];
 	int i;
 
-	handle = nugu_decoder_get_driver_data(dec);
+	od = nugu_decoder_get_driver_data(dec);
+
+	if (od->dump_fd != -1) {
+		if (write(od->dump_fd, data, data_len) < 0)
+			nugu_error("write to fd-%d failed", od->dump_fd);
+	}
 
 	/**
 	 * opus 1 frame
@@ -114,8 +165,8 @@ static int _decoder_decode(NuguDecoderDriver *driver, NuguDecoder *dec,
 		enc_final_range = READINT(packet);
 		packet += 4;
 
-		nsamples = opus_decode(handle, packet, len, sample, PCM_SAMPLES,
-				       0);
+		nsamples = opus_decode(od->handle, packet, len, sample,
+				       PCM_SAMPLES, 0);
 		if (nsamples <= 0) {
 			dump_opus_error(nsamples);
 			break;
@@ -123,7 +174,7 @@ static int _decoder_decode(NuguDecoderDriver *driver, NuguDecoder *dec,
 
 		packet += len;
 
-		opus_decoder_ctl(handle,
+		opus_decoder_ctl(od->handle,
 				 OPUS_GET_FINAL_RANGE(&dec_final_range));
 		if (enc_final_range != dec_final_range) {
 			nugu_error("range coder status mismatch (0x%x != 0x%X)",
@@ -136,12 +187,6 @@ static int _decoder_decode(NuguDecoderDriver *driver, NuguDecoder *dec,
 			plain_pcm[2 * i + 1] = (sample[i] & 0xFF00) >> 8;
 		}
 
-#ifdef DECODER_FILE_DUMP
-		if (_tmp_filedump)
-			nugu_pcm_push_data(_tmp_filedump, plain_pcm,
-					   nsamples * 2, 0);
-#endif
-
 		nugu_buffer_add(out_buf, plain_pcm, nsamples * 2);
 	}
 
@@ -150,20 +195,25 @@ static int _decoder_decode(NuguDecoderDriver *driver, NuguDecoder *dec,
 
 static int _decoder_destroy(NuguDecoderDriver *driver, NuguDecoder *dec)
 {
-	OpusDecoder *handle;
+	struct opus_data *od;
 
-	handle = nugu_decoder_get_driver_data(dec);
+	od = nugu_decoder_get_driver_data(dec);
+	if (!od) {
+		nugu_error("internal error");
+		return -1;
+	}
 
-	opus_decoder_destroy(handle);
+	if (od->dump_fd >= 0) {
+		close(od->dump_fd);
+		od->dump_fd = -1;
+	}
+
+	opus_decoder_destroy(od->handle);
+
+	free(od);
+	nugu_decoder_set_driver_data(dec, NULL);
 
 	nugu_dbg("opus decoder destroyed");
-
-#ifdef DECODER_FILE_DUMP
-	if (_tmp_filedump) {
-		pcm_free(_tmp_filedump);
-		_tmp_filedump = NULL;
-	}
-#endif
 
 	return 0;
 }

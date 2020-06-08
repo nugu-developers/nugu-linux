@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
+#include <time.h>
+#include <fcntl.h>
+#include <errno.h>
 
 #include <glib.h>
 
@@ -23,20 +29,55 @@
 #include "base/nugu_decoder.h"
 #include "base/nugu_pcm.h"
 
-#define DECODER_FILENAME_TPL "/tmp/filedump_decoder_XXXXXX"
-#define PCM_FILENAME_TPL "/tmp/filedumpXXXXXX"
-
 static NuguDecoderDriver *decoder_driver;
 static NuguPcmDriver *pcm_driver;
+
+static int _dumpfile_open(const char *path, const char *prefix)
+{
+	char ymd[9];
+	char hms[7];
+	time_t now;
+	struct tm now_tm;
+	char *buf = NULL;
+	int fd;
+
+	now = time(NULL);
+	localtime_r(&now, &now_tm);
+
+	snprintf(ymd, 9, "%04d%02d%02d", now_tm.tm_year + 1900,
+		 now_tm.tm_mon + 1, now_tm.tm_mday);
+	snprintf(hms, 7, "%02d%02d%02d", now_tm.tm_hour, now_tm.tm_min,
+		 now_tm.tm_sec);
+
+	if (path)
+		buf = g_strdup_printf("%s/%s_%s_%s.dat", path, prefix, ymd,
+				      hms);
+	else
+		buf = g_strdup_printf("/tmp/%s_%s_%s.dat", prefix, ymd, hms);
+
+	fd = open(buf, O_CREAT | O_WRONLY, 0644);
+	if (fd < 0)
+		nugu_error("open(%s) failed: %s", buf, strerror(errno));
+
+	nugu_dbg("%s filedump to '%s' (fd=%d)", prefix, buf, fd);
+
+	free(buf);
+
+	return fd;
+}
 
 static int _decoder_create(NuguDecoderDriver *driver, NuguDecoder *dec)
 {
 	int fd;
-	char buf[255] = DECODER_FILENAME_TPL;
 
 	nugu_dbg("new filedump decoder created");
 
-	fd = g_mkstemp(buf);
+#ifdef NUGU_ENV_DUMP_PATH_DECODER
+	fd = _dumpfile_open(getenv(NUGU_ENV_DUMP_PATH_DECODER), "decoder");
+#else
+	fd = _dumpfile_open(NULL, "decoder");
+#endif
+
 	if (fd < 0)
 		return -1;
 
@@ -49,6 +90,9 @@ static int _decoder_decode(NuguDecoderDriver *driver, NuguDecoder *dec,
 			   const void *data, size_t data_len, NuguBuffer *buf)
 {
 	int fd;
+
+	if (nugu_decoder_get_driver_data(dec) == NULL)
+		return -1;
 
 	fd = GPOINTER_TO_INT(nugu_decoder_get_driver_data(dec));
 	if (write(fd, data, data_len) < 0)
@@ -63,6 +107,10 @@ static int _decoder_destroy(NuguDecoderDriver *driver, NuguDecoder *dec)
 
 	fd = GPOINTER_TO_INT(nugu_decoder_get_driver_data(dec));
 	close(fd);
+
+	nugu_decoder_set_driver_data(dec, NULL);
+
+	nugu_dbg("decoder filedump done");
 
 	return 0;
 }
@@ -86,15 +134,20 @@ static void _pcm_destroy(NuguPcmDriver *driver, NuguPcm *pcm)
 static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm)
 {
 	int fd;
-	char buf[255] = PCM_FILENAME_TPL;
 
-	fd = g_mkstemp(buf);
+#ifdef NUGU_ENV_DUMP_PATH_PCM
+	fd = _dumpfile_open(getenv(NUGU_ENV_DUMP_PATH_PCM), "pcm");
+#else
+	fd = _dumpfile_open(NULL, "pcm");
+#endif
+
 	if (fd < 0)
 		return -1;
 
-	nugu_dbg("pcm filedump open: name=%s, fd=%d", buf, fd);
-
 	nugu_pcm_set_driver_data(pcm, GINT_TO_POINTER(fd));
+
+	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_READY);
+	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_PLAYING);
 
 	return 0;
 }
@@ -104,12 +157,17 @@ static int _pcm_push_data(NuguPcmDriver *driver, NuguPcm *pcm, const char *data,
 {
 	int fd;
 
-	fd = GPOINTER_TO_INT(nugu_pcm_get_driver_data(pcm));
+	if (nugu_pcm_get_driver_data(pcm) == NULL)
+		return -1;
 
+	fd = GPOINTER_TO_INT(nugu_pcm_get_driver_data(pcm));
 	if (data != NULL && size > 0) {
 		if (write(fd, data, size) < 0)
 			return -1;
 	}
+
+	if (is_last)
+		nugu_pcm_emit_event(pcm, NUGU_MEDIA_EVENT_END_OF_STREAM);
 
 	return 0;
 }
@@ -118,11 +176,17 @@ static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 {
 	int fd;
 
+	if (nugu_pcm_get_driver_data(pcm) == NULL)
+		return 0;
+
 	fd = GPOINTER_TO_INT(nugu_pcm_get_driver_data(pcm));
+	close(fd);
+
+	nugu_pcm_set_driver_data(pcm, NULL);
 
 	nugu_dbg("pcm filedump close: fd=%d", fd);
 
-	close(fd);
+	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_STOPPED);
 
 	return 0;
 }
@@ -140,7 +204,7 @@ static int init(NuguPlugin *p)
 	nugu_dbg("plugin-init '%s'", nugu_plugin_get_description(p)->name);
 
 	decoder_driver = nugu_decoder_driver_new(
-		"filedump", NUGU_DECODER_TYPE_CUSTOM, &decoder_ops);
+		"filedump", NUGU_DECODER_TYPE_OPUS, &decoder_ops);
 	if (!decoder_driver)
 		return -1;
 

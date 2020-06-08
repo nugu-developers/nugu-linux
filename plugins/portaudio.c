@@ -14,10 +14,13 @@
  * limitations under the License.
  */
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
+#include <fcntl.h>
+#include <errno.h>
 
 #include <glib.h>
 #include <alsa/error.h>
@@ -34,11 +37,6 @@
 #define FRAME_PER_BUFFER 512
 
 //#define DEBUG_PCM
-//#define DUMP_PCM
-#ifdef DUMP_PCM
-#define DECODER_FILENAME_TPL "/tmp/filedump_decoder_XXXXXX"
-#define PCM_FILENAME_TPL "/tmp/filedumpXXXXXX"
-#endif
 
 struct pa_audio_param {
 	PaStream *stream;
@@ -53,13 +51,44 @@ struct pa_audio_param {
 	void *data;
 	int is_start;
 	int is_first;
-#ifdef DUMP_PCM
-	int fd;
-#endif
+	int dump_fd;
 };
 
 static NuguRecorderDriver *rec_driver;
 static NuguPcmDriver *pcm_driver;
+
+static int _dumpfile_open(const char *path, const char *prefix)
+{
+	char ymd[9];
+	char hms[7];
+	time_t now;
+	struct tm now_tm;
+	char *buf = NULL;
+	int fd;
+
+	if (!path)
+		return -1;
+
+	now = time(NULL);
+	localtime_r(&now, &now_tm);
+
+	snprintf(ymd, 9, "%04d%02d%02d", now_tm.tm_year + 1900,
+		 now_tm.tm_mon + 1, now_tm.tm_mday);
+	snprintf(hms, 7, "%02d%02d%02d", now_tm.tm_hour, now_tm.tm_min,
+		 now_tm.tm_sec);
+
+	buf = g_strdup_printf("%s/%s_%s_%s.dat", path, prefix, ymd, hms);
+
+	fd = open(buf, O_CREAT | O_WRONLY, 0644);
+	if (fd < 0)
+		nugu_error("open(%s) failed: %s", buf, strerror(errno));
+
+	nugu_dbg("%s filedump to '%s' (fd=%d)", prefix, buf, fd);
+
+	free(buf);
+
+	return fd;
+}
 
 static int _set_property_to_param(struct pa_audio_param *param,
 				  NuguAudioProperty prop)
@@ -148,6 +177,11 @@ static int _recordCallback(const void *inputBuffer, void *outputBuffer,
 		nugu_recorder_push_frame(rec, buf, buf_size);
 	}
 
+	if (param->dump_fd != -1) {
+		if (write(param->dump_fd, buf, buf_size) < 0)
+			nugu_error("write to fd-%d failed", param->dump_fd);
+	}
+
 	if (param->stop)
 		finished = paComplete;
 
@@ -204,6 +238,14 @@ static int _playbackCallback(const void *inputBuffer, void *outputBuffer,
 
 		nugu_pcm_get_data(pcm, buf, buf_size);
 		param->write_data += buf_size;
+
+#ifndef DUMP_ON_PCM_PUSH_DATA
+		if (param->dump_fd != -1) {
+			if (write(param->dump_fd, buf, buf_size) < 0)
+				nugu_error("write to fd-%d failed",
+					   param->dump_fd);
+		}
+#endif
 	} else if (nugu_pcm_receive_is_last_data(pcm)) {
 		// send event to the main loop thread
 		if (!param->done) {
@@ -280,6 +322,13 @@ static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 		return -1;
 	}
 
+#ifdef NUGU_ENV_DUMP_PATH_RECORDER
+	rec_param->dump_fd =
+		_dumpfile_open(getenv(NUGU_ENV_DUMP_PATH_RECORDER), "parec");
+#else
+	rec_param->dump_fd = -1;
+#endif
+
 	nugu_recorder_set_driver_data(rec, rec_param);
 
 	nugu_dbg("start done");
@@ -303,6 +352,11 @@ static int _rec_stop(NuguRecorderDriver *driver, NuguRecorder *rec)
 	err = Pa_CloseStream(rec_param->stream);
 	if (err != paNoError)
 		nugu_error("Pa_CloseStream return fail");
+
+	if (rec_param->dump_fd >= 0) {
+		close(rec_param->dump_fd);
+		rec_param->dump_fd = -1;
+	}
 
 	g_free(rec_param);
 	nugu_recorder_set_driver_data(rec, NULL);
@@ -383,9 +437,6 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm)
 {
 	PaError err = paNoError;
 	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
-#ifdef DUMP_PCM
-	char buf[255] = DECODER_FILENAME_TPL;
-#endif
 
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -399,12 +450,11 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm)
 		return 0;
 	}
 
-#ifdef DUMP_PCM
-	pcm_param->fd = g_mkstemp(buf);
-	if (pcm_param->fd < 0)
-		nugu_error("pcm filedump create failed");
-	else
-		nugu_info("pcm filedump create %s success", buf);
+#ifdef NUGU_ENV_DUMP_PATH_PCM
+	pcm_param->dump_fd =
+		_dumpfile_open(getenv(NUGU_ENV_DUMP_PATH_PCM), "papcm");
+#else
+	pcm_param->dump_fd = -1;
 #endif
 
 	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_READY);
@@ -451,10 +501,10 @@ static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 	while (Pa_IsStreamActive(pcm_param->stream) == 1)
 		Pa_Sleep(10);
 
-#ifdef DUMP_PCM
-	if (pcm_param->fd >= 0)
-		close(pcm_param->fd);
-#endif
+	if (pcm_param->dump_fd >= 0) {
+		close(pcm_param->dump_fd);
+		pcm_param->dump_fd = -1;
+	}
 
 	err = Pa_StopStream(pcm_param->stream);
 	if (err != paNoError && err != paStreamIsStopped) {
@@ -551,7 +601,7 @@ static void snd_error_log(const char *file, int line, const char *function,
 		       -1, "[ALSA] <%s:%d> err=%d, %s", file, line, err, msg);
 }
 
-#ifdef DUMP_PCM
+#ifdef DUMP_ON_PCM_PUSH_DATA
 static int _pcm_push_data(NuguPcmDriver *driver, NuguPcm *pcm, const char *data,
 			  size_t size, int is_last)
 {
@@ -579,7 +629,7 @@ static struct nugu_pcm_driver_ops pcm_ops = {
 	.stop = _pcm_stop,
 	.pause = _pcm_pause,
 	.resume = _pcm_resume,
-#ifdef DUMP_PCM
+#ifdef DUMP_ON_PCM_PUSH_DATA
 	.push_data = _pcm_push_data,
 #endif
 	.get_position = _pcm_get_position
