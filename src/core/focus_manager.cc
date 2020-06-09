@@ -118,7 +118,7 @@ bool FocusManager::requestFocus(const std::string& type, const std::string& name
     return true;
 }
 
-bool FocusManager::releaseFocus(const std::string& type)
+bool FocusManager::releaseFocus(const std::string& type, const std::string& name)
 {
     if (configuration_map.find(type) == configuration_map.end()) {
         nugu_error("The focus[%s] is not exist in focus configuration", type.c_str());
@@ -130,6 +130,12 @@ bool FocusManager::releaseFocus(const std::string& type)
         return true;
 
     FocusResource* release_focus = focus_resource_ordered_map[priority].get();
+
+    if (name.size() && release_focus->name != name) {
+        nugu_dbg("already released focus [%s - %s]", release_focus->type.c_str(), name.c_str());
+        return true;
+    }
+
     nugu_info("[%s - %s] - NONE (priority: %d)", release_focus->type.c_str(), release_focus->name.c_str(), release_focus->priority);
     release_focus->setState(FocusState::NONE);
     focus_resource_ordered_map.erase(priority);

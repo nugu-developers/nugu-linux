@@ -60,7 +60,7 @@ public:
     virtual ~FocusManager();
 
     bool requestFocus(const std::string& type, const std::string& name, IFocusResourceListener* listener) override;
-    bool releaseFocus(const std::string& type) override;
+    bool releaseFocus(const std::string& type, const std::string& name) override;
 
     void setConfigurations(std::vector<FocusConfiguration>& configurations) override;
     void stopAllFocus() override;
