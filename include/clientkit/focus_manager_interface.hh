@@ -111,11 +111,12 @@ public:
     virtual bool requestFocus(const std::string& type, const std::string& name, IFocusResourceListener* listener) = 0;
 
     /**
-     * @brief Release Focus
+     * @brief Release focus
      * @param[in] type focus type
+     * @param[in] name focus name
      * @return if the release is success, then true otherwise false
      */
-    virtual bool releaseFocus(const std::string& type) = 0;
+    virtual bool releaseFocus(const std::string& type, const std::string& name) = 0;
 
     /**
      * @brief Set focus configurations.

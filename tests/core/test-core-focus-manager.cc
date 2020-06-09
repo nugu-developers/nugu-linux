@@ -85,12 +85,13 @@ public:
 
     bool requestFocus(const std::string& type, const std::string& name)
     {
+        this->name = name;
         return focus_manager_interface->requestFocus(type, name, this);
     }
 
     bool releaseFocus(const std::string& type)
     {
-        return focus_manager_interface->releaseFocus(type);
+        return focus_manager_interface->releaseFocus(type, name);
     }
 
     void stopAllFocus()
@@ -116,6 +117,7 @@ public:
 private:
     IFocusManager* focus_manager_interface;
     FocusState cur_state;
+    std::string name;
 };
 
 typedef struct {
@@ -295,6 +297,19 @@ static void test_focusmanager_release_no_activity_resource(ntimerFixture* fixtur
     g_assert(RELEASE_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
 }
 
+static void test_focusmanager_release_resource_with_other_name(ntimerFixture* fixture, gconstpointer ignored)
+{
+    g_assert(REQUEST_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE, DIALOG_NAME));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::FOREGROUND);
+
+    g_assert(REQUEST_FOCUS(fixture->another_dialog_resource, DIALOG_FOCUS_TYPE, ANOTHER_DIALOG_NAME));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::NONE);
+    ASSERT_EXPECTED_STATE(fixture->another_dialog_resource, FocusState::FOREGROUND);
+
+    g_assert(RELEASE_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
+    ASSERT_EXPECTED_STATE(fixture->another_dialog_resource, FocusState::FOREGROUND);
+}
+
 static void test_focusmanager_release_foreground_resource(ntimerFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE, DIALOG_NAME));
@@ -401,6 +416,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/FocusManager/RequestSameResourceOnBackground", test_focusmanager_request_same_resource_on_background);
     G_TEST_ADD_FUNC("/core/FocusManager/RequestSameResourceWithOtherInterfaceName", test_focusmanager_request_same_resource_with_other_name);
     G_TEST_ADD_FUNC("/core/FocusManager/ReleaseNoActivityResource", test_focusmanager_release_no_activity_resource);
+    G_TEST_ADD_FUNC("/core/FocusManager/ReleaseResourceWithOtherInterfaceName", test_focusmanager_release_resource_with_other_name);
     G_TEST_ADD_FUNC("/core/FocusManager/ReleaseForegroundResource", test_focusmanager_release_foreground_resource);
     G_TEST_ADD_FUNC("/core/FocusManager/ReleaseForegroundResourceWithBackgroundResource", test_focusmanager_release_foreground_resource_with_background_resource);
     G_TEST_ADD_FUNC("/core/FocusManager/ReleaseBackgroundResource", test_focusmanager_release_background_resource);
