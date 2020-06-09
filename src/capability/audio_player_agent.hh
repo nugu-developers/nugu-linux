@@ -17,7 +17,6 @@
 #ifndef __NUGU_AUDIO_PLAYER_AGENT_H__
 #define __NUGU_AUDIO_PLAYER_AGENT_H__
 
-#include "base/nugu_focus.h"
 #include "capability/audio_player_interface.hh"
 #include "clientkit/capability.hh"
 
@@ -27,8 +26,8 @@ using namespace NuguClientKit;
 
 class AudioPlayerAgent final : public Capability,
                                public IMediaPlayerListener,
-                               public IFocusListener,
-                               public IAudioPlayerHandler {
+                               public IAudioPlayerHandler,
+                               public IFocusResourceListener {
 public:
     enum PlaybackError {
         MEDIA_ERROR_UNKNOWN,
@@ -69,6 +68,10 @@ public:
     std::string setShuffle(bool shuffle) override;
     bool setVolume(int volume) override;
     bool setMute(bool mute) override;
+
+    void onFocusChanged(FocusState state) override;
+    void executeOnForegrondAction();
+    void executeOnBackgrondAction();
 
     void sendEventPlaybackStarted(EventResultCallback cb = nullptr);
     void sendEventPlaybackFinished(EventResultCallback cb = nullptr);
@@ -117,16 +120,13 @@ private:
     std::string playbackError(PlaybackError error);
     std::string playerActivity(AudioPlayerState state);
 
-    void onFocus(void* event) override;
-    NuguFocusResult onUnfocus(void* event, NuguUnFocusMode mode) override;
-    NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
-
     const unsigned int PAUSE_CONTEXT_HOLD_TIME = 60 * 10;
 
     IMediaPlayer* cur_player;
     IMediaPlayer* media_player;
     ITTSPlayer* tts_player;
     NuguDirective* speak_dir;
+    FocusState focus_state;
     bool is_tts_activate;
     bool is_next_play;
 

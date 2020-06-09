@@ -17,7 +17,6 @@
 #ifndef __NUGU_TTS_AGENT_H__
 #define __NUGU_TTS_AGENT_H__
 
-#include "base/nugu_focus.h"
 #include "capability/tts_interface.hh"
 #include "clientkit/capability.hh"
 
@@ -25,8 +24,8 @@ namespace NuguCapability {
 
 class TTSAgent final : public Capability,
                        public ITTSHandler,
-                       public IFocusListener,
-                       public IMediaPlayerListener {
+                       public IMediaPlayerListener,
+                       public IFocusResourceListener {
 public:
     TTSAgent();
     virtual ~TTSAgent();
@@ -43,6 +42,9 @@ public:
     std::string requestTTS(const std::string& text, const std::string& play_service_id, const std::string& referrer_id = "") override;
     bool setVolume(int volume) override;
 
+    void onFocusChanged(FocusState state) override;
+    void executeOnForegrondAction();
+
     void sendEventSpeechStarted(const std::string& token, EventResultCallback cb = nullptr);
     void sendEventSpeechFinished(const std::string& token, EventResultCallback cb = nullptr);
     void sendEventSpeechStopped(const std::string& token, EventResultCallback cb = nullptr);
@@ -58,10 +60,6 @@ private:
     void parsingSpeak(const char* message);
     void parsingStop(const char* message);
 
-    void onFocus(void* event) override;
-    NuguFocusResult onUnfocus(void* event, NuguUnFocusMode mode) override;
-    NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
-
     void mediaStateChanged(MediaPlayerState state) override;
     void mediaEventReport(MediaPlayerEvent event) override;
     void mediaChanged(const std::string& url) override;
@@ -72,6 +70,7 @@ private:
 
     ITTSPlayer* player;
     MediaPlayerState cur_state;
+    FocusState focus_state;
     std::string cur_token;
     bool is_finished;
 

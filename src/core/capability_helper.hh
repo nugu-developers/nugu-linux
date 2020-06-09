@@ -42,13 +42,6 @@ public:
     void getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value) override;
     void getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values) override;
 
-    // about focus
-    int addFocus(const std::string& fname, NuguFocusType type, IFocusListener* listener) override;
-    int removeFocus(const std::string& fname) override;
-    int releaseFocus(const std::string& fname) override;
-    int requestFocus(const std::string& fname, void* event) override;
-    bool isFocusOn(NuguFocusType type) override;
-
     // about context
     std::string makeContextInfo(const std::string& cname, Json::Value& ctx) override;
     std::string makeAllContextInfo() override;
