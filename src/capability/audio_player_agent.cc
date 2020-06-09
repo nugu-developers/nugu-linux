@@ -31,6 +31,7 @@ AudioPlayerAgent::AudioPlayerAgent()
     , media_player(nullptr)
     , tts_player(nullptr)
     , speak_dir(nullptr)
+    , focus_state(FocusState::NONE)
     , is_tts_activate(false)
     , is_next_play(false)
     , cur_aplayer_state(AudioPlayerState::IDLE)
@@ -64,8 +65,6 @@ void AudioPlayerAgent::initialize()
     tts_player->addListener(this);
 
     cur_player = media_player;
-
-    capa_helper->addFocus("cap_audio", NUGU_FOCUS_TYPE_MEDIA, this);
 
     addReferrerEvents("PlaybackStarted", "Play");
     addReferrerEvents("PlaybackFinished", "Play");
@@ -103,8 +102,6 @@ void AudioPlayerAgent::deInitialize()
 {
     aplayer_listeners.clear();
 
-    capa_helper->removeFocus("cap_audio");
-
     if (media_player) {
         media_player->removeListener(this);
         delete media_player;
@@ -129,15 +126,15 @@ void AudioPlayerAgent::suspend()
         return;
     }
 
-    nugu_dbg("suspend_policy[%d], cur_aplayer_state => %d", suspend_policy, cur_aplayer_state);
-    if (suspend_policy == SuspendPolicy::STOP && (cur_aplayer_state == AudioPlayerState::PLAYING || cur_aplayer_state == AudioPlayerState::PAUSED)) {
-        nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_FINISHED);
-        if (!cur_player->stop()) {
-            nugu_error("stop media failed");
-            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
-        }
+    nugu_dbg("suspend_policy[%d], focus_state => %s", suspend_policy, focus_manager->getStateString(focus_state).c_str());
+
+    if (suspend_policy == SuspendPolicy::STOP) {
+        if (focus_state != FocusState::NONE)
+            focus_manager->releaseFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME);
+    } else {
+        if (focus_state == FocusState::FOREGROUND)
+            executeOnBackgrondAction();
     }
-    capa_helper->releaseFocus("cap_audio");
     suspended = true;
 }
 
@@ -148,9 +145,10 @@ void AudioPlayerAgent::restore()
         return;
     }
 
-    nugu_dbg("suspend_policy[%d], cur_aplayer_state => %d, cur_player->state(): %d", suspend_policy, cur_aplayer_state, cur_player->state());
-    if (cur_player->state() != MediaPlayerState::IDLE)
-        capa_helper->requestFocus("cap_audio", NULL);
+    nugu_dbg("suspend_policy[%d], focus_state => %s", suspend_policy, focus_manager->getStateString(focus_state).c_str());
+
+    if (suspend_policy == SuspendPolicy::PAUSE && focus_state != FocusState::NONE)
+        executeOnForegrondAction();
 
     suspended = false;
 }
@@ -179,8 +177,38 @@ void AudioPlayerAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
     }
 }
 
-void AudioPlayerAgent::onFocus(void* event)
+void AudioPlayerAgent::onFocusChanged(FocusState state)
 {
+    nugu_info("Focus Changed(%s -> %s)", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
+
+    switch (state) {
+    case FocusState::FOREGROUND:
+        executeOnForegrondAction();
+        break;
+    case FocusState::BACKGROUND:
+        executeOnBackgrondAction();
+        break;
+    case FocusState::NONE:
+        if (speak_dir) {
+            nugu_directive_remove_data_callback(speak_dir);
+            destroyDirective(speak_dir);
+            speak_dir = nullptr;
+        }
+
+        nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_FINISHED);
+        if (!cur_player->stop()) {
+            nugu_error("stop media failed");
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
+        }
+        break;
+    }
+    focus_state = state;
+}
+
+void AudioPlayerAgent::executeOnForegrondAction()
+{
+    nugu_dbg("executeOnForegrondAction()");
+
     if (is_paused) {
         nugu_warn("AudioPlayer is pause mode caused by directive(PAUSE)");
         return;
@@ -213,33 +241,19 @@ void AudioPlayerAgent::onFocus(void* event)
     }
 }
 
-NuguFocusResult AudioPlayerAgent::onUnfocus(void* event, NuguUnFocusMode mode)
+void AudioPlayerAgent::executeOnBackgrondAction()
 {
+    nugu_dbg("executeOnBackgrondAction()");
+
     nugu_dbg("is_finished: %d, cur_player->state(): %d", is_finished, cur_player->state());
-
-    if (mode == NUGU_UNFOCUS_FORCE) {
-        nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_FINISHED);
-        cur_player->stop();
-        return NUGU_FOCUS_REMOVE;
-    }
-
     if (cur_player->state() == MediaPlayerState::PLAYING) {
         is_paused_by_unfocus = true;
         if (!cur_player->pause()) {
             nugu_error("pause media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
                 "player can't pause");
-            return NUGU_FOCUS_REMOVE;
         }
-        return NUGU_FOCUS_PAUSE;
     }
-
-    return NUGU_FOCUS_REMOVE;
-}
-
-NuguFocusStealResult AudioPlayerAgent::onStealRequest(void* event, NuguFocusType target_type)
-{
-    return NUGU_FOCUS_STEAL_ALLOW;
 }
 
 std::string AudioPlayerAgent::play()
@@ -871,7 +885,10 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         return;
     }
 
-    capa_helper->requestFocus("cap_audio", NULL);
+    if (focus_state == FocusState::FOREGROUND)
+        executeOnForegrondAction();
+    else
+        focus_manager->requestFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME, this);
 }
 
 void AudioPlayerAgent::parsingPause(const char* message)
@@ -931,21 +948,8 @@ void AudioPlayerAgent::parsingStop(const char* message)
         if (!stacked_ps_id.empty() && playstackctl_ps_id != stacked_ps_id)
             return;
 
-        if (speak_dir) {
-            nugu_directive_remove_data_callback(speak_dir);
-            destroyDirective(speak_dir);
-            speak_dir = nullptr;
-        }
-
-        nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_FINISHED);
-        cur_dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
-        if (!cur_player->stop()) {
-            nugu_error("stop media failed");
-            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
-        }
-
         if (stacked_ps_id.empty())
-            capa_helper->releaseFocus("cap_audio");
+            focus_manager->releaseFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME);
     }
 }
 
@@ -1271,7 +1275,6 @@ void AudioPlayerAgent::mediaEventReport(MediaPlayerEvent event)
         nugu_dbg("PLAYING_MEDIA_FINISHED");
         is_finished = true;
         mediaStateChanged(MediaPlayerState::STOPPED);
-        capa_helper->releaseFocus("cap_audio");
         break;
     case MediaPlayerEvent::PLAYING_MEDIA_UNDERRUN:
         for (auto aplayer_listener : aplayer_listeners) {

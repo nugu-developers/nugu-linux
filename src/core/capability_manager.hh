@@ -22,7 +22,6 @@
 
 #include "base/nugu_directive_sequencer.h"
 #include "base/nugu_event.h"
-#include "base/nugu_focus.h"
 #include "clientkit/capability_interface.hh"
 #include "focus_manager.hh"
 #include "playsync_manager.hh"
@@ -71,18 +70,11 @@ public:
     void suspendAll();
     void restoreAll();
 
-    bool isFocusOn(NuguFocusType type);
-    int addFocus(const std::string& fname, NuguFocusType type, IFocusListener* listener);
-    int removeFocus(const std::string& fname);
-    int requestFocus(const std::string& fname, void* event);
-    int releaseFocus(const std::string& fname);
-
 private:
     ICapabilityInterface* findCapability(const std::string& cname);
 
     static CapabilityManager* instance;
     std::map<std::string, ICapabilityInterface*> caps;
-    std::map<std::string, NuguFocus*> focusmap;
     std::map<std::string, std::string> events;
     std::map<std::string, std::string> events_cname_map;
     std::string wword;

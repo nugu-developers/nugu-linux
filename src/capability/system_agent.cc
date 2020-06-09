@@ -321,7 +321,7 @@ void SystemAgent::parsingException(const char* message)
 
     if (exception == SystemException::PLAY_ROUTER_PROCESSING_EXCEPTION) {
         nugu_info("Release ASR focus due to 'not found play' state");
-        capa_helper->releaseFocus("asr");
+        capa_helper->sendCommand("System", "ASR", "releaseFocus", "");
     }
 
     std::string dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());

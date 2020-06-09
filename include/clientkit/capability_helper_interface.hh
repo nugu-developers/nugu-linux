@@ -21,7 +21,6 @@
 #include <list>
 
 #include <base/nugu_event.h>
-#include <base/nugu_focus.h>
 #include <clientkit/focus_manager_interface.hh>
 #include <clientkit/playsync_manager_interface.hh>
 #include <clientkit/session_manager_interface.hh>
@@ -37,40 +36,6 @@ namespace NuguClientKit {
  *
  * @{
  */
-
-/**
- * @brief FocusListener interface
- */
-class IFocusListener {
-public:
-    virtual ~IFocusListener() = default;
-
-    /**
-     * @brief Receive callback when request focus is acquired.
-     * @param[in] event focus event
-     */
-    virtual void onFocus(void* event) = 0;
-
-    /**
-     * @brief Receive callback when request focus is released.
-     * @param[in] event focus event
-     * @param[in] mode focus mode
-     * @return focus result
-     * @retval NUGU_FOCUS_REMOVE lost and remove focus
-     * @retval NUGU_FOCUS_PAUSE lost but add focus to queue
-     */
-    virtual NuguFocusResult onUnfocus(void* event, NuguUnFocusMode mode) = 0;
-
-    /**
-     * @brief Receive callback when another focus try to steal.
-     * @param[in] event focus event
-     * @param[in] target_type focus which request to steal
-     * @return focus steal result
-     * @retval NUGU_FOCUS_STEAL_ALLOW allow the caller's request to steal the focus
-     * @retval NUGU_FOCUS_STEAL_REJECT reject the caller's request to steal the focus
-     */
-    virtual NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) = 0;
-};
 
 /**
  * @brief CapabilityHelper interface
@@ -148,39 +113,6 @@ public:
      * @param[in] values property values
      */
     virtual void getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values) = 0;
-
-    /**
-     * @brief Add focus about some focus type.
-     * @param[in] fname focus name
-     * @param[in] type focus type
-     * @param[in] listener focus listener instance
-     */
-    virtual int addFocus(const std::string& fname, NuguFocusType type, IFocusListener* listener) = 0;
-
-    /**
-     * @brief Remove focus.
-     * @param[in] fname focus name
-     */
-    virtual int removeFocus(const std::string& fname) = 0;
-
-    /**
-     * @brief Release focus.
-     * @param[in] fname focus name
-     */
-    virtual int releaseFocus(const std::string& fname) = 0;
-
-    /**
-     * @brief Request focus.
-     * @param[in] fname focus name
-     * @param[in] event focus event
-     */
-    virtual int requestFocus(const std::string& fname, void* event) = 0;
-
-    /**
-     * @brief Check whether param's focus type is focused.
-     * @param[in] type focus type
-     */
-    virtual bool isFocusOn(NuguFocusType type) = 0;
 
     /**
      * @brief Get context info.

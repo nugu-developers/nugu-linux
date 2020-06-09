@@ -31,6 +31,7 @@ TTSAgent::TTSAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , player(nullptr)
     , cur_state(MediaPlayerState::IDLE)
+    , focus_state(FocusState::NONE)
     , cur_token("")
     , is_finished(false)
     , speak_dir(nullptr)
@@ -61,8 +62,6 @@ void TTSAgent::initialize()
     player = core_container->createTTSPlayer();
     player->addListener(this);
 
-    capa_helper->addFocus("cap_tts", NUGU_FOCUS_TYPE_TTS, this);
-
     addReferrerEvents("SpeechStarted", "Speak");
     addReferrerEvents("SpeechFinished", "Speak");
     addReferrerEvents("SpeechStopped", "Speak");
@@ -85,21 +84,14 @@ void TTSAgent::deInitialize()
     }
 
     initialized = false;
-    capa_helper->removeFocus("cap_tts");
 }
 
 void TTSAgent::suspend()
 {
-    nugu_dbg("suspend_policy[%d], cur_state => %d, speak_dir => %p", suspend_policy, cur_state, speak_dir);
-    if (cur_state == MediaPlayerState::PLAYING) {
-        if (speak_dir) {
-            nugu_directive_remove_data_callback(speak_dir);
-            destroyDirective(speak_dir);
-            speak_dir = NULL;
-        }
-        // TODO: need to manage the context
-        capa_helper->releaseFocus("cap_tts");
-    }
+    nugu_dbg("suspend_policy[%d], focus_state => %s", suspend_policy, focus_manager->getStateString(focus_state).c_str());
+
+    // TODO: need to manage the context
+    focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
 }
 
 void TTSAgent::directiveDataCallback(NuguDirective* ndir, void* userdata)
@@ -127,13 +119,34 @@ void TTSAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
         nugu_dbg("tts player state: %d", tts->player->state());
         if (tts->player->state() == MediaPlayerState::IDLE) {
             nugu_warn("TTS play fails, force release the focus");
-            tts->capa_helper->releaseFocus("cap_tts");
+            tts->focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
         }
     }
 }
 
-void TTSAgent::onFocus(void* event)
+void TTSAgent::onFocusChanged(FocusState state)
 {
+    nugu_info("Focus Changed(%s -> %s)", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
+
+    switch (state) {
+    case FocusState::FOREGROUND:
+        executeOnForegrondAction();
+        break;
+    case FocusState::BACKGROUND:
+        focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
+        break;
+    case FocusState::NONE:
+        playsync_manager->removeContext(playstackctl_ps_id, getName(), !is_finished);
+        stopTTS();
+        break;
+    }
+    focus_state = state;
+}
+
+void TTSAgent::executeOnForegrondAction()
+{
+    nugu_dbg("executeOnForegrondAction()");
+
     if (!player->play()) {
         nugu_error("play() failed");
         if (speak_dir) {
@@ -149,33 +162,6 @@ void TTSAgent::onFocus(void* event)
 
         nugu_directive_set_data_callback(speak_dir, directiveDataCallback, this);
     }
-}
-
-NuguFocusResult TTSAgent::onUnfocus(void* event, NuguUnFocusMode mode)
-{
-    MediaPlayerState pre_state = cur_state;
-
-    if (!player->stop())
-        nugu_error("stop() failed");
-
-    playsync_manager->removeContext(playstackctl_ps_id, getName(), !is_finished);
-
-    if (tts_listener && pre_state != MediaPlayerState::STOPPED)
-        tts_listener->onTTSCancel(dialog_id);
-
-    return NUGU_FOCUS_REMOVE;
-}
-
-NuguFocusStealResult TTSAgent::onStealRequest(void* event, NuguFocusType target_type)
-{
-    if (target_type <= NUGU_FOCUS_TYPE_TTS) {
-        // When the tts is about call, it just reject for finishing current tts speak.
-        if (target_type == NUGU_FOCUS_TYPE_CALL && playsync_manager->getLayerType(playstackctl_ps_id) == PlaysyncLayer::Call)
-            return NUGU_FOCUS_STEAL_REJECT;
-
-        return NUGU_FOCUS_STEAL_ALLOW;
-    } else
-        return NUGU_FOCUS_STEAL_REJECT;
 }
 
 void TTSAgent::stopTTS()
@@ -345,7 +331,7 @@ std::string TTSAgent::sendEventSpeechPlay(const std::string& token, const std::s
     return sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
-void TTSAgent::sendEventCommon(CapabilityEvent *event, const std::string& token, EventResultCallback cb)
+void TTSAgent::sendEventCommon(CapabilityEvent* event, const std::string& token, EventResultCallback cb)
 {
     std::string payload = "";
     Json::StyledWriter writer;
@@ -413,7 +399,10 @@ void TTSAgent::parsingSpeak(const char* message)
     nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE, dialog_id.c_str(),
         nugu_directive_peek_msg_id(speak_dir), NULL);
 
-    capa_helper->requestFocus("cap_tts", NULL);
+    if (focus_state == FocusState::FOREGROUND)
+        executeOnForegrondAction();
+    else
+        focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
 
     if (tts_listener)
         tts_listener->onTTSText(text, dialog_id);
@@ -433,8 +422,7 @@ void TTSAgent::parsingStop(const char* message)
     if (!root["playServiceId"].empty())
         ps_id = root["playServiceId"].asString();
 
-    stopTTS();
-    capa_helper->releaseFocus("cap_tts");
+    focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
 }
 
 void TTSAgent::setCapabilityListener(ICapabilityListener* clistener)
@@ -475,7 +463,7 @@ void TTSAgent::mediaEventReport(MediaPlayerEvent event)
         nugu_dbg("PLAYING_MEDIA_FINISHED");
         is_finished = true;
         mediaStateChanged(MediaPlayerState::STOPPED);
-        capa_helper->releaseFocus("cap_tts");
+        focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
         break;
     default:
         break;

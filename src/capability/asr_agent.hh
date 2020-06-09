@@ -20,7 +20,6 @@
 #include <memory>
 #include <vector>
 
-#include "base/nugu_focus.h"
 #include "capability/asr_interface.hh"
 #include "clientkit/capability.hh"
 
@@ -37,7 +36,8 @@ typedef struct expect_speech_attr {
 
 class ASRAgent final : public Capability,
                        public IASRHandler,
-                       public ISpeechRecognizerListener {
+                       public ISpeechRecognizerListener,
+                       public IFocusResourceListener {
 public:
     ASRAgent();
     virtual ~ASRAgent();
@@ -59,7 +59,6 @@ public:
     void receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
     void getProperty(const std::string& property, std::string& value) override;
     void getProperties(const std::string& property, std::list<std::string>& values) override;
-
     void checkResponseTimeout();
     void clearResponseTimeout();
 
@@ -70,6 +69,8 @@ public:
     void sendEventListenTimeout(EventResultCallback cb = nullptr);
     void sendEventListenFailed(EventResultCallback cb = nullptr);
     void sendEventStopRecognize(EventResultCallback cb = nullptr);
+
+    void onFocusChanged(FocusState state) override;
 
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void addListener(IASRListener* listener) override;
@@ -108,8 +109,8 @@ private:
     std::unique_ptr<ISpeechRecognizer> speech_recognizer;
     std::string all_context_info;
     std::string dialog_id;
-    IFocusListener* asr_focus_listener;
-    IFocusListener* expect_focus_listener;
+    int uniq;
+    FocusState focus_state;
     std::vector<IASRListener*> asr_listeners;
     ListeningState prev_listening_state = ListeningState::DONE;
     AsrRecognizeCallback rec_callback;

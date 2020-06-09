@@ -27,126 +27,13 @@ namespace NuguCapability {
 static const char* CAPABILITY_NAME = "ASR";
 static const char* CAPABILITY_VERSION = "1.3";
 
-class ASRFocusListener : public IFocusListener {
-public:
-    explicit ASRFocusListener(ASRAgent* agent, ISpeechRecognizer* speech_recognizer);
-    virtual ~ASRFocusListener();
-
-    void onFocus(void* event) override;
-    NuguFocusResult onUnfocus(void* event, NuguUnFocusMode mode) override;
-    NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
-
-private:
-    ASRAgent* agent;
-    ISpeechRecognizer* speech_recognizer;
-    int uniq;
-};
-
-ASRFocusListener::ASRFocusListener(ASRAgent* agent, ISpeechRecognizer* speech_recognizer)
-    : agent(agent)
-    , speech_recognizer(speech_recognizer)
-    , uniq(0)
-
-{
-    agent->getCapabilityHelper()->addFocus("asr", NUGU_FOCUS_TYPE_ASR, this);
-}
-
-ASRFocusListener::~ASRFocusListener()
-{
-    agent->getCapabilityHelper()->removeFocus("asr");
-}
-
-void ASRFocusListener::onFocus(void* event)
-{
-    nugu_dbg("ASRFocusListener::onFocus");
-
-    std::string id = "id#" + std::to_string(uniq++);
-    agent->setListeningId(id);
-    speech_recognizer->startListening(id);
-
-    if (agent->isExpectSpeechState())
-        agent->getCapabilityHelper()->releaseFocus("expect");
-}
-
-NuguFocusResult ASRFocusListener::onUnfocus(void* event, NuguUnFocusMode mode)
-{
-    nugu_dbg("ASRFocusListener::onUnfocus");
-    speech_recognizer->stopListening();
-
-    if (agent->getASRState() == ASRState::LISTENING
-        || agent->getASRState() == ASRState::RECOGNIZING
-        || agent->getASRState() == ASRState::EXPECTING_SPEECH)
-        agent->sendEventStopRecognize();
-
-    if (agent->getASRState() == ASRState::BUSY)
-        agent->setASRState(ASRState::IDLE);
-
-    agent->resetExpectSpeechState();
-
-    return NUGU_FOCUS_REMOVE;
-}
-
-NuguFocusStealResult ASRFocusListener::onStealRequest(void* event, NuguFocusType target_type)
-{
-    if (target_type == NUGU_FOCUS_TYPE_ALERT || target_type == NUGU_FOCUS_TYPE_ASR)
-        return NUGU_FOCUS_STEAL_ALLOW;
-
-    return (agent->getListeningState() == ListeningState::DONE) ? NUGU_FOCUS_STEAL_ALLOW : NUGU_FOCUS_STEAL_REJECT;
-}
-
-class ExpectFocusListener : public IFocusListener {
-public:
-    explicit ExpectFocusListener(ASRAgent* agent);
-    virtual ~ExpectFocusListener();
-
-    void onFocus(void* event) override;
-    NuguFocusResult onUnfocus(void* event, NuguUnFocusMode mode) override;
-    NuguFocusStealResult onStealRequest(void* event, NuguFocusType target_type) override;
-
-private:
-    ASRAgent* agent;
-};
-
-ExpectFocusListener::ExpectFocusListener(ASRAgent* agent)
-    : agent(agent)
-{
-    agent->getCapabilityHelper()->addFocus("expect", NUGU_FOCUS_TYPE_ASR_EXPECT, this);
-}
-
-ExpectFocusListener::~ExpectFocusListener()
-{
-    agent->getCapabilityHelper()->removeFocus("expect");
-}
-
-void ExpectFocusListener::onFocus(void* event)
-{
-    nugu_dbg("ExpectFocusListener::onFocus");
-
-    agent->syncSession();
-    agent->startRecognition(true);
-}
-
-NuguFocusResult ExpectFocusListener::onUnfocus(void* event, NuguUnFocusMode mode)
-{
-    nugu_dbg("ExpectFocusListener::onUnfocus");
-
-    return NUGU_FOCUS_REMOVE;
-}
-
-NuguFocusStealResult ExpectFocusListener::onStealRequest(void* event, NuguFocusType target_type)
-{
-    nugu_dbg("ExpectFocusListener::onStealRequest");
-
-    return NUGU_FOCUS_STEAL_ALLOW;
-}
-
 ASRAgent::ASRAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , es_attr({})
     , rec_event(nullptr)
     , timer(nullptr)
-    , asr_focus_listener(nullptr)
-    , expect_focus_listener(nullptr)
+    , uniq(0)
+    , focus_state(FocusState::NONE)
     , cur_state(ASRState::IDLE)
     , asr_cancel(false)
     , model_path("")
@@ -199,9 +86,6 @@ void ASRAgent::initialize()
         releaseASRFocus(false, ASRError::RESPONSE_TIMEOUT);
     });
 
-    asr_focus_listener = new ASRFocusListener(this, this->speech_recognizer.get());
-    expect_focus_listener = new ExpectFocusListener(this);
-
     addReferrerEvents("Recognize", "ExpectSpeech");
     addReferrerEvents("ResponseTimeout", "ASRAgent.sendEventRecognize");
     addReferrerEvents("ListenTimeout", "ASRAgent.sendEventRecognize");
@@ -228,9 +112,6 @@ void ASRAgent::deInitialize()
         delete rec_event;
         rec_event = nullptr;
     }
-
-    delete asr_focus_listener;
-    delete expect_focus_listener;
 
     speech_recognizer.reset();
 
@@ -268,19 +149,14 @@ void ASRAgent::startRecognition(bool expected)
         return;
     }
 
-    saveAllContextInfo();
-    capa_helper->requestFocus("asr", NULL);
+    focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
     asr_cancel = false;
 }
 
 void ASRAgent::stopRecognition()
 {
     nugu_dbg("stopRecognition()");
-    if (isExpectSpeechState()) {
-        capa_helper->releaseFocus("expect");
-        resetExpectSpeechState();
-    }
-    capa_helper->releaseFocus("asr");
+    focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
     asr_cancel = false;
 }
 
@@ -289,6 +165,41 @@ void ASRAgent::cancelRecognition()
     nugu_dbg("cancelRecognition()");
     asr_cancel = true;
     speech_recognizer->stopListening();
+}
+
+void ASRAgent::onFocusChanged(FocusState state)
+{
+    nugu_info("Focus Changed(%s -> %s)", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
+
+    switch (state) {
+    case FocusState::FOREGROUND: {
+        saveAllContextInfo();
+
+        if (isExpectSpeechState())
+            syncSession();
+
+        std::string id = "id#" + std::to_string(uniq++);
+        setListeningId(id);
+        speech_recognizer->startListening(id);
+    } break;
+    case FocusState::BACKGROUND:
+        focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
+        break;
+    case FocusState::NONE:
+        speech_recognizer->stopListening();
+
+        if (getASRState() == ASRState::LISTENING
+            || getASRState() == ASRState::RECOGNIZING
+            || getASRState() == ASRState::EXPECTING_SPEECH)
+            sendEventStopRecognize();
+
+        if (getASRState() == ASRState::BUSY)
+            setASRState(ASRState::IDLE);
+
+        resetExpectSpeechState();
+        break;
+    }
+    focus_state = state;
 }
 
 void ASRAgent::parsingDirective(const char* dname, const char* message)
@@ -324,11 +235,12 @@ void ASRAgent::receiveCommand(const std::string& from, const std::string& comman
 
     nugu_dbg("receive command(%s) from %s", command.c_str(), from.c_str());
 
-    if (!convert_command.compare("releasefocus")) {
-        if (param.find("TTS") == std::string::npos && param.find("AudioPlayer") == std::string::npos)
+    if (convert_command == "releasefocus") {
+        if (param.find("TTS") == std::string::npos) {
+            nugu_info("Focus(type: %s) Release", DIALOG_FOCUS_TYPE);
             stopRecognition();
-
-    } else if (!convert_command.compare("cancel"))
+        }
+    } else if (convert_command == "cancel")
         cancelRecognition();
 }
 
@@ -516,7 +428,7 @@ void ASRAgent::parsingExpectSpeech(const char* message)
     playsync_manager->setExpectSpeech(true);
     setASRState(ASRState::EXPECTING_SPEECH);
 
-    capa_helper->requestFocus("expect", NULL);
+    focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
 }
 
 void ASRAgent::parsingNotifyResult(const char* message)
@@ -689,7 +601,7 @@ void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error, bool release_focu
 
     if (release_focus) {
         nugu_dbg("request to release focus");
-        capa_helper->releaseFocus("asr");
+        focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
     }
 }
 
@@ -759,12 +671,14 @@ void ASRAgent::syncSession()
 
 void ASRAgent::notifyEventResponse(const char* msg_id, const char* json, bool success)
 {
-    // release focus when there are no focus stealer like TTS, AudioPlayer
+    // release focus when there are no focus stealer like TTS
     std::string data { json };
 
     if (data.find("ASR") != std::string::npos && data.find("NotifyResult") != std::string::npos
-        && data.find("TTS") == std::string::npos && data.find("AudioPlayer") == std::string::npos)
+        && data.find("TTS") == std::string::npos) {
+        nugu_info("Focus(type: %s) Release", DIALOG_FOCUS_TYPE);
         stopRecognition();
+    }
 }
 
 } // NuguCapability

@@ -27,27 +27,6 @@ static const char* WAKEUP_WORD = "아리아";
 
 CapabilityManager* CapabilityManager::instance = NULL;
 
-static void on_focus(NuguFocus* focus, void* event, void* userdata)
-{
-    IFocusListener* listener = static_cast<IFocusListener*>(userdata);
-
-    listener->onFocus(event);
-}
-
-static NuguFocusResult on_unfocus(NuguFocus* focus, NuguUnFocusMode mode, void* event, void* userdata)
-{
-    IFocusListener* listener = static_cast<IFocusListener*>(userdata);
-
-    return listener->onUnfocus(event, mode);
-}
-
-static NuguFocusStealResult on_steal_request(NuguFocus* focus, void* event, NuguFocus* target, void* userdata)
-{
-    IFocusListener* listener = static_cast<IFocusListener*>(userdata);
-
-    return listener->onStealRequest(event, nugu_focus_get_type(target));
-}
-
 CapabilityManager::CapabilityManager()
 {
     nugu_dirseq_set_callback(dirseqCallback, this);
@@ -61,7 +40,6 @@ CapabilityManager::CapabilityManager()
 CapabilityManager::~CapabilityManager()
 {
     caps.clear();
-    focusmap.clear();
     events.clear();
     events_cname_map.clear();
 
@@ -356,65 +334,6 @@ void CapabilityManager::restoreAll()
     for (const auto& iter : caps) {
         iter.second->restore();
     }
-}
-
-bool CapabilityManager::isFocusOn(NuguFocusType type)
-{
-    NuguFocus* focus = nugu_focus_peek_top();
-
-    if (focus && nugu_focus_get_type(focus) == type)
-        return true;
-    else
-        return false;
-}
-
-int CapabilityManager::addFocus(const std::string& fname, NuguFocusType type, IFocusListener* listener)
-{
-    NuguFocus* focus;
-
-    focus = nugu_focus_new(fname.c_str(), type, on_focus, on_unfocus, on_steal_request, listener);
-    if (!focus)
-        return -1;
-
-    focusmap[fname] = focus;
-
-    return 0;
-}
-
-int CapabilityManager::removeFocus(const std::string& fname)
-{
-    NuguFocus* focus;
-
-    focus = focusmap[fname];
-    if (!focus)
-        return -1;
-
-    nugu_focus_free(focus);
-    focusmap.erase(fname);
-
-    return 0;
-}
-
-int CapabilityManager::requestFocus(const std::string& fname, void* event)
-{
-    NuguFocus* focus;
-
-    focus = focusmap[fname];
-    if (!focus)
-        return -1;
-
-    return nugu_focus_request(focus, event);
-}
-
-int CapabilityManager::releaseFocus(const std::string& fname)
-{
-    NuguFocus* focus;
-
-    focus = focusmap[fname];
-    if (!focus)
-        return -1;
-
-    return nugu_focus_release(focus);
 }
 
 PlaySyncManager* CapabilityManager::getPlaySyncManager()

@@ -102,31 +102,6 @@ void CapabilityHelper::getCapabilityProperties(const std::string& cap, const std
     CapabilityManager::getInstance()->getCapabilityProperties(cap, property, values);
 }
 
-int CapabilityHelper::addFocus(const std::string& fname, NuguFocusType type, IFocusListener* listener)
-{
-    return CapabilityManager::getInstance()->addFocus(fname, type, listener);
-}
-
-int CapabilityHelper::removeFocus(const std::string& fname)
-{
-    return CapabilityManager::getInstance()->removeFocus(fname);
-}
-
-int CapabilityHelper::releaseFocus(const std::string& fname)
-{
-    return CapabilityManager::getInstance()->releaseFocus(fname);
-}
-
-int CapabilityHelper::requestFocus(const std::string& fname, void* event)
-{
-    return CapabilityManager::getInstance()->requestFocus(fname, event);
-}
-
-bool CapabilityHelper::isFocusOn(NuguFocusType type)
-{
-    return CapabilityManager::getInstance()->isFocusOn(type);
-}
-
 std::string CapabilityHelper::makeContextInfo(const std::string& cname, Json::Value& ctx)
 {
     return CapabilityManager::getInstance()->makeContextInfo(cname, ctx);
