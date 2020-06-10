@@ -61,7 +61,6 @@ public:
     std::string makeAllContextInfo();
     std::string makeAllContextInfoStack();
 
-    void checkAndReleaseASRFocus(const std::string& groups, const std::string& dialog_id);
     void preprocessDirective(NuguDirective* ndir);
     bool isSupportDirectiveVersion(const std::string& version, ICapabilityInterface* cap);
 
@@ -90,8 +89,6 @@ private:
     std::unique_ptr<PlaySyncManager> playsync_manager = nullptr;
     std::unique_ptr<FocusManager> focus_manager = nullptr;
     std::unique_ptr<SessionManager> session_manager = nullptr;
-    bool check_asr_focus_release = false;
-    std::string asr_dialog_id;
 };
 
 } // NuguCore
