@@ -92,11 +92,6 @@ std::string CapabilityHelper::getWakeupWord()
     return CapabilityManager::getInstance()->getWakeupWord();
 }
 
-void CapabilityHelper::checkAndReleaseASRFocus(const std::string& groups, const std::string& dialog_id)
-{
-    return CapabilityManager::getInstance()->checkAndReleaseASRFocus(groups, dialog_id);
-}
-
 void CapabilityHelper::getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value)
 {
     CapabilityManager::getInstance()->getCapabilityProperty(cap, property, value);

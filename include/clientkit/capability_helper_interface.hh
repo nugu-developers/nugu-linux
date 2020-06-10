@@ -134,13 +134,6 @@ public:
     virtual std::string getWakeupWord() = 0;
 
     /**
-     * @brief Check the response directive group on the server to see if asr focus should be released
-     * @param[in] groups directive groups
-     * @param[in] dialog_id directive's dialog request id
-     */
-    virtual void checkAndReleaseASRFocus(const std::string& groups, const std::string& dialog_id) = 0;
-
-    /**
      * @brief Get property from CapabilityAgent.
      * @param[in] cap CapabilityAgent
      * @param[in] property property key

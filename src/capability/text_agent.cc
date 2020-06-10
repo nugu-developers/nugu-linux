@@ -131,7 +131,7 @@ void TextAgent::receiveCommandAll(const std::string& command, const std::string&
         if (text_listener)
             text_listener->onState(cur_state, cur_dialog_id);
 
-        capa_helper->checkAndReleaseASRFocus(dir_groups, cur_dialog_id);
+        capa_helper->sendCommand("Text", "ASR", "releaseFocus", dir_groups);
         cur_dialog_id = "";
     }
 }

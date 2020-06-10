@@ -324,9 +324,11 @@ void ASRAgent::receiveCommand(const std::string& from, const std::string& comman
 
     nugu_dbg("receive command(%s) from %s", command.c_str(), from.c_str());
 
-    if (!convert_command.compare("releasefocus"))
-        stopRecognition();
-    else if (!convert_command.compare("cancel"))
+    if (!convert_command.compare("releasefocus")) {
+        if (param.find("TTS") == std::string::npos && param.find("AudioPlayer") == std::string::npos)
+            stopRecognition();
+
+    } else if (!convert_command.compare("cancel"))
         cancelRecognition();
 }
 
@@ -754,4 +756,15 @@ void ASRAgent::syncSession()
 
     session_manager->activate(es_attr.dialog_id);
 }
+
+void ASRAgent::notifyEventResponse(const char* msg_id, const char* json, bool success)
+{
+    // release focus when there are no focus stealer like TTS, AudioPlayer
+    std::string data { json };
+
+    if (data.find("ASR") != std::string::npos && data.find("NotifyResult") != std::string::npos
+        && data.find("TTS") == std::string::npos && data.find("AudioPlayer") == std::string::npos)
+        stopRecognition();
+}
+
 } // NuguCapability
