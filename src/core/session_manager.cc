@@ -41,7 +41,7 @@ void SessionManager::set(const std::string& dialog_id, Session&& session)
     session_map.emplace(dialog_id, session);
 }
 
-void SessionManager::sync(const std::string& dialog_id)
+void SessionManager::activate(const std::string& dialog_id)
 {
     if (dialog_id.empty()) {
         nugu_error("The dialog request ID is empty.");
@@ -49,13 +49,13 @@ void SessionManager::sync(const std::string& dialog_id)
     }
 
     try {
-        session_map.at(dialog_id).is_synced = true;
+        session_map.at(dialog_id).is_active = true;
     } catch (std::out_of_range& exception) {
         nugu_warn("The such session is not exist.");
     }
 }
 
-void SessionManager::release(const std::string& dialog_id)
+void SessionManager::deactivate(const std::string& dialog_id)
 {
     if (dialog_id.empty()) {
         nugu_error("The dialog request ID is empty.");
@@ -65,12 +65,12 @@ void SessionManager::release(const std::string& dialog_id)
     session_map.erase(dialog_id);
 }
 
-Json::Value SessionManager::getSyncedSessionInfo()
+Json::Value SessionManager::getActiveSessionInfo()
 {
     Json::Value session_info_list;
 
     for (const auto& item : session_map) {
-        if (item.second.is_synced) {
+        if (item.second.is_active) {
             Json::Value session_info;
             session_info["sessionId"] = item.second.session_id;
             session_info["playServiceId"] = item.second.ps_id;

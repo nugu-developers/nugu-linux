@@ -32,7 +32,7 @@ SessionAgent::SessionAgent()
 void SessionAgent::updateInfoForContext(Json::Value& ctx)
 {
     Json::Value session;
-    Json::Value session_list = session_manager->getSyncedSessionInfo();
+    Json::Value session_list = session_manager->getActiveSessionInfo();
 
     session["version"] = getVersion();
 

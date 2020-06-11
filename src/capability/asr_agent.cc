@@ -707,7 +707,7 @@ ListeningState ASRAgent::getListeningState()
 void ASRAgent::resetExpectSpeechState()
 {
     if (!es_attr.dialog_id.empty())
-        session_manager->release(es_attr.dialog_id);
+        session_manager->deactivate(es_attr.dialog_id);
 
     if (es_attr.is_handle)
         es_attr = {};
@@ -752,6 +752,6 @@ void ASRAgent::syncSession()
         return;
     }
 
-    session_manager->sync(es_attr.dialog_id);
+    session_manager->activate(es_attr.dialog_id);
 }
 } // NuguCapability

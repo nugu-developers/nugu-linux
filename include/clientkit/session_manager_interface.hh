@@ -40,7 +40,7 @@ namespace NuguClientKit {
 typedef struct {
     std::string session_id; /**< session id */
     std::string ps_id; /**< play service id */
-    bool is_synced; /**< whether session is synced */
+    bool is_active; /**< whether session is active */
 } Session;
 
 /**
@@ -58,22 +58,22 @@ public:
     virtual void set(const std::string& dialog_id, Session&& session) = 0;
 
     /**
-     * @brief Sync Session object which is mapped with dialog request id.
-     * @param[in] dialog_id dialog request id for Session object
+     * @brief Activate Session which is mapped with dialog request id.
+     * @param[in] dialog_id dialog request id for Session
      */
-    virtual void sync(const std::string& dialog_id) = 0;
+    virtual void activate(const std::string& dialog_id) = 0;
 
     /**
-     * @brief Release sync Session object which is mapped with dialog request id.
-     * @param[in] dialog_id dialog request id for Session object
+     * @brief Deactivate Session which is mapped with dialog request id.
+     * @param[in] dialog_id dialog request id for Session
      */
-    virtual void release(const std::string& dialog_id) = 0;
+    virtual void deactivate(const std::string& dialog_id) = 0;
 
     /**
-     * @brief Get current synced session info which is composed by session list.
+     * @brief Get current active session info which is composed by session list.
      * @return session info which is formatted to json type
      */
-    virtual Json::Value getSyncedSessionInfo() = 0;
+    virtual Json::Value getActiveSessionInfo() = 0;
 };
 
 /**
