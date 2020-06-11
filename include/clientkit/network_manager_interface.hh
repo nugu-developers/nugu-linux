@@ -84,10 +84,10 @@ public:
     /**
      * @brief Report the response data received from the server.
      * @param[in] msg_id event message id
-     * @param[in] json response json data
+     * @param[in] data response raw data (format json)
      * @param[in] success event result
      */
-    virtual void onEventResponse(const char* msg_id, const char* json, bool success);
+    virtual void onEventResponse(const char* msg_id, const char* data, bool success);
 };
 
 /**

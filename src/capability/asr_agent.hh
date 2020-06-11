@@ -86,7 +86,7 @@ public:
     ASRState getASRState();
     void setListeningId(const std::string& id);
     void syncSession();
-    void notifyEventResponse(const char* msg_id, const char* json, bool success) override;
+    void notifyEventResponse(const std::string& msg_id, const std::string& data, bool success) override;
 
 private:
     void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);

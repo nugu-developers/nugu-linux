@@ -202,7 +202,7 @@ void Capability::notifyEventResult(const std::string& event_desc)
     }
 }
 
-void Capability::notifyEventResponse(const char* msg_id, const char* json, bool success)
+void Capability::notifyEventResponse(const std::string& msg_id, const std::string& data, bool success)
 {
 }
 

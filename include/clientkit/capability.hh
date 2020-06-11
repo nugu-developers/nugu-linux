@@ -171,10 +171,10 @@ public:
     /**
      * @brief Notify event response info.
      * @param[in] msg_id message id which is sent with event
-     * @param[in] json raw data which is received from server about event
+     * @param[in] data raw data which is received from server about event (json format)
      * @param[in] success whether receive event response
      */
-    void notifyEventResponse(const char* msg_id, const char* json, bool success);
+    void notifyEventResponse(const std::string& msg_id, const std::string& data, bool success);
 
     /**
      * @brief Add event name and directive name for referred dialog request id.
