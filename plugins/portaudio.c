@@ -171,16 +171,17 @@ static int _recordCallback(const void *inputBuffer, void *outputBuffer,
 	if (inputBuffer == NULL) {
 		buf = malloc(buf_size);
 		memset(buf, SAMPLE_SILENCE, buf_size);
-		nugu_recorder_push_frame(rec, buf, buf_size);
-		free(buf);
-	} else {
-		nugu_recorder_push_frame(rec, buf, buf_size);
 	}
+
+	nugu_recorder_push_frame(rec, buf, buf_size);
 
 	if (param->dump_fd != -1) {
 		if (write(param->dump_fd, buf, buf_size) < 0)
 			nugu_error("write to fd-%d failed", param->dump_fd);
 	}
+
+	if (inputBuffer == NULL)
+		free(buf);
 
 	if (param->stop)
 		finished = paComplete;
