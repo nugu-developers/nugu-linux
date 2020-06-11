@@ -30,6 +30,9 @@ public:
     SoundAgent();
     virtual ~SoundAgent() = default;
 
+    void initialize() override;
+    void deInitialize() override;
+
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void parsingDirective(const char* dname, const char* message) override;

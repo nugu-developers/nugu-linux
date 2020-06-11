@@ -67,6 +67,8 @@ void TTSAgent::initialize()
     addReferrerEvents("SpeechStopped", "Speak");
     addReferrerEvents("SpeechPlay", "TTSAgent.requestTTS");
 
+    addBlockingPolicy("Speak", { BlockingMedium::AUDIO, true });
+
     initialized = true;
 }
 
@@ -113,8 +115,6 @@ void TTSAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
 
     if (nugu_directive_is_data_end(ndir)) {
         tts->player->write_done();
-        tts->destroyDirective(ndir);
-        tts->speak_dir = NULL;
 
         nugu_dbg("tts player state: %d", tts->player->state());
         if (tts->player->state() == MediaPlayerState::IDLE) {

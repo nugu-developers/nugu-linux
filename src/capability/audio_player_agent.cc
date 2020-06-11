@@ -95,6 +95,16 @@ void AudioPlayerAgent::initialize()
     addReferrerEvents("RequestPauseCommandIssued", "RequestPauseCommand");
     addReferrerEvents("RequestStopCommandIssued", "RequestStopCommand");
 
+    addBlockingPolicy("Play", { BlockingMedium::AUDIO, false });
+    addBlockingPolicy("Stop", { BlockingMedium::AUDIO, false });
+    addBlockingPolicy("Pause", { BlockingMedium::AUDIO, false });
+    addBlockingPolicy("RequestPlayCommand", { BlockingMedium::AUDIO, false });
+    addBlockingPolicy("RequestResumeCommand", { BlockingMedium::AUDIO, false });
+    addBlockingPolicy("RequestNextCommand", { BlockingMedium::AUDIO, false });
+    addBlockingPolicy("RequestPreviousCommand", { BlockingMedium::AUDIO, false });
+    addBlockingPolicy("RequestPauseCommand", { BlockingMedium::AUDIO, false });
+    addBlockingPolicy("RequestStopCommand", { BlockingMedium::AUDIO, false });
+
     initialized = true;
 }
 

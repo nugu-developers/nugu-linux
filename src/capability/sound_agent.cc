@@ -29,6 +29,23 @@ SoundAgent::SoundAgent()
 {
 }
 
+void SoundAgent::initialize()
+{
+    if (initialized) {
+        nugu_info("It's already initialized.");
+        return;
+    }
+
+    addBlockingPolicy("Beep", { BlockingMedium::AUDIO, true });
+
+    initialized = true;
+}
+
+void SoundAgent::deInitialize()
+{
+    initialized = false;
+}
+
 void SoundAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)

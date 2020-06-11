@@ -17,7 +17,6 @@
 #include <cstring>
 #include <string.h>
 
-#include "base/nugu_directive_sequencer.h"
 #include "base/nugu_log.h"
 
 #include "clientkit/capability.hh"
@@ -304,7 +303,7 @@ void Capability::destroyDirective(NuguDirective* ndir)
     if (ndir == pimpl->cur_ndir)
         pimpl->cur_ndir = NULL;
 
-    nugu_dirseq_complete(ndir);
+    directive_sequencer->complete(ndir);
 }
 
 NuguDirective* Capability::getNuguDirective()
