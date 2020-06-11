@@ -150,7 +150,7 @@ void CapabilityManager::onEventSendResult(const char* msg_id, bool success, int 
     events.erase(msg_id);
 }
 
-void CapabilityManager::onEventResponse(const char* msg_id, const char* json, bool success)
+void CapabilityManager::onEventResponse(const char* msg_id, const char* data, bool success)
 {
     if (!success)
         nugu_error("can't receive event response: msg_id=%s", msg_id);
@@ -158,8 +158,12 @@ void CapabilityManager::onEventResponse(const char* msg_id, const char* json, bo
     try {
         ICapabilityInterface* cap = findCapability(events_cname_map.at(msg_id));
 
-        if (cap)
-            cap->notifyEventResponse(msg_id, json, success);
+        if (cap) {
+            std::string message_id = msg_id ? msg_id : "";
+            std::string message_data = data ? data : "";
+
+            cap->notifyEventResponse(message_id, message_data, success);
+        }
 
         events_cname_map.erase(msg_id);
     } catch (std::out_of_range& exception) {

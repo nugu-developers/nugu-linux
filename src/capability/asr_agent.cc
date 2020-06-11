@@ -669,11 +669,9 @@ void ASRAgent::syncSession()
     session_manager->activate(es_attr.dialog_id);
 }
 
-void ASRAgent::notifyEventResponse(const char* msg_id, const char* json, bool success)
+void ASRAgent::notifyEventResponse(const std::string& msg_id, const std::string& data, bool success)
 {
     // release focus when there are no focus stealer like TTS
-    std::string data { json };
-
     if (data.find("ASR") != std::string::npos && data.find("NotifyResult") != std::string::npos
         && data.find("TTS") == std::string::npos) {
         nugu_info("Focus(type: %s) Release", DIALOG_FOCUS_TYPE);
