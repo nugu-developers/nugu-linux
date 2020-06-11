@@ -47,6 +47,9 @@ void SpeakerAgent::initialize()
     addReferrerEvents("SetMuteSucceeded", "SetMute");
     addReferrerEvents("SetMuteFailed", "SetMute");
 
+    addBlockingPolicy("SetVolume", { BlockingMedium::AUDIO, true });
+    addBlockingPolicy("SetMute", { BlockingMedium::AUDIO, true });
+
     initialized = true;
 }
 

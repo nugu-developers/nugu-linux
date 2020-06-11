@@ -20,7 +20,6 @@
 #include <map>
 #include <memory>
 
-#include "base/nugu_directive_sequencer.h"
 #include "base/nugu_event.h"
 #include "clientkit/capability_interface.hh"
 #include "focus_manager.hh"
@@ -44,8 +43,6 @@ public:
     FocusManager* getFocusManager();
     SessionManager* getSessionManager();
     DirectiveSequencer* getDirectiveSequencer();
-
-    static NuguDirseqReturn dirseqCallback(NuguDirective* ndir, void* userdata);
 
     void addCapability(const std::string& cname, ICapabilityInterface* cap);
     void removeCapability(const std::string& cname);

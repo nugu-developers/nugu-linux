@@ -22,7 +22,6 @@
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
 #include "base/nugu_prof.h"
-#include "base/nugu_directive_sequencer.h"
 
 #include "nugu_client_impl.hh"
 
@@ -42,15 +41,11 @@ NuguClientImpl::NuguClientImpl()
 
     network_manager = std::unique_ptr<INetworkManager>(nugu_core_container->createNetworkManager());
     network_manager->addListener(nugu_core_container->getNetworkManagerListener());
-
-    nugu_dirseq_initialize();
 }
 
 NuguClientImpl::~NuguClientImpl()
 {
     nugu_core_container->destroyInstance();
-
-    nugu_dirseq_deinitialize();
 
     if (plugin_loaded)
         unloadPlugins();

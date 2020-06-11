@@ -93,6 +93,8 @@ void ASRAgent::initialize()
     addReferrerEvents("StopRecognize", "ASRAgent.sendEventRecognize");
     addReferrerEvents("ListenFailed", "ASRAgent.sendEventRecognize");
 
+    addBlockingPolicy("ExpectSpeech", { BlockingMedium::AUDIO, true });
+
     initialized = true;
 }
 
