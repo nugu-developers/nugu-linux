@@ -31,9 +31,9 @@ public:
     virtual ~SessionManager();
 
     void set(const std::string& dialog_id, Session&& session) override;
-    void sync(const std::string& dialog_id) override;
-    void release(const std::string& dialog_id) override;
-    Json::Value getSyncedSessionInfo() override;
+    void activate(const std::string& dialog_id) override;
+    void deactivate(const std::string& dialog_id) override;
+    Json::Value getActiveSessionInfo() override;
 
 private:
     std::map<std::string, Session> session_map;
