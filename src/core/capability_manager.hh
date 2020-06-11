@@ -26,10 +26,12 @@
 #include "focus_manager.hh"
 #include "playsync_manager.hh"
 #include "session_manager.hh"
+#include "directive_sequencer.hh"
 
 namespace NuguCore {
 
-class CapabilityManager : public INetworkManagerListener {
+class CapabilityManager : public INetworkManagerListener,
+                          public IDirectiveSequencerListener {
 private:
     CapabilityManager();
     virtual ~CapabilityManager();
@@ -41,6 +43,7 @@ public:
     PlaySyncManager* getPlaySyncManager();
     FocusManager* getFocusManager();
     SessionManager* getSessionManager();
+    DirectiveSequencer* getDirectiveSequencer();
 
     static NuguDirseqReturn dirseqCallback(NuguDirective* ndir, void* userdata);
 
@@ -70,6 +73,9 @@ public:
     void suspendAll();
     void restoreAll();
 
+    bool onPreHandleDirective(NuguDirective* ndir) override;
+    bool onHandleDirective(NuguDirective* ndir) override;
+
 private:
     ICapabilityInterface* findCapability(const std::string& cname);
 
@@ -81,6 +87,7 @@ private:
     std::unique_ptr<PlaySyncManager> playsync_manager = nullptr;
     std::unique_ptr<FocusManager> focus_manager = nullptr;
     std::unique_ptr<SessionManager> session_manager = nullptr;
+    std::unique_ptr<DirectiveSequencer> directive_sequencer = nullptr;
 };
 
 } // NuguCore

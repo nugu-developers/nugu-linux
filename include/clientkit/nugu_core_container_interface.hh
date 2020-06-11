@@ -19,6 +19,7 @@
 
 #include <clientkit/capability_helper_interface.hh>
 #include <clientkit/focus_manager_interface.hh>
+#include <clientkit/directive_sequencer_interface.hh>
 #include <clientkit/media_player_interface.hh>
 #include <clientkit/network_manager_interface.hh>
 #include <clientkit/nugu_timer_interface.hh>
@@ -82,6 +83,11 @@ public:
      * @brief Get FocusManager instance
      */
     virtual IFocusManager* getFocusManager() = 0;
+
+    /**
+     * @brief Get DirectiveSequencer instance
+     */
+    virtual IDirectiveSequencer* getDirectiveSequencer() = 0;
 };
 
 /**

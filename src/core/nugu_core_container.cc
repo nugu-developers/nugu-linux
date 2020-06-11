@@ -91,6 +91,11 @@ IFocusManager* NuguCoreContainer::getFocusManager()
     return CapabilityManager::getInstance()->getFocusManager();
 }
 
+IDirectiveSequencer* NuguCoreContainer::getDirectiveSequencer()
+{
+    return CapabilityManager::getInstance()->getDirectiveSequencer();
+}
+
 void NuguCoreContainer::setWakeupWord(const std::string& wakeup_word)
 {
     if (!wakeup_word.empty())

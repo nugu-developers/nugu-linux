@@ -35,6 +35,7 @@ CapabilityManager::CapabilityManager()
     playsync_manager = std::unique_ptr<PlaySyncManager>(new PlaySyncManager());
     focus_manager = std::unique_ptr<FocusManager>(new FocusManager());
     session_manager = std::unique_ptr<SessionManager>(new SessionManager());
+    directive_sequencer = std::unique_ptr<DirectiveSequencer>(new DirectiveSequencer());
 }
 
 CapabilityManager::~CapabilityManager()
@@ -60,6 +61,45 @@ void CapabilityManager::destroyInstance()
         delete instance;
         instance = NULL;
     }
+}
+
+bool CapabilityManager::onPreHandleDirective(NuguDirective* ndir)
+{
+    ICapabilityInterface* cap = findCapability(nugu_directive_peek_namespace(ndir));
+    if (cap == nullptr) {
+        nugu_warn("capability(%s) is not support", nugu_directive_peek_namespace(ndir));
+        return false;
+    }
+
+    const char* version = nugu_directive_peek_version(ndir);
+
+    if (!isSupportDirectiveVersion(version, cap)) {
+        nugu_error("directives[%s] cannot work on %s[%s] agent",
+            version, cap->getName().c_str(), cap->getVersion().c_str());
+
+        /* Destroy the unsupported version of the directive */
+        nugu_directive_unref(ndir);
+        return true;
+    }
+
+    return false;
+}
+
+bool CapabilityManager::onHandleDirective(NuguDirective* ndir)
+{
+    ICapabilityInterface* cap = findCapability(nugu_directive_peek_namespace(ndir));
+    if (cap == nullptr) {
+        nugu_warn("capability(%s) is not support", nugu_directive_peek_namespace(ndir));
+        return false;
+    }
+
+    nugu_info("preprocessDirective");
+    preprocessDirective(ndir);
+
+    nugu_info("processDirective");
+    cap->processDirective(ndir);
+
+    return true;
 }
 
 NuguDirseqReturn CapabilityManager::dirseqCallback(NuguDirective* ndir, void* userdata)
@@ -349,6 +389,11 @@ FocusManager* CapabilityManager::getFocusManager()
 SessionManager* CapabilityManager::getSessionManager()
 {
     return session_manager.get();
+}
+
+DirectiveSequencer* CapabilityManager::getDirectiveSequencer()
+{
+    return directive_sequencer.get();
 }
 
 } // NuguCore

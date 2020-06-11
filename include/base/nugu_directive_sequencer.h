@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NUGU_DIRECTIVE_SEQUENCER_H__
-#define __NUGU_DIRECTIVE_SEQUENCER_H__
+#ifndef __NUGU_DIRECTIVE_SEQUENCER_LEGACY_H__
+#define __NUGU_DIRECTIVE_SEQUENCER_LEGACY_H__
 
 #include <base/nugu_directive.h>
 

@@ -62,6 +62,11 @@ ISessionManager* CapabilityHelper::getSessionManager()
     return CapabilityManager::getInstance()->getSessionManager();
 }
 
+IDirectiveSequencer* CapabilityHelper::getDirectiveSequencer()
+{
+    return CapabilityManager::getInstance()->getDirectiveSequencer();
+}
+
 bool CapabilityHelper::setMute(bool mute)
 {
     return AudioRecorderManager::getInstance()->setMute(mute);

@@ -180,9 +180,15 @@ public:
      * @brief Add event name and directive name for referred dialog request id.
      * @param[in] ename event name
      * @param[in] dname directive name
-     * @return referred dialog request id
      */
     void addReferrerEvents(const std::string& ename, const std::string& dname);
+
+    /**
+     * @brief Add blocking policy for directive name
+     * @param[in] dname directive name
+     * @param[in] policy BlockingPolicy information
+     */
+    void addBlockingPolicy(const std::string& dname, BlockingPolicy policy);
 
     /**
      * @brief Get referred dialog request id.
@@ -352,6 +358,9 @@ protected:
 
     /** @brief ISessionManager instance for using session management */
     ISessionManager* session_manager = nullptr;
+
+    /** @brief IDirectiveSequencer instance for directive sequence management */
+    IDirectiveSequencer* directive_sequencer = nullptr;
 
     /** @brief SuspendPolicy variable for deciding suspend action (default:STOP) */
     SuspendPolicy suspend_policy = SuspendPolicy::STOP;

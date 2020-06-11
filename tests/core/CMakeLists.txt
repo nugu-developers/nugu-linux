@@ -1,10 +1,12 @@
-SET(UNIT_TESTS test-core-nugu-timer
-				test-core-focus-manager)
+SET(UNIT_TESTS
+	test-core-nugu-timer
+	test-core-focus-manager
+	test-core-directive-sequencer)
 
 # Add Compile Sources with Mock for test
-SET(test-core-nugu-timer-srcs test-core-nugu-timer-mock.cc
-								../../src/core/nugu_timer.cc)
-
+SET(test-core-nugu-timer-srcs
+	test-core-nugu-timer-mock.cc ../../src/core/nugu_timer.cc)
+SET(test-core-directive-sequencer-srcs ../../src/core/directive_sequencer.cc)
 SET(test-core-focus-manager-srcs ../../src/core/focus_manager.cc)
 
 FOREACH(test ${UNIT_TESTS})
