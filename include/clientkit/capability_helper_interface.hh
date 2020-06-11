@@ -24,6 +24,7 @@
 #include <clientkit/focus_manager_interface.hh>
 #include <clientkit/playsync_manager_interface.hh>
 #include <clientkit/session_manager_interface.hh>
+#include <clientkit/directive_sequencer_interface.hh>
 
 namespace NuguClientKit {
 /**
@@ -61,6 +62,12 @@ public:
      * @return ISessionManager instance
      */
     virtual ISessionManager* getSessionManager() = 0;
+
+     /**
+     * @brief Get IDirectiveSequencer instance
+     * @return IDirectiveSequencer instance
+     */
+    virtual IDirectiveSequencer* getDirectiveSequencer() = 0;
 
     /**
      * @brief Set Audio Recorder mute/unmute

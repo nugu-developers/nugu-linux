@@ -147,9 +147,11 @@ void Capability::setNuguCoreContainer(INuguCoreContainer* core_container)
 {
     this->core_container = core_container;
     capa_helper = core_container->getCapabilityHelper();
+
     playsync_manager = capa_helper->getPlaySyncManager();
     focus_manager = capa_helper->getFocusManager();
     session_manager = capa_helper->getSessionManager();
+    directive_sequencer = capa_helper->getDirectiveSequencer();
 }
 
 void Capability::initialize()
@@ -209,6 +211,16 @@ void Capability::notifyEventResponse(const std::string& msg_id, const std::strin
 void Capability::addReferrerEvents(const std::string& ename, const std::string& dname)
 {
     pimpl->referrer_events[ename] = dname;
+}
+
+void Capability::addBlockingPolicy(const std::string& dname, BlockingPolicy policy)
+{
+    if (directive_sequencer == nullptr) {
+        nugu_error("directive sequencer is nullptr");
+        return;
+    }
+
+    directive_sequencer->addPolicy(pimpl->cname, dname, policy);
 }
 
 std::string Capability::getReferrerDialogRequestId(const std::string& ename)

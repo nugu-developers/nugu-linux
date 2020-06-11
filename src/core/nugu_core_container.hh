@@ -37,6 +37,7 @@ public:
     INuguTimer* createNuguTimer() override;
     ICapabilityHelper* getCapabilityHelper() override;
     IFocusManager* getFocusManager() override;
+    IDirectiveSequencer* getDirectiveSequencer() override;
 
     // wrapping CapabilityManager functions
     void setWakeupWord(const std::string& wakeup_word);
