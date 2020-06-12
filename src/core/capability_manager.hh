@@ -22,10 +22,11 @@
 
 #include "base/nugu_event.h"
 #include "clientkit/capability_interface.hh"
+
+#include "directive_sequencer.hh"
 #include "focus_manager.hh"
 #include "playsync_manager.hh"
 #include "session_manager.hh"
-#include "directive_sequencer.hh"
 
 namespace NuguCore {
 
@@ -70,11 +71,13 @@ public:
     void suspendAll();
     void restoreAll();
 
+    // overriding IDirectiveSequencerListener
     bool onPreHandleDirective(NuguDirective* ndir) override;
     bool onHandleDirective(NuguDirective* ndir) override;
 
 private:
     ICapabilityInterface* findCapability(const std::string& cname);
+    std::string makeAllContextCommonInfo(bool include_playstack = false);
 
     static CapabilityManager* instance;
     std::map<std::string, ICapabilityInterface*> caps;

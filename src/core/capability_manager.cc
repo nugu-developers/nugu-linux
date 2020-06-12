@@ -25,15 +25,15 @@ namespace NuguCore {
 // define default property values
 static const char* WAKEUP_WORD = "아리아";
 
-CapabilityManager* CapabilityManager::instance = NULL;
+CapabilityManager* CapabilityManager::instance = nullptr;
 
 CapabilityManager::CapabilityManager()
+    : playsync_manager(std::unique_ptr<PlaySyncManager>(new PlaySyncManager()))
+    , focus_manager(std::unique_ptr<FocusManager>(new FocusManager()))
+    , session_manager(std::unique_ptr<SessionManager>(new SessionManager()))
+    , directive_sequencer(std::unique_ptr<DirectiveSequencer>(new DirectiveSequencer()))
 {
     wword = WAKEUP_WORD;
-    playsync_manager = std::unique_ptr<PlaySyncManager>(new PlaySyncManager());
-    focus_manager = std::unique_ptr<FocusManager>(new FocusManager());
-    session_manager = std::unique_ptr<SessionManager>(new SessionManager());
-    directive_sequencer = std::unique_ptr<DirectiveSequencer>(new DirectiveSequencer());
 }
 
 CapabilityManager::~CapabilityManager()
@@ -45,9 +45,9 @@ CapabilityManager::~CapabilityManager()
 
 CapabilityManager* CapabilityManager::getInstance()
 {
-    if (!instance) {
+    if (!instance)
         instance = new CapabilityManager();
-    }
+
     return instance;
 }
 
@@ -55,7 +55,7 @@ void CapabilityManager::destroyInstance()
 {
     if (instance) {
         delete instance;
-        instance = NULL;
+        instance = nullptr;
     }
 }
 
@@ -100,7 +100,7 @@ bool CapabilityManager::onHandleDirective(NuguDirective* ndir)
 
 void CapabilityManager::addCapability(const std::string& cname, ICapabilityInterface* cap)
 {
-    caps[cname] = cap;
+    caps.emplace(cname, cap);
     directive_sequencer->addListener(cname, this);
 }
 
@@ -135,7 +135,7 @@ void CapabilityManager::requestEventResult(NuguEvent* event)
                                  .append(".")
                                  .append(dialog_id);
 
-    events[msg_id] = event_desc;
+    events.emplace(msg_id, event_desc);
     events_cname_map.emplace(msg_id, name_space);
 
     nugu_dbg("request event[%s] result - %s", msg_id, event_desc.c_str());
@@ -211,7 +211,7 @@ std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::V
     Json::Value root;
     Json::Value client;
 
-    for (auto cap : caps) {
+    for (const auto& cap : caps) {
         ICapabilityInterface* icap = cap.second;
         if (icap->getName() == cname)
             continue;
@@ -234,40 +234,32 @@ std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::V
 
 std::string CapabilityManager::makeAllContextInfo()
 {
-    Json::StyledWriter writer;
-    Json::Value root;
-    Json::Value ctx;
-    Json::Value client;
-
-    for (auto iter : caps)
-        iter.second->updateInfoForContext(ctx);
-
-    client["wakeupWord"] = wword;
-    client["os"] = "Linux";
-
-    root["supportedInterfaces"] = ctx;
-    root["client"] = client;
-
-    return writer.write(root);
+    return makeAllContextCommonInfo();
 }
 
 std::string CapabilityManager::makeAllContextInfoStack()
+{
+    return makeAllContextCommonInfo(true);
+}
+
+std::string CapabilityManager::makeAllContextCommonInfo(bool include_playstack)
 {
     Json::StyledWriter writer;
     Json::Value root;
     Json::Value ctx;
     Json::Value client;
 
-    for (auto iter : caps)
+    for (const auto& iter : caps)
         iter.second->updateInfoForContext(ctx);
 
     client["wakeupWord"] = wword;
     client["os"] = "Linux";
 
-    auto play_stack = playsync_manager->getAllPlayStackItems();
+    if (include_playstack) {
+        auto play_stack = playsync_manager->getAllPlayStackItems();
 
-    for (const auto& element : play_stack) {
-        client["playStack"].append(element);
+        for (const auto& element : play_stack)
+            client["playStack"].append(element);
     }
 
     root["supportedInterfaces"] = ctx;
@@ -278,8 +270,6 @@ std::string CapabilityManager::makeAllContextInfoStack()
 
 void CapabilityManager::preprocessDirective(NuguDirective* ndir)
 {
-    std::string name_space = nugu_directive_peek_namespace(ndir);
-    std::string dname = nugu_directive_peek_name(ndir);
     std::string groups = nugu_directive_peek_groups(ndir);
 
     sendCommandAll("receive_directive_group", groups);
@@ -305,15 +295,14 @@ void CapabilityManager::sendCommandAll(const std::string& command, const std::st
 {
     nugu_dbg("send %s with %s", command.c_str(), param.c_str());
 
-    for (auto iter : caps) {
+    for (const auto& iter : caps)
         iter.second->receiveCommandAll(command, param);
-    }
 }
 
 void CapabilityManager::sendCommand(const std::string& from, const std::string& to,
     const std::string& command, const std::string& param)
 {
-    for (auto iter : caps) {
+    for (const auto& iter : caps) {
         if (iter.second->getName() == to) {
             iter.second->receiveCommand(from, command, param);
             break;
@@ -323,7 +312,7 @@ void CapabilityManager::sendCommand(const std::string& from, const std::string& 
 
 void CapabilityManager::getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value)
 {
-    for (auto iter : caps) {
+    for (const auto& iter : caps) {
         if (iter.second->getName() == cap) {
             iter.second->getProperty(property, value);
             break;
@@ -333,7 +322,7 @@ void CapabilityManager::getCapabilityProperty(const std::string& cap, const std:
 
 void CapabilityManager::getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values)
 {
-    for (auto iter : caps) {
+    for (const auto& iter : caps) {
         if (iter.second->getName() == cap) {
             iter.second->getProperties(property, values);
             break;
@@ -343,16 +332,14 @@ void CapabilityManager::getCapabilityProperties(const std::string& cap, const st
 
 void CapabilityManager::suspendAll()
 {
-    for (const auto& iter : caps) {
+    for (const auto& iter : caps)
         iter.second->suspend();
-    }
 }
 
 void CapabilityManager::restoreAll()
 {
-    for (const auto& iter : caps) {
+    for (const auto& iter : caps)
         iter.second->restore();
-    }
 }
 
 PlaySyncManager* CapabilityManager::getPlaySyncManager()
