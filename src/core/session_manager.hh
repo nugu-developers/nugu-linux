@@ -35,6 +35,8 @@ public:
     void deactivate(const std::string& dialog_id) override;
     Json::Value getActiveSessionInfo() override;
 
+    std::map<std::string, Session> getAllSessions();
+
 private:
     std::map<std::string, Session> session_map;
 };
