@@ -81,4 +81,9 @@ Json::Value SessionManager::getActiveSessionInfo()
     return session_info_list;
 }
 
+std::map<std::string, Session> SessionManager::getAllSessions()
+{
+    return session_map;
+}
+
 } // NuguCore
