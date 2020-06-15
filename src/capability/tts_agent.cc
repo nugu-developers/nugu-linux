@@ -130,7 +130,7 @@ void TTSAgent::onFocusChanged(FocusState state)
 
     switch (state) {
     case FocusState::FOREGROUND:
-        executeOnForegrondAction();
+        executeOnForegroundAction();
         break;
     case FocusState::BACKGROUND:
         focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
@@ -143,9 +143,9 @@ void TTSAgent::onFocusChanged(FocusState state)
     focus_state = state;
 }
 
-void TTSAgent::executeOnForegrondAction()
+void TTSAgent::executeOnForegroundAction()
 {
-    nugu_dbg("executeOnForegrondAction()");
+    nugu_dbg("executeOnForegroundAction()");
 
     if (!player->play()) {
         nugu_error("play() failed");
@@ -400,7 +400,7 @@ void TTSAgent::parsingSpeak(const char* message)
         nugu_directive_peek_msg_id(speak_dir), NULL);
 
     if (focus_state == FocusState::FOREGROUND)
-        executeOnForegrondAction();
+        executeOnForegroundAction();
     else
         focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
 

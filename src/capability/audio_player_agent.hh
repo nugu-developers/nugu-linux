@@ -70,8 +70,8 @@ public:
     bool setMute(bool mute) override;
 
     void onFocusChanged(FocusState state) override;
-    void executeOnForegrondAction();
-    void executeOnBackgrondAction();
+    void executeOnForegroundAction();
+    void executeOnBackgroundAction();
 
     void sendEventPlaybackStarted(EventResultCallback cb = nullptr);
     void sendEventPlaybackFinished(EventResultCallback cb = nullptr);
