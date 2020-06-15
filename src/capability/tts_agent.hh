@@ -43,7 +43,7 @@ public:
     bool setVolume(int volume) override;
 
     void onFocusChanged(FocusState state) override;
-    void executeOnForegrondAction();
+    void executeOnForegroundAction();
 
     void sendEventSpeechStarted(const std::string& token, EventResultCallback cb = nullptr);
     void sendEventSpeechFinished(const std::string& token, EventResultCallback cb = nullptr);

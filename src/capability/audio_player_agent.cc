@@ -143,7 +143,7 @@ void AudioPlayerAgent::suspend()
             focus_manager->releaseFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME);
     } else {
         if (focus_state == FocusState::FOREGROUND)
-            executeOnBackgrondAction();
+            executeOnBackgroundAction();
     }
     suspended = true;
 }
@@ -158,7 +158,7 @@ void AudioPlayerAgent::restore()
     nugu_dbg("suspend_policy[%d], focus_state => %s", suspend_policy, focus_manager->getStateString(focus_state).c_str());
 
     if (suspend_policy == SuspendPolicy::PAUSE && focus_state != FocusState::NONE)
-        executeOnForegrondAction();
+        executeOnForegroundAction();
 
     suspended = false;
 }
@@ -193,10 +193,10 @@ void AudioPlayerAgent::onFocusChanged(FocusState state)
 
     switch (state) {
     case FocusState::FOREGROUND:
-        executeOnForegrondAction();
+        executeOnForegroundAction();
         break;
     case FocusState::BACKGROUND:
-        executeOnBackgrondAction();
+        executeOnBackgroundAction();
         break;
     case FocusState::NONE:
         if (speak_dir) {
@@ -215,9 +215,9 @@ void AudioPlayerAgent::onFocusChanged(FocusState state)
     focus_state = state;
 }
 
-void AudioPlayerAgent::executeOnForegrondAction()
+void AudioPlayerAgent::executeOnForegroundAction()
 {
-    nugu_dbg("executeOnForegrondAction()");
+    nugu_dbg("executeOnForegroundAction()");
 
     if (is_paused) {
         nugu_warn("AudioPlayer is pause mode caused by directive(PAUSE)");
@@ -251,9 +251,9 @@ void AudioPlayerAgent::executeOnForegrondAction()
     }
 }
 
-void AudioPlayerAgent::executeOnBackgrondAction()
+void AudioPlayerAgent::executeOnBackgroundAction()
 {
-    nugu_dbg("executeOnBackgrondAction()");
+    nugu_dbg("executeOnBackgroundAction()");
 
     nugu_dbg("is_finished: %d, cur_player->state(): %d", is_finished, cur_player->state());
     if (cur_player->state() == MediaPlayerState::PLAYING) {
@@ -896,7 +896,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     }
 
     if (focus_state == FocusState::FOREGROUND)
-        executeOnForegrondAction();
+        executeOnForegroundAction();
     else
         focus_manager->requestFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME, this);
 }
