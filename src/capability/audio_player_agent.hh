@@ -117,6 +117,7 @@ private:
     void parsingRequestPlayCommand(const char* dname, const char* message);
     void parsingRequestOthersCommand(const char* dname, const char* message);
 
+    void checkAndUpdateVolume();
     std::string playbackError(PlaybackError error);
     std::string playerActivity(AudioPlayerState state);
 
@@ -141,6 +142,8 @@ private:
     std::string pre_ref_dialog_id;
     std::string cur_dialog_id;
     bool is_finished;
+    bool volume_update;
+    int volume;
     std::vector<IAudioPlayerListener*> aplayer_listeners;
 };
 
