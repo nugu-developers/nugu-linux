@@ -60,6 +60,7 @@ private:
     void parsingSpeak(const char* message);
     void parsingStop(const char* message);
 
+    void checkAndUpdateVolume();
     void mediaStateChanged(MediaPlayerState state) override;
     void mediaEventReport(MediaPlayerEvent event) override;
     void mediaChanged(const std::string& url) override;
@@ -73,6 +74,8 @@ private:
     FocusState focus_state;
     std::string cur_token;
     bool is_finished;
+    bool volume_update;
+    int volume;
 
     NuguDirective* speak_dir;
 

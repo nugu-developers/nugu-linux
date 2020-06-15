@@ -34,6 +34,8 @@ TTSAgent::TTSAgent()
     , focus_state(FocusState::NONE)
     , cur_token("")
     , is_finished(false)
+    , volume_update(false)
+    , volume(-1)
     , speak_dir(nullptr)
     , dialog_id("")
     , ps_id("")
@@ -59,8 +61,13 @@ void TTSAgent::initialize()
         return;
     }
 
+    std::string volume_str;
+    capa_helper->getCapabilityProperty("Speaker", "voice_command", volume_str);
+    volume = std::stoi(volume_str);
+
     player = core_container->createTTSPlayer();
     player->addListener(this);
+    player->setVolume(volume);
 
     addReferrerEvents("SpeechStarted", "Speak");
     addReferrerEvents("SpeechFinished", "Speak");
@@ -147,6 +154,8 @@ void TTSAgent::executeOnForegroundAction()
 {
     nugu_dbg("executeOnForegroundAction()");
 
+    checkAndUpdateVolume();
+
     if (!player->play()) {
         nugu_error("play() failed");
         if (speak_dir) {
@@ -204,10 +213,16 @@ bool TTSAgent::setVolume(int volume)
 {
     nugu_dbg("set pcm player's volume: %d", volume);
 
-    if (!player || player->setVolume(volume) != 0)
-        return false;
+    if (this->volume == volume)
+        return true;
 
-    nugu_dbg("pcm player's volume(%d) changed..", volume);
+    this->volume = volume;
+    volume_update = true;
+
+    if (focus_state == FocusState::FOREGROUND)
+        checkAndUpdateVolume();
+    else
+        nugu_dbg("Reserved to change pcm player's volume(%d)", volume);
     return true;
 }
 
@@ -488,6 +503,15 @@ void TTSAgent::volumeChanged(int volume)
 
 void TTSAgent::muteChanged(int mute)
 {
+}
+
+void TTSAgent::checkAndUpdateVolume()
+{
+    if (volume_update && player) {
+        nugu_dbg("pcm player's volume(%d) is changed", volume);
+        player->setVolume(volume);
+        volume_update = false;
+    }
 }
 
 } // NuguCapability

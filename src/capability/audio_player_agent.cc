@@ -44,6 +44,8 @@ AudioPlayerAgent::AudioPlayerAgent()
     , cur_token("")
     , pre_ref_dialog_id("")
     , is_finished(false)
+    , volume_update(false)
+    , volume(-1)
 {
 }
 
@@ -58,11 +60,17 @@ void AudioPlayerAgent::initialize()
         return;
     }
 
+    std::string volume_str;
+    capa_helper->getCapabilityProperty("Speaker", "music", volume_str);
+    volume = std::stoi(volume_str);
+
     media_player = core_container->createMediaPlayer();
     media_player->addListener(this);
+    media_player->setVolume(volume);
 
     tts_player = core_container->createTTSPlayer();
     tts_player->addListener(this);
+    tts_player->setVolume(volume);
 
     cur_player = media_player;
 
@@ -227,6 +235,8 @@ void AudioPlayerAgent::executeOnForegroundAction()
     std::string type = is_tts_activate ? "attachment" : "streaming";
     nugu_dbg("cur_aplayer_state[%s] => %d, player->state() => %s", type.c_str(), cur_aplayer_state, cur_player->stateString(cur_player->state()).c_str());
 
+    checkAndUpdateVolume();
+
     if (cur_player->state() == MediaPlayerState::PAUSED) {
         if (!cur_player->resume()) {
             nugu_error("resume media(%s) failed", type.c_str());
@@ -390,13 +400,17 @@ std::string AudioPlayerAgent::setShuffle(bool shuffle)
 bool AudioPlayerAgent::setVolume(int volume)
 {
     nugu_dbg("set media player's volume: %d", volume);
-    if (!cur_player)
-        return false;
+    if (this->volume == volume)
+        return true;
 
-    if (!cur_player->setVolume(volume))
-        return false;
+    this->volume = volume;
+    volume_update = true;
 
-    nugu_dbg("media player's volume(%d) changed..", volume);
+    if (focus_state == FocusState::FOREGROUND)
+        checkAndUpdateVolume();
+    else
+        nugu_dbg("Reserved to change media player's volume(%d)", volume);
+
     return true;
 }
 
@@ -1326,4 +1340,13 @@ void AudioPlayerAgent::muteChanged(int mute)
 {
 }
 
+void AudioPlayerAgent::checkAndUpdateVolume()
+{
+    if (volume_update && media_player && tts_player) {
+        nugu_dbg("media player's volume(%d) is changed", volume);
+        media_player->setVolume(volume);
+        tts_player->setVolume(volume);
+        volume_update = false;
+    }
+}
 } // NuguCapability

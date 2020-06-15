@@ -43,9 +43,15 @@ using namespace NuguClientKit;
  * @brief SpeakerType
  */
 enum class SpeakerType {
-    NUGU, /**< General NUGU Speaker type */
+    NUGU, /**< General NUGU Speaker type: Music + Voice command */
+    MUSIC, /**< Music type */
+    RINGTON, /**< Rington type */
     CALL, /**< Call type */
-    ALARM /**< Alarm type */
+    NOTIFICATION, /**< Notification type */
+    ALARM, /**< Alarm type */
+    VOICE_COMMAND, /**< Voice Command type */
+    NAVIGATION, /**< Navigation type */
+    SYSTEM_SOUND /**< System Sound type */
 };
 
 /**

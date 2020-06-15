@@ -33,6 +33,7 @@ public:
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
+    void getProperty(const std::string& property, std::string& value) override;
 
     void setSpeakerInfo(const std::map<SpeakerType, SpeakerInfo>& info) override;
 

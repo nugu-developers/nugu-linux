@@ -87,8 +87,14 @@ void CapabilityCollection::composeCapabilityFactory()
             // compose SpeakerInfo
             std::map<SpeakerType, SpeakerInfo> speakers {
                 { SpeakerType::NUGU, makeSpeakerInfo(SpeakerType::NUGU, true) },
+                { SpeakerType::MUSIC, makeSpeakerInfo(SpeakerType::MUSIC) },
+                { SpeakerType::RINGTON, makeSpeakerInfo(SpeakerType::RINGTON) },
                 { SpeakerType::CALL, makeSpeakerInfo(SpeakerType::CALL) },
+                { SpeakerType::NOTIFICATION, makeSpeakerInfo(SpeakerType::NOTIFICATION) },
                 { SpeakerType::ALARM, makeSpeakerInfo(SpeakerType::ALARM) },
+                { SpeakerType::VOICE_COMMAND, makeSpeakerInfo(SpeakerType::VOICE_COMMAND) },
+                { SpeakerType::NAVIGATION, makeSpeakerInfo(SpeakerType::NAVIGATION) },
+                { SpeakerType::SYSTEM_SOUND, makeSpeakerInfo(SpeakerType::SYSTEM_SOUND) },
             };
 
             speaker_handler->setSpeakerInfo(speakers);

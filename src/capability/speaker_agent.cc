@@ -22,7 +22,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "Speaker";
-static const char* CAPABILITY_VERSION = "1.0";
+static const char* CAPABILITY_VERSION = "1.1";
 
 SpeakerAgent::SpeakerAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -97,6 +97,28 @@ void SpeakerAgent::setCapabilityListener(ICapabilityListener* clistener)
         speaker_listener = dynamic_cast<ISpeakerListener*>(clistener);
 }
 
+void SpeakerAgent::getProperty(const std::string& property, std::string& value)
+{
+    std::string convert_property;
+    convert_property.resize(property.size());
+    std::transform(property.cbegin(), property.cend(), convert_property.begin(), ::toupper);
+
+    value = std::to_string(NUGU_SPEAKER_MAX_VOLUME);
+
+    SpeakerType type;
+    if (!getSpeakerType(convert_property, type)) {
+        nugu_warn("property(%s) is not exist, so use the property(nugu)", property.c_str());
+        type = SpeakerType::NUGU;
+    }
+
+    if (speakers.find(type) != speakers.end() && speakers[type]->can_control)
+        value = std::to_string(speakers[type]->volume);
+    else if (speakers.find(SpeakerType::NUGU) != speakers.end() && speakers[SpeakerType::NUGU]->can_control)
+        value = std::to_string(speakers[SpeakerType::NUGU]->volume);
+
+    nugu_dbg("request to get property(%s) and return value(%s)", property.c_str(), value.c_str());
+}
+
 void SpeakerAgent::setSpeakerInfo(const std::map<SpeakerType, SpeakerInfo>& info)
 {
     if (info.size() == 0)
@@ -167,11 +189,23 @@ bool SpeakerAgent::getSpeakerType(const std::string& name, SpeakerType& type)
     if (name == "NUGU") {
         type = SpeakerType::NUGU;
         return true;
-    } else if (name == "CALL") {
-        type = SpeakerType::CALL;
+    } else if (name == "MUSIC") {
+        type = SpeakerType::MUSIC;
         return true;
-    } else if (name == "ALARM") {
-        type = SpeakerType::ALARM;
+    } else if (name == "RINGTON") {
+        type = SpeakerType::RINGTON;
+        return true;
+    } else if (name == "NOTIFICATION") {
+        type = SpeakerType::NOTIFICATION;
+        return true;
+    } else if (name == "VOICE_COMMAND") {
+        type = SpeakerType::VOICE_COMMAND;
+        return true;
+    } else if (name == "NAVIGATION") {
+        type = SpeakerType::NAVIGATION;
+        return true;
+    } else if (name == "SYSTEM_SOUND") {
+        type = SpeakerType::SYSTEM_SOUND;
         return true;
     }
     return false;
@@ -179,10 +213,20 @@ bool SpeakerAgent::getSpeakerType(const std::string& name, SpeakerType& type)
 
 std::string SpeakerAgent::getSpeakerName(const SpeakerType& type)
 {
-    if (type == SpeakerType::CALL)
-        return "CALL";
-    else if (type == SpeakerType::ALARM)
-        return "ALARM";
+    if (type == SpeakerType::NUGU)
+        return "NUGU";
+    else if (type == SpeakerType::MUSIC)
+        return "MUSIC";
+    else if (type == SpeakerType::RINGTON)
+        return "RINGTON";
+    else if (type == SpeakerType::NOTIFICATION)
+        return "NOTIFICATION";
+    else if (type == SpeakerType::VOICE_COMMAND)
+        return "VOICE_COMMAND";
+    else if (type == SpeakerType::NAVIGATION)
+        return "NAVIGATION";
+    else if (type == SpeakerType::SYSTEM_SOUND)
+        return "SYSTEM_SOUND";
     else
         return "NUGU";
 }
