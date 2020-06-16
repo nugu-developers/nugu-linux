@@ -91,9 +91,4 @@ INetworkManager* NuguClient::getNetworkManager()
     return impl->getNetworkManager();
 }
 
-IFocusManager* NuguClient::getFocusManager()
-{
-    return impl->getFocusManager();
-}
-
 } // NuguClientKit
