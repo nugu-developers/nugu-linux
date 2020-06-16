@@ -139,6 +139,7 @@ private:
     long report_delay_time;
     long report_interval_time;
     std::string cur_token;
+    std::string cur_url;
     std::string pre_ref_dialog_id;
     std::string cur_dialog_id;
     bool is_finished;

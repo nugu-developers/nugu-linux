@@ -42,6 +42,7 @@ AudioPlayerAgent::AudioPlayerAgent()
     , report_delay_time(-1)
     , report_interval_time(-1)
     , cur_token("")
+    , cur_url("")
     , pre_ref_dialog_id("")
     , is_finished(false)
     , volume_update(false)
@@ -775,6 +776,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     std::string url;
     std::string cache_key;
     long offset;
+    bool new_content;
     std::string token;
     std::string prev_token;
     std::string temp;
@@ -811,14 +813,27 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     }
 
     if (source_type == "ATTACHMENT") {
-        nugu_dbg("Receive Attachment media");
         has_attachment = true;
+
+        nugu_dbg("    token => %s", token.c_str());
+        nugu_dbg("cur_token => %s", cur_token.c_str());
+        nugu_dbg("   offset => %d", offset);
+
+        new_content = (token != cur_token) || (offset == 0);
+        nugu_dbg("Receive Attachment media (new_content: %d)", new_content);
     } else {
-        nugu_dbg("Receive Streaming media");
         if (url.size() == 0) {
             nugu_error("There is no mandatory data in directive message");
             return;
         }
+
+        nugu_dbg("    url => %s", url.c_str());
+        nugu_dbg("cur_url => %s", cur_url.c_str());
+        nugu_dbg(" offset => %d", offset);
+
+        new_content = (url != cur_url) || (offset == 0);
+        nugu_dbg("Receive Streaming media (new_content: %d)", new_content);
+        cur_url = url;
     }
 
     if (cache_key.size()) {
@@ -861,9 +876,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
 
     std::string dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
     std::string dname = nugu_directive_peek_name(getNuguDirective());
-    // Different tokens mean different media play requests.
-    if (token != cur_token) {
-
+    if (new_content) {
         if (pre_ref_dialog_id.size())
             setReferrerDialogRequestId(dname, pre_ref_dialog_id);
 
@@ -893,15 +906,17 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         is_tts_activate = false;
     }
 
-    if (!cur_player->setSource(url)) {
-        nugu_error("set source failed");
-        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "can't set source");
-        return;
-    }
-    if (offset >= 0 && !cur_player->seek(offset / 1000)) {
-        nugu_error("seek media failed");
-        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "can't seek");
-        return;
+    if (new_content) {
+        if (!cur_player->setSource(url)) {
+            nugu_error("set source failed");
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "can't set source");
+            return;
+        }
+        if (offset >= 0 && !cur_player->seek(offset / 1000)) {
+            nugu_error("seek media failed");
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "can't seek");
+            return;
+        }
     }
 
     if (suspended && suspend_policy == SuspendPolicy::STOP) {
