@@ -27,6 +27,7 @@ using namespace NuguClientKit;
 std::unique_ptr<NuguClient> nugu_client = nullptr;
 std::unique_ptr<NuguSampleManager> nugu_sample_manager = nullptr;
 std::unique_ptr<CapabilityCollection> capa_collection = nullptr;
+INuguCoreContainer* nugu_core_container = nullptr;
 
 template <typename T, typename... Ts>
 std::unique_ptr<T> make_unique(Ts&&... params)
@@ -48,7 +49,7 @@ class FocusManagerObserver : public IFocusManagerObserver {
 public:
     void onFocusChanged(const FocusConfiguration& configuration, FocusState state, const std::string& name)
     {
-        auto focus_manager(nugu_client->getFocusManager());
+        auto focus_manager(nugu_core_container->getCapabilityHelper()->getFocusManager());
         std::string msg;
 
         msg.append("==================================================\n[")
@@ -175,6 +176,7 @@ int main(int argc, char** argv)
 
     nugu_client = make_unique<NuguClient>();
     capa_collection = make_unique<CapabilityCollection>();
+    nugu_core_container = nugu_client->getNuguCoreContainer();
 
     registerCapabilities();
 
@@ -183,7 +185,7 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    auto focus_manager(nugu_client->getFocusManager());
+    auto focus_manager(nugu_core_container->getCapabilityHelper()->getFocusManager());
     auto focus_manager_observer(make_unique<FocusManagerObserver>());
     focus_manager->addObserver(focus_manager_observer.get());
 
@@ -198,7 +200,6 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
-    auto nugu_core_container(nugu_client->getNuguCoreContainer());
     auto wakeup_handler(std::unique_ptr<IWakeupHandler>(
         nugu_core_container->createWakeupHandler(nugu_sample_manager->getModelPath())));
 

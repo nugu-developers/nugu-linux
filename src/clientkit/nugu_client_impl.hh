@@ -43,7 +43,6 @@ public:
     ICapabilityInterface* getCapabilityHandler(const std::string& cname);
     INuguCoreContainer* getNuguCoreContainer();
     INetworkManager* getNetworkManager();
-    IFocusManager* getFocusManager();
 
 private:
     int createCapabilities(void);

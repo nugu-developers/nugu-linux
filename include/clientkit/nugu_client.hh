@@ -121,12 +121,6 @@ public:
      */
     INetworkManager* getNetworkManager();
 
-    /**
-     * @brief Get FocusManager object
-     * @return IFocusManager abstraction object of FocuskManager
-     */
-    IFocusManager* getFocusManager();
-
 private:
     std::unique_ptr<NuguClientImpl> impl;
     CapabilityBuilder* cap_builder;

@@ -40,15 +40,11 @@ INetworkManager* NuguCoreContainer::createNetworkManager()
 
 IWakeupHandler* NuguCoreContainer::createWakeupHandler(const std::string& model_path)
 {
-    // TODO : It needs guarantee related plugin is loaded.
-
     return new WakeupHandler(model_path);
 }
 
 ISpeechRecognizer* NuguCoreContainer::createSpeechRecognizer(const std::string& model_path, const EpdAttribute& epd_attr)
 {
-    // TODO : It needs guarantee related plugin is loaded.
-
     SpeechRecognizer::Attribute sr_attribute;
 
     sr_attribute.model_path = model_path;
@@ -64,15 +60,11 @@ ISpeechRecognizer* NuguCoreContainer::createSpeechRecognizer(const std::string& 
 
 IMediaPlayer* NuguCoreContainer::createMediaPlayer()
 {
-    // TODO : It needs guarantee related plugin is loaded.
-
     return new MediaPlayer();
 }
 
 ITTSPlayer* NuguCoreContainer::createTTSPlayer()
 {
-    // TODO : It needs guarantee related plugin is loaded.
-
     return new TTSPlayer();
 }
 
@@ -84,16 +76,6 @@ INuguTimer* NuguCoreContainer::createNuguTimer()
 ICapabilityHelper* NuguCoreContainer::getCapabilityHelper()
 {
     return CapabilityHelper::getInstance();
-}
-
-IFocusManager* NuguCoreContainer::getFocusManager()
-{
-    return CapabilityManager::getInstance()->getFocusManager();
-}
-
-IDirectiveSequencer* NuguCoreContainer::getDirectiveSequencer()
-{
-    return CapabilityManager::getInstance()->getDirectiveSequencer();
 }
 
 void NuguCoreContainer::setWakeupWord(const std::string& wakeup_word)
