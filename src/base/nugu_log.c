@@ -408,24 +408,22 @@ EXPORT_API void nugu_log_print(enum nugu_log_module module,
 	va_list arg;
 	enum nugu_log_system log_system;
 
-	pthread_mutex_lock(&_log_mutex);
-
-	if (!_log_override_checked)
+	if (!_log_override_checked) {
+		pthread_mutex_lock(&_log_mutex);
 		_log_check_override();
-
-	if ((_log_module_bitset & module) == 0) {
 		pthread_mutex_unlock(&_log_mutex);
-		return;
 	}
 
-	if (level > _log_level) {
-		pthread_mutex_unlock(&_log_mutex);
+	if (level > _log_level)
 		return;
+
+	/* The NUGU_LOG_LEVEL_ERROR always pass the module filtering */
+	if (level > NUGU_LOG_LEVEL_ERROR) {
+		if ((_log_module_bitset & module) == 0)
+			return;
 	}
 
 	log_system = _log_system;
-
-	pthread_mutex_unlock(&_log_mutex);
 
 	switch (log_system) {
 	case NUGU_LOG_SYSTEM_SYSLOG:
