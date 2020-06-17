@@ -22,6 +22,8 @@
 #include "base/nugu_decoder.h"
 #include "base/nugu_log.h"
 #include "base/nugu_pcm.h"
+#include "base/nugu_prof.h"
+
 #include "nugu_timer.hh"
 #include "tts_player.hh"
 
@@ -49,6 +51,7 @@ public:
         , total_size(0)
         , timeout(0)
         , mute(false)
+        , count(0)
     {
     }
     ~TTSPlayerPrivate() {}
@@ -68,6 +71,7 @@ public:
     size_t total_size;
     gint timeout;
     bool mute;
+    int count;
 };
 std::map<TTSPlayer*, TTSPlayerPrivate*> TTSPlayerPrivate::mp_map;
 
@@ -224,6 +228,11 @@ bool TTSPlayer::write_audio(const char* data, int size)
             d->seek_size = 0;
         }
     }
+
+    if (d->count == 0)
+        nugu_prof_mark(NUGU_PROF_TYPE_TTS_FIRST_DECODING);
+
+    d->count++;
 
     if (dsize)
         ret = (nugu_pcm_push_data(d->player, (const char*)dbuf, dsize, false) >= 0);
@@ -470,6 +479,7 @@ void TTSPlayer::clearContent()
 {
     d->position = d->duration = 0;
     d->seek_time = d->seek_size = 0;
+    d->count = 0;
 }
 
 void TTSPlayer::StopB4Start()
