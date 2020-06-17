@@ -733,6 +733,21 @@ static int _pcm_resume(NuguPcmDriver *driver, NuguPcm *pcm)
 	return 0;
 }
 
+static int _pcm_set_volume(NuguPcmDriver *driver, NuguPcm *pcm, int volume)
+{
+	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
+
+	g_return_val_if_fail(pcm != NULL, -1);
+
+	if (pcm_param == NULL) {
+		nugu_error("internal error");
+		return -1;
+	}
+
+	nugu_warn("This device is not support to set volume yet");
+	return -1;
+}
+
 static int _pcm_get_position(NuguPcmDriver *driver, NuguPcm *pcm)
 {
 	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
@@ -803,6 +818,7 @@ static struct nugu_pcm_driver_ops pcm_ops = {
 	.pause = _pcm_pause, /* nugu_pcm_pause() */
 	.resume = _pcm_resume, /* nugu_pcm_resume() */
 	.push_data = _pcm_push_data, /* nugu_pcm_push_data() */
+	.set_volume = _pcm_set_volume, /* nugu_pcm_set_volume() */
 	.get_position = _pcm_get_position /* nugu_pcm_get_position() */
 };
 

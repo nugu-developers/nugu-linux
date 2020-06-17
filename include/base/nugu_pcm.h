@@ -359,6 +359,12 @@ struct nugu_pcm_driver_ops {
 	int (*resume)(NuguPcmDriver *driver, NuguPcm *pcm);
 
 	/**
+	 * @brief called when pcm is needed to set volume
+	 * @see nugu_pcm_resume()
+	 */
+	int (*set_volume)(NuguPcmDriver *driver, NuguPcm *pcm, int volume);
+
+	/**
 	 * @brief Called when a playback position is requested.
 	 * @see nugu_pcm_get_position()
 	 */

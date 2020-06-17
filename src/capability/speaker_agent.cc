@@ -219,8 +219,12 @@ std::string SpeakerAgent::getSpeakerName(const SpeakerType& type)
         return "MUSIC";
     else if (type == SpeakerType::RINGTON)
         return "RINGTON";
+    else if (type == SpeakerType::CALL)
+        return "CALL";
     else if (type == SpeakerType::NOTIFICATION)
         return "NOTIFICATION";
+    else if (type == SpeakerType::ALARM)
+        return "ALARM";
     else if (type == SpeakerType::VOICE_COMMAND)
         return "VOICE_COMMAND";
     else if (type == SpeakerType::NAVIGATION)
