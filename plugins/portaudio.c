@@ -22,8 +22,8 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include <glib.h>
 #include <alsa/error.h>
+#include <glib.h>
 #include <portaudio.h>
 
 #include "base/nugu_log.h"
@@ -37,6 +37,16 @@
 #define FRAME_PER_BUFFER 512
 
 //#define DEBUG_PCM
+//#define ASYNC_PLAYBACK
+
+#ifndef ASYNC_PLAYBACK
+enum SYNC_FLAG {
+	SYNC_FLAG_NOT_RUNNING,
+	SYNC_FLAG_READY,
+	SYNC_FLAG_DATA,
+	SYNC_FLAG_EXIT
+};
+#endif
 
 struct pa_audio_param {
 	PaStream *stream;
@@ -52,11 +62,20 @@ struct pa_audio_param {
 	int is_start;
 	int is_first;
 	int dump_fd;
+
+#ifndef ASYNC_PLAYBACK
+	pthread_t tid;
+	pthread_mutex_t lock;
+	pthread_cond_t cond;
+	enum SYNC_FLAG flag;
+	int running;
+#endif
 };
 
 static NuguRecorderDriver *rec_driver;
 static NuguPcmDriver *pcm_driver;
 
+#if defined(NUGU_ENV_DUMP_PATH_RECORDER) || defined(NUGU_ENV_DUMP_PATH_PCM)
 static int _dumpfile_open(const char *path, const char *prefix)
 {
 	char ymd[9];
@@ -89,6 +108,7 @@ static int _dumpfile_open(const char *path, const char *prefix)
 
 	return fd;
 }
+#endif
 
 static int _set_property_to_param(struct pa_audio_param *param,
 				  NuguAudioProperty prop)
@@ -201,6 +221,7 @@ static gboolean _playerEndOfStream(void *userdata)
 	return FALSE;
 }
 
+#ifdef ASYNC_PLAYBACK
 /* This routine will be called by the PortAudio engine when audio is needed.
  * It may be called at interrupt level on some machines so don't do anything
  * that could mess up the system like calling malloc() or free().
@@ -261,6 +282,7 @@ static int _playbackCallback(const void *inputBuffer, void *outputBuffer,
 
 	return finished;
 }
+#endif
 
 static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 		      NuguAudioProperty prop)
@@ -367,12 +389,94 @@ static int _rec_stop(NuguRecorderDriver *driver, NuguRecorder *rec)
 	return 0;
 }
 
+#ifndef ASYNC_PLAYBACK
+static void *_play_loop(void *data)
+{
+	NuguPcm *pcm = data;
+	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
+	char *buf = NULL;
+	size_t buf_size = 0;
+	PaError err;
+	int is_last = 0;
+	size_t data_size;
+
+	pthread_mutex_lock(&pcm_param->lock);
+	pcm_param->flag = SYNC_FLAG_READY;
+	pthread_cond_signal(&pcm_param->cond);
+	pthread_mutex_unlock(&pcm_param->lock);
+
+	while (pcm_param->running) {
+		/* wait for new data */
+		pthread_mutex_lock(&pcm_param->lock);
+		if (pcm_param->flag == SYNC_FLAG_READY)
+			pthread_cond_wait(&pcm_param->cond, &pcm_param->lock);
+
+		if (pcm_param->flag == SYNC_FLAG_EXIT) {
+			pthread_mutex_unlock(&pcm_param->lock);
+			break;
+		} else if (pcm_param->flag == SYNC_FLAG_DATA) {
+
+			is_last = nugu_pcm_receive_is_last_data(pcm);
+
+			data_size = nugu_pcm_get_data_size(pcm);
+			if (data_size > 0) {
+				/* resize the buffer */
+				if (data_size > buf_size) {
+					if (buf)
+						free(buf);
+
+					buf_size = data_size;
+					buf = malloc(buf_size);
+				}
+
+				nugu_pcm_get_data(pcm, buf, buf_size);
+				pcm_param->write_data += buf_size;
+			}
+
+			pcm_param->flag = SYNC_FLAG_READY;
+		}
+		pthread_mutex_unlock(&pcm_param->lock);
+
+		if (pcm_param->is_first) {
+			nugu_prof_mark(NUGU_PROF_TYPE_TTS_FIRST_PCM_WRITE);
+			pcm_param->is_first = 0;
+		}
+
+		if (buf) {
+			nugu_dbg("Pa_WriteStream %zd bytes", data_size);
+			err = Pa_WriteStream(pcm_param->stream, buf,
+					     data_size / pcm_param->samplebyte);
+			if (err != paNoError) {
+				nugu_error("Pa_WriteStream return fail: %d",
+					   err);
+				continue;
+			}
+
+			if (is_last) {
+				nugu_dbg("last pcm data");
+				g_idle_add(_playerEndOfStream, pcm);
+			}
+		}
+	}
+
+	if (buf)
+		free(buf);
+
+	nugu_dbg("_play_loop finished");
+
+	return NULL;
+}
+#endif
+
 static int _pcm_create(NuguPcmDriver *driver, NuguPcm *pcm,
 		       NuguAudioProperty prop)
 {
 	PaStreamParameters output_param;
 	PaError err = paNoError;
 	struct pa_audio_param *pcm_param;
+	PaHostApiIndex hostapi_count;
+	PaDeviceIndex dev_count;
+	int i;
 
 	pcm_param = g_malloc0(sizeof(struct pa_audio_param));
 
@@ -385,10 +489,32 @@ static int _pcm_create(NuguPcmDriver *driver, NuguPcm *pcm,
 		return -1;
 	}
 
+	hostapi_count = Pa_GetHostApiCount();
+	nugu_dbg("Pa_GetHostApiCount() = %d", hostapi_count);
+	for (i = 0; i < hostapi_count; i++) {
+		const struct PaHostApiInfo *hostapi = Pa_GetHostApiInfo(i);
+
+		if (hostapi)
+			nugu_dbg("[%d] type=%d, name=%s, deviceCount=%d", i,
+				 hostapi->type, hostapi->name,
+				 hostapi->deviceCount);
+	}
+
+	dev_count = Pa_GetDeviceCount();
+	nugu_dbg("Pa_GetDeviceCount() = %d", dev_count);
+	for (i = 0; i < dev_count; i++) {
+		const struct PaDeviceInfo *device = Pa_GetDeviceInfo(i);
+
+		if (device)
+			nugu_dbg("[%d] name: '%s', hostApi: %d", i,
+				 device->name, device->hostApi);
+	}
+
 	pcm_param->data = (void *)pcm;
 
 	/* default output device */
 	output_param.device = Pa_GetDefaultOutputDevice();
+	nugu_dbg("Pa_GetDefaultOutputDevice() = %d", output_param.device);
 	if (output_param.device == paNoDevice) {
 		nugu_error("no default output device");
 		g_free(pcm_param);
@@ -401,11 +527,19 @@ static int _pcm_create(NuguPcmDriver *driver, NuguPcm *pcm,
 		Pa_GetDeviceInfo(output_param.device)->defaultLowOutputLatency;
 	output_param.hostApiSpecificStreamInfo = NULL;
 
+#ifdef ASYNC_PLAYBACK
 	err = Pa_OpenStream(&pcm_param->stream, NULL, /* no input */
 			    &output_param, pcm_param->samplerate,
 			    FRAME_PER_BUFFER,
 			    paClipOff, /* don't bother clipping them */
 			    _playbackCallback, pcm_param);
+#else
+	err = Pa_OpenStream(&pcm_param->stream, NULL, /* no input */
+			    &output_param, pcm_param->samplerate,
+			    FRAME_PER_BUFFER,
+			    paClipOff, /* don't bother clipping them */
+			    NULL, NULL);
+#endif
 	if (err != paNoError) {
 		nugu_error("Pa_OpenStream return fail");
 		g_free(pcm_param);
@@ -414,6 +548,21 @@ static int _pcm_create(NuguPcmDriver *driver, NuguPcm *pcm,
 
 	nugu_pcm_set_driver_data(pcm, pcm_param);
 
+#ifndef ASYNC_PLAYBACK
+	pcm_param->flag = SYNC_FLAG_NOT_RUNNING;
+	pcm_param->running = 1;
+
+	pthread_mutex_init(&pcm_param->lock, NULL);
+	pthread_cond_init(&pcm_param->cond, NULL);
+	pthread_create(&pcm_param->tid, NULL, _play_loop, pcm);
+
+	/* Wait for thread creation */
+	pthread_mutex_lock(&pcm_param->lock);
+	if (pcm_param->flag == SYNC_FLAG_NOT_RUNNING)
+		pthread_cond_wait(&pcm_param->cond, &pcm_param->lock);
+	pthread_mutex_unlock(&pcm_param->lock);
+#endif
+
 	return 0;
 }
 
@@ -421,6 +570,18 @@ static void _pcm_destroy(NuguPcmDriver *driver, NuguPcm *pcm)
 {
 	PaError err = paNoError;
 	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
+
+#ifndef ASYNC_PLAYBACK
+	if (pcm_param->running) {
+		pcm_param->running = 0;
+		pthread_mutex_lock(&pcm_param->lock);
+		pcm_param->flag = SYNC_FLAG_EXIT;
+		pthread_cond_signal(&pcm_param->cond);
+		pthread_mutex_unlock(&pcm_param->lock);
+	}
+
+	pthread_join(pcm_param->tid, NULL);
+#endif
 
 	err = Pa_CloseStream(pcm_param->stream);
 	if (err != paNoError)
@@ -499,8 +660,11 @@ static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 
 	pcm_param->pause = 0;
 	pcm_param->stop = 1;
+
+#ifdef ASYNC_PLAYBACK
 	while (Pa_IsStreamActive(pcm_param->stream) == 1)
 		Pa_Sleep(10);
+#endif
 
 	if (pcm_param->dump_fd >= 0) {
 		close(pcm_param->dump_fd);
@@ -602,7 +766,6 @@ static void snd_error_log(const char *file, int line, const char *function,
 		       -1, "[ALSA] <%s:%d> err=%d, %s", file, line, err, msg);
 }
 
-#ifdef DUMP_ON_PCM_PUSH_DATA
 static int _pcm_push_data(NuguPcmDriver *driver, NuguPcm *pcm, const char *data,
 			  size_t size, int is_last)
 {
@@ -611,29 +774,36 @@ static int _pcm_push_data(NuguPcmDriver *driver, NuguPcm *pcm, const char *data,
 	if (pcm_param == NULL)
 		nugu_error("pcm is not started");
 
-	if (pcm_param->fd < 0 || write(pcm_param->fd, data, size) < 0)
-		nugu_error("write pcm data failed");
+#ifndef ASYNC_PLAYBACK
+	if (pcm_param->dump_fd != -1) {
+		if (write(pcm_param->dump_fd, data, size) < 0)
+			nugu_error("write pcm data failed");
+	}
 
+	pthread_mutex_lock(&pcm_param->lock);
+	pcm_param->flag = SYNC_FLAG_DATA;
+	pthread_cond_signal(&pcm_param->cond);
+	pthread_mutex_unlock(&pcm_param->lock);
+#endif
 	return 0;
 }
-#endif
 
 static struct nugu_recorder_driver_ops rec_ops = {
-	.start = _rec_start,
-	.stop = _rec_stop
+	/* nugu_recorder_driver */
+	.start = _rec_start, /* nugu_recorder_start() */
+	.stop = _rec_stop /* nugu_recorder_stop() */
 };
 
 static struct nugu_pcm_driver_ops pcm_ops = {
-	.create = _pcm_create,
-	.destroy = _pcm_destroy,
-	.start = _pcm_start,
-	.stop = _pcm_stop,
-	.pause = _pcm_pause,
-	.resume = _pcm_resume,
-#ifdef DUMP_ON_PCM_PUSH_DATA
-	.push_data = _pcm_push_data,
-#endif
-	.get_position = _pcm_get_position
+	/* nugu_pcm_driver */
+	.create = _pcm_create, /* nugu_pcm_new() */
+	.destroy = _pcm_destroy, /* nugu_pcm_free() */
+	.start = _pcm_start, /* nugu_pcm_start() */
+	.stop = _pcm_stop, /* nugu_pcm_stop() */
+	.pause = _pcm_pause, /* nugu_pcm_pause() */
+	.resume = _pcm_resume, /* nugu_pcm_resume() */
+	.push_data = _pcm_push_data, /* nugu_pcm_push_data() */
+	.get_position = _pcm_get_position /* nugu_pcm_get_position() */
 };
 
 static int init(NuguPlugin *p)
@@ -700,9 +870,12 @@ static void unload(NuguPlugin *p)
 		 nugu_plugin_get_description(p)->name);
 }
 
-NUGU_PLUGIN_DEFINE(PLUGIN_DRIVER_NAME,
-	NUGU_PLUGIN_PRIORITY_DEFAULT,
-	"0.0.1",
-	load,
-	unload,
-	init);
+NUGU_PLUGIN_DEFINE(
+	/* NUGU SDK Plug-in description */
+	PLUGIN_DRIVER_NAME, /* Plugin name */
+	NUGU_PLUGIN_PRIORITY_DEFAULT, /* Plugin priority */
+	"0.0.1", /* Plugin version */
+	load, /* dlopen */
+	unload, /* dlclose */
+	init /* initialize */
+);
