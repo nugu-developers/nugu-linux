@@ -336,14 +336,23 @@ EXPORT_API int nugu_pcm_resume(NuguPcm *pcm)
 EXPORT_API int nugu_pcm_set_volume(NuguPcm *pcm, int volume)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
+	g_return_val_if_fail(pcm->driver != NULL, -1);
 
 	if (volume < NUGU_SET_VOLUME_MIN)
-		pcm->volume = NUGU_SET_VOLUME_MIN;
+		volume = NUGU_SET_VOLUME_MIN;
 	else if (volume > NUGU_SET_VOLUME_MAX)
-		pcm->volume = NUGU_SET_VOLUME_MAX;
-	else
-		pcm->volume = volume;
+		volume = NUGU_SET_VOLUME_MAX;
 
+	if (pcm->driver->ops->set_volume == NULL) {
+		nugu_error("Not supported");
+		return -1;
+	}
+	if (pcm->driver->ops->set_volume(pcm->driver, pcm, volume)) {
+		nugu_error("volume is not changed");
+		return -1;
+	}
+
+	pcm->volume = volume;
 	nugu_dbg("change volume: %d", pcm->volume);
 
 	return 0;
@@ -528,9 +537,7 @@ EXPORT_API int nugu_pcm_get_data(NuguPcm *pcm, char *data, size_t size)
 {
 	size_t data_size;
 	const char *ptr;
-	float vol;
 	int ret;
-	size_t i;
 
 	g_return_val_if_fail(pcm != NULL, -1);
 	g_return_val_if_fail(pcm->buf != NULL, -1);
@@ -551,10 +558,7 @@ EXPORT_API int nugu_pcm_get_data(NuguPcm *pcm, char *data, size_t size)
 		return -1;
 	}
 
-	vol = (float)pcm->volume / NUGU_SET_VOLUME_MAX;
-
-	for (i = 0; i < size; i++)
-		*(data + i) = *(ptr + i) * vol;
+	memcpy(data, ptr, size);
 
 	ret = nugu_buffer_shift_left(pcm->buf, size);
 	if (ret == -1) {
