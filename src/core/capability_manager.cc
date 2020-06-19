@@ -29,6 +29,7 @@ CapabilityManager* CapabilityManager::instance = nullptr;
 
 CapabilityManager::CapabilityManager()
     : playsync_manager(std::unique_ptr<PlaySyncManager>(new PlaySyncManager()))
+    , playstack_manager(std::unique_ptr<PlayStackManager>(new PlayStackManager()))
     , focus_manager(std::unique_ptr<FocusManager>(new FocusManager()))
     , session_manager(std::unique_ptr<SessionManager>(new SessionManager()))
     , directive_sequencer(std::unique_ptr<DirectiveSequencer>(new DirectiveSequencer()))
@@ -345,6 +346,11 @@ void CapabilityManager::restoreAll()
 PlaySyncManager* CapabilityManager::getPlaySyncManager()
 {
     return playsync_manager.get();
+}
+
+PlayStackManager* CapabilityManager::getPlayStackManager()
+{
+    return playstack_manager.get();
 }
 
 FocusManager* CapabilityManager::getFocusManager()

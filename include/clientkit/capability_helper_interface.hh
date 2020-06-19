@@ -21,10 +21,11 @@
 #include <list>
 
 #include <base/nugu_event.h>
+#include <clientkit/directive_sequencer_interface.hh>
 #include <clientkit/focus_manager_interface.hh>
+#include <clientkit/playstack_manager_interface.hh>
 #include <clientkit/playsync_manager_interface.hh>
 #include <clientkit/session_manager_interface.hh>
-#include <clientkit/directive_sequencer_interface.hh>
 
 namespace NuguClientKit {
 /**
@@ -52,6 +53,12 @@ public:
     virtual IPlaySyncManager* getPlaySyncManager() = 0;
 
     /**
+     * @brief Get IPlayStackManager instance
+     * @return IPlayStackManager instance
+     */
+    virtual IPlayStackManager* getPlayStackManager() = 0;
+
+    /**
      * @brief Get IFocusManager instance
      * @return IFocusManager instance
      */
@@ -63,7 +70,7 @@ public:
      */
     virtual ISessionManager* getSessionManager() = 0;
 
-     /**
+    /**
      * @brief Get IDirectiveSequencer instance
      * @return IDirectiveSequencer instance
      */

@@ -30,6 +30,7 @@ public:
 
     // implements ICapabilityHelper
     IPlaySyncManager* getPlaySyncManager() override;
+    IPlayStackManager* getPlayStackManager() override;
     IFocusManager* getFocusManager() override;
     ISessionManager* getSessionManager() override;
     IDirectiveSequencer* getDirectiveSequencer() override;

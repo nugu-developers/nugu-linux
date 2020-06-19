@@ -2,7 +2,8 @@ SET(UNIT_TESTS
 	test-core-nugu-timer
 	test-core-focus-manager
 	test-core-directive-sequencer
-	test-core-session-manager)
+	test-core-session-manager
+	test-core-playstack-manager)
 
 # Add Compile Sources with Mock for test
 SET(test-core-nugu-timer-srcs
@@ -10,6 +11,7 @@ SET(test-core-nugu-timer-srcs
 SET(test-core-focus-manager-srcs ../../src/core/focus_manager.cc)
 SET(test-core-directive-sequencer-srcs ../../src/core/directive_sequencer.cc)
 SET(test-core-session-manager-srcs ../../src/core/session_manager.cc)
+SET(test-core-playstack-manager-srcs ../../src/core/playstack_manager.cc)
 
 FOREACH(test ${UNIT_TESTS})
 	SET(SRC ${test}.cc)
