@@ -52,6 +52,11 @@ IPlaySyncManager* CapabilityHelper::getPlaySyncManager()
     return CapabilityManager::getInstance()->getPlaySyncManager();
 }
 
+IPlayStackManager* CapabilityHelper::getPlayStackManager()
+{
+    return CapabilityManager::getInstance()->getPlayStackManager();
+}
+
 IFocusManager* CapabilityHelper::getFocusManager()
 {
     return CapabilityManager::getInstance()->getFocusManager();

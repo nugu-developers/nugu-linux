@@ -25,6 +25,7 @@
 
 #include "directive_sequencer.hh"
 #include "focus_manager.hh"
+#include "playstack_manager.hh"
 #include "playsync_manager.hh"
 #include "session_manager.hh"
 
@@ -41,6 +42,7 @@ public:
     static void destroyInstance();
 
     PlaySyncManager* getPlaySyncManager();
+    PlayStackManager* getPlayStackManager();
     FocusManager* getFocusManager();
     SessionManager* getSessionManager();
     DirectiveSequencer* getDirectiveSequencer();
@@ -85,6 +87,7 @@ private:
     std::map<std::string, std::string> events_cname_map;
     std::string wword;
     std::unique_ptr<PlaySyncManager> playsync_manager = nullptr;
+    std::unique_ptr<PlayStackManager> playstack_manager = nullptr;
     std::unique_ptr<FocusManager> focus_manager = nullptr;
     std::unique_ptr<SessionManager> session_manager = nullptr;
     std::unique_ptr<DirectiveSequencer> directive_sequencer = nullptr;
