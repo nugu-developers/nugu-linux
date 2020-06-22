@@ -635,8 +635,6 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm)
 		return -1;
 	}
 
-	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_PLAYING);
-
 	nugu_dbg("start done");
 	return 0;
 }
@@ -785,9 +783,13 @@ static int _pcm_push_data(NuguPcmDriver *driver, NuguPcm *pcm, const char *data,
 			  size_t size, int is_last)
 {
 	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
+	int playing_flag = 0;
 
 	if (pcm_param == NULL)
 		nugu_error("pcm is not started");
+
+	if (pcm_param->is_first == 1)
+		playing_flag = 1;
 
 #ifndef ASYNC_PLAYBACK
 	if (pcm_param->dump_fd != -1) {
@@ -800,6 +802,10 @@ static int _pcm_push_data(NuguPcmDriver *driver, NuguPcm *pcm, const char *data,
 	pthread_cond_signal(&pcm_param->cond);
 	pthread_mutex_unlock(&pcm_param->lock);
 #endif
+
+	if (playing_flag)
+		nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_PLAYING);
+
 	return 0;
 }
 
