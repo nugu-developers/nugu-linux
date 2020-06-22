@@ -229,6 +229,8 @@ bool TTSPlayer::write_audio(const char* data, int size)
         }
     }
 
+    nugu_dbg("opus %d bytes -> pcm %d bytes", size, dsize);
+
     if (d->count == 0)
         nugu_prof_mark(NUGU_PROF_TYPE_TTS_FIRST_DECODING);
 

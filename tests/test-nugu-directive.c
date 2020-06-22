@@ -28,7 +28,7 @@
 int flag;
 unsigned char dummy[] = { 1, 2, 3, 4, 5 };
 
-static void on_data(NuguDirective *ndir, void *userdata)
+static void on_data(NuguDirective *ndir, int seq, void *userdata)
 {
 	int ud = GPOINTER_TO_INT(userdata);
 	unsigned char *tmp;

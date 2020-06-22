@@ -34,6 +34,7 @@ struct _nugu_directive {
 	char *referrer_id;
 	char *groups;
 
+	int seq;
 	int is_active;
 	int is_end;
 
@@ -71,6 +72,7 @@ nugu_directive_new(const char *name_space, const char *name,
 	ndir->json = strdup(json);
 	ndir->groups = strdup(groups);
 
+	ndir->seq = -1;
 	ndir->is_active = 0;
 	ndir->buf = nugu_buffer_new(0);
 	ndir->media_type = NULL;
@@ -255,6 +257,8 @@ EXPORT_API int nugu_directive_add_data(NuguDirective *ndir, size_t length,
 				   length);
 			return -1;
 		}
+
+		ndir->seq++;
 	}
 
 	if (nugu_directive_is_active(ndir) == 0) {
@@ -263,7 +267,7 @@ EXPORT_API int nugu_directive_add_data(NuguDirective *ndir, size_t length,
 	}
 
 	if (ndir->callback)
-		ndir->callback(ndir, ndir->callback_userdata);
+		ndir->callback(ndir, ndir->seq, ndir->callback_userdata);
 
 	return 0;
 }

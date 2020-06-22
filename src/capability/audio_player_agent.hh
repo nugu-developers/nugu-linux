@@ -50,7 +50,7 @@ public:
     void receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
-    static void directiveDataCallback(NuguDirective* ndir, void* userdata);
+    static void directiveDataCallback(NuguDirective* ndir, int seq, void* userdata);
     static void getAttachmentData(NuguDirective* ndir, void* userdata);
 
     // implements IAudioPlayerHandler

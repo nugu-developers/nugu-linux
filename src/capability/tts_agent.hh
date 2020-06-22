@@ -51,8 +51,8 @@ public:
     std::string sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id = "", EventResultCallback cb = nullptr);
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
-    static void directiveDataCallback(NuguDirective* ndir, void* userdata);
-    static void getAttachmentData(NuguDirective* ndir, void* userdata);
+    static void directiveDataCallback(NuguDirective* ndir, int seq, void* userdata);
+    static void getAttachmentData(NuguDirective* ndir, int seq, void* userdata);
 
 private:
     void sendEventCommon(CapabilityEvent *event, const std::string& token, EventResultCallback cb = nullptr);
