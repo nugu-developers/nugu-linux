@@ -172,7 +172,7 @@ void AudioPlayerAgent::restore()
     suspended = false;
 }
 
-void AudioPlayerAgent::directiveDataCallback(NuguDirective* ndir, void* userdata)
+void AudioPlayerAgent::directiveDataCallback(NuguDirective* ndir, int seq, void* userdata)
 {
     getAttachmentData(ndir, userdata);
 }

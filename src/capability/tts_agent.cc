@@ -24,6 +24,8 @@
 
 namespace NuguCapability {
 
+#define TTS_FIRST_ATTACHMENT_LIMIT 4200
+
 static const char* CAPABILITY_NAME = "TTS";
 static const char* CAPABILITY_VERSION = "1.2";
 
@@ -103,12 +105,12 @@ void TTSAgent::suspend()
     focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
 }
 
-void TTSAgent::directiveDataCallback(NuguDirective* ndir, void* userdata)
+void TTSAgent::directiveDataCallback(NuguDirective* ndir, int seq, void* userdata)
 {
-    getAttachmentData(ndir, userdata);
+    getAttachmentData(ndir, seq, userdata);
 }
 
-void TTSAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
+void TTSAgent::getAttachmentData(NuguDirective* ndir, int seq, void* userdata)
 {
     TTSAgent* tts = static_cast<TTSAgent*>(userdata);
     unsigned char* buf;
@@ -116,7 +118,13 @@ void TTSAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
 
     buf = nugu_directive_get_data(ndir, &length);
     if (buf) {
-        tts->player->write_audio((const char*)buf, length);
+        if (seq == 0 && length > TTS_FIRST_ATTACHMENT_LIMIT) {
+            nugu_dbg("first attachment is too big(%d > %d)", length, TTS_FIRST_ATTACHMENT_LIMIT);
+            tts->player->write_audio((const char*)buf, TTS_FIRST_ATTACHMENT_LIMIT);
+            tts->player->write_audio((const char*)buf + TTS_FIRST_ATTACHMENT_LIMIT, length - TTS_FIRST_ATTACHMENT_LIMIT);
+        } else {
+            tts->player->write_audio((const char*)buf, length);
+        }
         free(buf);
     }
 
@@ -167,7 +175,7 @@ void TTSAgent::executeOnForegroundAction()
 
     if (speak_dir) {
         if (nugu_directive_get_data_size(speak_dir) > 0)
-            getAttachmentData(speak_dir, this);
+            getAttachmentData(speak_dir, 0, this);
 
         nugu_directive_set_data_callback(speak_dir, directiveDataCallback, this);
     }
