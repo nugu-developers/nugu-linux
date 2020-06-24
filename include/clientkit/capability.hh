@@ -235,6 +235,12 @@ public:
     std::string getPlayServiceIdInStackControl(const Json::Value& playstack_control);
 
     /**
+     * @brief Preprocess directive received from Directive Sequencer.
+     * @param[in] ndir directive
+     */
+    void preprocessDirective(NuguDirective* ndir) override;
+
+    /**
      * @brief Process directive received from Directive Sequencer.
      * @param[in] ndir directive
      */

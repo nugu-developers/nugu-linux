@@ -270,6 +270,10 @@ std::string Capability::getPlayServiceIdInStackControl(const Json::Value& playst
     return playstack_ps_id;
 }
 
+void Capability::preprocessDirective(NuguDirective* ndir)
+{
+}
+
 void Capability::processDirective(NuguDirective* ndir)
 {
     if (ndir) {

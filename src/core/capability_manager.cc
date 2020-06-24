@@ -79,6 +79,9 @@ bool CapabilityManager::onPreHandleDirective(NuguDirective* ndir)
         return true;
     }
 
+    nugu_info("preprocessDirective");
+    cap->preprocessDirective(ndir);
+
     return false;
 }
 
@@ -90,8 +93,11 @@ bool CapabilityManager::onHandleDirective(NuguDirective* ndir)
         return false;
     }
 
-    nugu_info("preprocessDirective");
-    preprocessDirective(ndir);
+    std::string groups = nugu_directive_peek_groups(ndir);
+
+    sendCommandAll("receive_directive_group", groups);
+    sendCommandAll("directive_dialog_id", nugu_directive_peek_dialog_id(ndir));
+    playsync_manager->setDirectiveGroups(groups);
 
     nugu_info("processDirective");
     cap->processDirective(ndir);
@@ -267,15 +273,6 @@ std::string CapabilityManager::makeAllContextCommonInfo(bool include_playstack)
     root["client"] = client;
 
     return writer.write(root);
-}
-
-void CapabilityManager::preprocessDirective(NuguDirective* ndir)
-{
-    std::string groups = nugu_directive_peek_groups(ndir);
-
-    sendCommandAll("receive_directive_group", groups);
-    sendCommandAll("directive_dialog_id", nugu_directive_peek_dialog_id(ndir));
-    playsync_manager->setDirectiveGroups(groups);
 }
 
 bool CapabilityManager::isSupportDirectiveVersion(const std::string& version, ICapabilityInterface* cap)

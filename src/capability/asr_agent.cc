@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <chrono>
 #include <string.h>
 
 #include "base/nugu_log.h"
@@ -204,10 +203,26 @@ void ASRAgent::onFocusChanged(FocusState state)
     focus_state = state;
 }
 
+void ASRAgent::preprocessDirective(NuguDirective* ndir)
+{
+    const char* dname;
+    const char* message;
+
+    if (!ndir
+        || !(dname = nugu_directive_peek_name(ndir))
+        || !(message = nugu_directive_peek_json(ndir))) {
+        nugu_error("The directive info is not exist.");
+        return;
+    }
+
+    if (!strcmp(dname, "ExpectSpeech"))
+        parsingExpectSpeech(std::string(nugu_directive_peek_dialog_id(ndir)), message);
+}
+
 void ASRAgent::parsingDirective(const char* dname, const char* message)
 {
     if (!strcmp(dname, "ExpectSpeech"))
-        parsingExpectSpeech(message);
+        handleExpectSpeech();
     else if (!strcmp(dname, "NotifyResult"))
         parsingNotifyResult(message);
     else if (!strcmp(dname, "CancelRecognize"))
@@ -418,7 +433,7 @@ std::vector<IASRListener*> ASRAgent::getListener()
     return asr_listeners;
 }
 
-void ASRAgent::parsingExpectSpeech(const char* message)
+void ASRAgent::parsingExpectSpeech(std::string&& dialog_id, const char* message)
 {
     Json::Value root;
     Json::Reader reader;
@@ -438,15 +453,7 @@ void ASRAgent::parsingExpectSpeech(const char* message)
     es_attr.play_service_id = root["playServiceId"].asString();
     es_attr.domain_types = root["domainTypes"];
     es_attr.asr_context = root["asrContext"];
-
-    // set dialog request id about current directive
-    es_attr.dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
-
-    nugu_dbg("Parsing ExpectSpeech directive");
-    playsync_manager->setExpectSpeech(true);
-    setASRState(ASRState::EXPECTING_SPEECH);
-
-    focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
+    es_attr.dialog_id = dialog_id;
 }
 
 void ASRAgent::parsingNotifyResult(const char* message)
@@ -510,6 +517,15 @@ void ASRAgent::parsingCancelRecognize(const char* message)
 
     if (cause == "WAKEUP_POWER")
         releaseASRFocus(true, ASRError::UNKNOWN, true);
+}
+
+void ASRAgent::handleExpectSpeech()
+{
+    if (es_attr.is_handle) {
+        playsync_manager->setExpectSpeech(true);
+        setASRState(ASRState::EXPECTING_SPEECH);
+        focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
+    }
 }
 
 void ASRAgent::onListeningState(ListeningState state, const std::string& id)
