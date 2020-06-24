@@ -104,14 +104,14 @@ DirectiveSequencer::~DirectiveSequencer()
     if (idler_src != 0)
         g_source_remove(idler_src);
 
+    dump_policies(policy_map);
+    dump_dialog_queue(audio_map, visual_map);
+    dump_msgid(msgid_directive_map);
+
     /* Remove scheduled(but not yet handled) directives */
     for (auto& ndir : scheduled_list) {
         nugu_directive_unref(ndir);
     }
-
-    dump_policies(policy_map);
-    dump_dialog_queue(audio_map, visual_map);
-    dump_msgid(msgid_directive_map);
 
     nugu_network_manager_set_directive_callback(NULL, NULL);
     nugu_network_manager_set_attachment_callback(NULL, NULL);

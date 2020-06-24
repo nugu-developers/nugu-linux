@@ -147,6 +147,12 @@ public:
     virtual std::string getVersion() = 0;
 
     /**
+     * @brief Preprocess directive received from Directive Sequencer.
+     * @param[in] ndir directive
+     */
+    virtual void preprocessDirective(NuguDirective* ndir) = 0;
+
+    /**
      * @brief Process directive received from Directive Sequencer.
      * @param[in] ndir directive
      */

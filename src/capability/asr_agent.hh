@@ -52,6 +52,7 @@ public:
     void startRecognition(bool expected);
     void stopRecognition() override;
 
+    void preprocessDirective(NuguDirective* ndir) override;
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void saveAllContextInfo();
@@ -96,9 +97,10 @@ private:
     void onRecordData(unsigned char* buf, int length) override;
 
     // parsing directive
-    void parsingExpectSpeech(const char* message);
+    void parsingExpectSpeech(std::string&& dialog_id, const char* message);
     void parsingNotifyResult(const char* message);
     void parsingCancelRecognize(const char* message);
+    void handleExpectSpeech();
 
     void releaseASRFocus(bool is_cancel, ASRError error, bool release_focus = true);
     void cancelRecognition();
