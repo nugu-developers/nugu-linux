@@ -86,7 +86,6 @@ public:
     void setASRState(ASRState state);
     ASRState getASRState();
     void setListeningId(const std::string& id);
-    void syncSession();
     void notifyEventResponse(const std::string& msg_id, const std::string& data, bool success) override;
 
 private:

@@ -176,9 +176,6 @@ void ASRAgent::onFocusChanged(FocusState state)
     case FocusState::FOREGROUND: {
         saveAllContextInfo();
 
-        if (isExpectSpeechState())
-            syncSession();
-
         std::string id = "id#" + std::to_string(uniq++);
         setListeningId(id);
         speech_recognizer->startListening(id);
@@ -454,6 +451,8 @@ void ASRAgent::parsingExpectSpeech(std::string&& dialog_id, const char* message)
     es_attr.domain_types = root["domainTypes"];
     es_attr.asr_context = root["asrContext"];
     es_attr.dialog_id = dialog_id;
+
+    session_manager->activate(es_attr.dialog_id);
 }
 
 void ASRAgent::parsingNotifyResult(const char* message)
@@ -641,10 +640,7 @@ void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error, bool release_focu
 
 bool ASRAgent::isExpectSpeechState()
 {
-    if (es_attr.is_handle)
-        return true;
-    else
-        return false;
+    return es_attr.is_handle;
 }
 
 ListeningState ASRAgent::getListeningState()
@@ -691,16 +687,6 @@ void ASRAgent::setListeningId(const std::string& id)
 {
     request_listening_id = id;
     nugu_dbg("startListening with new id(%s)", request_listening_id.c_str());
-}
-
-void ASRAgent::syncSession()
-{
-    if (es_attr.dialog_id.empty()) {
-        nugu_error("The dialog request ID is empty.");
-        return;
-    }
-
-    session_manager->activate(es_attr.dialog_id);
 }
 
 void ASRAgent::notifyEventResponse(const std::string& msg_id, const std::string& data, bool success)
