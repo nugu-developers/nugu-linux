@@ -40,7 +40,6 @@ namespace NuguClientKit {
 typedef struct {
     std::string session_id; /**< session id */
     std::string ps_id; /**< play service id */
-    bool is_active; /**< whether session is active */
 } Session;
 
 /**

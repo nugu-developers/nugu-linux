@@ -14,19 +14,18 @@
  * limitations under the License.
  */
 
+#include <algorithm>
+
 #include "base/nugu_log.h"
 
 #include "session_manager.hh"
 
 namespace NuguCore {
 
-SessionManager::SessionManager()
-{
-}
-
 SessionManager::~SessionManager()
 {
     session_map.clear();
+    active_list.clear();
 }
 
 void SessionManager::set(const std::string& dialog_id, Session&& session)
@@ -48,11 +47,8 @@ void SessionManager::activate(const std::string& dialog_id)
         return;
     }
 
-    try {
-        session_map.at(dialog_id).is_active = true;
-    } catch (std::out_of_range& exception) {
-        nugu_warn("The such session is not exist.");
-    }
+    if (std::find(active_list.cbegin(), active_list.cend(), dialog_id) == active_list.cend())
+        active_list.emplace_back(dialog_id);
 }
 
 void SessionManager::deactivate(const std::string& dialog_id)
@@ -62,6 +58,11 @@ void SessionManager::deactivate(const std::string& dialog_id)
         return;
     }
 
+    active_list.erase(std::remove_if(active_list.begin(), active_list.end(),
+        [&](const std::string& element) {
+            return element == dialog_id;
+        }));
+
     session_map.erase(dialog_id);
 }
 
@@ -69,19 +70,28 @@ Json::Value SessionManager::getActiveSessionInfo()
 {
     Json::Value session_info_list;
 
-    for (const auto& item : session_map) {
-        if (item.second.is_active) {
+    for (const auto& item : active_list) {
+        try {
+            auto session = session_map.at(item);
+
             Json::Value session_info;
-            session_info["sessionId"] = item.second.session_id;
-            session_info["playServiceId"] = item.second.ps_id;
+            session_info["sessionId"] = session.session_id;
+            session_info["playServiceId"] = session.ps_id;
             session_info_list.append(session_info);
+        } catch (std::out_of_range& exception) {
+            nugu_warn("The such session is not exist.");
         }
     }
 
     return session_info_list;
 }
 
-std::map<std::string, Session> SessionManager::getAllSessions()
+const SessionManager::ActiveDialogs& SessionManager::getActiveList()
+{
+    return active_list;
+}
+
+const SessionManager::Sessions& SessionManager::getAllSessions()
 {
     return session_map;
 }

@@ -18,6 +18,7 @@
 #define __NUGU_SESSION_MANAGER_H__
 
 #include <map>
+#include <vector>
 
 #include "clientkit/session_manager_interface.hh"
 
@@ -27,7 +28,11 @@ using namespace NuguClientKit;
 
 class SessionManager : public ISessionManager {
 public:
-    SessionManager();
+    using ActiveDialogs = std::vector<std::string>;
+    using Sessions = std::map<std::string, Session>;
+
+public:
+    SessionManager() = default;
     virtual ~SessionManager();
 
     void set(const std::string& dialog_id, Session&& session) override;
@@ -35,10 +40,12 @@ public:
     void deactivate(const std::string& dialog_id) override;
     Json::Value getActiveSessionInfo() override;
 
-    std::map<std::string, Session> getAllSessions();
+    const ActiveDialogs& getActiveList();
+    const Sessions& getAllSessions();
 
 private:
-    std::map<std::string, Session> session_map;
+    std::vector<std::string> active_list;
+    Sessions session_map;
 };
 
 } // NuguCore
