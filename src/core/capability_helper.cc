@@ -47,11 +47,6 @@ void CapabilityHelper::destroyInstance()
     }
 }
 
-IPlaySyncManager* CapabilityHelper::getPlaySyncManager()
-{
-    return CapabilityManager::getInstance()->getPlaySyncManager();
-}
-
 IPlayStackManager* CapabilityHelper::getPlayStackManager()
 {
     return CapabilityManager::getInstance()->getPlayStackManager();
@@ -120,11 +115,6 @@ std::string CapabilityHelper::makeContextInfo(const std::string& cname, Json::Va
 std::string CapabilityHelper::makeAllContextInfo()
 {
     return CapabilityManager::getInstance()->makeAllContextInfo();
-}
-
-std::string CapabilityHelper::makeAllContextInfoStack()
-{
-    return CapabilityManager::getInstance()->makeAllContextInfoStack();
 }
 
 } // NuguCore

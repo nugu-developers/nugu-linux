@@ -151,8 +151,11 @@ void TTSAgent::onFocusChanged(FocusState state)
         focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
         break;
     case FocusState::NONE:
-        playsync_manager->removeContext(playstackctl_ps_id, getName(), !is_finished);
         stopTTS();
+
+        if (playstack_manager->getPlayStackLayer(playstackctl_ps_id) == PlayStackLayer::Info)
+            playstack_manager->remove(playstackctl_ps_id);
+
         break;
     }
     focus_state = state;
@@ -406,18 +409,19 @@ void TTSAgent::parsingSpeak(const char* message)
 
     stopTTS();
 
-    playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
-
-    if (!playstackctl_ps_id.empty()) {
-        playsync_manager->addContext(playstackctl_ps_id, getName());
-    }
-
     cur_token = token;
     ps_id = play_service_id;
 
     is_finished = false;
     speak_dir = getNuguDirective();
     dialog_id = nugu_directive_peek_dialog_id(speak_dir);
+
+    std::string tmp_playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
+    playstack_manager->add(tmp_playstackctl_ps_id, speak_dir);
+
+    // It need to preserve previous playstack_ps_id, if a new received playstack_ps_id is not exist.
+    if (!tmp_playstackctl_ps_id.empty())
+        playstackctl_ps_id = tmp_playstackctl_ps_id;
 
     nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE, dialog_id.c_str(),
         nugu_directive_peek_msg_id(speak_dir), NULL);

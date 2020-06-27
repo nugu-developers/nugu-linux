@@ -44,7 +44,7 @@ public:
 
     PlayStackLayer getPlayStackLayer(const std::string& ps_id) override;
     std::vector<std::string> getAllPlayStackItems() override;
-    PlayStack getPlayStackContainer();
+    const PlayStack& getPlayStackContainer();
 
 private:
     class StackTimer final : public NUGUTimer {
@@ -63,6 +63,8 @@ private:
     void removeFromContainer(const std::string& ps_id);
     void clearContainer();
     bool isStackedCondition(PlayStackLayer layer);
+    bool isStackedCondition(const std::string& ps_id);
+    bool hasExpectSpeech(NuguDirective* ndir);
 
     template <typename T>
     void removeItemInList(std::vector<T>& list, const T& item);
@@ -73,7 +75,10 @@ private:
     PlayStack playstack_container;
     std::vector<IPlayStackManagerListener*> listeners;
     std::unique_ptr<StackTimer> timer = nullptr;
+    bool has_long_timer = false;
     bool has_holding = false;
+    bool is_expect_speech = false;
+    bool is_stacked = false;
 };
 
 } // NuguCore

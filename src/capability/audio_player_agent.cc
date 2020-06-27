@@ -859,11 +859,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         report_interval_time = report["progressReportIntervalInMilliseconds"].asLargestInt();
     }
 
-    std::string playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
-
-    if (!playstackctl_ps_id.empty()) {
-        playsync_manager->addContext(playstackctl_ps_id, getName());
-    }
+    playstack_manager->add(getPlayServiceIdInStackControl(root["playStackControl"]), getNuguDirective());
 
     is_finished = false;
     is_paused_by_unfocus = false;
@@ -955,7 +951,7 @@ void AudioPlayerAgent::parsingPause(const char* message)
         capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
 
         // hold context about 10m' and remove it, if there are no action.
-        playsync_manager->removeContextLater(playserviceid, getName(), PAUSE_CONTEXT_HOLD_TIME);
+        playstack_manager->remove(playserviceid, PlayStackRemoveMode::Later);
 
         cur_dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
         if (!cur_player->pause()) {
@@ -985,16 +981,9 @@ void AudioPlayerAgent::parsingStop(const char* message)
     playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
     if (!playstackctl_ps_id.empty()) {
-        playsync_manager->removeContext(playstackctl_ps_id, getName(), !is_finished);
-        std::string stacked_ps_id = playsync_manager->getPlayStackItem(getName());
+        playstack_manager->remove(playstackctl_ps_id, is_finished ? PlayStackRemoveMode::Normal : PlayStackRemoveMode::Immediately);
 
         capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
-
-        if (!stacked_ps_id.empty() && playstackctl_ps_id != stacked_ps_id)
-            return;
-
-        if (stacked_ps_id.empty())
-            focus_manager->releaseFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME);
     }
 }
 

@@ -29,7 +29,6 @@ public:
     static void destroyInstance();
 
     // implements ICapabilityHelper
-    IPlaySyncManager* getPlaySyncManager() override;
     IPlayStackManager* getPlayStackManager() override;
     IFocusManager* getFocusManager() override;
     ISessionManager* getSessionManager() override;
@@ -47,7 +46,6 @@ public:
     // about context
     std::string makeContextInfo(const std::string& cname, Json::Value& ctx) override;
     std::string makeAllContextInfo() override;
-    std::string makeAllContextInfoStack() override;
 
 private:
     CapabilityHelper();
