@@ -365,8 +365,8 @@ protected:
     /** @brief ICapabilityHelper instance for using NuguCore functions */
     ICapabilityHelper* capa_helper = nullptr;
 
-    /** @brief IPlaySyncManager instance for using play context sync */
-    IPlaySyncManager* playsync_manager = nullptr;
+    /** @brief IPlayStackManager instance for using playstack management */
+    IPlayStackManager* playstack_manager = nullptr;
 
     /** @brief IFocusManager instance for using audio focus */
     IFocusManager* focus_manager = nullptr;

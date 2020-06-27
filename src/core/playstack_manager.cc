@@ -22,6 +22,50 @@
 namespace NuguCore {
 
 /*******************************************************************************
+ * for debugging
+ ******************************************************************************/
+namespace Debug {
+    void showPlayStack(const PlayStackManager::PlayStack& playstack_container)
+    {
+        std::string playstack_log("\n>>>>> [PlayStack] >>>>>\n");
+
+        for (const auto& item : playstack_container.second) {
+            std::string layer = "[None] ";
+
+            try {
+                switch (playstack_container.first.at(item)) {
+                case PlayStackLayer::Alert:
+                    layer = "[Alert] ";
+                    break;
+                case PlayStackLayer::Call:
+                    layer = "[Call] ";
+                    break;
+                case PlayStackLayer::Info:
+                    layer = "[Info] ";
+                    break;
+                case PlayStackLayer::Media:
+                    layer = "[Media] ";
+                    break;
+                case PlayStackLayer::None:
+                default:
+                    break;
+                }
+            } catch (std::out_of_range& exception) {
+            }
+
+            playstack_log
+                .append(layer)
+                .append(item)
+                .append("\n");
+        }
+
+        playstack_log.append("<<<<< [PlayStack] <<<<<\n");
+
+        nugu_dbg(playstack_log.c_str());
+    }
+}
+
+/*******************************************************************************
  * Define PlayStackManager::StackTimer
  *******************************************************************************/
 
@@ -85,19 +129,24 @@ int PlayStackManager::getListenerCount()
 
 void PlayStackManager::add(const std::string& ps_id, NuguDirective* ndir)
 {
+    has_holding = false;
+
     if (ps_id.empty() || !ndir) {
         nugu_warn("The PlayServiceId or directive is empty.");
         return;
     }
 
-    if (playstack_container.first.find(ps_id) != playstack_container.first.end()) {
+    PlayStackLayer layer = extractPlayStackLayer(ndir);
+    is_expect_speech = hasExpectSpeech(ndir);
+    is_stacked = isStackedCondition(layer);
+
+    if (playstack_container.first.find(ps_id) != playstack_container.first.end()
+        && (getPlayStackLayer(ps_id) == layer || is_stacked)) {
         nugu_warn("%s is already added.", ps_id.c_str());
         return;
     }
 
-    PlayStackLayer layer = extractPlayStackLayer(ndir);
-
-    if (!isStackedCondition(layer))
+    if (!is_stacked)
         clearContainer();
 
     addToContainer(ps_id, layer);
@@ -105,19 +154,33 @@ void PlayStackManager::add(const std::string& ps_id, NuguDirective* ndir)
 
 void PlayStackManager::remove(const std::string& ps_id, PlayStackRemoveMode mode)
 {
-    if (ps_id.empty()) {
-        nugu_warn("The PlayServiceId is empty.");
+    has_holding = false;
+
+    if (ps_id.empty() || playstack_container.first.find(ps_id) == playstack_container.first.end()) {
+        nugu_warn("The PlayServiceId is empty or not exist in PlayStack.");
         return;
     }
 
-    if (mode == PlayStackRemoveMode::Immediately)
+    if (mode == PlayStackRemoveMode::Immediately) {
         removeFromContainer(ps_id);
-    else {
+
+        if (has_long_timer) {
+            timer->stop();
+            has_long_timer = false;
+        }
+    } else if (!is_expect_speech && isStackedCondition(ps_id)) {
+        removeFromContainer(ps_id);
+
+        if (has_long_timer)
+            timer->start();
+    } else {
         timer->setCallback([&, ps_id](int count, int repeat) {
             removeFromContainer(ps_id);
+            has_long_timer = false;
         });
 
-        timer->setInterval(mode == PlayStackRemoveMode::Later ? LONG_HOLD_TIME : DEFAULT_HOLD_TIME);
+        has_long_timer = (mode == PlayStackRemoveMode::Later);
+        timer->setInterval(has_long_timer ? LONG_HOLD_TIME : DEFAULT_HOLD_TIME);
         timer->start();
     }
 }
@@ -133,7 +196,8 @@ void PlayStackManager::stopHolding()
 void PlayStackManager::resetHolding()
 {
     if (has_holding) {
-        timer->start();
+        (is_expect_speech && is_stacked) ? timer->notifyCallback() : timer->start();
+        is_expect_speech = false;
         has_holding = false;
     }
 }
@@ -155,10 +219,13 @@ PlayStackLayer PlayStackManager::getPlayStackLayer(const std::string& ps_id)
 
 std::vector<std::string> PlayStackManager::getAllPlayStackItems()
 {
-    return playstack_container.second;
+    std::vector<std::string> reverse_play_stack(playstack_container.second);
+    std::reverse(reverse_play_stack.begin(), reverse_play_stack.end());
+
+    return reverse_play_stack;
 }
 
-PlayStackManager::PlayStack PlayStackManager::getPlayStackContainer()
+const PlayStackManager::PlayStack& PlayStackManager::getPlayStackContainer()
 {
     return playstack_container;
 }
@@ -184,6 +251,8 @@ void PlayStackManager::addToContainer(const std::string& ps_id, PlayStackLayer l
 
     for (const auto& listener : listeners)
         listener->onStackAdded(ps_id);
+
+    Debug::showPlayStack(playstack_container);
 }
 
 void PlayStackManager::removeFromContainer(const std::string& ps_id)
@@ -193,6 +262,8 @@ void PlayStackManager::removeFromContainer(const std::string& ps_id)
 
     for (const auto& listener : listeners)
         listener->onStackRemoved(ps_id);
+
+    Debug::showPlayStack(playstack_container);
 }
 
 void PlayStackManager::clearContainer()
@@ -209,6 +280,19 @@ bool PlayStackManager::isStackedCondition(PlayStackLayer layer)
         });
 
     return result != playstack_container.first.cend() && layer != PlayStackLayer::Media;
+}
+
+bool PlayStackManager::isStackedCondition(const std::string& ps_id)
+{
+    return isStackedCondition(getPlayStackLayer(ps_id));
+}
+
+bool PlayStackManager::hasExpectSpeech(NuguDirective* ndir)
+{
+    const char* tmp_ndir_groups = nugu_directive_peek_groups(ndir);
+    std::string ndir_groups = tmp_ndir_groups ? tmp_ndir_groups : "";
+
+    return ndir_groups.find("ASR.ExpectSpeech") != std::string::npos;
 }
 
 template <typename T>

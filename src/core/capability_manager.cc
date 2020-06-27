@@ -28,8 +28,7 @@ static const char* WAKEUP_WORD = "아리아";
 CapabilityManager* CapabilityManager::instance = nullptr;
 
 CapabilityManager::CapabilityManager()
-    : playsync_manager(std::unique_ptr<PlaySyncManager>(new PlaySyncManager()))
-    , playstack_manager(std::unique_ptr<PlayStackManager>(new PlayStackManager()))
+    : playstack_manager(std::unique_ptr<PlayStackManager>(new PlayStackManager()))
     , focus_manager(std::unique_ptr<FocusManager>(new FocusManager()))
     , session_manager(std::unique_ptr<SessionManager>(new SessionManager()))
     , directive_sequencer(std::unique_ptr<DirectiveSequencer>(new DirectiveSequencer()))
@@ -93,11 +92,8 @@ bool CapabilityManager::onHandleDirective(NuguDirective* ndir)
         return false;
     }
 
-    std::string groups = nugu_directive_peek_groups(ndir);
-
-    sendCommandAll("receive_directive_group", groups);
+    sendCommandAll("receive_directive_group", nugu_directive_peek_groups(ndir));
     sendCommandAll("directive_dialog_id", nugu_directive_peek_dialog_id(ndir));
-    playsync_manager->setDirectiveGroups(groups);
 
     nugu_info("processDirective");
     cap->processDirective(ndir);
@@ -232,6 +228,7 @@ std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::V
 
     client["wakeupWord"] = wword;
     client["os"] = "Linux";
+    client["playStack"] = Json::arrayValue;
 
     root["supportedInterfaces"] = ctx;
     root["client"] = client;
@@ -240,16 +237,6 @@ std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::V
 }
 
 std::string CapabilityManager::makeAllContextInfo()
-{
-    return makeAllContextCommonInfo();
-}
-
-std::string CapabilityManager::makeAllContextInfoStack()
-{
-    return makeAllContextCommonInfo(true);
-}
-
-std::string CapabilityManager::makeAllContextCommonInfo(bool include_playstack)
 {
     Json::StyledWriter writer;
     Json::Value root;
@@ -261,13 +248,13 @@ std::string CapabilityManager::makeAllContextCommonInfo(bool include_playstack)
 
     client["wakeupWord"] = wword;
     client["os"] = "Linux";
+    client["playStack"] = Json::arrayValue;
 
-    if (include_playstack) {
-        auto play_stack = playsync_manager->getAllPlayStackItems();
+    // compose playStack info
+    auto playstack = playstack_manager->getAllPlayStackItems();
 
-        for (const auto& element : play_stack)
-            client["playStack"].append(element);
-    }
+    for (const auto& element : playstack)
+        client["playStack"].append(element);
 
     root["supportedInterfaces"] = ctx;
     root["client"] = client;
@@ -341,11 +328,6 @@ void CapabilityManager::restoreAll()
 {
     for (const auto& iter : caps)
         iter.second->restore();
-}
-
-PlaySyncManager* CapabilityManager::getPlaySyncManager()
-{
-    return playsync_manager.get();
 }
 
 PlayStackManager* CapabilityManager::getPlayStackManager()

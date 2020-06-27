@@ -26,7 +26,6 @@
 #include "directive_sequencer.hh"
 #include "focus_manager.hh"
 #include "playstack_manager.hh"
-#include "playsync_manager.hh"
 #include "session_manager.hh"
 
 namespace NuguCore {
@@ -41,7 +40,6 @@ public:
     static CapabilityManager* getInstance();
     static void destroyInstance();
 
-    PlaySyncManager* getPlaySyncManager();
     PlayStackManager* getPlayStackManager();
     FocusManager* getFocusManager();
     SessionManager* getSessionManager();
@@ -61,7 +59,6 @@ public:
 
     std::string makeContextInfo(const std::string& cname, Json::Value& ctx);
     std::string makeAllContextInfo();
-    std::string makeAllContextInfoStack();
 
     bool isSupportDirectiveVersion(const std::string& version, ICapabilityInterface* cap);
 
@@ -78,14 +75,12 @@ public:
 
 private:
     ICapabilityInterface* findCapability(const std::string& cname);
-    std::string makeAllContextCommonInfo(bool include_playstack = false);
 
     static CapabilityManager* instance;
     std::map<std::string, ICapabilityInterface*> caps;
     std::map<std::string, std::string> events;
     std::map<std::string, std::string> events_cname_map;
     std::string wword;
-    std::unique_ptr<PlaySyncManager> playsync_manager = nullptr;
     std::unique_ptr<PlayStackManager> playstack_manager = nullptr;
     std::unique_ptr<FocusManager> focus_manager = nullptr;
     std::unique_ptr<SessionManager> session_manager = nullptr;

@@ -133,6 +133,9 @@ void TextAgent::receiveCommandAll(const std::string& command, const std::string&
 
         capa_helper->sendCommand("Text", "ASR", "releaseFocus", dir_groups);
         cur_dialog_id = "";
+
+        if (dir_groups.find("TTS") == std::string::npos && dir_groups.find("AudioPlayer") == std::string::npos)
+            playstack_manager->resetHolding();
     }
 }
 
@@ -218,9 +221,9 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
 
     cur_dialog_id = event.getDialogRequestId();
 
-    playsync_manager->holdContext();
+    playstack_manager->stopHolding();
 
-    sendEvent(&event, capa_helper->makeAllContextInfoStack(), payload, std::move(cb));
+    sendEvent(&event, capa_helper->makeAllContextInfo(), payload, std::move(cb));
 }
 
 void TextAgent::parsingTextSource(const char* message)

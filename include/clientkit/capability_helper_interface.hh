@@ -24,7 +24,6 @@
 #include <clientkit/directive_sequencer_interface.hh>
 #include <clientkit/focus_manager_interface.hh>
 #include <clientkit/playstack_manager_interface.hh>
-#include <clientkit/playsync_manager_interface.hh>
 #include <clientkit/session_manager_interface.hh>
 
 namespace NuguClientKit {
@@ -45,12 +44,6 @@ namespace NuguClientKit {
 class ICapabilityHelper {
 public:
     virtual ~ICapabilityHelper() = default;
-
-    /**
-     * @brief Get IPlaySyncManager instance
-     * @return IPlaySyncManager instance
-     */
-    virtual IPlaySyncManager* getPlaySyncManager() = 0;
 
     /**
      * @brief Get IPlayStackManager instance
@@ -148,11 +141,6 @@ public:
      * @brief Get context info from All CapabilityAgents.
      */
     virtual std::string makeAllContextInfo() = 0;
-
-    /**
-     * @brief Get context info including play stack of All CapabilityAgents.
-     */
-    virtual std::string makeAllContextInfoStack() = 0;
 };
 
 /**

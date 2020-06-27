@@ -174,6 +174,8 @@ void ASRAgent::onFocusChanged(FocusState state)
 
     switch (state) {
     case FocusState::FOREGROUND: {
+        playstack_manager->stopHolding();
+
         saveAllContextInfo();
 
         std::string id = "id#" + std::to_string(uniq++);
@@ -184,6 +186,8 @@ void ASRAgent::onFocusChanged(FocusState state)
         focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
         break;
     case FocusState::NONE:
+        playstack_manager->resetHolding();
+
         speech_recognizer->stopListening();
 
         if (getASRState() == ASRState::LISTENING
@@ -238,7 +242,7 @@ void ASRAgent::updateInfoForContext(Json::Value& ctx)
 
 void ASRAgent::saveAllContextInfo()
 {
-    all_context_info = capa_helper->makeAllContextInfoStack();
+    all_context_info = capa_helper->makeAllContextInfo();
 }
 
 bool ASRAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
@@ -521,7 +525,6 @@ void ASRAgent::parsingCancelRecognize(const char* message)
 void ASRAgent::handleExpectSpeech()
 {
     if (es_attr.is_handle) {
-        playsync_manager->setExpectSpeech(true);
         setASRState(ASRState::EXPECTING_SPEECH);
         focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
     }
@@ -539,8 +542,6 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
 
         rec_event = new CapabilityEvent("Recognize", this);
         rec_event->setType(NUGU_EVENT_TYPE_WITH_ATTACHMENT);
-
-        playsync_manager->holdContext();
 
         sendEventRecognize(NULL, 0, false, [&](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {
             nugu_dbg("receive %s.%s(%s) result %d(code:%d)", getName().c_str(), ename.c_str(), msg_id.c_str(), success, code);
@@ -629,8 +630,6 @@ void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error, bool release_focu
         else
             asr_listener->onError(error, getRecognizeDialogId());
     }
-
-    playsync_manager->onASRError(isExpectSpeechState());
 
     if (release_focus) {
         nugu_dbg("request to release focus");

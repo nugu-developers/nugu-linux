@@ -147,7 +147,7 @@ void Capability::setNuguCoreContainer(INuguCoreContainer* core_container)
     this->core_container = core_container;
     capa_helper = core_container->getCapabilityHelper();
 
-    playsync_manager = capa_helper->getPlaySyncManager();
+    playstack_manager = capa_helper->getPlayStackManager();
     focus_manager = capa_helper->getFocusManager();
     session_manager = capa_helper->getSessionManager();
     directive_sequencer = capa_helper->getDirectiveSequencer();
