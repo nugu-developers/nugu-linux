@@ -64,8 +64,8 @@ void TTSAgent::initialize()
     }
 
     std::string volume_str;
-    capa_helper->getCapabilityProperty("Speaker", "voice_command", volume_str);
-    volume = std::stoi(volume_str);
+    if (capa_helper->getCapabilityProperty("Speaker", "voice_command", volume_str))
+        volume = std::stoi(volume_str);
 
     player = core_container->createTTSPlayer();
     player->addListener(this);

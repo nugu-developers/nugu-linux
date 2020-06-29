@@ -300,35 +300,38 @@ void CapabilityManager::sendCommandAll(const std::string& command, const std::st
         iter.second->receiveCommandAll(command, param);
 }
 
-void CapabilityManager::sendCommand(const std::string& from, const std::string& to,
+bool CapabilityManager::sendCommand(const std::string& from, const std::string& to,
     const std::string& command, const std::string& param)
 {
     for (const auto& iter : caps) {
         if (iter.second->getName() == to) {
-            iter.second->receiveCommand(from, command, param);
-            break;
+            return iter.second->receiveCommand(from, command, param);
         }
     }
+
+    return false;
 }
 
-void CapabilityManager::getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value)
+bool CapabilityManager::getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value)
 {
     for (const auto& iter : caps) {
         if (iter.second->getName() == cap) {
-            iter.second->getProperty(property, value);
-            break;
+            return iter.second->getProperty(property, value);
         }
     }
+
+    return false;
 }
 
-void CapabilityManager::getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values)
+bool CapabilityManager::getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values)
 {
     for (const auto& iter : caps) {
         if (iter.second->getName() == cap) {
-            iter.second->getProperties(property, values);
-            break;
+            return iter.second->getProperties(property, values);
         }
     }
+
+    return false;
 }
 
 void CapabilityManager::suspendAll()

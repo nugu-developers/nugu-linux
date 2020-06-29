@@ -128,7 +128,7 @@ void SystemAgent::setCapabilityListener(ICapabilityListener* clistener)
         system_listener = dynamic_cast<ISystemListener*>(clistener);
 }
 
-void SystemAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
+bool SystemAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
 {
     std::string convert_command;
     convert_command.resize(command.size());
@@ -138,7 +138,12 @@ void SystemAgent::receiveCommand(const std::string& from, const std::string& com
         nugu_dbg("update timer");
         if (timer)
             timer->start();
+    } else {
+        nugu_error("invalid command: %s", command.c_str());
+        return false;
     }
+
+    return true;
 }
 
 void SystemAgent::synchronizeState()

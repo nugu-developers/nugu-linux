@@ -66,10 +66,10 @@ public:
     void preprocessDirective(NuguDirective* ndir);
     bool isSupportDirectiveVersion(const std::string& version, ICapabilityInterface* cap);
 
-    void sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param);
+    bool sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param);
     void sendCommandAll(const std::string& command, const std::string& param);
-    void getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value);
-    void getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values);
+    bool getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value);
+    bool getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values);
     void suspendAll();
     void restoreAll();
 

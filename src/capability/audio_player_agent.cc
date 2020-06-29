@@ -62,8 +62,8 @@ void AudioPlayerAgent::initialize()
     }
 
     std::string volume_str;
-    capa_helper->getCapabilityProperty("Speaker", "music", volume_str);
-    volume = std::stoi(volume_str);
+    if (capa_helper->getCapabilityProperty("Speaker", "music", volume_str))
+        volume = std::stoi(volume_str);
 
     media_player = core_container->createMediaPlayer();
     media_player->addListener(this);
@@ -479,14 +479,20 @@ void AudioPlayerAgent::updateInfoForContext(Json::Value& ctx)
     ctx[getName()] = aplayer;
 }
 
-void AudioPlayerAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
+bool AudioPlayerAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
 {
     std::string convert_command;
     convert_command.resize(command.size());
     std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
 
-    if (!convert_command.compare("setvolume"))
+    if (!convert_command.compare("setvolume")) {
         cur_player->setVolume(std::stoi(param));
+    } else {
+        nugu_error("invalid command: %s", command.c_str());
+        return false;
+    }
+
+    return true;
 }
 
 void AudioPlayerAgent::setCapabilityListener(ICapabilityListener* listener)

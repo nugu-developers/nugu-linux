@@ -77,9 +77,9 @@ bool CapabilityHelper::setMute(bool mute)
     return AudioRecorderManager::getInstance()->setMute(mute);
 }
 
-void CapabilityHelper::sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param)
+bool CapabilityHelper::sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param)
 {
-    CapabilityManager::getInstance()->sendCommand(from, to, command, param);
+    return CapabilityManager::getInstance()->sendCommand(from, to, command, param);
 }
 
 void CapabilityHelper::requestEventResult(NuguEvent* event)
@@ -102,14 +102,14 @@ std::string CapabilityHelper::getWakeupWord()
     return CapabilityManager::getInstance()->getWakeupWord();
 }
 
-void CapabilityHelper::getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value)
+bool CapabilityHelper::getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value)
 {
-    CapabilityManager::getInstance()->getCapabilityProperty(cap, property, value);
+    return CapabilityManager::getInstance()->getCapabilityProperty(cap, property, value);
 }
 
-void CapabilityHelper::getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values)
+bool CapabilityHelper::getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values)
 {
-    CapabilityManager::getInstance()->getCapabilityProperties(cap, property, values);
+    return CapabilityManager::getInstance()->getCapabilityProperties(cap, property, values);
 }
 
 std::string CapabilityHelper::makeContextInfo(const std::string& cname, Json::Value& ctx)

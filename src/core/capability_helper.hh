@@ -36,13 +36,13 @@ public:
     IDirectiveSequencer* getDirectiveSequencer() override;
 
     bool setMute(bool mute) override;
-    void sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param) override;
+    bool sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param) override;
     void requestEventResult(NuguEvent* event) override;
     void suspendAll() override;
     void restoreAll() override;
     std::string getWakeupWord() override;
-    void getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value) override;
-    void getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values) override;
+    bool getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value) override;
+    bool getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values) override;
 
     // about context
     std::string makeContextInfo(const std::string& cname, Json::Value& ctx) override;

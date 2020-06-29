@@ -35,7 +35,7 @@ public:
     void updateInfoForContext(Json::Value& ctx) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
-    void receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
+    bool receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
 
     void synchronizeState() override;
     void updateUserActivity() override;
