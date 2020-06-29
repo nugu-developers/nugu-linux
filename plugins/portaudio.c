@@ -61,7 +61,14 @@ struct pa_audio_param {
 	void *data;
 	int is_start;
 	int is_first;
+
+#if defined(NUGU_ENV_DUMP_PATH_RECORDER) || defined(NUGU_ENV_DUMP_PATH_PCM)
 	int dump_fd;
+#endif
+
+#ifdef NUGU_ENV_RECORDING_FROM_FILE
+	int src_fd;
+#endif
 
 #ifndef ASYNC_PLAYBACK
 	pthread_t tid;
@@ -169,6 +176,56 @@ static int _set_property_to_param(struct pa_audio_param *param,
 	return 0;
 }
 
+static void _recorder_push(struct pa_audio_param *param, const char *buf,
+			   int buf_size)
+{
+	nugu_recorder_push_frame(param->data, buf, buf_size);
+
+#ifdef NUGU_ENV_DUMP_PATH_RECORDER
+	if (param->dump_fd != -1) {
+		if (write(param->dump_fd, buf, buf_size) < 0)
+			nugu_error("write to fd-%d failed", param->dump_fd);
+	}
+#endif
+}
+
+#ifdef NUGU_ENV_RECORDING_FROM_FILE
+static int _recording_from_file(struct pa_audio_param *param, int buf_size)
+{
+	char *buf;
+	ssize_t nread;
+
+	buf = malloc(buf_size);
+	if (!buf) {
+		nugu_error_nomem();
+		return -1;
+	}
+
+	nread = read(param->src_fd, buf, buf_size);
+	if (nread < 0) {
+		nugu_error("read() failed: %s", strerror(errno));
+
+		free(buf);
+		close(param->src_fd);
+		param->src_fd = -1;
+		return -1;
+	} else if (nread == 0) {
+		nugu_dbg("read all pcm data from file");
+
+		free(buf);
+		close(param->src_fd);
+		param->src_fd = -1;
+		return -1;
+	}
+
+	_recorder_push(param, buf, nread);
+
+	free(buf);
+
+	return 0;
+}
+#endif
+
 /* This routine will be called by the PortAudio engine when audio is needed.
  * It may be called at interrupt level on some machines so don't do anything
  * that could mess up the system like calling malloc() or free().
@@ -179,32 +236,42 @@ static int _recordCallback(const void *inputBuffer, void *outputBuffer,
 			   PaStreamCallbackFlags statusFlags, void *userData)
 {
 	struct pa_audio_param *param = (struct pa_audio_param *)userData;
-	NuguRecorder *rec = (NuguRecorder *)param->data;
-	char *buf = (char *)inputBuffer;
-	int finished = paContinue;
 	int buf_size = framesPerBuffer * param->samplebyte;
-
-	(void)outputBuffer; /* Prevent unused variable warnings. */
-	(void)timeInfo;
-	(void)statusFlags;
-
-	if (inputBuffer == NULL) {
-		buf = malloc(buf_size);
-		memset(buf, SAMPLE_SILENCE, buf_size);
-	}
-
-	nugu_recorder_push_frame(rec, buf, buf_size);
-
-	if (param->dump_fd != -1) {
-		if (write(param->dump_fd, buf, buf_size) < 0)
-			nugu_error("write to fd-%d failed", param->dump_fd);
-	}
-
-	if (inputBuffer == NULL)
-		free(buf);
+	int finished = paContinue;
 
 	if (param->stop)
 		finished = paComplete;
+
+	/* Fill the buffer to SILENCE data */
+	if (inputBuffer == NULL) {
+		char *buf;
+
+		buf = malloc(buf_size);
+		if (!buf) {
+			nugu_error_nomem();
+			return finished;
+		}
+
+		memset(buf, SAMPLE_SILENCE, buf_size);
+
+		_recorder_push(param, buf, buf_size);
+
+		free(buf);
+
+		return finished;
+	}
+
+#ifdef NUGU_ENV_RECORDING_FROM_FILE
+	/* Use file source instead of real microphone data */
+	if (param->src_fd != -1) {
+		if (_recording_from_file(param, buf_size) < 0)
+			return paComplete;
+		else
+			return finished;
+	}
+#endif
+
+	_recorder_push(param, inputBuffer, buf_size);
 
 	return finished;
 }
@@ -261,12 +328,14 @@ static int _playbackCallback(const void *inputBuffer, void *outputBuffer,
 		nugu_pcm_get_data(pcm, buf, buf_size);
 		param->write_data += buf_size;
 
+#ifdef NUGU_ENV_DUMP_PATH_PCM
 #ifndef DUMP_ON_PCM_PUSH_DATA
 		if (param->dump_fd != -1) {
 			if (write(param->dump_fd, buf, buf_size) < 0)
 				nugu_error("write to fd-%d failed",
 					   param->dump_fd);
 		}
+#endif
 #endif
 	} else if (nugu_pcm_receive_is_last_data(pcm)) {
 		// send event to the main loop thread
@@ -348,8 +417,17 @@ static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 #ifdef NUGU_ENV_DUMP_PATH_RECORDER
 	rec_param->dump_fd =
 		_dumpfile_open(getenv(NUGU_ENV_DUMP_PATH_RECORDER), "parec");
-#else
-	rec_param->dump_fd = -1;
+#endif
+
+#ifdef NUGU_ENV_RECORDING_FROM_FILE
+	if (getenv(NUGU_ENV_RECORDING_FROM_FILE)) {
+		rec_param->src_fd =
+			open(getenv(NUGU_ENV_RECORDING_FROM_FILE), O_RDONLY);
+		nugu_dbg("recording from file: '%s'",
+			 getenv(NUGU_ENV_RECORDING_FROM_FILE));
+	} else {
+		rec_param->src_fd = -1;
+	}
 #endif
 
 	nugu_recorder_set_driver_data(rec, rec_param);
@@ -376,10 +454,19 @@ static int _rec_stop(NuguRecorderDriver *driver, NuguRecorder *rec)
 	if (err != paNoError)
 		nugu_error("Pa_CloseStream return fail");
 
+#ifdef NUGU_ENV_DUMP_PATH_RECORDER
 	if (rec_param->dump_fd >= 0) {
 		close(rec_param->dump_fd);
 		rec_param->dump_fd = -1;
 	}
+#endif
+
+#ifdef NUGU_ENV_RECORDING_FROM_FILE
+	if (rec_param->src_fd >= 0) {
+		close(rec_param->src_fd);
+		rec_param->src_fd = -1;
+	}
+#endif
 
 	g_free(rec_param);
 	nugu_recorder_set_driver_data(rec, NULL);
@@ -615,8 +702,6 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm)
 #ifdef NUGU_ENV_DUMP_PATH_PCM
 	pcm_param->dump_fd =
 		_dumpfile_open(getenv(NUGU_ENV_DUMP_PATH_PCM), "papcm");
-#else
-	pcm_param->dump_fd = -1;
 #endif
 
 	nugu_pcm_emit_status(pcm, NUGU_MEDIA_STATUS_READY);
@@ -664,10 +749,12 @@ static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm)
 		Pa_Sleep(10);
 #endif
 
+#ifdef NUGU_ENV_DUMP_PATH_PCM
 	if (pcm_param->dump_fd >= 0) {
 		close(pcm_param->dump_fd);
 		pcm_param->dump_fd = -1;
 	}
+#endif
 
 	err = Pa_StopStream(pcm_param->stream);
 	if (err != paNoError && err != paStreamIsStopped) {
@@ -792,11 +879,12 @@ static int _pcm_push_data(NuguPcmDriver *driver, NuguPcm *pcm, const char *data,
 		playing_flag = 1;
 
 #ifndef ASYNC_PLAYBACK
+#ifdef NUGU_ENV_DUMP_PATH_PCM
 	if (pcm_param->dump_fd != -1) {
 		if (write(pcm_param->dump_fd, data, size) < 0)
 			nugu_error("write pcm data failed");
 	}
-
+#endif
 	pthread_mutex_lock(&pcm_param->lock);
 	pcm_param->flag = SYNC_FLAG_DATA;
 	pthread_cond_signal(&pcm_param->cond);
