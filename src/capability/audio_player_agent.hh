@@ -47,7 +47,7 @@ public:
 
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
-    void receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
+    bool receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     static void directiveDataCallback(NuguDirective* ndir, int seq, void* userdata);

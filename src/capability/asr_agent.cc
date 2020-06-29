@@ -229,7 +229,7 @@ void ASRAgent::saveAllContextInfo()
     all_context_info = capa_helper->makeAllContextInfoStack();
 }
 
-void ASRAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
+bool ASRAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
 {
     std::string convert_command;
     convert_command.resize(command.size());
@@ -242,11 +242,17 @@ void ASRAgent::receiveCommand(const std::string& from, const std::string& comman
             nugu_info("Focus(type: %s) Release", DIALOG_FOCUS_TYPE);
             stopRecognition();
         }
-    } else if (convert_command == "cancel")
+    } else if (convert_command == "cancel") {
         cancelRecognition();
+    } else {
+        nugu_error("invalid command: %s", command.c_str());
+        return false;
+    }
+
+    return true;
 }
 
-void ASRAgent::getProperty(const std::string& property, std::string& value)
+bool ASRAgent::getProperty(const std::string& property, std::string& value)
 {
     value = "";
 
@@ -257,10 +263,15 @@ void ASRAgent::getProperty(const std::string& property, std::string& value)
             Json::StyledWriter writer;
             value = writer.write(es_attr.asr_context);
         }
+    } else {
+        nugu_error("invalid property: %s", property.c_str());
+        return false;
     }
+
+    return true;
 }
 
-void ASRAgent::getProperties(const std::string& property, std::list<std::string>& values)
+bool ASRAgent::getProperties(const std::string& property, std::list<std::string>& values)
 {
     values.clear();
 
@@ -268,7 +279,12 @@ void ASRAgent::getProperties(const std::string& property, std::list<std::string>
         for (int i = 0; i < (int)es_attr.domain_types.size(); i++) {
             values.emplace_back(es_attr.domain_types[i].asString());
         }
+    } else {
+        nugu_error("invalid property: %s", property.c_str());
+        return false;
     }
+
+    return true;
 }
 
 void ASRAgent::checkResponseTimeout()

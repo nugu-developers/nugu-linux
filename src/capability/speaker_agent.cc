@@ -97,7 +97,7 @@ void SpeakerAgent::setCapabilityListener(ICapabilityListener* clistener)
         speaker_listener = dynamic_cast<ISpeakerListener*>(clistener);
 }
 
-void SpeakerAgent::getProperty(const std::string& property, std::string& value)
+bool SpeakerAgent::getProperty(const std::string& property, std::string& value)
 {
     std::string convert_property;
     convert_property.resize(property.size());
@@ -117,6 +117,8 @@ void SpeakerAgent::getProperty(const std::string& property, std::string& value)
         value = std::to_string(speakers[SpeakerType::NUGU]->volume);
 
     nugu_dbg("request to get property(%s) and return value(%s)", property.c_str(), value.c_str());
+
+    return true;
 }
 
 void SpeakerAgent::setSpeakerInfo(const std::map<SpeakerType, SpeakerInfo>& info)

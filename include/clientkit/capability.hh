@@ -284,15 +284,21 @@ public:
      * @brief It is possible to share own property value among objects.
      * @param[in] property capability property
      * @param[in] values capability property value
+     * @return property get result
+     * @retval true The property is valid
+     * @retval false The property is invalid
      */
-    void getProperty(const std::string& property, std::string& value) override;
+    bool getProperty(const std::string& property, std::string& value) override;
 
     /**
      * @brief It is possible to share own property values among objects.
      * @param[in] property capability property
      * @param[in] values capability property values
+     * @return property get result
+     * @retval true The property is valid
+     * @retval false The property is invalid
      */
-    void getProperties(const std::string& property, std::list<std::string>& values) override;
+    bool getProperties(const std::string& property, std::list<std::string>& values) override;
 
     /**
      * @brief Set the listener object.
@@ -305,8 +311,11 @@ public:
      * @param[in] from capability who send the command
      * @param[in] command command
      * @param[in] param command parameter
+     * @return command result
+     * @retval true The command is valid
+     * @retval false The command is invalid
      */
-    void receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
+    bool receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
 
     /**
      * @brief Process command received from capability manager.

@@ -56,9 +56,9 @@ public:
     void updateInfoForContext(Json::Value& ctx) override;
     void saveAllContextInfo();
 
-    void receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
-    void getProperty(const std::string& property, std::string& value) override;
-    void getProperties(const std::string& property, std::list<std::string>& values) override;
+    bool receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
+    bool getProperty(const std::string& property, std::string& value) override;
+    bool getProperties(const std::string& property, std::list<std::string>& values) override;
     void checkResponseTimeout();
     void clearResponseTimeout();
 

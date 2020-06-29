@@ -88,8 +88,11 @@ public:
      * @param[in] to target CapabilityAgent
      * @param[in] command command
      * @param[in] param parameter
+     * @return send command result
+     * @retval true CapabilityAgent and command are valid
+     * @retval false CapabilityAgent or command is invalid
      */
-    virtual void sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param) = 0;
+    virtual bool sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param) = 0;
 
     /**
      * @brief Request to send event result via CapabilityManager.
@@ -117,16 +120,22 @@ public:
      * @param[in] cap CapabilityAgent
      * @param[in] property property key
      * @param[in] value property value
+     * @return property get result
+     * @retval true CapabilityAgent and property are valid
+     * @retval false CapabilityAgent or property is invalid
      */
-    virtual void getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value) = 0;
+    virtual bool getCapabilityProperty(const std::string& cap, const std::string& property, std::string& value) = 0;
 
     /**
      * @brief Get properties from CapabilityAgent.
      * @param[in] cap CapabilityAgent
      * @param[in] property property key
      * @param[in] values property values
+     * @return property get result
+     * @retval true CapabilityAgent and property are valid
+     * @retval false CapabilityAgent or property is invalid
      */
-    virtual void getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values) = 0;
+    virtual bool getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values) = 0;
 
     /**
      * @brief Get context info.

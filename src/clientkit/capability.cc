@@ -317,14 +317,18 @@ void Capability::parsingDirective(const char* dname, const char* message)
     destroyDirective(pimpl->cur_ndir);
 }
 
-void Capability::getProperty(const std::string& property, std::string& value)
+bool Capability::getProperty(const std::string& property, std::string& value)
 {
     value = "";
+
+    return true;
 }
 
-void Capability::getProperties(const std::string& property, std::list<std::string>& values)
+bool Capability::getProperties(const std::string& property, std::list<std::string>& values)
 {
     values.clear();
+
+    return true;
 }
 
 std::string Capability::sendEvent(const std::string& name, const std::string& context, const std::string& payload, EventResultCallback cb, bool is_sync)
@@ -389,8 +393,9 @@ void Capability::setCapabilityListener(ICapabilityListener* clistener)
 {
 }
 
-void Capability::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
+bool Capability::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
 {
+    return true;
 }
 
 void Capability::receiveCommandAll(const std::string& command, const std::string& param)
