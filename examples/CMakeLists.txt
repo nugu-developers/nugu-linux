@@ -7,6 +7,7 @@ ADD_SUBDIRECTORY(simple_text)
 ADD_SUBDIRECTORY(simple_asr)
 ADD_SUBDIRECTORY(simple_play)
 ADD_SUBDIRECTORY(simple_tts)
+ADD_SUBDIRECTORY(profiling)
 ADD_SUBDIRECTORY(capability_injection)
 
 # A shell script that executes a program using the token information

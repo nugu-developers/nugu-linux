@@ -210,12 +210,10 @@ static int _recording_from_file(struct pa_audio_param *param, int buf_size)
 		param->src_fd = -1;
 		return -1;
 	} else if (nread == 0) {
-		nugu_dbg("read all pcm data from file");
+		nugu_dbg("read all pcm data from file. fill the SILENCE data");
 
-		free(buf);
-		close(param->src_fd);
-		param->src_fd = -1;
-		return -1;
+		memset(buf, SAMPLE_SILENCE, buf_size);
+		nread = buf_size;
 	}
 
 	_recorder_push(param, buf, nread);

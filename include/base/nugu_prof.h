@@ -274,6 +274,15 @@ int nugu_prof_get_diff_msec_timespec(const struct timespec *ts1,
 				     const struct timespec *ts2);
 
 /**
+ * @brief Get the time difference(ts2 - ts1) value in milliseconds
+ * @param[in] type1 profiling type
+ * @param[in] type2 profiling type
+ * @return milliseconds
+ */
+int nugu_prof_get_diff_msec_type(enum nugu_prof_type type1,
+				 enum nugu_prof_type type2);
+
+/**
  * @brief Get the time difference(prof2 - prof1) value in milliseconds
  * @param[in] prof1 time value
  * @param[in] prof2 time value
@@ -281,6 +290,13 @@ int nugu_prof_get_diff_msec_timespec(const struct timespec *ts1,
  */
 int nugu_prof_get_diff_msec(const struct nugu_prof_data *prof1,
 			    const struct nugu_prof_data *prof2);
+
+/**
+ * @brief Get string type name for profiling type
+ * @param[in] type profiling type
+ * @return NULL terminated string
+ */
+const char *nugu_prof_get_type_name(enum nugu_prof_type type);
 
 /**
  * @brief Dump the profiling data between 'from' type to 'to' type
