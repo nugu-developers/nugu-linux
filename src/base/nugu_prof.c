@@ -332,6 +332,13 @@ EXPORT_API int nugu_prof_get_diff_msec_timespec(const struct timespec *ts1,
 	return (nsec / 1000000) + (sec * 1000);
 }
 
+EXPORT_API int nugu_prof_get_diff_msec_type(enum nugu_prof_type type1,
+					    enum nugu_prof_type type2)
+{
+	return nugu_prof_get_diff_msec_timespec(&_prof_data[type1].timestamp,
+						&_prof_data[type2].timestamp);
+}
+
 EXPORT_API int nugu_prof_get_diff_msec(const struct nugu_prof_data *prof1,
 				       const struct nugu_prof_data *prof2)
 {
@@ -344,6 +351,11 @@ EXPORT_API int nugu_prof_get_diff_msec(const struct nugu_prof_data *prof1,
 
 	return nugu_prof_get_diff_msec_timespec(&prof1->timestamp,
 						&prof2->timestamp);
+}
+
+EXPORT_API const char *nugu_prof_get_type_name(enum nugu_prof_type type)
+{
+	return _hints[type].text;
 }
 
 static void _fill_timeunit(int msec, char *dest, size_t dest_len)
