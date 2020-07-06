@@ -24,39 +24,26 @@ namespace NuguCore {
 /*******************************************************************************
  * for debugging
  ******************************************************************************/
+
 namespace Debug {
+    const std::map<PlayStackLayer, std::string> PLAYSTACK_LAYER_TEXT {
+        { PlayStackLayer::Alert, "[Alert] " },
+        { PlayStackLayer::Call, "[Call] " },
+        { PlayStackLayer::Info, "[Info] " },
+        { PlayStackLayer::Media, "[Media] " },
+    };
+
     void showPlayStack(const PlayStackManager::PlayStack& playstack_container)
     {
         std::string playstack_log("\n>>>>> [PlayStack] >>>>>\n");
 
         for (const auto& item : playstack_container.second) {
-            std::string layer = "[None] ";
-
             try {
-                switch (playstack_container.first.at(item)) {
-                case PlayStackLayer::Alert:
-                    layer = "[Alert] ";
-                    break;
-                case PlayStackLayer::Call:
-                    layer = "[Call] ";
-                    break;
-                case PlayStackLayer::Info:
-                    layer = "[Info] ";
-                    break;
-                case PlayStackLayer::Media:
-                    layer = "[Media] ";
-                    break;
-                case PlayStackLayer::None:
-                default:
-                    break;
-                }
+                std::string layer = PLAYSTACK_LAYER_TEXT.at(playstack_container.first.at(item));
+                playstack_log.append(layer).append(item).append("\n");
             } catch (std::out_of_range& exception) {
+                // pass silently
             }
-
-            playstack_log
-                .append(layer)
-                .append(item)
-                .append("\n");
         }
 
         playstack_log.append("<<<<< [PlayStack] <<<<<\n");
