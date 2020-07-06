@@ -325,7 +325,7 @@ void AudioPlayerAgent::seek(int msec)
         cur_player->seek(msec * 1000);
 }
 
-std::string AudioPlayerAgent::setFavorite(bool favorite)
+std::string AudioPlayerAgent::requestFavoriteCommmand(bool current_favorite)
 {
     std::string ename = "FavoriteCommandIssued";
     std::string payload = "";
@@ -338,7 +338,7 @@ std::string AudioPlayerAgent::setFavorite(bool favorite)
     }
 
     root["playServiceId"] = ps_id;
-    root["favorite"] = favorite;
+    root["favorite"] = current_favorite;
     payload = writer.write(root);
 
     std::string id = sendEvent(ename, getContextInfo(), payload);
@@ -346,7 +346,7 @@ std::string AudioPlayerAgent::setFavorite(bool favorite)
     return id;
 }
 
-std::string AudioPlayerAgent::setRepeat(RepeatType repeat)
+std::string AudioPlayerAgent::requestRepeatCommmand(RepeatType current_repeat)
 {
     std::string ename = "RepeatCommandIssued";
     std::string payload = "";
@@ -359,7 +359,7 @@ std::string AudioPlayerAgent::setRepeat(RepeatType repeat)
     }
 
     root["playServiceId"] = ps_id;
-    switch (repeat) {
+    switch (current_repeat) {
     case RepeatType::ONE:
         root["repeat"] = "ONE";
         break;
@@ -377,7 +377,7 @@ std::string AudioPlayerAgent::setRepeat(RepeatType repeat)
     return id;
 }
 
-std::string AudioPlayerAgent::setShuffle(bool shuffle)
+std::string AudioPlayerAgent::requestShuffleCommmand(bool current_shuffle)
 {
     std::string ename = "ShuffleCommandIssued";
     std::string payload = "";
@@ -390,7 +390,7 @@ std::string AudioPlayerAgent::setShuffle(bool shuffle)
     }
 
     root["playServiceId"] = ps_id;
-    root["shuffle"] = shuffle;
+    root["shuffle"] = current_shuffle;
     payload = writer.write(root);
 
     std::string id = sendEvent(ename, getContextInfo(), payload);
