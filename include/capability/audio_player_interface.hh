@@ -193,25 +193,25 @@ public:
     virtual void seek(int msec) = 0;
 
     /**
-     * @brief Request the audio player to set favorite the content.
-     * @param[in] favorite favorite value
+     * @brief Send to request favorite command event with current favorite value.
+     * @param[in] current_favorite current favorite value
      * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual std::string setFavorite(bool favorite) = 0;
+    virtual std::string requestFavoriteCommmand(bool current_favorite) = 0;
 
     /**
-     * @brief Request the audio player to set repeat the content.
-     * @param[in] repeat repeat value
+     * @brief Send to request repeat command event with current repeat value.
+     * @param[in] current_repeat current repeat value
      * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual std::string setRepeat(RepeatType repeat) = 0;
+    virtual std::string requestRepeatCommmand(RepeatType current_repeat) = 0;
 
     /**
-     * @brief Request the audio player to set shuffle the content.
-     * @param[in] shuffle shuffle value
+     * @brief Send to request shuffle command event with current shuffle value.
+     * @param[in] current_shuffle current shuffle value
      * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual std::string setShuffle(bool shuffle) = 0;
+    virtual std::string requestShuffleCommmand(bool current_shuffle) = 0;
 
     /**
      * @brief set media player's volume
