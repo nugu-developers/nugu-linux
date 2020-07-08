@@ -17,7 +17,6 @@
 #include <algorithm>
 
 #include "base/nugu_log.h"
-
 #include "session_manager.hh"
 
 namespace NuguCore {
@@ -47,8 +46,18 @@ void SessionManager::activate(const std::string& dialog_id)
         return;
     }
 
-    if (std::find(active_list.cbegin(), active_list.cend(), dialog_id) == active_list.cend())
-        active_list.emplace_back(dialog_id);
+    auto result = std::find_if(active_list.begin(), active_list.end(),
+        [&](std::pair<std::string, int>& item) {
+            if (item.first == dialog_id) {
+                item.second++;
+                return true;
+            }
+
+            return false;
+        });
+
+    if (result == active_list.end())
+        active_list.emplace_back(std::make_pair(dialog_id, 1));
 }
 
 void SessionManager::deactivate(const std::string& dialog_id)
@@ -58,12 +67,17 @@ void SessionManager::deactivate(const std::string& dialog_id)
         return;
     }
 
-    active_list.erase(std::remove_if(active_list.begin(), active_list.end(),
-        [&](const std::string& element) {
-            return element == dialog_id;
-        }));
+    active_list.erase(
+        std::remove_if(active_list.begin(), active_list.end(),
+            [&](std::pair<std::string, int>& item) {
+                if (item.first == dialog_id && (--item.second) < 1) {
+                    session_map.erase(dialog_id);
+                    return true;
+                }
 
-    session_map.erase(dialog_id);
+                return false;
+            }),
+        active_list.end());
 }
 
 Json::Value SessionManager::getActiveSessionInfo()
@@ -72,7 +86,7 @@ Json::Value SessionManager::getActiveSessionInfo()
 
     for (const auto& item : active_list) {
         try {
-            auto session = session_map.at(item);
+            auto session = session_map.at(item.first);
 
             Json::Value session_info;
             session_info["sessionId"] = session.session_id;
