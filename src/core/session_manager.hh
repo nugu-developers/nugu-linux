@@ -28,7 +28,7 @@ using namespace NuguClientKit;
 
 class SessionManager : public ISessionManager {
 public:
-    using ActiveDialogs = std::vector<std::string>;
+    using ActiveDialogs = std::vector<std::pair<std::string, int>>;
     using Sessions = std::map<std::string, Session>;
 
 public:
@@ -44,7 +44,7 @@ public:
     const Sessions& getAllSessions();
 
 private:
-    std::vector<std::string> active_list;
+    ActiveDialogs active_list;
     Sessions session_map;
 };
 

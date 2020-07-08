@@ -131,6 +131,22 @@ static void test_session_manager_multi_active(TestFixture* fixture, gconstpointe
     g_assert(session_container.empty() && active_list.empty());
 }
 
+static void test_session_manager_multi_agent_participation(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->session_manager->activate("dialog_id_1"); // by ASR
+    fixture->session_manager->set("dialog_id_1", { "session_id_1", "ps_id_1" }); // by Session
+    fixture->session_manager->activate("dialog_id_1"); // by Display
+    auto active_session_info = fixture->session_manager->getActiveSessionInfo();
+    g_assert(active_session_info.size() == 1 && active_session_info[0]["sessionId"].asString() == "session_id_1");
+
+    fixture->session_manager->deactivate("dialog_id_1"); // by ASR
+    active_session_info = fixture->session_manager->getActiveSessionInfo();
+    g_assert(active_session_info.size() == 1 && active_session_info[0]["sessionId"].asString() == "session_id_1");
+
+    fixture->session_manager->deactivate("dialog_id_1"); // by Display
+    g_assert(fixture->session_manager->getActiveSessionInfo().empty());
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -144,6 +160,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/SessionManager/get", test_session_manager_get);
     G_TEST_ADD_FUNC("/core/SessionManager/singleActive", test_session_manager_single_active);
     G_TEST_ADD_FUNC("/core/SessionManager/multiActive", test_session_manager_multi_active);
+    G_TEST_ADD_FUNC("/core/SessionManager/multiAgentParticipation", test_session_manager_multi_agent_participation);
 
     return g_test_run();
 }
