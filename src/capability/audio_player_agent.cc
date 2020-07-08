@@ -984,6 +984,8 @@ void AudioPlayerAgent::parsingStop(const char* message)
         playstack_manager->remove(playstackctl_ps_id, is_finished ? PlayStackRemoveMode::Normal : PlayStackRemoveMode::Immediately);
 
         capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
+
+        focus_manager->releaseFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME);
     }
 }
 
