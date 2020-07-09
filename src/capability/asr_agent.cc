@@ -533,9 +533,12 @@ void ASRAgent::handleExpectSpeech()
 void ASRAgent::onListeningState(ListeningState state, const std::string& id)
 {
     switch (state) {
-    case ListeningState::READY: {
+    case ListeningState::READY:
         nugu_dbg("[%s] ListeningState::READY", id.c_str());
         clearResponseTimeout();
+        break;
+    case ListeningState::LISTENING: {
+        nugu_dbg("[%s] ListeningState::LISTENING", id.c_str());
 
         if (rec_event)
             delete rec_event;
@@ -543,23 +546,23 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
         rec_event = new CapabilityEvent("Recognize", this);
         rec_event->setType(NUGU_EVENT_TYPE_WITH_ATTACHMENT);
 
-        sendEventRecognize(NULL, 0, false, [&](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {
-            nugu_dbg("receive %s.%s(%s) result %d(code:%d)", getName().c_str(), ename.c_str(), msg_id.c_str(), success, code);
-        });
+        sendEventRecognize(NULL, 0, false,
+            [&](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {
+                nugu_dbg("receive %s.%s(%s) result %d(code:%d)", getName().c_str(), ename.c_str(), msg_id.c_str(), success, code);
+            });
+
         wakeup_power_noise = 0;
         wakeup_power_speech = 0;
 
         std::string id = getRecognizeDialogId();
         nugu_dbg("user request dialog id: %s", id.c_str());
-        if (rec_callback != nullptr && id.size())
+
+        if (rec_callback && !id.empty())
             rec_callback(id);
 
         setASRState(ASRState::LISTENING);
         break;
     }
-    case ListeningState::LISTENING:
-        nugu_dbg("[%s] ListeningState::LISTENING", id.c_str());
-        break;
     case ListeningState::SPEECH_START:
         nugu_dbg("[%s] ListeningState::SPEECH_START", id.c_str());
         setASRState(ASRState::RECOGNIZING);
