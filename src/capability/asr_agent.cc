@@ -527,6 +527,7 @@ void ASRAgent::handleExpectSpeech()
     if (es_attr.is_handle) {
         setASRState(ASRState::EXPECTING_SPEECH);
         focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
+        asr_cancel = false;
     }
 }
 
