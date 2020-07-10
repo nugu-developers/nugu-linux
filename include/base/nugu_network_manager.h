@@ -338,6 +338,14 @@ int nugu_network_manager_disconnect(void);
 int nugu_network_manager_handoff(const NuguNetworkServerPolicy *policy);
 
 /**
+ * @brief Immediately disconnect the current connection and reconnect.
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_network_manager_reset_connection(void);
+
+/**
  * @brief Set the access token value.
  * @param[in] token access token
  * @return result

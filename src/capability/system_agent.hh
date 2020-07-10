@@ -55,6 +55,7 @@ private:
     void parsingNoDirectives(const char* message);
     void parsingRevoke(const char* message);
     void parsingNoop(const char* message);
+    void parsingResetConnection(const char* message);
 
     ISystemListener* system_listener;
     INuguTimer* timer;
