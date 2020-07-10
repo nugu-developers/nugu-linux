@@ -776,6 +776,28 @@ EXPORT_API int nugu_network_manager_connect(void)
 	return _start_registry(_network);
 }
 
+static void _disconnect(NetworkManager *nm)
+{
+	nugu_info("disconnecting: current step is %d", nm->step);
+
+	nm->serverinfo = NULL;
+
+	if (nm->server) {
+		dg_server_free(nm->server);
+		nm->server = NULL;
+	}
+
+	if (nm->handoff) {
+		dg_server_free(nm->handoff);
+		nm->handoff = NULL;
+	}
+
+	if (nm->registry) {
+		dg_registry_free(nm->registry);
+		nm->registry = NULL;
+	}
+}
+
 EXPORT_API int nugu_network_manager_disconnect(void)
 {
 	g_return_val_if_fail(_network != NULL, -1);
@@ -785,26 +807,23 @@ EXPORT_API int nugu_network_manager_disconnect(void)
 		return 0;
 	}
 
-	nugu_info("disconnecting: current step is %d", _network->step);
-
-	_network->serverinfo = NULL;
-
-	if (_network->server) {
-		dg_server_free(_network->server);
-		_network->server = NULL;
-	}
-
-	if (_network->handoff) {
-		dg_server_free(_network->handoff);
-		_network->handoff = NULL;
-	}
-
-	if (_network->registry) {
-		dg_registry_free(_network->registry);
-		_network->registry = NULL;
-	}
+	_disconnect(_network);
 
 	_update_status(_network, NUGU_NETWORK_DISCONNECTED);
+
+	return 0;
+}
+
+EXPORT_API int nugu_network_manager_reset_connection(void)
+{
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return -1;
+	}
+
+	_disconnect(_network);
+
+	_start_registry(_network);
 
 	return 0;
 }

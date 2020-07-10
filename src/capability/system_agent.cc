@@ -27,7 +27,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "System";
-static const char* CAPABILITY_VERSION = "1.2";
+static const char* CAPABILITY_VERSION = "1.3";
 
 SystemAgent::SystemAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -98,6 +98,8 @@ void SystemAgent::parsingDirective(const char* dname, const char* message)
         parsingResetUserInactivity(message);
     else if (!strcmp(dname, "HandoffConnection"))
         parsingHandoffConnection(message);
+    else if (!strcmp(dname, "ResetConnection"))
+        parsingResetConnection(message);
     else if (!strcmp(dname, "TurnOff"))
         parsingTurnOff(message);
     else if (!strcmp(dname, "UpdateState"))
@@ -385,4 +387,23 @@ void SystemAgent::parsingNoop(const char* message)
 {
     // ignore directive
 }
+
+void SystemAgent::parsingResetConnection(const char* message)
+{
+    Json::Value root;
+    Json::Reader reader;
+    std::string desc;
+
+    if (!reader.parse(message, root)) {
+        nugu_error("parsing error");
+        return;
+    }
+
+    desc = root["description"].asString();
+    if (desc.size() != 0)
+        nugu_dbg("description: %s", desc.c_str());
+
+    nugu_network_manager_reset_connection();
+}
+
 } // NuguCapability
