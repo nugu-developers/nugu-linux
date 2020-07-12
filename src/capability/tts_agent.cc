@@ -406,6 +406,7 @@ void TTSAgent::parsingSpeak(const char* message)
     }
 
     has_attachment = true;
+    speak_dir = nullptr;
 
     stopTTS();
 

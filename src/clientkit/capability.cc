@@ -283,6 +283,19 @@ void Capability::processDirective(NuguDirective* ndir)
         message = nugu_directive_peek_json(ndir);
         dname = nugu_directive_peek_name(ndir);
 
+        // handle previous dialog if exist
+        if (pimpl->cur_ndir) {
+            nugu_directive_remove_data_callback(pimpl->cur_ndir);
+
+            if (playstack_manager->isStackedCondition(ndir)) {
+                nugu_dbg("complete previous dialog");
+                directive_sequencer->complete(pimpl->cur_ndir);
+            } else {
+                nugu_dbg("cancel previous dialog");
+                directive_sequencer->cancel(nugu_directive_peek_dialog_id(pimpl->cur_ndir));
+            }
+        }
+
         pimpl->cur_ndir = ndir;
 
         if (!message || !dname) {

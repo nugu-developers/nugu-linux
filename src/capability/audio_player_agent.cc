@@ -267,7 +267,11 @@ void AudioPlayerAgent::executeOnBackgroundAction()
     nugu_dbg("executeOnBackgroundAction()");
 
     nugu_dbg("is_finished: %d, cur_player->state(): %d", is_finished, cur_player->state());
-    if (cur_player->state() == MediaPlayerState::PLAYING) {
+
+    MediaPlayerState state = cur_player->state();
+
+    if (state == MediaPlayerState::PLAYING || state == MediaPlayerState::PREPARE
+        || state == MediaPlayerState::READY) {
         is_paused_by_unfocus = true;
         if (!cur_player->pause()) {
             nugu_error("pause media failed");
@@ -863,12 +867,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
 
     is_finished = false;
     is_paused_by_unfocus = false;
-
-    if (speak_dir) {
-        nugu_directive_remove_data_callback(speak_dir);
-        destroyDirective(speak_dir);
-        speak_dir = nullptr;
-    }
+    speak_dir = nullptr;
 
     nugu_dbg("= token: %s", token.c_str());
     nugu_dbg("= url: %s", url.c_str());

@@ -224,6 +224,17 @@ static void test_playstack_manager_controlHolding(TestFixture* fixture, gconstpo
     g_assert(fixture->playstack_manager->isActiveHolding());
 }
 
+static void test_playstack_manager_checkStack(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->playstack_manager->add("ps_id_1", fixture->ndir_info);
+    g_assert(!fixture->playstack_manager->isStackedCondition(fixture->ndir_info));
+
+    fixture->playstack_manager->remove("ps_id_1", PlayStackRemoveMode::Immediately);
+    fixture->playstack_manager->add("ps_id_2", fixture->ndir_media);
+    g_assert(fixture->playstack_manager->isStackedCondition(fixture->ndir_info));
+    g_assert(!fixture->playstack_manager->isStackedCondition(fixture->ndir_media));
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -239,6 +250,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/holdStack", test_playstack_manager_holdStack);
     G_TEST_ADD_FUNC("/core/PlayStackManager/layerPolicy", test_playstack_manager_layerPolicy);
     G_TEST_ADD_FUNC("/core/PlayStackManager/controlHolding", test_playstack_manager_controlHolding);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/checkStack", test_playstack_manager_checkStack);
 
     return g_test_run();
 }
