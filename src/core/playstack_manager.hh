@@ -38,6 +38,7 @@ public:
 
     void add(const std::string& ps_id, NuguDirective* ndir) override;
     void remove(const std::string& ps_id, PlayStackRemoveMode mode = PlayStackRemoveMode::Normal) override;
+    bool isStackedCondition(NuguDirective* ndir) override;
     void stopHolding() override;
     void resetHolding() override;
     bool isActiveHolding();

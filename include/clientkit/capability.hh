@@ -244,7 +244,7 @@ public:
      * @brief Process directive received from Directive Sequencer.
      * @param[in] ndir directive
      */
-    void processDirective(NuguDirective* ndir) override;
+    void processDirective(NuguDirective* ndir) override final;
 
     /**
      * @brief Destroy directive received from Directive Sequencer.

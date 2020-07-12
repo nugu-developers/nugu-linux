@@ -172,6 +172,11 @@ void PlayStackManager::remove(const std::string& ps_id, PlayStackRemoveMode mode
     }
 }
 
+bool PlayStackManager::isStackedCondition(NuguDirective* ndir)
+{
+    return ndir && isStackedCondition(extractPlayStackLayer(ndir));
+}
+
 void PlayStackManager::stopHolding()
 {
     if (timer->isStarted()) {

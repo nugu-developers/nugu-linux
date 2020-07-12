@@ -115,6 +115,13 @@ public:
     virtual void remove(const std::string& ps_id, PlayStackRemoveMode mode = PlayStackRemoveMode::Normal) = 0;
 
     /**
+     * @brief Check whether to be stacked condition if the current layer is added.
+     * @param[in] ndir directive
+     * @return true if stacked condition, otherwise false
+     */
+    virtual bool isStackedCondition(NuguDirective* ndir) = 0;
+
+    /**
      * @brief Stop timer for removing playstack.
      */
     virtual void stopHolding() = 0;
