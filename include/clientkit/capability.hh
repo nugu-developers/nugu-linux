@@ -174,7 +174,7 @@ public:
      * @param[in] data raw data which is received from server about event (json format)
      * @param[in] success whether receive event response
      */
-    void notifyEventResponse(const std::string& msg_id, const std::string& data, bool success);
+    void notifyEventResponse(const std::string& msg_id, const std::string& data, bool success) override;
 
     /**
      * @brief Add event name and directive name for referred dialog request id.
