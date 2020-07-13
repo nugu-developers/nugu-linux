@@ -462,6 +462,8 @@ bool DirectiveSequencer::cancel(const std::string& dialog_id)
 
         /* Clear the queue */
         audio_iter->second.clear();
+
+        audio_map.erase(dialog_id);
     }
 
     /* remove visual queue */
@@ -478,9 +480,13 @@ bool DirectiveSequencer::cancel(const std::string& dialog_id)
 
         /* Clear the queue */
         visual_iter->second.clear();
+
+        visual_map.erase(dialog_id);
     }
 
     dump_msgid(msgid_directive_map);
+
+    dump_dialog_queue(audio_map, visual_map);
 
     return true;
 }
