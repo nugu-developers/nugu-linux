@@ -37,13 +37,21 @@ ENDIF(ENABLE_OPUS_PLUGIN)
 # PortAudio plugin
 IF(ENABLE_PORTAUDIO_PLUGIN)
 	pkg_check_modules(portaudio REQUIRED portaudio-2.0 alsa)
-	ADD_LIBRARY(portaudio SHARED portaudio.c)
-	TARGET_COMPILE_OPTIONS(portaudio PRIVATE ${portaudio_CFLAGS})
-	TARGET_LINK_LIBRARIES(portaudio ${pkgs_LDFLAGS} ${portaudio_LDFLAGS}
-		-L${CMAKE_BINARY_DIR}/src -lnugu -ldl)
-	SET_TARGET_PROPERTIES(portaudio PROPERTIES PREFIX "" OUTPUT_NAME portaudio)
-	INSTALL(TARGETS portaudio LIBRARY DESTINATION ${plugindir})
-	ADD_DEPENDENCIES(portaudio libnugu)
+	SET(PORTAUDIO_PLUGINS
+		portaudio
+		portaudio_recorder
+		portaudio_pcm_sync
+		portaudio_pcm_async)
+
+	FOREACH(plugin ${PORTAUDIO_PLUGINS})
+		ADD_LIBRARY(${plugin} SHARED ${plugin}.c)
+		TARGET_COMPILE_OPTIONS(${plugin} PRIVATE ${portaudio_CFLAGS})
+		TARGET_LINK_LIBRARIES(${plugin} ${pkgs_LDFLAGS} ${portaudio_LDFLAGS}
+			-L${CMAKE_BINARY_DIR}/src -lnugu -ldl)
+		SET_TARGET_PROPERTIES(${plugin} PROPERTIES PREFIX "" OUTPUT_NAME ${plugin})
+		INSTALL(TARGETS ${plugin} LIBRARY DESTINATION ${plugindir})
+		ADD_DEPENDENCIES(${plugin} libnugu)
+	ENDFOREACH(plugin)
 ENDIF(ENABLE_PORTAUDIO_PLUGIN)
 
 # gstreamer plugin
