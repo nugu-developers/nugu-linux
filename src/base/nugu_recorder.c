@@ -98,8 +98,10 @@ EXPORT_API int nugu_recorder_driver_register(NuguRecorderDriver *driver)
 	}
 
 	_recorder_drivers = g_list_append(_recorder_drivers, driver);
+
 	if (!_default_driver)
 		nugu_recorder_driver_set_default(driver);
+
 	return 0;
 }
 
@@ -127,6 +129,8 @@ EXPORT_API int nugu_recorder_driver_remove(NuguRecorderDriver *driver)
 EXPORT_API int nugu_recorder_driver_set_default(NuguRecorderDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
+
+	nugu_info("set default recorder driver: '%s'", driver->name);
 
 	_default_driver = driver;
 

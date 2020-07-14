@@ -95,8 +95,10 @@ EXPORT_API int nugu_player_driver_register(NuguPlayerDriver *driver)
 	}
 
 	_player_drivers = g_list_append(_player_drivers, driver);
+
 	if (!_default_driver)
 		nugu_player_driver_set_default(driver);
+
 	return 0;
 }
 
@@ -124,6 +126,8 @@ EXPORT_API int nugu_player_driver_remove(NuguPlayerDriver *driver)
 EXPORT_API int nugu_player_driver_set_default(NuguPlayerDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
+
+	nugu_info("set default player driver: '%s'", driver->name);
 
 	_default_driver = driver;
 

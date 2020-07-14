@@ -256,6 +256,8 @@ EXPORT_API void nugu_plugin_deinitialize(void)
 	if (_plugin_list == NULL)
 		return;
 
+	_plugin_list = g_list_reverse(_plugin_list);
+
 	for (cur = _plugin_list; cur; cur = cur->next) {
 		NuguPlugin *p = cur->data;
 
