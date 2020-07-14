@@ -104,8 +104,10 @@ EXPORT_API int nugu_pcm_driver_register(NuguPcmDriver *driver)
 	}
 
 	_pcm_drivers = g_list_append(_pcm_drivers, driver);
+
 	if (!_default_driver)
 		nugu_pcm_driver_set_default(driver);
+
 	return 0;
 }
 
@@ -133,6 +135,8 @@ EXPORT_API int nugu_pcm_driver_remove(NuguPcmDriver *driver)
 EXPORT_API int nugu_pcm_driver_set_default(NuguPcmDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
+
+	nugu_info("set default pcm driver: '%s'", driver->name);
 
 	_default_driver = driver;
 
