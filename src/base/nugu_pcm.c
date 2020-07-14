@@ -145,6 +145,16 @@ EXPORT_API int nugu_pcm_driver_set_default(NuguPcmDriver *driver)
 
 EXPORT_API NuguPcmDriver *nugu_pcm_driver_get_default(void)
 {
+#ifdef NUGU_ENV_DEFAULT_PCM_DRIVER
+	const char *tmp;
+
+	tmp = getenv(NUGU_ENV_DEFAULT_PCM_DRIVER);
+	if (tmp) {
+		nugu_info("force use '%s' to default pcm driver", tmp);
+		return nugu_pcm_driver_find(tmp);
+	}
+#endif
+
 	return _default_driver;
 }
 
