@@ -78,7 +78,7 @@ bool CapabilityManager::onPreHandleDirective(NuguDirective* ndir)
         return true;
     }
 
-    nugu_info("preprocessDirective");
+    nugu_info("preprocessDirective - [%s.%s]", cap->getName().c_str(), nugu_directive_peek_name(ndir));
     cap->preprocessDirective(ndir);
 
     return false;
@@ -95,7 +95,7 @@ bool CapabilityManager::onHandleDirective(NuguDirective* ndir)
     sendCommandAll("receive_directive_group", nugu_directive_peek_groups(ndir));
     sendCommandAll("directive_dialog_id", nugu_directive_peek_dialog_id(ndir));
 
-    nugu_info("processDirective");
+    nugu_info("processDirective - [%s.%s]", cap->getName().c_str(), nugu_directive_peek_name(ndir));
     cap->processDirective(ndir);
 
     return true;
