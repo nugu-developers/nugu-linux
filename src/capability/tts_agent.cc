@@ -408,6 +408,11 @@ void TTSAgent::parsingSpeak(const char* message)
     has_attachment = true;
     speak_dir = nullptr;
 
+    // set referrer id previous dialog_id
+    std::string dname = nugu_directive_peek_name(getNuguDirective());
+    if (dialog_id.size())
+        setReferrerDialogRequestId(dname, dialog_id);
+
     stopTTS();
 
     cur_token = token;
@@ -416,6 +421,9 @@ void TTSAgent::parsingSpeak(const char* message)
     is_finished = false;
     speak_dir = getNuguDirective();
     dialog_id = nugu_directive_peek_dialog_id(speak_dir);
+
+    // set referrer id new dialog_id
+    setReferrerDialogRequestId(dname, dialog_id);
 
     std::string tmp_playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
     playstack_manager->add(tmp_playstackctl_ps_id, speak_dir);
