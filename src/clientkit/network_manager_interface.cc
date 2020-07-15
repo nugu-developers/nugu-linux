@@ -19,7 +19,8 @@ namespace NuguClientKit {
 
 void INetworkManagerListener::onStatusChanged(NetworkStatus status) {}
 void INetworkManagerListener::onError(NetworkError error) {}
-void INetworkManagerListener::onEventSent(const char* ename, const char* msg_id, const char* dialog_id, const char* referrer_id) {}
+void INetworkManagerListener::onEventSend(NuguEvent *nev) {}
+void INetworkManagerListener::onEventAttachmentSend(NuguEvent *nev, int seq, bool is_end, size_t length, unsigned char *data) {}
 void INetworkManagerListener::onEventSendResult(const char* msg_id, bool success, int code) {}
 void INetworkManagerListener::onEventResponse(const char* msg_id, const char* data, bool success) {}
 
