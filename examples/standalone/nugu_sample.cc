@@ -102,19 +102,38 @@ public:
         nugu_sample_manager->handleNetworkResult(false);
     }
 
-    void onEventSent(const char* ename, const char* msg_id, const char* dialog_id, const char* referrer_id)
+    void onEventSend(NuguEvent *nev)
     {
         std::string msg;
         msg.append("send event(")
-            .append(ename)
-            .append(") msg_id - ")
-            .append(msg_id)
+            .append(nugu_event_peek_namespace(nev))
+            .append(".")
+            .append(nugu_event_peek_name(nev))
+            .append(")\n\tmsg_id: ")
+            .append(nugu_event_peek_msg_id(nev))
             .append("\n\tdialog_id: ")
-            .append(dialog_id);
+            .append(nugu_event_peek_dialog_id(nev));
 
-        if (referrer_id)
-            msg.append(", referrer_id: ")
-                .append(referrer_id);
+        if (nugu_event_peek_referrer_id(nev))
+            msg.append("\n\treferrer_id: ")
+                .append(nugu_event_peek_referrer_id(nev));
+
+        msg_info(std::move(msg));
+    }
+
+    void onEventAttachmentSend(NuguEvent* nev, int seq, bool is_end, size_t length, unsigned char* data)
+    {
+        std::string msg;
+        msg.append("send attachment(")
+                    .append(nugu_event_peek_namespace(nev))
+            .append(".")
+            .append(nugu_event_peek_name(nev))
+            .append(", seq=")
+            .append(std::to_string(seq))
+            .append(", is_end=")
+            .append(std::to_string(is_end))
+            .append(", length=")
+            .append(std::to_string(length));
 
         msg_info(std::move(msg));
     }

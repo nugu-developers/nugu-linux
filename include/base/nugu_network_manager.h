@@ -97,6 +97,15 @@ typedef void (*NuguNetworkManagerEventSendNotifyCallback)(NuguEvent *nev,
 							  void *userdata);
 
 /**
+ * @brief Callback prototype for notification of event data sending requests
+ * @see nugu_network_manager_send_event_data()
+ * @see nugu_network_manager_set_event_data_send_notify_callback()
+ */
+typedef void (*NuguNetworkManagerEventDataSendNotifyCallback)(
+	NuguEvent *nev, int is_end, size_t length, unsigned char *data,
+	void *userdata);
+
+/**
  * @brief Callback prototype for result of event transfer request.
  * @see nugu_network_manager_send_event()
  * @see nugu_network_manager_set_event_result_callback()
@@ -189,6 +198,17 @@ int nugu_network_manager_set_handoff_status_callback(
  */
 int nugu_network_manager_set_event_send_notify_callback(
 	NuguNetworkManagerEventSendNotifyCallback callback, void *userdata);
+
+/**
+ * @brief Set event data send notify callback
+ * @param[in] callback callback function
+ * @param[in] userdata data to pass to the user callback
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_network_manager_set_event_data_send_notify_callback(
+	NuguNetworkManagerEventDataSendNotifyCallback callback, void *userdata);
 
 /**
  * @brief Set event send result callback

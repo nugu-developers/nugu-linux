@@ -93,6 +93,9 @@ struct _nugu_network {
 	NuguNetworkManagerEventSendNotifyCallback event_send_callback;
 	void *event_send_callback_userdata;
 
+	NuguNetworkManagerEventDataSendNotifyCallback event_data_send_callback;
+	void *event_data_send_callback_userdata;
+
 	/* Event send result */
 	NuguNetworkManagerEventResultCallback event_result_callback;
 	void *event_result_callback_userdata;
@@ -864,6 +867,18 @@ EXPORT_API int nugu_network_manager_set_event_send_notify_callback(
 	return 0;
 }
 
+EXPORT_API int nugu_network_manager_set_event_data_send_notify_callback(
+	NuguNetworkManagerEventDataSendNotifyCallback callback, void *userdata)
+{
+	if (!_network)
+		return -1;
+
+	_network->event_data_send_callback = callback;
+	_network->event_data_send_callback_userdata = userdata;
+
+	return 0;
+}
+
 EXPORT_API int nugu_network_manager_set_event_result_callback(
 	NuguNetworkManagerEventResultCallback callback, void *userdata)
 {
@@ -943,15 +958,15 @@ EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev, int is_sync)
 		return -1;
 	}
 
+	if (_network->event_send_callback)
+		_network->event_send_callback(
+			nev, _network->event_send_callback_userdata);
+
 	ret = dg_server_send_event(_network->server, nev, is_sync);
 	if (ret < 0) {
 		nugu_error("event send failed: %d", ret);
 		return -1;
 	}
-
-	if (_network->event_send_callback)
-		_network->event_send_callback(
-			nev, _network->event_send_callback_userdata);
 
 	return 0;
 }
@@ -993,6 +1008,11 @@ EXPORT_API int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
 		nugu_error("not connected");
 		return -1;
 	}
+
+	if (_network->event_data_send_callback)
+		_network->event_data_send_callback(
+			nev, is_end, length, data,
+			_network->event_data_send_callback_userdata);
 
 	return dg_server_send_attachment(_network->server, nev, is_end, length,
 					 data);

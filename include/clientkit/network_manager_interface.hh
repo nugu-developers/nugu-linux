@@ -18,6 +18,7 @@
 #define __NUGU_INETWORK_MANAGER_INTERFACE_H__
 
 #include <string>
+#include <base/nugu_event.h>
 
 namespace NuguClientKit {
 
@@ -65,13 +66,16 @@ public:
     virtual void onError(NetworkError error);
 
     /**
-     * @brief Report that an event has been sent to the server.
-     * @param[in] ename event name
-     * @param[in] msg_id event message id
-     * @param[in] dialog_id event dialog request id
-     * @param[in] referrer_id event referrer dialog request id
+     * @brief Report that the event will be sent to the server.
+     * @param[in] nev NuguEvent object
      */
-    virtual void onEventSent(const char* ename, const char* msg_id, const char* dialog_id, const char* referrer_id);
+    virtual void onEventSend(NuguEvent *nev);
+
+    /**
+     * @brief Report that the attachment will be sent to the server.
+     * @param[in] nev NuguEvent object
+     */
+    virtual void onEventAttachmentSend(NuguEvent *nev, int seq, bool is_end, size_t length, unsigned char *data);
 
     /**
      * @brief Report the result of sending an event from the server.
