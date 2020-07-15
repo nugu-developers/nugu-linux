@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['listeningstate',['ListeningState',['../group__SpeechRecognizerInterface.html#gaae383c251ee0fa6e96e4c53b9f5d9a3a',1,'NuguClientKit']]]
+  ['focusstate',['FocusState',['../group__FocusManagerInterface.html#ga0a43ecaeb330bca6b94215d69e54bfe6',1,'NuguClientKit']]]
 ];

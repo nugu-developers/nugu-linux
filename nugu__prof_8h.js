@@ -42,7 +42,10 @@ var nugu__prof_8h =
       [ "NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE", "group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadca489b695c2df0f0ff74182b1b546df46e", null ],
       [ "NUGU_PROF_TYPE_TTS_FAILED", "group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadcaf517dac3f0f926c7bd1c063a2bec951d", null ],
       [ "NUGU_PROF_TYPE_TTS_STARTED", "group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadca5e7203197e8abdaee513f3aa51cb824b", null ],
+      [ "NUGU_PROF_TYPE_TTS_NET_FIRST_ATTACHMENT", "group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadcaea03ed3780236cc98b0bcc33afa3af54", null ],
       [ "NUGU_PROF_TYPE_TTS_FIRST_ATTACHMENT", "group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadcaa44e1764dd3c430508b1607e8e53e0b7", null ],
+      [ "NUGU_PROF_TYPE_TTS_FIRST_DECODING", "group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadcadfbe492897f849c68448198d83e6d59d", null ],
+      [ "NUGU_PROF_TYPE_TTS_FIRST_PCM_WRITE", "group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadca649cb4cd3afede897fe44e7b5ce4d0ca", null ],
       [ "NUGU_PROF_TYPE_TTS_LAST_ATTACHMENT", "group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadca43d2d4269b74c681ca59ae70b90c6665", null ],
       [ "NUGU_PROF_TYPE_TTS_STOPPED", "group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadca24fed5133a4cccafd0af063e8a4ce487", null ],
       [ "NUGU_PROF_TYPE_TTS_FINISHED", "group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadca9e5b5e298679f4c168132aa3698c705b", null ],
@@ -58,6 +61,8 @@ var nugu__prof_8h =
     [ "nugu_prof_mark_data", "group__Profiling.html#ga3bfd35e98ee59483a808f4f48f78eac7", null ],
     [ "nugu_prof_get_last_data", "group__Profiling.html#gadc75f0cf1d4377b2a98008552d336c2e", null ],
     [ "nugu_prof_get_diff_msec_timespec", "group__Profiling.html#ga09d04b4bab1f2e3a471343b6ad9cac76", null ],
+    [ "nugu_prof_get_diff_msec_type", "group__Profiling.html#gace36d6879c1ced5093d67fa4578c0a4d", null ],
     [ "nugu_prof_get_diff_msec", "group__Profiling.html#ga97a10b7b761d35d7502b58917a533c9f", null ],
+    [ "nugu_prof_get_type_name", "group__Profiling.html#ga5ced31590017e916ca50dfc50694ef76", null ],
     [ "nugu_prof_dump", "group__Profiling.html#ga97ae0725519cf14096a9e105f90a8c61", null ]
 ];

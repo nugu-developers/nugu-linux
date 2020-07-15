@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['playsync_5fmanager_5finterface_2ehh',['playsync_manager_interface.hh',['../playsync__manager__interface_8hh.html',1,'']]]
+  ['media_5fplayer_5finterface_2ehh',['media_player_interface.hh',['../media__player__interface_8hh.html',1,'']]],
+  ['mic_5finterface_2ehh',['mic_interface.hh',['../mic__interface_8hh.html',1,'']]]
 ];

@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['speakertype',['SpeakerType',['../group__SpeakerInterface.html#ga8601f6be80368c9d1a7c7b346c99a698',1,'NuguCapability']]],
-  ['suspendpolicy',['SuspendPolicy',['../classNuguClientKit_1_1ICapabilityInterface.html#a15d8782f9a3ea99381f64fe5d159a2f2',1,'NuguClientKit::ICapabilityInterface']]],
-  ['systemexception',['SystemException',['../group__SystemInterface.html#gae95aa9037a85a223126f51c1efcbe671',1,'NuguCapability']]]
+  ['repeattype',['RepeatType',['../group__AudioPlayerInterface.html#ga0cb2048ef5fb507017eb53ee3e52716d',1,'NuguCapability']]],
+  ['revokereason',['RevokeReason',['../group__SystemInterface.html#ga210ca95bced11e44b9558947bb31a2eb',1,'NuguCapability']]]
 ];

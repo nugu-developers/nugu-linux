@@ -6,6 +6,7 @@ var searchData=
   ['wakeup_5finterface_2ehh',['wakeup_interface.hh',['../wakeup__interface_8hh.html',1,'']]],
   ['wakeupdetectstate',['WakeupDetectState',['../group__WakeupInterface.html#ga5379a1d6d0c4ea118547f802b851e119',1,'NuguClientKit']]],
   ['wakeupinterface',['WakeupInterface',['../group__WakeupInterface.html',1,'']]],
+  ['withdrawn_5fuser',['WITHDRAWN_USER',['../group__SystemInterface.html#gga210ca95bced11e44b9558947bb31a2eba61edd86da66e7b719182d760a0427ffd',1,'NuguCapability']]],
   ['write_5faudio',['write_audio',['../classNuguClientKit_1_1ITTSPlayer.html#a79eae6c79ec0589a693f05e971a000a4',1,'NuguClientKit::ITTSPlayer']]],
   ['write_5fdone',['write_done',['../classNuguClientKit_1_1ITTSPlayer.html#ac08f98c47733365a6cf5464aa6bcad8d',1,'NuguClientKit::ITTSPlayer']]]
 ];

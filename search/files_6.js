@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['text_5finterface_2ehh',['text_interface.hh',['../text__interface_8hh.html',1,'']]],
-  ['tts_5finterface_2ehh',['tts_interface.hh',['../tts__interface_8hh.html',1,'']]]
+  ['playstack_5fmanager_5finterface_2ehh',['playstack_manager_interface.hh',['../playstack__manager__interface_8hh.html',1,'']]]
 ];

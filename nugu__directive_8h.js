@@ -1,7 +1,7 @@
 var nugu__directive_8h =
 [
     [ "NuguDirective", "group__NuguDirective.html#ga0e689d212db128a33b2869181169e216", null ],
-    [ "NuguDirectiveDataCallback", "group__NuguDirective.html#ga886c54d6300991bd43bd63541d5ca16a", null ],
+    [ "NuguDirectiveDataCallback", "group__NuguDirective.html#gad7b2a8a9e6127f5240532e38d55813ee", null ],
     [ "nugu_directive_new", "group__NuguDirective.html#gab87fd19b47ca52db5db2e73232c8ec7a", null ],
     [ "nugu_directive_ref", "group__NuguDirective.html#ga502912ff0b9e914c2d5c3fe8f114fdaf", null ],
     [ "nugu_directive_unref", "group__NuguDirective.html#ga7aff4a16e9087dc7911dedb5be6c9ca5", null ],
@@ -15,7 +15,7 @@ var nugu__directive_8h =
     [ "nugu_directive_peek_json", "group__NuguDirective.html#ga8bec3442ca9b12e8f5e3a162195237a3", null ],
     [ "nugu_directive_is_active", "group__NuguDirective.html#gaee9f335c3006f600356cf403c8c8931c", null ],
     [ "nugu_directive_set_active", "group__NuguDirective.html#ga702da3c3ced0c3877befccd329664c00", null ],
-    [ "nugu_directive_add_data", "group__NuguDirective.html#ga32c613d6bfac483ceb5cfdabe721b8d2", null ],
+    [ "nugu_directive_add_data", "group__NuguDirective.html#ga7e418328bf1e91d48fcb5e5a06933da9", null ],
     [ "nugu_directive_close_data", "group__NuguDirective.html#ga2b8ea1315f4e3ec572a8876c4ebf06ab", null ],
     [ "nugu_directive_is_data_end", "group__NuguDirective.html#ga2cf2d7ec9d5ed9b7c7eb36ef48ccc2db", null ],
     [ "nugu_directive_set_media_type", "group__NuguDirective.html#gad021258775a6b0215783c285fe187e39", null ],

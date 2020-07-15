@@ -5,5 +5,6 @@ var searchData=
   ['recognizing',['RECOGNIZING',['../group__ASRInterface.html#ggafe4f48f063bafec608e5060090a9543ba437f3cbaf966fe37c60ee219ecb23576',1,'NuguCapability']]],
   ['response_5ffail',['RESPONSE_FAIL',['../group__SoundInterface.html#ggaa422ff53ae62f3ef7309d310162386abaeda97b7f27f3db06d19df8830e8625cd',1,'NuguCapability']]],
   ['response_5ftimeout',['RESPONSE_TIMEOUT',['../group__ASRInterface.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21a0bc1f3f491e9717b6ff83103a014d496',1,'NuguCapability::RESPONSE_TIMEOUT()'],['../group__TextInterface.html#ggab868b04fc95d19706ef1896699930baca0bc1f3f491e9717b6ff83103a014d496',1,'NuguCapability::RESPONSE_TIMEOUT()']]],
-  ['revoked_5fdevice',['REVOKED_DEVICE',['../group__SystemInterface.html#gga210ca95bced11e44b9558947bb31a2eba64553a0f7f0768e2fc75f89f901ec790',1,'NuguCapability']]]
+  ['revoked_5fdevice',['REVOKED_DEVICE',['../group__SystemInterface.html#gga210ca95bced11e44b9558947bb31a2eba64553a0f7f0768e2fc75f89f901ec790',1,'NuguCapability']]],
+  ['rington',['RINGTON',['../group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a4ffad184d2206f7c174226cfe718a7ae',1,'NuguCapability']]]
 ];

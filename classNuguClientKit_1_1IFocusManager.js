@@ -1,0 +1,11 @@
+var classNuguClientKit_1_1IFocusManager =
+[
+    [ "requestFocus", "group__FocusManagerInterface.html#gab29d3665dae878ed7e76a984f049f912", null ],
+    [ "releaseFocus", "group__FocusManagerInterface.html#gaeefd9d5ae3668c5f18f301f01f23ef6c", null ],
+    [ "setConfigurations", "group__FocusManagerInterface.html#ga46a8046941137ff75dfb0c966fb040be", null ],
+    [ "stopAllFocus", "group__FocusManagerInterface.html#gadd927685ef65023e45a7291e8ef4cd54", null ],
+    [ "stopForegroundFocus", "group__FocusManagerInterface.html#ga503b896522f9271ee8f08a55ba361add", null ],
+    [ "getStateString", "group__FocusManagerInterface.html#gaaea80a31df369f5a45126c9b17843d1e", null ],
+    [ "addObserver", "group__FocusManagerInterface.html#gaa4a33e5d89941e07ab5c3d11b092ce3d", null ],
+    [ "removeObserver", "group__FocusManagerInterface.html#ga0b2b321ce06f60cbc1074530d5c94d61", null ]
+];

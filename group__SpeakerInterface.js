@@ -26,7 +26,13 @@ var group__SpeakerInterface =
     ] ],
     [ "SpeakerType", "group__SpeakerInterface.html#ga8601f6be80368c9d1a7c7b346c99a698", [
       [ "NUGU", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a5cf2406ff6ad128f4d2ebd67ca595b0f", null ],
+      [ "MUSIC", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698ad74c735013cdd2b883e25ccca502a2e9", null ],
+      [ "RINGTON", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a4ffad184d2206f7c174226cfe718a7ae", null ],
       [ "CALL", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698aca3547acb9162b49fb4a6594ed9b3030", null ],
-      [ "ALARM", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a9de6d0a670ae5a0dee31a6318aa00e8d", null ]
+      [ "NOTIFICATION", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a9814d942b7e24870084a3dce24867ab3", null ],
+      [ "ALARM", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a9de6d0a670ae5a0dee31a6318aa00e8d", null ],
+      [ "VOICE_COMMAND", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698ab077c1bf8325593593f2bc2db6b009ba", null ],
+      [ "NAVIGATION", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a5995d98caf31b9445202b0f054fdc54e", null ],
+      [ "SYSTEM_SOUND", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698ac53b8b4384c6e37baa71628bafb5d4da", null ]
     ] ]
 ];

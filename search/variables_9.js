@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['name',['name',['../structnugu__plugin__desc.html#a3f0f0e80e02f75d01507e06c4279e498',1,'nugu_plugin_desc']]]
+  ['max',['max',['../classNuguCapability_1_1SpeakerInfo.html#a63a909bad5c32807cf6a3a79f3cae003',1,'NuguCapability::SpeakerInfo']]],
+  ['medium',['medium',['../structNuguClientKit_1_1BlockingPolicy.html#a9720ec0a99692a1c4ee1d46d47feeb28',1,'NuguClientKit::BlockingPolicy']]],
+  ['min',['min',['../classNuguCapability_1_1SpeakerInfo.html#a4018769b0894b03683ea2bee22e3735f',1,'NuguCapability::SpeakerInfo']]],
+  ['model_5fpath',['model_path',['../structNuguCapability_1_1ASRAttribute.html#a81d5159679ea5a8a88b2e99d6464f86f',1,'NuguCapability::ASRAttribute']]],
+  ['mute',['mute',['../classNuguCapability_1_1SpeakerInfo.html#a8130e7a45265650f1dd40287e2719253',1,'NuguCapability::SpeakerInfo']]]
 ];

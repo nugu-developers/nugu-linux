@@ -20,5 +20,7 @@ var group__NuguPlayer =
     [ "nugu_player_set_status_callback", "group__NuguPlayer.html#gafee35c5f80fa823200395dc10477814f", null ],
     [ "nugu_player_emit_status", "group__NuguPlayer.html#ga91b17f64f4645de14306e679e5471344", null ],
     [ "nugu_player_set_event_callback", "group__NuguPlayer.html#ga0de7e004054bc6b61d0fb850e9ef14ee", null ],
-    [ "nugu_player_emit_event", "group__NuguPlayer.html#ga38942a2d728942c046db33b47f8735e6", null ]
+    [ "nugu_player_emit_event", "group__NuguPlayer.html#ga38942a2d728942c046db33b47f8735e6", null ],
+    [ "nugu_player_set_driver_data", "group__NuguPlayer.html#gac009675aabb157ce844a3f5fef4ed7f7", null ],
+    [ "nugu_player_get_driver_data", "group__NuguPlayer.html#ga5fd165b725024558aefc2edca9fd2822", null ]
 ];

@@ -5,5 +5,5 @@ var classNuguClientKit_1_1INetworkManagerListener =
     [ "onError", "classNuguClientKit_1_1INetworkManagerListener.html#af11a90bd687c8fb17ecb429fb64fe619", null ],
     [ "onEventSent", "classNuguClientKit_1_1INetworkManagerListener.html#a4b1882a77ffe8c804311dfd6d37caf4d", null ],
     [ "onEventSendResult", "classNuguClientKit_1_1INetworkManagerListener.html#adb7599cc95ff466c0b61ef4a8e1203c0", null ],
-    [ "onEventResponse", "classNuguClientKit_1_1INetworkManagerListener.html#a6d712937eb61bd3c20e5098ffaacf27d", null ]
+    [ "onEventResponse", "classNuguClientKit_1_1INetworkManagerListener.html#ad23d142edd8688d6d5d7103c428aef52", null ]
 ];

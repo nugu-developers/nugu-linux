@@ -1,14 +1,14 @@
 var structnugu__player__driver__ops =
 [
-    [ "create", "structnugu__player__driver__ops.html#a1cfb23b5bf0d0d38eca95bf9a9cd44e9", null ],
-    [ "destroy", "structnugu__player__driver__ops.html#a7f9eb9522080d53fbe35bfa61bd1aee5", null ],
-    [ "set_source", "structnugu__player__driver__ops.html#a30ed371dfd423b78e635c34e9433c393", null ],
-    [ "start", "structnugu__player__driver__ops.html#a63458076892c8df1b9ab4983db29e0e9", null ],
-    [ "stop", "structnugu__player__driver__ops.html#ae499d2a649991dedb80cb0e2ad369efc", null ],
-    [ "pause", "structnugu__player__driver__ops.html#aef55bbbf41b0a46cbb0a275e5077eec7", null ],
-    [ "resume", "structnugu__player__driver__ops.html#a6d8f3dd94c52ad6ad77373dd1afb0d75", null ],
-    [ "seek", "structnugu__player__driver__ops.html#a5010caa42413af6f622bbb34e56689cb", null ],
-    [ "set_volume", "structnugu__player__driver__ops.html#ae11c85fcfbbe42b12bf5e4c07476be2f", null ],
-    [ "get_duration", "structnugu__player__driver__ops.html#a0323114e63d8f8e9dc990553c1b41385", null ],
-    [ "get_position", "structnugu__player__driver__ops.html#ae1db694c938c0a1dd52031fae4416c16", null ]
+    [ "create", "structnugu__player__driver__ops.html#ab1e9c7a681e56b2a4f32ac691bec305f", null ],
+    [ "destroy", "structnugu__player__driver__ops.html#a6e72c98933ca5cf61e28c27e4e207a1d", null ],
+    [ "set_source", "structnugu__player__driver__ops.html#a736afc919713272e5051b2dccba01aef", null ],
+    [ "start", "structnugu__player__driver__ops.html#ad234b453ae727334c1bfab2690c5a0b9", null ],
+    [ "stop", "structnugu__player__driver__ops.html#a8b1e28968b9a1d8e3e2584287e169494", null ],
+    [ "pause", "structnugu__player__driver__ops.html#aabc656ad1a1b0e7229af74ef94842c97", null ],
+    [ "resume", "structnugu__player__driver__ops.html#aa7d2e91cdfb0a822d856821a0a15156b", null ],
+    [ "seek", "structnugu__player__driver__ops.html#a987b764d062a44c78b20bed53d3328be", null ],
+    [ "set_volume", "structnugu__player__driver__ops.html#a555f686b16885d2512e734cfcc204e1b", null ],
+    [ "get_duration", "structnugu__player__driver__ops.html#ae4bb8d776de9c2d1910be32e48d8855b", null ],
+    [ "get_position", "structnugu__player__driver__ops.html#a21d7e43bbc70f261eb124e5fa2b1f2a9", null ]
 ];

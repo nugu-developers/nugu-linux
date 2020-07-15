@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['later',['Later',['../group__PlayStackManagerInterface.html#ggaec202c4af52f315ec45a83b391db6833a61057a0c84605444201929bdd72014f0',1,'NuguClientKit']]],
   ['listen_5ffailed',['LISTEN_FAILED',['../group__ASRInterface.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21a25b5127a7de62d625277c315c505f18f',1,'NuguCapability']]],
   ['listen_5ftimeout',['LISTEN_TIMEOUT',['../group__ASRInterface.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21a54a62829eeacbac64ad20c96ade3b58d',1,'NuguCapability']]],
   ['listening',['LISTENING',['../group__ASRInterface.html#ggafe4f48f063bafec608e5060090a9543bac0ff938e396e72c225bd66562b80a77e',1,'NuguCapability::LISTENING()'],['../group__SpeechRecognizerInterface.html#ggaae383c251ee0fa6e96e4c53b9f5d9a3aac0ff938e396e72c225bd66562b80a77e',1,'NuguClientKit::LISTENING()']]],

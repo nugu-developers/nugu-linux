@@ -1,7 +1,6 @@
 var searchData=
 [
   ['makeallcontextinfo',['makeAllContextInfo',['../classNuguClientKit_1_1ICapabilityHelper.html#ab8bb6c82bc6661316bf36230be31392e',1,'NuguClientKit::ICapabilityHelper']]],
-  ['makeallcontextinfostack',['makeAllContextInfoStack',['../classNuguClientKit_1_1ICapabilityHelper.html#a31e33344720c97b5490db39db112f95b',1,'NuguClientKit::ICapabilityHelper']]],
   ['makecapability',['makeCapability',['../classNuguCapability_1_1CapabilityFactory.html#a46d96b1bc96903f02905c92ba8794bf6',1,'NuguCapability::CapabilityFactory']]],
   ['makecontextinfo',['makeContextInfo',['../classNuguClientKit_1_1ICapabilityHelper.html#ad0ad702511967625952dce147e81e14f',1,'NuguClientKit::ICapabilityHelper']]],
   ['mediachanged',['mediaChanged',['../classNuguClientKit_1_1IMediaPlayerListener.html#a7a3835846590a14e39e136a296e44a6c',1,'NuguClientKit::IMediaPlayerListener']]],
