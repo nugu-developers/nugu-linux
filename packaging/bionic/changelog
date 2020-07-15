@@ -1,3 +1,23 @@
+nugu (0.20.0ubuntu1~bionic) bionic; urgency=medium
+
+  * Added BlockingPolicy
+  * Added DirectiveSequencer
+  * Added PlayStackManager
+  * Added SessionManager
+  * Added simple TTS sample application
+  * Added profiling measurement tool
+  * Added Session interface v1.0 spec
+  * Updated TTS interface v1.2 spec
+  * Updated AudioPlayer interface v1.3 spec
+  * Updated ASR interface v1.3 spec
+  * Updated Text interface v1.2 spec
+  * Updated Speaker interface v1.1 spec
+  * Updated System interface v1.3 spec
+  * Fixed driver API
+  * Fixed PortAudio pcm driver
+
+ -- nugulinux <nugulinux@gmail.com>  Wed, 15 Jul 2020 14:45:54 +0900
+
 nugu (0.10.1ubuntu1~bionic) bionic; urgency=medium
 
   * Fixed AudioPlayerAgent bug
