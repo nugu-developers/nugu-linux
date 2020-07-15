@@ -178,6 +178,10 @@ void ASRAgent::startRecognition(ASRInitiator initiator, AsrRecognizeCallback cal
     saveAllContextInfo();
 
     playsync_manager->postPoneRelease();
+
+    if (routine_manager->isRoutineProgress())
+        routine_manager->interrupt();
+
     focus_manager->requestFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME, asr_user_listener);
     asr_cancel = false;
 }
@@ -728,6 +732,8 @@ void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error, bool release_focu
         focus_manager->releaseFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME);
         focus_manager->releaseFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME);
     }
+
+    routine_manager->stop();
 }
 
 bool ASRAgent::isExpectSpeechState()

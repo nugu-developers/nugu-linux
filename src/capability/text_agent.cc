@@ -72,6 +72,11 @@ void TextAgent::initialize()
     });
     addReferrerEvents("TextInput", "TextSource");
 
+    // for handling routine action about text request
+    routine_manager->setTextRequester([&](const std::string& token, const std::string& text, const std::string& ps_id) {
+        return requestTextInput(text, token, ps_id);
+    });
+
     initialized = true;
 }
 
@@ -168,7 +173,41 @@ std::string TextAgent::requestTextInput(const std::string& text, const std::stri
 
     sendEventTextInput({ text, token }, include_dialog_attribute);
 
+    if (routine_manager->isRoutineProgress())
+        routine_manager->interrupt();
+
     nugu_dbg("user request id: %s", cur_dialog_id.c_str());
+    if (text_listener)
+        text_listener->onState(cur_state, cur_dialog_id);
+
+    capa_helper->sendCommand("Text", "ASR", "cancel", "");
+
+    return cur_dialog_id;
+}
+
+std::string TextAgent::requestTextInput(const std::string& text, const std::string& token, const std::string& ps_id)
+{
+    if (cur_state == TextState::BUSY) {
+        nugu_warn("already request nugu service to the server");
+        return "";
+    }
+
+    if (text.empty() || token.empty()) {
+        nugu_error("The mandatory data is not exist.");
+        return "";
+    }
+
+    if (timer)
+        timer->start();
+
+    if (timer_msec)
+        timer_msec->start();
+
+    cur_state = TextState::BUSY;
+    sendEventTextInput({ text, token, ps_id });
+
+    nugu_dbg("user request id: %s", cur_dialog_id.c_str());
+
     if (text_listener)
         text_listener->onState(cur_state, cur_dialog_id);
 

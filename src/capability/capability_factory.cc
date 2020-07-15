@@ -21,6 +21,7 @@
 #include "extension_agent.hh"
 #include "mic_agent.hh"
 #include "nudge_agent.hh"
+#include "routine_agent.hh"
 #include "session_agent.hh"
 #include "sound_agent.hh"
 #include "speaker_agent.hh"
@@ -58,5 +59,5 @@ template IUtilityHandler* CapabilityFactory::makeCapability<UtilityAgent, IUtili
 template IExtensionHandler* CapabilityFactory::makeCapability<ExtensionAgent, IExtensionHandler>(ICapabilityListener* listener);
 template IChipsHandler* CapabilityFactory::makeCapability<ChipsAgent, IChipsHandler>(ICapabilityListener* listener);
 template INudgeHandler* CapabilityFactory::makeCapability<NudgeAgent, INudgeHandler>(ICapabilityListener* listener);
-
+template IRoutineHandler* CapabilityFactory::makeCapability<RoutineAgent, IRoutineHandler>(ICapabilityListener* listener);
 } // NuguCapability

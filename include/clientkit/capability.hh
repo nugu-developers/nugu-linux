@@ -404,6 +404,9 @@ protected:
     /** @brief IDirectiveSequencer instance for directive sequence management */
     IDirectiveSequencer* directive_sequencer = nullptr;
 
+    /** @brief IRoutineManager instance for using routine management */
+    IRoutineManager* routine_manager = nullptr;
+
     /** @brief SuspendPolicy variable for deciding suspend action (default:STOP) */
     SuspendPolicy suspend_policy = SuspendPolicy::STOP;
 

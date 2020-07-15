@@ -38,6 +38,8 @@ public:
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     std::string requestTextInput(const std::string& text, const std::string& token = "", bool include_dialog_attribute = true) override;
+    std::string requestTextInput(const std::string& text, const std::string& token, const std::string& ps_id);
+
     void notifyResponseTimeout();
 
 private:
