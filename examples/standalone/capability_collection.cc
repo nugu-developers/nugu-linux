@@ -158,6 +158,12 @@ void CapabilityCollection::composeCapabilityFactory()
 
         return nudge_handler.get();
     });
+    factories.emplace("Routine", [&]() {
+        if (!routine_handler)
+            routine_handler = makeCapability<RoutineAgent, IRoutineHandler>(nullptr);
+
+        return routine_handler.get();
+    });
 }
 
 void CapabilityCollection::composeSpeakerInterface()

@@ -212,6 +212,10 @@ void AudioPlayerAgent::onFocusChanged(FocusState state)
             nugu_info("The multi-turn is active. So, it ignore intermediate foreground focus. ");
             return;
         }
+        if (routine_manager->isRoutineAlive()) {
+            nugu_info("Routine is alive. So, it ignore intermediate foreground focus. ");
+            return;
+        }
 
         executeOnForegroundAction();
         break;

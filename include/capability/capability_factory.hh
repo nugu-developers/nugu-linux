@@ -106,6 +106,11 @@ class ChipsAgent;
 class NudgeAgent;
 
 /**
+ * @brief RoutineAgent
+ */
+class RoutineAgent;
+
+/**
  * @brief CapabilityFactory
  */
 class CapabilityFactory {

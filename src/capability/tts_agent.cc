@@ -85,6 +85,8 @@ void TTSAgent::initialize()
 
 void TTSAgent::deInitialize()
 {
+    routine_manager->stop();
+
     postProcessDirective();
 
     if (player) {
@@ -191,7 +193,7 @@ void TTSAgent::stopTTS()
     MediaPlayerState pre_state = cur_state;
 
     sendClearNudgeCommand(speak_dir);
-    postProcessDirective();
+    postProcessDirective(!is_finished && routine_manager->hasRoutineDirective(speak_dir));
 
     if (player)
         player->stop();
@@ -251,8 +253,12 @@ void TTSAgent::preprocessDirective(NuguDirective* ndir)
 
     is_prehandling = true;
 
-    if (!strcmp(dname, "Speak"))
+    if (!strcmp(dname, "Speak")) {
+        if (routine_manager->isConditionToStop(ndir))
+            routine_manager->stop();
+
         playsync_manager->prepareSync(getPlayServiceIdInStackControl(message), ndir);
+    }
 }
 
 void TTSAgent::parsingDirective(const char* dname, const char* message)

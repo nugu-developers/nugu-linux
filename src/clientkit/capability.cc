@@ -150,6 +150,7 @@ void Capability::setNuguCoreContainer(INuguCoreContainer* core_container)
     session_manager = capa_helper->getSessionManager();
     directive_sequencer = capa_helper->getDirectiveSequencer();
     interaction_control_manager = capa_helper->getInteractionControlManager();
+    routine_manager = capa_helper->getRoutineManager();
 }
 
 void Capability::initialize()
@@ -309,42 +310,45 @@ void Capability::cancelDirective(NuguDirective* ndir)
 
 void Capability::processDirective(NuguDirective* ndir)
 {
-    if (ndir) {
-        const char* dname;
-        const char* message;
-
-        message = nugu_directive_peek_json(ndir);
-        dname = nugu_directive_peek_name(ndir);
-
-        // handle previous dialog if exist
-        if (pimpl->cur_ndir) {
-            nugu_directive_remove_data_callback(pimpl->cur_ndir);
-
-            if (playsync_manager->isConditionToHandlePrevDialog(pimpl->cur_ndir, ndir)) {
-                pimpl->prev_ndir = pimpl->cur_ndir;
-            } else {
-                nugu_dbg("cancel previous dialog");
-                directive_sequencer->cancel(nugu_directive_peek_dialog_id(pimpl->cur_ndir));
-            }
-        }
-
-        pimpl->cur_ndir = ndir;
-
-        if (!message || !dname) {
-            nugu_error("directive message is not correct");
-            destroyDirective(ndir);
-            return;
-        }
-
-        setReferrerDialogRequestId(nugu_directive_peek_name(ndir), nugu_directive_peek_dialog_id(ndir));
-
-        destroy_directive_by_agent = false;
-        parsingDirective(dname, message);
-
-        // if 'destroy_directive_by_agent' is set to true, the related agent should destroy it by self.
-        if (!destroy_directive_by_agent)
-            destroyDirective(ndir);
+    if (!ndir) {
+        nugu_error("The directive is not exist.");
+        return;
     }
+
+    const char* dname;
+    const char* message;
+
+    message = nugu_directive_peek_json(ndir);
+    dname = nugu_directive_peek_name(ndir);
+
+    // handle previous dialog if exist
+    if (pimpl->cur_ndir) {
+        nugu_directive_remove_data_callback(pimpl->cur_ndir);
+
+        if (playsync_manager->isConditionToHandlePrevDialog(pimpl->cur_ndir, ndir)) {
+            pimpl->prev_ndir = pimpl->cur_ndir;
+        } else {
+            nugu_dbg("cancel previous dialog");
+            directive_sequencer->cancel(nugu_directive_peek_dialog_id(pimpl->cur_ndir));
+        }
+    }
+
+    pimpl->cur_ndir = ndir;
+
+    if (!message || !dname) {
+        nugu_error("directive message is not correct");
+        destroyDirective(ndir);
+        return;
+    }
+
+    setReferrerDialogRequestId(nugu_directive_peek_name(ndir), nugu_directive_peek_dialog_id(ndir));
+
+    destroy_directive_by_agent = false;
+    parsingDirective(dname, message);
+
+    // if 'destroy_directive_by_agent' is set to true, the related agent should destroy it by self.
+    if (!destroy_directive_by_agent)
+        destroyDirective(ndir);
 }
 
 void Capability::destroyDirective(NuguDirective* ndir, bool is_cancel)
@@ -356,6 +360,9 @@ void Capability::destroyDirective(NuguDirective* ndir, bool is_cancel)
 
     if (pimpl->cur_ndir && ndir == pimpl->cur_ndir) {
         nugu_directive_remove_data_callback(pimpl->cur_ndir);
+
+        if (routine_manager->isActionProgress(nugu_directive_peek_dialog_id(pimpl->cur_ndir)))
+            routine_manager->finish();
 
         if (is_cancel) {
             std::string dialog_id = nugu_directive_peek_dialog_id(pimpl->cur_ndir);
