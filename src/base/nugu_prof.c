@@ -38,74 +38,74 @@ struct nugu_prof_hints {
 static const struct nugu_prof_hints _hints[NUGU_PROF_TYPE_MAX + 1] = {
 	/* sdk */
 	{ "Created", NUGU_PROF_TYPE_MAX },
-	{ "Plugin init", NUGU_PROF_TYPE_SDK_CREATED },
-	{ "Plugin done", NUGU_PROF_TYPE_SDK_PLUGIN_INIT_START },
+	{ "Plugin_init", NUGU_PROF_TYPE_SDK_CREATED },
+	{ "Plugin_done", NUGU_PROF_TYPE_SDK_PLUGIN_INIT_START },
 	{ "Initialized", NUGU_PROF_TYPE_SDK_CREATED },
 
 	/* network */
-	{ "Connect request", NUGU_PROF_TYPE_MAX },
-	{ "Registry request", NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST },
-	{ "Registry response", NUGU_PROF_TYPE_NETWORK_REGISTRY_REQUEST },
-	{ "Registry failed", NUGU_PROF_TYPE_NETWORK_REGISTRY_REQUEST },
-	{ "Server request", NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST },
-	{ "Server establish", NUGU_PROF_TYPE_NETWORK_SERVER_ESTABLISH_REQUEST },
-	{ "Server failed", NUGU_PROF_TYPE_NETWORK_SERVER_ESTABLISH_REQUEST },
+	{ "Connect_request", NUGU_PROF_TYPE_MAX },
+	{ "Registry_request", NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST },
+	{ "Registry_response", NUGU_PROF_TYPE_NETWORK_REGISTRY_REQUEST },
+	{ "Registry_failed", NUGU_PROF_TYPE_NETWORK_REGISTRY_REQUEST },
+	{ "Server_request", NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST },
+	{ "Server_establish", NUGU_PROF_TYPE_NETWORK_SERVER_ESTABLISH_REQUEST },
+	{ "Server_failed", NUGU_PROF_TYPE_NETWORK_SERVER_ESTABLISH_REQUEST },
 	{ "Connected", NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST },
-	{ "Directive closed", NUGU_PROF_TYPE_MAX },
-	{ "DNS failed", NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST },
-	{ "SSL failed", NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST },
-	{ "Network timeout", NUGU_PROF_TYPE_MAX },
-	{ "Internal net-error", NUGU_PROF_TYPE_MAX },
-	{ "Invalid token", NUGU_PROF_TYPE_MAX },
+	{ "Directive_closed", NUGU_PROF_TYPE_MAX },
+	{ "DNS_failed", NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST },
+	{ "SSL_failed", NUGU_PROF_TYPE_NETWORK_CONNECT_REQUEST },
+	{ "Network_timeout", NUGU_PROF_TYPE_MAX },
+	{ "Internal_net-error", NUGU_PROF_TYPE_MAX },
+	{ "Invalid_token", NUGU_PROF_TYPE_MAX },
 
 	/* /v2/ping */
-	{ "PING request", NUGU_PROF_TYPE_MAX },
-	{ "PING response", NUGU_PROF_TYPE_NETWORK_PING_REQUEST },
-	{ "PING failed", NUGU_PROF_TYPE_NETWORK_PING_REQUEST },
+	{ "PING_request", NUGU_PROF_TYPE_MAX },
+	{ "PING_response", NUGU_PROF_TYPE_NETWORK_PING_REQUEST },
+	{ "PING_failed", NUGU_PROF_TYPE_NETWORK_PING_REQUEST },
 
 	/* /v2/events event */
-	{ "Event request", NUGU_PROF_TYPE_MAX },
-	{ "Event response", NUGU_PROF_TYPE_NETWORK_EVENT_REQUEST },
-	{ "Event failed", NUGU_PROF_TYPE_NETWORK_EVENT_REQUEST },
+	{ "Event_request", NUGU_PROF_TYPE_MAX },
+	{ "Event_response", NUGU_PROF_TYPE_NETWORK_EVENT_REQUEST },
+	{ "Event_failed", NUGU_PROF_TYPE_NETWORK_EVENT_REQUEST },
 
 	/* /v2/events attachment */
-	{ "Attachment request", NUGU_PROF_TYPE_MAX },
+	{ "Attachment_request", NUGU_PROF_TYPE_MAX },
 
 	/* /v2/events directive */
-	{ "Directive response", NUGU_PROF_TYPE_NETWORK_EVENT_REQUEST },
-	{ "Directive timeout", NUGU_PROF_TYPE_NETWORK_EVENT_REQUEST },
+	{ "Directive_response", NUGU_PROF_TYPE_NETWORK_EVENT_REQUEST },
+	{ "Directive_timeout", NUGU_PROF_TYPE_NETWORK_EVENT_REQUEST },
 
 	/* /v2/directives */
-	{ "Last push-data", NUGU_PROF_TYPE_MAX },
+	{ "Last_push_data", NUGU_PROF_TYPE_MAX },
 
 	/* wakeup word */
-	{ "wakeup detected", NUGU_PROF_TYPE_MAX },
+	{ "wakeup_detected", NUGU_PROF_TYPE_MAX },
 
 	/* ASR */
-	{ "Listening started", NUGU_PROF_TYPE_WAKEUP_KEYWORD_DETECTED },
-	{ "ASR.Recognize", NUGU_PROF_TYPE_ASR_LISTENING_STARTED },
+	{ "Listening_started", NUGU_PROF_TYPE_WAKEUP_KEYWORD_DETECTED },
+	{ "ASR_Recognize", NUGU_PROF_TYPE_ASR_LISTENING_STARTED },
 	{ "Recognizing", NUGU_PROF_TYPE_ASR_LISTENING_STARTED },
-	{ "End detected", NUGU_PROF_TYPE_ASR_RECOGNIZING_STARTED },
+	{ "End_detected", NUGU_PROF_TYPE_ASR_RECOGNIZING_STARTED },
 	{ "Timeout", NUGU_PROF_TYPE_ASR_LISTENING_STARTED },
-	{ "First attachment", NUGU_PROF_TYPE_ASR_RECOGNIZING_STARTED },
-	{ "Last attachment", NUGU_PROF_TYPE_ASR_FIRST_ATTACHMENT },
-	{ "ASR Result", NUGU_PROF_TYPE_ASR_END_POINT_DETECTED },
+	{ "First_attachment", NUGU_PROF_TYPE_ASR_RECOGNIZING_STARTED },
+	{ "Last_attachment", NUGU_PROF_TYPE_ASR_FIRST_ATTACHMENT },
+	{ "ASR_Result", NUGU_PROF_TYPE_ASR_END_POINT_DETECTED },
 
 	/* TTS */
-	{ "TTS Speak directive", NUGU_PROF_TYPE_ASR_RESULT },
-	{ "TTS failed", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
-	{ "TTS started", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
-	{ "TTS net 1st data", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
-	{ "TTS 1st data", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
-	{ "TTS 1st decoding", NUGU_PROF_TYPE_TTS_FIRST_ATTACHMENT },
-	{ "TTS 1st pcm write", NUGU_PROF_TYPE_TTS_FIRST_DECODING },
-	{ "TTS last data", NUGU_PROF_TYPE_TTS_FIRST_ATTACHMENT },
-	{ "TTS stopped", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
-	{ "TTS finished", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
+	{ "TTS_Speak_directive", NUGU_PROF_TYPE_ASR_RESULT },
+	{ "TTS_failed", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
+	{ "TTS_started", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
+	{ "TTS_net_1st_data", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
+	{ "TTS_1st_data", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
+	{ "TTS_1st_decoding", NUGU_PROF_TYPE_TTS_FIRST_ATTACHMENT },
+	{ "TTS_1st_pcm_write", NUGU_PROF_TYPE_TTS_FIRST_DECODING },
+	{ "TTS_last_data", NUGU_PROF_TYPE_TTS_FIRST_ATTACHMENT },
+	{ "TTS_stopped", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
+	{ "TTS_finished", NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE },
 
 	/* Audio */
-	{ "Audio started", NUGU_PROF_TYPE_ASR_RESULT },
-	{ "Audio finished", NUGU_PROF_TYPE_AUDIO_STARTED },
+	{ "Audio_started", NUGU_PROF_TYPE_ASR_RESULT },
+	{ "Audio_finished", NUGU_PROF_TYPE_AUDIO_STARTED },
 
 	/* end */
 	{ "END", NUGU_PROF_TYPE_MAX }

@@ -27,6 +27,7 @@ static int test_iteration_max = 1;
 static int test_delay = 1;
 static int test_timeout = 60;
 static int test_network_timeout = 60;
+static std::string test_name;
 static GMainLoop* loop;
 static FILE* fp_out;
 static guint timer_src;
@@ -100,7 +101,8 @@ static void test_finished(void)
     }
 
     /* CSV data */
-    fprintf(fp_out, "%d,%d,%d,%d,%d,%d,%s\n", test_iteration,
+    fprintf(fp_out, "%s,%d,%ld,%d,%d,%d,%d,%d,%s\n",
+        test_name.c_str(), test_iteration, tmp->timestamp.tv_sec,
         nugu_prof_get_diff_msec_type(NUGU_PROF_TYPE_ASR_LISTENING_STARTED, NUGU_PROF_TYPE_ASR_END_POINT_DETECTED),
         nugu_prof_get_diff_msec_type(NUGU_PROF_TYPE_ASR_END_POINT_DETECTED, NUGU_PROF_TYPE_ASR_RESULT),
         nugu_prof_get_diff_msec_type(NUGU_PROF_TYPE_ASR_RESULT, NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE),
@@ -130,6 +132,7 @@ static void usage(const char* cmd)
     printf(" -m model_path\t\tSet the ASR Model path. (default = %s)\n", DEFAULT_MODEL_PATH);
     printf(" -d delay\t\tDelay between each test iteration. (seconds, default = %d)\n", test_delay);
     printf(" -t timeout\t\tTimeout for each tests. (seconds, default = %d)\n", test_timeout);
+    printf(" -c name\t\tName for testcase. (default = input-file)\n");
     printf("\nPlease set the token using the NUGU_TOKEN environment variable.\n");
 }
 
@@ -254,7 +257,7 @@ int main(int argc, char* argv[])
     std::string output_file;
     std::string model_path = DEFAULT_MODEL_PATH;
 
-    while ((c = getopt(argc, argv, "i:o:n:m:d:t:")) != -1) {
+    while ((c = getopt(argc, argv, "i:o:n:m:d:t:c:")) != -1) {
         switch (c) {
         case 'i':
             input_file = optarg;
@@ -273,6 +276,9 @@ int main(int argc, char* argv[])
             break;
         case 't':
             test_timeout = std::strtol(optarg, nullptr, 10);
+            break;
+        case 'c':
+            test_name = optarg;
             break;
         default:
             usage(argv[0]);
@@ -297,6 +303,9 @@ int main(int argc, char* argv[])
     }
     fclose(fp_out);
 
+    if (test_name.size() == 0)
+        test_name = input_file;
+
     setenv("NUGU_RECORDING_FROM_FILE", input_file.c_str(), 1);
 
     fp_out = fopen(output_file.c_str(), "w");
@@ -306,7 +315,7 @@ int main(int argc, char* argv[])
     }
 
     /* CSV header */
-    fprintf(fp_out, "Num,%s,%s,%s,%s,%s,Dialog-Request-ID\n",
+    fprintf(fp_out, "Testcase,Num,timestamp,%s,%s,%s,%s,%s,Dialog_Request_ID\n",
         nugu_prof_get_type_name(NUGU_PROF_TYPE_ASR_END_POINT_DETECTED),
         nugu_prof_get_type_name(NUGU_PROF_TYPE_ASR_RESULT),
         nugu_prof_get_type_name(NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE),
