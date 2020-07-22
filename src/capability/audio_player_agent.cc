@@ -23,7 +23,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "AudioPlayer";
-static const char* CAPABILITY_VERSION = "1.3";
+static const char* CAPABILITY_VERSION = "1.4";
 
 AudioPlayerAgent::AudioPlayerAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -474,6 +474,8 @@ void AudioPlayerAgent::updateInfoForContext(Json::Value& ctx)
     aplayer["version"] = getVersion();
     aplayer["playerActivity"] = playerActivity(cur_aplayer_state);
     aplayer["offsetInMilliseconds"] = offset;
+    if (ps_id.size())
+        aplayer["playServiceId"] = ps_id;
     if (cur_aplayer_state != AudioPlayerState::IDLE) {
         aplayer["token"] = cur_token;
         if (duration)
