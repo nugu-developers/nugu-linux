@@ -12,17 +12,17 @@ ADD_DEPENDENCIES(plugin_nugu_custom.so libnugu)
 
 # Unit tests
 SET(UNIT_TESTS
-	test-nugu-buffer
-	test-nugu-plugin
-	test-nugu-recorder
-	test-nugu-decoder
-	test-nugu-pcm
-	test-nugu-player
-	test-nugu-timer
-	test-nugu-event
-	test-nugu-uuid
-	test-nugu-directive
-	test-nugu-ringbuffer)
+	test_nugu_buffer
+	test_nugu_plugin
+	test_nugu_recorder
+	test_nugu_decoder
+	test_nugu_pcm
+	test_nugu_player
+	test_nugu_timer
+	test_nugu_event
+	test_nugu_uuid
+	test_nugu_directive
+	test_nugu_ringbuffer)
 
 FOREACH(test ${UNIT_TESTS})
 	ADD_EXECUTABLE(${test} ${test}.c)
