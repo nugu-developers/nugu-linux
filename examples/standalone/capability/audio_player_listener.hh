@@ -36,6 +36,16 @@ public:
     void repeatChanged(RepeatType repeat, const std::string& dialog_id) override;
     void requestContentCache(const std::string& key, const std::string& playurl) override;
     bool requestToGetCachedContent(const std::string& key, std::string& filepath) override;
+
+    // implements IAudioPlayerDisplayListener
+    void renderDisplay(const std::string& id, const std::string& type, const std::string& json_payload, const std::string& dialog_id) override;
+    bool clearDisplay(const std::string& id, bool unconditionally) override;
+    void controlDisplay(const std::string& id, ControlType type, ControlDirection direction) override;
+    void updateDisplay(const std::string& id, const std::string& json_payload) override;
+    bool requestLyricsPageAvailable(const std::string& id, bool& visible) override;
+    bool showLyrics(const std::string& id) override;
+    bool hideLyrics(const std::string& id) override;
+    void updateMetaData(const std::string& id, const std::string& json_payload) override;
 };
 
 #endif /* __AUDIO_PLAYER_LISTENER_H__ */
