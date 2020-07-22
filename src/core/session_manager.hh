@@ -39,6 +39,7 @@ public:
     void activate(const std::string& dialog_id) override;
     void deactivate(const std::string& dialog_id) override;
     Json::Value getActiveSessionInfo() override;
+    void clear() override;
 
     const ActiveDialogs& getActiveList();
     const Sessions& getAllSessions();

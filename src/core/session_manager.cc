@@ -23,8 +23,7 @@ namespace NuguCore {
 
 SessionManager::~SessionManager()
 {
-    session_map.clear();
-    active_list.clear();
+    clear();
 }
 
 void SessionManager::set(const std::string& dialog_id, Session&& session)
@@ -98,6 +97,12 @@ Json::Value SessionManager::getActiveSessionInfo()
     }
 
     return session_info_list;
+}
+
+void SessionManager::clear()
+{
+    session_map.clear();
+    active_list.clear();
 }
 
 const SessionManager::ActiveDialogs& SessionManager::getActiveList()

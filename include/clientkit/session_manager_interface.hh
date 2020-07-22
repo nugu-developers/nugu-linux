@@ -73,6 +73,11 @@ public:
      * @return session info which is formatted to json type
      */
     virtual Json::Value getActiveSessionInfo() = 0;
+
+    /**
+     * @brief Clear all session info.
+     */
+    virtual void clear() = 0;
 };
 
 /**

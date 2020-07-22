@@ -293,6 +293,7 @@ void Capability::processDirective(NuguDirective* ndir)
             } else {
                 nugu_dbg("cancel previous dialog");
                 directive_sequencer->cancel(nugu_directive_peek_dialog_id(pimpl->cur_ndir));
+                session_manager->clear();
             }
         }
 
