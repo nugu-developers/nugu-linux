@@ -97,3 +97,47 @@ bool AudioPlayerListener::requestToGetCachedContent(const std::string& key, std:
 {
     return false;
 }
+
+void AudioPlayerListener::renderDisplay(const std::string& id, const std::string& type, const std::string& json_payload, const std::string& dialog_id)
+{
+    std::cout << "[AudioPlayer][id:" << id << "] renderDisplay - type: " << type << std::endl;
+}
+
+bool AudioPlayerListener::clearDisplay(const std::string& id, bool unconditionally)
+{
+    std::cout << "[AudioPlayer][id:" << id << "] clearDisplay - unconditionally: " << (int)unconditionally << std::endl;
+    return false;
+}
+
+void AudioPlayerListener::controlDisplay(const std::string& id, ControlType type, ControlDirection direction)
+{
+    std::cout << "[AudioPlayer][id:" << id << "] controlDisplay" << std::endl;
+}
+
+void AudioPlayerListener::updateDisplay(const std::string& id, const std::string& json_payload)
+{
+    std::cout << "[AudioPlayer][id:" << id << "] updateDisplay" << std::endl;
+}
+
+bool AudioPlayerListener::requestLyricsPageAvailable(const std::string& id, bool& visible)
+{
+    std::cout << "[AudioPlayer] requestLyricsPageAvailable" << std::endl;
+    return false;
+}
+
+bool AudioPlayerListener::showLyrics(const std::string& id)
+{
+    std::cout << "[AudioPlayer] showLyrics" << std::endl;
+    return false;
+}
+
+bool AudioPlayerListener::hideLyrics(const std::string& id)
+{
+    std::cout << "[AudioPlayer] hideLyrics" << std::endl;
+    return false;
+}
+
+void AudioPlayerListener::updateMetaData(const std::string& id, const std::string& json_payload)
+{
+    std::cout << "[AudioPlayer][id:" << id << "] updateMetaData - json: " << json_payload << std::endl;
+}

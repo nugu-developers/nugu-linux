@@ -47,6 +47,7 @@ AudioPlayerAgent::AudioPlayerAgent()
     , is_finished(false)
     , volume_update(false)
     , volume(-1)
+    , display_listener(nullptr)
 {
 }
 
@@ -219,6 +220,11 @@ void AudioPlayerAgent::onFocusChanged(FocusState state)
             nugu_error("stop media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
         }
+
+        // TODO: integrate with playsync and session manager
+        template_id = "";
+        template_view = "";
+        template_type = "";
         break;
     }
     focus_state = state;
@@ -237,6 +243,10 @@ void AudioPlayerAgent::executeOnForegroundAction()
     nugu_dbg("cur_aplayer_state[%s] => %d, player->state() => %s", type.c_str(), cur_aplayer_state, cur_player->stateString(cur_player->state()).c_str());
 
     checkAndUpdateVolume();
+
+    // TODO: integrate with playsync and session manager
+    if (focus_state == FocusState::BACKGROUND && display_listener)
+        display_listener->renderDisplay(template_id, template_type, template_view, template_id);
 
     if (cur_player->state() == MediaPlayerState::PAUSED) {
         if (!cur_player->resume()) {
@@ -480,6 +490,11 @@ void AudioPlayerAgent::updateInfoForContext(Json::Value& ctx)
         aplayer["token"] = cur_token;
         if (duration)
             aplayer["durationInMilliseconds"] = duration;
+    }
+    if (display_listener) {
+        bool visible = false;
+        if (display_listener->requestLyricsPageAvailable(template_id, visible))
+            aplayer["lyricsVisible"] = visible;
     }
 
     ctx[getName()] = aplayer;
@@ -879,6 +894,24 @@ void AudioPlayerAgent::parsingPlay(const char* message)
 
     std::string dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
     std::string dname = nugu_directive_peek_name(getNuguDirective());
+
+    if (display_listener) {
+        Json::Value meta = audio_item["metadata"];
+
+        if (!meta.empty() && !meta["template"].empty()) {
+            Json::StyledWriter writer;
+
+            // TODO: integrate with playsync and session manager
+            std::string type = meta["template"]["type"].asString();
+            std::string json = writer.write(meta["template"]);
+
+            display_listener->renderDisplay(dialog_id, type, json, dialog_id);
+            template_id = dialog_id;
+            template_type = type;
+            template_view = json;
+        }
+    }
+
     if (new_content) {
         if (pre_ref_dialog_id.size())
             setReferrerDialogRequestId(dname, pre_ref_dialog_id);
@@ -986,6 +1019,10 @@ void AudioPlayerAgent::parsingStop(const char* message)
 
         focus_manager->releaseFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME);
 
+        // TODO: integrate with playsync and session manager
+        if (display_listener)
+            display_listener->clearDisplay(template_id, true);
+
         capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
     }
 }
@@ -995,6 +1032,7 @@ void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
     Json::Value root;
     Json::Value settings;
     Json::Reader reader;
+    Json::StyledWriter writer;
     std::string playserviceid;
 
     if (!reader.parse(message, root)) {
@@ -1012,7 +1050,9 @@ void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
         return;
     }
 
-    if (root["metadata"].empty() || root["metadata"]["template"].empty() || root["metadata"]["template"]["settings"].empty()) {
+    if (root["metadata"].empty() || root["metadata"]["template"].empty()
+        || root["metadata"]["template"]["content"].empty()
+        || root["metadata"]["template"]["content"]["settings"].empty()) {
         nugu_error("directive message syntax error");
         return;
     }
@@ -1044,6 +1084,11 @@ void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
         for (auto aplayer_listener : aplayer_listeners)
             aplayer_listener->shuffleChanged(shuffle, dialog_id);
     }
+
+    if (!template_id.empty()) {
+        for (auto aplayer_listener : aplayer_listeners)
+            aplayer_listener->updateMetaData(template_id, writer.write(root["metadata"]));
+    }
 }
 
 void AudioPlayerAgent::parsingShowLyrics(const char* message)
@@ -1066,6 +1111,9 @@ void AudioPlayerAgent::parsingShowLyrics(const char* message)
         nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
         return;
     }
+
+    if (display_listener)
+        display_listener->showLyrics(template_id);
 }
 
 void AudioPlayerAgent::parsingHideLyrics(const char* message)
@@ -1088,6 +1136,9 @@ void AudioPlayerAgent::parsingHideLyrics(const char* message)
         nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
         return;
     }
+
+    if (display_listener)
+        display_listener->hideLyrics(template_id);
 }
 
 void AudioPlayerAgent::parsingControlLyricsPage(const char* message)
@@ -1096,6 +1147,7 @@ void AudioPlayerAgent::parsingControlLyricsPage(const char* message)
     Json::Reader reader;
     std::string playserviceid;
     std::string direction;
+    ControlDirection control_direction;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -1109,14 +1161,19 @@ void AudioPlayerAgent::parsingControlLyricsPage(const char* message)
         return;
     }
 
+    if (direction == "NEXT")
+        control_direction = ControlDirection::NEXT;
+    else
+        control_direction = ControlDirection::PREVIOUS;
+
     if (playserviceid != ps_id) {
         nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
+        sendEventControlLyricsPageFailed(direction);
         return;
     }
 
-    // TBD
-    // sendEventControlLyricsPageSucceeded(direction);
-    // sendEventControlLyricsPageFailed(direction);
+    if (display_listener)
+        display_listener->controlDisplay(template_id, ControlType::Scroll, control_direction);
 }
 
 void AudioPlayerAgent::parsingRequestPlayCommand(const char* dname, const char* message)
@@ -1362,4 +1419,49 @@ void AudioPlayerAgent::checkAndUpdateVolume()
         volume_update = false;
     }
 }
+
+void AudioPlayerAgent::displayRendered(const std::string& id)
+{
+    // TODO: integrate with playsync and session manager
+}
+
+void AudioPlayerAgent::displayCleared(const std::string& id)
+{
+    // TODO: integrate with playsync and session manager
+}
+
+void AudioPlayerAgent::elementSelected(const std::string& id, const std::string& item_token)
+{
+    // ignore
+}
+
+void AudioPlayerAgent::informControlResult(const std::string& id, ControlType type, ControlDirection direction)
+{
+    sendEventControlLyricsPageSucceeded(direction == ControlDirection::NEXT ? "NEXT" : "PREVIOUS");
+}
+
+void AudioPlayerAgent::setListener(IDisplayListener* listener)
+{
+    if (listener == nullptr)
+        return;
+
+    display_listener = dynamic_cast<IAudioPlayerDisplayListener*>(listener);
+}
+
+void AudioPlayerAgent::removeListener(IDisplayListener* listener)
+{
+    if (listener == nullptr)
+        return;
+
+    auto audio_display_listener = dynamic_cast<IAudioPlayerDisplayListener*>(listener);
+
+    if (audio_display_listener == display_listener)
+        display_listener = nullptr;
+}
+
+void AudioPlayerAgent::stopRenderingTimer(const std::string& id)
+{
+    // TODO: integrate with playsync and session manager
+}
+
 } // NuguCapability

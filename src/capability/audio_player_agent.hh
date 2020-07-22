@@ -18,6 +18,7 @@
 #define __NUGU_AUDIO_PLAYER_AGENT_H__
 
 #include "capability/audio_player_interface.hh"
+#include "capability/display_interface.hh"
 #include "clientkit/capability.hh"
 
 namespace NuguCapability {
@@ -72,6 +73,14 @@ public:
     void onFocusChanged(FocusState state) override;
     void executeOnForegroundAction();
     void executeOnBackgroundAction();
+
+    void displayRendered(const std::string& id) override;
+    void displayCleared(const std::string& id) override;
+    void elementSelected(const std::string& id, const std::string& item_token) override;
+    void informControlResult(const std::string& id, ControlType type, ControlDirection direction) override;
+    void setListener(IDisplayListener* listener) override;
+    void removeListener(IDisplayListener* listener) override;
+    void stopRenderingTimer(const std::string& id) override;
 
     void sendEventPlaybackStarted(EventResultCallback cb = nullptr);
     void sendEventPlaybackFinished(EventResultCallback cb = nullptr);
@@ -145,7 +154,11 @@ private:
     bool is_finished;
     bool volume_update;
     int volume;
+    std::string template_id;
+    std::string template_view;
+    std::string template_type;
     std::vector<IAudioPlayerListener*> aplayer_listeners;
+    IAudioPlayerDisplayListener* display_listener;
 };
 
 } // NuguCapability
