@@ -1,22 +1,22 @@
 SET(UNIT_TESTS
-	test-core-nugu-timer
-	test-core-focus-manager
-	test-core-directive-sequencer
-	test-core-session-manager
-	test-core-playstack-manager)
+	test_core_nugu_timer
+	test_core_focus_manager
+	test_core_directive_sequencer
+	test_core_session_manager
+	test_core_playstack_manager)
 
 # Add Compile Sources with Mock for test
-SET(test-core-nugu-timer-srcs
-	test-core-nugu-timer-mock.cc ../../src/core/nugu_timer.cc)
-SET(test-core-focus-manager-srcs ../../src/core/focus_manager.cc)
-SET(test-core-directive-sequencer-srcs ../../src/core/directive_sequencer.cc)
-SET(test-core-session-manager-srcs ../../src/core/session_manager.cc)
-SET(test-core-playstack-manager-srcs ../../src/core/playstack_manager.cc)
+SET(test_core_nugu_timer_srcs
+	test_core_nugu_timer_mock.cc ../../src/core/nugu_timer.cc)
+SET(test_core_focus_manager_srcs ../../src/core/focus_manager.cc)
+SET(test_core_directive_sequencer_srcs ../../src/core/directive_sequencer.cc)
+SET(test_core_session_manager_srcs ../../src/core/session_manager.cc)
+SET(test_core_playstack_manager_srcs ../../src/core/playstack_manager.cc)
 
 FOREACH(test ${UNIT_TESTS})
 	SET(SRC ${test}.cc)
-	IF (${test}-srcs)
-		LIST(APPEND SRC ${${test}-srcs})
+	IF (${test}_srcs)
+		LIST(APPEND SRC ${${test}_srcs})
 	ENDIF ()
 	ADD_EXECUTABLE(${test} ${SRC})
 	TARGET_COMPILE_DEFINITIONS(${test} PRIVATE
