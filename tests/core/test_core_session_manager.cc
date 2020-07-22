@@ -147,6 +147,17 @@ static void test_session_manager_multi_agent_participation(TestFixture* fixture,
     g_assert(fixture->session_manager->getActiveSessionInfo().empty());
 }
 
+static void test_session_manager_clear(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->session_manager->activate("dialog_id_1");
+    fixture->session_manager->set("dialog_id_1", { "session_id_1", "ps_id_1" });
+    fixture->session_manager->set("dialog_id_2", { "session_id_2", "ps_id_2" });
+    g_assert(!fixture->session_manager->getActiveSessionInfo().empty());
+
+    fixture->session_manager->clear();
+    g_assert(fixture->session_manager->getActiveSessionInfo().empty());
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -161,6 +172,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/SessionManager/singleActive", test_session_manager_single_active);
     G_TEST_ADD_FUNC("/core/SessionManager/multiActive", test_session_manager_multi_active);
     G_TEST_ADD_FUNC("/core/SessionManager/multiAgentParticipation", test_session_manager_multi_agent_participation);
+    G_TEST_ADD_FUNC("/core/SessionManager/clear", test_session_manager_clear);
 
     return g_test_run();
 }
