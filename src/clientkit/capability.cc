@@ -332,7 +332,6 @@ NuguDirective* Capability::getNuguDirective()
 void Capability::parsingDirective(const char* dname, const char* message)
 {
     nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
-    destroyDirective(pimpl->cur_ndir);
 }
 
 bool Capability::getProperty(const std::string& property, std::string& value)
