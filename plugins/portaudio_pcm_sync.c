@@ -540,8 +540,10 @@ static int _pcm_push_data(NuguPcmDriver *driver, NuguPcm *pcm, const char *data,
 	struct pa_audio_param *pcm_param = nugu_pcm_get_driver_data(pcm);
 	int playing_flag = 0;
 
-	if (pcm_param == NULL)
+	if (pcm_param == NULL) {
 		nugu_error("pcm is not started");
+		return -1;
+	}
 
 	if (pcm_param->is_first == 1)
 		playing_flag = 1;

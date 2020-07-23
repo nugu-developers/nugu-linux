@@ -26,6 +26,7 @@ namespace NuguCore {
  ******************************************************************************/
 
 namespace Debug {
+    // NOLINTNEXTLINE (cert-err58-cpp)
     const std::map<PlayStackLayer, std::string> PLAYSTACK_LAYER_TEXT {
         { PlayStackLayer::Alert, "[Alert] " },
         { PlayStackLayer::Call, "[Call] " },
@@ -39,7 +40,7 @@ namespace Debug {
 
         for (const auto& item : playstack_container.second) {
             try {
-                std::string layer = PLAYSTACK_LAYER_TEXT.at(playstack_container.first.at(item));
+                const std::string& layer = PLAYSTACK_LAYER_TEXT.at(playstack_container.first.at(item));
                 playstack_log.append(layer).append(item).append("\n");
             } catch (std::out_of_range& exception) {
                 // pass silently
