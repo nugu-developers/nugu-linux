@@ -263,16 +263,16 @@ int main(int argc, char* argv[])
             output_file = optarg;
             break;
         case 'n':
-            test_iteration_max = atoi(optarg);
+            test_iteration_max = std::strtol(optarg, nullptr, 10);
             break;
         case 'm':
             model_path = optarg;
             break;
         case 'd':
-            test_delay = atoi(optarg);
+            test_delay = std::strtol(optarg, nullptr, 10);
             break;
         case 't':
-            test_timeout = atoi(optarg);
+            test_timeout = std::strtol(optarg, nullptr, 10);
             break;
         default:
             usage(argv[0]);

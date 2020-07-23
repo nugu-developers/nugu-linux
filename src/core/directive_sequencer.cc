@@ -197,14 +197,14 @@ bool DirectiveSequencer::complete(NuguDirective* ndir)
 
     DirectiveSequencer::DialogQueueMap* qmap = nullptr;
 
-    if (policy.medium == BlockingMedium::NONE) {
-        /* NONE type does not need to check the queue */
-        nugu_directive_unref(ndir);
-        return true;
-    } else if (policy.medium == BlockingMedium::AUDIO) {
+    if (policy.medium == BlockingMedium::AUDIO) {
         qmap = &audio_map;
     } else if (policy.medium == BlockingMedium::VISUAL) {
         qmap = &visual_map;
+    } else {
+        /* NONE type does not need to check the queue */
+        nugu_directive_unref(ndir);
+        return true;
     }
 
     const char* dialog_id = nugu_directive_peek_dialog_id(ndir);
@@ -311,14 +311,14 @@ bool DirectiveSequencer::add(NuguDirective* ndir)
 
     DialogQueueMap* qmap = nullptr;
 
-    if (policy.medium == BlockingMedium::NONE) {
-        nugu_dbg("BlockingMedium::NONE type - handle immediately");
-        handleDirective(ndir);
-        return true;
-    } else if (policy.medium == BlockingMedium::AUDIO) {
+    if (policy.medium == BlockingMedium::AUDIO) {
         qmap = &audio_map;
     } else if (policy.medium == BlockingMedium::VISUAL) {
         qmap = &visual_map;
+    } else {
+        nugu_dbg("BlockingMedium::NONE type - handle immediately");
+        handleDirective(ndir);
+        return true;
     }
 
     const char* dialog_id = nugu_directive_peek_dialog_id(ndir);
