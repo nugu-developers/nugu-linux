@@ -49,7 +49,6 @@ public:
 
     void startRecognition(float power_noise, float power_speech, AsrRecognizeCallback callback = nullptr) override;
     void startRecognition(AsrRecognizeCallback callback = nullptr) override;
-    void startRecognition(bool expected);
     void stopRecognition() override;
 
     void preprocessDirective(NuguDirective* ndir) override;
