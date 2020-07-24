@@ -287,7 +287,7 @@ void Capability::processDirective(NuguDirective* ndir)
         if (pimpl->cur_ndir) {
             nugu_directive_remove_data_callback(pimpl->cur_ndir);
 
-            if (playstack_manager->isStackedCondition(ndir)) {
+            if (playstack_manager->isStackedCondition(ndir) && !playstack_manager->hasExpectSpeech(pimpl->cur_ndir)) {
                 nugu_dbg("complete previous dialog");
                 directive_sequencer->complete(pimpl->cur_ndir);
             } else {

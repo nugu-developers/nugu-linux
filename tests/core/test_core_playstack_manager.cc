@@ -61,6 +61,7 @@ typedef struct {
 
     NuguDirective* ndir_info;
     NuguDirective* ndir_media;
+    NuguDirective* ndir_expect_speech;
 } TestFixture;
 
 static void setup(TestFixture* fixture, gconstpointer user_data)
@@ -71,12 +72,14 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
 
     fixture->ndir_info = createDirective("TTS", "test", "{ \"directives\": [\"TTS.Speak\"] }");
     fixture->ndir_media = createDirective("AudioPlayer", "test", "{ \"directives\": [\"AudioPlayer.Play\"] }");
+    fixture->ndir_expect_speech = createDirective("ASR", "test", "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\"] }");
 }
 
 static void teardown(TestFixture* fixture, gconstpointer user_data)
 {
     nugu_directive_unref(fixture->ndir_info);
     nugu_directive_unref(fixture->ndir_media);
+    nugu_directive_unref(fixture->ndir_expect_speech);
 
     fixture->playstack_manager_listener.reset();
     fixture->playstack_manager_listener_snd.reset();
@@ -235,6 +238,13 @@ static void test_playstack_manager_checkStack(TestFixture* fixture, gconstpointe
     g_assert(!fixture->playstack_manager->isStackedCondition(fixture->ndir_media));
 }
 
+static void test_playstack_manager_checkExpectSpeech(TestFixture* fixture, gconstpointer ignored)
+{
+    g_assert(!fixture->playstack_manager->hasExpectSpeech(nullptr));
+    g_assert(!fixture->playstack_manager->hasExpectSpeech(fixture->ndir_info));
+    g_assert(fixture->playstack_manager->hasExpectSpeech(fixture->ndir_expect_speech));
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -251,6 +261,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/layerPolicy", test_playstack_manager_layerPolicy);
     G_TEST_ADD_FUNC("/core/PlayStackManager/controlHolding", test_playstack_manager_controlHolding);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkStack", test_playstack_manager_checkStack);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/checkExpectSpeech", test_playstack_manager_checkExpectSpeech);
 
     return g_test_run();
 }

@@ -39,6 +39,7 @@ public:
     void add(const std::string& ps_id, NuguDirective* ndir) override;
     void remove(const std::string& ps_id, PlayStackRemoveMode mode = PlayStackRemoveMode::Normal) override;
     bool isStackedCondition(NuguDirective* ndir) override;
+    bool hasExpectSpeech(NuguDirective* ndir) override;
     void stopHolding() override;
     void resetHolding() override;
     bool isActiveHolding();
@@ -65,7 +66,6 @@ private:
     void clearContainer();
     bool isStackedCondition(PlayStackLayer layer);
     bool isStackedCondition(const std::string& ps_id);
-    bool hasExpectSpeech(NuguDirective* ndir);
 
     template <typename T>
     void removeItemInList(std::vector<T>& list, const T& item);

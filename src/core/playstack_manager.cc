@@ -178,6 +178,19 @@ bool PlayStackManager::isStackedCondition(NuguDirective* ndir)
     return ndir && isStackedCondition(extractPlayStackLayer(ndir));
 }
 
+bool PlayStackManager::hasExpectSpeech(NuguDirective* ndir)
+{
+    if (!ndir) {
+        nugu_warn("The directive is empty.");
+        return false;
+    }
+
+    const char* tmp_ndir_groups = nugu_directive_peek_groups(ndir);
+    std::string ndir_groups = tmp_ndir_groups ? tmp_ndir_groups : "";
+
+    return ndir_groups.find("ASR.ExpectSpeech") != std::string::npos;
+}
+
 void PlayStackManager::stopHolding()
 {
     if (timer->isStarted()) {
@@ -278,14 +291,6 @@ bool PlayStackManager::isStackedCondition(PlayStackLayer layer)
 bool PlayStackManager::isStackedCondition(const std::string& ps_id)
 {
     return isStackedCondition(getPlayStackLayer(ps_id));
-}
-
-bool PlayStackManager::hasExpectSpeech(NuguDirective* ndir)
-{
-    const char* tmp_ndir_groups = nugu_directive_peek_groups(ndir);
-    std::string ndir_groups = tmp_ndir_groups ? tmp_ndir_groups : "";
-
-    return ndir_groups.find("ASR.ExpectSpeech") != std::string::npos;
 }
 
 template <typename T>

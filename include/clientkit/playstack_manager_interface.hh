@@ -122,6 +122,14 @@ public:
     virtual bool isStackedCondition(NuguDirective* ndir) = 0;
 
     /**
+     * @brief Check whether it has ASR-ExpectSpeech directive.
+     * @param[in] ndir directive
+     * @return true if it has, otherwise false
+     */
+
+    virtual bool hasExpectSpeech(NuguDirective* ndir) = 0;
+
+    /**
      * @brief Stop timer for removing playstack.
      */
     virtual void stopHolding() = 0;
