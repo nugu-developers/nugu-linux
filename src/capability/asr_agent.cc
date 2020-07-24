@@ -133,19 +133,12 @@ void ASRAgent::startRecognition(float power_noise, float power_speech, AsrRecogn
 
 void ASRAgent::startRecognition(AsrRecognizeCallback callback)
 {
-    if (callback != nullptr)
+    if (callback)
         rec_callback = std::move(callback);
-
-    startRecognition(false);
-}
-
-void ASRAgent::startRecognition(bool expected)
-{
-    nugu_dbg("startRecognition(%d)", expected);
 
     if (speech_recognizer->isMute()) {
         nugu_warn("recorder is mute state");
-        if (rec_callback != nullptr)
+        if (rec_callback)
             rec_callback("");
         return;
     }
