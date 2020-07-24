@@ -145,7 +145,7 @@ void TextAgent::setCapabilityListener(ICapabilityListener* clistener)
         text_listener = dynamic_cast<ITextListener*>(clistener);
 }
 
-std::string TextAgent::requestTextInput(std::string text)
+std::string TextAgent::requestTextInput(const std::string& text)
 {
     nugu_dbg("receive text interface : %s from user app", text.c_str());
     if (cur_state == TextState::BUSY) {
