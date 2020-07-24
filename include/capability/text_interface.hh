@@ -108,7 +108,7 @@ public:
      * @brief Request NUGU services based on text input.
      * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual std::string requestTextInput(std::string text) = 0;
+    virtual std::string requestTextInput(const std::string& text) = 0;
 
     /**
      * @brief Set attribute about response
