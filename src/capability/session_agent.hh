@@ -23,17 +23,26 @@
 namespace NuguCapability {
 
 class SessionAgent final : public Capability,
-                           public ISessionHandler {
+                           public ISessionHandler,
+                           public ISessionManagerListener {
 public:
     SessionAgent();
     virtual ~SessionAgent() = default;
 
+    void initialize() override;
+    void deInitialize() override;
+    void setCapabilityListener(ICapabilityListener* clistener) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void parsingDirective(const char* dname, const char* message) override;
 
 private:
     void parsingSet(const char* message);
 
+    // implements ISessionManagerListener
+    void activated(const std::string& dialog_id, Session session);
+    void deactivated(const std::string& dialog_id);
+
+    ISessionListener* session_listener = nullptr;
     std::string play_service_id;
     std::string session_id;
 };

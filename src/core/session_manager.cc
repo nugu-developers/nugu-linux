@@ -144,6 +144,9 @@ Json::Value SessionManager::getActiveSessionInfo()
 
 void SessionManager::clear()
 {
+    for (const auto& item : session_map)
+        notifyActiveState(item.first, false);
+
     session_map.clear();
     active_list.clear();
 }

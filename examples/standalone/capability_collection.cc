@@ -137,8 +137,10 @@ void CapabilityCollection::composeCapabilityFactory()
         return sound_handler.get();
     });
     factories.emplace("Session", [&]() {
-        if (!session_handler)
-            session_handler = makeCapability<SessionAgent, ISessionHandler>(nullptr);
+        if (!session_handler) {
+            session_listener = std::make_shared<SessionListener>();
+            session_handler = makeCapability<SessionAgent, ISessionHandler>(session_listener.get());
+        }
 
         return session_handler.get();
     });

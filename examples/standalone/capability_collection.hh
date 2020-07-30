@@ -25,6 +25,7 @@
 
 #include "audio_player_listener.hh"
 #include "mic_listener.hh"
+#include "session_listener.hh"
 #include "sound_listener.hh"
 #include "speaker_listener.hh"
 #include "speech_operator.hh"
@@ -72,6 +73,7 @@ private:
     std::shared_ptr<SpeakerListener> speaker_listener = nullptr;
     std::shared_ptr<MicListener> mic_listener = nullptr;
     std::shared_ptr<SoundListener> sound_listener = nullptr;
+    std::shared_ptr<SessionListener> session_listener = nullptr;
 
     std::map<std::string, std::function<ICapabilityInterface*()>> factories;
 };
