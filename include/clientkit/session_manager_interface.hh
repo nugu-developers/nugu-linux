@@ -43,11 +43,46 @@ typedef struct {
 } Session;
 
 /**
+ * @brief ISessionManagerListener interface
+ * @see ISessionManager
+ */
+class ISessionManagerListener {
+public:
+    virtual ~ISessionManagerListener() = default;
+
+    /**
+     * @brief Receive callback when the session is activated.
+     * @param[in] dialog_id dialog request id for Session
+     * @param[in] session Session object
+     */
+    virtual void activated(const std::string& dialog_id, Session session) = 0;
+
+    /**
+     * @brief Receive callback when the session is deactivated.
+     * @param[in] dialog_id dialog request id for Session
+     */
+    virtual void deactivated(const std::string& dialog_id) = 0;
+};
+
+/**
  * @brief SessionManager interface
+ * @see ISessionManagerListener
  */
 class ISessionManager {
 public:
     virtual ~ISessionManager() = default;
+
+    /**
+     * @brief Add ISessionManagerListener.
+     * @param[in] listener ISessionManagerListener instance
+     */
+    virtual void addListener(ISessionManagerListener* listener) = 0;
+
+    /**
+     * @brief Remove ISessionManagerListener.
+     * @param[in] listener ISessionManagerListener instance
+     */
+    virtual void removeListener(ISessionManagerListener* listener) = 0;
 
     /**
      * @brief Set Session object which is received by Session Interface.

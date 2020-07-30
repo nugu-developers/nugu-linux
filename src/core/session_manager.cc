@@ -26,6 +26,37 @@ SessionManager::~SessionManager()
     clear();
 }
 
+void SessionManager::addListener(ISessionManagerListener* listener)
+{
+    if (!listener) {
+        nugu_warn("The listener is not exist.");
+        return;
+    }
+
+    if (std::find(listeners.cbegin(), listeners.cend(), listener) == listeners.cend())
+        listeners.emplace_back(listener);
+}
+
+void SessionManager::removeListener(ISessionManagerListener* listener)
+{
+    if (!listener) {
+        nugu_warn("The listener is not exist.");
+        return;
+    }
+
+    listeners.erase(
+        std::remove_if(listeners.begin(), listeners.end(),
+            [&](const ISessionManagerListener* element) {
+                return element == listener;
+            }),
+        listeners.end());
+}
+
+int SessionManager::getListenerCount()
+{
+    return listeners.size();
+}
+
 void SessionManager::set(const std::string& dialog_id, Session&& session)
 {
     if (dialog_id.empty() || session.session_id.empty() || session.ps_id.empty()) {
@@ -33,9 +64,15 @@ void SessionManager::set(const std::string& dialog_id, Session&& session)
         return;
     }
 
-    // It remove the previous session of same key, if exists.
+    if (session_map.find(dialog_id) != session_map.cend()) {
+        nugu_warn("The session info is already set.");
+        return;
+    }
+
     session_map.erase(dialog_id);
     session_map.emplace(dialog_id, session);
+
+    notifyActiveState(dialog_id);
 }
 
 void SessionManager::activate(const std::string& dialog_id)
@@ -55,8 +92,11 @@ void SessionManager::activate(const std::string& dialog_id)
             return false;
         });
 
-    if (result == active_list.end())
+    if (result == active_list.end()) {
         active_list.emplace_back(std::make_pair(dialog_id, 1));
+
+        notifyActiveState(dialog_id);
+    }
 }
 
 void SessionManager::deactivate(const std::string& dialog_id)
@@ -71,6 +111,9 @@ void SessionManager::deactivate(const std::string& dialog_id)
             [&](std::pair<std::string, int>& item) {
                 if (item.first == dialog_id && (--item.second) < 1) {
                     session_map.erase(dialog_id);
+
+                    notifyActiveState(dialog_id, false);
+
                     return true;
                 }
 
@@ -113,6 +156,25 @@ const SessionManager::ActiveDialogs& SessionManager::getActiveList()
 const SessionManager::Sessions& SessionManager::getAllSessions()
 {
     return session_map;
+}
+
+void SessionManager::notifyActiveState(const std::string& dialog_id, bool is_active)
+{
+    if (!is_active) {
+        for (const auto& listener : listeners)
+            listener->deactivated(dialog_id);
+
+        return;
+    }
+
+    auto result = std::find_if(active_list.cbegin(), active_list.cend(),
+        [&](const std::pair<std::string, int>& item) {
+            return item.first == dialog_id;
+        });
+
+    if (result != active_list.cend() && session_map.find(dialog_id) != session_map.cend())
+        for (const auto& listener : listeners)
+            listener->activated(dialog_id, session_map[dialog_id]);
 }
 
 } // NuguCore
