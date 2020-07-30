@@ -35,6 +35,10 @@ public:
     SessionManager() = default;
     virtual ~SessionManager();
 
+    void addListener(ISessionManagerListener* listener) override;
+    void removeListener(ISessionManagerListener* listener) override;
+    int getListenerCount();
+
     void set(const std::string& dialog_id, Session&& session) override;
     void activate(const std::string& dialog_id) override;
     void deactivate(const std::string& dialog_id) override;
@@ -45,6 +49,9 @@ public:
     const Sessions& getAllSessions();
 
 private:
+    void notifyActiveState(const std::string& dialog_id, bool is_active = true);
+
+    std::vector<ISessionManagerListener*> listeners;
     ActiveDialogs active_list;
     Sessions session_map;
 };
