@@ -269,13 +269,22 @@ static void test_session_manager_notify_multi_active_state(TestFixture* fixture,
 
 static void test_session_manager_clear(TestFixture* fixture, gconstpointer ignored)
 {
+    fixture->session_manager->addListener(fixture->session_manager_listener.get());
+
     fixture->session_manager->activate("dialog_id_1");
     fixture->session_manager->set("dialog_id_1", { "session_id_1", "ps_id_1" });
     fixture->session_manager->set("dialog_id_2", { "session_id_2", "ps_id_2" });
     g_assert(!fixture->session_manager->getActiveSessionInfo().empty());
+    g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_1") == 1);
+
+    fixture->session_manager->activate("dialog_id_2");
+    fixture->session_manager->activate("dialog_id_2");
+    g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_2") == 1);
 
     fixture->session_manager->clear();
     g_assert(fixture->session_manager->getActiveSessionInfo().empty());
+    g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_1") == 0);
+    g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_2") == 0);
 }
 
 int main(int argc, char* argv[])

@@ -35,12 +35,28 @@ using namespace NuguClientKit;
  */
 
 /**
+ * @brief Session State list
+ * @see ISessionListener::onState
+ */
+enum class SessionState {
+    ACTIVE, /**< Session is activated */
+    INACTIVE /**< Session is deactivated */
+};
+
+/**
  * @brief session listener interface
  * @see ISessionHandler
  */
 class ISessionListener : public ICapabilityListener {
 public:
     virtual ~ISessionListener() = default;
+
+    /**
+     * @brief Receive callback when the session state is changed.
+     * @param[in] state session state
+     * @param[in] dialog_id dialog request id for Session
+     */
+    virtual void onState(SessionState state, const std::string& dialog_id) = 0;
 };
 
 /**

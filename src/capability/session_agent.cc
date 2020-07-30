@@ -29,6 +29,31 @@ SessionAgent::SessionAgent()
 {
 }
 
+void SessionAgent::initialize()
+{
+    if (initialized) {
+        nugu_info("It's already initialized.");
+        return;
+    }
+
+    session_manager->addListener(this);
+
+    initialized = true;
+}
+
+void SessionAgent::deInitialize()
+{
+    session_manager->removeListener(this);
+
+    initialized = false;
+}
+
+void SessionAgent::setCapabilityListener(ICapabilityListener* clistener)
+{
+    if (clistener)
+        session_listener = dynamic_cast<ISessionListener*>(clistener);
+}
+
 void SessionAgent::updateInfoForContext(Json::Value& ctx)
 {
     Json::Value session;
@@ -41,10 +66,6 @@ void SessionAgent::updateInfoForContext(Json::Value& ctx)
 
     ctx[getName()] = session;
 }
-
-/*******************************************************************************
- * parse directive
- ******************************************************************************/
 
 void SessionAgent::parsingDirective(const char* dname, const char* message)
 {
@@ -78,6 +99,26 @@ void SessionAgent::parsingSet(const char* message)
 
     session_manager->set(nugu_directive_peek_dialog_id(getNuguDirective()),
         Session { session_id, play_service_id });
+}
+
+void SessionAgent::activated(const std::string& dialog_id, Session session)
+{
+    // Even if it's possible to receive session info from SessionManager,
+    // in currently, there are no reason to send session info to application.
+    // So, it just leave that session info for handling later.
+
+    nugu_dbg("session activated: %s", dialog_id);
+
+    if (session_listener)
+        session_listener->onState(SessionState::ACTIVE, dialog_id);
+}
+
+void SessionAgent::deactivated(const std::string& dialog_id)
+{
+    nugu_dbg("session deactivated: %s", dialog_id);
+
+    if (session_listener)
+        session_listener->onState(SessionState::INACTIVE, dialog_id);
 }
 
 } // NuguCapability
