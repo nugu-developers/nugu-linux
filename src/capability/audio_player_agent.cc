@@ -949,8 +949,6 @@ void AudioPlayerAgent::parsingPause(const char* message)
     playserviceid = root["playServiceId"].asString();
 
     if (playserviceid.size()) {
-        capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
-
         // hold context about 10m' and remove it, if there are no action.
         playstack_manager->remove(playserviceid, PlayStackRemoveMode::Later);
 
@@ -964,6 +962,8 @@ void AudioPlayerAgent::parsingPause(const char* message)
             prev_aplayer_state = cur_aplayer_state = AudioPlayerState::PAUSED;
             sendEventPlaybackPaused();
         }
+
+        capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
     }
 }
 
@@ -984,9 +984,9 @@ void AudioPlayerAgent::parsingStop(const char* message)
     if (!playstackctl_ps_id.empty()) {
         playstack_manager->remove(playstackctl_ps_id, is_finished ? PlayStackRemoveMode::Normal : PlayStackRemoveMode::Immediately);
 
-        capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
-
         focus_manager->releaseFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME);
+
+        capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
     }
 }
 
