@@ -75,6 +75,12 @@ public:
      * @retval false There was a problem with the directive processing.
      */
     virtual bool onHandleDirective(NuguDirective* ndir) = 0;
+
+    /**
+     * @brief Notify the directive to cancel
+     * @param[in] ndir NuguDirective object
+     */
+    virtual void onCancelDirective(NuguDirective* ndir) = 0;
 };
 
 /**

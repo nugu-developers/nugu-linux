@@ -89,6 +89,7 @@ private:
 
     bool preHandleDirective(NuguDirective* ndir);
     void handleDirective(NuguDirective* ndir);
+    void cancelDirective(NuguDirective* ndir);
 
     /* Network manager callback */
     static void onDirective(NuguDirective* ndir, void* userdata);
