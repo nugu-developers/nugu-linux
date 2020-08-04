@@ -119,6 +119,20 @@ public:
     virtual bool releaseFocus(const std::string& type, const std::string& name) = 0;
 
     /**
+     * @brief Hold focus. If requested to hold focus, the low priority focus is not preempted.
+     * @param[in] type focus type
+     * @return if the hold is success, then true otherwise false
+     */
+    virtual bool holdFocus(const std::string& type) = 0;
+
+    /**
+     * @brief Unhold focus
+     * @param[in] type focus type
+     * @return if the unhold is success, then true otherwise false
+     */
+    virtual bool unholdFocus(const std::string& type) = 0;
+
+    /**
      * @brief Set focus configurations.
      * @param[in] configurations focus configurations
      */

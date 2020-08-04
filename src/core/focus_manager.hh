@@ -62,6 +62,9 @@ public:
     bool requestFocus(const std::string& type, const std::string& name, IFocusResourceListener* listener) override;
     bool releaseFocus(const std::string& type, const std::string& name) override;
 
+    bool holdFocus(const std::string& type) override;
+    bool unholdFocus(const std::string& type) override;
+
     void setConfigurations(std::vector<FocusConfiguration>& configurations) override;
     void stopAllFocus() override;
     void stopForegroundFocus() override;
@@ -79,6 +82,7 @@ public:
 private:
     std::map<std::string, int> configuration_map;
     std::map<int, std::shared_ptr<FocusResource>> focus_resource_ordered_map;
+    std::map<std::string, bool> focus_hold_map;
     std::vector<IFocusManagerObserver*> observers;
 };
 
