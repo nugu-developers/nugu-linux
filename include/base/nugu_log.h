@@ -45,7 +45,11 @@ extern "C" {
  */
 
 #ifndef NUGU_ANSI_COLOR_NORMAL
+#ifdef NUGU_LOG_USE_ANSICOLOR
 #define NUGU_ANSI_COLOR_NORMAL       "\e[0m"
+#else
+#define NUGU_ANSI_COLOR_NORMAL       ""
+#endif
 #endif
 
 #ifndef NUGU_ANSI_COLOR_BLACK
