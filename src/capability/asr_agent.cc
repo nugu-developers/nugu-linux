@@ -150,6 +150,7 @@ void ASRAgent::startRecognition(AsrRecognizeCallback callback)
 void ASRAgent::stopRecognition()
 {
     nugu_dbg("stopRecognition()");
+    focus_manager->unholdFocus(DIALOG_FOCUS_TYPE);
     focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
     asr_cancel = false;
 }
@@ -450,6 +451,7 @@ void ASRAgent::parsingExpectSpeech(std::string&& dialog_id, const char* message)
     es_attr.dialog_id = dialog_id;
 
     session_manager->activate(es_attr.dialog_id);
+    focus_manager->holdFocus(DIALOG_FOCUS_TYPE);
 }
 
 void ASRAgent::parsingNotifyResult(const char* message)

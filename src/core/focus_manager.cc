@@ -77,6 +77,11 @@ bool FocusManager::requestFocus(const std::string& type, const std::string& name
         return false;
     }
 
+    if (focus_hold_map[type]) {
+        focus_hold_map[type] = false;
+        nugu_info("[%s] - Reset HOLD", type.c_str());
+    }
+
     FocusResource* activate_focus = nullptr;
     // get current activated focus
     if (focus_resource_ordered_map.begin() != focus_resource_ordered_map.end())
@@ -100,17 +105,30 @@ bool FocusManager::requestFocus(const std::string& type, const std::string& name
         }
     }
 
+    bool higher_hold = false;
+    for(const auto& hold : focus_hold_map) {
+        if (!hold.second)
+            continue;
+
+        if (priority > configuration_map[hold.first]) {
+            nugu_info("[%s] - HOLD requestFocus", type.c_str());
+            higher_hold = true;
+            break;
+        }
+    }
+
     // get request focus
     FocusResource* request_focus = focus_resource_ordered_map[priority].get();
+    FocusState request_focus_state = higher_hold ? FocusState::BACKGROUND : FocusState::FOREGROUND;
 
     if (activate_focus == nullptr || activate_focus == request_focus) {
-        nugu_info("[%s - %s] - FOREGROUND (priority: %d)", request_focus->type.c_str(), request_focus->name.c_str(), request_focus->priority);
-        request_focus->setState(FocusState::FOREGROUND);
+        nugu_info("[%s - %s] - %s (priority: %d)", request_focus->type.c_str(), request_focus->name.c_str(), getStateString(request_focus_state).c_str(), request_focus->priority);
+        request_focus->setState(request_focus_state);
     } else if (*request_focus < *activate_focus) {
         nugu_info("[%s - %s] - BACKGROUND (priority: %d)", activate_focus->type.c_str(), activate_focus->name.c_str(), activate_focus->priority);
         activate_focus->setState(FocusState::BACKGROUND);
-        nugu_info("[%s - %s] - FOREGROUND (priority: %d)", request_focus->type.c_str(), request_focus->name.c_str(), request_focus->priority);
-        request_focus->setState(FocusState::FOREGROUND);
+        nugu_info("[%s - %s] - %s (priority: %d)", request_focus->type.c_str(), request_focus->name.c_str(), getStateString(request_focus_state).c_str(), request_focus->priority);
+        request_focus->setState(request_focus_state);
     } else {
         nugu_info("[%s - %s] - BACKGROUND (priority: %d)", request_focus->type.c_str(), request_focus->name.c_str(), request_focus->priority);
         request_focus->setState(FocusState::BACKGROUND);
@@ -136,6 +154,8 @@ bool FocusManager::releaseFocus(const std::string& type, const std::string& name
         return true;
     }
 
+    const std::string release_focus_type = release_focus->type;
+
     nugu_info("[%s - %s] - NONE (priority: %d)", release_focus->type.c_str(), release_focus->name.c_str(), release_focus->priority);
     release_focus->setState(FocusState::NONE);
     focus_resource_ordered_map.erase(priority);
@@ -144,10 +164,42 @@ bool FocusManager::releaseFocus(const std::string& type, const std::string& name
     if (focus_resource_ordered_map.size() == 0)
         return true;
 
+    if (focus_hold_map[release_focus_type]) {
+        nugu_info("[%s] - HOLD releaseFocus", release_focus_type.c_str());
+        return true;
+    }
+
     // activate highest focus
     FocusResource* activate_focus = focus_resource_ordered_map.begin()->second.get();
     nugu_info("[%s - %s] - FOREGROUND (priority: %d)", activate_focus->type.c_str(), activate_focus->name.c_str(), activate_focus->priority);
     activate_focus->setState(FocusState::FOREGROUND);
+    return true;
+}
+
+bool FocusManager::holdFocus(const std::string& type)
+{
+    nugu_info("[%s] - HOLD", type.c_str());
+    focus_hold_map[type] = true;
+    return true;
+}
+
+bool FocusManager::unholdFocus(const std::string& type)
+{
+    focus_hold_map[type] = false;
+
+    nugu_info("[%s] - UNHOLD", type.c_str());
+
+    FocusResource* activate_focus = nullptr;
+    // get current activated focus
+    if (focus_resource_ordered_map.begin() == focus_resource_ordered_map.end())
+        return true;
+
+    activate_focus = focus_resource_ordered_map.begin()->second.get();
+    if (activate_focus->state == FocusState::BACKGROUND) {
+        nugu_info("[%s - %s] - FOREGROUND (priority: %d)", activate_focus->type.c_str(), activate_focus->name.c_str(), activate_focus->priority);
+        activate_focus->setState(FocusState::FOREGROUND);
+    }
+
     return true;
 }
 
@@ -251,7 +303,7 @@ void FocusManager::onFocusChanged(const std::string& type, const std::string& na
 void FocusManager::printConfigurations()
 {
     nugu_info("Focus Resource Configurtaion ==================");
-    for(auto configuration : configuration_map)
+    for (auto configuration : configuration_map)
         nugu_info("Resource - priority:%4d, type: %s", configuration.second, configuration.first.c_str());
     nugu_info("===============================================");
 }

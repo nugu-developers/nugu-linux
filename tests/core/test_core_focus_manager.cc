@@ -42,6 +42,12 @@ using namespace NuguCore;
 #define RELEASE_FOCUS(resource, type) \
     resource->releaseFocus(type)
 
+#define HOLD_FOCUS(resource, type) \
+    resource->holdFocus(type)
+
+#define UNHOLD_FOCUS(resource, type) \
+    resource->unholdFocus(type)
+
 #define ASSERT_EXPECTED_STATE(resource, state) \
     g_assert(resource->getState() == state);
 
@@ -92,6 +98,16 @@ public:
     bool releaseFocus(const std::string& type)
     {
         return focus_manager_interface->releaseFocus(type, name);
+    }
+
+    bool holdFocus(const std::string& type)
+    {
+        return focus_manager_interface->holdFocus(type);
+    }
+
+    bool unholdFocus(const std::string& type)
+    {
+        return focus_manager_interface->unholdFocus(type);
     }
 
     void stopAllFocus()
@@ -395,6 +411,50 @@ static void test_focusmanager_stop_all_focus_with_two_resources(ntimerFixture* f
     ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::NONE);
 }
 
+static void test_focusmanager_request_resource_hold_and_unhold(ntimerFixture* fixture, gconstpointer ignored)
+{
+    g_assert(REQUEST_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE, DIALOG_NAME));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::FOREGROUND);
+
+    g_assert(REQUEST_FOCUS(fixture->content_resource, CONTENT_FOCUS_TYPE, CONTENT_NAME));
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::BACKGROUND);
+
+    g_assert(HOLD_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
+
+    g_assert(RELEASE_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::NONE);
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::BACKGROUND);
+
+    g_assert(UNHOLD_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::FOREGROUND);
+}
+
+static void test_focusmanager_request_resource_with_hold_higher_resource(ntimerFixture* fixture, gconstpointer ignored)
+{
+    g_assert(HOLD_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
+
+    g_assert(REQUEST_FOCUS(fixture->content_resource, CONTENT_FOCUS_TYPE, CONTENT_NAME));
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::BACKGROUND);
+
+    g_assert(UNHOLD_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::FOREGROUND);
+}
+
+static void test_focusmanager_request_same_holded_resource_and_auto_unhold(ntimerFixture* fixture, gconstpointer ignored)
+{
+    g_assert(HOLD_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
+
+    g_assert(REQUEST_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE, DIALOG_NAME));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::FOREGROUND);
+
+    g_assert(REQUEST_FOCUS(fixture->content_resource, CONTENT_FOCUS_TYPE, CONTENT_NAME));
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::BACKGROUND);
+
+    g_assert(RELEASE_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::NONE);
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::FOREGROUND);
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -425,6 +485,9 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/FocusManager/StopAllFocusWithNoResource", test_focusmanager_stop_all_focus_with_no_resource);
     G_TEST_ADD_FUNC("/core/FocusManager/StopAllFocusWithOneResource", test_focusmanager_stop_all_focus_with_one_resource);
     G_TEST_ADD_FUNC("/core/FocusManager/StopAllFocusWithTwoResources", test_focusmanager_stop_all_focus_with_two_resources);
+    G_TEST_ADD_FUNC("/core/FocusManager/RequestResourceUnHold", test_focusmanager_request_resource_hold_and_unhold);
+    G_TEST_ADD_FUNC("/core/FocusManager/RequestResourceWithHoldHigherResource", test_focusmanager_request_resource_with_hold_higher_resource);
+    G_TEST_ADD_FUNC("/core/FocusManager/RequestSameHoldedResourceAndAutoUnhold", test_focusmanager_request_same_holded_resource_and_auto_unhold);
 
     return g_test_run();
 }
