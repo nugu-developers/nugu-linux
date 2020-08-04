@@ -50,6 +50,7 @@ public:
 
 private:
     void notifyActiveState(const std::string& dialog_id, bool is_active = true);
+    void clearContainer();
 
     std::vector<ISessionManagerListener*> listeners;
     ActiveDialogs active_list;

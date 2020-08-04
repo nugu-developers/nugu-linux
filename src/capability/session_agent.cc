@@ -107,7 +107,7 @@ void SessionAgent::activated(const std::string& dialog_id, Session session)
     // in currently, there are no reason to send session info to application.
     // So, it just leave that session info for handling later.
 
-    nugu_dbg("session activated: %s", dialog_id);
+    nugu_dbg("session activated: %s", dialog_id.c_str());
 
     if (session_listener)
         session_listener->onState(SessionState::ACTIVE, dialog_id);
@@ -115,7 +115,7 @@ void SessionAgent::activated(const std::string& dialog_id, Session session)
 
 void SessionAgent::deactivated(const std::string& dialog_id)
 {
-    nugu_dbg("session deactivated: %s", dialog_id);
+    nugu_dbg("session deactivated: %s", dialog_id.c_str());
 
     if (session_listener)
         session_listener->onState(SessionState::INACTIVE, dialog_id);

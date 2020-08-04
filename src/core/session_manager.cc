@@ -23,7 +23,7 @@ namespace NuguCore {
 
 SessionManager::~SessionManager()
 {
-    clear();
+    clearContainer();
 }
 
 void SessionManager::addListener(ISessionManagerListener* listener)
@@ -147,8 +147,7 @@ void SessionManager::clear()
     for (const auto& item : session_map)
         notifyActiveState(item.first, false);
 
-    session_map.clear();
-    active_list.clear();
+    clearContainer();
 }
 
 const SessionManager::ActiveDialogs& SessionManager::getActiveList()
@@ -178,6 +177,12 @@ void SessionManager::notifyActiveState(const std::string& dialog_id, bool is_act
     if (result != active_list.cend() && session_map.find(dialog_id) != session_map.cend())
         for (const auto& listener : listeners)
             listener->activated(dialog_id, session_map[dialog_id]);
+}
+
+void SessionManager::clearContainer()
+{
+    session_map.clear();
+    active_list.clear();
 }
 
 } // NuguCore
