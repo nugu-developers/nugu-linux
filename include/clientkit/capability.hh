@@ -235,13 +235,19 @@ public:
     std::string getPlayServiceIdInStackControl(const Json::Value& playstack_control);
 
     /**
-     * @brief Preprocess directive received from Directive Sequencer.
+     * @brief Receive a directive preprocessing request from Directive sequencer.
      * @param[in] ndir directive
      */
     void preprocessDirective(NuguDirective* ndir) override;
 
     /**
-     * @brief Process directive received from Directive Sequencer.
+     * @brief Receive a directive cancellation from the Directive sequencer.
+     * @param[in] ndir directive
+     */
+    void cancelDirective(NuguDirective* ndir) override;
+
+    /**
+     * @brief Receive a directive processing request from Directive sequencer.
      * @param[in] ndir directive
      */
     void processDirective(NuguDirective* ndir) override final;

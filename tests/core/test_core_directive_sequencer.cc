@@ -73,6 +73,10 @@ public:
         return false;
     }
 
+    void onCancelDirective(NuguDirective* ndir) override
+    {
+    }
+
     bool onHandleDirective(NuguDirective* ndir) override
     {
         value++;
@@ -92,6 +96,10 @@ public:
          * The directive is handled in the pre-handle callback.
          */
         return true;
+    }
+
+    void onCancelDirective(NuguDirective* ndir) override
+    {
     }
 
     bool onHandleDirective(NuguDirective* ndir) override
@@ -171,6 +179,10 @@ public:
     bool onPreHandleDirective(NuguDirective* ndir) override
     {
         return false;
+    }
+
+    void onCancelDirective(NuguDirective* ndir) override
+    {
     }
 
     bool onHandleDirective(NuguDirective* ndir) override
@@ -261,6 +273,12 @@ public:
         return false;
     }
 
+    void onCancelDirective(NuguDirective* ndir) override
+    {
+        g_assert_cmpstr(nugu_directive_peek_namespace(ndir), ==, "TTS");
+        cancel_flag++;
+    }
+
     bool onHandleDirective(NuguDirective* ndir) override
     {
         /* Allow only 'TTS' namespace */
@@ -277,7 +295,9 @@ public:
                 g_assert_cmpstr(nugu_directive_peek_dialog_id(speak_dir), !=, nugu_directive_peek_dialog_id(ndir));
 
                 /* Cancel(destroy) the previous dialog */
+                cancel_flag = 0;
                 seq->cancel(nugu_directive_peek_dialog_id(speak_dir));
+                g_assert(cancel_flag != 0);
 
                 if (idler)
                     g_source_remove(idler);
@@ -322,6 +342,7 @@ public:
     GMainLoop* loop;
     NuguDirective* speak_dir;
     guint idler;
+    int cancel_flag;
 };
 
 class AudioPlayerAgent : public IDirectiveSequencerListener {
@@ -336,6 +357,10 @@ public:
     bool onPreHandleDirective(NuguDirective* ndir) override
     {
         return false;
+    }
+
+    void onCancelDirective(NuguDirective* ndir) override
+    {
     }
 
     bool onHandleDirective(NuguDirective* ndir) override
@@ -408,6 +433,10 @@ public:
     bool onPreHandleDirective(NuguDirective* ndir) override
     {
         return false;
+    }
+
+    void onCancelDirective(NuguDirective* ndir) override
+    {
     }
 
     bool onHandleDirective(NuguDirective* ndir) override

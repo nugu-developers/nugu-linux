@@ -72,6 +72,7 @@ public:
     // overriding IDirectiveSequencerListener
     bool onPreHandleDirective(NuguDirective* ndir) override;
     bool onHandleDirective(NuguDirective* ndir) override;
+    void onCancelDirective(NuguDirective* ndir) override;
 
 private:
     ICapabilityInterface* findCapability(const std::string& cname);

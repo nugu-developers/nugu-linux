@@ -101,6 +101,18 @@ bool CapabilityManager::onHandleDirective(NuguDirective* ndir)
     return true;
 }
 
+void CapabilityManager::onCancelDirective(NuguDirective* ndir)
+{
+    ICapabilityInterface* cap = findCapability(nugu_directive_peek_namespace(ndir));
+    if (cap == nullptr) {
+        nugu_warn("capability(%s) is not support", nugu_directive_peek_namespace(ndir));
+        return;
+    }
+
+    nugu_info("cancelDirective - [%s.%s]", cap->getName().c_str(), nugu_directive_peek_name(ndir));
+    cap->cancelDirective(ndir);
+}
+
 void CapabilityManager::addCapability(const std::string& cname, ICapabilityInterface* cap)
 {
     caps.emplace(cname, cap);

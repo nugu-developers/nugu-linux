@@ -278,6 +278,18 @@ void DirectiveSequencer::handleDirective(NuguDirective* ndir)
     }
 }
 
+void DirectiveSequencer::cancelDirective(NuguDirective* ndir)
+{
+    const char* name_space = nugu_directive_peek_namespace(ndir);
+    const char* name = nugu_directive_peek_name(ndir);
+
+    nugu_dbg("cancel the directive '%s.%s'", name_space, name);
+
+    for (auto& listener : listeners_map[name_space]) {
+        listener->onCancelDirective(ndir);
+    }
+}
+
 bool DirectiveSequencer::add(NuguDirective* ndir)
 {
     if (ndir == nullptr) {
@@ -456,6 +468,8 @@ bool DirectiveSequencer::cancel(const std::string& dialog_id)
             if (msgid_iter != msgid_directive_map.end())
                 msgid_directive_map.erase(msgid_iter);
 
+            cancelDirective(ndir);
+
             /* Destroy the directive */
             nugu_directive_unref(ndir);
         }
@@ -473,6 +487,8 @@ bool DirectiveSequencer::cancel(const std::string& dialog_id)
             msgid_iter = msgid_directive_map.find(nugu_directive_peek_msg_id(ndir));
             if (msgid_iter != msgid_directive_map.end())
                 msgid_directive_map.erase(msgid_iter);
+
+            cancelDirective(ndir);
 
             /* Destroy the directive */
             nugu_directive_unref(ndir);

@@ -274,6 +274,10 @@ void Capability::preprocessDirective(NuguDirective* ndir)
 {
 }
 
+void Capability::cancelDirective(NuguDirective* ndir)
+{
+}
+
 void Capability::processDirective(NuguDirective* ndir)
 {
     if (ndir) {
