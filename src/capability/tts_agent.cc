@@ -153,7 +153,7 @@ void TTSAgent::onFocusChanged(FocusState state)
     case FocusState::NONE:
         stopTTS();
 
-        if (playstack_manager->getPlayStackLayer(playstackctl_ps_id) == PlayStackLayer::Info)
+        if (playstack_manager->getPlayStackLayer(playstackctl_ps_id) != PlayStackLayer::Media)
             playstack_manager->remove(playstackctl_ps_id);
 
         break;
