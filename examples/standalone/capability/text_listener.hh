@@ -28,6 +28,10 @@ public:
     void onComplete(const std::string& dialog_id) override;
     void onError(TextError error, const std::string& dialog_id) override;
     bool handleTextCommand(const std::string& text, const std::string& token) override;
+
+private:
+    TextState prev_state = TextState::IDLE;
+    std::string prev_dialog_id;
 };
 
 #endif /* __TEXT_LISTENER_H__ */

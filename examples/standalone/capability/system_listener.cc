@@ -64,5 +64,4 @@ void SystemListener::onRevoke(RevokeReason reason)
 
 void SystemListener::onNoDirective(const std::string& dialog_id)
 {
-    std::cout << "[SYSTEM][id:" << dialog_id << "] receive no directive" << std::endl;
 }

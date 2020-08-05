@@ -88,11 +88,12 @@ void AudioPlayerListener::repeatChanged(RepeatType repeat, const std::string& di
 
 void AudioPlayerListener::requestContentCache(const std::string& key, const std::string& playurl)
 {
-    std::cout << "[AudioPlayer] request to cache content - key: " << key << ", playurl: " << playurl << std::endl;
+    std::cout << "[AudioPlayer] request to cache content:\n"
+              << "  - key: " << key << std::endl
+              << "  - playurl: " << playurl << std::endl;
 }
 
 bool AudioPlayerListener::requestToGetCachedContent(const std::string& key, std::string& filepath)
 {
-    std::cout << "[AudioPlayer] request to get cached content - key: " << key << std::endl;
     return false;
 }
