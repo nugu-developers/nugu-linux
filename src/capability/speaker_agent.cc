@@ -197,8 +197,14 @@ bool SpeakerAgent::getSpeakerType(const std::string& name, SpeakerType& type)
     } else if (name == "RINGTON") {
         type = SpeakerType::RINGTON;
         return true;
+    } else if (name == "CALL") {
+        type = SpeakerType::CALL;
+        return true;
     } else if (name == "NOTIFICATION") {
         type = SpeakerType::NOTIFICATION;
+        return true;
+    } else if (name == "ALARM") {
+        type = SpeakerType::ALARM;
         return true;
     } else if (name == "VOICE_COMMAND") {
         type = SpeakerType::VOICE_COMMAND;
