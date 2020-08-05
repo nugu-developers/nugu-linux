@@ -234,6 +234,7 @@ void NuguSampleManager::showPrompt(void)
                   << C_RESET;
     else {
         std::cout << C_YELLOW
+                  << std::endl
                   << "=======================================================\n"
                   << C_RED
                   << "NUGU SDK Command (" << (commander.is_connected ? "Connected" : "Disconnected") << ")\n"
@@ -313,8 +314,6 @@ gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpoint
 
         if (ns_mgr->commander.text_handler)
             id = ns_mgr->commander.text_handler->requestTextInput(keybuf);
-
-        std::cout << "[Text][id:" << id << "] requestTextInput" << std::endl;
     } else {
         try {
             // It has to send ns_mgr (NuguSampleManager* instance) parameter mandatorily

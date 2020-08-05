@@ -127,15 +127,10 @@ void SpeechOperator::startListening(float noise, float speech)
         return;
     }
 
-    if (noise && speech) {
-        asr_handler->startRecognition(noise, speech, [&](const std::string& dialog_id) {
-            msg::asr::callback(__FUNCTION__, dialog_id, "startRecognition callback");
-        });
-    } else {
-        asr_handler->startRecognition([&](const std::string& dialog_id) {
-            msg::asr::callback(__FUNCTION__, dialog_id, "startRecognition callback");
-        });
-    }
+    if (noise && speech)
+        asr_handler->startRecognition(noise, speech, [&](const std::string& dialog_id) {});
+    else
+        asr_handler->startRecognition([&](const std::string& dialog_id) {});
 }
 
 void SpeechOperator::stopListeningAndWakeup()

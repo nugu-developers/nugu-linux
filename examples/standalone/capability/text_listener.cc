@@ -20,7 +20,10 @@
 
 void TextListener::onState(TextState state, const std::string& dialog_id)
 {
-    std::cout << "[Text][id:" << dialog_id << "] onState: ";
+    if (state == prev_state && dialog_id == prev_dialog_id)
+        return;
+
+    std::cout << "[Text][id:" << dialog_id << "] ";
 
     switch (state) {
     case TextState::BUSY:
@@ -33,6 +36,9 @@ void TextListener::onState(TextState state, const std::string& dialog_id)
         std::cout << "UNKNOWN STATE" << std::endl;
         break;
     }
+
+    prev_state = state;
+    prev_dialog_id = dialog_id;
 }
 
 void TextListener::onComplete(const std::string& dialog_id)
