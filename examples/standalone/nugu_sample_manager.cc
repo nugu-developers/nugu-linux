@@ -33,7 +33,7 @@ const char* NuguSampleManager::C_RESET = "\033[0m";
 
 // NOLINTNEXTLINE (cert-err58-cpp)
 const NuguSampleManager::CommandKey NuguSampleManager::COMMAND_KEYS {
-    "w", "l", "s", "t", "m", "sa", "ra", "c", "d", "q"
+    "w", "l", "s", "t", "t2", "m", "sa", "ra", "c", "d", "q"
 };
 
 // NOLINTNEXTLINE (cert-err58-cpp)
@@ -54,6 +54,10 @@ const NuguSampleManager::CommandMap NuguSampleManager::COMMAND_MAP {
                 ns_mgr->commander.text_input = 1;
                 ns_mgr->showPrompt();
             } } },
+    { "t2", { "text input (ignore dialog attribute)", [](NuguSampleManager* ns_mgr) {
+                 ns_mgr->commander.text_input = 2;
+                 ns_mgr->showPrompt();
+             } } },
     { "m", { "set mic mute", [](NuguSampleManager* ns_mgr) {
                 static bool mute = false;
                 mute = !mute;
@@ -308,12 +312,10 @@ gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpoint
     }
 
     if (ns_mgr->commander.text_input) {
-        ns_mgr->commander.text_input = 0;
-
-        std::string id;
-
         if (ns_mgr->commander.text_handler)
-            id = ns_mgr->commander.text_handler->requestTextInput(keybuf);
+            ns_mgr->commander.text_handler->requestTextInput(keybuf, (ns_mgr->commander.text_input == 1));
+
+        ns_mgr->commander.text_input = 0;
     } else {
         try {
             // It has to send ns_mgr (NuguSampleManager* instance) parameter mandatorily

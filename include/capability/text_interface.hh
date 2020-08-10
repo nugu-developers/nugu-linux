@@ -106,9 +106,11 @@ public:
 
     /**
      * @brief Request NUGU services based on text input.
+     * @param[in] text text command
+     * @param[in] include_dialog_attribute whether including dialog attribute
      * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual std::string requestTextInput(const std::string& text) = 0;
+    virtual std::string requestTextInput(const std::string& text, bool include_dialog_attribute = true) = 0;
 
     /**
      * @brief Set attribute about response
