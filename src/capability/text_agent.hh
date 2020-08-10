@@ -37,11 +37,11 @@ public:
     void receiveCommandAll(const std::string& command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
-    std::string requestTextInput(const std::string& text) override;
+    std::string requestTextInput(const std::string& text, bool include_dialog_attribute = true) override;
     void notifyResponseTimeout();
 
 private:
-    void sendEventTextInput(const std::string& text, const std::string& token, EventResultCallback cb = nullptr);
+    void sendEventTextInput(const std::string& text, const std::string& token, bool include_dialog_attribute, EventResultCallback cb = nullptr);
     void parsingTextSource(const char* message);
 
     ITextListener* text_listener;

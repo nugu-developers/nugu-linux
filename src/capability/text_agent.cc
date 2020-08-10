@@ -145,7 +145,7 @@ void TextAgent::setCapabilityListener(ICapabilityListener* clistener)
         text_listener = dynamic_cast<ITextListener*>(clistener);
 }
 
-std::string TextAgent::requestTextInput(const std::string& text)
+std::string TextAgent::requestTextInput(const std::string& text, bool include_dialog_attribute)
 {
     nugu_dbg("receive text interface : %s from user app", text.c_str());
     if (cur_state == TextState::BUSY) {
@@ -165,7 +165,7 @@ std::string TextAgent::requestTextInput(const std::string& text)
         timer_msec->start();
 
     cur_state = TextState::BUSY;
-    sendEventTextInput(text, "");
+    sendEventTextInput(text, "", include_dialog_attribute);
 
     nugu_dbg("user request id: %s", cur_dialog_id.c_str());
     if (text_listener)
@@ -186,7 +186,7 @@ void TextAgent::notifyResponseTimeout()
         text_listener->onState(cur_state, cur_dialog_id);
 }
 
-void TextAgent::sendEventTextInput(const std::string& text, const std::string& token, EventResultCallback cb)
+void TextAgent::sendEventTextInput(const std::string& text, const std::string& token, bool include_dialog_attribute, EventResultCallback cb)
 {
     CapabilityEvent event("TextInput", this);
     std::string payload = "";
@@ -196,21 +196,24 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
     std::string asr_context = "";
     std::list<std::string> domainTypes;
 
-    capa_helper->getCapabilityProperty("ASR", "es.playServiceId", ps_id);
-    capa_helper->getCapabilityProperty("ASR", "es.asrContext", asr_context);
-    capa_helper->getCapabilityProperties("ASR", "es.domainTypes", domainTypes);
-
     root["text"] = text;
     if (token.size())
         root["token"] = token;
-    if (ps_id.size())
-        root["playServiceId"] = ps_id;
-    if (asr_context.size())
-        root["asrContext"] = asr_context;
-    if (domainTypes.size()) {
-        while (!domainTypes.empty()) {
-            root["domainTypes"].append(domainTypes.front());
-            domainTypes.pop_front();
+
+    if (include_dialog_attribute) {
+        capa_helper->getCapabilityProperty("ASR", "es.playServiceId", ps_id);
+        capa_helper->getCapabilityProperty("ASR", "es.asrContext", asr_context);
+        capa_helper->getCapabilityProperties("ASR", "es.domainTypes", domainTypes);
+
+        if (ps_id.size())
+            root["playServiceId"] = ps_id;
+        if (asr_context.size())
+            root["asrContext"] = asr_context;
+        if (domainTypes.size()) {
+            while (!domainTypes.empty()) {
+                root["domainTypes"].append(domainTypes.front());
+                domainTypes.pop_front();
+            }
         }
     }
     payload = writer.write(root);
@@ -257,7 +260,7 @@ void TextAgent::parsingTextSource(const char* message)
         timer->start();
 
     cur_state = TextState::BUSY;
-    sendEventTextInput(text, token);
+    sendEventTextInput(text, token, true);
 
     setReferrerDialogRequestId(nugu_directive_peek_name(getNuguDirective()), "");
 
