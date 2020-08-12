@@ -24,6 +24,7 @@ namespace NuguCore {
 SessionManager::~SessionManager()
 {
     clearContainer();
+    listeners.clear();
 }
 
 void SessionManager::addListener(ISessionManagerListener* listener)
