@@ -52,6 +52,7 @@ public:
     void stopRecognition() override;
 
     void preprocessDirective(NuguDirective* ndir) override;
+    void cancelDirective(NuguDirective* ndir) override;
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void saveAllContextInfo();
