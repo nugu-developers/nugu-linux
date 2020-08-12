@@ -214,6 +214,11 @@ void ASRAgent::preprocessDirective(NuguDirective* ndir)
         parsingExpectSpeech(std::string(nugu_directive_peek_dialog_id(ndir)), message);
 }
 
+void ASRAgent::cancelDirective(NuguDirective* ndir)
+{
+    resetExpectSpeechState();
+}
+
 void ASRAgent::parsingDirective(const char* dname, const char* message)
 {
     if (!strcmp(dname, "ExpectSpeech"))
