@@ -86,7 +86,7 @@ ENDIF()
 # Gstreamer does not support dynamic loading/unloading of their libraries.
 # Therefore, add the library dependency to NUGU SDK instead of NUGU Plugin.
 IF(ENABLE_GSTREAMER_PLUGIN)
-	LIST(APPEND FORCE_LIB_DEPENDENCY gstreamer-1.0 gstreamer-pbutils-1.0)
+	LIST(APPEND FORCE_LIB_DEPENDENCY gstreamer-1.0 gstreamer-pbutils-1.0 gstreamer-app-1.0)
 ENDIF()
 
 # Get CFLAGS and LDFLAGS from pkg-config list
