@@ -56,10 +56,16 @@ ENDIF(ENABLE_PORTAUDIO_PLUGIN)
 
 # gstreamer plugin
 IF(ENABLE_GSTREAMER_PLUGIN)
-	ADD_LIBRARY(gstreamer SHARED gstreamer.c)
-	TARGET_LINK_LIBRARIES(gstreamer ${pkgs_LDFLAGS}
-		-L${CMAKE_BINARY_DIR}/src -lnugu -ldl)
-	SET_TARGET_PROPERTIES(gstreamer PROPERTIES PREFIX "" OUTPUT_NAME gstreamer)
-	INSTALL(TARGETS gstreamer LIBRARY DESTINATION ${plugindir})
-	ADD_DEPENDENCIES(gstreamer libnugu)
+	SET(GSTREAMER_PLUGINS
+		gstreamer
+		gstreamer_pcm)
+
+	FOREACH(plugin ${GSTREAMER_PLUGINS})
+		ADD_LIBRARY(${plugin} SHARED ${plugin}.c)
+		TARGET_LINK_LIBRARIES(${plugin} ${pkgs_LDFLAGS}
+			-L${CMAKE_BINARY_DIR}/src -lnugu -ldl)
+		SET_TARGET_PROPERTIES(${plugin} PROPERTIES PREFIX "" OUTPUT_NAME ${plugin})
+		INSTALL(TARGETS ${plugin} LIBRARY DESTINATION ${plugindir})
+		ADD_DEPENDENCIES(${plugin} libnugu)
+	ENDFOREACH(plugin)
 ENDIF(ENABLE_GSTREAMER_PLUGIN)
