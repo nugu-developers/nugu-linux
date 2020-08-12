@@ -151,6 +151,7 @@ void Capability::setNuguCoreContainer(INuguCoreContainer* core_container)
     focus_manager = capa_helper->getFocusManager();
     session_manager = capa_helper->getSessionManager();
     directive_sequencer = capa_helper->getDirectiveSequencer();
+    interaction_control_manager = capa_helper->getInteractionControlManager();
 }
 
 void Capability::initialize()

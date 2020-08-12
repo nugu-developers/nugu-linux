@@ -380,6 +380,9 @@ protected:
     /** @brief ISessionManager instance for using session management */
     ISessionManager* session_manager = nullptr;
 
+    /** @brief IInteractionControlManager instance for using interaction control management */
+    IInteractionControlManager* interaction_control_manager = nullptr;
+
     /** @brief IDirectiveSequencer instance for directive sequence management */
     IDirectiveSequencer* directive_sequencer = nullptr;
 

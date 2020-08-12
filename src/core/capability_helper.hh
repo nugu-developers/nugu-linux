@@ -32,6 +32,7 @@ public:
     IPlayStackManager* getPlayStackManager() override;
     IFocusManager* getFocusManager() override;
     ISessionManager* getSessionManager() override;
+    IInteractionControlManager* getInteractionControlManager() override;
     IDirectiveSequencer* getDirectiveSequencer() override;
 
     bool setMute(bool mute) override;

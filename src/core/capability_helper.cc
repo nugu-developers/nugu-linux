@@ -62,6 +62,11 @@ ISessionManager* CapabilityHelper::getSessionManager()
     return CapabilityManager::getInstance()->getSessionManager();
 }
 
+IInteractionControlManager* CapabilityHelper::getInteractionControlManager()
+{
+    return CapabilityManager::getInstance()->getInteractionControlManager();
+}
+
 IDirectiveSequencer* CapabilityHelper::getDirectiveSequencer()
 {
     return CapabilityManager::getInstance()->getDirectiveSequencer();
