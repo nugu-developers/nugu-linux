@@ -271,6 +271,14 @@ std::string Capability::getPlayServiceIdInStackControl(const Json::Value& playst
     return playstack_ps_id;
 }
 
+InteractionMode Capability::getInteractionMode(const Json::Value& interaction_control)
+{
+    if (!interaction_control.empty() && interaction_control["mode"].asString() == "MULTI_TURN")
+        return InteractionMode::MULTI_TURN;
+
+    return InteractionMode::NONE;
+}
+
 void Capability::preprocessDirective(NuguDirective* ndir)
 {
 }
@@ -299,6 +307,7 @@ void Capability::processDirective(NuguDirective* ndir)
                 nugu_dbg("cancel previous dialog");
                 directive_sequencer->cancel(nugu_directive_peek_dialog_id(pimpl->cur_ndir));
                 session_manager->clear();
+                interaction_control_manager->clear();
             }
         }
 

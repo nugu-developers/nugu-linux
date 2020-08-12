@@ -235,6 +235,12 @@ public:
     std::string getPlayServiceIdInStackControl(const Json::Value& playstack_control);
 
     /**
+     * @brief Get interaction mode which is included in interactionControl.
+     * @return interaction mode (NONE, MULTI_TURN,...)
+     */
+    InteractionMode getInteractionMode(const Json::Value& interaction_control);
+
+    /**
      * @brief Receive a directive preprocessing request from Directive sequencer.
      * @param[in] ndir directive
      */

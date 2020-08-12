@@ -451,6 +451,7 @@ void ASRAgent::parsingExpectSpeech(std::string&& dialog_id, const char* message)
     es_attr.dialog_id = dialog_id;
 
     session_manager->activate(es_attr.dialog_id);
+    interaction_control_manager->start(InteractionMode::MULTI_TURN, getName());
     focus_manager->holdFocus(DIALOG_FOCUS_TYPE);
 }
 
@@ -653,6 +654,8 @@ void ASRAgent::resetExpectSpeechState()
 
     if (es_attr.is_handle)
         es_attr = {};
+
+    interaction_control_manager->finish(InteractionMode::MULTI_TURN, getName());
 }
 
 /*

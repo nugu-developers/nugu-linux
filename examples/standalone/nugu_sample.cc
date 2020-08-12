@@ -103,6 +103,14 @@ public:
     }
 };
 
+class InteractionControlManagerListener : public IInteractionControlManagerListener {
+public:
+    void onModeChanged(bool is_multi_turn)
+    {
+        std::cout << "[multi-turn] " << (is_multi_turn ? "started" : "finished") << std::endl;
+    }
+};
+
 void registerCapabilities()
 {
     if (!nugu_client || !nugu_sample_manager)
@@ -157,6 +165,10 @@ int main(int argc, char** argv)
     auto focus_manager(nugu_core_container->getCapabilityHelper()->getFocusManager());
     auto focus_manager_observer(make_unique<FocusManagerObserver>());
     focus_manager->addObserver(focus_manager_observer.get());
+
+    auto interaction_control_manager_listener(make_unique<InteractionControlManagerListener>());
+    auto interaction_control_manager = nugu_core_container->getCapabilityHelper()->getInteractionControlManager();
+    interaction_control_manager->addListener(interaction_control_manager_listener.get());
 
     auto network_manager_listener(make_unique<NetworkManagerListener>());
     auto network_manager(nugu_client->getNetworkManager());
