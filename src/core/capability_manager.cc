@@ -32,6 +32,7 @@ CapabilityManager::CapabilityManager()
     , focus_manager(std::unique_ptr<FocusManager>(new FocusManager()))
     , session_manager(std::unique_ptr<SessionManager>(new SessionManager()))
     , directive_sequencer(std::unique_ptr<DirectiveSequencer>(new DirectiveSequencer()))
+    , interaction_control_manager(std::unique_ptr<InteractionControlManager>(new InteractionControlManager()))
 {
     wword = WAKEUP_WORD;
 }
@@ -355,6 +356,11 @@ FocusManager* CapabilityManager::getFocusManager()
 SessionManager* CapabilityManager::getSessionManager()
 {
     return session_manager.get();
+}
+
+InteractionControlManager* CapabilityManager::getInteractionControlManager()
+{
+    return interaction_control_manager.get();
 }
 
 DirectiveSequencer* CapabilityManager::getDirectiveSequencer()

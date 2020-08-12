@@ -23,6 +23,7 @@
 #include <base/nugu_event.h>
 #include <clientkit/directive_sequencer_interface.hh>
 #include <clientkit/focus_manager_interface.hh>
+#include <clientkit/interaction_control_manager_interface.hh>
 #include <clientkit/playstack_manager_interface.hh>
 #include <clientkit/session_manager_interface.hh>
 
@@ -62,6 +63,12 @@ public:
      * @return ISessionManager instance
      */
     virtual ISessionManager* getSessionManager() = 0;
+
+    /**
+     * @brief Get IInteractionControlManager instance
+     * @return IInteractionControlManager instance
+     */
+    virtual IInteractionControlManager* getInteractionControlManager() = 0;
 
     /**
      * @brief Get IDirectiveSequencer instance

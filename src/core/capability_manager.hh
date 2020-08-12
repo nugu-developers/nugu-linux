@@ -25,6 +25,7 @@
 
 #include "directive_sequencer.hh"
 #include "focus_manager.hh"
+#include "interaction_control_manager.hh"
 #include "playstack_manager.hh"
 #include "session_manager.hh"
 
@@ -43,6 +44,7 @@ public:
     PlayStackManager* getPlayStackManager();
     FocusManager* getFocusManager();
     SessionManager* getSessionManager();
+    InteractionControlManager* getInteractionControlManager();
     DirectiveSequencer* getDirectiveSequencer();
 
     void addCapability(const std::string& cname, ICapabilityInterface* cap);
@@ -86,6 +88,7 @@ private:
     std::unique_ptr<FocusManager> focus_manager = nullptr;
     std::unique_ptr<SessionManager> session_manager = nullptr;
     std::unique_ptr<DirectiveSequencer> directive_sequencer = nullptr;
+    std::unique_ptr<InteractionControlManager> interaction_control_manager = nullptr;
 };
 
 } // NuguCore
