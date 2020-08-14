@@ -51,7 +51,7 @@ public:
 
 private:
     void composeCapabilityFactory();
-    SpeakerInfo makeSpeakerInfo(SpeakerType type, bool can_control = false);
+    SpeakerInfo makeSpeakerInfo(SpeakerType type, int muted = NUGU_SPEAKER_UNABLE_CONTROL, bool can_control = false);
 
     // Capability instance
     std::shared_ptr<ISystemHandler> system_handler = nullptr;

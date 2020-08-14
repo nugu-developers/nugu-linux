@@ -80,11 +80,16 @@ void SpeakerAgent::updateInfoForContext(Json::Value& ctx)
 
         Json::Value volume;
         volume["name"] = getSpeakerName(sinfo->type);
-        volume["volume"] = sinfo->volume;
-        volume["minVolume"] = sinfo->min;
-        volume["maxVolume"] = sinfo->max;
-        volume["defaultVolumeStep"] = sinfo->step;
-        volume["muted"] = sinfo->mute;
+        if (sinfo->volume != NUGU_SPEAKER_UNABLE_CONTROL)
+            volume["volume"] = sinfo->volume;
+        if (sinfo->min != NUGU_SPEAKER_UNABLE_CONTROL)
+            volume["minVolume"] = sinfo->min;
+        if (sinfo->max != NUGU_SPEAKER_UNABLE_CONTROL)
+            volume["maxVolume"] = sinfo->max;
+        if (sinfo->step != NUGU_SPEAKER_UNABLE_CONTROL)
+            volume["defaultVolumeStep"] = sinfo->step;
+        if (sinfo->mute != NUGU_SPEAKER_UNABLE_CONTROL)
+            volume["muted"] = sinfo->mute;
 
         speaker["volumes"].append(volume);
     }
@@ -129,8 +134,8 @@ void SpeakerAgent::setSpeakerInfo(const std::map<SpeakerType, SpeakerInfo>& info
     for (const auto& container : info) {
         speakers.emplace(container.second.type, std::unique_ptr<SpeakerInfo>(new SpeakerInfo(container.second)));
 
-        nugu_dbg("speaker - %s %d[%d - %d], can_control: %d",
-            getSpeakerName(container.second.type).c_str(), container.second.volume, container.second.min, container.second.max, container.second.can_control);
+        nugu_dbg("speaker - %s %d[%d - %d], mute: %d, can_control: %d",
+            getSpeakerName(container.second.type).c_str(), container.second.volume, container.second.min, container.second.max, container.second.mute, container.second.can_control);
     }
 }
 

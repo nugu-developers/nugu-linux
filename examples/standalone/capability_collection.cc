@@ -86,7 +86,7 @@ void CapabilityCollection::composeCapabilityFactory()
 
             // compose SpeakerInfo
             std::map<SpeakerType, SpeakerInfo> speakers {
-                { SpeakerType::NUGU, makeSpeakerInfo(SpeakerType::NUGU, true) },
+                { SpeakerType::NUGU, makeSpeakerInfo(SpeakerType::NUGU, 0, true) },
                 { SpeakerType::MUSIC, makeSpeakerInfo(SpeakerType::MUSIC) },
                 { SpeakerType::RINGTON, makeSpeakerInfo(SpeakerType::RINGTON) },
                 { SpeakerType::CALL, makeSpeakerInfo(SpeakerType::CALL) },
@@ -146,10 +146,11 @@ void CapabilityCollection::composeCapabilityFactory()
     });
 }
 
-SpeakerInfo CapabilityCollection::makeSpeakerInfo(SpeakerType type, bool can_control)
+SpeakerInfo CapabilityCollection::makeSpeakerInfo(SpeakerType type, int muted, bool can_control)
 {
     SpeakerInfo nugu_speaker;
     nugu_speaker.type = type;
+    nugu_speaker.mute = muted;
     nugu_speaker.can_control = can_control;
 
     return nugu_speaker;
