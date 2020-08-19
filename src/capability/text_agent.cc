@@ -225,12 +225,36 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
     sendEvent(&event, capa_helper->makeAllContextInfo(), payload, std::move(cb));
 }
 
+void TextAgent::sendEventTextInput(const std::string& text, const std::string& token, const std::string& ps_id, EventResultCallback cb)
+{
+    CapabilityEvent event("TextInput", this);
+    std::string payload = "";
+    Json::StyledWriter writer;
+    Json::Value root;
+
+    root["text"] = text;
+    if (token.size())
+        root["token"] = token;
+
+    if (ps_id.size())
+        root["playServiceId"] = ps_id;
+
+    payload = writer.write(root);
+
+    cur_dialog_id = event.getDialogRequestId();
+
+    playstack_manager->stopHolding();
+
+    sendEvent(&event, capa_helper->makeAllContextInfo(), payload, std::move(cb));
+}
+
 void TextAgent::parsingTextSource(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
     std::string text;
     std::string token;
+    std::string ps_id;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -239,6 +263,7 @@ void TextAgent::parsingTextSource(const char* message)
 
     text = root["text"].asString();
     token = root["token"].asString();
+    ps_id = root["playServiceId"].asString();
 
     if (text.size() == 0 || token.size() == 0) {
         nugu_error("There is no mandatory data in directive message");
@@ -260,7 +285,11 @@ void TextAgent::parsingTextSource(const char* message)
         timer->start();
 
     cur_state = TextState::BUSY;
-    sendEventTextInput(text, token, true);
+
+    if (ps_id.size() > 0)
+        sendEventTextInput(text, token, ps_id);
+    else
+        sendEventTextInput(text, token, true);
 
     setReferrerDialogRequestId(nugu_directive_peek_name(getNuguDirective()), "");
 
