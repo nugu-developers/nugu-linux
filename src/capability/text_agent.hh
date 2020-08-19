@@ -42,6 +42,7 @@ public:
 
 private:
     void sendEventTextInput(const std::string& text, const std::string& token, bool include_dialog_attribute, EventResultCallback cb = nullptr);
+    void sendEventTextInput(const std::string& text, const std::string& token, const std::string& ps_id, EventResultCallback cb = nullptr);
     void parsingTextSource(const char* message);
 
     ITextListener* text_listener;
