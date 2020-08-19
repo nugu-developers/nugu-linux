@@ -542,9 +542,15 @@ static int init(NuguPlugin *p)
 	}
 
 	if (nugu_pcm_driver_register(pcm_driver) != 0) {
+		nugu_error("nugu_pcm_driver_register() failed");
 		nugu_pcm_driver_free(pcm_driver);
 		pcm_driver = NULL;
 		return -1;
+	}
+
+	if (nugu_pcm_driver_get_default() != pcm_driver) {
+		nugu_dbg("set default driver to portaudio");
+		nugu_pcm_driver_set_default(pcm_driver);
 	}
 
 	nugu_dbg("'%s' plugin initialized done",
