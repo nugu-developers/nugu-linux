@@ -89,7 +89,7 @@ void SpeakerAgent::updateInfoForContext(Json::Value& ctx)
         if (sinfo->step != NUGU_SPEAKER_UNABLE_CONTROL)
             volume["defaultVolumeStep"] = sinfo->step;
         if (sinfo->mute != NUGU_SPEAKER_UNABLE_CONTROL)
-            volume["muted"] = sinfo->mute;
+            volume["muted"] = sinfo->mute ? true : false;
 
         speaker["volumes"].append(volume);
     }
