@@ -143,6 +143,7 @@ void ASRAgent::startRecognition(AsrRecognizeCallback callback)
         return;
     }
 
+    saveAllContextInfo();
     focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
     asr_cancel = false;
 }
@@ -169,8 +170,6 @@ void ASRAgent::onFocusChanged(FocusState state)
     switch (state) {
     case FocusState::FOREGROUND: {
         playstack_manager->stopHolding();
-
-        saveAllContextInfo();
 
         std::string id = "id#" + std::to_string(uniq++);
         setListeningId(id);
@@ -527,6 +526,7 @@ void ASRAgent::handleExpectSpeech()
 {
     if (es_attr.is_handle) {
         setASRState(ASRState::EXPECTING_SPEECH);
+        saveAllContextInfo();
         focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
         asr_cancel = false;
     }
