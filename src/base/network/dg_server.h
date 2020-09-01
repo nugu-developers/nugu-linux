@@ -55,6 +55,8 @@ int dg_server_send_attachment(DGServer *server, NuguEvent *nev, int is_end,
 			      size_t length, unsigned char *data);
 int dg_server_force_close_event(DGServer *server, NuguEvent *nev);
 
+int dg_server_update_last_asr_time(DGServer *server);
+
 #ifdef __cplusplus
 }
 #endif

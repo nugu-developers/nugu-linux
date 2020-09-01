@@ -413,6 +413,12 @@ int nugu_network_manager_set_useragent(const char *app_version,
 const char *nugu_network_manager_peek_useragent(void);
 
 /**
+ * @brief Get the last ASR event time information.
+ * @return Last-Asr-Event-Time. Please do not modify the data manually.
+ */
+const char *nugu_network_manager_peek_last_asr_time(void);
+
+/**
  * @}
  */
 

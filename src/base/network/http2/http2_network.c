@@ -70,6 +70,9 @@ struct _http2_network {
 	/* authorization header */
 	gchar *token;
 
+	/* Last-Asr-Event-Time header */
+	gchar *last_asr;
+
 	/* thread creation check */
 	ThreadSync *sync_init;
 };
@@ -431,6 +434,7 @@ void http2_network_free(HTTP2Network *net)
 		thread_sync_free(net->sync_init);
 
 	g_free(net->token);
+	g_free(net->last_asr);
 
 	memset(net, 0, sizeof(HTTP2Network));
 	free(net);
@@ -446,6 +450,21 @@ int http2_network_set_token(HTTP2Network *net, const char *token)
 		net->token = g_strdup_printf("authorization: Bearer %s", token);
 	else
 		net->token = NULL;
+
+	return 0;
+}
+
+int http2_network_set_last_asr_time(HTTP2Network *net, const char *timestr)
+{
+	g_return_val_if_fail(net != NULL, -1);
+
+	g_free(net->last_asr);
+
+	if (timestr)
+		net->last_asr =
+			g_strdup_printf("Last-Asr-Event-Time: %s", timestr);
+	else
+		net->last_asr = NULL;
 
 	return 0;
 }
@@ -482,6 +501,9 @@ int http2_network_add_request(HTTP2Network *net, HTTP2Request *req)
 
 	if (net->token)
 		http2_request_add_header(req, net->token);
+
+	if (net->last_asr)
+		http2_request_add_header(req, net->last_asr);
 
 	http2_request_set_useragent(req, net->useragent);
 
