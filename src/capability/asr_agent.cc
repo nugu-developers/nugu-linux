@@ -442,13 +442,7 @@ void ASRAgent::parsingExpectSpeech(std::string&& dialog_id, const char* message)
         return;
     }
 
-    if (root["timeoutInMilliseconds"].empty()) {
-        nugu_error("There is no mandatory data in directive message");
-        return;
-    }
-
     es_attr.is_handle = true;
-    es_attr.timeout = root["timeoutInMilliseconds"].asString();
     es_attr.play_service_id = root["playServiceId"].asString();
     es_attr.domain_types = root["domainTypes"];
     es_attr.asr_context = root["asrContext"];

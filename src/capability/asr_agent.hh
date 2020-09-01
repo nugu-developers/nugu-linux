@@ -28,7 +28,6 @@ namespace NuguCapability {
 typedef struct expect_speech_attr {
     bool is_handle;
     std::string dialog_id;
-    std::string timeout;
     std::string play_service_id;
     Json::Value domain_types;
     Json::Value asr_context;
