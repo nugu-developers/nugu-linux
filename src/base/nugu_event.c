@@ -144,14 +144,12 @@ EXPORT_API const char *nugu_event_peek_version(NuguEvent *nev)
 EXPORT_API int nugu_event_set_context(NuguEvent *nev, const char *context)
 {
 	g_return_val_if_fail(nev != NULL, -1);
+	g_return_val_if_fail(context != NULL, -1);
 
 	if (nev->context)
 		free(nev->context);
 
-	if (!context)
-		nev->context = NULL;
-	else
-		nev->context = strdup(context);
+	nev->context = strdup(context);
 
 	return 0;
 }
@@ -170,10 +168,10 @@ EXPORT_API int nugu_event_set_json(NuguEvent *nev, const char *json)
 	if (nev->json)
 		free(nev->json);
 
-	if (!json)
-		nev->json = NULL;
-	else
+	if (json)
 		nev->json = strdup(json);
+	else
+		nev->json = NULL;
 
 	return 0;
 }
@@ -214,12 +212,14 @@ EXPORT_API int nugu_event_set_referrer_id(NuguEvent *nev,
 					  const char *referrer_id)
 {
 	g_return_val_if_fail(nev != NULL, -1);
-	g_return_val_if_fail(referrer_id != NULL, -1);
 
 	if (nev->referrer_id)
 		free(nev->referrer_id);
 
-	nev->referrer_id = strdup(referrer_id);
+	if (referrer_id)
+		nev->referrer_id = strdup(referrer_id);
+	else
+		nev->referrer_id = NULL;
 
 	return 0;
 }
@@ -272,7 +272,7 @@ EXPORT_API char *nugu_event_generate_payload(NuguEvent *nev)
 	return buf;
 }
 
-int nugu_event_set_type(NuguEvent *nev, enum nugu_event_type type)
+EXPORT_API int nugu_event_set_type(NuguEvent *nev, enum nugu_event_type type)
 {
 	g_return_val_if_fail(nev != NULL, -1);
 
@@ -281,7 +281,7 @@ int nugu_event_set_type(NuguEvent *nev, enum nugu_event_type type)
 	return 0;
 }
 
-enum nugu_event_type nugu_event_get_type(NuguEvent *nev)
+EXPORT_API enum nugu_event_type nugu_event_get_type(NuguEvent *nev)
 {
 	g_return_val_if_fail(nev != NULL, NUGU_EVENT_TYPE_DEFAULT);
 

@@ -39,6 +39,7 @@ int http2_network_start(HTTP2Network *net);
 int http2_network_wakeup(HTTP2Network *net);
 
 int http2_network_set_token(HTTP2Network *net, const char *token);
+int http2_network_set_last_asr_time(HTTP2Network *net, const char *timestr);
 
 void http2_network_enable_curl_log(HTTP2Network *net);
 void http2_network_disable_curl_log(HTTP2Network *net);

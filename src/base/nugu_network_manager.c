@@ -72,6 +72,7 @@ struct _nugu_network {
 	enum connection_step step;
 	char *token;
 	char *useragent;
+	char *last_asr;
 
 	/* Registry */
 	char *registry_url;
@@ -694,6 +695,9 @@ static void nugu_network_manager_free(NetworkManager *nm)
 	if (nm->token)
 		free(nm->token);
 
+	if (nm->last_asr)
+		free(nm->last_asr);
+
 	if (nm->registry_url)
 		free(nm->registry_url);
 
@@ -968,6 +972,26 @@ EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev, int is_sync)
 		return -1;
 	}
 
+	/* Update Last-Asr-Event-Time header */
+	if (!g_strcmp0(nugu_event_peek_namespace(nev), "ASR")) {
+		char buf[255];
+		time_t now;
+		struct tm tm;
+
+		now = time(NULL);
+		gmtime_r(&now, &tm);
+		strftime(buf, sizeof(buf), "%a, %d %b %Y %H:%M:%S %Z", &tm);
+
+		if (_network->last_asr)
+			free(_network->last_asr);
+
+		_network->last_asr = g_strdup(buf);
+		nugu_info("update Last-Asr-Event-Time: '%s'",
+			  _network->last_asr);
+
+		dg_server_update_last_asr_time(_network->server);
+	}
+
 	return 0;
 }
 
@@ -1069,6 +1093,12 @@ EXPORT_API int nugu_network_manager_set_token(const char *token)
 		free(_network->token);
 
 	_network->token = strdup(token);
+
+	/* Reset the Last-Asr-Event-Time header */
+	if (_network->last_asr) {
+		free(_network->last_asr);
+		_network->last_asr = NULL;
+	}
 
 	return 0;
 }
@@ -1172,4 +1202,14 @@ EXPORT_API const char *nugu_network_manager_peek_useragent(void)
 	}
 
 	return _network->useragent;
+}
+
+EXPORT_API const char *nugu_network_manager_peek_last_asr_time(void)
+{
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return NULL;
+	}
+
+	return _network->last_asr;
 }

@@ -244,6 +244,8 @@ DGServer *dg_server_new(const NuguNetworkServerPolicy *policy)
 	}
 #endif
 
+	dg_server_update_last_asr_time(server);
+
 	http2_network_set_token(server->net, nugu_network_manager_peek_token());
 	http2_network_enable_curl_log(server->net);
 	http2_network_start(server->net);
@@ -452,6 +454,21 @@ int dg_server_force_close_event(DGServer *server, NuguEvent *nev)
 
 	g_hash_table_remove(server->pending_events,
 			    nugu_event_peek_msg_id(nev));
+
+	return 0;
+}
+
+int dg_server_update_last_asr_time(DGServer *server)
+{
+	const char *last_asr_time;
+
+	g_return_val_if_fail(server != NULL, -1);
+
+	last_asr_time = nugu_network_manager_peek_last_asr_time();
+	if (last_asr_time == NULL)
+		return 0;
+
+	http2_network_set_last_asr_time(server->net, last_asr_time);
 
 	return 0;
 }
