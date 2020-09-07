@@ -1,3 +1,20 @@
+nugu (0.21.0ubuntu1~xenial) xenial; urgency=medium
+
+  * Fixed ASR’s context and cleared ExpectSpeech attributes
+  * Added the unable control property to Speaker
+  * Added pcm player plugin using gstreamer
+  * Added Interaction Control Manager
+  * Added SessionManager listener
+  * Added focus hold/unhold function
+  * Improved the stability of capability agents
+  * Applied session clearance
+  * Modified the previous directive complete condition
+  * Added cancel callback to DirectiveSequencer
+  * Enhanced the profiling reporting result
+  * Updated AudioPlayer interface v 1.4 spec
+
+ -- nugulinux <nugulinux@gmail.com>  Mon, 07 Sep 2020 15:30:00 +0900
+
 nugu (0.20.0ubuntu1~xenial) xenial; urgency=medium
 
   * Added BlockingPolicy
