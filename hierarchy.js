@@ -36,6 +36,8 @@ var hierarchy =
     [ "NuguClientKit::IFocusManager", "classNuguClientKit_1_1IFocusManager.html", null ],
     [ "NuguClientKit::IFocusManagerObserver", "classNuguClientKit_1_1IFocusManagerObserver.html", null ],
     [ "NuguClientKit::IFocusResourceListener", "classNuguClientKit_1_1IFocusResourceListener.html", null ],
+    [ "NuguClientKit::IInteractionControlManager", "classNuguClientKit_1_1IInteractionControlManager.html", null ],
+    [ "NuguClientKit::IInteractionControlManagerListener", "classNuguClientKit_1_1IInteractionControlManagerListener.html", null ],
     [ "NuguClientKit::IMediaPlayer", "classNuguClientKit_1_1IMediaPlayer.html", [
       [ "NuguClientKit::ITTSPlayer", "classNuguClientKit_1_1ITTSPlayer.html", null ]
     ] ],
@@ -47,6 +49,7 @@ var hierarchy =
     [ "NuguClientKit::IPlayStackManager", "classNuguClientKit_1_1IPlayStackManager.html", null ],
     [ "NuguClientKit::IPlayStackManagerListener", "classNuguClientKit_1_1IPlayStackManagerListener.html", null ],
     [ "NuguClientKit::ISessionManager", "classNuguClientKit_1_1ISessionManager.html", null ],
+    [ "NuguClientKit::ISessionManagerListener", "classNuguClientKit_1_1ISessionManagerListener.html", null ],
     [ "NuguClientKit::ISpeechRecognizer", "classNuguClientKit_1_1ISpeechRecognizer.html", null ],
     [ "NuguClientKit::ISpeechRecognizerListener", "classNuguClientKit_1_1ISpeechRecognizerListener.html", null ],
     [ "NuguClientKit::IWakeupHandler", "classNuguClientKit_1_1IWakeupHandler.html", null ],

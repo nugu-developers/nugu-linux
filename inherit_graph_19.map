@@ -1,12 +1,12 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classNuguClientKit_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="5,233,196,274"/>
-<area shape="rect" id="node2" href="$classNuguCapability_1_1IASRListener.html" title="ASR listener interface. " alt="" coords="256,5,467,32"/>
-<area shape="rect" id="node3" href="$classNuguCapability_1_1IAudioPlayerListener.html" title="audioplayer listener interface " alt="" coords="256,57,467,98"/>
-<area shape="rect" id="node4" href="$classNuguCapability_1_1IMicListener.html" title="mic listener interface " alt="" coords="258,123,465,149"/>
-<area shape="rect" id="node5" href="$classNuguCapability_1_1ISessionListener.html" title="session listener interface " alt="" coords="270,174,453,215"/>
-<area shape="rect" id="node6" href="$classNuguCapability_1_1ISoundListener.html" title="sound listener interface " alt="" coords="249,240,474,267"/>
-<area shape="rect" id="node7" href="$classNuguCapability_1_1ISpeakerListener.html" title="speaker listener interface " alt="" coords="268,291,455,333"/>
-<area shape="rect" id="node8" href="$classNuguCapability_1_1ISystemListener.html" title="system listener interface " alt="" coords="244,357,479,384"/>
-<area shape="rect" id="node9" href="$classNuguCapability_1_1ITextListener.html" title="text listener interface " alt="" coords="255,408,467,435"/>
-<area shape="rect" id="node10" href="$classNuguCapability_1_1ITTSListener.html" title="tts listener interface " alt="" coords="257,459,466,485"/>
+<area shape="rect" id="node1" href="$classNuguClientKit_1_1ICapabilityListener.html" title="capability listener interface " alt="" coords="5,233,179,274"/>
+<area shape="rect" id="node2" href="$classNuguCapability_1_1IASRListener.html" title="ASR listener interface. " alt="" coords="235,5,433,32"/>
+<area shape="rect" id="node3" href="$classNuguCapability_1_1IAudioPlayerListener.html" title="audioplayer listener interface " alt="" coords="237,57,431,98"/>
+<area shape="rect" id="node4" href="$classNuguCapability_1_1IMicListener.html" title="mic listener interface " alt="" coords="239,123,429,149"/>
+<area shape="rect" id="node5" href="$classNuguCapability_1_1ISessionListener.html" title="session listener interface " alt="" coords="249,174,419,215"/>
+<area shape="rect" id="node6" href="$classNuguCapability_1_1ISoundListener.html" title="sound listener interface " alt="" coords="231,240,437,267"/>
+<area shape="rect" id="node7" href="$classNuguCapability_1_1ISpeakerListener.html" title="speaker listener interface " alt="" coords="249,291,419,333"/>
+<area shape="rect" id="node8" href="$classNuguCapability_1_1ISystemListener.html" title="system listener interface " alt="" coords="227,357,441,384"/>
+<area shape="rect" id="node9" href="$classNuguCapability_1_1ITextListener.html" title="text listener interface " alt="" coords="237,408,431,435"/>
+<area shape="rect" id="node10" href="$classNuguCapability_1_1ITTSListener.html" title="tts listener interface " alt="" coords="237,459,431,485"/>
 </map>

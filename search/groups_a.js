@@ -1,4 +1,8 @@
 var searchData=
 [
-  ['ringbuffer',['RingBuffer',['../group__NuguRingBuffer.html',1,'']]]
+  ['pcm_20manipulation',['PCM manipulation',['../group__NuguPcm.html',1,'']]],
+  ['pcm_20driver',['PCM driver',['../group__NuguPcmDriver.html',1,'']]],
+  ['plugin',['Plugin',['../group__NuguPlugin.html',1,'']]],
+  ['playstackmanagerinterface',['PlayStackManagerInterface',['../group__PlayStackManagerInterface.html',1,'']]],
+  ['profiling',['Profiling',['../group__Profiling.html',1,'']]]
 ];

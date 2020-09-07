@@ -21,7 +21,9 @@ var classNuguClientKit_1_1Capability =
     [ "setVersion", "classNuguClientKit_1_1Capability.html#a1eaae25a45e9dcd409a72be9f3d44d20", null ],
     [ "getVersion", "classNuguClientKit_1_1Capability.html#a0ec8b1adcf68e5f86a8fca679b02aa3b", null ],
     [ "getPlayServiceIdInStackControl", "classNuguClientKit_1_1Capability.html#a7572cbd3d1768825f035554bb3042f2a", null ],
+    [ "getInteractionMode", "classNuguClientKit_1_1Capability.html#a2abdf585895f3a0a6c5187de90324fd6", null ],
     [ "preprocessDirective", "classNuguClientKit_1_1Capability.html#a8f4ad2d7bfae818d7e5f91a2b4ec02ac", null ],
+    [ "cancelDirective", "classNuguClientKit_1_1Capability.html#a37e752ad287c002f1fc9b023c9f8c319", null ],
     [ "processDirective", "classNuguClientKit_1_1Capability.html#af1a294ba01c24abb0bc222467138964d", null ],
     [ "destroyDirective", "classNuguClientKit_1_1Capability.html#a7901005a3ff7a03d9b70987df17e816e", null ],
     [ "getNuguDirective", "classNuguClientKit_1_1Capability.html#a8354027497ae65feca713f52fee1381e", null ],
@@ -44,6 +46,7 @@ var classNuguClientKit_1_1Capability =
     [ "playstack_manager", "classNuguClientKit_1_1Capability.html#ad8af17142b3a27fe0032b3b3a8bdec70", null ],
     [ "focus_manager", "classNuguClientKit_1_1Capability.html#aafde90cd3d8dbc4ac454c70aaebb3e0d", null ],
     [ "session_manager", "classNuguClientKit_1_1Capability.html#a3fa525ae220091b2dbab1bdc1a5b7139", null ],
+    [ "interaction_control_manager", "classNuguClientKit_1_1Capability.html#a0f3b7c451056a734824e98de6a98bb40", null ],
     [ "directive_sequencer", "classNuguClientKit_1_1Capability.html#a8658b77a46b306bfb8289c2220fd099b", null ],
     [ "suspend_policy", "classNuguClientKit_1_1Capability.html#a55e1b7727b78c2e7cf57c2cebc6f195a", null ]
 ];

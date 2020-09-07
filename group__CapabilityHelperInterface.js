@@ -5,6 +5,7 @@ var group__CapabilityHelperInterface =
       [ "getPlayStackManager", "classNuguClientKit_1_1ICapabilityHelper.html#af28d025484aebf1f86396030b08065d1", null ],
       [ "getFocusManager", "classNuguClientKit_1_1ICapabilityHelper.html#a73e851e07fe280fed3c581790c57663a", null ],
       [ "getSessionManager", "classNuguClientKit_1_1ICapabilityHelper.html#a6c3f8cc5bb60c2fe7d31ee4e81e7539d", null ],
+      [ "getInteractionControlManager", "classNuguClientKit_1_1ICapabilityHelper.html#a9da5ffb469ea9681ab7bf0dabd40a3fa", null ],
       [ "getDirectiveSequencer", "classNuguClientKit_1_1ICapabilityHelper.html#abc0cd2ae78dbb4add7649b71cc779029", null ],
       [ "setMute", "classNuguClientKit_1_1ICapabilityHelper.html#a03910a4b3b8b4b7bc35fc446c9d9da38", null ],
       [ "sendCommand", "classNuguClientKit_1_1ICapabilityHelper.html#a73c6d5dcdebe665f2aa416d43dce0a70", null ],

@@ -5,6 +5,7 @@ var group__SDKNuguClientKit =
     [ "CapabilityInterface", "group__CapabilityInterface.html", "group__CapabilityInterface" ],
     [ "DirectiveSequencerInterface", "group__DirectiveSequencerInterface.html", "group__DirectiveSequencerInterface" ],
     [ "FocusManagerInterface", "group__FocusManagerInterface.html", "group__FocusManagerInterface" ],
+    [ "InteractionControlManagerInterface", "group__InteractionControlManagerInterface.html", "group__InteractionControlManagerInterface" ],
     [ "MediaPlayerInterface", "group__MediaPlayerInterface.html", "group__MediaPlayerInterface" ],
     [ "NetworkManagerInterface", "group__NetworkManagerInterface.html", "group__NetworkManagerInterface" ],
     [ "NuguClient", "group__NuguClient.html", "group__NuguClient" ],

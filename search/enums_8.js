@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['repeattype',['RepeatType',['../group__AudioPlayerInterface.html#ga0cb2048ef5fb507017eb53ee3e52716d',1,'NuguCapability']]],
-  ['revokereason',['RevokeReason',['../group__SystemInterface.html#ga210ca95bced11e44b9558947bb31a2eb',1,'NuguCapability']]]
+  ['playstacklayer',['PlayStackLayer',['../group__PlayStackManagerInterface.html#ga4095ed0fa5de9f5140dd656317ab44a5',1,'NuguClientKit']]],
+  ['playstackremovemode',['PlayStackRemoveMode',['../group__PlayStackManagerInterface.html#gaec202c4af52f315ec45a83b391db6833',1,'NuguClientKit']]]
 ];

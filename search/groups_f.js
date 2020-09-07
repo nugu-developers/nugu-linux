@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wakeupinterface',['WakeupInterface',['../group__WakeupInterface.html',1,'']]]
+  ['voice_20recorder',['Voice recorder',['../group__NuguRecorder.html',1,'']]]
 ];

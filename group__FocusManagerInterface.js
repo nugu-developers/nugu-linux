@@ -7,6 +7,8 @@ var group__FocusManagerInterface =
     [ "IFocusManager", "classNuguClientKit_1_1IFocusManager.html", [
       [ "requestFocus", "group__FocusManagerInterface.html#gab29d3665dae878ed7e76a984f049f912", null ],
       [ "releaseFocus", "group__FocusManagerInterface.html#gaeefd9d5ae3668c5f18f301f01f23ef6c", null ],
+      [ "holdFocus", "group__FocusManagerInterface.html#ga5fa2cc120e70a7e1dd696e902ee0fcf8", null ],
+      [ "unholdFocus", "group__FocusManagerInterface.html#ga3e0546b71fb3396af9f7db486e4fa3b6", null ],
       [ "setConfigurations", "group__FocusManagerInterface.html#ga46a8046941137ff75dfb0c966fb040be", null ],
       [ "stopAllFocus", "group__FocusManagerInterface.html#gadd927685ef65023e45a7291e8ef4cd54", null ],
       [ "stopForegroundFocus", "group__FocusManagerInterface.html#ga503b896522f9271ee8f08a55ba361add", null ],
@@ -31,6 +33,8 @@ var group__FocusManagerInterface =
     [ "onFocusChanged", "group__FocusManagerInterface.html#gae588aa6af0b3e263c5635c3d04c8d094", null ],
     [ "requestFocus", "group__FocusManagerInterface.html#gab29d3665dae878ed7e76a984f049f912", null ],
     [ "releaseFocus", "group__FocusManagerInterface.html#gaeefd9d5ae3668c5f18f301f01f23ef6c", null ],
+    [ "holdFocus", "group__FocusManagerInterface.html#ga5fa2cc120e70a7e1dd696e902ee0fcf8", null ],
+    [ "unholdFocus", "group__FocusManagerInterface.html#ga3e0546b71fb3396af9f7db486e4fa3b6", null ],
     [ "setConfigurations", "group__FocusManagerInterface.html#ga46a8046941137ff75dfb0c966fb040be", null ],
     [ "stopAllFocus", "group__FocusManagerInterface.html#gadd927685ef65023e45a7291e8ef4cd54", null ],
     [ "stopForegroundFocus", "group__FocusManagerInterface.html#ga503b896522f9271ee8f08a55ba361add", null ],

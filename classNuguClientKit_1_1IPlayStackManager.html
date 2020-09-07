@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.20.0</span>
+   &#160;<span id="projectnumber">0.21.0</span>
    </div>
   </td>
  </tr>
@@ -114,6 +114,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7a9d7f3786a9c4b5b1aaa2d38fa7bbee"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="group__PlayStackManagerInterface.html#ga4095ed0fa5de9f5140dd656317ab44a5">PlayStackLayer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlayStackManager.html#a7a9d7f3786a9c4b5b1aaa2d38fa7bbee">getPlayStackLayer</a> (const std::string &amp;ps_id)=0</td></tr>
 <tr class="memdesc:a7a9d7f3786a9c4b5b1aaa2d38fa7bbee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get playstack layer type which is mapped to play service id.  <a href="#a7a9d7f3786a9c4b5b1aaa2d38fa7bbee">More...</a><br /></td></tr>
 <tr class="separator:a7a9d7f3786a9c4b5b1aaa2d38fa7bbee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cc05b1ef715f2b9452bdd782a7d5f47"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlayStackManager.html#a0cc05b1ef715f2b9452bdd782a7d5f47">hasExpectSpeech</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)=0</td></tr>
+<tr class="memdesc:a0cc05b1ef715f2b9452bdd782a7d5f47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether it has ASR-ExpectSpeech directive.  <a href="#a0cc05b1ef715f2b9452bdd782a7d5f47">More...</a><br /></td></tr>
+<tr class="separator:a0cc05b1ef715f2b9452bdd782a7d5f47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac288a6a18f83e140b907ab307f2e707b"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlayStackManager.html#ac288a6a18f83e140b907ab307f2e707b">isStackedCondition</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)=0</td></tr>
 <tr class="memdesc:ac288a6a18f83e140b907ab307f2e707b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether to be stacked condition if the current layer is added.  <a href="#ac288a6a18f83e140b907ab307f2e707b">More...</a><br /></td></tr>
 <tr class="separator:ac288a6a18f83e140b907ab307f2e707b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -329,6 +332,41 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
+<a id="a0cc05b1ef715f2b9452bdd782a7d5f47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cc05b1ef715f2b9452bdd782a7d5f47">&#9670;&nbsp;</a></span>hasExpectSpeech()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool NuguClientKit::IPlayStackManager::hasExpectSpeech </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *&#160;</td>
+          <td class="paramname"><em>ndir</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether it has ASR-ExpectSpeech directive. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ndir</td><td>directive </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if it has, otherwise false </dd></dl>
+
+</div>
+</div>
 <a id="a7a9d7f3786a9c4b5b1aaa2d38fa7bbee"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a7a9d7f3786a9c4b5b1aaa2d38fa7bbee">&#9670;&nbsp;</a></span>getPlayStackLayer()</h2>
 
@@ -401,7 +439,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1IPlayStackManager.html">IPlayStackManager</a></li>
-    <li class="footer">Generated on Wed Jul 15 2020 08:28:37 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Sep 7 2020 17:08:21 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

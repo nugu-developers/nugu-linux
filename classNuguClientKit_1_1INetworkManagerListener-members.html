@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.20.0</span>
+   &#160;<span id="projectnumber">0.21.0</span>
    </div>
   </td>
  </tr>
@@ -88,17 +88,18 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1INetworkManagerL
 <p>This is the complete list of members for <a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a>, including all inherited members.</p>
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#af11a90bd687c8fb17ecb429fb64fe619">onError</a>(NetworkError error)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#ad23d142edd8688d6d5d7103c428aef52">onEventResponse</a>(const char *msg_id, const char *data, bool success)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#a288a3cdad0c65239c04362404f7cd6ad">onEventAttachmentSend</a>(NuguEvent *nev, int seq, bool is_end, size_t length, unsigned char *data)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#ad23d142edd8688d6d5d7103c428aef52">onEventResponse</a>(const char *msg_id, const char *data, bool success)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#a8531fad463fd84c68fa60b1a835ae5e4">onEventSend</a>(NuguEvent *nev)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#adb7599cc95ff466c0b61ef4a8e1203c0">onEventSendResult</a>(const char *msg_id, bool success, int code)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#a4b1882a77ffe8c804311dfd6d37caf4d">onEventSent</a>(const char *ename, const char *msg_id, const char *dialog_id, const char *referrer_id)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#a091c1b1e49bda57cb32e70ba2a3e1e3b">onStatusChanged</a>(NetworkStatus status)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>~INetworkManagerListener</b>()=default (defined in <a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a>)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html#a091c1b1e49bda57cb32e70ba2a3e1e3b">onStatusChanged</a>(NetworkStatus status)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>~INetworkManagerListener</b>()=default (defined in <a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a>)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1INetworkManagerListener.html">NuguClientKit::INetworkManagerListener</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 15 2020 08:28:37 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Sep 7 2020 17:08:21 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

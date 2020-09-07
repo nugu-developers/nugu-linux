@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.20.0</span>
+   &#160;<span id="projectnumber">0.21.0</span>
    </div>
   </td>
  </tr>
@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('group__FocusManagerInterface.html','')
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <center><table><tr><td><img src="group__FocusManagerInterface.png" border="0" alt="" usemap="#group____FocusManagerInterface"/>
 <map name="group____FocusManagerInterface" id="group____FocusManagerInterface">
-<area shape="rect" id="node2" href="group__SDKNuguClientKit.html" title="NuguClientKit" alt="" coords="5,5,117,32"/>
+<area shape="rect" id="node2" href="group__SDKNuguClientKit.html" title="NuguClientKit" alt="" coords="5,5,108,32"/>
 </map>
 </td></tr></table></center>
 </div>
@@ -164,6 +164,9 @@ Functions</h2></td></tr>
 <tr class="memitem:gaaea80a31df369f5a45126c9b17843d1e"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__FocusManagerInterface.html#gaaea80a31df369f5a45126c9b17843d1e">NuguClientKit::IFocusManager::getStateString</a> (<a class="el" href="group__FocusManagerInterface.html#ga0a43ecaeb330bca6b94215d69e54bfe6">FocusState</a> state)=0</td></tr>
 <tr class="memdesc:gaaea80a31df369f5a45126c9b17843d1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get state string.  <a href="#gaaea80a31df369f5a45126c9b17843d1e">More...</a><br /></td></tr>
 <tr class="separator:gaaea80a31df369f5a45126c9b17843d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5fa2cc120e70a7e1dd696e902ee0fcf8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__FocusManagerInterface.html#ga5fa2cc120e70a7e1dd696e902ee0fcf8">NuguClientKit::IFocusManager::holdFocus</a> (const std::string &amp;type)=0</td></tr>
+<tr class="memdesc:ga5fa2cc120e70a7e1dd696e902ee0fcf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hold focus. If requested to hold focus, the low priority focus is not preempted.  <a href="#ga5fa2cc120e70a7e1dd696e902ee0fcf8">More...</a><br /></td></tr>
+<tr class="separator:ga5fa2cc120e70a7e1dd696e902ee0fcf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2d11291f6c00c40a4c92d2578ddda9dd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__FocusManagerInterface.html#ga2d11291f6c00c40a4c92d2578ddda9dd">NuguClientKit::IFocusResourceListener::onFocusChanged</a> (<a class="el" href="group__FocusManagerInterface.html#ga0a43ecaeb330bca6b94215d69e54bfe6">FocusState</a> state)=0</td></tr>
 <tr class="memdesc:ga2d11291f6c00c40a4c92d2578ddda9dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notify the resource of focus state change.  <a href="#ga2d11291f6c00c40a4c92d2578ddda9dd">More...</a><br /></td></tr>
 <tr class="separator:ga2d11291f6c00c40a4c92d2578ddda9dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,6 +193,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__FocusManagerInterface.html#ga503b896522f9271ee8f08a55ba361add">NuguClientKit::IFocusManager::stopForegroundFocus</a> ()=0</td></tr>
 <tr class="memdesc:ga503b896522f9271ee8f08a55ba361add"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop highest priority of focus that is foreground state. <br /></td></tr>
 <tr class="separator:ga503b896522f9271ee8f08a55ba361add"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3e0546b71fb3396af9f7db486e4fa3b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__FocusManagerInterface.html#ga3e0546b71fb3396af9f7db486e4fa3b6">NuguClientKit::IFocusManager::unholdFocus</a> (const std::string &amp;type)=0</td></tr>
+<tr class="memdesc:ga3e0546b71fb3396af9f7db486e4fa3b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unhold focus.  <a href="#ga3e0546b71fb3396af9f7db486e4fa3b6">More...</a><br /></td></tr>
+<tr class="separator:ga3e0546b71fb3396af9f7db486e4fa3b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -420,6 +426,76 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="ga5fa2cc120e70a7e1dd696e902ee0fcf8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5fa2cc120e70a7e1dd696e902ee0fcf8">&#9670;&nbsp;</a></span>holdFocus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool NuguClientKit::IFocusManager::holdFocus </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Hold focus. If requested to hold focus, the low priority focus is not preempted. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>focus type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>if the hold is success, then true otherwise false </dd></dl>
+
+</div>
+</div>
+<a id="ga3e0546b71fb3396af9f7db486e4fa3b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga3e0546b71fb3396af9f7db486e4fa3b6">&#9670;&nbsp;</a></span>unholdFocus()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool NuguClientKit::IFocusManager::unholdFocus </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Unhold focus. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">type</td><td>focus type </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>if the unhold is success, then true otherwise false </dd></dl>
+
+</div>
+</div>
 <a id="ga46a8046941137ff75dfb0c966fb040be"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga46a8046941137ff75dfb0c966fb040be">&#9670;&nbsp;</a></span>setConfigurations()</h2>
 
@@ -593,7 +669,7 @@ Variables</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 15 2020 08:28:34 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Sep 7 2020 17:08:21 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

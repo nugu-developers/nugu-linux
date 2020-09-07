@@ -1,13 +1,8 @@
 var searchData=
 [
-  ['networkmanagerinterface',['NetworkManagerInterface',['../group__NetworkManagerInterface.html',1,'']]],
-  ['nugu_20sdk_20information',['NUGU SDK information',['../group__nugu.html',1,'']]],
-  ['networkmanager',['NetworkManager',['../group__nugu__network.html',1,'']]],
-  ['nuguclient',['NuguClient',['../group__NuguClient.html',1,'']]],
-  ['nugucorecontainerinterface',['NuguCoreContainerInterface',['../group__NuguCoreContainerInterface.html',1,'']]],
-  ['nugu_20directive',['NUGU Directive',['../group__NuguDirective.html',1,'']]],
-  ['nugu_20event',['NUGU Event',['../group__NuguEvent.html',1,'']]],
-  ['nugutimerinterface',['NuguTimerInterface',['../group__NuguTimerInterface.html',1,'']]],
-  ['nugucapability',['NuguCapability',['../group__SDKNuguCapability.html',1,'']]],
-  ['nuguclientkit',['NuguClientKit',['../group__SDKNuguClientKit.html',1,'']]]
+  ['media',['Media',['../group__Media.html',1,'']]],
+  ['mediaplayerinterface',['MediaPlayerInterface',['../group__MediaPlayerInterface.html',1,'']]],
+  ['micinterface',['MicInterface',['../group__MicInterface.html',1,'']]],
+  ['media_20player',['Media player',['../group__NuguPlayer.html',1,'']]],
+  ['media_20player_20driver',['Media player driver',['../group__NuguPlayerDriver.html',1,'']]]
 ];

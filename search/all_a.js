@@ -19,8 +19,9 @@ var searchData=
   ['micstatuschanged',['micStatusChanged',['../classNuguCapability_1_1IMicListener.html#ab522986b24690f463e45bd46bb813867',1,'NuguCapability::IMicListener']]],
   ['min',['min',['../classNuguCapability_1_1SpeakerInfo.html#a4018769b0894b03683ea2bee22e3735f',1,'NuguCapability::SpeakerInfo']]],
   ['model_5fpath',['model_path',['../structNuguCapability_1_1ASRAttribute.html#a81d5159679ea5a8a88b2e99d6464f86f',1,'NuguCapability::ASRAttribute']]],
+  ['multi_5fturn',['MULTI_TURN',['../group__InteractionControlManagerInterface.html#gga7ed168a573888495a90b6f74bdfb5e2da840044d2d261feb9f03ae3390e681323',1,'NuguClientKit']]],
   ['music',['MUSIC',['../group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698ad74c735013cdd2b883e25ccca502a2e9',1,'NuguCapability']]],
-  ['mute',['mute',['../classNuguCapability_1_1SpeakerInfo.html#a8130e7a45265650f1dd40287e2719253',1,'NuguCapability::SpeakerInfo::mute()'],['../classNuguClientKit_1_1IMediaPlayer.html#a45316cfe6f809ec76954ab1fd3290eac',1,'NuguClientKit::IMediaPlayer::mute()']]],
+  ['mute',['mute',['../classNuguCapability_1_1SpeakerInfo.html#a7cbad4634291669487cbe5ab2e528abb',1,'NuguCapability::SpeakerInfo::mute()'],['../classNuguClientKit_1_1IMediaPlayer.html#a45316cfe6f809ec76954ab1fd3290eac',1,'NuguClientKit::IMediaPlayer::mute()']]],
   ['mutechanged',['muteChanged',['../classNuguClientKit_1_1IMediaPlayerListener.html#aabe69756b2a317bd2f9d5f34e89c9e87',1,'NuguClientKit::IMediaPlayerListener']]],
   ['media_20player',['Media player',['../group__NuguPlayer.html',1,'']]],
   ['media_20player_20driver',['Media player driver',['../group__NuguPlayerDriver.html',1,'']]]

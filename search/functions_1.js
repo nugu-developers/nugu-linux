@@ -1,6 +1,8 @@
 var searchData=
 [
   ['cancel',['cancel',['../classNuguClientKit_1_1IDirectiveSequencer.html#a6e7fb841d186057c4b2e256292672c06',1,'NuguClientKit::IDirectiveSequencer']]],
+  ['canceldirective',['cancelDirective',['../classNuguClientKit_1_1Capability.html#a37e752ad287c002f1fc9b023c9f8c319',1,'NuguClientKit::Capability::cancelDirective()'],['../classNuguClientKit_1_1ICapabilityInterface.html#a66b731780d30bd7515fd2d93fc53cd61',1,'NuguClientKit::ICapabilityInterface::cancelDirective()']]],
+  ['clear',['clear',['../classNuguClientKit_1_1IInteractionControlManager.html#a4df4438d06df547c4244533f8162426f',1,'NuguClientKit::IInteractionControlManager::clear()'],['../classNuguClientKit_1_1ISessionManager.html#a626713cfb36793f7d7b4499c64e55946',1,'NuguClientKit::ISessionManager::clear()']]],
   ['complete',['complete',['../classNuguClientKit_1_1IDirectiveSequencer.html#a90ea647f44a1c899d3afd170eed5dbef',1,'NuguClientKit::IDirectiveSequencer']]],
   ['connect',['connect',['../classNuguClientKit_1_1INetworkManager.html#acccae4f8cac190e9702fe8e13a73bca1',1,'NuguClientKit::INetworkManager']]],
   ['construct',['construct',['../classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#a5fa03281804df2c704003347666b84bc',1,'NuguClientKit::NuguClient::CapabilityBuilder']]],

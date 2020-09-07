@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.20.0</span>
+   &#160;<span id="projectnumber">0.21.0</span>
    </div>
   </td>
  </tr>
@@ -101,6 +101,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:gaaea80a31df369f5a45126c9b17843d1e"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__FocusManagerInterface.html#gaaea80a31df369f5a45126c9b17843d1e">getStateString</a> (<a class="el" href="group__FocusManagerInterface.html#ga0a43ecaeb330bca6b94215d69e54bfe6">FocusState</a> state)=0</td></tr>
 <tr class="memdesc:gaaea80a31df369f5a45126c9b17843d1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get state string.  <a href="group__FocusManagerInterface.html#gaaea80a31df369f5a45126c9b17843d1e">More...</a><br /></td></tr>
 <tr class="separator:gaaea80a31df369f5a45126c9b17843d1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5fa2cc120e70a7e1dd696e902ee0fcf8"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__FocusManagerInterface.html#ga5fa2cc120e70a7e1dd696e902ee0fcf8">holdFocus</a> (const std::string &amp;type)=0</td></tr>
+<tr class="memdesc:ga5fa2cc120e70a7e1dd696e902ee0fcf8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Hold focus. If requested to hold focus, the low priority focus is not preempted.  <a href="group__FocusManagerInterface.html#ga5fa2cc120e70a7e1dd696e902ee0fcf8">More...</a><br /></td></tr>
+<tr class="separator:ga5fa2cc120e70a7e1dd696e902ee0fcf8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaeefd9d5ae3668c5f18f301f01f23ef6c"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__FocusManagerInterface.html#gaeefd9d5ae3668c5f18f301f01f23ef6c">releaseFocus</a> (const std::string &amp;type, const std::string &amp;name)=0</td></tr>
 <tr class="memdesc:gaeefd9d5ae3668c5f18f301f01f23ef6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release focus.  <a href="group__FocusManagerInterface.html#gaeefd9d5ae3668c5f18f301f01f23ef6c">More...</a><br /></td></tr>
 <tr class="separator:gaeefd9d5ae3668c5f18f301f01f23ef6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,6 +124,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__FocusManagerInterface.html#ga503b896522f9271ee8f08a55ba361add">stopForegroundFocus</a> ()=0</td></tr>
 <tr class="memdesc:ga503b896522f9271ee8f08a55ba361add"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop highest priority of focus that is foreground state. <br /></td></tr>
 <tr class="separator:ga503b896522f9271ee8f08a55ba361add"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3e0546b71fb3396af9f7db486e4fa3b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__FocusManagerInterface.html#ga3e0546b71fb3396af9f7db486e4fa3b6">unholdFocus</a> (const std::string &amp;type)=0</td></tr>
+<tr class="memdesc:ga3e0546b71fb3396af9f7db486e4fa3b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unhold focus.  <a href="group__FocusManagerInterface.html#ga3e0546b71fb3396af9f7db486e4fa3b6">More...</a><br /></td></tr>
+<tr class="separator:ga3e0546b71fb3396af9f7db486e4fa3b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classNuguClientKit_1_1IFocusManager.html" title="IFocusManager. ">IFocusManager</a>. </p>
@@ -136,7 +142,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">IFocusManager</a></li>
-    <li class="footer">Generated on Wed Jul 15 2020 08:28:37 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Sep 7 2020 17:08:21 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

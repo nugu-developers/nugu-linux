@@ -4,6 +4,7 @@ var speaker__interface_8hh =
     [ "NUGU_SPEAKER_MAX_VOLUME", "group__SpeakerInterface.html#ga6dac4ec98f91eeace19bd646744fcda8", null ],
     [ "NUGU_SPEAKER_DEFAULT_VOLUME", "group__SpeakerInterface.html#ga1d9b402166faf229e8bc3b41bdc3dc23", null ],
     [ "NUGU_SPEAKER_DEFAULT_STEP", "group__SpeakerInterface.html#gada531e82db55df75ef6d73f8c4002718", null ],
+    [ "NUGU_SPEAKER_UNABLE_CONTROL", "group__SpeakerInterface.html#gaecc8a1b14b8e06ac03a00addde00d10d", null ],
     [ "SpeakerType", "speaker__interface_8hh.html#ga8601f6be80368c9d1a7c7b346c99a698", [
       [ "NUGU", "speaker__interface_8hh.html#gga8601f6be80368c9d1a7c7b346c99a698a5cf2406ff6ad128f4d2ebd67ca595b0f", null ],
       [ "MUSIC", "speaker__interface_8hh.html#gga8601f6be80368c9d1a7c7b346c99a698ad74c735013cdd2b883e25ccca502a2e9", null ],

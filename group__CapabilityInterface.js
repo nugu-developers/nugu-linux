@@ -20,6 +20,7 @@ var group__CapabilityInterface =
       [ "getName", "classNuguClientKit_1_1ICapabilityInterface.html#aa5d512ebf9c13ab2eabbfd5709698fb5", null ],
       [ "getVersion", "classNuguClientKit_1_1ICapabilityInterface.html#a5165192ab427d8115df899323ee482c0", null ],
       [ "preprocessDirective", "classNuguClientKit_1_1ICapabilityInterface.html#a21ea22765c766b1f3e54793f4492b861", null ],
+      [ "cancelDirective", "classNuguClientKit_1_1ICapabilityInterface.html#a66b731780d30bd7515fd2d93fc53cd61", null ],
       [ "processDirective", "classNuguClientKit_1_1ICapabilityInterface.html#a32b3c3172d411f9d4b87c172f2066078", null ],
       [ "updateInfoForContext", "classNuguClientKit_1_1ICapabilityInterface.html#a743711b81aacc194fef39f00d5c5c5d7", null ],
       [ "receiveCommand", "classNuguClientKit_1_1ICapabilityInterface.html#a95cfe85442962851f698fad3007ecb8c", null ],

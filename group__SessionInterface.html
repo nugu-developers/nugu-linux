@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.20.0</span>
+   &#160;<span id="projectnumber">0.21.0</span>
    </div>
   </td>
  </tr>
@@ -81,7 +81,8 @@ $(document).ready(function(){initNavTree('group__SessionInterface.html','');});
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle">
 <div class="title">SessionInterface<div class="ingroups"><a class="el" href="group__SDKNuguCapability.html">NuguCapability</a></div></div>  </div>
 </div><!--header-->
@@ -96,7 +97,7 @@ $(document).ready(function(){initNavTree('group__SessionInterface.html','');});
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <center><table><tr><td><img src="group__SessionInterface.png" border="0" alt="" usemap="#group____SessionInterface"/>
 <map name="group____SessionInterface" id="group____SessionInterface">
-<area shape="rect" id="node2" href="group__SDKNuguCapability.html" title="NuguCapability" alt="" coords="5,5,128,32"/>
+<area shape="rect" id="node2" href="group__SDKNuguCapability.html" title="NuguCapability" alt="" coords="5,5,116,32"/>
 </map>
 </td></tr></table></center>
 </div>
@@ -109,16 +110,56 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1ISessionListener.html">NuguCapability::ISessionListener</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">session listener interface  <a href="classNuguCapability_1_1ISessionListener.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ga4b3903e444431d8dcb96a672d48be180"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SessionInterface.html#ga4b3903e444431d8dcb96a672d48be180">NuguCapability::SessionState</a> { <a class="el" href="group__SessionInterface.html#gga4b3903e444431d8dcb96a672d48be180a18ff74f43da410c5529f7d6fca84f115">NuguCapability::SessionState::ACTIVE</a>, 
+<a class="el" href="group__SessionInterface.html#gga4b3903e444431d8dcb96a672d48be180a6b273343c454f9c53dcfc9c4ccf171d2">NuguCapability::SessionState::INACTIVE</a>
+ }<tr class="memdesc:ga4b3903e444431d8dcb96a672d48be180"><td class="mdescLeft">&#160;</td><td class="mdescRight">Session State list.  <a href="group__SessionInterface.html#ga4b3903e444431d8dcb96a672d48be180">More...</a><br /></td></tr>
+</td></tr>
+<tr class="separator:ga4b3903e444431d8dcb96a672d48be180"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p>Session capability interface. </p>
 <p>It's for managing session info between play and client. </p>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="ga4b3903e444431d8dcb96a672d48be180"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4b3903e444431d8dcb96a672d48be180">&#9670;&nbsp;</a></span>SessionState</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__SessionInterface.html#ga4b3903e444431d8dcb96a672d48be180">NuguCapability::SessionState</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Session State list. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguCapability_1_1ISessionListener.html#a6fad5654bd092325bbb97f556667faa3" title="Receive callback when the session state is changed. ">ISessionListener::onState</a> </dd></dl>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="gga4b3903e444431d8dcb96a672d48be180a18ff74f43da410c5529f7d6fca84f115"></a>ACTIVE&#160;</td><td class="fielddoc"><p>Session is activated </p>
+</td></tr>
+<tr><td class="fieldname"><a id="gga4b3903e444431d8dcb96a672d48be180a6b273343c454f9c53dcfc9c4ccf171d2"></a>INACTIVE&#160;</td><td class="fielddoc"><p>Session is deactivated </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 15 2020 08:28:34 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Sep 7 2020 17:08:21 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

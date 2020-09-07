@@ -15,6 +15,7 @@ var searchData=
   ['nugunetworkhandoffstatus',['NuguNetworkHandoffStatus',['../group__nugu__network.html#ga3f80c9aee71e930d412527fc33f252df',1,'nugu_network_manager.h']]],
   ['nugunetworkmanagerattachmentcallback',['NuguNetworkManagerAttachmentCallback',['../group__nugu__network.html#gac87483a62a92587958888b9c28d6772e',1,'nugu_network_manager.h']]],
   ['nugunetworkmanagerdirectivecallback',['NuguNetworkManagerDirectiveCallback',['../group__nugu__network.html#gabe4e495b8cb71683c8d16ca4de9b144c',1,'nugu_network_manager.h']]],
+  ['nugunetworkmanagereventdatasendnotifycallback',['NuguNetworkManagerEventDataSendNotifyCallback',['../group__nugu__network.html#ga08b86a177632c92b4aed4827976877b6',1,'nugu_network_manager.h']]],
   ['nugunetworkmanagereventresponsecallback',['NuguNetworkManagerEventResponseCallback',['../group__nugu__network.html#ga0a64654ecf6ef2e8ed4e7f26ffec4121',1,'nugu_network_manager.h']]],
   ['nugunetworkmanagereventresultcallback',['NuguNetworkManagerEventResultCallback',['../group__nugu__network.html#ga453e0c8dda9435ad1cc5c31cdd0dbf9a',1,'nugu_network_manager.h']]],
   ['nugunetworkmanagereventsendnotifycallback',['NuguNetworkManagerEventSendNotifyCallback',['../group__nugu__network.html#ga1d74a13221968b12acbc256af5aa115b',1,'nugu_network_manager.h']]],

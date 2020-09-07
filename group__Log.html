@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.20.0</span>
+   &#160;<span id="projectnumber">0.21.0</span>
    </div>
   </td>
  </tr>
@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('group__Log.html','');});
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <center><table><tr><td><img src="group__Log.png" border="0" alt="" usemap="#group____Log"/>
 <map name="group____Log" id="group____Log">
-<area shape="rect" id="node2" href="group__SDKBase.html" title="SDK Base" alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node2" href="group__SDKBase.html" title="SDK Base" alt="" coords="5,5,89,32"/>
 </map>
 </td></tr></table></center>
 </div>
@@ -149,7 +149,7 @@ Macros</h2></td></tr>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_MAGENTA</b>&#160;&#160;&#160;&quot;\e[0;35m&quot;</td></tr>
 <tr class="separator:gaf6d9968a150cb4d90e965bede3c4d42e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga148e0c5830b551811018d8863cd3eb99"><td class="memItemLeft" align="right" valign="top"><a id="ga148e0c5830b551811018d8863cd3eb99"></a>
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_NORMAL</b>&#160;&#160;&#160;&quot;\e[0m&quot;</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_NORMAL</b>&#160;&#160;&#160;&quot;&quot;</td></tr>
 <tr class="separator:ga148e0c5830b551811018d8863cd3eb99"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga93dae7a7cd39bce31484794c08c3bcbb"><td class="memItemLeft" align="right" valign="top"><a id="ga93dae7a7cd39bce31484794c08c3bcbb"></a>
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_ANSI_COLOR_RECV</b>&#160;&#160;&#160;&quot;&quot;</td></tr>
@@ -571,7 +571,7 @@ enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" tit
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line"><a class="code" href="group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc">nugu_log_print</a>(<a class="code" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a">NUGU_LOG_MODULE_PROTOCOL</a>, level, NULL, NULL, -1,        \</div><div class="line">                       NUGU_ANSI_COLOR_SEND NUGU_LOG_MARK_SEND fmt             \</div><div class="line">                               NUGU_ANSI_COLOR_NORMAL,                         \</div><div class="line">                       ##__VA_ARGS__)</div><div class="ttc" id="group__Log_html_ga9dfe5ed26e2a83b98f8cda52a44d41cc"><div class="ttname"><a href="group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc">nugu_log_print</a></div><div class="ttdeci">void nugu_log_print(enum nugu_log_module module, enum nugu_log_level level, const char *filename, const char *funcname, int line, const char *format,...)</div><div class="ttdoc">logging function </div></div>
-<div class="ttc" id="group__Log_html_ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a"><div class="ttname"><a href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a">NUGU_LOG_MODULE_PROTOCOL</a></div><div class="ttdef"><b>Definition:</b> nugu_log.h:177</div></div>
+<div class="ttc" id="group__Log_html_ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a"><div class="ttname"><a href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a">NUGU_LOG_MODULE_PROTOCOL</a></div><div class="ttdef"><b>Definition:</b> nugu_log.h:181</div></div>
 </div><!-- fragment -->
 <p>Protocol log message for sending. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -619,7 +619,7 @@ enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" tit
       </table>
 </div><div class="memdoc">
 <b>Value:</b><div class="fragment"><div class="line"><a class="code" href="group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc">nugu_log_print</a>(<a class="code" href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a">NUGU_LOG_MODULE_PROTOCOL</a>, level, NULL, NULL, -1,        \</div><div class="line">                       NUGU_ANSI_COLOR_RECV NUGU_LOG_MARK_RECV fmt             \</div><div class="line">                               NUGU_ANSI_COLOR_NORMAL,                         \</div><div class="line">                       ##__VA_ARGS__)</div><div class="ttc" id="group__Log_html_ga9dfe5ed26e2a83b98f8cda52a44d41cc"><div class="ttname"><a href="group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc">nugu_log_print</a></div><div class="ttdeci">void nugu_log_print(enum nugu_log_module module, enum nugu_log_level level, const char *filename, const char *funcname, int line, const char *format,...)</div><div class="ttdoc">logging function </div></div>
-<div class="ttc" id="group__Log_html_ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a"><div class="ttname"><a href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a">NUGU_LOG_MODULE_PROTOCOL</a></div><div class="ttdef"><b>Definition:</b> nugu_log.h:177</div></div>
+<div class="ttc" id="group__Log_html_ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a"><div class="ttname"><a href="group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1a4329db921d5ea00cf9d56e7ecd47431a">NUGU_LOG_MODULE_PROTOCOL</a></div><div class="ttdef"><b>Definition:</b> nugu_log.h:181</div></div>
 </div><!-- fragment -->
 <p>Protocol log message for receiving. </p>
 <dl class="params"><dt>Parameters</dt><dd>
@@ -1250,7 +1250,7 @@ enum <a class="el" href="group__Log.html#gaa713331b2690e589ff6a29ea655d1e97" tit
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 15 2020 08:28:33 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Sep 7 2020 17:08:21 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

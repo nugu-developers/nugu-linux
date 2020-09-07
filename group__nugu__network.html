@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.20.0</span>
+   &#160;<span id="projectnumber">0.21.0</span>
    </div>
   </td>
  </tr>
@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('group__nugu__network.html','');});
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <center><table><tr><td><img src="group__nugu__network.png" border="0" alt="" usemap="#group____nugu____network"/>
 <map name="group____nugu____network" id="group____nugu____network">
-<area shape="rect" id="node2" href="group__SDKBase.html" title="SDK Base" alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node2" href="group__SDKBase.html" title="SDK Base" alt="" coords="5,5,89,32"/>
 </map>
 </td></tr></table></center>
 </div>
@@ -129,6 +129,9 @@ Typedefs</h2></td></tr>
 <tr class="memitem:gabe4e495b8cb71683c8d16ca4de9b144c"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gabe4e495b8cb71683c8d16ca4de9b144c">NuguNetworkManagerDirectiveCallback</a>) (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir, void *userdata)</td></tr>
 <tr class="memdesc:gabe4e495b8cb71683c8d16ca4de9b144c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback prototype for receiving directive.  <a href="#gabe4e495b8cb71683c8d16ca4de9b144c">More...</a><br /></td></tr>
 <tr class="separator:gabe4e495b8cb71683c8d16ca4de9b144c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga08b86a177632c92b4aed4827976877b6"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga08b86a177632c92b4aed4827976877b6">NuguNetworkManagerEventDataSendNotifyCallback</a>) (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev, int is_end, size_t length, unsigned char *data, void *userdata)</td></tr>
+<tr class="memdesc:ga08b86a177632c92b4aed4827976877b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback prototype for notification of event data sending requests.  <a href="#ga08b86a177632c92b4aed4827976877b6">More...</a><br /></td></tr>
+<tr class="separator:ga08b86a177632c92b4aed4827976877b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0a64654ecf6ef2e8ed4e7f26ffec4121"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga0a64654ecf6ef2e8ed4e7f26ffec4121">NuguNetworkManagerEventResponseCallback</a>) (int success, const char *event_msg_id, const char *event_dialog_id, const char *json, void *userdata)</td></tr>
 <tr class="memdesc:ga0a64654ecf6ef2e8ed4e7f26ffec4121"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback prototype for directive response of event request.  <a href="#ga0a64654ecf6ef2e8ed4e7f26ffec4121">More...</a><br /></td></tr>
 <tr class="separator:ga0a64654ecf6ef2e8ed4e7f26ffec4121"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -222,6 +225,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <tr class="memitem:gaada3d7ec0417536ed2cad678cd118203"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gaada3d7ec0417536ed2cad678cd118203">nugu_network_manager_set_directive_callback</a> (<a class="el" href="group__nugu__network.html#gabe4e495b8cb71683c8d16ca4de9b144c">NuguNetworkManagerDirectiveCallback</a> callback, void *userdata)</td></tr>
 <tr class="memdesc:gaada3d7ec0417536ed2cad678cd118203"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set directive receive callback.  <a href="#gaada3d7ec0417536ed2cad678cd118203">More...</a><br /></td></tr>
 <tr class="separator:gaada3d7ec0417536ed2cad678cd118203"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4101be2a488446b5df49b233f4f49cca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#ga4101be2a488446b5df49b233f4f49cca">nugu_network_manager_set_event_data_send_notify_callback</a> (<a class="el" href="group__nugu__network.html#ga08b86a177632c92b4aed4827976877b6">NuguNetworkManagerEventDataSendNotifyCallback</a> callback, void *userdata)</td></tr>
+<tr class="memdesc:ga4101be2a488446b5df49b233f4f49cca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set event data send notify callback.  <a href="#ga4101be2a488446b5df49b233f4f49cca">More...</a><br /></td></tr>
+<tr class="separator:ga4101be2a488446b5df49b233f4f49cca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac699526be5f9cc9f9f333ba188be1787"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__nugu__network.html#gac699526be5f9cc9f9f333ba188be1787">nugu_network_manager_set_event_response_callback</a> (<a class="el" href="group__nugu__network.html#ga0a64654ecf6ef2e8ed4e7f26ffec4121">NuguNetworkManagerEventResponseCallback</a> callback, void *userdata)</td></tr>
 <tr class="memdesc:gac699526be5f9cc9f9f333ba188be1787"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set event response callback.  <a href="#gac699526be5f9cc9f9f333ba188be1787">More...</a><br /></td></tr>
 <tr class="separator:gac699526be5f9cc9f9f333ba188be1787"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -337,6 +343,25 @@ NetworkManagerHandoffStatusCallback </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="group__nugu__network.html#gadfd7f5ce83fe0afc18e1a3bbd4dedc59" title="Send the event to server. ">nugu_network_manager_send_event()</a> </dd>
 <dd>
 <a class="el" href="group__nugu__network.html#gacff241f4be3a3f2c0a12960abe370c99" title="Set event send notify callback. ">nugu_network_manager_set_event_send_notify_callback()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ga08b86a177632c92b4aed4827976877b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga08b86a177632c92b4aed4827976877b6">&#9670;&nbsp;</a></span>NuguNetworkManagerEventDataSendNotifyCallback</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef void(* NuguNetworkManagerEventDataSendNotifyCallback) (<a class="el" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev, int is_end, size_t length, unsigned char *data, void *userdata)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Callback prototype for notification of event data sending requests. </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__nugu__network.html#gac8a5a41821ad77b0e964dd79a218ac41" title="Send the attachment data of event to server. ">nugu_network_manager_send_event_data()</a> </dd>
+<dd>
+<a class="el" href="group__nugu__network.html#ga4101be2a488446b5df49b233f4f49cca" title="Set event data send notify callback. ">nugu_network_manager_set_event_data_send_notify_callback()</a> </dd></dl>
 
 </div>
 </div>
@@ -640,6 +665,51 @@ NetworkManagerHandoffStatusCallback </dd></dl>
 </div><div class="memdoc">
 
 <p>Set event send notify callback. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>callback function </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">userdata</td><td>data to pass to the user callback </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>result </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">0</td><td>success </td></tr>
+    <tr><td class="paramname">-1</td><td>failure </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga4101be2a488446b5df49b233f4f49cca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4101be2a488446b5df49b233f4f49cca">&#9670;&nbsp;</a></span>nugu_network_manager_set_event_data_send_notify_callback()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int nugu_network_manager_set_event_data_send_notify_callback </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__nugu__network.html#ga08b86a177632c92b4aed4827976877b6">NuguNetworkManagerEventDataSendNotifyCallback</a>&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>userdata</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set event data send notify callback. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">callback</td><td>callback function </td></tr>
@@ -1369,7 +1439,7 @@ NetworkManagerHandoffStatusCallback </dd></dl>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 15 2020 08:28:33 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Sep 7 2020 17:08:21 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

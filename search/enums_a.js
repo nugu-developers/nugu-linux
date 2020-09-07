@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['texterror',['TextError',['../group__TextInterface.html#gab868b04fc95d19706ef1896699930bac',1,'NuguCapability']]],
-  ['textstate',['TextState',['../group__TextInterface.html#ga69b7f95a5985645bb3a5d3be597ad35a',1,'NuguCapability']]],
-  ['ttsstate',['TTSState',['../group__TTSInterface.html#ga7d4f4423b5757b9a2b029a5ce5fbcccf',1,'NuguCapability']]]
+  ['sessionstate',['SessionState',['../group__SessionInterface.html#ga4b3903e444431d8dcb96a672d48be180',1,'NuguCapability']]],
+  ['speakertype',['SpeakerType',['../group__SpeakerInterface.html#ga8601f6be80368c9d1a7c7b346c99a698',1,'NuguCapability']]],
+  ['suspendpolicy',['SuspendPolicy',['../classNuguClientKit_1_1ICapabilityInterface.html#a15d8782f9a3ea99381f64fe5d159a2f2',1,'NuguClientKit::ICapabilityInterface']]],
+  ['systemexception',['SystemException',['../group__SystemInterface.html#gae95aa9037a85a223126f51c1efcbe671',1,'NuguCapability']]]
 ];

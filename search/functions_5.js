@@ -13,6 +13,8 @@ var searchData=
   ['getepdpauselength',['getEpdPauseLength',['../classNuguClientKit_1_1ISpeechRecognizer.html#a2175d92758fc274694885a82fc4e5140',1,'NuguClientKit::ISpeechRecognizer']]],
   ['getepdsilenceinterval',['getEpdSilenceInterval',['../classNuguCapability_1_1IASRHandler.html#a21ba6d6e3a66409370184ac4877e0612',1,'NuguCapability::IASRHandler']]],
   ['getfocusmanager',['getFocusManager',['../classNuguClientKit_1_1ICapabilityHelper.html#a73e851e07fe280fed3c581790c57663a',1,'NuguClientKit::ICapabilityHelper']]],
+  ['getinteractioncontrolmanager',['getInteractionControlManager',['../classNuguClientKit_1_1ICapabilityHelper.html#a9da5ffb469ea9681ab7bf0dabd40a3fa',1,'NuguClientKit::ICapabilityHelper']]],
+  ['getinteractionmode',['getInteractionMode',['../classNuguClientKit_1_1Capability.html#a2abdf585895f3a0a6c5187de90324fd6',1,'NuguClientKit::Capability']]],
   ['getinterval',['getInterval',['../classNuguClientKit_1_1INuguTimer.html#a8c2a292628296eae6f9a96441c777484',1,'NuguClientKit::INuguTimer']]],
   ['getmessageid',['getMessageId',['../classNuguClientKit_1_1CapabilityEvent.html#a589299abc9711ae593c493f15e1da456',1,'NuguClientKit::CapabilityEvent']]],
   ['getname',['getName',['../classNuguClientKit_1_1CapabilityEvent.html#afe9da44f52de0c68b1b6dd52c03ab2ff',1,'NuguClientKit::CapabilityEvent::getName()'],['../classNuguClientKit_1_1Capability.html#a2242903bb83c781ae5cc12d5fb52cd00',1,'NuguClientKit::Capability::getName()'],['../classNuguClientKit_1_1ICapabilityInterface.html#aa5d512ebf9c13ab2eabbfd5709698fb5',1,'NuguClientKit::ICapabilityInterface::getName()']]],

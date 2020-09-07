@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.20.0</span>
+   &#160;<span id="projectnumber">0.21.0</span>
    </div>
   </td>
  </tr>
@@ -89,18 +89,20 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1IFocusManager.ht
 <table class="directory">
   <tr class="even"><td class="entry"><a class="el" href="group__FocusManagerInterface.html#gaa4a33e5d89941e07ab5c3d11b092ce3d">addObserver</a>(IFocusManagerObserver *observer)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="group__FocusManagerInterface.html#gaaea80a31df369f5a45126c9b17843d1e">getStateString</a>(FocusState state)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="group__FocusManagerInterface.html#gaeefd9d5ae3668c5f18f301f01f23ef6c">releaseFocus</a>(const std::string &amp;type, const std::string &amp;name)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="group__FocusManagerInterface.html#ga0b2b321ce06f60cbc1074530d5c94d61">removeObserver</a>(IFocusManagerObserver *observer)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="group__FocusManagerInterface.html#gab29d3665dae878ed7e76a984f049f912">requestFocus</a>(const std::string &amp;type, const std::string &amp;name, IFocusResourceListener *listener)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="group__FocusManagerInterface.html#ga46a8046941137ff75dfb0c966fb040be">setConfigurations</a>(std::vector&lt; FocusConfiguration &gt; &amp;configurations)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="group__FocusManagerInterface.html#gadd927685ef65023e45a7291e8ef4cd54">stopAllFocus</a>()=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="group__FocusManagerInterface.html#ga503b896522f9271ee8f08a55ba361add">stopForegroundFocus</a>()=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="group__FocusManagerInterface.html#ga5fa2cc120e70a7e1dd696e902ee0fcf8">holdFocus</a>(const std::string &amp;type)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="group__FocusManagerInterface.html#gaeefd9d5ae3668c5f18f301f01f23ef6c">releaseFocus</a>(const std::string &amp;type, const std::string &amp;name)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="group__FocusManagerInterface.html#ga0b2b321ce06f60cbc1074530d5c94d61">removeObserver</a>(IFocusManagerObserver *observer)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="group__FocusManagerInterface.html#gab29d3665dae878ed7e76a984f049f912">requestFocus</a>(const std::string &amp;type, const std::string &amp;name, IFocusResourceListener *listener)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="group__FocusManagerInterface.html#ga46a8046941137ff75dfb0c966fb040be">setConfigurations</a>(std::vector&lt; FocusConfiguration &gt; &amp;configurations)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="group__FocusManagerInterface.html#gadd927685ef65023e45a7291e8ef4cd54">stopAllFocus</a>()=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="group__FocusManagerInterface.html#ga503b896522f9271ee8f08a55ba361add">stopForegroundFocus</a>()=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="group__FocusManagerInterface.html#ga3e0546b71fb3396af9f7db486e4fa3b6">unholdFocus</a>(const std::string &amp;type)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IFocusManager.html">NuguClientKit::IFocusManager</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jul 15 2020 08:28:37 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Sep 7 2020 17:08:21 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

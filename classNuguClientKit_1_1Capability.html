@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.20.0</span>
+   &#160;<span id="projectnumber">0.21.0</span>
    </div>
   </td>
  </tr>
@@ -100,7 +100,7 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1Capability.html'
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classNuguClientKit_1_1Capability__inherit__graph.png" border="0" usemap="#NuguClientKit_1_1Capability_inherit__map" alt="Inheritance graph"/></div>
 <map name="NuguClientKit_1_1Capability_inherit__map" id="NuguClientKit_1_1Capability_inherit__map">
-<area shape="rect" id="node2" href="classNuguClientKit_1_1ICapabilityInterface.html" title="capability interface " alt="" coords="5,5,196,47"/>
+<area shape="rect" id="node2" href="classNuguClientKit_1_1ICapabilityInterface.html" title="capability interface " alt="" coords="5,5,179,47"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -110,13 +110,14 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1Capability.html'
 <div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classNuguClientKit_1_1Capability__coll__graph.png" border="0" usemap="#NuguClientKit_1_1Capability_coll__map" alt="Collaboration graph"/></div>
 <map name="NuguClientKit_1_1Capability_coll__map" id="NuguClientKit_1_1Capability_coll__map">
-<area shape="rect" id="node2" href="classNuguClientKit_1_1ICapabilityInterface.html" title="capability interface " alt="" coords="25,5,216,47"/>
-<area shape="rect" id="node3" href="classNuguClientKit_1_1ISessionManager.html" title="SessionManager interface. " alt="" coords="5,71,236,98"/>
-<area shape="rect" id="node4" href="classNuguClientKit_1_1ICapabilityHelper.html" title="CapabilityHelper interface. " alt="" coords="25,123,216,164"/>
-<area shape="rect" id="node5" href="classNuguClientKit_1_1IDirectiveSequencer.html" title="IDirectiveSequencer. " alt="" coords="29,188,212,229"/>
-<area shape="rect" id="node6" href="classNuguClientKit_1_1IFocusManager.html" title="IFocusManager. " alt="" coords="12,254,229,281"/>
-<area shape="rect" id="node7" href="classNuguClientKit_1_1IPlayStackManager.html" title="PlayStackManager interface. " alt="" coords="27,305,215,347"/>
-<area shape="rect" id="node8" href="classNuguClientKit_1_1INuguCoreContainer.html" title="NuguCoreContainer interface. " alt="" coords="27,371,215,412"/>
+<area shape="rect" id="node2" href="classNuguClientKit_1_1ICapabilityInterface.html" title="capability interface " alt="" coords="25,5,198,47"/>
+<area shape="rect" id="node3" href="classNuguClientKit_1_1ISessionManager.html" title="SessionManager interface. " alt="" coords="5,71,217,98"/>
+<area shape="rect" id="node4" href="classNuguClientKit_1_1ICapabilityHelper.html" title="CapabilityHelper interface. " alt="" coords="25,123,198,164"/>
+<area shape="rect" id="node5" href="classNuguClientKit_1_1IDirectiveSequencer.html" title="IDirectiveSequencer. " alt="" coords="28,188,195,229"/>
+<area shape="rect" id="node6" href="classNuguClientKit_1_1IFocusManager.html" title="IFocusManager. " alt="" coords="11,254,212,281"/>
+<area shape="rect" id="node7" href="classNuguClientKit_1_1IInteractionControlManager.html" title="InteractionControlManager interface. " alt="" coords="23,305,199,347"/>
+<area shape="rect" id="node8" href="classNuguClientKit_1_1IPlayStackManager.html" title="PlayStackManager interface. " alt="" coords="24,371,199,412"/>
+<area shape="rect" id="node9" href="classNuguClientKit_1_1INuguCoreContainer.html" title="NuguCoreContainer interface. " alt="" coords="24,436,199,477"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
@@ -131,6 +132,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aef24099b9f2d495600e8f9c411238b94"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1Capability.html#aef24099b9f2d495600e8f9c411238b94">addReferrerEvents</a> (const std::string &amp;ename, const std::string &amp;dname)</td></tr>
 <tr class="memdesc:aef24099b9f2d495600e8f9c411238b94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add event name and directive name for referred dialog request id.  <a href="#aef24099b9f2d495600e8f9c411238b94">More...</a><br /></td></tr>
 <tr class="separator:aef24099b9f2d495600e8f9c411238b94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37e752ad287c002f1fc9b023c9f8c319"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1Capability.html#a37e752ad287c002f1fc9b023c9f8c319">cancelDirective</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir) override</td></tr>
+<tr class="memdesc:a37e752ad287c002f1fc9b023c9f8c319"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive a directive cancellation from the Directive sequencer.  <a href="#a37e752ad287c002f1fc9b023c9f8c319">More...</a><br /></td></tr>
+<tr class="separator:a37e752ad287c002f1fc9b023c9f8c319"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73a89b7bd92c77695aa73a574eb658da"><td class="memItemLeft" align="right" valign="top"><a id="a73a89b7bd92c77695aa73a574eb658da"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>Capability</b> (const std::string &amp;name, const std::string &amp;ver=&quot;1.0&quot;)</td></tr>
 <tr class="separator:a73a89b7bd92c77695aa73a574eb658da"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -147,6 +151,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a48ef514fde84116ad1d653626b432f5a"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1Capability.html#a48ef514fde84116ad1d653626b432f5a">getContextInfo</a> ()</td></tr>
 <tr class="memdesc:a48ef514fde84116ad1d653626b432f5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current context info.  <a href="#a48ef514fde84116ad1d653626b432f5a">More...</a><br /></td></tr>
 <tr class="separator:a48ef514fde84116ad1d653626b432f5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2abdf585895f3a0a6c5187de90324fd6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__InteractionControlManagerInterface.html#ga7ed168a573888495a90b6f74bdfb5e2d">InteractionMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1Capability.html#a2abdf585895f3a0a6c5187de90324fd6">getInteractionMode</a> (const Json::Value &amp;interaction_control)</td></tr>
+<tr class="memdesc:a2abdf585895f3a0a6c5187de90324fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get interaction mode which is included in interactionControl.  <a href="#a2abdf585895f3a0a6c5187de90324fd6">More...</a><br /></td></tr>
+<tr class="separator:a2abdf585895f3a0a6c5187de90324fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2242903bb83c781ae5cc12d5fb52cd00"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1Capability.html#a2242903bb83c781ae5cc12d5fb52cd00">getName</a> () override</td></tr>
 <tr class="memdesc:a2242903bb83c781ae5cc12d5fb52cd00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the capability name of the current object.  <a href="#a2242903bb83c781ae5cc12d5fb52cd00">More...</a><br /></td></tr>
 <tr class="separator:a2242903bb83c781ae5cc12d5fb52cd00"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,10 +189,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memdesc:a3289c47ce9c38309540d111e3fad4998"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parsing directive and do the required action.  <a href="#a3289c47ce9c38309540d111e3fad4998">More...</a><br /></td></tr>
 <tr class="separator:a3289c47ce9c38309540d111e3fad4998"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f4ad2d7bfae818d7e5f91a2b4ec02ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1Capability.html#a8f4ad2d7bfae818d7e5f91a2b4ec02ac">preprocessDirective</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir) override</td></tr>
-<tr class="memdesc:a8f4ad2d7bfae818d7e5f91a2b4ec02ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Preprocess directive received from Directive Sequencer.  <a href="#a8f4ad2d7bfae818d7e5f91a2b4ec02ac">More...</a><br /></td></tr>
+<tr class="memdesc:a8f4ad2d7bfae818d7e5f91a2b4ec02ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive a directive preprocessing request from Directive sequencer.  <a href="#a8f4ad2d7bfae818d7e5f91a2b4ec02ac">More...</a><br /></td></tr>
 <tr class="separator:a8f4ad2d7bfae818d7e5f91a2b4ec02ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1a294ba01c24abb0bc222467138964d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1Capability.html#af1a294ba01c24abb0bc222467138964d">processDirective</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir) override final</td></tr>
-<tr class="memdesc:af1a294ba01c24abb0bc222467138964d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process directive received from Directive Sequencer.  <a href="#af1a294ba01c24abb0bc222467138964d">More...</a><br /></td></tr>
+<tr class="memdesc:af1a294ba01c24abb0bc222467138964d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receive a directive processing request from Directive sequencer.  <a href="#af1a294ba01c24abb0bc222467138964d">More...</a><br /></td></tr>
 <tr class="separator:af1a294ba01c24abb0bc222467138964d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a980b5998d6aef6322d79ffb98ba11012"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1Capability.html#a980b5998d6aef6322d79ffb98ba11012">receiveCommand</a> (const std::string &amp;from, const std::string &amp;command, const std::string &amp;param) override</td></tr>
 <tr class="memdesc:a980b5998d6aef6322d79ffb98ba11012"><td class="mdescLeft">&#160;</td><td class="mdescRight">Process command from other objects.  <a href="#a980b5998d6aef6322d79ffb98ba11012">More...</a><br /></td></tr>
@@ -265,6 +272,10 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1Capability.html#ac208e94ea13143d4503824230d04c296">initialized</a> = false</td></tr>
 <tr class="memdesc:ac208e94ea13143d4503824230d04c296"><td class="mdescLeft">&#160;</td><td class="mdescRight">whether capability initialized <br /></td></tr>
 <tr class="separator:ac208e94ea13143d4503824230d04c296"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f3b7c451056a734824e98de6a98bb40"><td class="memItemLeft" align="right" valign="top"><a id="a0f3b7c451056a734824e98de6a98bb40"></a>
+<a class="el" href="classNuguClientKit_1_1IInteractionControlManager.html">IInteractionControlManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1Capability.html#a0f3b7c451056a734824e98de6a98bb40">interaction_control_manager</a> = nullptr</td></tr>
+<tr class="memdesc:a0f3b7c451056a734824e98de6a98bb40"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classNuguClientKit_1_1IInteractionControlManager.html" title="InteractionControlManager interface. ">IInteractionControlManager</a> instance for using interaction control management. <br /></td></tr>
+<tr class="separator:a0f3b7c451056a734824e98de6a98bb40"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad8af17142b3a27fe0032b3b3a8bdec70"><td class="memItemLeft" align="right" valign="top"><a id="ad8af17142b3a27fe0032b3b3a8bdec70"></a>
 <a class="el" href="classNuguClientKit_1_1IPlayStackManager.html">IPlayStackManager</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1Capability.html#ad8af17142b3a27fe0032b3b3a8bdec70">playstack_manager</a> = nullptr</td></tr>
 <tr class="memdesc:ad8af17142b3a27fe0032b3b3a8bdec70"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classNuguClientKit_1_1IPlayStackManager.html" title="PlayStackManager interface. ">IPlayStackManager</a> instance for using playstack management. <br /></td></tr>
@@ -811,6 +822,27 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a2abdf585895f3a0a6c5187de90324fd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2abdf585895f3a0a6c5187de90324fd6">&#9670;&nbsp;</a></span>getInteractionMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__InteractionControlManagerInterface.html#ga7ed168a573888495a90b6f74bdfb5e2d">InteractionMode</a> NuguClientKit::Capability::getInteractionMode </td>
+          <td>(</td>
+          <td class="paramtype">const Json::Value &amp;&#160;</td>
+          <td class="paramname"><em>interaction_control</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get interaction mode which is included in interactionControl. </p>
+<dl class="section return"><dt>Returns</dt><dd>interaction mode (NONE, MULTI_TURN,...) </dd></dl>
+
+</div>
+</div>
 <a id="a8f4ad2d7bfae818d7e5f91a2b4ec02ac"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8f4ad2d7bfae818d7e5f91a2b4ec02ac">&#9670;&nbsp;</a></span>preprocessDirective()</h2>
 
@@ -835,7 +867,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Preprocess directive received from Directive Sequencer. </p>
+<p>Receive a directive preprocessing request from Directive sequencer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">ndir</td><td>directive </td></tr>
@@ -844,6 +876,42 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html#a21ea22765c766b1f3e54793f4492b861">NuguClientKit::ICapabilityInterface</a>.</p>
+
+</div>
+</div>
+<a id="a37e752ad287c002f1fc9b023c9f8c319"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37e752ad287c002f1fc9b023c9f8c319">&#9670;&nbsp;</a></span>cancelDirective()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NuguClientKit::Capability::cancelDirective </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *&#160;</td>
+          <td class="paramname"><em>ndir</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Receive a directive cancellation from the Directive sequencer. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ndir</td><td>directive </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html#a66b731780d30bd7515fd2d93fc53cd61">NuguClientKit::ICapabilityInterface</a>.</p>
 
 </div>
 </div>
@@ -871,7 +939,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Process directive received from Directive Sequencer. </p>
+<p>Receive a directive processing request from Directive sequencer. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">ndir</td><td>directive </td></tr>
@@ -1452,7 +1520,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1Capability.html">Capability</a></li>
-    <li class="footer">Generated on Wed Jul 15 2020 08:28:37 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Sep 7 2020 17:08:21 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

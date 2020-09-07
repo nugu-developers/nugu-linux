@@ -8,6 +8,7 @@ var group__PlayStackManagerInterface =
       [ "add", "classNuguClientKit_1_1IPlayStackManager.html#aa77eb7972c5bbf9614b8e76a43bad71a", null ],
       [ "remove", "classNuguClientKit_1_1IPlayStackManager.html#a77bc72c3a8d2bb9b9ae9daef4659cbb9", null ],
       [ "isStackedCondition", "classNuguClientKit_1_1IPlayStackManager.html#ac288a6a18f83e140b907ab307f2e707b", null ],
+      [ "hasExpectSpeech", "classNuguClientKit_1_1IPlayStackManager.html#a0cc05b1ef715f2b9452bdd782a7d5f47", null ],
       [ "stopHolding", "classNuguClientKit_1_1IPlayStackManager.html#a7ef05228fd8da8c8036ec104acb2cc74", null ],
       [ "resetHolding", "classNuguClientKit_1_1IPlayStackManager.html#ab5342cdd7dc612f1071e806a234c679e", null ],
       [ "getPlayStackLayer", "classNuguClientKit_1_1IPlayStackManager.html#a7a9d7f3786a9c4b5b1aaa2d38fa7bbee", null ],
