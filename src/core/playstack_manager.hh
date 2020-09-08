@@ -19,13 +19,18 @@
 
 #include <memory>
 
-#include "base/nugu_timer.h"
 #include "clientkit/playstack_manager_interface.hh"
 #include "nugu_timer.hh"
 
 namespace NuguCore {
 
 using namespace NuguClientKit;
+
+class IStackTimer : public NUGUTimer {
+public:
+    virtual ~IStackTimer() = default;
+    virtual bool isStarted() = 0;
+};
 
 class PlayStackManager : public IPlayStackManager {
 public:
@@ -35,8 +40,9 @@ public:
     void addListener(IPlayStackManagerListener* listener) override;
     void removeListener(IPlayStackManagerListener* listener) override;
     int getListenerCount();
+    void setTimer(IStackTimer* timer);
 
-    void add(const std::string& ps_id, NuguDirective* ndir) override;
+    bool add(const std::string& ps_id, NuguDirective* ndir) override;
     void remove(const std::string& ps_id, PlayStackRemoveMode mode = PlayStackRemoveMode::Normal) override;
     bool isStackedCondition(NuguDirective* ndir) override;
     bool hasExpectSpeech(NuguDirective* ndir) override;
@@ -49,7 +55,7 @@ public:
     const PlayStack& getPlayStackContainer();
 
 private:
-    class StackTimer final : public NUGUTimer {
+    class StackTimer final : public IStackTimer {
     public:
         bool isStarted();
         void start(unsigned int sec = 0) override;
@@ -61,8 +67,11 @@ private:
 
 private:
     PlayStackLayer extractPlayStackLayer(NuguDirective* ndir);
-    void addToContainer(const std::string& ps_id, PlayStackLayer layer);
+    std::string getSameLayerStack(PlayStackLayer layer);
+    void handlePreviousStack(PlayStackLayer layer, bool is_stacked);
+    bool addToContainer(const std::string& ps_id, PlayStackLayer layer);
     void removeFromContainer(const std::string& ps_id);
+    void notifyStackRemoved(const std::string& ps_id);
     void clearContainer();
     bool isStackedCondition(PlayStackLayer layer);
     bool isStackedCondition(const std::string& ps_id);
@@ -75,7 +84,8 @@ private:
 
     PlayStack playstack_container;
     std::vector<IPlayStackManagerListener*> listeners;
-    std::unique_ptr<StackTimer> timer = nullptr;
+    std::unique_ptr<IStackTimer> timer = nullptr;
+
     bool has_long_timer = false;
     bool has_holding = false;
     bool is_expect_speech = false;
