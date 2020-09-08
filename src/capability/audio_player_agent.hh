@@ -63,9 +63,9 @@ public:
     std::string pause() override;
     std::string resume() override;
     void seek(int msec) override;
-    std::string requestFavoriteCommmand(bool current_favorite) override;
-    std::string requestRepeatCommmand(RepeatType current_repeat) override;
-    std::string requestShuffleCommmand(bool current_shuffle) override;
+    std::string requestFavoriteCommand(bool current_favorite) override;
+    std::string requestRepeatCommand(RepeatType current_repeat) override;
+    std::string requestShuffleCommand(bool current_shuffle) override;
     bool setVolume(int volume) override;
     bool setMute(bool mute) override;
 

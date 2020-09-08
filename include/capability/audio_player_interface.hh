@@ -197,21 +197,21 @@ public:
      * @param[in] current_favorite current favorite value
      * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual std::string requestFavoriteCommmand(bool current_favorite) = 0;
+    virtual std::string requestFavoriteCommand(bool current_favorite) = 0;
 
     /**
      * @brief Send to request repeat command event with current repeat value.
      * @param[in] current_repeat current repeat value
      * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual std::string requestRepeatCommmand(RepeatType current_repeat) = 0;
+    virtual std::string requestRepeatCommand(RepeatType current_repeat) = 0;
 
     /**
      * @brief Send to request shuffle command event with current shuffle value.
      * @param[in] current_shuffle current shuffle value
      * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
      */
-    virtual std::string requestShuffleCommmand(bool current_shuffle) = 0;
+    virtual std::string requestShuffleCommand(bool current_shuffle) = 0;
 
     /**
      * @brief set media player's volume
