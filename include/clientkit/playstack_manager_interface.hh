@@ -104,8 +104,9 @@ public:
      * @brief Add play service id to playstack.
      * @param[in] ps_id play service id
      * @param[in] ndir directive
+     * @return true if the play service id is added, otherwise false
      */
-    virtual void add(const std::string& ps_id, NuguDirective* ndir) = 0;
+    virtual bool add(const std::string& ps_id, NuguDirective* ndir) = 0;
 
     /**
      * @brief Remove play service id from playstack.

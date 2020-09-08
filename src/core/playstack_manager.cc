@@ -115,29 +115,36 @@ int PlayStackManager::getListenerCount()
     return listeners.size();
 }
 
-void PlayStackManager::add(const std::string& ps_id, NuguDirective* ndir)
+void PlayStackManager::setTimer(IStackTimer* timer)
+{
+    if (!timer) {
+        nugu_warn("The timer is not exist.");
+        return;
+    }
+
+    this->timer.reset(timer);
+}
+
+bool PlayStackManager::add(const std::string& ps_id, NuguDirective* ndir)
 {
     has_holding = false;
 
     if (ps_id.empty() || !ndir) {
         nugu_warn("The PlayServiceId or directive is empty.");
-        return;
+        return false;
     }
 
     PlayStackLayer layer = extractPlayStackLayer(ndir);
     is_expect_speech = hasExpectSpeech(ndir);
     is_stacked = isStackedCondition(layer);
 
-    if (playstack_container.first.find(ps_id) != playstack_container.first.end()
-        && (getPlayStackLayer(ps_id) == layer || is_stacked)) {
+    if ((playstack_container.first.find(ps_id) != playstack_container.first.end()) && getPlayStackLayer(ps_id) == layer) {
         nugu_warn("%s is already added.", ps_id.c_str());
-        return;
+        return false;
     }
 
-    if (!is_stacked)
-        clearContainer();
-
-    addToContainer(ps_id, layer);
+    handlePreviousStack(layer, is_stacked);
+    return addToContainer(ps_id, layer);
 }
 
 void PlayStackManager::remove(const std::string& ps_id, PlayStackRemoveMode mode)
@@ -250,8 +257,34 @@ PlayStackLayer PlayStackManager::extractPlayStackLayer(NuguDirective* ndir)
         return PlayStackLayer::Info;
 }
 
-void PlayStackManager::addToContainer(const std::string& ps_id, PlayStackLayer layer)
+std::string PlayStackManager::getSameLayerStack(PlayStackLayer layer)
 {
+    for (const auto& item : playstack_container.first)
+        if (item.second == layer)
+            return item.first;
+
+    return "";
+}
+
+void PlayStackManager::handlePreviousStack(PlayStackLayer layer, bool is_stacked)
+{
+    if (is_stacked) {
+        removeFromContainer(getSameLayerStack(layer));
+    } else {
+        for (const auto& item : playstack_container.second)
+            notifyStackRemoved(item);
+
+        clearContainer();
+    }
+}
+
+bool PlayStackManager::addToContainer(const std::string& ps_id, PlayStackLayer layer)
+{
+    if (playstack_container.first.find(ps_id) != playstack_container.first.end()) {
+        nugu_warn("%s is already added.", ps_id.c_str());
+        return false;
+    }
+
     playstack_container.first.emplace(ps_id, layer);
     playstack_container.second.emplace_back(ps_id);
 
@@ -259,17 +292,29 @@ void PlayStackManager::addToContainer(const std::string& ps_id, PlayStackLayer l
         listener->onStackAdded(ps_id);
 
     Debug::showPlayStack(playstack_container);
+
+    return true;
 }
 
 void PlayStackManager::removeFromContainer(const std::string& ps_id)
 {
+    if (ps_id.empty()) {
+        nugu_warn("The PlayServiceId is empty.");
+        return;
+    }
+
     playstack_container.first.erase(ps_id);
     removeItemInList(playstack_container.second, ps_id);
 
-    for (const auto& listener : listeners)
-        listener->onStackRemoved(ps_id);
+    notifyStackRemoved(ps_id);
 
     Debug::showPlayStack(playstack_container);
+}
+
+void PlayStackManager::notifyStackRemoved(const std::string& ps_id)
+{
+    for (const auto& listener : listeners)
+        listener->onStackRemoved(ps_id);
 }
 
 void PlayStackManager::clearContainer()
