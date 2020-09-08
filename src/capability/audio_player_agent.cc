@@ -329,7 +329,7 @@ void AudioPlayerAgent::seek(int msec)
         cur_player->seek(msec * 1000);
 }
 
-std::string AudioPlayerAgent::requestFavoriteCommmand(bool current_favorite)
+std::string AudioPlayerAgent::requestFavoriteCommand(bool current_favorite)
 {
     std::string ename = "FavoriteCommandIssued";
     std::string payload = "";
@@ -350,7 +350,7 @@ std::string AudioPlayerAgent::requestFavoriteCommmand(bool current_favorite)
     return id;
 }
 
-std::string AudioPlayerAgent::requestRepeatCommmand(RepeatType current_repeat)
+std::string AudioPlayerAgent::requestRepeatCommand(RepeatType current_repeat)
 {
     std::string ename = "RepeatCommandIssued";
     std::string payload = "";
@@ -381,7 +381,7 @@ std::string AudioPlayerAgent::requestRepeatCommmand(RepeatType current_repeat)
     return id;
 }
 
-std::string AudioPlayerAgent::requestShuffleCommmand(bool current_shuffle)
+std::string AudioPlayerAgent::requestShuffleCommand(bool current_shuffle)
 {
     std::string ename = "ShuffleCommandIssued";
     std::string payload = "";
