@@ -1,0 +1,614 @@
+/*
+ * Copyright (c) 2019 SK Telecom Co., Ltd. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include <algorithm>
+#include <chrono>
+#include <condition_variable>
+#include <glib.h>
+#include <map>
+#include <memory>
+#include <mutex>
+#include <thread>
+
+#include "playsync_manager.hh"
+
+using namespace NuguCore;
+
+const unsigned int TIMER_DOWNSCALE_FACTOR = 1;
+std::mutex mutex;
+std::condition_variable cv;
+
+class FakeStackTimer final : public IStackTimer {
+public:
+    FakeStackTimer(std::mutex& mutex, std::condition_variable& cv)
+        : _mutex(mutex)
+        , _cv(cv)
+    {
+    }
+
+    virtual ~FakeStackTimer()
+    {
+        stop();
+    }
+
+    bool isStarted() override
+    {
+        return is_started;
+    }
+
+    void start(unsigned int sec = 0) override
+    {
+        if (is_started)
+            return;
+
+        worker = std::thread { [&]() {
+            setStarted(true);
+            _cv.notify_one();
+
+            std::this_thread::sleep_for(std::chrono::microseconds(getInterval() / TIMER_DOWNSCALE_FACTOR));
+
+            if (is_started)
+                notifyCallback();
+
+            setStarted(false);
+        } };
+    }
+    void stop() override
+    {
+        setStarted(false);
+
+        if (worker.joinable())
+            worker.join();
+    }
+
+private:
+    void setStarted(bool is_started)
+    {
+        std::lock_guard<std::mutex> lock(_mutex);
+        this->is_started = is_started;
+    }
+
+    std::thread worker;
+    bool is_started = false;
+    std::mutex& _mutex;
+    std::condition_variable& _cv;
+};
+
+struct DummyExtraInfo {
+    std::string id;
+};
+
+class PlaySyncManagerListener : public IPlaySyncManagerListener {
+public:
+    void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
+    {
+        if (this->state != state) {
+            this->state = state;
+            this->extra_data = extra_data;
+            same_state_call_count = 0;
+        } else {
+            same_state_call_count++;
+        }
+
+        sync_state_map[ps_id] = state;
+    }
+
+    PlaySyncState getSyncState(const std::string& ps_id)
+    {
+        try {
+            return sync_state_map.at(ps_id);
+        } catch (std::out_of_range& exception) {
+            return PlaySyncState::None;
+        }
+    }
+
+    bool hasPlayStack(const std::string& ps_id)
+    {
+        return sync_state_map.find(ps_id) != sync_state_map.cend();
+    }
+
+    int getSameStateCallCount()
+    {
+        return same_state_call_count;
+    }
+
+    void* getExtraData()
+    {
+        return extra_data;
+    }
+
+private:
+    std::map<std::string, PlaySyncState> sync_state_map;
+    PlaySyncState state = PlaySyncState::None;
+    void* extra_data = nullptr;
+    int same_state_call_count = 0;
+};
+
+static NuguDirective* createDirective(const std::string& name_space, const std::string& name, const std::string& groups)
+{
+    return nugu_directive_new(name_space.c_str(), name.c_str(), "1.0", "msg_1", "dlg_1",
+        "ref_1", "{}", groups.c_str());
+}
+
+typedef struct {
+    std::shared_ptr<PlaySyncManager> playsync_manager;
+    std::shared_ptr<PlaySyncManagerListener> playsync_manager_listener;
+    std::shared_ptr<PlaySyncManagerListener> playsync_manager_listener_snd;
+    DummyExtraInfo* dummy_extra_data;
+
+    NuguDirective* ndir_info_disp;
+    NuguDirective* ndir_media;
+    NuguDirective* ndir_expect_speech;
+} TestFixture;
+
+static void setup(TestFixture* fixture, gconstpointer user_data)
+{
+    PlayStackManager* playstack_manager = new PlayStackManager();
+    playstack_manager->setTimer(new FakeStackTimer(mutex, cv));
+
+    fixture->playsync_manager_listener = std::make_shared<PlaySyncManagerListener>();
+    fixture->playsync_manager_listener_snd = std::make_shared<PlaySyncManagerListener>();
+
+    fixture->playsync_manager = std::make_shared<PlaySyncManager>();
+    fixture->playsync_manager->setPlayStackManager(playstack_manager);
+    fixture->playsync_manager->addListener("TTS", fixture->playsync_manager_listener.get());
+
+    fixture->dummy_extra_data = new DummyExtraInfo();
+
+    fixture->ndir_info_disp = createDirective("TTS", "Speak",
+        "{ \"directives\": [\"TTS.Speak\", \"Display.FullText1\"] }");
+    fixture->ndir_media = createDirective("AudioPlayer", "Play",
+        "{ \"directives\": [\"TTS.Speak\", \"AudioPlayer.Play\"] }");
+    fixture->ndir_expect_speech = createDirective("ASR", "test",
+        "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\"] }");
+}
+
+static void teardown(TestFixture* fixture, gconstpointer user_data)
+{
+    nugu_directive_unref(fixture->ndir_info_disp);
+    nugu_directive_unref(fixture->ndir_media);
+    nugu_directive_unref(fixture->ndir_expect_speech);
+
+    fixture->playsync_manager_listener.reset();
+    fixture->playsync_manager_listener_snd.reset();
+    fixture->playsync_manager.reset();
+
+    delete fixture->dummy_extra_data;
+    fixture->dummy_extra_data = nullptr;
+}
+
+static void onTimeElapsed(unsigned int duration)
+{
+    const unsigned int DELAY = 1500 / TIMER_DOWNSCALE_FACTOR;
+    std::unique_lock<std::mutex> lock(mutex);
+
+    if (cv.wait_until(lock, std::chrono::system_clock::now() + std::chrono::microseconds(duration * 1000 / TIMER_DOWNSCALE_FACTOR)) == std::cv_status::no_timeout)
+        std::this_thread::sleep_for(std::chrono::microseconds(DELAY + duration * 1000 / TIMER_DOWNSCALE_FACTOR));
+}
+
+#define G_TEST_ADD_FUNC(name, func) \
+    g_test_add(name, TestFixture, nullptr, setup, func, teardown);
+
+static void test_playstack_manager_listener(TestFixture* fixture, gconstpointer ignored)
+{
+    // It already has one listener which is added in setup.
+
+    // check invalid parameter
+    fixture->playsync_manager->addListener("", fixture->playsync_manager_listener.get());
+    g_assert(fixture->playsync_manager->getListenerCount() == 1);
+
+    // check whether same listener is added duplicately
+    fixture->playsync_manager->addListener("TTS", fixture->playsync_manager_listener.get());
+    g_assert(fixture->playsync_manager->getListenerCount() == 1);
+
+    // check invalid parameter
+    fixture->playsync_manager->addListener("Display", nullptr);
+    g_assert(fixture->playsync_manager->getListenerCount() == 1);
+
+    fixture->playsync_manager->addListener("Display", fixture->playsync_manager_listener_snd.get());
+    g_assert(fixture->playsync_manager->getListenerCount() == 2);
+
+    // check invalid parameter
+    fixture->playsync_manager->removeListener("");
+    g_assert(fixture->playsync_manager->getListenerCount() == 2);
+
+    fixture->playsync_manager->removeListener("TTS");
+    g_assert(fixture->playsync_manager->getListenerCount() == 1);
+
+    // check whether same listener is removed duplicately
+    fixture->playsync_manager->removeListener("TTS");
+    g_assert(fixture->playsync_manager->getListenerCount() == 1);
+
+    fixture->playsync_manager->removeListener("Display");
+    g_assert(fixture->playsync_manager->getListenerCount() == 0);
+}
+
+static void test_playstack_manager_prepare_sync(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& playstacks = fixture->playsync_manager->getPlayStacks();
+
+    // check invalid parameter
+    fixture->playsync_manager->prepareSync("", fixture->ndir_info_disp);
+    g_assert(playstacks.empty());
+
+    // check invalid parameter
+    fixture->playsync_manager->prepareSync("ps_id_1", nullptr);
+    g_assert(playstacks.empty());
+
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_info_disp);
+    const auto& playsync_container = playstacks.at("ps_id_1");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Prepared);
+    g_assert(playsync_container.at("Display").first == PlaySyncState::Prepared);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Prepared);
+}
+
+static void test_playstack_manager_start_sync(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& playstacks = fixture->playsync_manager->getPlayStacks();
+
+    // try to start sync before prepare sync
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    g_assert(playstacks.find("ps_id_1") == playstacks.cend());
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::None);
+    g_assert(!fixture->playsync_manager_listener->hasPlayStack("ps_id_1"));
+
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_info_disp);
+    const auto& playsync_container = playstacks.at("ps_id_1");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Prepared);
+
+    // check invalid parameter
+    fixture->playsync_manager->startSync("", "TTS");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Prepared);
+
+    // check invalid parameter
+    fixture->playsync_manager->startSync("ps_id_1", "");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Prepared);
+
+    // try to start sync not prepared play service id
+    fixture->playsync_manager->startSync("ps_id_2", "TTS");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Prepared);
+
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Prepared);
+    g_assert(fixture->playsync_manager_listener->hasPlayStack("ps_id_1"));
+
+    // try to start sync not prepared play service id
+    fixture->playsync_manager->startSync("ps_id_2", "Display");
+    g_assert(playsync_container.at("Display").first == PlaySyncState::Prepared);
+
+    fixture->playsync_manager->startSync("ps_id_1", "Display");
+    g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+    g_assert(fixture->playsync_manager_listener->hasPlayStack("ps_id_1"));
+    g_assert(fixture->playsync_manager_listener->getSameStateCallCount() == 0);
+
+    // check whether onSyncState is called just one time when all items are synced
+    fixture->playsync_manager->startSync("ps_id_1", "Display");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+    g_assert(fixture->playsync_manager_listener->getSameStateCallCount() == 0);
+}
+
+static void sub_test_playstack_manager_preset_sync(TestFixture* fixture, std::string&& ps_id)
+{
+    const auto& playstacks = fixture->playsync_manager->getPlayStacks();
+
+    /***************************************************************************
+     * [1] handle in DisplayAgent
+     **************************************************************************/
+    fixture->playsync_manager->prepareSync(ps_id, fixture->ndir_info_disp);
+    const auto& playsync_container = playstacks.at(ps_id);
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Prepared);
+    g_assert(playsync_container.at("Display").first == PlaySyncState::Prepared);
+    g_assert(fixture->playsync_manager_listener->getSyncState(ps_id) == PlaySyncState::Prepared);
+
+    fixture->playsync_manager->startSync(ps_id, "Display");
+    g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
+    g_assert(fixture->playsync_manager_listener->getSyncState(ps_id) == PlaySyncState::Prepared);
+
+    /***************************************************************************
+     * [2] handle in TTSAgent
+     **************************************************************************/
+    fixture->playsync_manager->prepareSync(ps_id, fixture->ndir_info_disp);
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Prepared);
+    g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
+    g_assert(fixture->playsync_manager_listener->getSyncState(ps_id) == PlaySyncState::Prepared);
+
+    fixture->playsync_manager->startSync(ps_id, "TTS");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+    g_assert(fixture->playsync_manager_listener->getSyncState(ps_id) == PlaySyncState::Synced);
+}
+
+static void test_playstack_manager_cancel_sync(TestFixture* fixture, gconstpointer ignored)
+{
+    sub_test_playstack_manager_preset_sync(fixture, "ps_id_1");
+
+    const auto& playsync_container = fixture->playsync_manager->getPlayStacks().at("ps_id_1");
+
+    // check invalid parameter
+    fixture->playsync_manager->cancelSync("", "Display");
+    g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
+
+    // check invalid parameter
+    fixture->playsync_manager->cancelSync("ps_id_1", "");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+    g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
+
+    // try to cancel sync not prepared play service id
+    fixture->playsync_manager->cancelSync("ps_id_2", "Display");
+    g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
+
+    // try to cancel sync not prepared requester
+    fixture->playsync_manager->cancelSync("ps_id_1", "AudioPlayer");
+    g_assert(playsync_container.find("AudioPlayer") == playsync_container.cend());
+
+    fixture->playsync_manager->cancelSync("ps_id_1", "Display");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+    g_assert(playsync_container.find("Display") == playsync_container.cend());
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+}
+
+static void test_playstack_manager_release_sync_immediately(TestFixture* fixture, gconstpointer ignored)
+{
+    sub_test_playstack_manager_preset_sync(fixture, "ps_id_2");
+
+    const auto& playstacks = fixture->playsync_manager->getPlayStacks();
+    const auto& playsync_container = playstacks.at("ps_id_2");
+
+    // check invalid parameter
+    fixture->playsync_manager->releaseSyncImmediately("", "TTS");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+
+    // check invalid parameter
+    fixture->playsync_manager->releaseSyncImmediately("ps_id_2", "");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+
+    // try to release sync not prepared play service id
+    fixture->playsync_manager->releaseSyncImmediately("ps_id_1", "TTS");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+
+    fixture->playsync_manager->releaseSyncImmediately("ps_id_2", "TTS");
+    g_assert(playstacks.find("ps_id_2") == playstacks.cend());
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Released);
+}
+
+static void test_playstack_manager_release_sync(TestFixture* fixture, gconstpointer ignored)
+{
+    sub_test_playstack_manager_preset_sync(fixture, "ps_id_1");
+
+    const auto& playstacks = fixture->playsync_manager->getPlayStacks();
+    const auto& playsync_container = playstacks.at("ps_id_1");
+
+    // check invalid parameter
+    fixture->playsync_manager->releaseSync("", "TTS");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+
+    // check invalid parameter
+    fixture->playsync_manager->releaseSync("ps_id_1", "");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+
+    // try to release sync not prepared requester
+    fixture->playsync_manager->releaseSync("ps_id_1", "AudioPlayer");
+    g_assert(playsync_container.find("AudioPlayer") == playsync_container.cend());
+
+    fixture->playsync_manager->releaseSync("ps_id_1", "TTS");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+    g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
+
+    onTimeElapsed(7);
+    g_assert(playstacks.find("ps_id_1") == playstacks.cend());
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+
+    // check whether onSyncState is called just one time when all items are released
+    fixture->playsync_manager->releaseSync("ps_id_1", "Display");
+    onTimeElapsed(7);
+    g_assert(fixture->playsync_manager_listener->getSameStateCallCount() == 0);
+}
+
+static void test_playstack_manager_release_sync_later(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_media);
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    fixture->playsync_manager->startSync("ps_id_1", "AudioPlayer");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+
+    fixture->playsync_manager->releaseSyncLater("ps_id_1", "AudioPlayer");
+    onTimeElapsed(600);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+}
+
+static void test_playstack_manager_normal_case(TestFixture* fixture, gconstpointer ignored)
+{
+    sub_test_playstack_manager_preset_sync(fixture, "ps_id_1");
+
+    fixture->playsync_manager->releaseSync("ps_id_1", "TTS");
+    onTimeElapsed(7);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+}
+
+static void test_playstack_manager_stop_case(TestFixture* fixture, gconstpointer ignored)
+{
+    sub_test_playstack_manager_preset_sync(fixture, "ps_id_1");
+
+    fixture->playsync_manager->releaseSyncImmediately("ps_id_1", "TTS");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+}
+
+static void test_playstack_manager_ignore_render_case(TestFixture* fixture, gconstpointer ignored)
+{
+    sub_test_playstack_manager_preset_sync(fixture, "ps_id_1");
+
+    const auto& playstacks = fixture->playsync_manager->getPlayStacks();
+    const auto& playsync_container = playstacks.at("ps_id_1");
+
+    fixture->playsync_manager->cancelSync("ps_id_1", "Display");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+    g_assert(playsync_container.find("Display") == playsync_container.cend());
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+
+    fixture->playsync_manager->releaseSync("ps_id_1", "TTS");
+    onTimeElapsed(7);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+}
+
+static void test_playstack_manager_handle_info_layer(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->playsync_manager->addListener("Display", fixture->playsync_manager_listener_snd.get());
+
+    /***************************************************************************
+     * [1] handle in DisplayAgent
+     **************************************************************************/
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_info_disp);
+    fixture->dummy_extra_data->id = "100";
+    fixture->playsync_manager->startSync("ps_id_1", "Display", fixture->dummy_extra_data);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Prepared);
+
+    /***************************************************************************
+     * [2] handle in TTSAgent
+     **************************************************************************/
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_info_disp);
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+
+    g_assert(!fixture->playsync_manager_listener->getExtraData());
+
+    auto extra_data = fixture->playsync_manager_listener_snd->getExtraData();
+    g_assert(extra_data);
+    g_assert(reinterpret_cast<DummyExtraInfo*>(extra_data)->id == "100");
+
+    fixture->playsync_manager->releaseSync("ps_id_1", "TTS");
+    onTimeElapsed(7);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+}
+
+static void test_playstack_manager_playstack_holding(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_info_disp);
+    fixture->playsync_manager->startSync("ps_id_1", "Display");
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+
+    fixture->playsync_manager->releaseSync("ps_id_1", "TTS");
+    onTimeElapsed(3);
+    fixture->playsync_manager->stopHolding();
+    onTimeElapsed(5);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+
+    fixture->playsync_manager->resetHolding();
+    onTimeElapsed(7);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+}
+
+static void test_playstack_manager_check_playstack_layer(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_media);
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    g_assert(!fixture->playsync_manager->hasLayer("", PlayStackLayer::Media));
+    g_assert(fixture->playsync_manager->hasLayer("ps_id_1", PlayStackLayer::Media));
+    g_assert(!fixture->playsync_manager->hasLayer("ps_id_1", PlayStackLayer::Info));
+}
+
+static void test_playstack_manager_recv_callback_only_participants(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->playsync_manager->addListener("AudioPlayer", fixture->playsync_manager_listener_snd.get());
+    g_assert(fixture->playsync_manager->getListenerCount() == 2);
+
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_info_disp);
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    fixture->playsync_manager->startSync("ps_id_1", "Display");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+    g_assert(fixture->playsync_manager_listener_snd->getSyncState("ps_id_1") == PlaySyncState::None);
+}
+
+static void sub_test_playstack_manager_preset_media_stacked(TestFixture* fixture)
+{
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_media);
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    fixture->playsync_manager->startSync("ps_id_1", "AudioPlayer");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+
+    fixture->playsync_manager->prepareSync("ps_id_2", fixture->ndir_info_disp);
+    fixture->playsync_manager->startSync("ps_id_2", "TTS");
+    fixture->playsync_manager->startSync("ps_id_2", "Display");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Synced);
+}
+
+static void test_playstack_manager_media_stacked_case(TestFixture* fixture, gconstpointer ignored)
+{
+    sub_test_playstack_manager_preset_media_stacked(fixture);
+
+    // It released info layer immediately if the media is stacked
+    fixture->playsync_manager->releaseSync("ps_id_2", "TTS");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Released);
+
+    fixture->playsync_manager->releaseSync("ps_id_1", "AudioPlayer");
+    onTimeElapsed(7);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+}
+
+static void test_playstack_manager_postpone_release(TestFixture* fixture, gconstpointer ignored)
+{
+    sub_test_playstack_manager_preset_media_stacked(fixture);
+
+    fixture->playsync_manager->postPoneRelease();
+    fixture->playsync_manager->releaseSync("ps_id_2", "TTS");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Synced);
+
+    fixture->playsync_manager->continueRelease();
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Released);
+}
+
+static void test_playstack_manager_check_to_process_previous_dialog(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_media);
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    fixture->playsync_manager->startSync("ps_id_1", "AudioPlayer");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+
+    g_assert(fixture->playsync_manager->isConditionToHandlePrevDialog(fixture->ndir_media, fixture->ndir_info_disp));
+    g_assert(!fixture->playsync_manager->isConditionToHandlePrevDialog(fixture->ndir_expect_speech, fixture->ndir_info_disp));
+}
+
+int main(int argc, char* argv[])
+{
+#if !GLIB_CHECK_VERSION(2, 36, 0)
+    g_type_init();
+#endif
+
+    g_test_init(&argc, &argv, (void*)NULL);
+    g_log_set_always_fatal((GLogLevelFlags)G_LOG_FATAL_MASK);
+
+    G_TEST_ADD_FUNC("/core/PlayStackManager/listener", test_playstack_manager_listener);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/prepareSync", test_playstack_manager_prepare_sync);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/startSync", test_playstack_manager_start_sync);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/cancelSync", test_playstack_manager_cancel_sync);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/releaseSyncImmediately", test_playstack_manager_release_sync_immediately);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/releaseSync", test_playstack_manager_release_sync);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/releaseSyncLater", test_playstack_manager_release_sync_later);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/normalCase", test_playstack_manager_normal_case);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/stopCase", test_playstack_manager_stop_case);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/ignoreRenderCase", test_playstack_manager_ignore_render_case);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/handleInfoLayer", test_playstack_manager_handle_info_layer);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/playstackHolding", test_playstack_manager_playstack_holding);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/checkPlayStackLayer", test_playstack_manager_check_playstack_layer);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/recvCallbackOnlyParticipants", test_playstack_manager_recv_callback_only_participants);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/mediaStackedCase", test_playstack_manager_media_stacked_case);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/postPoneRelease", test_playstack_manager_postpone_release);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/checkToProcessPreviousDialog", test_playstack_manager_check_to_process_previous_dialog);
+
+    return g_test_run();
+}

@@ -4,6 +4,7 @@ SET(UNIT_TESTS
 	test_core_directive_sequencer
 	test_core_session_manager
 	test_core_playstack_manager
+	test_core_playsync_manager
 	test_core_interaction_control_manager)
 
 # Add Compile Sources with Mock for test
@@ -13,6 +14,7 @@ SET(test_core_focus_manager_srcs ../../src/core/focus_manager.cc)
 SET(test_core_directive_sequencer_srcs ../../src/core/directive_sequencer.cc)
 SET(test_core_session_manager_srcs ../../src/core/session_manager.cc)
 SET(test_core_playstack_manager_srcs ../../src/core/playstack_manager.cc)
+SET(test_core_playsync_manager_srcs ../../src/core/playsync_manager.cc)
 SET(test_core_interaction_control_manager_srcs ../../src/core/interaction_control_manager.cc)
 
 FOREACH(test ${UNIT_TESTS})
