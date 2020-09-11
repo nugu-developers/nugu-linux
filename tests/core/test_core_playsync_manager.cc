@@ -93,7 +93,7 @@ struct DummyExtraInfo {
 
 class PlaySyncManagerListener : public IPlaySyncManagerListener {
 public:
-    void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
+    void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data) override
     {
         if (this->state != state) {
             this->state = state;
@@ -104,6 +104,11 @@ public:
         }
 
         sync_state_map[ps_id] = state;
+    }
+
+    void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override
+    {
+        this->extra_data = extra_datas.second;
     }
 
     PlaySyncState getSyncState(const std::string& ps_id)
@@ -148,6 +153,7 @@ typedef struct {
     std::shared_ptr<PlaySyncManagerListener> playsync_manager_listener;
     std::shared_ptr<PlaySyncManagerListener> playsync_manager_listener_snd;
     DummyExtraInfo* dummy_extra_data;
+    DummyExtraInfo* dummy_extra_data_snd;
 
     NuguDirective* ndir_info_disp;
     NuguDirective* ndir_media;
@@ -167,6 +173,7 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
     fixture->playsync_manager->addListener("TTS", fixture->playsync_manager_listener.get());
 
     fixture->dummy_extra_data = new DummyExtraInfo();
+    fixture->dummy_extra_data_snd = new DummyExtraInfo();
 
     fixture->ndir_info_disp = createDirective("TTS", "Speak",
         "{ \"directives\": [\"TTS.Speak\", \"Display.FullText1\"] }");
@@ -187,7 +194,10 @@ static void teardown(TestFixture* fixture, gconstpointer user_data)
     fixture->playsync_manager.reset();
 
     delete fixture->dummy_extra_data;
+    delete fixture->dummy_extra_data_snd;
+
     fixture->dummy_extra_data = nullptr;
+    fixture->dummy_extra_data_snd = nullptr;
 }
 
 static void onTimeElapsed(unsigned int duration)
@@ -583,6 +593,26 @@ static void test_playstack_manager_check_to_process_previous_dialog(TestFixture*
     g_assert(!fixture->playsync_manager->isConditionToHandlePrevDialog(fixture->ndir_expect_speech, fixture->ndir_info_disp));
 }
 
+static void test_playstack_manager_refresh_extra_data(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->playsync_manager->addListener("AudioPlayer", fixture->playsync_manager_listener_snd.get());
+
+    fixture->dummy_extra_data->id = "100";
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_media);
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    fixture->playsync_manager->startSync("ps_id_1", "AudioPlayer", fixture->dummy_extra_data);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+    g_assert(reinterpret_cast<DummyExtraInfo*>(fixture->playsync_manager_listener_snd->getExtraData())->id == "100");
+    g_assert(!fixture->playsync_manager_listener->getExtraData());
+
+    fixture->dummy_extra_data_snd->id = "200";
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_media);
+    fixture->playsync_manager->startSync("ps_id_1", "AudioPlayer", fixture->dummy_extra_data_snd);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+    g_assert(reinterpret_cast<DummyExtraInfo*>(fixture->playsync_manager_listener_snd->getExtraData())->id == "200");
+    g_assert(!fixture->playsync_manager_listener->getExtraData());
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -609,6 +639,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/mediaStackedCase", test_playstack_manager_media_stacked_case);
     G_TEST_ADD_FUNC("/core/PlayStackManager/postPoneRelease", test_playstack_manager_postpone_release);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkToProcessPreviousDialog", test_playstack_manager_check_to_process_previous_dialog);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/refreshExtraData", test_playstack_manager_refresh_extra_data);
 
     return g_test_run();
 }
