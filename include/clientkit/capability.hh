@@ -230,9 +230,17 @@ public:
 
     /**
      * @brief Get play service id which is managed by play stack control.
+     * @param[in] playstack_control json object which has playStackControl field
      * @return current play service id
      */
     std::string getPlayServiceIdInStackControl(const Json::Value& playstack_control);
+
+    /**
+     * @brief Get play service id which is managed by play stack control.
+     * * @param[in] payload raw json data
+     * @return current play service id
+     */
+    std::string getPlayServiceIdInStackControl(const char* payload);
 
     /**
      * @brief Get interaction mode which is included in interactionControl.
@@ -377,8 +385,8 @@ protected:
     /** @brief ICapabilityHelper instance for using NuguCore functions */
     ICapabilityHelper* capa_helper = nullptr;
 
-    /** @brief IPlayStackManager instance for using playstack management */
-    IPlayStackManager* playstack_manager = nullptr;
+    /** @brief IPlaySyncManager instance for using playsync management */
+    IPlaySyncManager* playsync_manager = nullptr;
 
     /** @brief IFocusManager instance for using audio focus */
     IFocusManager* focus_manager = nullptr;

@@ -48,6 +48,7 @@ AudioPlayerAgent::AudioPlayerAgent()
     , volume_update(false)
     , volume(-1)
     , display_listener(nullptr)
+    , render_info({})
 {
 }
 
@@ -115,6 +116,8 @@ void AudioPlayerAgent::initialize()
     addBlockingPolicy("RequestPauseCommand", { BlockingMedium::AUDIO, false });
     addBlockingPolicy("RequestStopCommand", { BlockingMedium::AUDIO, false });
 
+    playsync_manager->addListener(getName(), this);
+
     initialized = true;
 }
 
@@ -133,6 +136,8 @@ void AudioPlayerAgent::deInitialize()
         delete tts_player;
         tts_player = nullptr;
     }
+
+    playsync_manager->removeListener(getName());
 
     cur_player = nullptr;
 
@@ -245,8 +250,8 @@ void AudioPlayerAgent::executeOnForegroundAction()
     checkAndUpdateVolume();
 
     // TODO: integrate with playsync and session manager
-    if (focus_state == FocusState::BACKGROUND && display_listener)
-        display_listener->renderDisplay(template_id, template_type, template_view, template_id);
+    // if (focus_state == FocusState::BACKGROUND && display_listener)
+    //     display_listener->renderDisplay(template_id, template_type, template_view, template_id);
 
     if (cur_player->state() == MediaPlayerState::PAUSED) {
         if (!cur_player->resume()) {
@@ -440,6 +445,30 @@ bool AudioPlayerAgent::setMute(bool mute)
 
     nugu_dbg("media player's mute(%d) changed..", mute);
     return true;
+}
+
+void AudioPlayerAgent::preprocessDirective(NuguDirective* ndir)
+{
+    const char* dname;
+    const char* message;
+
+    if (!ndir
+        || !(dname = nugu_directive_peek_name(ndir))
+        || !(message = nugu_directive_peek_json(ndir))) {
+        nugu_error("The directive info is not exist.");
+        return;
+    }
+
+    if (!strcmp(dname, "Play")) {
+        parsingRenderInfo(ndir, message);
+
+        std::string playstackctl_ps_id = getPlayServiceIdInStackControl(message);
+
+        if (playsync_manager->hasLayer(playstackctl_ps_id, PlayStackLayer::Media))
+            playsync_manager->startSync(playstackctl_ps_id, getName(), &render_info);
+        else
+            playsync_manager->prepareSync(playstackctl_ps_id, ndir);
+    }
 }
 
 void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
@@ -880,7 +909,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         report_interval_time = report["progressReportIntervalInMilliseconds"].asLargestInt();
     }
 
-    playstack_manager->add(getPlayServiceIdInStackControl(root["playStackControl"]), getNuguDirective());
+    playsync_manager->startSync(getPlayServiceIdInStackControl(root["playStackControl"]), getName());
 
     is_finished = false;
     is_paused_by_unfocus = false;
@@ -894,23 +923,6 @@ void AudioPlayerAgent::parsingPlay(const char* message)
 
     std::string dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
     std::string dname = nugu_directive_peek_name(getNuguDirective());
-
-    if (display_listener) {
-        Json::Value meta = audio_item["metadata"];
-
-        if (!meta.empty() && !meta["template"].empty()) {
-            Json::StyledWriter writer;
-
-            // TODO: integrate with playsync and session manager
-            std::string type = meta["template"]["type"].asString();
-            std::string json = writer.write(meta["template"]);
-
-            display_listener->renderDisplay(dialog_id, type, json, dialog_id);
-            template_id = dialog_id;
-            template_type = type;
-            template_view = json;
-        }
-    }
 
     if (new_content) {
         if (pre_ref_dialog_id.size())
@@ -983,7 +995,7 @@ void AudioPlayerAgent::parsingPause(const char* message)
 
     if (playserviceid.size()) {
         // hold context about 10m' and remove it, if there are no action.
-        playstack_manager->remove(playserviceid, PlayStackRemoveMode::Later);
+        playsync_manager->releaseSyncLater(playserviceid, getName());
 
         cur_dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
         if (!cur_player->pause()) {
@@ -1015,13 +1027,11 @@ void AudioPlayerAgent::parsingStop(const char* message)
     playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
     if (!playstackctl_ps_id.empty()) {
-        playstack_manager->remove(playstackctl_ps_id, is_finished ? PlayStackRemoveMode::Normal : PlayStackRemoveMode::Immediately);
+        is_finished
+            ? playsync_manager->releaseSync(playstackctl_ps_id, getName())
+            : playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
 
         focus_manager->releaseFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME);
-
-        // TODO: integrate with playsync and session manager
-        if (display_listener)
-            display_listener->clearDisplay(template_id, true);
 
         capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
     }
@@ -1238,6 +1248,29 @@ void AudioPlayerAgent::parsingRequestOthersCommand(const char* dname, const char
     }
 
     sendEventByRequestOthersDirective(dname);
+}
+
+void AudioPlayerAgent::parsingRenderInfo(NuguDirective* ndir, const char* message)
+{
+    Json::Value root;
+    Json::Reader reader;
+
+    if (!reader.parse(message, root)) {
+        nugu_error("parsing error");
+        return;
+    }
+
+    Json::Value meta = root["audioItem"]["metadata"];
+
+    if (!meta.empty() && !meta["template"].empty()) {
+        Json::StyledWriter writer;
+
+        render_info = RenderInfo {
+            meta["template"]["type"].asString(),
+            writer.write(meta["template"]),
+            nugu_directive_peek_dialog_id(ndir)
+        };
+    }
 }
 
 std::string AudioPlayerAgent::playbackError(PlaybackError error)
@@ -1462,6 +1495,32 @@ void AudioPlayerAgent::removeListener(IDisplayListener* listener)
 void AudioPlayerAgent::stopRenderingTimer(const std::string& id)
 {
     // TODO: integrate with playsync and session manager
+}
+
+void AudioPlayerAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
+{
+    if (display_listener && extra_data) {
+        std::tie(template_type, template_view, template_id) = *reinterpret_cast<RenderInfo*>(extra_data);
+
+        if (state == PlaySyncState::Synced)
+            display_listener->renderDisplay(template_id, template_type, template_view, template_id);
+        else if (state == PlaySyncState::Released)
+            display_listener->clearDisplay(template_id, true);
+    }
+}
+
+void AudioPlayerAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
+{
+    if (extra_datas.first) {
+        std::string template_id;
+        std::tie(std::ignore, std::ignore, template_id) = *reinterpret_cast<RenderInfo*>(extra_datas.first);
+        display_listener->clearDisplay(template_id, true);
+    }
+
+    if (extra_datas.second) {
+        std::tie(template_type, template_view, template_id) = *reinterpret_cast<RenderInfo*>(extra_datas.second);
+        display_listener->renderDisplay(template_id, template_type, template_view, template_id);
+    }
 }
 
 } // NuguCapability

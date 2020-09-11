@@ -78,6 +78,8 @@ void TTSAgent::initialize()
 
     addBlockingPolicy("Speak", { BlockingMedium::AUDIO, true });
 
+    playsync_manager->addListener(getName(), this);
+
     initialized = true;
 }
 
@@ -93,6 +95,8 @@ void TTSAgent::deInitialize()
         player->removeListener(this);
         delete player;
     }
+
+    playsync_manager->removeListener(getName());
 
     initialized = false;
 }
@@ -153,8 +157,8 @@ void TTSAgent::onFocusChanged(FocusState state)
     case FocusState::NONE:
         stopTTS();
 
-        if (playstack_manager->getPlayStackLayer(playstackctl_ps_id) != PlayStackLayer::Media)
-            playstack_manager->remove(playstackctl_ps_id);
+        if (!playsync_manager->hasLayer(playstackctl_ps_id, PlayStackLayer::Media))
+            playsync_manager->releaseSync(playstackctl_ps_id, getName());
 
         break;
     }
@@ -235,6 +239,22 @@ bool TTSAgent::setVolume(int volume)
     else
         nugu_dbg("Reserved to change pcm player's volume(%d)", volume);
     return true;
+}
+
+void TTSAgent::preprocessDirective(NuguDirective* ndir)
+{
+    const char* dname;
+    const char* message;
+
+    if (!ndir
+        || !(dname = nugu_directive_peek_name(ndir))
+        || !(message = nugu_directive_peek_json(ndir))) {
+        nugu_error("The directive info is not exist.");
+        return;
+    }
+
+    if (!strcmp(dname, "Speak"))
+        playsync_manager->prepareSync(getPlayServiceIdInStackControl(message), ndir);
 }
 
 void TTSAgent::parsingDirective(const char* dname, const char* message)
@@ -426,7 +446,7 @@ void TTSAgent::parsingSpeak(const char* message)
     setReferrerDialogRequestId(dname, dialog_id);
 
     std::string tmp_playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
-    playstack_manager->add(tmp_playstackctl_ps_id, speak_dir);
+    playsync_manager->startSync(tmp_playstackctl_ps_id, getName());
 
     // It need to preserve previous playstack_ps_id, if a new received playstack_ps_id is not exist.
     if (!tmp_playstackctl_ps_id.empty())
@@ -533,6 +553,16 @@ void TTSAgent::checkAndUpdateVolume()
         player->setVolume(volume);
         volume_update = false;
     }
+}
+
+void TTSAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
+{
+    if (state == PlaySyncState::Released && !is_finished)
+        suspend();
+}
+
+void TTSAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
+{
 }
 
 } // NuguCapability

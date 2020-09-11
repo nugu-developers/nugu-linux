@@ -26,32 +26,49 @@ namespace NuguCore {
 
 using namespace NuguClientKit;
 
+enum class PlayStackRemoveMode {
+    Normal,
+    Immediately,
+    Later
+};
+
+class IPlayStackManagerListener {
+public:
+    virtual ~IPlayStackManagerListener() = default;
+
+    virtual void onStackAdded(const std::string& ps_id) = 0;
+    virtual void onStackRemoved(const std::string& ps_id) = 0;
+};
+
 class IStackTimer : public NUGUTimer {
 public:
     virtual ~IStackTimer() = default;
     virtual bool isStarted() = 0;
 };
 
-class PlayStackManager : public IPlayStackManager {
+class PlayStackManager {
+public:
+    using PlayStack = std::pair<std::map<std::string, PlayStackLayer>, std::vector<std::string>>;
+
 public:
     PlayStackManager();
     virtual ~PlayStackManager();
 
-    void addListener(IPlayStackManagerListener* listener) override;
-    void removeListener(IPlayStackManagerListener* listener) override;
+    void addListener(IPlayStackManagerListener* listener);
+    void removeListener(IPlayStackManagerListener* listener);
     int getListenerCount();
     void setTimer(IStackTimer* timer);
 
-    bool add(const std::string& ps_id, NuguDirective* ndir) override;
-    void remove(const std::string& ps_id, PlayStackRemoveMode mode = PlayStackRemoveMode::Normal) override;
-    bool isStackedCondition(NuguDirective* ndir) override;
-    bool hasExpectSpeech(NuguDirective* ndir) override;
-    void stopHolding() override;
-    void resetHolding() override;
+    bool add(const std::string& ps_id, NuguDirective* ndir);
+    void remove(const std::string& ps_id, PlayStackRemoveMode mode = PlayStackRemoveMode::Normal);
+    bool isStackedCondition(NuguDirective* ndir);
+    bool hasExpectSpeech(NuguDirective* ndir);
+    void stopHolding();
+    void resetHolding();
     bool isActiveHolding();
 
-    PlayStackLayer getPlayStackLayer(const std::string& ps_id) override;
-    std::vector<std::string> getAllPlayStackItems() override;
+    PlayStackLayer getPlayStackLayer(const std::string& ps_id);
+    std::vector<std::string> getAllPlayStackItems();
     const PlayStack& getPlayStackContainer();
 
 private:

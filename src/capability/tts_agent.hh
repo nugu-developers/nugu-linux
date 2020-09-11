@@ -25,7 +25,8 @@ namespace NuguCapability {
 class TTSAgent final : public Capability,
                        public ITTSHandler,
                        public IMediaPlayerListener,
-                       public IFocusResourceListener {
+                       public IFocusResourceListener,
+                       public IPlaySyncManagerListener {
 public:
     TTSAgent();
     virtual ~TTSAgent();
@@ -35,6 +36,7 @@ public:
     void deInitialize() override;
     void suspend() override;
 
+    void preprocessDirective(NuguDirective* ndir) override;
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
 
@@ -54,8 +56,12 @@ public:
     static void directiveDataCallback(NuguDirective* ndir, int seq, void* userdata);
     static void getAttachmentData(NuguDirective* ndir, int seq, void* userdata);
 
+    // implements IPlaySyncManagerListener
+    void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data) override;
+    void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override;
+
 private:
-    void sendEventCommon(CapabilityEvent *event, const std::string& token, EventResultCallback cb = nullptr);
+    void sendEventCommon(CapabilityEvent* event, const std::string& token, EventResultCallback cb = nullptr);
     // parsing directive
     void parsingSpeak(const char* message);
     void parsingStop(const char* message);

@@ -147,7 +147,7 @@ void Capability::setNuguCoreContainer(INuguCoreContainer* core_container)
     this->core_container = core_container;
     capa_helper = core_container->getCapabilityHelper();
 
-    playstack_manager = capa_helper->getPlayStackManager();
+    playsync_manager = capa_helper->getPlaySyncManager();
     focus_manager = capa_helper->getFocusManager();
     session_manager = capa_helper->getSessionManager();
     directive_sequencer = capa_helper->getDirectiveSequencer();
@@ -258,17 +258,28 @@ std::string Capability::getVersion()
 
 std::string Capability::getPlayServiceIdInStackControl(const Json::Value& playstack_control)
 {
-    std::string playstack_ps_id;
+    if (!playstack_control.empty() && playstack_control["type"].asString() == "PUSH")
+        return playstack_control["playServiceId"].asString();
 
-    if (!playstack_control.isNull() && !playstack_control.empty()) {
-        std::string playstack_type = playstack_control["type"].asString();
+    return "";
+}
 
-        if (playstack_type.size() > 0 && playstack_type == "PUSH") {
-            playstack_ps_id = playstack_control["playServiceId"].asString();
-        }
+std::string Capability::getPlayServiceIdInStackControl(const char* payload)
+{
+    if (!payload) {
+        nugu_error("The payload is not exist.");
+        return "";
     }
 
-    return playstack_ps_id;
+    Json::Value root;
+    Json::Reader reader;
+
+    if (!reader.parse(payload, root)) {
+        nugu_error("parsing error");
+        return "";
+    }
+
+    return getPlayServiceIdInStackControl(root["playStackControl"]);
 }
 
 InteractionMode Capability::getInteractionMode(const Json::Value& interaction_control)
@@ -300,7 +311,7 @@ void Capability::processDirective(NuguDirective* ndir)
         if (pimpl->cur_ndir) {
             nugu_directive_remove_data_callback(pimpl->cur_ndir);
 
-            if (playstack_manager->isStackedCondition(ndir) && !playstack_manager->hasExpectSpeech(pimpl->cur_ndir)) {
+            if (playsync_manager->isConditionToHandlePrevDialog(pimpl->cur_ndir, ndir)) {
                 nugu_dbg("complete previous dialog");
                 directive_sequencer->complete(pimpl->cur_ndir);
             } else {

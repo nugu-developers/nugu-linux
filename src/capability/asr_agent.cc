@@ -144,6 +144,8 @@ void ASRAgent::startRecognition(AsrRecognizeCallback callback)
     }
 
     saveAllContextInfo();
+
+    playsync_manager->postPoneRelease();
     focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
     asr_cancel = false;
 }
@@ -169,7 +171,7 @@ void ASRAgent::onFocusChanged(FocusState state)
 
     switch (state) {
     case FocusState::FOREGROUND: {
-        playstack_manager->stopHolding();
+        playsync_manager->stopHolding();
 
         std::string id = "id#" + std::to_string(uniq++);
         setListeningId(id);
@@ -179,8 +181,8 @@ void ASRAgent::onFocusChanged(FocusState state)
         focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
         break;
     case FocusState::NONE:
-        playstack_manager->resetHolding();
-
+        playsync_manager->continueRelease();
+        playsync_manager->resetHolding();
         speech_recognizer->stopListening();
 
         if (getASRState() == ASRState::LISTENING

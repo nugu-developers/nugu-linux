@@ -67,6 +67,7 @@ void CapabilityCollection::composeCapabilityFactory()
         if (!audio_player_handler) {
             aplayer_listener = std::make_shared<AudioPlayerListener>();
             audio_player_handler = makeCapability<AudioPlayerAgent, IAudioPlayerHandler>(aplayer_listener.get());
+            audio_player_handler->setListener(aplayer_listener.get());
         }
 
         return audio_player_handler.get();

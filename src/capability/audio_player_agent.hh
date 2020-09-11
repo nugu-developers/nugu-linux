@@ -28,7 +28,8 @@ using namespace NuguClientKit;
 class AudioPlayerAgent final : public Capability,
                                public IMediaPlayerListener,
                                public IAudioPlayerHandler,
-                               public IFocusResourceListener {
+                               public IFocusResourceListener,
+                               public IPlaySyncManagerListener {
 public:
     enum PlaybackError {
         MEDIA_ERROR_UNKNOWN,
@@ -38,6 +39,8 @@ public:
         MEDIA_ERROR_INTERNAL_DEVICE_ERROR
     };
 
+    using RenderInfo = std::tuple<std::string, std::string, std::string>;
+
 public:
     AudioPlayerAgent();
     virtual ~AudioPlayerAgent();
@@ -46,6 +49,7 @@ public:
     void suspend() override;
     void restore() override;
 
+    void preprocessDirective(NuguDirective* ndir) override;
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
     bool receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
@@ -112,6 +116,10 @@ public:
     void volumeChanged(int volume) override;
     void muteChanged(int mute) override;
 
+    // implements IPlaySyncManagerListener
+    void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data) override;
+    void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override;
+
 private:
     std::string sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);
 
@@ -125,6 +133,7 @@ private:
     void parsingControlLyricsPage(const char* message);
     void parsingRequestPlayCommand(const char* dname, const char* message);
     void parsingRequestOthersCommand(const char* dname, const char* message);
+    void parsingRenderInfo(NuguDirective* ndir, const char* message);
 
     void checkAndUpdateVolume();
     std::string playbackError(PlaybackError error);
@@ -159,6 +168,7 @@ private:
     std::string template_type;
     std::vector<IAudioPlayerListener*> aplayer_listeners;
     IAudioPlayerDisplayListener* display_listener;
+    RenderInfo render_info;
 };
 
 } // NuguCapability

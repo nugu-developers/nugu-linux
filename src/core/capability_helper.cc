@@ -47,9 +47,9 @@ void CapabilityHelper::destroyInstance()
     }
 }
 
-IPlayStackManager* CapabilityHelper::getPlayStackManager()
+IPlaySyncManager* CapabilityHelper::getPlaySyncManager()
 {
-    return CapabilityManager::getInstance()->getPlayStackManager();
+    return CapabilityManager::getInstance()->getPlaySyncManager();
 }
 
 IFocusManager* CapabilityHelper::getFocusManager()

@@ -135,7 +135,7 @@ void TextAgent::receiveCommandAll(const std::string& command, const std::string&
         cur_dialog_id = "";
 
         if (dir_groups.find("TTS") == std::string::npos && dir_groups.find("AudioPlayer") == std::string::npos)
-            playstack_manager->resetHolding();
+            playsync_manager->resetHolding();
     }
 }
 
@@ -220,7 +220,7 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
 
     cur_dialog_id = event.getDialogRequestId();
 
-    playstack_manager->stopHolding();
+    playsync_manager->stopHolding();
 
     sendEvent(&event, capa_helper->makeAllContextInfo(), payload, std::move(cb));
 }
@@ -243,7 +243,7 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
 
     cur_dialog_id = event.getDialogRequestId();
 
-    playstack_manager->stopHolding();
+    playsync_manager->stopHolding();
 
     sendEvent(&event, capa_helper->makeAllContextInfo(), payload, std::move(cb));
 }

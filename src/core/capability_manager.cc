@@ -28,7 +28,7 @@ static const char* WAKEUP_WORD = "아리아";
 CapabilityManager* CapabilityManager::instance = nullptr;
 
 CapabilityManager::CapabilityManager()
-    : playstack_manager(std::unique_ptr<PlayStackManager>(new PlayStackManager()))
+    : playsync_manager(std::unique_ptr<PlaySyncManager>(new PlaySyncManager()))
     , focus_manager(std::unique_ptr<FocusManager>(new FocusManager()))
     , session_manager(std::unique_ptr<SessionManager>(new SessionManager()))
     , directive_sequencer(std::unique_ptr<DirectiveSequencer>(new DirectiveSequencer()))
@@ -264,7 +264,7 @@ std::string CapabilityManager::makeAllContextInfo()
     client["playStack"] = Json::arrayValue;
 
     // compose playStack info
-    auto playstack = playstack_manager->getAllPlayStackItems();
+    const auto& playstack = playsync_manager->getAllPlayStackItems();
 
     for (const auto& element : playstack)
         client["playStack"].append(element);
@@ -343,9 +343,9 @@ void CapabilityManager::restoreAll()
         iter.second->restore();
 }
 
-PlayStackManager* CapabilityManager::getPlayStackManager()
+PlaySyncManager* CapabilityManager::getPlaySyncManager()
 {
-    return playstack_manager.get();
+    return playsync_manager.get();
 }
 
 FocusManager* CapabilityManager::getFocusManager()

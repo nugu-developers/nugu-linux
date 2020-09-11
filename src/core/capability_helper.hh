@@ -29,7 +29,7 @@ public:
     static void destroyInstance();
 
     // implements ICapabilityHelper
-    IPlayStackManager* getPlayStackManager() override;
+    IPlaySyncManager* getPlaySyncManager() override;
     IFocusManager* getFocusManager() override;
     ISessionManager* getSessionManager() override;
     IInteractionControlManager* getInteractionControlManager() override;
