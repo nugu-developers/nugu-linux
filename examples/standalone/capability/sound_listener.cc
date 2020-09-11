@@ -22,9 +22,8 @@ void SoundListener::setSoundHandler(ISoundHandler* sound_handler)
         this->sound_handler = sound_handler;
 }
 
-void SoundListener::handleBeep(BeepType beep_type)
+void SoundListener::handleBeep(BeepType beep_type, const std::string& dialog_id)
 {
-
     switch (beep_type) {
     case BeepType::RESPONSE_FAIL:
         // step-1 : play related beep sound file

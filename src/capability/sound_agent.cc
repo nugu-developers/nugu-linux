@@ -104,7 +104,7 @@ void SoundAgent::parsingBeep(const char* message)
 
     if (sound_listener) {
         try {
-            sound_listener->handleBeep(BEEP_TYPE_MAP.at(beep_name));
+            sound_listener->handleBeep(BEEP_TYPE_MAP.at(beep_name), nugu_directive_peek_dialog_id(getNuguDirective()));
         } catch (const std::out_of_range& oor) {
             nugu_warn("There are not exist matched beep type.");
 
