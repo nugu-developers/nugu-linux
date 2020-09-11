@@ -24,7 +24,7 @@
 #include <clientkit/directive_sequencer_interface.hh>
 #include <clientkit/focus_manager_interface.hh>
 #include <clientkit/interaction_control_manager_interface.hh>
-#include <clientkit/playstack_manager_interface.hh>
+#include <clientkit/playsync_manager_interface.hh>
 #include <clientkit/session_manager_interface.hh>
 
 namespace NuguClientKit {
@@ -47,10 +47,10 @@ public:
     virtual ~ICapabilityHelper() = default;
 
     /**
-     * @brief Get IPlayStackManager instance
-     * @return IPlayStackManager instance
+     * @brief Get IPlaySyncManager instance
+     * @return IPlaySyncManager instance
      */
-    virtual IPlayStackManager* getPlayStackManager() = 0;
+    virtual IPlaySyncManager* getPlaySyncManager() = 0;
 
     /**
      * @brief Get IFocusManager instance
