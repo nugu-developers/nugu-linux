@@ -53,8 +53,9 @@ public:
     /**
      * @brief Handle beep sound which is related to received beep name.
      * @param[in] beep_type beep type
+     * @param[in] dialog_id dialog request id
      */
-    virtual void handleBeep(BeepType beep_type) = 0;
+    virtual void handleBeep(BeepType beep_type, const std::string& dialog_id) = 0;
 };
 
 /**
