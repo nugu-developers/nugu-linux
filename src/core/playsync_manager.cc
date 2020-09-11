@@ -90,11 +90,14 @@ void PlaySyncManager::prepareSync(const std::string& ps_id, NuguDirective* ndir)
 
     playstack_map.emplace(ps_id, playsync_container);
 
-    notifyStateChange(ps_id, PlaySyncState::Prepared);
+    notifyStateChanged(ps_id, PlaySyncState::Prepared);
 }
 
 void PlaySyncManager::startSync(const std::string& ps_id, const std::string& requester, void* extra_data)
 {
+    if (extra_data)
+        updateExtraData(ps_id, requester, extra_data);
+
     if (!isConditionToSyncAction(ps_id, requester, PlaySyncState::Synced))
         return;
 
@@ -106,7 +109,7 @@ void PlaySyncManager::startSync(const std::string& ps_id, const std::string& req
         if (element.second.first != PlaySyncState::Synced)
             return;
 
-    notifyStateChange(ps_id, PlaySyncState::Synced);
+    notifyStateChanged(ps_id, PlaySyncState::Synced);
 }
 
 void PlaySyncManager::cancelSync(const std::string& ps_id, const std::string& requester)
@@ -191,12 +194,26 @@ void PlaySyncManager::onStackRemoved(const std::string& ps_id)
     for (auto& element : playsync_container)
         element.second.first = PlaySyncState::Released;
 
-    notifyStateChange(ps_id, PlaySyncState::Released);
+    notifyStateChanged(ps_id, PlaySyncState::Released);
 
     playstack_map.erase(ps_id);
 }
 
-void PlaySyncManager::notifyStateChange(const std::string& ps_id, PlaySyncState state)
+void PlaySyncManager::updateExtraData(const std::string& ps_id, const std::string& requester, void* extra_data)
+{
+    try {
+        auto& playsync_element = playstack_map.at(ps_id).at(requester);
+
+        if (playsync_element.first == PlaySyncState::Synced) {
+            listener_map.at(requester)->onDataChanged(ps_id, { playsync_element.second, extra_data });
+            playsync_element.second = extra_data;
+        }
+    } catch (std::out_of_range& exception) {
+        nugu_warn("The playSyncContainer or element is not exist.");
+    }
+}
+
+void PlaySyncManager::notifyStateChanged(const std::string& ps_id, PlaySyncState state)
 {
     if (playstack_map.find(ps_id) == playstack_map.cend()) {
         nugu_warn("The PlaySyncContainer is not exist.");
