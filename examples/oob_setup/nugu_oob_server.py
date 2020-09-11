@@ -5,6 +5,12 @@ from flask.json import jsonify
 from requests_oauthlib import OAuth2Session
 import os
 import sys
+import logging
+import sys
+
+log = logging.getLogger('requests_oauthlib')
+log.addHandler(logging.StreamHandler(sys.stdout))
+log.setLevel(logging.DEBUG)
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 
@@ -57,7 +63,10 @@ def refresh_token():
     extra = {
         'client_id': oauthinfo['clientId'],
         'client_secret': oauthinfo['clientSecret'],
-        'refresh_token': authinfo['refresh_token']
+        'refresh_token': authinfo['refresh_token'],
+        'data': {
+            'deviceSerialNumber': oauthinfo['deviceSerialNumber']
+        }
     }
 
     nugu = OAuth2Session(oauthinfo['clientId'], token=authinfo['access_token'])
@@ -217,27 +226,32 @@ def index():
 <table width=100%>
     <tr>
         <th>access_token</th>
-        <td width=100%><input style="width:100%;" type=text name=clientId value="{access_token}"/></td>
+        <td width=100%><input disabled style="width:100%;" type=text name=clientId value="{access_token}"/></td>
     </tr>
     <tr>
         <th>expires_at</th>
-        <td width=100%><input style="width:100%;" type=text name=clientId value="{expires_at}"/></td>
+        <td width=100%><input disabled style="width:100%;" type=text name=clientId value="{expires_at}"/></td>
     </tr>
     <tr>
         <th>expires_in</th>
-        <td width=100%><input style="width:100%;" type=text name=clientId value="{expires_in}"/></td>
+        <td width=100%><input disabled style="width:100%;" type=text name=clientId value="{expires_in}"/></td>
     </tr>
     <tr>
         <th>refresh_token</th>
-        <td width=100%><input style="width:100%;" type=text name=clientId value="{refresh_token}"/></td>
+        <td width=100%><input disabled style="width:100%;" type=text name=clientId value="{refresh_token}"/></td>
     </tr>
     <tr>
         <th>token_type</th>
-        <td width=100%><input style="width:100%;" type=text name=clientId value="{token_type}"/></td>
+        <td width=100%><input disabled style="width:100%;" type=text name=clientId value="{token_type}"/></td>
     </tr>
+    <tr>
+        <th>scope</th>
+        <td width=100%><input disabled type=text style="width:100%;" name=scope value="{scope}"/></td>
+    </tr>
+
 </table>
 <p align="center"><a href="/logout">Logout</a> or <a href="/refresh">Refresh the token</a></p>
-""".format(access_token=token['access_token'], expires_at=token['expires_at'], expires_in=token['expires_in'], refresh_token=refresh_token, token_type=token['token_type'])
+""".format(access_token=token['access_token'], expires_at=token['expires_at'], expires_in=token['expires_in'], refresh_token=refresh_token, token_type=token['token_type'], scope=token['scope'])
     else:
         loginForm = """
 <p align="center"><a href="/login">Get OAuth2 token</a> or <a href="/refresh">Refresh the token</a></p>
@@ -333,6 +347,7 @@ def callback():
 
     clientId = oauthinfo['clientId']
     clientSecret = oauthinfo['clientSecret']
+    serial = oauthinfo['deviceSerialNumber']
 
     if 'oauth_state' in session:
         oauth_state = session['oauth_state']
@@ -344,7 +359,8 @@ def callback():
     nugu = OAuth2Session(
         clientId, state=oauth_state, redirect_uri=redirect_uri)
     token = nugu.fetch_token(token_url, client_secret=clientSecret,
-                                authorization_response=request.url)
+                                authorization_response=request.url,
+                                data='{{"deviceSerialNumber":"{serial}"}}'.format(serial=serial))
 
     token_json = json.dumps(token, indent=4)
     print token_json
