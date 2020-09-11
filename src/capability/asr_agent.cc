@@ -487,7 +487,7 @@ void ASRAgent::parsingNotifyResult(const char* message)
     }
 
     if (state == "ERROR") {
-        nugu_error("NotifyResult.state is ERROR");
+        nugu_error("NotifyResult.state is ERROR (code: %d, desc: %s)", root["asrErrorCode"].asInt(), root["description"].asString().c_str());
         releaseASRFocus(false, ASRError::RECOGNIZE_ERROR);
     }
 }
