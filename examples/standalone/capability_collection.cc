@@ -145,6 +145,14 @@ void CapabilityCollection::composeCapabilityFactory()
 
         return session_handler.get();
     });
+    factories.emplace("Display", [&]() {
+        if (!display_handler) {
+            display_listener = std::make_shared<DisplayListener>();
+            display_handler = makeCapability<DisplayAgent, IDisplayHandler>(display_listener.get());
+        }
+
+        return display_handler.get();
+    });
 }
 
 SpeakerInfo CapabilityCollection::makeSpeakerInfo(SpeakerType type, int muted, bool can_control)

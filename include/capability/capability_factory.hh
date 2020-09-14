@@ -81,6 +81,11 @@ class SoundAgent;
 class SessionAgent;
 
 /**
+ * @brief DisplayAgent
+ */
+class DisplayAgent;
+
+/**
  * @brief CapabilityFactory
  */
 class CapabilityFactory {
