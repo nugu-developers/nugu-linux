@@ -35,6 +35,7 @@ TTSAgent::TTSAgent()
     , cur_state(MediaPlayerState::IDLE)
     , focus_state(FocusState::NONE)
     , cur_token("")
+    , is_prehandling(false)
     , is_finished(false)
     , volume_update(false)
     , volume(-1)
@@ -253,6 +254,8 @@ void TTSAgent::preprocessDirective(NuguDirective* ndir)
         return;
     }
 
+    is_prehandling = true;
+
     if (!strcmp(dname, "Speak"))
         playsync_manager->prepareSync(getPlayServiceIdInStackControl(message), ndir);
 }
@@ -260,6 +263,8 @@ void TTSAgent::preprocessDirective(NuguDirective* ndir)
 void TTSAgent::parsingDirective(const char* dname, const char* message)
 {
     nugu_dbg("message: %s", message);
+
+    is_prehandling = false;
 
     // directive name check
     if (!strcmp(dname, "Speak")) {
@@ -557,7 +562,7 @@ void TTSAgent::checkAndUpdateVolume()
 
 void TTSAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
 {
-    if (state == PlaySyncState::Released && !is_finished)
+    if (state == PlaySyncState::Released && !is_finished && !is_prehandling)
         suspend();
 }
 
