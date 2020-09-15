@@ -79,6 +79,7 @@ private:
     MediaPlayerState cur_state;
     FocusState focus_state;
     std::string cur_token;
+    bool is_prehandling;
     bool is_finished;
     bool volume_update;
     int volume;
