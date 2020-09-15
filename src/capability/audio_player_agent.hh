@@ -17,6 +17,8 @@
 #ifndef __NUGU_AUDIO_PLAYER_AGENT_H__
 #define __NUGU_AUDIO_PLAYER_AGENT_H__
 
+#include <map>
+
 #include "capability/audio_player_interface.hh"
 #include "capability/display_interface.hh"
 #include "clientkit/capability.hh"
@@ -133,7 +135,7 @@ private:
     void parsingControlLyricsPage(const char* message);
     void parsingRequestPlayCommand(const char* dname, const char* message);
     void parsingRequestOthersCommand(const char* dname, const char* message);
-    void parsingRenderInfo(NuguDirective* ndir, const char* message);
+    std::string parsingRenderInfo(NuguDirective* ndir, const char* message);
 
     void checkAndUpdateVolume();
     std::string playbackError(PlaybackError error);
@@ -168,7 +170,7 @@ private:
     std::string template_type;
     std::vector<IAudioPlayerListener*> aplayer_listeners;
     IAudioPlayerDisplayListener* display_listener;
-    RenderInfo render_info;
+    std::map<std::string, RenderInfo> render_infos;
 };
 
 } // NuguCapability

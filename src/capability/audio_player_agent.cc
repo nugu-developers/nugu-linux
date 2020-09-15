@@ -48,7 +48,6 @@ AudioPlayerAgent::AudioPlayerAgent()
     , volume_update(false)
     , volume(-1)
     , display_listener(nullptr)
-    , render_info({})
 {
 }
 
@@ -124,6 +123,7 @@ void AudioPlayerAgent::initialize()
 void AudioPlayerAgent::deInitialize()
 {
     aplayer_listeners.clear();
+    render_infos.clear();
 
     if (media_player) {
         media_player->removeListener(this);
@@ -460,12 +460,11 @@ void AudioPlayerAgent::preprocessDirective(NuguDirective* ndir)
     }
 
     if (!strcmp(dname, "Play")) {
-        parsingRenderInfo(ndir, message);
-
+        std::string template_id = parsingRenderInfo(ndir, message);
         std::string playstackctl_ps_id = getPlayServiceIdInStackControl(message);
 
         if (playsync_manager->hasLayer(playstackctl_ps_id, PlayStackLayer::Media))
-            playsync_manager->startSync(playstackctl_ps_id, getName(), &render_info);
+            playsync_manager->startSync(playstackctl_ps_id, getName(), &render_infos[template_id]);
         else
             playsync_manager->prepareSync(playstackctl_ps_id, ndir);
     }
@@ -1250,27 +1249,28 @@ void AudioPlayerAgent::parsingRequestOthersCommand(const char* dname, const char
     sendEventByRequestOthersDirective(dname);
 }
 
-void AudioPlayerAgent::parsingRenderInfo(NuguDirective* ndir, const char* message)
+std::string AudioPlayerAgent::parsingRenderInfo(NuguDirective* ndir, const char* message)
 {
     Json::Value root;
     Json::Reader reader;
+    Json::Value meta;
 
-    if (!reader.parse(message, root)) {
+    if (!reader.parse(message, root)
+        || ((meta = root["audioItem"]["metadata"]).empty() || meta["template"].empty())) {
         nugu_error("parsing error");
-        return;
+        return "";
     }
 
-    Json::Value meta = root["audioItem"]["metadata"];
+    Json::StyledWriter writer;
+    std::string template_id = nugu_directive_peek_dialog_id(ndir);
 
-    if (!meta.empty() && !meta["template"].empty()) {
-        Json::StyledWriter writer;
+    render_infos[template_id] = RenderInfo {
+        meta["template"]["type"].asString(),
+        writer.write(meta["template"]),
+        template_id
+    };
 
-        render_info = RenderInfo {
-            meta["template"]["type"].asString(),
-            writer.write(meta["template"]),
-            nugu_directive_peek_dialog_id(ndir)
-        };
-    }
+    return template_id;
 }
 
 std::string AudioPlayerAgent::playbackError(PlaybackError error)
@@ -1504,8 +1504,10 @@ void AudioPlayerAgent::onSyncState(const std::string& ps_id, PlaySyncState state
 
         if (state == PlaySyncState::Synced)
             display_listener->renderDisplay(template_id, template_type, template_view, template_id);
-        else if (state == PlaySyncState::Released)
+        else if (state == PlaySyncState::Released) {
             display_listener->clearDisplay(template_id, true);
+            render_infos.erase(template_id);
+        }
     }
 }
 
@@ -1515,6 +1517,7 @@ void AudioPlayerAgent::onDataChanged(const std::string& ps_id, std::pair<void*, 
         std::string template_id;
         std::tie(std::ignore, std::ignore, template_id) = *reinterpret_cast<RenderInfo*>(extra_datas.first);
         display_listener->clearDisplay(template_id, true);
+        render_infos.erase(template_id);
     }
 
     if (display_listener && extra_datas.second) {
