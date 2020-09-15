@@ -1511,13 +1511,13 @@ void AudioPlayerAgent::onSyncState(const std::string& ps_id, PlaySyncState state
 
 void AudioPlayerAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
 {
-    if (extra_datas.first) {
+    if (display_listener && extra_datas.first) {
         std::string template_id;
         std::tie(std::ignore, std::ignore, template_id) = *reinterpret_cast<RenderInfo*>(extra_datas.first);
         display_listener->clearDisplay(template_id, true);
     }
 
-    if (extra_datas.second) {
+    if (display_listener && extra_datas.second) {
         std::tie(template_type, template_view, template_id) = *reinterpret_cast<RenderInfo*>(extra_datas.second);
         display_listener->renderDisplay(template_id, template_type, template_view, template_id);
     }
