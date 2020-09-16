@@ -47,7 +47,7 @@ private:
         std::string ps_id;
     };
 
-    void sendEventTextInput(TextInputParam&& text_input_param, bool include_dialog_attribute, EventResultCallback cb = nullptr);
+    void sendEventTextInput(TextInputParam&& text_input_param, bool include_dialog_attribute = true, EventResultCallback cb = nullptr);
     void parsingTextSource(const char* message);
 
     ITextListener* text_listener;

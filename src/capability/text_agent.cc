@@ -269,7 +269,7 @@ void TextAgent::parsingTextSource(const char* message)
 
     cur_state = TextState::BUSY;
 
-    sendEventTextInput({ text, token, ps_id }, true);
+    sendEventTextInput({ text, token, ps_id });
 
     setReferrerDialogRequestId(nugu_directive_peek_name(getNuguDirective()), "");
 
