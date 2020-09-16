@@ -41,8 +41,13 @@ public:
     void notifyResponseTimeout();
 
 private:
-    void sendEventTextInput(const std::string& text, const std::string& token, bool include_dialog_attribute, EventResultCallback cb = nullptr);
-    void sendEventTextInput(const std::string& text, const std::string& token, const std::string& ps_id, EventResultCallback cb = nullptr);
+    using TextInputParam = struct {
+        std::string text;
+        std::string token;
+        std::string ps_id;
+    };
+
+    void sendEventTextInput(TextInputParam&& text_input_param, bool include_dialog_attribute, EventResultCallback cb = nullptr);
     void parsingTextSource(const char* message);
 
     ITextListener* text_listener;

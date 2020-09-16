@@ -22,7 +22,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "Text";
-static const char* CAPABILITY_VERSION = "1.2";
+static const char* CAPABILITY_VERSION = "1.3";
 
 TextAgent::TextAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -165,7 +165,8 @@ std::string TextAgent::requestTextInput(const std::string& text, bool include_di
         timer_msec->start();
 
     cur_state = TextState::BUSY;
-    sendEventTextInput(text, "", include_dialog_attribute);
+
+    sendEventTextInput({ text }, include_dialog_attribute);
 
     nugu_dbg("user request id: %s", cur_dialog_id.c_str());
     if (text_listener)
@@ -186,21 +187,25 @@ void TextAgent::notifyResponseTimeout()
         text_listener->onState(cur_state, cur_dialog_id);
 }
 
-void TextAgent::sendEventTextInput(const std::string& text, const std::string& token, bool include_dialog_attribute, EventResultCallback cb)
+void TextAgent::sendEventTextInput(TextInputParam&& text_input_param, bool include_dialog_attribute, EventResultCallback cb)
 {
     CapabilityEvent event("TextInput", this);
     std::string payload = "";
     Json::StyledWriter writer;
     Json::Value root;
-    std::string ps_id = "";
-    std::string asr_context = "";
-    std::list<std::string> domainTypes;
 
-    root["text"] = text;
-    if (token.size())
-        root["token"] = token;
+    root["text"] = text_input_param.text;
 
-    if (include_dialog_attribute) {
+    if (!text_input_param.token.empty())
+        root["token"] = text_input_param.token;
+
+    if (!text_input_param.ps_id.empty())
+        root["playServiceId"] = text_input_param.ps_id;
+    else if (include_dialog_attribute) {
+        std::string ps_id = "";
+        std::string asr_context = "";
+        std::list<std::string> domainTypes;
+
         capa_helper->getCapabilityProperty("ASR", "es.playServiceId", ps_id);
         capa_helper->getCapabilityProperty("ASR", "es.asrContext", asr_context);
         capa_helper->getCapabilityProperties("ASR", "es.domainTypes", domainTypes);
@@ -216,28 +221,6 @@ void TextAgent::sendEventTextInput(const std::string& text, const std::string& t
             }
         }
     }
-    payload = writer.write(root);
-
-    cur_dialog_id = event.getDialogRequestId();
-
-    playsync_manager->stopHolding();
-
-    sendEvent(&event, capa_helper->makeAllContextInfo(), payload, std::move(cb));
-}
-
-void TextAgent::sendEventTextInput(const std::string& text, const std::string& token, const std::string& ps_id, EventResultCallback cb)
-{
-    CapabilityEvent event("TextInput", this);
-    std::string payload = "";
-    Json::StyledWriter writer;
-    Json::Value root;
-
-    root["text"] = text;
-    if (token.size())
-        root["token"] = token;
-
-    if (ps_id.size())
-        root["playServiceId"] = ps_id;
 
     payload = writer.write(root);
 
@@ -286,10 +269,7 @@ void TextAgent::parsingTextSource(const char* message)
 
     cur_state = TextState::BUSY;
 
-    if (ps_id.size() > 0)
-        sendEventTextInput(text, token, ps_id);
-    else
-        sendEventTextInput(text, token, true);
+    sendEventTextInput({ text, token, ps_id }, true);
 
     setReferrerDialogRequestId(nugu_directive_peek_name(getNuguDirective()), "");
 
