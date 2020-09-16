@@ -1335,7 +1335,10 @@ void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
         break;
     case MediaPlayerState::PLAYING:
         cur_aplayer_state = AudioPlayerState::PLAYING;
-        if (!is_paused_by_unfocus) {
+        if (is_paused_by_unfocus) {
+            nugu_dbg("force setting previous state for notify to application");
+            prev_aplayer_state = AudioPlayerState::PAUSED;
+        } else {
             if (prev_aplayer_state == AudioPlayerState::PAUSED)
                 sendEventPlaybackResumed();
             else
