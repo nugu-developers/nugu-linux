@@ -1261,6 +1261,12 @@ std::string AudioPlayerAgent::parsingRenderInfo(NuguDirective* ndir, const char*
         return "";
     }
 
+    // if it has Display, skip to render AudioPlayer's template
+    if (std::string { nugu_directive_peek_groups(ndir) }.find("Display") != std::string::npos) {
+        nugu_warn("It has the separated display. So skip to parse render info.");
+        return "";
+    }
+
     Json::StyledWriter writer;
     std::string template_id = nugu_directive_peek_dialog_id(ndir);
 
@@ -1502,30 +1508,44 @@ void AudioPlayerAgent::stopRenderingTimer(const std::string& id)
 
 void AudioPlayerAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
 {
-    if (display_listener && extra_data) {
-        std::tie(template_type, template_view, template_id) = *reinterpret_cast<RenderInfo*>(extra_data);
-
-        if (state == PlaySyncState::Synced)
-            display_listener->renderDisplay(template_id, template_type, template_view, template_id);
-        else if (state == PlaySyncState::Released) {
-            display_listener->clearDisplay(template_id, true);
-            render_infos.erase(template_id);
-        }
-    }
+    if (state == PlaySyncState::Synced)
+        renderDisplay(extra_data);
+    else if (state == PlaySyncState::Released)
+        clearDisplay(extra_data);
 }
 
 void AudioPlayerAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
 {
-    if (display_listener && extra_datas.first) {
-        std::string template_id;
-        std::tie(std::ignore, std::ignore, template_id) = *reinterpret_cast<RenderInfo*>(extra_datas.first);
-        display_listener->clearDisplay(template_id, true);
-        render_infos.erase(template_id);
+    clearDisplay(extra_datas.first);
+    renderDisplay(extra_datas.second);
+}
+
+void AudioPlayerAgent::renderDisplay(void* data)
+{
+    if (!display_listener || !data) {
+        nugu_warn("The DisplayListener or render data is not exist.");
+        return;
     }
 
-    if (display_listener && extra_datas.second) {
-        std::tie(template_type, template_view, template_id) = *reinterpret_cast<RenderInfo*>(extra_datas.second);
+    std::tie(template_type, template_view, template_id) = *reinterpret_cast<RenderInfo*>(data);
+
+    if (!template_id.empty())
         display_listener->renderDisplay(template_id, template_type, template_view, template_id);
+}
+
+void AudioPlayerAgent::clearDisplay(void* data)
+{
+    if (!display_listener || !data) {
+        nugu_warn("The DisplayListener or render data is not exist.");
+        return;
+    }
+
+    std::string template_id;
+    std::tie(std::ignore, std::ignore, template_id) = *reinterpret_cast<RenderInfo*>(data);
+
+    if (!template_id.empty()) {
+        display_listener->clearDisplay(template_id, true);
+        render_infos.erase(template_id);
     }
 }
 

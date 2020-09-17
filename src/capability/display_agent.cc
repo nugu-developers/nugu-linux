@@ -459,20 +459,39 @@ std::string DisplayAgent::getDirectionString(ControlDirection direction)
 
 void DisplayAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
 {
-    if (display_listener && extra_data) {
-        auto render_info = reinterpret_cast<DisplayRenderInfo*>(extra_data);
-
-        if (state == PlaySyncState::Synced) {
-            display_listener->renderDisplay(render_info->id, render_info->type, render_info->payload, render_info->dialog_id);
-        } else if (state == PlaySyncState::Released) {
-            this->render_info[render_info->id]->close = true;
-            display_listener->clearDisplay(render_info->id, true);
-        }
-    }
+    if (state == PlaySyncState::Synced)
+        renderDisplay(extra_data);
+    else if (state == PlaySyncState::Released)
+        clearDisplay(extra_data);
 }
 
 void DisplayAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
 {
+    clearDisplay(extra_datas.first);
+    renderDisplay(extra_datas.second);
+}
+
+void DisplayAgent::renderDisplay(void* data)
+{
+    if (!display_listener || !data) {
+        nugu_warn("The DisplayListener or render data is not exist.");
+        return;
+    }
+
+    auto render_info = reinterpret_cast<DisplayRenderInfo*>(data);
+    display_listener->renderDisplay(render_info->id, render_info->type, render_info->payload, render_info->dialog_id);
+}
+
+void DisplayAgent::clearDisplay(void* data)
+{
+    if (!display_listener || !data) {
+        nugu_warn("The DisplayListener or render data is not exist.");
+        return;
+    }
+
+    auto render_info = reinterpret_cast<DisplayRenderInfo*>(data);
+    this->render_info[render_info->id]->close = true;
+    display_listener->clearDisplay(render_info->id, true);
 }
 
 } // NuguCapability
