@@ -141,6 +141,9 @@ private:
     std::string playbackError(PlaybackError error);
     std::string playerActivity(AudioPlayerState state);
 
+    void renderDisplay(void* data);
+    void clearDisplay(void* data);
+
     const unsigned int PAUSE_CONTEXT_HOLD_TIME = 60 * 10;
 
     IMediaPlayer* cur_player;

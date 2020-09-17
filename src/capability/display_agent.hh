@@ -79,6 +79,9 @@ private:
     std::string getTemplateId(const std::string& ps_id);
     std::string getDirectionString(ControlDirection direction);
 
+    void renderDisplay(void* data);
+    void clearDisplay(void* data);
+
     std::map<std::string, DisplayRenderInfo*> render_info;
     IDisplayListener* display_listener;
     std::string disp_cur_ps_id;
