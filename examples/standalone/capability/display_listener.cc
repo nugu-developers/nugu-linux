@@ -20,17 +20,21 @@
 
 void DisplayListener::renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id)
 {
-    std::cout << "[Display] render display template\n"
+    std::cout << "\033[1;94m"
+              << "[Display] render display template\n"
               << "\t id:" << id.c_str() << std::endl
               << "\t type:" << type.c_str() << std::endl
-              << "\t dialog_id:" << dialog_id.c_str() << std::endl;
+              << "\t dialog_id:" << dialog_id.c_str()
+              << "\033[0m" << std::endl;
 }
 
 bool DisplayListener::clearDisplay(const std::string& id, bool unconditionally)
 {
-    std::cout << "[Display] clear display template\n"
+    std::cout << "\033[1;94m"
+              << "[Display] clear display template\n"
               << "\t id:" << id.c_str() << std::endl
-              << "\t unconditionally:" << unconditionally << std::endl;
+              << "\t unconditionally:" << unconditionally
+              << "\033[0m" << std::endl;
 
     return false;
 }

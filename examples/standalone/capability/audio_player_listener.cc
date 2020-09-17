@@ -100,12 +100,22 @@ bool AudioPlayerListener::requestToGetCachedContent(const std::string& key, std:
 
 void AudioPlayerListener::renderDisplay(const std::string& id, const std::string& type, const std::string& json_payload, const std::string& dialog_id)
 {
-    std::cout << "[AudioPlayer][id:" << id << "] renderDisplay - type: " << type << std::endl;
+    std::cout << "\033[1;94m"
+              << "[AudioPlayer] render display template\n"
+              << "\t id:" << id.c_str() << std::endl
+              << "\t type:" << type.c_str() << std::endl
+              << "\t dialog_id:" << dialog_id.c_str()
+              << "\033[0m" << std::endl;
 }
 
 bool AudioPlayerListener::clearDisplay(const std::string& id, bool unconditionally)
 {
-    std::cout << "[AudioPlayer][id:" << id << "] clearDisplay - unconditionally: " << (int)unconditionally << std::endl;
+    std::cout << "\033[1;94m"
+              << "[AudioPlayer] clear display template\n"
+              << "\t id:" << id.c_str() << std::endl
+              << "\t unconditionally:" << unconditionally
+              << "\033[0m" << std::endl;
+
     return false;
 }
 
