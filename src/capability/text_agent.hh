@@ -37,7 +37,7 @@ public:
     void receiveCommandAll(const std::string& command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
-    std::string requestTextInput(const std::string& text, bool include_dialog_attribute = true) override;
+    std::string requestTextInput(const std::string& text, const std::string& token = "", bool include_dialog_attribute = true) override;
     void notifyResponseTimeout();
 
 private:
