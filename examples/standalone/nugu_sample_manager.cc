@@ -313,7 +313,7 @@ gboolean NuguSampleManager::onKeyInput(GIOChannel* src, GIOCondition con, gpoint
 
     if (ns_mgr->commander.text_input) {
         if (ns_mgr->commander.text_handler)
-            ns_mgr->commander.text_handler->requestTextInput(keybuf, (ns_mgr->commander.text_input == 1));
+            ns_mgr->commander.text_handler->requestTextInput(keybuf, "", (ns_mgr->commander.text_input == 1));
 
         ns_mgr->commander.text_input = 0;
     } else {
