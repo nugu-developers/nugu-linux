@@ -58,6 +58,12 @@ int InteractionControlManager::getListenerCount()
     return listeners.size();
 }
 
+void InteractionControlManager::notifyHasMultiTurn()
+{
+    for (const auto& listener : listeners)
+        listener->onHasMultiTurn();
+}
+
 void InteractionControlManager::start(InteractionMode mode, const std::string& requester)
 {
     if (mode != InteractionMode::MULTI_TURN) {

@@ -53,6 +53,11 @@ public:
      * @param[in] is_multi_turn whether current mode is multi-turn or not
      */
     virtual void onModeChanged(bool is_multi_turn) = 0;
+
+    /**
+     * @brief Receive callback when the current directive has multi-turn
+     */
+    virtual void onHasMultiTurn() = 0;
 };
 
 /**
@@ -88,6 +93,11 @@ public:
      * @param[in] requester a object which request interaction mode
      */
     virtual void finish(InteractionMode mode, const std::string& requester) = 0;
+
+    /**
+     * @brief Notify the current directive has multi-turn
+     */
+    virtual void notifyHasMultiTurn() = 0;
 
     /**
      * @brief Clear all about interaction mode

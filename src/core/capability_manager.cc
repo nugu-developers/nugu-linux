@@ -35,6 +35,8 @@ CapabilityManager::CapabilityManager()
     , interaction_control_manager(std::unique_ptr<InteractionControlManager>(new InteractionControlManager()))
 {
     wword = WAKEUP_WORD;
+
+    playsync_manager->setInteractionControlManager(interaction_control_manager.get());
 }
 
 CapabilityManager::~CapabilityManager()

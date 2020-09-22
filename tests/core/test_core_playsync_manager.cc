@@ -23,6 +23,7 @@
 #include <mutex>
 #include <thread>
 
+#include "interaction_control_manager.hh"
 #include "playsync_manager.hh"
 
 using namespace NuguCore;
@@ -142,6 +143,28 @@ private:
     int same_state_call_count = 0;
 };
 
+class InteractionControlManagerListener : public IInteractionControlManagerListener {
+public:
+    void onHasMultiTurn() override
+    {
+        has_multi_turn = true;
+    }
+
+    void onModeChanged(bool is_multi_turn) override
+    {
+        if (!is_multi_turn)
+            has_multi_turn = false;
+    }
+
+    bool hasMultiTurn()
+    {
+        return has_multi_turn;
+    }
+
+private:
+    bool has_multi_turn = false;
+};
+
 static NuguDirective* createDirective(const std::string& name_space, const std::string& name, const std::string& groups)
 {
     return nugu_directive_new(name_space.c_str(), name.c_str(), "1.0", "msg_1", "dlg_1",
@@ -152,6 +175,8 @@ typedef struct {
     std::shared_ptr<PlaySyncManager> playsync_manager;
     std::shared_ptr<PlaySyncManagerListener> playsync_manager_listener;
     std::shared_ptr<PlaySyncManagerListener> playsync_manager_listener_snd;
+    std::shared_ptr<InteractionControlManager> ic_manager;
+    std::shared_ptr<InteractionControlManagerListener> ic_manager_listener;
     DummyExtraInfo* dummy_extra_data;
     DummyExtraInfo* dummy_extra_data_snd;
 
@@ -162,14 +187,18 @@ typedef struct {
 
 static void setup(TestFixture* fixture, gconstpointer user_data)
 {
-    PlayStackManager* playstack_manager = new PlayStackManager();
-    playstack_manager->setTimer(new FakeStackTimer(mutex, cv));
-
+    fixture->playsync_manager = std::make_shared<PlaySyncManager>();
     fixture->playsync_manager_listener = std::make_shared<PlaySyncManagerListener>();
     fixture->playsync_manager_listener_snd = std::make_shared<PlaySyncManagerListener>();
+    fixture->ic_manager = std::make_shared<InteractionControlManager>();
+    fixture->ic_manager_listener = std::make_shared<InteractionControlManagerListener>();
 
-    fixture->playsync_manager = std::make_shared<PlaySyncManager>();
+    PlayStackManager* playstack_manager = new PlayStackManager();
+    playstack_manager->setTimer(new FakeStackTimer(mutex, cv));
+    fixture->ic_manager->addListener(fixture->ic_manager_listener.get());
+
     fixture->playsync_manager->setPlayStackManager(playstack_manager);
+    fixture->playsync_manager->setInteractionControlManager(fixture->ic_manager.get());
     fixture->playsync_manager->addListener("TTS", fixture->playsync_manager_listener.get());
 
     fixture->dummy_extra_data = new DummyExtraInfo();
@@ -192,6 +221,8 @@ static void teardown(TestFixture* fixture, gconstpointer user_data)
     fixture->playsync_manager_listener.reset();
     fixture->playsync_manager_listener_snd.reset();
     fixture->playsync_manager.reset();
+    fixture->ic_manager_listener.reset();
+    fixture->ic_manager.reset();
 
     delete fixture->dummy_extra_data;
     delete fixture->dummy_extra_data_snd;
@@ -613,6 +644,17 @@ static void test_playstack_manager_refresh_extra_data(TestFixture* fixture, gcon
     g_assert(!fixture->playsync_manager_listener->getExtraData());
 }
 
+static void test_playstack_manager_check_expect_speech(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_info_disp);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Prepared);
+    g_assert(!fixture->ic_manager_listener->hasMultiTurn());
+
+    fixture->playsync_manager->prepareSync("ps_id_2", fixture->ndir_expect_speech);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Prepared);
+    g_assert(fixture->ic_manager_listener->hasMultiTurn());
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -640,6 +682,8 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/postPoneRelease", test_playstack_manager_postpone_release);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkToProcessPreviousDialog", test_playstack_manager_check_to_process_previous_dialog);
     G_TEST_ADD_FUNC("/core/PlayStackManager/refreshExtraData", test_playstack_manager_refresh_extra_data);
+
+    G_TEST_ADD_FUNC("/core/PlayStackManager/checkExpectSpeech", test_playstack_manager_check_expect_speech);
 
     return g_test_run();
 }

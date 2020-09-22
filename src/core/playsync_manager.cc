@@ -44,6 +44,12 @@ void PlaySyncManager::setPlayStackManager(PlayStackManager* playstack_manager)
     this->playstack_manager->addListener(this);
 }
 
+void PlaySyncManager::setInteractionControlManager(InteractionControlManager* interaction_control_manager)
+{
+    if (interaction_control_manager)
+        this->interaction_control_manager = interaction_control_manager;
+}
+
 void PlaySyncManager::addListener(const std::string& requester, IPlaySyncManagerListener* listener)
 {
     if (requester.empty() || !listener) {
@@ -91,6 +97,10 @@ void PlaySyncManager::prepareSync(const std::string& ps_id, NuguDirective* ndir)
     playstack_map.emplace(ps_id, playsync_container);
 
     notifyStateChanged(ps_id, PlaySyncState::Prepared);
+
+    // notify whether the current directive has ASR.ExpectSpeech
+    if (interaction_control_manager && playstack_manager->hasExpectSpeech(ndir))
+        interaction_control_manager->notifyHasMultiTurn();
 }
 
 void PlaySyncManager::startSync(const std::string& ps_id, const std::string& requester, void* extra_data)

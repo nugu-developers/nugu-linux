@@ -35,6 +35,7 @@ public:
     void removeListener(IInteractionControlManagerListener* listener) override;
     int getListenerCount();
 
+    void notifyHasMultiTurn() override;
     void start(InteractionMode mode, const std::string& requester) override;
     void finish(InteractionMode mode, const std::string& requester) override;
     void clear() override;

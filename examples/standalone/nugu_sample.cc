@@ -105,7 +105,12 @@ public:
 
 class InteractionControlManagerListener : public IInteractionControlManagerListener {
 public:
-    void onModeChanged(bool is_multi_turn)
+    void onHasMultiTurn() override
+    {
+        std::cout << "[multi-turn] has multi-turn\n";
+    }
+
+    void onModeChanged(bool is_multi_turn) override
     {
         std::cout << "[multi-turn] " << (is_multi_turn ? "started" : "finished") << std::endl;
     }
