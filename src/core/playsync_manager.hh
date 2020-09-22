@@ -24,6 +24,7 @@
 #include <base/nugu_directive.h>
 
 #include "clientkit/playsync_manager_interface.hh"
+#include "interaction_control_manager.hh"
 #include "playstack_manager.hh"
 
 namespace NuguCore {
@@ -37,6 +38,7 @@ public:
     virtual ~PlaySyncManager();
 
     void setPlayStackManager(PlayStackManager* playstack_manager);
+    void setInteractionControlManager(InteractionControlManager* interaction_control_manager);
     void addListener(const std::string& requester, IPlaySyncManagerListener* listener) override;
     void removeListener(const std::string& requester) override;
     int getListenerCount();
@@ -73,6 +75,7 @@ private:
     const std::vector<std::string> SYNC_CAPABILITAY_LIST { "TTS", "AudioPlayer", "Display" };
 
     std::unique_ptr<PlayStackManager> playstack_manager = nullptr;
+    InteractionControlManager* interaction_control_manager = nullptr;
     std::function<void()> postponed_release_func = nullptr;
     std::map<std::string, IPlaySyncManagerListener*> listener_map;
     PlayStacks playstack_map;

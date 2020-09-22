@@ -29,12 +29,20 @@ public:
     using InteractionModeChecker = std::pair<bool, int>;
 
 public:
+    void onHasMultiTurn() override
+    {
+        has_multi_turn = true;
+    }
+
     void onModeChanged(bool is_multi_turn) override
     {
         if (mode_checker.first == is_multi_turn)
             mode_checker.second++;
         else
             mode_checker = { is_multi_turn, 1 };
+
+        if (!is_multi_turn)
+            has_multi_turn = false;
     };
 
     InteractionModeChecker getModeChecker()
@@ -42,8 +50,14 @@ public:
         return mode_checker;
     }
 
+    bool hasMultiTurn()
+    {
+        return has_multi_turn;
+    }
+
 private:
     InteractionModeChecker mode_checker = { false, 0 };
+    bool has_multi_turn = false;
 };
 
 using TestModeChecker = InteractionControlManagerListener::InteractionModeChecker;
@@ -150,6 +164,15 @@ static void test_interaction_control_manager_multi_requester(TestFixture* fixtur
     g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { false, 1 }));
 }
 
+static void test_interaction_control_manager_has_multi_turn(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->ic_manager->addListener(fixture->ic_manager_listener.get());
+    g_assert(!fixture->ic_manager_listener->hasMultiTurn());
+
+    fixture->ic_manager->notifyHasMultiTurn();
+    g_assert(fixture->ic_manager_listener->hasMultiTurn());
+}
+
 static void test_interaction_control_manager_clear(TestFixture* fixture, gconstpointer ignored)
 {
     fixture->ic_manager->addListener(fixture->ic_manager_listener.get());
@@ -177,6 +200,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/InteractionControlManager/listener", test_interaction_control_manager_listener);
     G_TEST_ADD_FUNC("/core/InteractionControlManager/singleRequester", test_interaction_control_manager_single_requester);
     G_TEST_ADD_FUNC("/core/InteractionControlManager/multiRequester", test_interaction_control_manager_multi_requester);
+    G_TEST_ADD_FUNC("/core/InteractionControlManager/hasMultiTurn", test_interaction_control_manager_has_multi_turn);
     G_TEST_ADD_FUNC("/core/InteractionControlManager/clear", test_interaction_control_manager_clear);
 
     return g_test_run();
