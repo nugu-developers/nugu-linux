@@ -26,6 +26,8 @@ using namespace NuguCapability;
 class SpeechOperator : public IWakeupListener,
                        public IASRListener {
 public:
+    virtual ~SpeechOperator() = default;
+
     void onWakeupState(WakeupDetectState state, float power_noise, float power_speech) override;
     void onState(ASRState state, const std::string& dialog_id) override;
     void onNone(const std::string& dialog_id) override;

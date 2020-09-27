@@ -21,58 +21,55 @@
 #include <glib.h>
 #include <iterator>
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
-#include <capability/mic_interface.hh>
-#include <capability/text_interface.hh>
-
-#include "speech_operator.hh"
-
 class NuguSampleManager {
 public:
-    virtual ~NuguSampleManager() = default;
-
-    using NetworkCallback = struct {
-        std::function<bool()> connect;
-        std::function<bool()> disconnect;
-    };
-
-    using ActionCallback = struct {
-        std::function<void()> suspend_all_func;
-        std::function<void()> restore_all_func;
-    };
-
+    using TextCommander = std::function<void(const std::string&, bool)>;
+    using Command = std::pair<std::string, std::function<void(int& flag)>>;
+    using Commands = std::pair<std::vector<std::string>, std::map<std::string, Command>>;
     using Commander = struct {
         bool is_connected;
         int text_input;
-        NetworkCallback network_callback;
-        ActionCallback action_callback;
-        ITextHandler* text_handler;
-        SpeechOperator* speech_operator;
-        IMicHandler* mic_handler;
+        TextCommander text_commander;
     };
+
+    class CommandBuilder {
+    public:
+        CommandBuilder* add(const std::string& key, Command&& command);
+        void compose(std::string&& divider = "");
+
+    private:
+        friend class NuguSampleManager;
+
+        explicit CommandBuilder(NuguSampleManager* sample_manager);
+        virtual ~CommandBuilder() = default;
+
+        NuguSampleManager* parent;
+    };
+
+public:
+    NuguSampleManager();
+    virtual ~NuguSampleManager();
 
     static void error(std::string&& message);
     static void info(std::string&& message);
 
     bool handleArguments(const int& argc, char** argv);
-    void prepare();
-    void runLoop(std::function<void()> quit_callback = nullptr);
-    void quit();
+    void handleNetworkResult(bool is_connected, bool is_show_cmd = true);
+    void setTextCommander(TextCommander&& text_commander);
 
     const std::string& getModelPath();
+    CommandBuilder* getCommandBuilder();
 
-    NuguSampleManager* setNetworkCallback(NetworkCallback callback);
-    NuguSampleManager* setTextHandler(ITextHandler* text_handler);
-    NuguSampleManager* setSpeechOperator(SpeechOperator* speech_operator);
-    NuguSampleManager* setMicHandler(IMicHandler* mic_handler);
-    NuguSampleManager* setActionCallback(ActionCallback&& callback);
-    void handleNetworkResult(bool is_connected, bool is_show_cmd = true);
+    void prepare();
+    void runLoop();
+    void reset();
+    void quit();
 
 private:
-    using CommandMap = std::map<std::string, std::pair<std::string, std::function<void(NuguSampleManager*)>>>;
-    using CommandKey = std::vector<std::string>;
     using CommandText = std::pair<std::string, std::string>;
     using CommandKeyIterator = std::vector<std::string>::const_iterator;
 
@@ -86,18 +83,17 @@ private:
     static const char* C_CYAN;
     static const char* C_WHITE;
     static const char* C_RESET;
-    static const CommandKey COMMAND_KEYS;
-    static const CommandMap COMMAND_MAP;
-
-    Commander commander {};
-    CommandText command_text {};
-    bool is_show_prompt = true;
 
     GMainLoop* loop;
     GMainContext* context = nullptr;
     std::string model_path = "./";
     bool is_prepared = false;
-    std::function<void()> quit_func;
+
+    Commands commands {};
+    CommandBuilder* command_builder = nullptr;
+    Commander commander {};
+    CommandText command_text {};
+    bool is_show_prompt = true;
 };
 
 #endif /* __NUGU_SAMPLE_MANAGER_H__ */
