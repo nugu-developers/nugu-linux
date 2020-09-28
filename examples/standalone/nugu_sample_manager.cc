@@ -175,7 +175,7 @@ void NuguSampleManager::reset()
     commands.first.clear();
     commands.second.clear();
     commander = {};
-    command_text = {};
+    command_text = std::make_pair("", "");
     is_show_prompt = true;
 }
 
