@@ -55,6 +55,8 @@ struct pa_audio_param {
 	int is_start;
 	int is_first;
 
+	guint timer;
+
 #if defined(NUGU_ENV_DUMP_PATH_PCM)
 	int dump_fd;
 #endif
@@ -158,10 +160,17 @@ static int _set_property_to_param(struct pa_audio_param *param,
 
 static gboolean _playerEndOfStream(void *userdata)
 {
-	NuguPcm *pcm = (NuguPcm *)userdata;
+	struct pa_audio_param *param = userdata;
 
-	if (pcm)
-		nugu_pcm_emit_event(pcm, NUGU_MEDIA_EVENT_END_OF_STREAM);
+	if (!param) {
+		nugu_error("wrong parameter");
+		return FALSE;
+	}
+
+	param->timer = 0;
+
+	if (param->pcm)
+		nugu_pcm_emit_event(param->pcm, NUGU_MEDIA_EVENT_END_OF_STREAM);
 	else
 		nugu_error("wrong parameter");
 
@@ -219,8 +228,11 @@ static int _playbackCallback(const void *inputBuffer, void *outputBuffer,
 	} else if (nugu_pcm_receive_is_last_data(pcm)) {
 		// send event to the main loop thread
 		if (!param->done) {
-			g_timeout_add(guard_time, _playerEndOfStream,
-				      (gpointer)pcm);
+			if (param->timer != 0)
+				g_source_remove(param->timer);
+
+			param->timer = g_timeout_add(guard_time,
+						     _playerEndOfStream, param);
 			param->done = 1;
 		}
 	}
@@ -314,6 +326,12 @@ static void _pcm_destroy(NuguPcmDriver *driver, NuguPcm *pcm)
 	err = Pa_CloseStream(pcm_param->stream);
 	if (err != paNoError)
 		nugu_error("Pa_CloseStream return fail(%d)", err);
+
+	if (pcm_param->timer) {
+		nugu_dbg("remove pending timer");
+		g_source_remove(pcm_param->timer);
+		pcm_param->timer = 0;
+	}
 
 	free(pcm_param);
 	nugu_pcm_set_driver_data(pcm, NULL);
