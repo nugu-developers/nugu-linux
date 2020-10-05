@@ -61,8 +61,10 @@ FocusManager::FocusManager()
     printConfigurations();
 }
 
-FocusManager::~FocusManager()
+void FocusManager::reset()
 {
+    focus_resource_ordered_map.clear();
+    focus_hold_map.clear();
 }
 
 bool FocusManager::requestFocus(const std::string& type, const std::string& name, IFocusResourceListener* listener)
@@ -106,7 +108,7 @@ bool FocusManager::requestFocus(const std::string& type, const std::string& name
     }
 
     bool higher_hold = false;
-    for(const auto& hold : focus_hold_map) {
+    for (const auto& hold : focus_hold_map) {
         if (!hold.second)
             continue;
 

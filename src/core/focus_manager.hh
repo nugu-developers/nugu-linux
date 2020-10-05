@@ -57,8 +57,9 @@ class FocusManager : public IFocusManager,
                      public IFocusResourceObserver {
 public:
     FocusManager();
-    virtual ~FocusManager();
+    virtual ~FocusManager() = default;
 
+    void reset();
     bool requestFocus(const std::string& type, const std::string& name, IFocusResourceListener* listener) override;
     bool releaseFocus(const std::string& type, const std::string& name) override;
 

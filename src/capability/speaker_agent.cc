@@ -30,17 +30,14 @@ SpeakerAgent::SpeakerAgent()
 {
 }
 
-SpeakerAgent::~SpeakerAgent()
-{
-    speakers.clear();
-}
-
 void SpeakerAgent::initialize()
 {
     if (initialized) {
         nugu_info("It's already initialized.");
         return;
     }
+
+    Capability::initialize();
 
     addReferrerEvents("SetVolumeSucceeded", "SetVolume");
     addReferrerEvents("SetVolumeFailed", "SetVolume");
@@ -51,6 +48,11 @@ void SpeakerAgent::initialize()
     addBlockingPolicy("SetMute", { BlockingMedium::AUDIO, true });
 
     initialized = true;
+}
+
+void SpeakerAgent::deInitialize()
+{
+    speakers.clear();
 }
 
 void SpeakerAgent::parsingDirective(const char* dname, const char* message)

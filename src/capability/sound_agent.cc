@@ -36,6 +36,10 @@ void SoundAgent::initialize()
         return;
     }
 
+    Capability::initialize();
+
+    play_service_id = "";
+
     addBlockingPolicy("Beep", { BlockingMedium::AUDIO, true });
 
     initialized = true;

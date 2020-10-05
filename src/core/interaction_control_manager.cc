@@ -27,6 +27,11 @@ InteractionControlManager::~InteractionControlManager()
     listeners.clear();
 }
 
+void InteractionControlManager::reset()
+{
+    clearContainer();
+}
+
 void InteractionControlManager::addListener(IInteractionControlManagerListener* listener)
 {
     if (!listener) {

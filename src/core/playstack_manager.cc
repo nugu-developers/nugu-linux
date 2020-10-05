@@ -89,6 +89,16 @@ PlayStackManager::~PlayStackManager()
     listeners.clear();
 }
 
+void PlayStackManager::reset()
+{
+    clearContainer();
+
+    has_long_timer = false;
+    has_holding = false;
+    is_expect_speech = false;
+    is_stacked = false;
+}
+
 void PlayStackManager::addListener(IPlayStackManagerListener* listener)
 {
     if (!listener) {

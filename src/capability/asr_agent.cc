@@ -28,24 +28,11 @@ static const char* CAPABILITY_VERSION = "1.3";
 
 ASRAgent::ASRAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
-    , es_attr({})
-    , rec_event(nullptr)
-    , timer(nullptr)
-    , uniq(0)
-    , focus_state(FocusState::NONE)
-    , cur_state(ASRState::IDLE)
-    , asr_cancel(false)
     , model_path("")
     , epd_type(NUGU_ASR_EPD_TYPE)
     , asr_encoding(NUGU_ASR_ENCODING)
     , response_timeout(NUGU_SERVER_RESPONSE_TIMEOUT_SEC)
     , epd_attribute({})
-    , wakeup_power_noise(0)
-    , wakeup_power_speech(0)
-{
-}
-
-ASRAgent::~ASRAgent()
 {
 }
 
@@ -74,6 +61,22 @@ void ASRAgent::initialize()
         nugu_info("It's already initialized.");
         return;
     }
+
+    Capability::initialize();
+
+    es_attr = {};
+    rec_event = nullptr;
+    all_context_info = "";
+    dialog_id = "";
+    uniq = 0;
+    focus_state = FocusState::NONE;
+    prev_listening_state = ListeningState::DONE;
+    rec_callback = nullptr;
+    cur_state = ASRState::IDLE;
+    request_listening_id = "";
+    asr_cancel = false;
+    wakeup_power_noise = 0;
+    wakeup_power_speech = 0;
 
     speech_recognizer = std::unique_ptr<ISpeechRecognizer>(core_container->createSpeechRecognizer(model_path, epd_attribute));
     speech_recognizer->setListener(this);

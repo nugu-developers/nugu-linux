@@ -27,14 +27,7 @@ static const char* CAPABILITY_VERSION = "1.3";
 TextAgent::TextAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , text_listener(nullptr)
-    , timer(nullptr)
-    , cur_state(TextState::IDLE)
-    , cur_dialog_id("")
     , response_timeout(NUGU_SERVER_RESPONSE_TIMEOUT_SEC)
-{
-}
-
-TextAgent::~TextAgent()
 {
 }
 
@@ -50,6 +43,12 @@ void TextAgent::initialize()
         nugu_info("It's already initialized.");
         return;
     }
+
+    Capability::initialize();
+
+    cur_state = TextState::IDLE;
+    cur_dialog_id = "";
+    dir_groups = "";
 
     timer = core_container->createNuguTimer();
     timer->setInterval(response_timeout * NUGU_TIMER_UNIT_SEC);

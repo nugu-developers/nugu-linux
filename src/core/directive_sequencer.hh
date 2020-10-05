@@ -35,6 +35,7 @@ public:
     DirectiveSequencer();
     virtual ~DirectiveSequencer();
 
+    void reset();
     void addListener(const std::string& name_space, IDirectiveSequencerListener* listener) override;
     void removeListener(const std::string& name_space, IDirectiveSequencerListener* listener) override;
 

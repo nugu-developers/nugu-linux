@@ -37,7 +37,7 @@ class DisplayAgent : public Capability,
                      public IPlaySyncManagerListener {
 public:
     DisplayAgent();
-    virtual ~DisplayAgent();
+    virtual ~DisplayAgent() = default;
 
     void initialize() override;
     void deInitialize() override;

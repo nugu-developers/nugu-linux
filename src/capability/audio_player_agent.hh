@@ -45,7 +45,7 @@ public:
 
 public:
     AudioPlayerAgent();
-    virtual ~AudioPlayerAgent();
+    virtual ~AudioPlayerAgent() = default;
     void initialize() override;
     void deInitialize() override;
     void suspend() override;

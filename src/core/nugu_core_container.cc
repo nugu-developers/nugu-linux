@@ -94,6 +94,11 @@ void NuguCoreContainer::removeCapability(const std::string& cname)
     CapabilityManager::getInstance()->removeCapability(cname);
 }
 
+void NuguCoreContainer::resetInstance()
+{
+    CapabilityManager::getInstance()->resetInstance();
+}
+
 void NuguCoreContainer::destroyInstance()
 {
     CapabilityManager::destroyInstance();

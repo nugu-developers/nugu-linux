@@ -31,6 +31,7 @@ public:
     InteractionControlManager() = default;
     virtual ~InteractionControlManager();
 
+    void reset();
     void addListener(IInteractionControlManagerListener* listener) override;
     void removeListener(IInteractionControlManagerListener* listener) override;
     int getListenerCount();

@@ -54,6 +54,7 @@ public:
     PlayStackManager();
     virtual ~PlayStackManager();
 
+    void reset();
     void addListener(IPlayStackManagerListener* listener);
     void removeListener(IPlayStackManagerListener* listener);
     int getListenerCount();

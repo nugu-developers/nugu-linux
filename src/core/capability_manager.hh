@@ -40,6 +40,7 @@ private:
 public:
     static CapabilityManager* getInstance();
     static void destroyInstance();
+    void resetInstance();
 
     PlaySyncManager* getPlaySyncManager();
     FocusManager* getFocusManager();
@@ -84,11 +85,11 @@ private:
     std::map<std::string, std::string> events;
     std::map<std::string, std::string> events_cname_map;
     std::string wword;
-    std::unique_ptr<PlaySyncManager> playsync_manager = nullptr;
-    std::unique_ptr<FocusManager> focus_manager = nullptr;
-    std::unique_ptr<SessionManager> session_manager = nullptr;
-    std::unique_ptr<DirectiveSequencer> directive_sequencer = nullptr;
-    std::unique_ptr<InteractionControlManager> interaction_control_manager = nullptr;
+    std::unique_ptr<PlaySyncManager> playsync_manager;
+    std::unique_ptr<FocusManager> focus_manager;
+    std::unique_ptr<SessionManager> session_manager;
+    std::unique_ptr<DirectiveSequencer> directive_sequencer;
+    std::unique_ptr<InteractionControlManager> interaction_control_manager;
 };
 
 } // NuguCore

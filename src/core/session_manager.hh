@@ -35,6 +35,7 @@ public:
     SessionManager() = default;
     virtual ~SessionManager();
 
+    void reset();
     void addListener(ISessionManagerListener* listener) override;
     void removeListener(ISessionManagerListener* listener) override;
     int getListenerCount();

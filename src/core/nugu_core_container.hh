@@ -41,6 +41,7 @@ public:
     void setWakeupWord(const std::string& wakeup_word);
     void addCapability(const std::string& cname, ICapabilityInterface* cap);
     void removeCapability(const std::string& cname);
+    void resetInstance();
     void destroyInstance();
     INetworkManagerListener* getNetworkManagerListener();
 

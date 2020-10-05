@@ -36,6 +36,11 @@ void SessionAgent::initialize()
         return;
     }
 
+    Capability::initialize();
+
+    play_service_id = "";
+    session_id = "";
+
     session_manager->addListener(this);
 
     initialized = true;

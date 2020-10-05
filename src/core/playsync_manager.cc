@@ -33,6 +33,14 @@ PlaySyncManager::~PlaySyncManager()
     listener_map.clear();
 }
 
+void PlaySyncManager::reset()
+{
+    clearPostPonedRelease();
+    clearContainer();
+
+    playstack_manager->reset();
+}
+
 void PlaySyncManager::setPlayStackManager(PlayStackManager* playstack_manager)
 {
     if (!playstack_manager) {

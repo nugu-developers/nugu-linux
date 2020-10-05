@@ -39,7 +39,7 @@ class ASRAgent final : public Capability,
                        public IFocusResourceListener {
 public:
     ASRAgent();
-    virtual ~ASRAgent();
+    virtual ~ASRAgent() = default;
 
     void setAttribute(ASRAttribute&& attribute) override;
     void initialize() override;
@@ -112,11 +112,14 @@ private:
     int uniq;
     FocusState focus_state;
     std::vector<IASRListener*> asr_listeners;
-    ListeningState prev_listening_state = ListeningState::DONE;
+    ListeningState prev_listening_state;
     AsrRecognizeCallback rec_callback;
     ASRState cur_state;
     std::string request_listening_id;
     bool asr_cancel;
+
+    float wakeup_power_noise;
+    float wakeup_power_speech;
 
     // attribute
     std::string model_path;
@@ -124,9 +127,6 @@ private:
     std::string asr_encoding;
     int response_timeout;
     EpdAttribute epd_attribute;
-
-    float wakeup_power_noise;
-    float wakeup_power_speech;
 };
 
 } // NuguCapability

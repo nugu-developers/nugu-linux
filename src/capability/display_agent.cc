@@ -31,20 +31,17 @@ DisplayAgent::DisplayAgent()
 {
 }
 
-DisplayAgent::~DisplayAgent()
-{
-    for (auto info : render_info)
-        delete info.second;
-
-    render_info.clear();
-}
-
 void DisplayAgent::initialize()
 {
     if (initialized) {
         nugu_info("It's already initialized.");
         return;
     }
+
+    Capability::initialize();
+
+    disp_cur_ps_id = "";
+    disp_cur_token = "";
 
     playsync_manager->addListener(getName(), this);
 
@@ -54,6 +51,11 @@ void DisplayAgent::initialize()
 void DisplayAgent::deInitialize()
 {
     playsync_manager->removeListener(getName());
+
+    for (auto info : render_info)
+        delete info.second;
+
+    render_info.clear();
 
     initialized = false;
 }

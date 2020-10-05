@@ -32,7 +32,6 @@ static const char* CAPABILITY_VERSION = "1.3";
 SystemAgent::SystemAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , system_listener(nullptr)
-    , timer(nullptr)
 {
     nugu_network_manager_set_handoff_status_callback(
         [](NuguNetworkHandoffStatus status, void* userdata) {
@@ -57,16 +56,14 @@ SystemAgent::SystemAgent()
         this);
 }
 
-SystemAgent::~SystemAgent()
-{
-}
-
 void SystemAgent::initialize()
 {
     if (initialized) {
         nugu_info("It's already initialized.");
         return;
     }
+
+    Capability::initialize();
 
     timer = core_container->createNuguTimer();
     timer->setInterval(DEFAULT_INACTIVITY_TIMEOUT * NUGU_TIMER_UNIT_SEC);
