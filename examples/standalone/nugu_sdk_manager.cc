@@ -46,6 +46,7 @@ void NuguSDKManager::setup()
             ->compose();
     };
 
+    createInstance();
     composeExecuteCommands();
 }
 
@@ -151,6 +152,7 @@ void NuguSDKManager::createInstance()
 }
 void NuguSDKManager::deleteInstance()
 {
+    wakeup_handler.reset();
     nugu_client.reset();
     capa_collection.reset();
     on_init_func = nullptr;
@@ -163,7 +165,6 @@ void NuguSDKManager::initSDK()
         return;
     }
 
-    createInstance();
     composeSDKCommands();
 
     if (!nugu_client->initialize()) {
@@ -192,11 +193,8 @@ void NuguSDKManager::deInitSDK(bool is_exit)
 
     msg_info("de-initialization start");
 
-    // TODO:It needs to re-position according by instance maintenance policy
-    wakeup_handler.reset();
-
+    network_manager->disconnect();
     nugu_client->deInitialize();
-    deleteInstance();
 
     msg_info("de-initialization done");
 
@@ -215,6 +213,7 @@ void NuguSDKManager::reset()
 void NuguSDKManager::exit()
 {
     deInitSDK(true);
+    deleteInstance();
     nugu_sample_manager->quit();
 }
 
@@ -247,12 +246,13 @@ void NuguSDKManager::onStatusChanged(NetworkStatus status)
         msg_info("Network disconnected.");
         nugu_sample_manager->handleNetworkResult(false);
 
-        if (on_fail_func)
+        if (is_network_error && on_fail_func)
             on_fail_func();
 
         break;
     case NetworkStatus::CONNECTED:
         msg_info("Network connected.");
+        is_network_error = false;
         nugu_sample_manager->handleNetworkResult(true);
 
         if (on_init_func)
@@ -279,6 +279,7 @@ void NuguSDKManager::onError(NetworkError error)
         break;
     }
 
+    is_network_error = true;
     nugu_sample_manager->handleNetworkResult(false);
 }
 

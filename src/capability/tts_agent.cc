@@ -31,23 +31,8 @@ static const char* CAPABILITY_VERSION = "1.2";
 
 TTSAgent::TTSAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
-    , player(nullptr)
-    , cur_state(MediaPlayerState::IDLE)
-    , focus_state(FocusState::NONE)
-    , cur_token("")
-    , is_prehandling(false)
-    , is_finished(false)
-    , volume_update(false)
-    , volume(-1)
-    , speak_dir(nullptr)
-    , dialog_id("")
-    , ps_id("")
     , tts_listener(nullptr)
     , tts_engine(NUGU_TTS_ENGINE)
-{
-}
-
-TTSAgent::~TTSAgent()
 {
 }
 
@@ -63,6 +48,20 @@ void TTSAgent::initialize()
         nugu_info("It's already initialized.");
         return;
     }
+
+    Capability::initialize();
+
+    cur_state = MediaPlayerState::IDLE;
+    focus_state = FocusState::NONE;
+    cur_token = "";
+    is_prehandling = false;
+    is_finished = false;
+    volume_update = false;
+    volume = -1;
+    speak_dir = nullptr;
+    dialog_id = "";
+    ps_id = "";
+    playstackctl_ps_id = "";
 
     std::string volume_str;
     if (capa_helper->getCapabilityProperty("Speaker", "voice_command", volume_str))

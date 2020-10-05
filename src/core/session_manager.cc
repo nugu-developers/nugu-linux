@@ -27,6 +27,11 @@ SessionManager::~SessionManager()
     listeners.clear();
 }
 
+void SessionManager::reset()
+{
+    clearContainer();
+}
+
 void SessionManager::addListener(ISessionManagerListener* listener)
 {
     if (!listener) {

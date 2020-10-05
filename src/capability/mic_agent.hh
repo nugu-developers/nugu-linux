@@ -26,7 +26,7 @@ class MicAgent final : public Capability,
                        public IMicHandler {
 public:
     MicAgent();
-    virtual ~MicAgent();
+    virtual ~MicAgent() = default;
 
     void initialize() override;
 

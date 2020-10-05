@@ -29,7 +29,7 @@ class TTSAgent final : public Capability,
                        public IPlaySyncManagerListener {
 public:
     TTSAgent();
-    virtual ~TTSAgent();
+    virtual ~TTSAgent() = default;
 
     void setAttribute(TTSAttribute&& attribute) override;
     void initialize() override;

@@ -62,6 +62,18 @@ void CapabilityManager::destroyInstance()
     }
 }
 
+void CapabilityManager::resetInstance()
+{
+    events.clear();
+    events_cname_map.clear();
+
+    playsync_manager->reset();
+    focus_manager->reset();
+    session_manager->reset();
+    directive_sequencer->reset();
+    interaction_control_manager->reset();
+}
+
 bool CapabilityManager::onPreHandleDirective(NuguDirective* ndir)
 {
     ICapabilityInterface* cap = findCapability(nugu_directive_peek_namespace(ndir));

@@ -156,10 +156,20 @@ void Capability::setNuguCoreContainer(INuguCoreContainer* core_container)
 
 void Capability::initialize()
 {
+    has_attachment = false;
+    suspended = false;
+    suspend_policy = SuspendPolicy::STOP;
+
+    pimpl->ref_dialog_id = "";
+    pimpl->cur_ndir = nullptr;
+    pimpl->referrer_events.clear();
+    pimpl->referrer_dirs.clear();
+    event_result_cbs.clear();
 }
 
 void Capability::deInitialize()
 {
+    initialized = false;
 }
 
 void Capability::setSuspendPolicy(SuspendPolicy policy)

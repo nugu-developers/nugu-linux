@@ -26,7 +26,7 @@ class SystemAgent final : public Capability,
                           public ISystemHandler {
 public:
     SystemAgent();
-    virtual ~SystemAgent();
+    virtual ~SystemAgent() = default;
 
     void initialize() override;
     void deInitialize() override;

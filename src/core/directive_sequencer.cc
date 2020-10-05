@@ -100,6 +100,12 @@ DirectiveSequencer::DirectiveSequencer()
 
 DirectiveSequencer::~DirectiveSequencer()
 {
+    nugu_network_manager_set_directive_callback(NULL, NULL);
+    nugu_network_manager_set_attachment_callback(NULL, NULL);
+}
+
+void DirectiveSequencer::reset()
+{
     /* Cancel the pending idler */
     if (idler_src != 0)
         g_source_remove(idler_src);
@@ -113,8 +119,12 @@ DirectiveSequencer::~DirectiveSequencer()
         nugu_directive_unref(ndir);
     }
 
-    nugu_network_manager_set_directive_callback(NULL, NULL);
-    nugu_network_manager_set_attachment_callback(NULL, NULL);
+    idler_src = 0;
+    policy_map.clear();
+    msgid_directive_map.clear();
+    audio_map.clear();
+    visual_map.clear();
+    scheduled_list.clear();
 }
 
 /* Callback by network-manager */

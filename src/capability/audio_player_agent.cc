@@ -27,31 +27,7 @@ static const char* CAPABILITY_VERSION = "1.4";
 
 AudioPlayerAgent::AudioPlayerAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
-    , cur_player(nullptr)
-    , media_player(nullptr)
-    , tts_player(nullptr)
-    , speak_dir(nullptr)
-    , focus_state(FocusState::NONE)
-    , is_tts_activate(false)
-    , is_next_play(false)
-    , cur_aplayer_state(AudioPlayerState::IDLE)
-    , prev_aplayer_state(AudioPlayerState::IDLE)
-    , is_paused(false)
-    , is_paused_by_unfocus(false)
-    , ps_id("")
-    , report_delay_time(-1)
-    , report_interval_time(-1)
-    , cur_token("")
-    , cur_url("")
-    , pre_ref_dialog_id("")
-    , is_finished(false)
-    , volume_update(false)
-    , volume(-1)
     , display_listener(nullptr)
-{
-}
-
-AudioPlayerAgent::~AudioPlayerAgent()
 {
 }
 
@@ -61,6 +37,30 @@ void AudioPlayerAgent::initialize()
         nugu_info("It's already initialized.");
         return;
     }
+
+    Capability::initialize();
+
+    speak_dir = nullptr;
+    focus_state = FocusState::NONE;
+    is_tts_activate = false;
+    is_next_play = false;
+    cur_aplayer_state = AudioPlayerState::IDLE;
+    prev_aplayer_state = AudioPlayerState::IDLE;
+    is_paused = false;
+    is_paused_by_unfocus = false;
+    ps_id = "";
+    report_delay_time = -1;
+    report_interval_time = -1;
+    cur_token = "";
+    cur_url = "";
+    pre_ref_dialog_id = "";
+    cur_dialog_id = "";
+    is_finished = false;
+    volume_update = false;
+    volume = -1;
+    template_id = "";
+    template_view = "";
+    template_type = "";
 
     std::string volume_str;
     if (capa_helper->getCapabilityProperty("Speaker", "music", volume_str))
@@ -122,7 +122,6 @@ void AudioPlayerAgent::initialize()
 
 void AudioPlayerAgent::deInitialize()
 {
-    aplayer_listeners.clear();
     render_infos.clear();
 
     if (media_player) {
@@ -137,9 +136,9 @@ void AudioPlayerAgent::deInitialize()
         tts_player = nullptr;
     }
 
-    playsync_manager->removeListener(getName());
-
     cur_player = nullptr;
+
+    playsync_manager->removeListener(getName());
 
     initialized = false;
 }

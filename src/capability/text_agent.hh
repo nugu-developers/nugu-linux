@@ -26,7 +26,7 @@ class TextAgent final : public Capability,
                         public ITextHandler {
 public:
     TextAgent();
-    virtual ~TextAgent();
+    virtual ~TextAgent() = default;
 
     void setAttribute(TextAttribute&& attribute) override;
     void initialize() override;

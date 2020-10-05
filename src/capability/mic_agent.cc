@@ -28,11 +28,6 @@ MicAgent::MicAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , mic_listener(nullptr)
     , cur_status(MicStatus::ON)
-    , ps_id("")
-{
-}
-
-MicAgent::~MicAgent()
 {
 }
 
@@ -42,6 +37,11 @@ void MicAgent::initialize()
         nugu_info("It's already initialized.");
         return;
     }
+
+    Capability::initialize();
+
+    cur_status = MicStatus::ON;
+    ps_id = "";
 
     addReferrerEvents("SetMicSucceeded", "SetMic");
     addReferrerEvents("SetMicFailed", "SetMic");
