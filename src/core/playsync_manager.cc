@@ -176,6 +176,11 @@ void PlaySyncManager::resetHolding()
     playstack_manager->resetHolding();
 }
 
+bool PlaySyncManager::hasPostPoneRelease()
+{
+    return release_postponed || postponed_release_func;
+}
+
 bool PlaySyncManager::isConditionToHandlePrevDialog(NuguDirective* prev_ndir, NuguDirective* cur_ndir)
 {
     return playstack_manager->isStackedCondition(cur_ndir) && !playstack_manager->hasExpectSpeech(prev_ndir);
