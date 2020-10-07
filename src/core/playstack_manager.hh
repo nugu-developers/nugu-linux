@@ -18,6 +18,7 @@
 #define __NUGU_PLAYSTACK_MANAGER_H__
 
 #include <memory>
+#include <set>
 
 #include "clientkit/playstack_manager_interface.hh"
 #include "nugu_timer.hh"
@@ -71,6 +72,7 @@ public:
     PlayStackLayer getPlayStackLayer(const std::string& ps_id);
     std::vector<std::string> getAllPlayStackItems();
     const PlayStack& getPlayStackContainer();
+    std::set<bool> getFlagSet();
 
 private:
     class StackTimer final : public IStackTimer {

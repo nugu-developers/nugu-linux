@@ -253,6 +253,11 @@ const PlayStackManager::PlayStack& PlayStackManager::getPlayStackContainer()
     return playstack_container;
 }
 
+std::set<bool> PlayStackManager::getFlagSet()
+{
+    return { has_long_timer, has_holding, is_expect_speech, is_stacked };
+}
+
 PlayStackLayer PlayStackManager::extractPlayStackLayer(NuguDirective* ndir)
 {
     std::string groups = nugu_directive_peek_groups(ndir);
