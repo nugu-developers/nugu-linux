@@ -245,6 +245,21 @@ static void test_playstack_manager_checkExpectSpeech(TestFixture* fixture, gcons
     g_assert(fixture->playstack_manager->hasExpectSpeech(fixture->ndir_expect_speech));
 }
 
+static void test_playstack_manager_reset(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& playstack_container = fixture->playstack_manager->getPlayStackContainer();
+
+    fixture->playstack_manager->add("ps_id_1", fixture->ndir_expect_speech);
+    auto flag_set_before = fixture->playstack_manager->getFlagSet();
+    g_assert(flag_set_before.find(true) != flag_set_before.cend());
+    g_assert(!playstack_container.first.empty());
+
+    fixture->playstack_manager->reset();
+    auto flag_set_after = fixture->playstack_manager->getFlagSet();
+    g_assert(flag_set_after.find(true) == flag_set_after.cend());
+    g_assert(playstack_container.first.empty());
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -262,6 +277,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/controlHolding", test_playstack_manager_controlHolding);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkStack", test_playstack_manager_checkStack);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkExpectSpeech", test_playstack_manager_checkExpectSpeech);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/reset", test_playstack_manager_reset);
 
     return g_test_run();
 }
