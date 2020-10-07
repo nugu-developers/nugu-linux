@@ -28,6 +28,9 @@ using namespace NuguClientKit;
 
 class InteractionControlManager : public IInteractionControlManager {
 public:
+    using Requesters = std::set<std::string>;
+
+public:
     InteractionControlManager() = default;
     virtual ~InteractionControlManager();
 
@@ -41,12 +44,14 @@ public:
     void finish(InteractionMode mode, const std::string& requester) override;
     void clear() override;
 
+    const Requesters& getAllRequesters();
+
 private:
     void notifyModeChange(bool is_multi_turn);
     void clearContainer();
 
     std::vector<IInteractionControlManagerListener*> listeners;
-    std::set<std::string> requester_set;
+    Requesters requester_set;
 };
 
 } // NuguCore

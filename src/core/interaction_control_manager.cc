@@ -115,6 +115,11 @@ void InteractionControlManager::clear()
     clearContainer();
 }
 
+const InteractionControlManager::Requesters& InteractionControlManager::getAllRequesters()
+{
+    return requester_set;
+}
+
 void InteractionControlManager::notifyModeChange(bool is_multi_turn)
 {
     for (const auto& listener : listeners)

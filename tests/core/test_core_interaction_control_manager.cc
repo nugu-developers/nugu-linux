@@ -188,6 +188,20 @@ static void test_interaction_control_manager_clear(TestFixture* fixture, gconstp
     g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { false, 1 }));
 }
 
+static void test_interaction_control_manager_reset(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& requesters = fixture->ic_manager->getAllRequesters();
+    fixture->ic_manager->addListener(fixture->ic_manager_listener.get());
+
+    fixture->ic_manager->start(InteractionMode::MULTI_TURN, "requester_1");
+    fixture->ic_manager->start(InteractionMode::MULTI_TURN, "requester_2");
+    g_assert(requesters.size() == 2);
+
+    fixture->ic_manager->reset();
+    g_assert(fixture->ic_manager->getListenerCount() == 1);
+    g_assert(requesters.empty());
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -202,6 +216,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/InteractionControlManager/multiRequester", test_interaction_control_manager_multi_requester);
     G_TEST_ADD_FUNC("/core/InteractionControlManager/hasMultiTurn", test_interaction_control_manager_has_multi_turn);
     G_TEST_ADD_FUNC("/core/InteractionControlManager/clear", test_interaction_control_manager_clear);
+    G_TEST_ADD_FUNC("/core/InteractionControlManager/reset", test_interaction_control_manager_reset);
 
     return g_test_run();
 }
