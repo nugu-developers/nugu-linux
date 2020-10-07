@@ -287,6 +287,23 @@ static void test_session_manager_clear(TestFixture* fixture, gconstpointer ignor
     g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_2") == 0);
 }
 
+static void test_session_manager_reset(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& session_container = fixture->session_manager->getAllSessions();
+    const auto& active_list = fixture->session_manager->getActiveList();
+    fixture->session_manager->addListener(fixture->session_manager_listener.get());
+
+    fixture->session_manager->activate("dialog_id_1");
+    fixture->session_manager->set("dialog_id_1", { "session_id_1", "ps_id_1" });
+    g_assert(session_container.size() == 1);
+    g_assert(active_list.size() == 1);
+
+    fixture->session_manager->reset();
+    g_assert(fixture->session_manager->getListenerCount() == 1);
+    g_assert(session_container.empty());
+    g_assert(active_list.empty());
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -305,6 +322,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/SessionManager/notifySingleActiveState", test_session_manager_notify_single_active_state);
     G_TEST_ADD_FUNC("/core/SessionManager/notifyMultiActiveState", test_session_manager_notify_multi_active_state);
     G_TEST_ADD_FUNC("/core/SessionManager/clear", test_session_manager_clear);
+    G_TEST_ADD_FUNC("/core/SessionManager/reset", test_session_manager_reset);
 
     return g_test_run();
 }
