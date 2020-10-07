@@ -655,6 +655,28 @@ static void test_playstack_manager_check_expect_speech(TestFixture* fixture, gco
     g_assert(fixture->ic_manager_listener->hasMultiTurn());
 }
 
+static void test_playstack_manager_reset(TestFixture* fixture, gconstpointer ignored)
+{
+    sub_test_playstack_manager_preset_sync(fixture, "ps_id_1");
+
+    const auto& playstacks = fixture->playsync_manager->getPlayStacks();
+
+    g_assert(!playstacks.empty());
+    g_assert(!fixture->playsync_manager->getAllPlayStackItems().empty());
+    g_assert(!fixture->playsync_manager->hasPostPoneRelease());
+
+    fixture->playsync_manager->postPoneRelease();
+    fixture->playsync_manager->releaseSync("ps_id_1", "TTS");
+    g_assert(fixture->playsync_manager->hasPostPoneRelease());
+
+    fixture->playsync_manager->reset();
+
+    g_assert(playstacks.empty());
+    g_assert(fixture->playsync_manager->getAllPlayStackItems().empty());
+    g_assert(!fixture->playsync_manager->hasPostPoneRelease());
+    g_assert(fixture->playsync_manager->getListenerCount() == 1);
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -682,8 +704,8 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/postPoneRelease", test_playstack_manager_postpone_release);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkToProcessPreviousDialog", test_playstack_manager_check_to_process_previous_dialog);
     G_TEST_ADD_FUNC("/core/PlayStackManager/refreshExtraData", test_playstack_manager_refresh_extra_data);
-
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkExpectSpeech", test_playstack_manager_check_expect_speech);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/reset", test_playstack_manager_reset);
 
     return g_test_run();
 }

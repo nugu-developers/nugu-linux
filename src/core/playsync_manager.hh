@@ -55,6 +55,7 @@ public:
     void continueRelease() override;
     void stopHolding() override;
     void resetHolding() override;
+    bool hasPostPoneRelease();
 
     bool isConditionToHandlePrevDialog(NuguDirective* prev_ndir, NuguDirective* cur_ndir) override;
     bool hasLayer(const std::string& ps_id, PlayStackLayer layer) override;
