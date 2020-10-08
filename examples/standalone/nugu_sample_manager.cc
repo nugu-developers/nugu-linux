@@ -27,6 +27,7 @@
 #include "nugu_sample_manager.hh"
 
 const char* NuguSampleManager::C_RED = "\033[1;91m";
+const char* NuguSampleManager::C_GREEN = "\033[1;92m";
 const char* NuguSampleManager::C_YELLOW = "\033[1;93m";
 const char* NuguSampleManager::C_BLUE = "\033[1;94m";
 const char* NuguSampleManager::C_CYAN = "\033[1;96m";
@@ -128,6 +129,11 @@ void NuguSampleManager::setTextCommander(TextCommander&& text_commander)
     commander.text_commander = text_commander;
 }
 
+void NuguSampleManager::setPlayStackRetriever(PlayStackRetriever&& playstack_retriever)
+{
+    commander.playstack_retriever = playstack_retriever;
+}
+
 const std::string& NuguSampleManager::getModelPath()
 {
     return model_path;
@@ -213,8 +219,16 @@ void NuguSampleManager::showPrompt(void)
         // display commands about sdk life cycle control
         std::cout << command_text.second
                   << C_YELLOW
-                  << "-------------------------------------------------------\n"
-                  << C_WHITE
+                  << "-------------------------------------------------------\n";
+
+        // show current PlayStack info
+        if (commander.is_connected) {
+            std::cout << C_GREEN << "[PlayStack] "
+                      << (commander.playstack_retriever ? commander.playstack_retriever() : "")
+                      << std::endl;
+        }
+
+        std::cout << C_WHITE
                   << "Select Command > "
                   << C_RESET;
     }

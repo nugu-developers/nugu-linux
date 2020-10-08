@@ -97,6 +97,31 @@ void NuguSDKManager::composeSDKCommands()
         ->compose("w");
 }
 
+void NuguSDKManager::createInstance()
+{
+    nugu_client = std::make_shared<NuguClient>();
+    capa_collection = std::make_shared<CapabilityCollection>();
+    nugu_core_container = nugu_client->getNuguCoreContainer();
+    speech_operator = capa_collection->getSpeechOperator();
+    network_manager = nugu_client->getNetworkManager();
+
+    registerCapabilities();
+
+    auto capability_helper(nugu_core_container->getCapabilityHelper());
+    capability_helper->getFocusManager()->addObserver(this);
+    capability_helper->getInteractionControlManager()->addListener(this);
+    playsync_manager = capability_helper->getPlaySyncManager();
+
+    network_manager->addListener(this);
+    network_manager->setToken(getenv("NUGU_TOKEN"));
+    network_manager->setUserAgent("0.2.0");
+
+    on_init_func = [&]() {
+        wakeup_handler = std::shared_ptr<IWakeupHandler>(nugu_core_container->createWakeupHandler(nugu_sample_manager->getModelPath()));
+        speech_operator->setWakeupHandler(wakeup_handler.get());
+    };
+}
+
 void NuguSDKManager::registerCapabilities()
 {
     if (!nugu_client)
@@ -107,10 +132,7 @@ void NuguSDKManager::registerCapabilities()
     mic_handler = capa_collection->getCapability<IMicHandler>("Mic");
 
     asr_handler->setAttribute(ASRAttribute { nugu_sample_manager->getModelPath() });
-    nugu_sample_manager->setTextCommander(
-        [&](std::string text, bool include_dialog_attribute) {
-            text_handler->requestTextInput(text, "", include_dialog_attribute);
-        });
+    setAdditionalExecutor();
 
     // create capability instance
     nugu_client->getCapabilityBuilder()
@@ -127,29 +149,26 @@ void NuguSDKManager::registerCapabilities()
         ->construct();
 }
 
-void NuguSDKManager::createInstance()
+void NuguSDKManager::setAdditionalExecutor()
 {
-    nugu_client = std::make_shared<NuguClient>();
-    capa_collection = std::make_shared<CapabilityCollection>();
-    nugu_core_container = nugu_client->getNuguCoreContainer();
-    speech_operator = capa_collection->getSpeechOperator();
-    network_manager = nugu_client->getNetworkManager();
+    nugu_sample_manager->setTextCommander(
+        [&](std::string text, bool include_dialog_attribute) {
+            text_handler->requestTextInput(text, "", include_dialog_attribute);
+        });
+    nugu_sample_manager->setPlayStackRetriever([&]() {
+        std::string playstack_text;
+        const auto& playstacks = playsync_manager->getAllPlayStackItems();
 
-    registerCapabilities();
+        for (const auto& item : playstacks)
+            playstack_text.append(item).append("|");
 
-    auto capability_helper(nugu_core_container->getCapabilityHelper());
-    capability_helper->getFocusManager()->addObserver(this);
-    capability_helper->getInteractionControlManager()->addListener(this);
+        if (!playstack_text.empty())
+            playstack_text.pop_back();
 
-    network_manager->addListener(this);
-    network_manager->setToken(getenv("NUGU_TOKEN"));
-    network_manager->setUserAgent("0.2.0");
-
-    on_init_func = [&]() {
-        wakeup_handler = std::shared_ptr<IWakeupHandler>(nugu_core_container->createWakeupHandler(nugu_sample_manager->getModelPath()));
-        speech_operator->setWakeupHandler(wakeup_handler.get());
-    };
+        return playstack_text;
+    });
 }
+
 void NuguSDKManager::deleteInstance()
 {
     wakeup_handler.reset();
