@@ -121,6 +121,12 @@ public:
      */
     INetworkManager* getNetworkManager();
 
+    /**
+     * @brief Get instance of CapabilityAgent
+     * @return ICapabilityInterface the instance which is related to requested CapabilityAgent, otherwise nullptr
+     */
+    ICapabilityInterface* getCapabilityHandler(const std::string& cname);
+
 private:
     std::unique_ptr<NuguClientImpl> impl;
     CapabilityBuilder* cap_builder;
