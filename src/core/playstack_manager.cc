@@ -91,6 +91,8 @@ PlayStackManager::~PlayStackManager()
 
 void PlayStackManager::reset()
 {
+    timer->stop();
+
     clearContainer();
 
     has_long_timer = false;

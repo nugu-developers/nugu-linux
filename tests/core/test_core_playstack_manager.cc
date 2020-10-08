@@ -254,10 +254,14 @@ static void test_playstack_manager_reset(TestFixture* fixture, gconstpointer ign
     g_assert(flag_set_before.find(true) != flag_set_before.cend());
     g_assert(!playstack_container.first.empty());
 
+    fixture->playstack_manager->remove("ps_id_1");
+    g_assert(fixture->playstack_manager->isActiveHolding());
+
     fixture->playstack_manager->reset();
     auto flag_set_after = fixture->playstack_manager->getFlagSet();
     g_assert(flag_set_after.find(true) == flag_set_after.cend());
     g_assert(playstack_container.first.empty());
+    g_assert(!fixture->playstack_manager->isActiveHolding());
 }
 
 int main(int argc, char* argv[])
