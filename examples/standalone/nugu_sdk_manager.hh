@@ -48,8 +48,9 @@ public:
 private:
     void composeExecuteCommands();
     void composeSDKCommands();
-    void registerCapabilities();
     void createInstance();
+    void registerCapabilities();
+    void setAdditionalExecutor();
     void deleteInstance();
 
     void initSDK();
@@ -65,6 +66,7 @@ private:
     std::shared_ptr<CapabilityCollection> capa_collection = nullptr;
     std::shared_ptr<IWakeupHandler> wakeup_handler = nullptr;
     INuguCoreContainer* nugu_core_container = nullptr;
+    IPlaySyncManager* playsync_manager = nullptr;
     INetworkManager* network_manager = nullptr;
     SpeechOperator* speech_operator = nullptr;
     ITextHandler* text_handler = nullptr;
