@@ -91,4 +91,9 @@ INetworkManager* NuguClient::getNetworkManager()
     return impl->getNetworkManager();
 }
 
+ICapabilityInterface* NuguClient::getCapabilityHandler(const std::string& cname)
+{
+    return impl->getCapabilityHandler(cname);
+}
+
 } // NuguClientKit
