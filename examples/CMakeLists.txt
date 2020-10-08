@@ -9,6 +9,7 @@ ADD_SUBDIRECTORY(simple_play)
 ADD_SUBDIRECTORY(simple_tts)
 ADD_SUBDIRECTORY(profiling)
 ADD_SUBDIRECTORY(capability_injection)
+ADD_SUBDIRECTORY(response_filter)
 
 # A shell script that executes a program using the token information
 # generated in the OAuth2 example.
