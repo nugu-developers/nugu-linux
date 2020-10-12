@@ -29,6 +29,7 @@ struct _nugu_timer {
     int fake_count;
     int repeat;
     int count;
+    gboolean loop;
     NuguTimeoutCallback cb;
     void* userdata;
     int start;
@@ -60,13 +61,12 @@ static void fake_timer_action(gpointer data, gpointer user_data)
     if (timer->start == 0)
         return;
 
-    if (timer->repeat < timer->count)
-        return;
-
     timer->fake_count++;
     if (timer->fake_count >= timer->interval) {
-        if (_nugu_timer_callback(timer) == FALSE)
+        gboolean ret = _nugu_timer_callback(timer);
+        if (!timer->loop && !ret)
             timer->start = 0;
+
         timer->fake_count = 0;
     }
 }
@@ -123,6 +123,16 @@ void nugu_timer_set_repeat(NuguTimer* timer, int repeat)
 int nugu_timer_get_repeat(NuguTimer* timer)
 {
     return timer->repeat;
+}
+
+void nugu_timer_set_loop(NuguTimer* timer, int loop)
+{
+    timer->loop = loop == 0 ? FALSE : TRUE;
+}
+
+int nugu_timer_get_loop(NuguTimer* timer)
+{
+    return timer->loop;
 }
 
 int nugu_timer_get_count(NuguTimer* timer)

@@ -84,6 +84,16 @@ unsigned int NUGUTimer::getRepeat()
     return nugu_timer_get_repeat(d->timer);
 }
 
+void NUGUTimer::setLoop(bool loop)
+{
+    nugu_timer_set_loop(d->timer, loop);
+}
+
+bool NUGUTimer::getLoop()
+{
+    return nugu_timer_get_loop(d->timer);
+}
+
 unsigned int NUGUTimer::getCount()
 {
     return nugu_timer_get_count(d->timer);

@@ -124,6 +124,40 @@ static void test_nugutimer_repeat(ntimerFixture* fixture, gconstpointer ignored)
     g_assert(timer->getCount() == (unsigned int)expect_count);
 }
 
+static void test_nugutimer_loop(ntimerFixture* fixture, gconstpointer ignored)
+{
+    NUGUTimer* timer = fixture->timer1;
+    int expect_repeat = 1;
+    int expect_count = 1;
+
+    timer->setCallback([&](int count, int repeat) {
+        g_assert(count == expect_count && repeat == expect_repeat);
+    });
+
+    /* Trigger Timer every time */
+    expect_repeat = 1;
+    timer->setInterval(TIMEOUT_UNIT_SEC);
+    timer->setRepeat(expect_repeat);
+    timer->setLoop(true);
+    timer->start();
+
+    expect_count = 1;
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
+    g_assert(timer->getCount() == (unsigned int)expect_count);
+    expect_count = 2;
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
+    g_assert(timer->getCount() == (unsigned int)expect_count);
+    expect_count = 3;
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
+    g_assert(timer->getCount() == (unsigned int)expect_count);
+    expect_count = 4;
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
+    g_assert(timer->getCount() == (unsigned int)expect_count);
+    expect_count = 5;
+    TIMER_ELAPSE_SEC(TIMEOUT_UNIT_SEC);
+    g_assert(timer->getCount() == (unsigned int)expect_count);
+}
+
 static void test_nugutimer_multi_trigger(ntimerFixture* fixture, gconstpointer ignored)
 {
     NUGUTimer* timer1 = fixture->timer1;
@@ -232,6 +266,7 @@ int main(int argc, char* argv[])
 
     G_TEST_ADD_FUNC("/core/NuguTimer/Trigger", test_nugutimer_trigger);
     G_TEST_ADD_FUNC("/core/NuguTimer/Repeat", test_nugutimer_repeat);
+    G_TEST_ADD_FUNC("/core/NuguTimer/Loop", test_nugutimer_loop);
     G_TEST_ADD_FUNC("/core/NuguTimer/MultiTrigger", test_nugutimer_multi_trigger);
     G_TEST_ADD_FUNC("/core/NuguTimer/MultiRepeat", test_nugutimer_multi_repeat);
 
