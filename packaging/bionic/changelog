@@ -1,3 +1,24 @@
+nugu (0.22.0ubuntu1~bionic) bionic; urgency=medium
+
+  * Added asr/text request filter example
+  * Added Display Interface v1.6 spec
+  * Added PlaySyncManager
+  * Added nugu timer loop property
+  * Applied render/clear Display
+  * Updated nugu_sample
+  * Updated NuguClient
+  * Updated Sound interface api
+  * Updated Text interface v1.3 spec
+  * Updated AudioPlayerAgent
+  * Updated TextAgent
+  * Updated ASRAgent
+  * Updated PlayStackManager
+  * Updated InteractionControlManager
+  * Updated SessionManager
+  * Updated network header
+
+ -- nugulinux <nugulinux@gmail.com>  Mon, 12 Oct 2020 15:30:00 +0900
+
 nugu (0.21.0ubuntu1~bionic) bionic; urgency=medium
 
   * Fixed ASR’s context and cleared ExpectSpeech attributes
