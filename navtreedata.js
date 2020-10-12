@@ -36,13 +36,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classNuguClientKit_1_1ICapabilityInterface.html#a5165192ab427d8115df899323ee482c0",
-"group__ASRInterface.html#ga5419ab10266ab89d5d5a405bf2f209cd",
-"group__Log.html#ggaf9fb527f66475b5f832571fe90940bd1acc517f59e91c4f7e22568f3d9abfe613",
-"group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcbad50174ba6d9eeccabab08ac56b37dcf9",
-"group__NuguRingBuffer.html#gab1c2ab08be8745ab4e5a8e0426074d81",
-"group__nugu__network.html#ga146c04f3badde8f76fcdd0469e1ac329",
-"speaker__interface_8hh.html#gga8601f6be80368c9d1a7c7b346c99a698aca3547acb9162b49fb4a6594ed9b3030"
+"classNuguClientKit_1_1ICapabilityHelper.html#a73e851e07fe280fed3c581790c57663a",
+"functions_func_g.html",
+"group__Log.html#gga087457802942b6cddead13bf0e061851ac7df00ffe5a260812e200c8b464618c2",
+"group__NuguEvent.html#ggad962955274c901710ed7946542f0cff4a6f7827affcc79339efc1fd353831ae26",
+"group__NuguRecorder.html#gacd7f549c14e5cbe14ee92566961890cf",
+"group__SpeechRecognizerInterface.html#gaae383c251ee0fa6e96e4c53b9f5d9a3a",
+"nugu__plugin_8h.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

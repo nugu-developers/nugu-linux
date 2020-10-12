@@ -52,5 +52,6 @@ var nugu__network__manager_8h =
     [ "nugu_network_manager_set_registry_url", "group__nugu__network.html#ga14fd663ca182334cf98f916b6e2ce2e8", null ],
     [ "nugu_network_manager_peek_registry_url", "group__nugu__network.html#ga72a662214e4e9a073e6911295599d5a1", null ],
     [ "nugu_network_manager_set_useragent", "group__nugu__network.html#gad996b56722f2aeade89d5591d76f4d22", null ],
-    [ "nugu_network_manager_peek_useragent", "group__nugu__network.html#ga146c04f3badde8f76fcdd0469e1ac329", null ]
+    [ "nugu_network_manager_peek_useragent", "group__nugu__network.html#ga146c04f3badde8f76fcdd0469e1ac329", null ],
+    [ "nugu_network_manager_peek_last_asr_time", "group__nugu__network.html#ga90ac485b01cb3a3b486777602a339d16", null ]
 ];

@@ -11,6 +11,9 @@ var hierarchy =
     [ "NuguClientKit::ICapabilityInterface", "classNuguClientKit_1_1ICapabilityInterface.html", [
       [ "NuguCapability::IASRHandler", "classNuguCapability_1_1IASRHandler.html", null ],
       [ "NuguCapability::IAudioPlayerHandler", "classNuguCapability_1_1IAudioPlayerHandler.html", null ],
+      [ "NuguCapability::IDisplayHandler", "classNuguCapability_1_1IDisplayHandler.html", [
+        [ "NuguCapability::IAudioPlayerHandler", "classNuguCapability_1_1IAudioPlayerHandler.html", null ]
+      ] ],
       [ "NuguCapability::IMicHandler", "classNuguCapability_1_1IMicHandler.html", null ],
       [ "NuguCapability::ISessionHandler", "classNuguCapability_1_1ISessionHandler.html", null ],
       [ "NuguCapability::ISoundHandler", "classNuguCapability_1_1ISoundHandler.html", null ],
@@ -22,7 +25,11 @@ var hierarchy =
     ] ],
     [ "NuguClientKit::ICapabilityListener", "classNuguClientKit_1_1ICapabilityListener.html", [
       [ "NuguCapability::IASRListener", "classNuguCapability_1_1IASRListener.html", null ],
-      [ "NuguCapability::IAudioPlayerListener", "classNuguCapability_1_1IAudioPlayerListener.html", null ],
+      [ "NuguCapability::IDisplayListener", "classNuguCapability_1_1IDisplayListener.html", [
+        [ "NuguCapability::IAudioPlayerDisplayListener", "classNuguCapability_1_1IAudioPlayerDisplayListener.html", [
+          [ "NuguCapability::IAudioPlayerListener", "classNuguCapability_1_1IAudioPlayerListener.html", null ]
+        ] ]
+      ] ],
       [ "NuguCapability::IMicListener", "classNuguCapability_1_1IMicListener.html", null ],
       [ "NuguCapability::ISessionListener", "classNuguCapability_1_1ISessionListener.html", null ],
       [ "NuguCapability::ISoundListener", "classNuguCapability_1_1ISoundListener.html", null ],
@@ -46,8 +53,8 @@ var hierarchy =
     [ "NuguClientKit::INetworkManagerListener", "classNuguClientKit_1_1INetworkManagerListener.html", null ],
     [ "NuguClientKit::INuguCoreContainer", "classNuguClientKit_1_1INuguCoreContainer.html", null ],
     [ "NuguClientKit::INuguTimer", "classNuguClientKit_1_1INuguTimer.html", null ],
-    [ "NuguClientKit::IPlayStackManager", "classNuguClientKit_1_1IPlayStackManager.html", null ],
-    [ "NuguClientKit::IPlayStackManagerListener", "classNuguClientKit_1_1IPlayStackManagerListener.html", null ],
+    [ "NuguClientKit::IPlaySyncManager", "classNuguClientKit_1_1IPlaySyncManager.html", null ],
+    [ "NuguClientKit::IPlaySyncManagerListener", "classNuguClientKit_1_1IPlaySyncManagerListener.html", null ],
     [ "NuguClientKit::ISessionManager", "classNuguClientKit_1_1ISessionManager.html", null ],
     [ "NuguClientKit::ISessionManagerListener", "classNuguClientKit_1_1ISessionManagerListener.html", null ],
     [ "NuguClientKit::ISpeechRecognizer", "classNuguClientKit_1_1ISpeechRecognizer.html", null ],

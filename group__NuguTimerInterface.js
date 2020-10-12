@@ -7,6 +7,8 @@ var group__NuguTimerInterface =
       [ "getInterval", "classNuguClientKit_1_1INuguTimer.html#a8c2a292628296eae6f9a96441c777484", null ],
       [ "setRepeat", "classNuguClientKit_1_1INuguTimer.html#a6d951ba95d349cc628a938de032b57fa", null ],
       [ "getRepeat", "classNuguClientKit_1_1INuguTimer.html#accfecfc5b1f9d89c5706c0d3d51e1712", null ],
+      [ "setLoop", "classNuguClientKit_1_1INuguTimer.html#ad3564633400799c2e9d2daec167701a4", null ],
+      [ "getLoop", "classNuguClientKit_1_1INuguTimer.html#a4743fa3eab47ac11985a8cf80a33a2a2", null ],
       [ "getCount", "classNuguClientKit_1_1INuguTimer.html#a38a6712755637e0357cb106718bd1bc1", null ],
       [ "stop", "classNuguClientKit_1_1INuguTimer.html#a4ae71270c5b28ca3fbcfb0da17d02cdd", null ],
       [ "start", "classNuguClientKit_1_1INuguTimer.html#a7ea04d2aa0f09eb14b812727f3a39a6b", null ],

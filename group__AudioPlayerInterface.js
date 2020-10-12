@@ -9,9 +9,9 @@ var group__AudioPlayerInterface =
       [ "pause", "classNuguCapability_1_1IAudioPlayerHandler.html#ac65e6b1dcd5793f22ae39846994440a2", null ],
       [ "resume", "classNuguCapability_1_1IAudioPlayerHandler.html#a55bb1d45565f77bf03bc69de1315cc64", null ],
       [ "seek", "classNuguCapability_1_1IAudioPlayerHandler.html#ab1ec85922a4d9dadbd9a21b1cdcc0476", null ],
-      [ "requestFavoriteCommmand", "classNuguCapability_1_1IAudioPlayerHandler.html#aef765aa684b3472822579b07bbb3fbb6", null ],
-      [ "requestRepeatCommmand", "classNuguCapability_1_1IAudioPlayerHandler.html#a3d42602f794a46c3f0c5b96f70d6824f", null ],
-      [ "requestShuffleCommmand", "classNuguCapability_1_1IAudioPlayerHandler.html#a743c9b26f00219da0bbf203b2d55c5a8", null ],
+      [ "requestFavoriteCommand", "classNuguCapability_1_1IAudioPlayerHandler.html#aecda4bded21a93a23a58871ccc70514e", null ],
+      [ "requestRepeatCommand", "classNuguCapability_1_1IAudioPlayerHandler.html#adf58508a05c7f4b7b0c9cbd3dcf1b6c3", null ],
+      [ "requestShuffleCommand", "classNuguCapability_1_1IAudioPlayerHandler.html#a98debb2842a852d57eef20fd1d74d981", null ],
       [ "setVolume", "classNuguCapability_1_1IAudioPlayerHandler.html#a8d1cad1be71f251efd151a2c01bfaf77", null ],
       [ "setMute", "classNuguCapability_1_1IAudioPlayerHandler.html#a23671759937074658ad0efdfcfc91479", null ],
       [ "addListener", "classNuguCapability_1_1IAudioPlayerHandler.html#a746a6fdf707260c8db56b5b0b331053a", null ],
@@ -46,9 +46,5 @@ var group__AudioPlayerInterface =
       [ "NONE", "group__AudioPlayerInterface.html#gga0cb2048ef5fb507017eb53ee3e52716dab50339a10e1de285ac99d4c3990b8693", null ],
       [ "ONE", "group__AudioPlayerInterface.html#gga0cb2048ef5fb507017eb53ee3e52716dabc21e6484530fc9d0313cb816b733396", null ],
       [ "ALL", "group__AudioPlayerInterface.html#gga0cb2048ef5fb507017eb53ee3e52716da5fb1f955b45e38e31789286a1790398d", null ]
-    ] ],
-    [ "ControlLyricsDirection", "group__AudioPlayerInterface.html#ga981015a8d321936038813f3f1ea0bf0a", [
-      [ "PREVIOUS", "group__AudioPlayerInterface.html#gga981015a8d321936038813f3f1ea0bf0aa315ba7a868d45a9cb131c8dca3166b51", null ],
-      [ "NEXT", "group__AudioPlayerInterface.html#gga981015a8d321936038813f3f1ea0bf0aa47559fb833ff58321570e5e877b467f6", null ]
     ] ]
 ];

@@ -6,7 +6,7 @@ var group__SoundInterface =
     ] ],
     [ "ISoundListener", "classNuguCapability_1_1ISoundListener.html", [
       [ "~ISoundListener", "classNuguCapability_1_1ISoundListener.html#a17761aba4fce10a6519a398b9093b113", null ],
-      [ "handleBeep", "classNuguCapability_1_1ISoundListener.html#a5a8b56801a95470a75b492204a83e090", null ]
+      [ "handleBeep", "classNuguCapability_1_1ISoundListener.html#af78afa2c9b053ec50610a09136ff6e6e", null ]
     ] ],
     [ "BeepType", "group__SoundInterface.html#gaa422ff53ae62f3ef7309d310162386ab", [
       [ "RESPONSE_FAIL", "group__SoundInterface.html#ggaa422ff53ae62f3ef7309d310162386abaeda97b7f27f3db06d19df8830e8625cd", null ]

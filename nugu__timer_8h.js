@@ -6,6 +6,8 @@ var nugu__timer_8h =
     [ "nugu_timer_delete", "group__NuguTimer.html#ga9b94911aaaf3be16ecee5a1eb56e1fd7", null ],
     [ "nugu_timer_set_interval", "group__NuguTimer.html#ga2a63d0ad8391b9a779fbef5cd8468d37", null ],
     [ "nugu_timer_get_interval", "group__NuguTimer.html#gac2bfc033a765fd2927cba4cf9aa8c483", null ],
+    [ "nugu_timer_set_loop", "group__NuguTimer.html#ga55d8925db170aaba28726ba10e4fbbb8", null ],
+    [ "nugu_timer_get_loop", "group__NuguTimer.html#gae6f01b0e9c03b313587c7fdbbe927c28", null ],
     [ "nugu_timer_set_repeat", "group__NuguTimer.html#ga5bcb7c25a6966ca509790eb6bc5df823", null ],
     [ "nugu_timer_get_repeat", "group__NuguTimer.html#gac70d068a8b553d900596f7f58edcbb30", null ],
     [ "nugu_timer_get_count", "group__NuguTimer.html#ga47d60ac015cbeec5711052953a65a661", null ],

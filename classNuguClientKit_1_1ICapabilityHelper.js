@@ -1,7 +1,7 @@
 var classNuguClientKit_1_1ICapabilityHelper =
 [
     [ "~ICapabilityHelper", "classNuguClientKit_1_1ICapabilityHelper.html#a0512c8c6e3e5ff4507d350ea6c0c303e", null ],
-    [ "getPlayStackManager", "classNuguClientKit_1_1ICapabilityHelper.html#af28d025484aebf1f86396030b08065d1", null ],
+    [ "getPlaySyncManager", "classNuguClientKit_1_1ICapabilityHelper.html#a9135f5c0e2b5963f14a9fb233e7404e0", null ],
     [ "getFocusManager", "classNuguClientKit_1_1ICapabilityHelper.html#a73e851e07fe280fed3c581790c57663a", null ],
     [ "getSessionManager", "classNuguClientKit_1_1ICapabilityHelper.html#a6c3f8cc5bb60c2fe7d31ee4e81e7539d", null ],
     [ "getInteractionControlManager", "classNuguClientKit_1_1ICapabilityHelper.html#a9da5ffb469ea9681ab7bf0dabd40a3fa", null ],

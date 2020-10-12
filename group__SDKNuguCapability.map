@@ -8,5 +8,6 @@
 <area shape="rect" id="node8" href="$group__MicInterface.html" title="MIC capability interface. " alt="" coords="188,309,283,336"/>
 <area shape="rect" id="node9" href="$group__TTSInterface.html" title="TTS capability interface. " alt="" coords="186,360,285,387"/>
 <area shape="rect" id="node10" href="$group__ASRInterface.html" title="ASR capability interface. " alt="" coords="185,411,286,437"/>
-<area shape="rect" id="node11" href="$group__TextInterface.html" title="Text capability interface. " alt="" coords="186,461,285,488"/>
+<area shape="rect" id="node11" href="$group__DisplayInterface.html" title="Display capability interface. " alt="" coords="177,461,294,488"/>
+<area shape="rect" id="node12" href="$group__TextInterface.html" title="Text capability interface. " alt="" coords="186,512,285,539"/>
 </map>

@@ -7,5 +7,6 @@ var searchData=
   ['playing_5fmedia_5ffinished',['PLAYING_MEDIA_FINISHED',['../group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28ca8aa89e3b945415649b8fa48f74865763',1,'NuguClientKit']]],
   ['playing_5fmedia_5funderrun',['PLAYING_MEDIA_UNDERRUN',['../group__MediaPlayerInterface.html#gga998b178629fb2f7d4eb807ece397c28cafdba45ec1356247b452fb7c37ab7f72d',1,'NuguClientKit']]],
   ['prepare',['PREPARE',['../group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317eab205205bc58adbefd02d8ba357b9c57f',1,'NuguClientKit']]],
-  ['previous',['PREVIOUS',['../group__AudioPlayerInterface.html#gga981015a8d321936038813f3f1ea0bf0aa315ba7a868d45a9cb131c8dca3166b51',1,'NuguCapability']]]
+  ['prepared',['Prepared',['../group__PlaySyncManagerInterface.html#gga5d9f5e0329e5706191b9a4682615d4d0a4f8ebbe84c83c694e33dfc679cf40ddb',1,'NuguClientKit']]],
+  ['previous',['PREVIOUS',['../group__DisplayInterface.html#gga99d4ad071b8f547cadd4a1852c9ca3f6a315ba7a868d45a9cb131c8dca3166b51',1,'NuguCapability']]]
 ];

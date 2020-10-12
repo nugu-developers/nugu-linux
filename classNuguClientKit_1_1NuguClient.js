@@ -10,5 +10,6 @@ var classNuguClientKit_1_1NuguClient =
     [ "initialize", "classNuguClientKit_1_1NuguClient.html#aae1f4508ab77758bec29c5ef54f2736a", null ],
     [ "deInitialize", "classNuguClientKit_1_1NuguClient.html#a32def4bda93b3a706d6e7757c5e41220", null ],
     [ "getNuguCoreContainer", "classNuguClientKit_1_1NuguClient.html#a0ad308f320bd4431bcb3edae6e806972", null ],
-    [ "getNetworkManager", "classNuguClientKit_1_1NuguClient.html#aa600061f3d9fd1f07eb933d10069ed81", null ]
+    [ "getNetworkManager", "classNuguClientKit_1_1NuguClient.html#aa600061f3d9fd1f07eb933d10069ed81", null ],
+    [ "getCapabilityHandler", "classNuguClientKit_1_1NuguClient.html#ab789df431ad90492b494e30a8e19a2e2", null ]
 ];
