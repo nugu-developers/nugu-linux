@@ -34,6 +34,8 @@ public:
     unsigned int getInterval() override;
     void setRepeat(unsigned int count) override;
     unsigned int getRepeat() override;
+    void setLoop(bool loop) override;
+    bool getLoop() override;
     unsigned int getCount() override;
 
     void stop() override;

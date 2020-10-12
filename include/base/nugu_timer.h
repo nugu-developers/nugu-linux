@@ -73,6 +73,22 @@ void nugu_timer_set_interval(NuguTimer *timer, long interval);
 long nugu_timer_get_interval(NuguTimer *timer);
 
 /**
+ * @brief Set loop property
+ * @param[in] timer timer object
+ * @param[in] loop loop
+ * @see nugu_timer_get_repeat()
+ */
+void nugu_timer_set_loop(NuguTimer *timer, int loop);
+
+/**
+ * @brief Get loop property
+ * @param[in] timer timer object
+ * @return loop
+ * @see nugu_timer_set_loop()
+ */
+int nugu_timer_get_loop(NuguTimer *timer);
+
+/**
  * @brief Set repeat count
  * @param[in] timer timer object
  * @param[in] repeat number of times to repeat

@@ -72,6 +72,16 @@ public:
      */
     virtual unsigned int getRepeat() = 0;
     /**
+     * @brief Set timer's loop property
+     * @param[in] loop loop property
+     */
+    virtual void setLoop(bool loop) = 0;
+    /**
+     * @brief Get timer's loop property
+     * @return loop property
+     */
+    virtual bool getLoop() = 0;
+    /**
      * @brief Get timer's timeout count
      * @return timeout count
      */

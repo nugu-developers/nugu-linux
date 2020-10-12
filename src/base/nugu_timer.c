@@ -27,6 +27,7 @@ struct _nugu_timer {
 	long interval;
 	int repeat;
 	int count;
+	gboolean loop;
 	NuguTimeoutCallback cb;
 	void *userdata;
 };
@@ -38,7 +39,7 @@ static gboolean _nugu_timer_callback(gpointer userdata)
 	timer->count++;
 	timer->cb(timer->userdata);
 
-	if (timer->repeat > timer->count)
+	if (timer->loop || timer->repeat > timer->count)
 		return TRUE;
 	else
 		return FALSE;
@@ -58,6 +59,7 @@ EXPORT_API NuguTimer *nugu_timer_new(long interval, int repeat)
 	timer->interval = interval;
 	timer->repeat = repeat;
 	timer->count = 0;
+	timer->loop = FALSE;
 	timer->cb = NULL;
 	timer->userdata = NULL;
 
@@ -105,6 +107,21 @@ EXPORT_API int nugu_timer_get_repeat(NuguTimer *timer)
 	g_return_val_if_fail(timer != NULL, -1);
 
 	return timer->repeat;
+}
+
+EXPORT_API void nugu_timer_set_loop(NuguTimer *timer, int loop)
+{
+	g_return_if_fail(timer != NULL);
+	g_return_if_fail(loop >= 0);
+
+	timer->loop = loop == 0 ? FALSE : TRUE;
+}
+
+EXPORT_API int nugu_timer_get_loop(NuguTimer *timer)
+{
+	g_return_val_if_fail(timer != NULL, FALSE);
+
+	return timer->loop;
 }
 
 EXPORT_API int nugu_timer_get_count(NuguTimer *timer)
