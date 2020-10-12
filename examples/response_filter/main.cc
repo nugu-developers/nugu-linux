@@ -20,6 +20,7 @@ static std::shared_ptr<ITextHandler> text_handler = nullptr;
 static std::shared_ptr<IASRHandler> asr_handler = nullptr;
 
 static std::string text_value;
+static GMainLoop* loop;
 
 class MyTTSListener : public ITTSListener {
 public:
@@ -30,6 +31,7 @@ public:
         switch (state) {
         case TTSState::TTS_SPEECH_FINISH:
             std::cout << "TTS Finish" << std::endl;
+            g_main_loop_quit(loop);
             break;
         default:
             break;
@@ -105,6 +107,7 @@ public:
             std::cout << "ASR unknown error, request dialog id: " << dialog_id << std::endl;
             break;
         }
+        g_main_loop_quit(loop);
     }
 
     void onCancel(const std::string& dialog_id)
@@ -125,6 +128,7 @@ public:
         switch (status) {
         case NetworkStatus::DISCONNECTED:
             std::cout << "Network disconnected !" << std::endl;
+            g_main_loop_quit(loop);
             break;
         case NetworkStatus::CONNECTED:
             std::cout << "Network connected !" << std::endl;
@@ -227,7 +231,7 @@ int main(int argc, char* argv[])
     network_manager->connect();
 
     /* Start GMainLoop */
-    GMainLoop* loop = g_main_loop_new(NULL, FALSE);
+    loop = g_main_loop_new(NULL, FALSE);
 
     std::cout << "Start the eventloop" << std::endl
               << std::endl;

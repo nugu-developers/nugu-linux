@@ -74,6 +74,7 @@ public:
                       << nugu_directive_peek_namespace(ndir) << ":"
                       << nugu_directive_peek_name(ndir) << std::endl;
 
+            nugu_directive_unref(ndir);
             return true;
         }
 
@@ -164,6 +165,7 @@ int filter_register(NuguClientKit::NuguClient* client)
     sequencer->addListener("TTS", dir_listener);
     sequencer->addListener("Text", dir_listener);
     sequencer->addListener("AudioPlayer", dir_listener);
+    sequencer->addListener("Display", dir_listener);
 
     net_listener = new NetworkListener();
     client->getNetworkManager()->addListener(net_listener);
