@@ -24,6 +24,7 @@
 #include "base/nugu_player.h"
 
 #include "media_player.hh"
+#include "nugu_timer.hh"
 
 namespace NuguCore {
 
@@ -41,6 +42,7 @@ public:
         , playurl("")
         , player_name("")
         , player(NULL)
+        , pos_timer(nullptr)
         , position(0)
         , duration(0)
         , volume(vol)
@@ -64,11 +66,11 @@ public:
     std::string playurl;
     std::string player_name;
     NuguPlayer* player;
+    NUGUTimer* pos_timer;
     int position;
     int duration;
     int volume;
     bool mute;
-    gint timeout;
     bool loop;
 };
 std::map<MediaPlayer*, MediaPlayerPrivate*> MediaPlayerPrivate::mp_map;
@@ -162,25 +164,17 @@ MediaPlayer::MediaPlayer(int volume)
     };
     nugu_player_set_event_callback(d->player, ecb, this);
 
-    GSourceFunc tfunc = [](gpointer userdata) {
-        MediaPlayer* mplayer = static_cast<MediaPlayer*>(userdata);
-        MediaPlayerPrivate* d = MediaPlayerPrivate::mp_map[mplayer];
+    d->pos_timer = new NUGUTimer();
+    d->pos_timer->setInterval(POSITION_POLLING_TIMEOUT_500MS);
+    d->pos_timer->setLoop(true);
+    d->pos_timer->setCallback([&](int count, int repeat) {
+        if (!isPlaying())
+            return;
 
-        if (!d)
-            return (gboolean)TRUE;
-
-        NuguPlayer* player = nugu_player_find(d->player_name.c_str());
-
-        if (!mplayer->isPlaying() || !player)
-            return (gboolean)TRUE;
-
-        int position = nugu_player_get_position(player);
+        int position = nugu_player_get_position(d->player);
         if (position >= 0)
-            mplayer->setPosition(position);
-
-        return (gboolean)TRUE;
-    };
-    d->timeout = g_timeout_add(POSITION_POLLING_TIMEOUT_500MS, tfunc, this);
+            setPosition(position);
+    });
     d->mp_map[this] = d;
 
     // NOLINTNEXTLINE (clang-analyzer-optin.cplusplus.VirtualCall)
@@ -197,9 +191,9 @@ MediaPlayer::~MediaPlayer()
         d->player = NULL;
     }
 
-    if (d->timeout) {
-        g_source_remove(d->timeout);
-        d->timeout = 0;
+    if (d->pos_timer) {
+        delete d->pos_timer;
+        d->pos_timer = nullptr;
     }
 
     d->mp_map.erase(this);
@@ -251,6 +245,8 @@ bool MediaPlayer::play()
 
     nugu_dbg("request to play mediaplayer");
 
+    d->pos_timer->restart();
+
     if (nugu_player_start(d->player) < 0)
         return false;
 
@@ -260,6 +256,8 @@ bool MediaPlayer::play()
 bool MediaPlayer::stop()
 {
     nugu_dbg("request to stop mediaplayer");
+
+    d->pos_timer->stop();
 
     if (nugu_player_stop(d->player) < 0)
         return false;
