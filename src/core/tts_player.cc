@@ -43,13 +43,13 @@ public:
         , player_name("")
         , player(nullptr)
         , decoder(nullptr)
+        , pos_timer(nullptr)
         , volume(vol)
         , position(0)
         , duration(0)
         , seek_time(0)
         , seek_size(0)
         , total_size(0)
-        , timeout(0)
         , mute(false)
         , count(0)
     {
@@ -63,13 +63,13 @@ public:
     std::string player_name;
     NuguPcm* player;
     NuguDecoder* decoder;
+    NUGUTimer* pos_timer;
     int volume;
     int position;
     int duration;
     int seek_time;
     size_t seek_size;
     size_t total_size;
-    gint timeout;
     bool mute;
     int count;
 };
@@ -150,23 +150,17 @@ TTSPlayer::TTSPlayer(int volume)
     };
     nugu_pcm_set_event_callback(d->player, ecb, this);
 
-    GSourceFunc tfunc = [](gpointer userdata) {
-        TTSPlayer* tplayer = static_cast<TTSPlayer*>(userdata);
-        TTSPlayerPrivate* d = TTSPlayerPrivate::mp_map[tplayer];
-
-        if (!d)
-            return (gboolean)TRUE;
-
-        if (!tplayer->isPlaying() || !d->player)
-            return (gboolean)TRUE;
+    d->pos_timer = new NUGUTimer();
+    d->pos_timer->setInterval(POSITION_POLLING_TIMEOUT_500MS);
+    d->pos_timer->setLoop(true);
+    d->pos_timer->setCallback([&](int count, int repeat) {
+        if (!isPlaying())
+            return;
 
         int position = nugu_pcm_get_position(d->player);
         if (position >= 0)
-            tplayer->setPosition(position);
-
-        return (gboolean)TRUE;
-    };
-    d->timeout = g_timeout_add(POSITION_POLLING_TIMEOUT_500MS, tfunc, this);
+            setPosition(position);
+    });
     d->mp_map[this] = d;
 }
 
@@ -188,9 +182,9 @@ TTSPlayer::~TTSPlayer()
         d->decoder = nullptr;
     }
 
-    if (d->timeout) {
-        g_source_remove(d->timeout);
-        d->timeout = 0;
+    if (d->pos_timer) {
+        delete d->pos_timer;
+        d->pos_timer = nullptr;
     }
 
     d->mp_map.erase(this);
@@ -265,6 +259,9 @@ bool TTSPlayer::play()
 {
     nugu_dbg("request to play mediaplayer.attachment");
     StopB4Start();
+
+    d->pos_timer->restart();
+
     return (nugu_pcm_start(d->player) >= 0);
 }
 
@@ -272,6 +269,9 @@ bool TTSPlayer::stop()
 {
     nugu_dbg("request to stop mediaplayer.attachment");
     clearContent();
+
+    d->pos_timer->stop();
+
     return (nugu_pcm_stop(d->player) >= 0);
 }
 
