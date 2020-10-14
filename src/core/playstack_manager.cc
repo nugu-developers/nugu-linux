@@ -155,7 +155,7 @@ bool PlayStackManager::add(const std::string& ps_id, NuguDirective* ndir)
         return false;
     }
 
-    handlePreviousStack(layer, is_stacked);
+    handlePreviousStack(is_stacked);
     return addToContainer(ps_id, layer);
 }
 
@@ -274,19 +274,19 @@ PlayStackLayer PlayStackManager::extractPlayStackLayer(NuguDirective* ndir)
         return PlayStackLayer::Info;
 }
 
-std::string PlayStackManager::getSameLayerStack(PlayStackLayer layer)
+std::string PlayStackManager::getNoneMediaLayerStack()
 {
     for (const auto& item : playstack_container.first)
-        if (item.second == layer)
+        if (item.second != PlayStackLayer::Media)
             return item.first;
 
     return "";
 }
 
-void PlayStackManager::handlePreviousStack(PlayStackLayer layer, bool is_stacked)
+void PlayStackManager::handlePreviousStack(bool is_stacked)
 {
     if (is_stacked) {
-        removeFromContainer(getSameLayerStack(layer));
+        removeFromContainer(getNoneMediaLayerStack());
     } else {
         for (const auto& item : playstack_container.second)
             notifyStackRemoved(item);
