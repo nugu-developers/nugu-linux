@@ -183,6 +183,7 @@ typedef struct {
     NuguDirective* ndir_info_disp;
     NuguDirective* ndir_media;
     NuguDirective* ndir_expect_speech;
+    NuguDirective* ndir_alerts;
 } TestFixture;
 
 static void setup(TestFixture* fixture, gconstpointer user_data)
@@ -210,6 +211,8 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
         "{ \"directives\": [\"TTS.Speak\", \"AudioPlayer.Play\"] }");
     fixture->ndir_expect_speech = createDirective("ASR", "test",
         "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\"] }");
+    fixture->ndir_alerts = createDirective("Alerts", "SetAlert",
+        "{ \"directives\": [\"Alerts.SetAlert\"] }");
 }
 
 static void teardown(TestFixture* fixture, gconstpointer user_data)
@@ -217,6 +220,7 @@ static void teardown(TestFixture* fixture, gconstpointer user_data)
     nugu_directive_unref(fixture->ndir_info_disp);
     nugu_directive_unref(fixture->ndir_media);
     nugu_directive_unref(fixture->ndir_expect_speech);
+    nugu_directive_unref(fixture->ndir_alerts);
 
     fixture->playsync_manager_listener.reset();
     fixture->playsync_manager_listener_snd.reset();
@@ -677,6 +681,21 @@ static void test_playstack_manager_reset(TestFixture* fixture, gconstpointer ign
     g_assert(fixture->playsync_manager->getListenerCount() == 1);
 }
 
+static void test_playstack_manager_register_capability_for_sync(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->playsync_manager->addListener("Alerts", fixture->playsync_manager_listener_snd.get());
+    fixture->playsync_manager->registerCapabilityForSync("Alerts");
+
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_alerts);
+    g_assert(fixture->playsync_manager_listener_snd->getSyncState("ps_id_1") == PlaySyncState::Prepared);
+
+    fixture->playsync_manager->startSync("ps_id_1", "Alerts");
+    g_assert(fixture->playsync_manager_listener_snd->getSyncState("ps_id_1") == PlaySyncState::Synced);
+
+    fixture->playsync_manager->releaseSyncImmediately("ps_id_1", "Alerts");
+    g_assert(fixture->playsync_manager_listener_snd->getSyncState("ps_id_1") == PlaySyncState::Released);
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -706,6 +725,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/refreshExtraData", test_playstack_manager_refresh_extra_data);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkExpectSpeech", test_playstack_manager_check_expect_speech);
     G_TEST_ADD_FUNC("/core/PlayStackManager/reset", test_playstack_manager_reset);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/registerCapabilityForSync", test_playstack_manager_register_capability_for_sync);
 
     return g_test_run();
 }

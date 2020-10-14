@@ -87,8 +87,8 @@ private:
 
 private:
     PlayStackLayer extractPlayStackLayer(NuguDirective* ndir);
-    std::string getSameLayerStack(PlayStackLayer layer);
-    void handlePreviousStack(PlayStackLayer layer, bool is_stacked);
+    std::string getNoneMediaLayerStack();
+    void handlePreviousStack(bool is_stacked);
     bool addToContainer(const std::string& ps_id, PlayStackLayer layer);
     void removeFromContainer(const std::string& ps_id);
     void notifyStackRemoved(const std::string& ps_id);

@@ -83,6 +83,12 @@ public:
     virtual ~IPlaySyncManager() = default;
 
     /**
+     * @brief Register capability agent for sync (default:TTS, AudioPlayer, Display)
+     * @param[in] capability_name capability agent name
+     */
+    virtual void registerCapabilityForSync(const std::string& capability_name) = 0;
+
+    /**
      * @brief Add IPlaySyncManagerListener.
      * @param[in] requester capability agent name
      * @param[in] listener IPlaySyncManagerListener instance

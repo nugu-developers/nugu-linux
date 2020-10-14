@@ -25,6 +25,7 @@ PlaySyncManager::PlaySyncManager()
     : playstack_manager(std::unique_ptr<PlayStackManager>(new PlayStackManager()))
 {
     playstack_manager->addListener(this);
+    sync_capability_list = DEFAULT_SYNC_CAPABILITY_LIST;
 }
 
 PlaySyncManager::~PlaySyncManager()
@@ -56,6 +57,12 @@ void PlaySyncManager::setInteractionControlManager(InteractionControlManager* in
 {
     if (interaction_control_manager)
         this->interaction_control_manager = interaction_control_manager;
+}
+
+void PlaySyncManager::registerCapabilityForSync(const std::string& capability_name)
+{
+    if (!capability_name.empty())
+        sync_capability_list.emplace_back(capability_name);
 }
 
 void PlaySyncManager::addListener(const std::string& requester, IPlaySyncManagerListener* listener)
@@ -98,7 +105,7 @@ void PlaySyncManager::prepareSync(const std::string& ps_id, NuguDirective* ndir)
     std::string dir_groups = nugu_directive_peek_groups(ndir);
     PlaySyncContainer playsync_container;
 
-    for (const auto& sync_capability : SYNC_CAPABILITAY_LIST)
+    for (const auto& sync_capability : sync_capability_list)
         if (dir_groups.find(sync_capability) != std::string::npos)
             playsync_container.emplace(sync_capability, std::make_pair(PlaySyncState::Prepared, nullptr));
 

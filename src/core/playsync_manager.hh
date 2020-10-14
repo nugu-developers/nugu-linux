@@ -40,6 +40,7 @@ public:
     void reset();
     void setPlayStackManager(PlayStackManager* playstack_manager);
     void setInteractionControlManager(InteractionControlManager* interaction_control_manager);
+    void registerCapabilityForSync(const std::string& capability_name) override;
     void addListener(const std::string& requester, IPlaySyncManagerListener* listener) override;
     void removeListener(const std::string& requester) override;
     int getListenerCount();
@@ -74,7 +75,8 @@ private:
     void clearContainer();
     void clearPostPonedRelease();
 
-    const std::vector<std::string> SYNC_CAPABILITAY_LIST { "TTS", "AudioPlayer", "Display" };
+    const std::vector<std::string> DEFAULT_SYNC_CAPABILITY_LIST { "TTS", "AudioPlayer", "Display" };
+    std::vector<std::string> sync_capability_list;
 
     std::unique_ptr<PlayStackManager> playstack_manager = nullptr;
     InteractionControlManager* interaction_control_manager = nullptr;
