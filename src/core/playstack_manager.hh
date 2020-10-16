@@ -20,7 +20,7 @@
 #include <memory>
 #include <set>
 
-#include "clientkit/playstack_manager_interface.hh"
+#include "clientkit/playsync_manager_interface.hh"
 #include "nugu_timer.hh"
 
 namespace NuguCore {

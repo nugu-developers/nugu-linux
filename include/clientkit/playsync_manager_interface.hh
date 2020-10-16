@@ -19,9 +19,9 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include <base/nugu_directive.h>
-#include <clientkit/playstack_manager_interface.hh>
 
 namespace NuguClientKit {
 
@@ -44,6 +44,17 @@ enum class PlaySyncState {
     Prepared, /**< agents are prepared for sync */
     Synced, /**< agents are synced */
     Released /**< agents are released */
+};
+
+/**
+ * @brief PlayStack Layer Type
+ */
+enum class PlayStackLayer {
+    None, /**< No Layer */
+    Alert, /**< Alert Layer */
+    Call, /**< Call Layer */
+    Info, /**< Info Layer */
+    Media /**< Media Layer */
 };
 
 /**
