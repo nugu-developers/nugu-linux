@@ -60,6 +60,8 @@ private:
     std::string getSpeakerName(const SpeakerType& type);
 
     std::map<SpeakerType, std::unique_ptr<SpeakerInfo>> speakers;
+    std::map<SpeakerType, std::string> speaker_names_for_types;
+    std::map<std::string, SpeakerType> speaker_types_for_names;
     ISpeakerListener* speaker_listener;
 };
 
