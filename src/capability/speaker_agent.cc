@@ -28,6 +28,23 @@ SpeakerAgent::SpeakerAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , speaker_listener(nullptr)
 {
+    // compose maps for SpeakerType and name string
+    speaker_names_for_types = {
+        { SpeakerType::NUGU, "NUGU" },
+        { SpeakerType::MUSIC, "MUSIC" },
+        { SpeakerType::RINGTON, "RINGTON" },
+        { SpeakerType::CALL, "CALL" },
+        { SpeakerType::NOTIFICATION, "NOTIFICATION" },
+        { SpeakerType::ALARM, "ALARM" },
+        { SpeakerType::VOICE_COMMAND, "VOICE_COMMAND" },
+        { SpeakerType::NAVIGATION, "NAVIGATION" },
+        { SpeakerType::SYSTEM_SOUND, "SYSTEM_SOUND" },
+    };
+
+    std::for_each(speaker_names_for_types.cbegin(), speaker_names_for_types.cend(),
+        [&](const std::pair<SpeakerType, std::string>& element) {
+            speaker_types_for_names.emplace(element.second, element.first);
+        });
 }
 
 void SpeakerAgent::initialize()
@@ -195,59 +212,21 @@ void SpeakerAgent::updateSpeakerMute(SpeakerType type, bool mute)
 
 bool SpeakerAgent::getSpeakerType(const std::string& name, SpeakerType& type)
 {
-    if (name == "NUGU") {
-        type = SpeakerType::NUGU;
+    try {
+        type = speaker_types_for_names.at(name);
         return true;
-    } else if (name == "MUSIC") {
-        type = SpeakerType::MUSIC;
-        return true;
-    } else if (name == "RINGTON") {
-        type = SpeakerType::RINGTON;
-        return true;
-    } else if (name == "CALL") {
-        type = SpeakerType::CALL;
-        return true;
-    } else if (name == "NOTIFICATION") {
-        type = SpeakerType::NOTIFICATION;
-        return true;
-    } else if (name == "ALARM") {
-        type = SpeakerType::ALARM;
-        return true;
-    } else if (name == "VOICE_COMMAND") {
-        type = SpeakerType::VOICE_COMMAND;
-        return true;
-    } else if (name == "NAVIGATION") {
-        type = SpeakerType::NAVIGATION;
-        return true;
-    } else if (name == "SYSTEM_SOUND") {
-        type = SpeakerType::SYSTEM_SOUND;
-        return true;
+    } catch (const std::out_of_range& oor) {
+        return false;
     }
-    return false;
 }
 
 std::string SpeakerAgent::getSpeakerName(const SpeakerType& type)
 {
-    if (type == SpeakerType::NUGU)
+    try {
+        return speaker_names_for_types.at(type);
+    } catch (const std::out_of_range& oor) {
         return "NUGU";
-    else if (type == SpeakerType::MUSIC)
-        return "MUSIC";
-    else if (type == SpeakerType::RINGTON)
-        return "RINGTON";
-    else if (type == SpeakerType::CALL)
-        return "CALL";
-    else if (type == SpeakerType::NOTIFICATION)
-        return "NOTIFICATION";
-    else if (type == SpeakerType::ALARM)
-        return "ALARM";
-    else if (type == SpeakerType::VOICE_COMMAND)
-        return "VOICE_COMMAND";
-    else if (type == SpeakerType::NAVIGATION)
-        return "NAVIGATION";
-    else if (type == SpeakerType::SYSTEM_SOUND)
-        return "SYSTEM_SOUND";
-    else
-        return "NUGU";
+    }
 }
 
 void SpeakerAgent::sendEventSetVolumeSucceeded(const std::string& ps_id, EventResultCallback cb)
