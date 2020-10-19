@@ -137,6 +137,7 @@ private:
     void parsingRequestOthersCommand(const char* dname, const char* message);
     std::string parsingRenderInfo(NuguDirective* ndir, const char* message);
 
+    void clearContext();
     void checkAndUpdateVolume();
     std::string playbackError(PlaybackError error);
     std::string playerActivity(AudioPlayerState state);
