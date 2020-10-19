@@ -513,7 +513,7 @@ void AudioPlayerAgent::updateInfoForContext(Json::Value& ctx)
     aplayer["offsetInMilliseconds"] = offset;
     if (ps_id.size())
         aplayer["playServiceId"] = ps_id;
-    if (cur_aplayer_state != AudioPlayerState::IDLE) {
+    if (cur_aplayer_state != AudioPlayerState::IDLE && cur_token.size()) {
         aplayer["token"] = cur_token;
         if (duration)
             aplayer["durationInMilliseconds"] = duration;
@@ -1025,11 +1025,12 @@ void AudioPlayerAgent::parsingStop(const char* message)
     playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
     if (!playstackctl_ps_id.empty()) {
+        is_next_play = false;
+        focus_manager->releaseFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME);
+
         is_finished
             ? playsync_manager->releaseSync(playstackctl_ps_id, getName())
             : playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
-
-        focus_manager->releaseFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME);
 
         capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
     }
@@ -1278,6 +1279,12 @@ std::string AudioPlayerAgent::parsingRenderInfo(NuguDirective* ndir, const char*
     return template_id;
 }
 
+void AudioPlayerAgent::clearContext()
+{
+    nugu_info("clear AudioPlayer's Context");
+    ps_id = cur_token = "";
+}
+
 std::string AudioPlayerAgent::playbackError(PlaybackError error)
 {
     std::string err_str;
@@ -1509,8 +1516,10 @@ void AudioPlayerAgent::onSyncState(const std::string& ps_id, PlaySyncState state
 {
     if (state == PlaySyncState::Synced)
         renderDisplay(extra_data);
-    else if (state == PlaySyncState::Released)
+    else if (state == PlaySyncState::Released) {
+        clearContext();
         clearDisplay(extra_data);
+    }
 }
 
 void AudioPlayerAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
