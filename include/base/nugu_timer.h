@@ -45,10 +45,9 @@ typedef void (*NuguTimeoutCallback)(void *userdata);
 /**
  * @brief Create new timer object
  * @param[in] interval interval seconds
- * @param[in] repeat repeat count
  * @return timer object
  */
-NuguTimer *nugu_timer_new(long interval, int repeat);
+NuguTimer *nugu_timer_new(long interval);
 
 /**
  * @brief Destroy the timer object
@@ -73,43 +72,22 @@ void nugu_timer_set_interval(NuguTimer *timer, long interval);
 long nugu_timer_get_interval(NuguTimer *timer);
 
 /**
- * @brief Set loop property
+ * @brief Set timer running single shot
  * @param[in] timer timer object
- * @param[in] loop loop
- * @see nugu_timer_get_repeat()
+ * @param[in] singleshot By setting the singleshot to 1, you can trigger
+ * the timer only once. The default value of singleshot is 0,
+ * and the timer runs repeatedly.
+ * @see nugu_timer_get_singleshot()
  */
-void nugu_timer_set_loop(NuguTimer *timer, int loop);
+void nugu_timer_set_singleshot(NuguTimer *timer, int singleshot);
 
 /**
- * @brief Get loop property
+ * @brief Get timer single shot property
  * @param[in] timer timer object
- * @return loop
- * @see nugu_timer_set_loop()
+ * @return single shot value
+ * @see nugu_timer_set_singleshot()
  */
-int nugu_timer_get_loop(NuguTimer *timer);
-
-/**
- * @brief Set repeat count
- * @param[in] timer timer object
- * @param[in] repeat number of times to repeat
- * @see nugu_timer_get_repeat()
- */
-void nugu_timer_set_repeat(NuguTimer *timer, int repeat);
-
-/**
- * @brief Get repeat count
- * @param[in] timer timer object
- * @return repeat count
- * @see nugu_timer_set_repeat()
- */
-int nugu_timer_get_repeat(NuguTimer *timer);
-
-/**
- * @brief Get timeout count
- * @param[in] timer timer object
- * @return timeout count
- */
-int nugu_timer_get_count(NuguTimer *timer);
+int nugu_timer_get_singleshot(NuguTimer *timer);
 
 /**
  * @brief Start the timer

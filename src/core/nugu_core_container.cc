@@ -68,9 +68,9 @@ ITTSPlayer* NuguCoreContainer::createTTSPlayer()
     return new TTSPlayer();
 }
 
-INuguTimer* NuguCoreContainer::createNuguTimer()
+INuguTimer* NuguCoreContainer::createNuguTimer(bool singleShot)
 {
-    return new NUGUTimer();
+    return new NUGUTimer(singleShot);
 }
 
 ICapabilityHelper* NuguCoreContainer::getCapabilityHelper()

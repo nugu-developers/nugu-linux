@@ -81,9 +81,9 @@ void ASRAgent::initialize()
     speech_recognizer = std::unique_ptr<ISpeechRecognizer>(core_container->createSpeechRecognizer(model_path, epd_attribute));
     speech_recognizer->setListener(this);
 
-    timer = core_container->createNuguTimer();
+    timer = core_container->createNuguTimer(true);
     timer->setInterval(response_timeout * NUGU_TIMER_UNIT_SEC);
-    timer->setCallback([&](int count, int repeat) {
+    timer->setCallback([&]() {
         sendEventResponseTimeout();
         releaseASRFocus(false, ASRError::RESPONSE_TIMEOUT);
     });

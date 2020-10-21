@@ -81,6 +81,7 @@ void PlayStackManager::StackTimer::stop()
 PlayStackManager::PlayStackManager()
     : timer(std::unique_ptr<StackTimer>(new StackTimer()))
 {
+    timer->setSingleShot(true);
 }
 
 PlayStackManager::~PlayStackManager()
@@ -181,7 +182,7 @@ void PlayStackManager::remove(const std::string& ps_id, PlayStackRemoveMode mode
         if (has_long_timer)
             timer->start();
     } else {
-        timer->setCallback([&, ps_id](int count, int repeat) {
+        timer->setCallback([&, ps_id]() {
             removeFromContainer(ps_id);
             has_long_timer = false;
         });

@@ -34,7 +34,7 @@ public:
     ISpeechRecognizer* createSpeechRecognizer(const std::string& model_path = "", const EpdAttribute& epd_attr = {}) override;
     IMediaPlayer* createMediaPlayer() override;
     ITTSPlayer* createTTSPlayer() override;
-    INuguTimer* createNuguTimer() override;
+    INuguTimer* createNuguTimer(bool singleShot = false) override;
     ICapabilityHelper* getCapabilityHelper() override;
 
     // wrapping CapabilityManager functions

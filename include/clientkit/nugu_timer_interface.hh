@@ -34,7 +34,7 @@ namespace NuguClientKit {
  */
 
 /** @brief time unit value(second) */
-#define NUGU_TIMER_UNIT_SEC  1000
+#define NUGU_TIMER_UNIT_SEC 1000
 
 /**
  * @brief nugu timer interface
@@ -43,10 +43,8 @@ class INuguTimer {
 public:
     /**
      * @brief Timer Callback
-     * @param[in] count timeout count
-     * @param[in] repeat timeout repeat
      */
-    typedef std::function<void(int, int)> timer_callback;
+    typedef std::function<void()> timer_callback;
 
 public:
     virtual ~INuguTimer() = default;
@@ -62,30 +60,15 @@ public:
      */
     virtual unsigned int getInterval() = 0;
     /**
-     * @brief Set timer's timeout repeat
-     * @param[in] count repeat (at least 1 value)
+     * @brief Set timer running single shot
+     * @param[in] singleshot singleshot
      */
-    virtual void setRepeat(unsigned int count) = 0;
+    virtual void setSingleShot(bool singleShot) = 0;
     /**
-     * @brief Get timer's timeout repeat
-     * @return timeout repeat
+     * @brief Get timer single shot property
+     * @return single shot value
      */
-    virtual unsigned int getRepeat() = 0;
-    /**
-     * @brief Set timer's loop property
-     * @param[in] loop loop property
-     */
-    virtual void setLoop(bool loop) = 0;
-    /**
-     * @brief Get timer's loop property
-     * @return loop property
-     */
-    virtual bool getLoop() = 0;
-    /**
-     * @brief Get timer's timeout count
-     * @return timeout count
-     */
-    virtual unsigned int getCount() = 0;
+    virtual bool getSingleShot() = 0;
     /**
      * @brief Request stop timer
      */
