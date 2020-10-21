@@ -65,6 +65,7 @@ private:
     // parsing directive
     void parsingSpeak(const char* message);
     void parsingStop(const char* message);
+    void postProcessDirective(bool is_cancel = false);
 
     void checkAndUpdateVolume();
     void mediaStateChanged(MediaPlayerState state) override;

@@ -349,12 +349,14 @@ void Capability::processDirective(NuguDirective* ndir)
     }
 }
 
-void Capability::destroyDirective(NuguDirective* ndir)
+void Capability::destroyDirective(NuguDirective* ndir, bool is_cancel)
 {
     if (ndir == pimpl->cur_ndir)
         pimpl->cur_ndir = NULL;
 
-    directive_sequencer->complete(ndir);
+    is_cancel
+        ? directive_sequencer->cancel(nugu_directive_peek_dialog_id(ndir))
+        : directive_sequencer->complete(ndir);
 }
 
 NuguDirective* Capability::getNuguDirective()
