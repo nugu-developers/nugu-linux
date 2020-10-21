@@ -166,8 +166,7 @@ MediaPlayer::MediaPlayer(int volume)
 
     d->pos_timer = new NUGUTimer();
     d->pos_timer->setInterval(POSITION_POLLING_TIMEOUT_500MS);
-    d->pos_timer->setLoop(true);
-    d->pos_timer->setCallback([&](int count, int repeat) {
+    d->pos_timer->setCallback([&]() {
         if (!isPlaying())
             return;
 

@@ -37,17 +37,11 @@ public:
     NUGUTimer::timer_callback cb;
 };
 
-NUGUTimer::NUGUTimer()
+NUGUTimer::NUGUTimer(bool singleShot)
     : d(new NUGUTimerPrivate())
 {
-    d->timer = nugu_timer_new(DEFAULT_TIMEOUT_MSEC, 1);
-    nugu_timer_set_callback(d->timer, timerCallback, this);
-}
-
-NUGUTimer::NUGUTimer(int interval, int repeat)
-    : d(new NUGUTimerPrivate())
-{
-    d->timer = nugu_timer_new(interval, (repeat > 1) ? repeat : 1);
+    d->timer = nugu_timer_new(DEFAULT_TIMEOUT_MSEC);
+    nugu_timer_set_singleshot(d->timer, singleShot);
     nugu_timer_set_callback(d->timer, timerCallback, this);
 }
 
@@ -74,29 +68,14 @@ unsigned int NUGUTimer::getInterval()
     return nugu_timer_get_interval(d->timer);
 }
 
-void NUGUTimer::setRepeat(unsigned int count)
+void NUGUTimer::setSingleShot(bool singleShot)
 {
-    nugu_timer_set_repeat(d->timer, count);
+    nugu_timer_set_singleshot(d->timer, singleShot);
 }
 
-unsigned int NUGUTimer::getRepeat()
+bool NUGUTimer::getSingleShot()
 {
-    return nugu_timer_get_repeat(d->timer);
-}
-
-void NUGUTimer::setLoop(bool loop)
-{
-    nugu_timer_set_loop(d->timer, loop);
-}
-
-bool NUGUTimer::getLoop()
-{
-    return nugu_timer_get_loop(d->timer);
-}
-
-unsigned int NUGUTimer::getCount()
-{
-    return nugu_timer_get_count(d->timer);
+    return nugu_timer_get_singleshot(d->timer);
 }
 
 void NUGUTimer::stop()
@@ -131,14 +110,8 @@ void NUGUTimer::notifyCallback()
     if (!d->timer)
         return;
 
-    int count = nugu_timer_get_count(d->timer);
-    int repeat = nugu_timer_get_repeat(d->timer);
-
-    if (count < 0 || repeat < 0)
-        return;
-
     if (d->cb)
-        d->cb(count, repeat);
+        d->cb();
 }
 
 void NUGUTimer::timerCallback(void* userdata)

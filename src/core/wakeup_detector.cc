@@ -83,7 +83,7 @@ void WakeupDetector::initialize(Attribute&& attribute)
 #ifdef ENABLE_VENDOR_LIBRARY
 void WakeupDetector::loop()
 {
-    NUGUTimer* timer = new NUGUTimer(1);
+    NUGUTimer* timer = new NUGUTimer(true);
     int pcm_size;
     std::string model_net_file;
     std::string model_search_file;
@@ -188,7 +188,7 @@ void WakeupDetector::loop()
 
         if (!is_started) {
             is_running = false;
-            timer->setCallback([&](int count, int repeat) {
+            timer->setCallback([&]() {
                 nugu_dbg("request to start audio input");
                 startWakeup(listening_id);
             });
@@ -242,8 +242,8 @@ void WakeupDetector::stopWakeup()
 
 void WakeupDetector::setPower(float power)
 {
-    power_noise[power_index%POWER_NOISE_PERIOD] = power;
-    power_speech[power_index%POWER_SPEECH_PERIOD] = power;
+    power_noise[power_index % POWER_NOISE_PERIOD] = power;
+    power_speech[power_index % POWER_SPEECH_PERIOD] = power;
     power_index++;
 }
 

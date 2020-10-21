@@ -69,8 +69,11 @@ public:
 
     /**
      * @brief Create NuguTimer instance
+     * @param[in] singleshot By setting the singleshot to true, you can trigger
+     * the timer only once. The default value of singleshot is false,
+     * and the timer runs repeatedly.
      */
-    virtual INuguTimer* createNuguTimer() = 0;
+    virtual INuguTimer* createNuguTimer(bool singleShot = false) = 0;
 
     /**
      * @brief Get CapabilityHelper instance

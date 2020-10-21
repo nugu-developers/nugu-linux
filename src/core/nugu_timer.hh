@@ -26,17 +26,13 @@ using namespace NuguClientKit;
 class NUGUTimerPrivate;
 class NUGUTimer : public INuguTimer {
 public:
-    NUGUTimer();
-    NUGUTimer(int interval, int repeat = 0);
+    NUGUTimer(bool singleShot = false);
     virtual ~NUGUTimer();
 
     void setInterval(unsigned int sec) override;
     unsigned int getInterval() override;
-    void setRepeat(unsigned int count) override;
-    unsigned int getRepeat() override;
-    void setLoop(bool loop) override;
-    bool getLoop() override;
-    unsigned int getCount() override;
+    void setSingleShot(bool singleShot) override;
+    bool getSingleShot() override;
 
     void stop() override;
     void start(unsigned int sec = 0) override;

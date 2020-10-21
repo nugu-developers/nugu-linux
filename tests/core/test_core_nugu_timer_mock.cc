@@ -27,28 +27,21 @@ struct _nugu_timer {
     GSource* source;
     long interval;
     int fake_count;
-    int repeat;
-    int count;
-    gboolean loop;
+    gboolean singleshot;
     NuguTimeoutCallback cb;
     void* userdata;
     int start;
 };
 
 GList* timers;
-static int fake_timer_count;
 
 static gboolean _nugu_timer_callback(gpointer userdata)
 {
     NuguTimer* timer = (NuguTimer*)userdata;
 
-    timer->count++;
     timer->cb(timer->userdata);
 
-    if (timer->repeat > timer->count)
-        return TRUE;
-    else
-        return FALSE;
+    return !timer->singleshot;
 }
 
 static void fake_timer_action(gpointer data, gpointer user_data)
@@ -64,16 +57,11 @@ static void fake_timer_action(gpointer data, gpointer user_data)
     timer->fake_count++;
     if (timer->fake_count >= timer->interval) {
         gboolean ret = _nugu_timer_callback(timer);
-        if (!timer->loop && !ret)
+        if (!ret)
             timer->start = 0;
-
-        timer->fake_count = 0;
+        else
+            timer->fake_count = 0;
     }
-}
-
-void fake_timer_start()
-{
-    fake_timer_count = 0;
 }
 
 void fake_timer_elapse()
@@ -81,16 +69,15 @@ void fake_timer_elapse()
     g_list_foreach(timers, fake_timer_action, NULL);
 }
 
-NuguTimer* nugu_timer_new(long interval, int repeat)
+NuguTimer* nugu_timer_new(long interval)
 {
     NuguTimer* timer;
 
     timer = (NuguTimer*)g_malloc0(sizeof(struct _nugu_timer));
     timer->source = NULL;
     timer->interval = interval;
-    timer->repeat = repeat;
     timer->fake_count = 0;
-    timer->count = 0;
+    timer->singleshot = FALSE;
     timer->cb = NULL;
     timer->userdata = NULL;
     timer->start = 0;
@@ -115,36 +102,18 @@ long nugu_timer_get_interval(NuguTimer* timer)
     return timer->interval;
 }
 
-void nugu_timer_set_repeat(NuguTimer* timer, int repeat)
+void nugu_timer_set_singleshot(NuguTimer* timer, int singleshot)
 {
-    timer->repeat = repeat;
+    timer->singleshot = singleshot == 0 ? FALSE : TRUE;
 }
 
-int nugu_timer_get_repeat(NuguTimer* timer)
+int nugu_timer_get_singleshot(NuguTimer* timer)
 {
-    return timer->repeat;
-}
-
-void nugu_timer_set_loop(NuguTimer* timer, int loop)
-{
-    timer->loop = loop == 0 ? FALSE : TRUE;
-}
-
-int nugu_timer_get_loop(NuguTimer* timer)
-{
-    return timer->loop;
-}
-
-int nugu_timer_get_count(NuguTimer* timer)
-{
-    return timer->count;
+    return timer->singleshot;
 }
 
 void nugu_timer_start(NuguTimer* timer)
 {
-    if (!timer->repeat)
-        return;
-
     nugu_timer_stop(timer);
     timer->start = 1;
 
@@ -153,9 +122,7 @@ void nugu_timer_start(NuguTimer* timer)
 
 void nugu_timer_stop(NuguTimer* timer)
 {
-    timer->count = 0;
     timer->fake_count = 0;
-    timer->start = 0;
 
     timers = g_list_remove(timers, timer);
 }

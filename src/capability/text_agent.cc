@@ -50,15 +50,15 @@ void TextAgent::initialize()
     cur_dialog_id = "";
     dir_groups = "";
 
-    timer = core_container->createNuguTimer();
+    timer = core_container->createNuguTimer(true);
     timer->setInterval(response_timeout * NUGU_TIMER_UNIT_SEC);
-    timer->setCallback([&](int count, int repeat) {
+    timer->setCallback([&]() {
         notifyResponseTimeout();
     });
 
-    timer_msec = core_container->createNuguTimer();
+    timer_msec = core_container->createNuguTimer(true);
     timer_msec->setInterval(response_timeout);
-    timer_msec->setCallback([&](int count, int repeat) {
+    timer_msec->setCallback([&]() {
         if (!cur_dialog_id.size()) {
             nugu_warn("cur_dialog_id is cleared...");
             return;

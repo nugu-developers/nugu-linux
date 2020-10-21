@@ -85,7 +85,7 @@ void SpeechRecognizer::initialize(Attribute&& attribute)
 #ifdef ENABLE_VENDOR_LIBRARY
 void SpeechRecognizer::loop()
 {
-    NUGUTimer* timer = new NUGUTimer(1);
+    NUGUTimer* timer = new NUGUTimer(true);
     unsigned char epd_buf[OUT_DATA_SIZE];
     EpdParam epd_param;
     int pcm_size;
@@ -244,7 +244,7 @@ void SpeechRecognizer::loop()
 
         if (!is_started) {
             is_running = false;
-            timer->setCallback([&](int count, int repeat) {
+            timer->setCallback([&]() {
                 nugu_dbg("request to start audio input");
                 startListening(listening_id);
             });

@@ -22,11 +22,11 @@
 
 #include "base/nugu_timer.h"
 
-#define TIME_UNIT_MS		100
-#define CHECK_SOFT_TIMER_LIMIT_FIVE	5
-#define CHECK_SOFT_TIMER_COUNT_THREE	3
-#define CHECK_SOFT_TIMER_COUNT_ZERO	0
-#define CHECK_SOFT_TIMER_COUNT_ONE	1
+#define TIME_UNIT_100MS 100
+#define CHECK_SOFT_TIMER_COUNT_FIVE 5
+#define CHECK_SOFT_TIMER_COUNT_THREE 3
+#define CHECK_SOFT_TIMER_COUNT_ZERO 0
+#define CHECK_SOFT_TIMER_COUNT_ONE 1
 
 static void count_timeout(void *param)
 {
@@ -42,90 +42,102 @@ static void quit_timeout(void *param)
 static void test_timer_default(void)
 {
 	GMainLoop *loop;
-	NuguTimer *t1, *t2, *t3;
+	NuguTimer *t1, *t2;
 	int t1_count = 0;
-	int t3_count = 0;
 
 	loop = g_main_loop_new(NULL, FALSE);
 
-	t1 = nugu_timer_new(TIME_UNIT_MS, CHECK_SOFT_TIMER_COUNT_THREE);
+	t1 = nugu_timer_new(TIME_UNIT_100MS * CHECK_SOFT_TIMER_COUNT_ONE);
 	g_assert(t1 != NULL);
 
 	nugu_timer_set_callback(t1, count_timeout, (void *)&t1_count);
 
-	t2 = nugu_timer_new(TIME_UNIT_MS * CHECK_SOFT_TIMER_LIMIT_FIVE, 1);
+	t2 = nugu_timer_new(TIME_UNIT_100MS * CHECK_SOFT_TIMER_COUNT_FIVE);
 	g_assert(t2 != NULL);
 
 	nugu_timer_set_callback(t2, quit_timeout, (void *)loop);
 
-	t3 = nugu_timer_new(TIME_UNIT_MS, CHECK_SOFT_TIMER_COUNT_ZERO);
-	g_assert(t3 != NULL);
-
-	nugu_timer_set_callback(t3, count_timeout, (void *)&t3_count);
-
 	nugu_timer_start(t1);
 	nugu_timer_start(t2);
-	nugu_timer_start(t3);
 
 	g_main_loop_run(loop);
 	g_main_loop_unref(loop);
 
 	nugu_timer_stop(t1);
 	nugu_timer_stop(t2);
-	nugu_timer_stop(t3);
 
-	g_assert(t1_count == CHECK_SOFT_TIMER_COUNT_THREE);
-	g_assert(t3_count == CHECK_SOFT_TIMER_COUNT_ZERO);
+	g_assert(t1_count >= CHECK_SOFT_TIMER_COUNT_THREE);
 
 	nugu_timer_delete(t1);
 	nugu_timer_delete(t2);
-	nugu_timer_delete(t3);
 }
 
-static void test_timer_loop(void)
+static void test_timer_set_zero(void)
 {
 	GMainLoop *loop;
-	NuguTimer *t1, *t2, *t3;
-	int t1_loop_count = 0;
-	int t2_unloop_count = 0;
+	NuguTimer *t1, *t2;
+	int t1_count = 0;
 
 	loop = g_main_loop_new(NULL, FALSE);
 
-	t1 = nugu_timer_new(TIME_UNIT_MS, CHECK_SOFT_TIMER_COUNT_ONE);
+	t1 = nugu_timer_new(TIME_UNIT_100MS * CHECK_SOFT_TIMER_COUNT_ZERO);
 	g_assert(t1 != NULL);
-	nugu_timer_set_loop(t1, TRUE);
-	g_assert(nugu_timer_get_loop(t1) != 0);
 
-	nugu_timer_set_callback(t1, count_timeout, (void *)&t1_loop_count);
+	nugu_timer_set_callback(t1, count_timeout, (void *)&t1_count);
 
-	t2 = nugu_timer_new(TIME_UNIT_MS, CHECK_SOFT_TIMER_COUNT_ONE);
+	t2 = nugu_timer_new(TIME_UNIT_100MS * CHECK_SOFT_TIMER_COUNT_THREE);
 	g_assert(t2 != NULL);
-	g_assert(nugu_timer_get_loop(t2) != 1);
 
-	nugu_timer_set_callback(t2, count_timeout, (void *)&t2_unloop_count);
-
-	t3 = nugu_timer_new(TIME_UNIT_MS * CHECK_SOFT_TIMER_COUNT_THREE, 1);
-	g_assert(t3 != NULL);
-
-	nugu_timer_set_callback(t3, quit_timeout, (void *)loop);
+	nugu_timer_set_callback(t2, quit_timeout, (void *)loop);
 
 	nugu_timer_start(t1);
 	nugu_timer_start(t2);
-	nugu_timer_start(t3);
 
 	g_main_loop_run(loop);
 	g_main_loop_unref(loop);
 
 	nugu_timer_stop(t1);
 	nugu_timer_stop(t2);
-	nugu_timer_stop(t3);
 
-	g_assert(t1_loop_count > CHECK_SOFT_TIMER_COUNT_ONE);
-	g_assert(t2_unloop_count == CHECK_SOFT_TIMER_COUNT_ONE);
+	g_assert(t1_count == CHECK_SOFT_TIMER_COUNT_ZERO);
 
 	nugu_timer_delete(t1);
 	nugu_timer_delete(t2);
-	nugu_timer_delete(t3);
+}
+
+static void test_timer_set_singleshot(void)
+{
+	GMainLoop *loop;
+	NuguTimer *t1, *t2;
+	int t1_count = 0;
+
+	loop = g_main_loop_new(NULL, FALSE);
+
+	t1 = nugu_timer_new(TIME_UNIT_100MS * CHECK_SOFT_TIMER_COUNT_ONE);
+	g_assert(t1 != NULL);
+
+	nugu_timer_set_callback(t1, count_timeout, (void *)&t1_count);
+
+	t2 = nugu_timer_new(TIME_UNIT_100MS * CHECK_SOFT_TIMER_COUNT_THREE);
+	g_assert(t2 != NULL);
+
+	nugu_timer_set_callback(t2, quit_timeout, (void *)loop);
+
+	nugu_timer_set_singleshot(t1, 1);
+
+	nugu_timer_start(t1);
+	nugu_timer_start(t2);
+
+	g_main_loop_run(loop);
+	g_main_loop_unref(loop);
+
+	nugu_timer_stop(t1);
+	nugu_timer_stop(t2);
+
+	g_assert(t1_count == CHECK_SOFT_TIMER_COUNT_ONE);
+
+	nugu_timer_delete(t1);
+	nugu_timer_delete(t2);
 }
 
 int main(int argc, char *argv[])
@@ -137,8 +149,10 @@ int main(int argc, char *argv[])
 	g_test_init(&argc, &argv, NULL);
 	g_log_set_always_fatal((GLogLevelFlags)G_LOG_FATAL_MASK);
 
-	g_test_add_func("/timer/default", test_timer_default);
-	g_test_add_func("/timer/loop", test_timer_loop);
+	g_test_add_func("/timer/timer_default", test_timer_default);
+	g_test_add_func("/timer/timer_set_zero", test_timer_set_zero);
+	g_test_add_func("/timer/timer_set_singleshot",
+			test_timer_set_singleshot);
 
 	return g_test_run();
 }
