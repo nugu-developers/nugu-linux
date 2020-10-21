@@ -269,8 +269,9 @@ public:
     /**
      * @brief Destroy directive received from Directive Sequencer.
      * @param[in] ndir directive
+     * @param[in] is_cancel whether to destroy by cancel
      */
-    void destroyDirective(NuguDirective* ndir);
+    void destroyDirective(NuguDirective* ndir, bool is_cancel = false);
 
     /**
      * @brief Get directive received from Directive Sequencer.

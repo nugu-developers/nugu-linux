@@ -85,11 +85,7 @@ void TTSAgent::initialize()
 
 void TTSAgent::deInitialize()
 {
-    if (speak_dir) {
-        nugu_directive_remove_data_callback(speak_dir);
-        destroyDirective(speak_dir);
-        speak_dir = NULL;
-    }
+    postProcessDirective();
 
     if (player) {
         player->removeListener(this);
@@ -192,11 +188,7 @@ void TTSAgent::stopTTS()
 {
     MediaPlayerState pre_state = cur_state;
 
-    if (speak_dir) {
-        nugu_directive_remove_data_callback(speak_dir);
-        destroyDirective(speak_dir);
-        speak_dir = NULL;
-    }
+    postProcessDirective();
 
     if (player)
         player->stop();
@@ -485,6 +477,15 @@ void TTSAgent::parsingStop(const char* message)
     focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
 }
 
+void TTSAgent::postProcessDirective(bool is_cancel)
+{
+    if (speak_dir) {
+        nugu_directive_remove_data_callback(speak_dir);
+        destroyDirective(speak_dir, is_cancel);
+        speak_dir = nullptr;
+    }
+}
+
 void TTSAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)
@@ -561,8 +562,15 @@ void TTSAgent::checkAndUpdateVolume()
 
 void TTSAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
 {
-    if (state == PlaySyncState::Released && !is_finished && !is_prehandling)
+    if (ps_id.empty() || playstackctl_ps_id != ps_id) {
+        nugu_warn("The PlayServiceId is not matched with current's.");
+        return;
+    }
+
+    if (state == PlaySyncState::Released && !is_finished && !is_prehandling) {
+        postProcessDirective(true);
         suspend();
+    }
 }
 
 void TTSAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
