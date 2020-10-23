@@ -64,10 +64,12 @@ public:
     ~SpeakerInfo() = default;
 
     SpeakerType type = SpeakerType::NUGU; /**< Speaker type  */
+    std::string group; /**< Speaker volume group  */
     int min = NUGU_SPEAKER_MIN_VOLUME; /**< Speaker min volume  */
     int max = NUGU_SPEAKER_MAX_VOLUME; /**< Speaker max volume  */
     int volume = NUGU_SPEAKER_DEFAULT_VOLUME; /**< Speaker current volume  */
     int step = NUGU_SPEAKER_DEFAULT_STEP; /**< Speaker default volume step  */
+    int level = NUGU_SPEAKER_DEFAULT_VOLUME; /**< Speaker default volume level  */
     int mute = NUGU_SPEAKER_UNABLE_CONTROL; /**< Speaker mute state  */
     bool can_control = false; /**< Speaker controllability */
 };

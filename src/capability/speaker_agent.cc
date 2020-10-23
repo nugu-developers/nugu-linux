@@ -22,7 +22,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "Speaker";
-static const char* CAPABILITY_VERSION = "1.1";
+static const char* CAPABILITY_VERSION = "1.2";
 
 SpeakerAgent::SpeakerAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -101,12 +101,16 @@ void SpeakerAgent::updateInfoForContext(Json::Value& ctx)
         volume["name"] = getSpeakerName(sinfo->type);
         if (sinfo->volume != NUGU_SPEAKER_UNABLE_CONTROL)
             volume["volume"] = sinfo->volume;
+        if (sinfo->group.size())
+            volume["group"] = sinfo->group;
         if (sinfo->min != NUGU_SPEAKER_UNABLE_CONTROL)
             volume["minVolume"] = sinfo->min;
         if (sinfo->max != NUGU_SPEAKER_UNABLE_CONTROL)
             volume["maxVolume"] = sinfo->max;
         if (sinfo->step != NUGU_SPEAKER_UNABLE_CONTROL)
             volume["defaultVolumeStep"] = sinfo->step;
+        if (sinfo->level != NUGU_SPEAKER_UNABLE_CONTROL)
+            volume["defaultVolumeLevel"] = sinfo->level;
         if (sinfo->mute != NUGU_SPEAKER_UNABLE_CONTROL)
             volume["muted"] = sinfo->mute ? true : false;
 
