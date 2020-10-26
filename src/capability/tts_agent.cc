@@ -27,7 +27,7 @@ namespace NuguCapability {
 #define TTS_FIRST_ATTACHMENT_LIMIT 4200
 
 static const char* CAPABILITY_NAME = "TTS";
-static const char* CAPABILITY_VERSION = "1.2";
+static const char* CAPABILITY_VERSION = "1.3";
 
 TTSAgent::TTSAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -302,15 +302,13 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
 
 void TTSAgent::sendEventSpeechStarted(const std::string& token, EventResultCallback cb)
 {
-    if (ps_id.size()) {
-        CapabilityEvent event("SpeechStarted", this);
+    CapabilityEvent event("SpeechStarted", this);
 
-        sendEventCommon(&event, token, std::move(cb));
+    sendEventCommon(&event, token, std::move(cb));
 
-        nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_STARTED,
-            event.getDialogRequestId().c_str(),
-            event.getMessageId().c_str(), NULL);
-    }
+    nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_STARTED,
+        event.getDialogRequestId().c_str(),
+        event.getMessageId().c_str(), NULL);
 
     if (tts_listener)
         tts_listener->onTTSState(TTSState::TTS_SPEECH_START, dialog_id);
@@ -318,15 +316,13 @@ void TTSAgent::sendEventSpeechStarted(const std::string& token, EventResultCallb
 
 void TTSAgent::sendEventSpeechFinished(const std::string& token, EventResultCallback cb)
 {
-    if (ps_id.size()) {
-        CapabilityEvent event("SpeechFinished", this);
+    CapabilityEvent event("SpeechFinished", this);
 
-        sendEventCommon(&event, token, std::move(cb));
+    sendEventCommon(&event, token, std::move(cb));
 
-        nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_FINISHED,
-            event.getDialogRequestId().c_str(),
-            event.getMessageId().c_str(), NULL);
-    }
+    nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_FINISHED,
+        event.getDialogRequestId().c_str(),
+        event.getMessageId().c_str(), NULL);
 
     if (tts_listener)
         tts_listener->onTTSState(TTSState::TTS_SPEECH_FINISH, dialog_id);
@@ -334,15 +330,13 @@ void TTSAgent::sendEventSpeechFinished(const std::string& token, EventResultCall
 
 void TTSAgent::sendEventSpeechStopped(const std::string& token, EventResultCallback cb)
 {
-    if (ps_id.size()) {
-        CapabilityEvent event("SpeechStopped", this);
+    CapabilityEvent event("SpeechStopped", this);
 
-        sendEventCommon(&event, token, std::move(cb));
+    sendEventCommon(&event, token, std::move(cb));
 
-        nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_STOPPED,
-            event.getDialogRequestId().c_str(),
-            event.getMessageId().c_str(), NULL);
-    }
+    nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_STOPPED,
+        event.getDialogRequestId().c_str(),
+        event.getMessageId().c_str(), NULL);
 }
 
 std::string TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id, EventResultCallback cb)
