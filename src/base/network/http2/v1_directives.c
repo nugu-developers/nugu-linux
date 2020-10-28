@@ -109,7 +109,7 @@ static void _on_destroy(HTTP2Request *req, void *userdata)
 /* invoked in a thread loop */
 static void _directive_cb(DirParser *dp, NuguDirective *ndir, void *userdata)
 {
-	nugu_dbg("receive directive: msg_id: %d, dialog_id: %s",
+	nugu_dbg("receive directive: msg_id: %s, dialog_id: %s",
 		 nugu_directive_peek_msg_id(ndir),
 		 nugu_directive_peek_dialog_id(ndir));
 
