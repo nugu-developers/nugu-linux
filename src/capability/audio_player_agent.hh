@@ -143,7 +143,7 @@ private:
     std::string playerActivity(AudioPlayerState state);
 
     void renderDisplay(void* data);
-    void clearDisplay(void* data);
+    void clearDisplay(void* data, bool has_next_render = false);
 
     const unsigned int PAUSE_CONTEXT_HOLD_TIME = 60 * 10;
 

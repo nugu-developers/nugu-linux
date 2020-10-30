@@ -192,6 +192,12 @@ public:
     virtual bool hasLayer(const std::string& ps_id, PlayStackLayer layer) = 0;
 
     /**
+     * @brief Check whether the next playstack to handle exists.
+     * @return true if the next playstack exists, otherwise false
+     */
+    virtual bool hasNextPlayStack() = 0;
+
+    /**
      * @brief Get all items which are stored in playstack.
      * @return Playstack items (play service id list)
      */

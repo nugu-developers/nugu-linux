@@ -80,7 +80,7 @@ private:
     std::string getDirectionString(ControlDirection direction);
 
     void renderDisplay(void* data);
-    void clearDisplay(void* data);
+    void clearDisplay(void* data, bool has_next_render = false);
 
     std::map<std::string, DisplayRenderInfo*> render_info;
     IDisplayListener* display_listener;

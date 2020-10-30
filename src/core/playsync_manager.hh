@@ -60,6 +60,7 @@ public:
 
     bool isConditionToHandlePrevDialog(NuguDirective* prev_ndir, NuguDirective* cur_ndir) override;
     bool hasLayer(const std::string& ps_id, PlayStackLayer layer) override;
+    bool hasNextPlayStack() override;
     std::vector<std::string> getAllPlayStackItems() override;
     const PlayStacks& getPlayStacks();
 

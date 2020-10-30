@@ -65,9 +65,10 @@ public:
      * @brief The SDK will ask you to delete the rendered display on the display according to the service context maintenance policy.
      * @param[in] id display template id
      * @param[in] unconditionally whether clear display unconditionally or not
+     * @param[in] has_next whether has next display to render
      * @return true if display is cleared
      */
-    virtual bool clearDisplay(const std::string& id, bool unconditionally) = 0;
+    virtual bool clearDisplay(const std::string& id, bool unconditionally, bool has_next) = 0;
 
     /**
      * @brief Request to control the display with type and direction

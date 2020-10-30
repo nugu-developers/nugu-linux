@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
+#include <iostream>
+
 #include <algorithm>
+#include <functional>
 #include <glib.h>
 #include <memory>
 
@@ -31,6 +34,9 @@ public:
 
     void onStackRemoved(const std::string& ps_id)
     {
+        if (inter_hook_func)
+            inter_hook_func();
+
         ps_ids.erase(
             std::remove_if(ps_ids.begin(), ps_ids.end(),
                 [&](const std::string& element) {
@@ -44,8 +50,14 @@ public:
         return ps_ids;
     }
 
+    void setHookInOnStackRemoved(std::function<void()> hook_func)
+    {
+        inter_hook_func = hook_func;
+    }
+
 private:
     std::vector<std::string> ps_ids;
+    std::function<void()> inter_hook_func = nullptr;
 };
 
 static NuguDirective* createDirective(const std::string& name_space, const std::string& name, const std::string& groups)
@@ -245,6 +257,22 @@ static void test_playstack_manager_checkExpectSpeech(TestFixture* fixture, gcons
     g_assert(fixture->playstack_manager->hasExpectSpeech(fixture->ndir_expect_speech));
 }
 
+static void test_playstack_manager_checkAddingPlayStack(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->playstack_manager->addListener(fixture->playstack_manager_listener.get());
+
+    fixture->playstack_manager_listener->setHookInOnStackRemoved([&]() {
+        g_assert(fixture->playstack_manager->hasAddingPlayStack());
+    });
+
+    fixture->playstack_manager->add("ps_id_1", fixture->ndir_info);
+    g_assert(fixture->playstack_manager_listener->getPlayServiceIds().at(0) == "ps_id_1");
+
+    fixture->playstack_manager->add("ps_id_2", fixture->ndir_info);
+    g_assert(fixture->playstack_manager_listener->getPlayServiceIds().at(0) == "ps_id_2");
+    g_assert(!fixture->playstack_manager->hasAddingPlayStack());
+}
+
 static void test_playstack_manager_reset(TestFixture* fixture, gconstpointer ignored)
 {
     const auto& playstack_container = fixture->playstack_manager->getPlayStackContainer();
@@ -254,7 +282,8 @@ static void test_playstack_manager_reset(TestFixture* fixture, gconstpointer ign
     g_assert(flag_set_before.find(true) != flag_set_before.cend());
     g_assert(!playstack_container.first.empty());
 
-    fixture->playstack_manager->remove("ps_id_1");
+    fixture->playstack_manager->add("ps_id_2", fixture->ndir_info);
+    fixture->playstack_manager->remove("ps_id_2");
     g_assert(fixture->playstack_manager->isActiveHolding());
 
     fixture->playstack_manager->reset();
@@ -262,6 +291,7 @@ static void test_playstack_manager_reset(TestFixture* fixture, gconstpointer ign
     g_assert(flag_set_after.find(true) == flag_set_after.cend());
     g_assert(playstack_container.first.empty());
     g_assert(!fixture->playstack_manager->isActiveHolding());
+    g_assert(!fixture->playstack_manager->hasAddingPlayStack());
 }
 
 int main(int argc, char* argv[])
@@ -281,6 +311,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/controlHolding", test_playstack_manager_controlHolding);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkStack", test_playstack_manager_checkStack);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkExpectSpeech", test_playstack_manager_checkExpectSpeech);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/checkAddingPlayStack", test_playstack_manager_checkAddingPlayStack);
     G_TEST_ADD_FUNC("/core/PlayStackManager/reset", test_playstack_manager_reset);
 
     return g_test_run();

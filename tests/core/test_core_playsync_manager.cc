@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <chrono>
 #include <condition_variable>
+#include <functional>
 #include <glib.h>
 #include <map>
 #include <memory>
@@ -105,6 +106,9 @@ public:
         }
 
         sync_state_map[ps_id] = state;
+
+        if (state == PlaySyncState::Released && inter_hook_func)
+            inter_hook_func();
     }
 
     void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override
@@ -136,11 +140,17 @@ public:
         return extra_data;
     }
 
+    void setHookInonSyncState(std::function<void()> hook_func)
+    {
+        inter_hook_func = hook_func;
+    }
+
 private:
     std::map<std::string, PlaySyncState> sync_state_map;
     PlaySyncState state = PlaySyncState::None;
     void* extra_data = nullptr;
     int same_state_call_count = 0;
+    std::function<void()> inter_hook_func = nullptr;
 };
 
 class InteractionControlManagerListener : public IInteractionControlManagerListener {
@@ -696,6 +706,20 @@ static void test_playstack_manager_register_capability_for_sync(TestFixture* fix
     g_assert(fixture->playsync_manager_listener_snd->getSyncState("ps_id_1") == PlaySyncState::Released);
 }
 
+static void test_playstack_manager_check_next_playstack(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->playsync_manager_listener->setHookInonSyncState([&]() {
+        g_assert(fixture->playsync_manager->hasNextPlayStack());
+    });
+
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_info_disp);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Prepared);
+
+    fixture->playsync_manager->prepareSync("ps_id_2", fixture->ndir_info_disp);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Prepared);
+    g_assert(!fixture->playsync_manager->hasNextPlayStack());
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -726,6 +750,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkExpectSpeech", test_playstack_manager_check_expect_speech);
     G_TEST_ADD_FUNC("/core/PlayStackManager/reset", test_playstack_manager_reset);
     G_TEST_ADD_FUNC("/core/PlayStackManager/registerCapabilityForSync", test_playstack_manager_register_capability_for_sync);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/checkNextPlayStack", test_playstack_manager_check_next_playstack);
 
     return g_test_run();
 }

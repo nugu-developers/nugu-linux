@@ -28,12 +28,13 @@ void DisplayListener::renderDisplay(const std::string& id, const std::string& ty
               << "\033[0m" << std::endl;
 }
 
-bool DisplayListener::clearDisplay(const std::string& id, bool unconditionally)
+bool DisplayListener::clearDisplay(const std::string& id, bool unconditionally, bool has_next)
 {
     std::cout << "\033[1;94m"
               << "[Display] clear display template\n"
               << "\t id:" << id.c_str() << std::endl
-              << "\t unconditionally:" << unconditionally
+              << "\t unconditionally:" << unconditionally << std::endl
+              << "\t has_next:" << has_next
               << "\033[0m" << std::endl;
 
     return false;
