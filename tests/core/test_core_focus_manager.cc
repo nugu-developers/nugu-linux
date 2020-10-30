@@ -164,7 +164,7 @@ static void setup(ntimerFixture* fixture, gconstpointer user_data)
     focus_configuration.push_back({ COMMUNICATIONS_FOCUS_TYPE, COMMUNICATIONS_FOCUS_PRIORITY });
     focus_configuration.push_back({ ALERTS_FOCUS_TYPE, ALERTS_FOCUS_PRIORITY });
     focus_configuration.push_back({ CONTENT_FOCUS_TYPE, CONTENT_FOCUS_PRIORITY });
-    fixture->focus_manager->setConfigurations(focus_configuration);
+    fixture->focus_manager->setConfigurations(focus_configuration, focus_configuration);
 }
 
 static void teardown(ntimerFixture* fixture, gconstpointer user_data)
@@ -188,7 +188,7 @@ static void test_focusmanager_configurations(ntimerFixture* fixture, gconstpoint
 
     // Add Dialog Resource to FocusManager
     focus_configuration.push_back({ DIALOG_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY });
-    focus_manager->setConfigurations(focus_configuration);
+    focus_manager->setConfigurations(focus_configuration, focus_configuration);
 
     g_assert(focus_manager->getFocusResourcePriority(DIALOG_FOCUS_TYPE) == DIALOG_FOCUS_PRIORITY);
     g_assert(focus_manager->getFocusResourcePriority(COMMUNICATIONS_FOCUS_TYPE) == -1);
@@ -197,7 +197,7 @@ static void test_focusmanager_configurations(ntimerFixture* fixture, gconstpoint
     focus_configuration.clear();
     focus_configuration.push_back({ DIALOG_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY + 100 });
     focus_configuration.push_back({ COMMUNICATIONS_FOCUS_TYPE, COMMUNICATIONS_FOCUS_PRIORITY });
-    focus_manager->setConfigurations(focus_configuration);
+    focus_manager->setConfigurations(focus_configuration, focus_configuration);
 
     g_assert(focus_manager->getFocusResourcePriority(DIALOG_FOCUS_TYPE) == (DIALOG_FOCUS_PRIORITY + 100));
     g_assert(focus_manager->getFocusResourcePriority(COMMUNICATIONS_FOCUS_TYPE) == COMMUNICATIONS_FOCUS_PRIORITY);
@@ -440,10 +440,28 @@ static void test_focusmanager_request_resource_with_hold_higher_resource(ntimerF
     ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::FOREGROUND);
 }
 
+static void test_focusmanager_release_resource_with_hold_higher_resource(ntimerFixture* fixture, gconstpointer ignored)
+{
+    g_assert(REQUEST_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE, DIALOG_NAME));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::FOREGROUND);
+
+    // hold communications priority: dialog > communications > content
+    g_assert(HOLD_FOCUS(fixture->comm_resource, COMMUNICATIONS_FOCUS_TYPE));
+
+    g_assert(REQUEST_FOCUS(fixture->content_resource, CONTENT_FOCUS_TYPE, CONTENT_NAME));
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::BACKGROUND);
+
+    // content focus is still background because communications is holded with higher priority.
+    g_assert(RELEASE_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::NONE);
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::BACKGROUND);
+}
+
 static void test_focusmanager_request_same_holded_resource_and_auto_unhold(ntimerFixture* fixture, gconstpointer ignored)
 {
     g_assert(HOLD_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
 
+    // unhold focus because of request with same priority
     g_assert(REQUEST_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE, DIALOG_NAME));
     ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::FOREGROUND);
 
@@ -453,6 +471,157 @@ static void test_focusmanager_request_same_holded_resource_and_auto_unhold(ntime
     g_assert(RELEASE_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
     ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::NONE);
     ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::FOREGROUND);
+}
+
+static void test_focusmanager_request_higher_resource_with_hold(ntimerFixture* fixture, gconstpointer ignored)
+{
+    g_assert(HOLD_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE));
+
+    // maintain hold focus because of request with higher priority than hold priority
+    g_assert(REQUEST_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE, DIALOG_NAME));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::FOREGROUND);
+
+    g_assert(REQUEST_FOCUS(fixture->content_resource, CONTENT_FOCUS_TYPE, CONTENT_NAME));
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::BACKGROUND);
+
+    g_assert(RELEASE_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::NONE);
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::BACKGROUND);
+
+    g_assert(UNHOLD_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE));
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::FOREGROUND);
+}
+
+static void test_focusmanager_request_and_release_configurations(ntimerFixture* fixture, gconstpointer ignored)
+{
+    FocusManager* focus_manager = fixture->focus_manager;
+    std::vector<FocusConfiguration> focus_request_configuration;
+    std::vector<FocusConfiguration> focus_release_configuration;
+
+    // Add Dialog Resource to FocusManager
+    focus_request_configuration.push_back({ DIALOG_FOCUS_TYPE, COMMUNICATIONS_FOCUS_PRIORITY });
+    focus_release_configuration.push_back({ DIALOG_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY });
+    focus_manager->setConfigurations(focus_request_configuration, focus_release_configuration);
+
+    // Focus resource's priority is followed by focus release configuration.
+    g_assert(focus_manager->getFocusResourcePriority(DIALOG_FOCUS_TYPE) == DIALOG_FOCUS_PRIORITY);
+    g_assert(focus_manager->getFocusResourcePriority(COMMUNICATIONS_FOCUS_TYPE) == -1);
+}
+
+static void test_focusmanager_steal_resource_with_higher_resource_by_request_priority(ntimerFixture* fixture, gconstpointer igresource)
+{
+    FocusManager* focus_manager = fixture->focus_manager;
+    std::vector<FocusConfiguration> focus_request_configuration;
+    std::vector<FocusConfiguration> focus_release_configuration;
+
+    // Request Priority: dialog = content
+    focus_request_configuration.push_back({ DIALOG_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY });
+    focus_request_configuration.push_back({ CONTENT_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY });
+    // Release Priority: dialog > content
+    focus_release_configuration.push_back({ DIALOG_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY });
+    focus_release_configuration.push_back({ CONTENT_FOCUS_TYPE, CONTENT_FOCUS_PRIORITY });
+    focus_manager->setConfigurations(focus_request_configuration, focus_release_configuration);
+
+    g_assert(REQUEST_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE, DIALOG_NAME));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::FOREGROUND);
+
+    // dialog focus is stealed by content focus caused by equal to request priority
+    g_assert(REQUEST_FOCUS(fixture->content_resource, CONTENT_FOCUS_TYPE, CONTENT_NAME));
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::FOREGROUND);
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::BACKGROUND);
+}
+
+static void test_focusmanager_no_steal_resource_with_higher_resource_request_priority(ntimerFixture* fixture, gconstpointer igresource)
+{
+    FocusManager* focus_manager = fixture->focus_manager;
+    std::vector<FocusConfiguration> focus_request_configuration;
+    std::vector<FocusConfiguration> focus_release_configuration;
+
+    // Request Priority: dialog > content
+    focus_request_configuration.push_back({ DIALOG_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY });
+    focus_request_configuration.push_back({ CONTENT_FOCUS_TYPE, CONTENT_FOCUS_PRIORITY });
+    // Release Priority: dialog > content
+    focus_release_configuration.push_back({ DIALOG_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY });
+    focus_release_configuration.push_back({ CONTENT_FOCUS_TYPE, CONTENT_FOCUS_PRIORITY });
+    focus_manager->setConfigurations(focus_request_configuration, focus_release_configuration);
+
+    g_assert(REQUEST_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE, DIALOG_NAME));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::FOREGROUND);
+
+    // Dialog focus can't be stolen because content focus has a low request priority
+    g_assert(REQUEST_FOCUS(fixture->content_resource, CONTENT_FOCUS_TYPE, CONTENT_NAME));
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::BACKGROUND);
+}
+
+static void test_focusmanager_release_resources_by_release_priority(ntimerFixture* fixture, gconstpointer igresource)
+{
+    FocusManager* focus_manager = fixture->focus_manager;
+    std::vector<FocusConfiguration> focus_request_configuration;
+    std::vector<FocusConfiguration> focus_release_configuration;
+
+    // Request Priority: dialog = content > alerts
+    focus_request_configuration.push_back({ DIALOG_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY });
+    focus_request_configuration.push_back({ ALERTS_FOCUS_TYPE, ALERTS_FOCUS_PRIORITY });
+    focus_request_configuration.push_back({ CONTENT_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY });
+    // Release Priority: dialog > alerts > content
+    focus_release_configuration.push_back({ DIALOG_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY });
+    focus_release_configuration.push_back({ ALERTS_FOCUS_TYPE, ALERTS_FOCUS_PRIORITY });
+    focus_release_configuration.push_back({ CONTENT_FOCUS_TYPE, CONTENT_FOCUS_PRIORITY });
+    focus_manager->setConfigurations(focus_request_configuration, focus_release_configuration);
+
+    g_assert(REQUEST_FOCUS(fixture->content_resource, CONTENT_FOCUS_TYPE, CONTENT_NAME));
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::FOREGROUND);
+
+    g_assert(REQUEST_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE, ALERTS_NAME));
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::FOREGROUND);
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::BACKGROUND);
+
+    g_assert(REQUEST_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE, DIALOG_NAME));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::FOREGROUND);
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::BACKGROUND);
+
+    g_assert(RELEASE_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::NONE);
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::FOREGROUND);
+}
+
+static void test_focusmanager_request_resource_hold_and_unhold_with_different_request_release_priority(ntimerFixture* fixture, gconstpointer ignored)
+{
+    FocusManager* focus_manager = fixture->focus_manager;
+    std::vector<FocusConfiguration> focus_request_configuration;
+    std::vector<FocusConfiguration> focus_release_configuration;
+    // Request Priority: dialog = content > communications > alerts
+    focus_request_configuration.push_back({ DIALOG_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY });
+    focus_request_configuration.push_back({ COMMUNICATIONS_FOCUS_TYPE, COMMUNICATIONS_FOCUS_PRIORITY });
+    focus_request_configuration.push_back({ ALERTS_FOCUS_TYPE, ALERTS_FOCUS_PRIORITY });
+    focus_request_configuration.push_back({ CONTENT_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY });
+    // Release Priority: dialog > communications > alerts > content
+    focus_release_configuration.push_back({ DIALOG_FOCUS_TYPE, DIALOG_FOCUS_PRIORITY });
+    focus_release_configuration.push_back({ COMMUNICATIONS_FOCUS_TYPE, COMMUNICATIONS_FOCUS_PRIORITY });
+    focus_release_configuration.push_back({ ALERTS_FOCUS_TYPE, ALERTS_FOCUS_PRIORITY });
+    focus_release_configuration.push_back({ CONTENT_FOCUS_TYPE, CONTENT_FOCUS_PRIORITY });
+    focus_manager->setConfigurations(focus_request_configuration, focus_release_configuration);
+
+    g_assert(HOLD_FOCUS(fixture->comm_resource, COMMUNICATIONS_FOCUS_TYPE));
+    // request priority: communications > alerts
+    g_assert(REQUEST_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE, ALERTS_NAME));
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::BACKGROUND);
+    // request priority: communications < content
+    g_assert(REQUEST_FOCUS(fixture->content_resource, CONTENT_FOCUS_TYPE, CONTENT_NAME));
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::FOREGROUND);
+    // request priority: dialog = content
+    g_assert(REQUEST_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE, DIALOG_NAME));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::FOREGROUND);
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::BACKGROUND);
+
+    // release priority: communication > alert > content
+    g_assert(RELEASE_FOCUS(fixture->dialog_resource, DIALOG_FOCUS_TYPE));
+    ASSERT_EXPECTED_STATE(fixture->dialog_resource, FocusState::NONE);
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::BACKGROUND);
+    ASSERT_EXPECTED_STATE(fixture->content_resource, FocusState::BACKGROUND);
+    // release priority: alert > content
+    g_assert(UNHOLD_FOCUS(fixture->comm_resource, COMMUNICATIONS_FOCUS_TYPE));
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::FOREGROUND);
 }
 
 int main(int argc, char* argv[])
@@ -485,9 +654,17 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/FocusManager/StopAllFocusWithNoResource", test_focusmanager_stop_all_focus_with_no_resource);
     G_TEST_ADD_FUNC("/core/FocusManager/StopAllFocusWithOneResource", test_focusmanager_stop_all_focus_with_one_resource);
     G_TEST_ADD_FUNC("/core/FocusManager/StopAllFocusWithTwoResources", test_focusmanager_stop_all_focus_with_two_resources);
-    G_TEST_ADD_FUNC("/core/FocusManager/RequestResourceUnHold", test_focusmanager_request_resource_hold_and_unhold);
+    G_TEST_ADD_FUNC("/core/FocusManager/RequestResourceHoldAndUnHold", test_focusmanager_request_resource_hold_and_unhold);
     G_TEST_ADD_FUNC("/core/FocusManager/RequestResourceWithHoldHigherResource", test_focusmanager_request_resource_with_hold_higher_resource);
+    G_TEST_ADD_FUNC("/core/FocusManager/ReleaseResourceWithHoldHigherResource", test_focusmanager_release_resource_with_hold_higher_resource);
     G_TEST_ADD_FUNC("/core/FocusManager/RequestSameHoldedResourceAndAutoUnhold", test_focusmanager_request_same_holded_resource_and_auto_unhold);
+    G_TEST_ADD_FUNC("/core/FocusManager/RequestHigherResourceWithHold", test_focusmanager_request_higher_resource_with_hold);
+
+    G_TEST_ADD_FUNC("/core/FocusManager/FocusRequestAndReleaseConfigurations", test_focusmanager_request_and_release_configurations);
+    G_TEST_ADD_FUNC("/core/FocusManager/StealResourceWithHigherResourceByRequestPriority", test_focusmanager_steal_resource_with_higher_resource_by_request_priority);
+    G_TEST_ADD_FUNC("/core/FocusManager/NoStealResourceWithHigherResourceByRequestPriority", test_focusmanager_no_steal_resource_with_higher_resource_request_priority);
+    G_TEST_ADD_FUNC("/core/FocusManager/ReleaseResourcesByReleasePriority", test_focusmanager_release_resources_by_release_priority);
+    G_TEST_ADD_FUNC("/core/FocusManager/RequestResourceHoldAndUnHoldWithDifferentRequestReleasePriority", test_focusmanager_request_resource_hold_and_unhold_with_different_request_release_priority);
 
     return g_test_run();
 }

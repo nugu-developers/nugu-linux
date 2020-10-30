@@ -36,7 +36,7 @@ public:
 
 class FocusResource {
 public:
-    FocusResource(const std::string& type, const std::string& name, int priority, IFocusResourceListener* listener, IFocusResourceObserver* observer);
+    FocusResource(const std::string& type, const std::string& name, int request_priority, int release_priority, IFocusResourceListener* listener, IFocusResourceObserver* observer);
     virtual ~FocusResource() = default;
 
     void setState(FocusState state);
@@ -47,7 +47,8 @@ public:
 public:
     std::string type;
     std::string name;
-    int priority;
+    int request_priority;
+    int release_priority;
     FocusState state;
     IFocusResourceListener* listener;
     IFocusResourceObserver* observer;
@@ -66,7 +67,7 @@ public:
     bool holdFocus(const std::string& type) override;
     bool unholdFocus(const std::string& type) override;
 
-    void setConfigurations(std::vector<FocusConfiguration>& configurations) override;
+    void setConfigurations(std::vector<FocusConfiguration>& request, std::vector<FocusConfiguration>& release) override;
     void stopAllFocus() override;
     void stopForegroundFocus() override;
 
@@ -81,9 +82,10 @@ public:
     void printConfigurations();
 
 private:
-    std::map<std::string, int> configuration_map;
+    std::map<std::string, int> request_configuration_map;
+    std::map<std::string, int> release_configuration_map;
     std::map<int, std::shared_ptr<FocusResource>> focus_resource_ordered_map;
-    std::map<std::string, bool> focus_hold_map;
+    int focus_hold_priority;
     std::vector<IFocusManagerObserver*> observers;
 };
 
