@@ -469,7 +469,7 @@ void DisplayAgent::onSyncState(const std::string& ps_id, PlaySyncState state, vo
 
 void DisplayAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
 {
-    clearDisplay(extra_datas.first);
+    clearDisplay(extra_datas.first, (extra_datas.second ? true : false));
     renderDisplay(extra_datas.second);
 }
 
@@ -484,7 +484,7 @@ void DisplayAgent::renderDisplay(void* data)
     display_listener->renderDisplay(render_info->id, render_info->type, render_info->payload, render_info->dialog_id);
 }
 
-void DisplayAgent::clearDisplay(void* data)
+void DisplayAgent::clearDisplay(void* data, bool has_next_render)
 {
     if (!display_listener || !data) {
         nugu_warn("The DisplayListener or render data is not exist.");
@@ -493,7 +493,7 @@ void DisplayAgent::clearDisplay(void* data)
 
     auto render_info = reinterpret_cast<DisplayRenderInfo*>(data);
     this->render_info[render_info->id]->close = true;
-    display_listener->clearDisplay(render_info->id, true);
+    display_listener->clearDisplay(render_info->id, true, has_next_render || playsync_manager->hasNextPlayStack());
 }
 
 } // NuguCapability

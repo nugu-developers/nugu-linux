@@ -100,6 +100,7 @@ void PlayStackManager::reset()
     has_holding = false;
     is_expect_speech = false;
     is_stacked = false;
+    has_adding_playstack = false;
 }
 
 void PlayStackManager::addListener(IPlayStackManagerListener* listener)
@@ -155,6 +156,8 @@ bool PlayStackManager::add(const std::string& ps_id, NuguDirective* ndir)
         nugu_warn("%s is already added.", ps_id.c_str());
         return false;
     }
+
+    has_adding_playstack = true;
 
     handlePreviousStack(is_stacked);
     return addToContainer(ps_id, layer);
@@ -233,6 +236,11 @@ bool PlayStackManager::isActiveHolding()
     return timer->isStarted();
 }
 
+bool PlayStackManager::hasAddingPlayStack()
+{
+    return has_adding_playstack;
+}
+
 PlayStackLayer PlayStackManager::getPlayStackLayer(const std::string& ps_id)
 {
     try {
@@ -305,6 +313,8 @@ bool PlayStackManager::addToContainer(const std::string& ps_id, PlayStackLayer l
 
     playstack_container.first.emplace(ps_id, layer);
     playstack_container.second.emplace_back(ps_id);
+
+    has_adding_playstack = false;
 
     for (const auto& listener : listeners)
         listener->onStackAdded(ps_id);

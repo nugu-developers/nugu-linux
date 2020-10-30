@@ -198,6 +198,11 @@ bool PlaySyncManager::hasLayer(const std::string& ps_id, PlayStackLayer layer)
     return playstack_manager->getPlayStackLayer(ps_id) == layer;
 }
 
+bool PlaySyncManager::hasNextPlayStack()
+{
+    return playstack_manager->hasAddingPlayStack();
+}
+
 std::vector<std::string> PlaySyncManager::getAllPlayStackItems()
 {
     return playstack_manager->getAllPlayStackItems();

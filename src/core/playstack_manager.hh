@@ -68,6 +68,7 @@ public:
     void stopHolding();
     void resetHolding();
     bool isActiveHolding();
+    bool hasAddingPlayStack();
 
     PlayStackLayer getPlayStackLayer(const std::string& ps_id);
     std::vector<std::string> getAllPlayStackItems();
@@ -110,6 +111,7 @@ private:
     bool has_holding = false;
     bool is_expect_speech = false;
     bool is_stacked = false;
+    bool has_adding_playstack = false;
 };
 
 } // NuguCore

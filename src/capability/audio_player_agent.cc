@@ -1524,7 +1524,7 @@ void AudioPlayerAgent::onSyncState(const std::string& ps_id, PlaySyncState state
 
 void AudioPlayerAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
 {
-    clearDisplay(extra_datas.first);
+    clearDisplay(extra_datas.first, (extra_datas.second ? true : false));
     renderDisplay(extra_datas.second);
 }
 
@@ -1541,7 +1541,7 @@ void AudioPlayerAgent::renderDisplay(void* data)
         display_listener->renderDisplay(template_id, template_type, template_view, template_id);
 }
 
-void AudioPlayerAgent::clearDisplay(void* data)
+void AudioPlayerAgent::clearDisplay(void* data, bool has_next_render)
 {
     if (!display_listener || !data) {
         nugu_warn("The DisplayListener or render data is not exist.");
@@ -1552,7 +1552,7 @@ void AudioPlayerAgent::clearDisplay(void* data)
     std::tie(std::ignore, std::ignore, template_id) = *reinterpret_cast<RenderInfo*>(data);
 
     if (!template_id.empty()) {
-        display_listener->clearDisplay(template_id, true);
+        display_listener->clearDisplay(template_id, true, has_next_render || playsync_manager->hasNextPlayStack());
         render_infos.erase(template_id);
     }
 }
