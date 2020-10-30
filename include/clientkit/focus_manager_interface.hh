@@ -33,17 +33,41 @@ namespace NuguClientKit {
  * @{
  */
 
-#define DIALOG_FOCUS_TYPE "Dialog" /** @def Default Dialog Focus Type */
-#define DIALOG_FOCUS_PRIORITY 100 /** @def Default Dialog Focus Priority */
+#define CALL_FOCUS_TYPE "Call" /** @def Default Call Focus Type */
+#define CALL_FOCUS_REQUEST_PRIORITY 100 /** @def Default Call Focus Request Priority */
+#define CALL_FOCUS_RELEASE_PRIORITY 100 /** @def Default Call Focus Release Priority */
 
-#define COMMUNICATIONS_FOCUS_TYPE "Communications" /** @def Default Communication Focus Type */
-#define COMMUNICATIONS_FOCUS_PRIORITY 200 /** @def Default Communication Focus Priority */
+#define ASR_USER_FOCUS_TYPE "ASRUser" /** @def Default ASR User Focus Type */
+#define ASR_USER_FOCUS_REQUEST_PRIORITY 100 /** @def Default ASR User Focus Request Priority */
+#define ASR_USER_FOCUS_RELEASE_PRIORITY 200 /** @def Default ASR User Focus Release Priority */
+
+#define ASR_DM_FOCUS_TYPE "ASRDM" /** @def Default ASR DM Focus Type */
+#define ASR_DM_FOCUS_REQUEST_PRIORITY 400 /** @def Default ASR DM Focus Request Priority */
+#define ASR_DM_FOCUS_RELEASE_PRIORITY 300 /** @def Default ASR DM Focus Release Priority */
+
+#define INFO_FOCUS_TYPE "Info" /** @def Default Information Focus Type */
+#define INFO_FOCUS_REQUEST_PRIORITY 200 /** @def Default Information Focus Request Priority */
+#define INFO_FOCUS_RELEASE_PRIORITY 300 /** @def Default Information Focus Release Priority */
 
 #define ALERTS_FOCUS_TYPE "Alerts" /** @def Default Alerts Focus Type */
-#define ALERTS_FOCUS_PRIORITY 300 /** @def Default Alerts Focus Priority */
+#define ALERTS_FOCUS_REQUEST_PRIORITY 200 /** @def Default Alerts Focus Request Priority */
+#define ALERTS_FOCUS_RELEASE_PRIORITY 300 /** @def Default Alerts Focus Release Priority */
 
-#define CONTENT_FOCUS_TYPE "Content" /** @def Default Content Focus Type */
-#define CONTENT_FOCUS_PRIORITY 400 /** @def Default Content Focus Priority */
+#define ASR_BEEP_FOCUS_TYPE "ASRBeep" /** @def Default ASR Beep Focus Type */
+#define ASR_BEEP_FOCUS_REQUEST_PRIORITY 500 /** @def Default ASR Beep Focus Request Priority */
+#define ASR_BEEP_FOCUS_RELEASE_PRIORITY 400 /** @def Default ASR Beep Focus Release Priority */
+
+#define MEDIA_FOCUS_TYPE "Media" /** @def Default Media Focus Type */
+#define MEDIA_FOCUS_REQUEST_PRIORITY 300 /** @def Default Media Focus Request Priority */
+#define MEDIA_FOCUS_RELEASE_PRIORITY 500 /** @def Default Media Focus Release Priority */
+
+#define SOUND_FOCUS_TYPE "Sound" /** @def Default Sound Focus Type */
+#define SOUND_FOCUS_REQUEST_PRIORITY 500 /** @def Default Sound Focus Request Priority */
+#define SOUND_FOCUS_RELEASE_PRIORITY 500 /** @def Default Sound Focus Release Priority */
+
+#define DUMMY_FOCUS_TYPE "Dummy" /** @def Default Dummy Focus Type */
+#define DUMMY_FOCUS_REQUEST_PRIORITY 600 /** @def Default Dummy Focus Request Priority */
+#define DUMMY_FOCUS_RELEASE_PRIORITY 500 /** @def Default Dummy Focus Release Priority */
 
 /**
  * @brief FocusState

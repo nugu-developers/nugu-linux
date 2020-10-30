@@ -35,8 +35,7 @@ typedef struct expect_speech_attr {
 
 class ASRAgent final : public Capability,
                        public IASRHandler,
-                       public ISpeechRecognizerListener,
-                       public IFocusResourceListener {
+                       public ISpeechRecognizerListener {
 public:
     ASRAgent();
     virtual ~ASRAgent() = default;
@@ -70,7 +69,9 @@ public:
     void sendEventListenFailed(EventResultCallback cb = nullptr);
     void sendEventStopRecognize(EventResultCallback cb = nullptr);
 
-    void onFocusChanged(FocusState state) override;
+    void executeOnForegroundAction(bool asr_user);
+    void executeOnBackgroundAction(bool asr_user);
+    void executeOnNoneAction(bool asr_user);
 
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void addListener(IASRListener* listener) override;
@@ -104,6 +105,20 @@ private:
     void releaseASRFocus(bool is_cancel, ASRError error, bool release_focus = true);
     void cancelRecognition();
 
+    class FocusListener : public IFocusResourceListener {
+        public:
+            FocusListener(ASRAgent* asr_agent, IFocusManager* focus_manager, bool asr_user);
+            FocusListener() = default;
+            virtual ~FocusListener() = default;
+
+            void onFocusChanged(FocusState state) override;
+
+        ASRAgent* asr_agent = nullptr;
+        IFocusManager* focus_manager = nullptr;
+        FocusState focus_state = FocusState::NONE;
+        bool asr_user = false;
+    };
+
     ExpectSpeechAttr es_attr;
     CapabilityEvent* rec_event;
     INuguTimer* timer;
@@ -111,13 +126,15 @@ private:
     std::string all_context_info;
     std::string dialog_id;
     int uniq;
-    FocusState focus_state;
     std::vector<IASRListener*> asr_listeners;
     ListeningState prev_listening_state;
     AsrRecognizeCallback rec_callback;
     ASRState cur_state;
     std::string request_listening_id;
     bool asr_cancel;
+
+    FocusListener* asr_user_listener;
+    FocusListener* asr_dm_listener;
 
     float wakeup_power_noise;
     float wakeup_power_speech;

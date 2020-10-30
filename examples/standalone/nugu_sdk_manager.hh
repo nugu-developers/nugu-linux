@@ -50,6 +50,7 @@ private:
     void composeSDKCommands();
     void createInstance();
     void registerCapabilities();
+    void setDefaultSoundLayerPolicy();
     void setAdditionalExecutor();
     void deleteInstance();
 

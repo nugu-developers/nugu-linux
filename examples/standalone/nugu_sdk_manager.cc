@@ -112,6 +112,8 @@ void NuguSDKManager::createInstance()
     capability_helper->getInteractionControlManager()->addListener(this);
     playsync_manager = capability_helper->getPlaySyncManager();
 
+    setDefaultSoundLayerPolicy();
+
     network_manager->addListener(this);
     network_manager->setToken(getenv("NUGU_TOKEN"));
     network_manager->setUserAgent("0.2.0");
@@ -147,6 +149,36 @@ void NuguSDKManager::registerCapabilities()
         ->add(text_handler)
         ->add(mic_handler)
         ->construct();
+}
+
+void NuguSDKManager::setDefaultSoundLayerPolicy()
+{
+    auto capability_helper(nugu_core_container->getCapabilityHelper());
+    auto focus_manager = capability_helper->getFocusManager();
+
+    std::vector<FocusConfiguration> request_configuration;
+    request_configuration.push_back({ CALL_FOCUS_TYPE, CALL_FOCUS_REQUEST_PRIORITY });
+    request_configuration.push_back({ ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_REQUEST_PRIORITY });
+    request_configuration.push_back({ INFO_FOCUS_TYPE, INFO_FOCUS_REQUEST_PRIORITY });
+    request_configuration.push_back({ ASR_DM_FOCUS_TYPE, ASR_DM_FOCUS_REQUEST_PRIORITY });
+    request_configuration.push_back({ ALERTS_FOCUS_TYPE, ALERTS_FOCUS_REQUEST_PRIORITY });
+    request_configuration.push_back({ ASR_BEEP_FOCUS_TYPE, ASR_BEEP_FOCUS_REQUEST_PRIORITY });
+    request_configuration.push_back({ MEDIA_FOCUS_TYPE, MEDIA_FOCUS_REQUEST_PRIORITY });
+    request_configuration.push_back({ SOUND_FOCUS_TYPE, SOUND_FOCUS_REQUEST_PRIORITY });
+    request_configuration.push_back({ DUMMY_FOCUS_TYPE, DUMMY_FOCUS_REQUEST_PRIORITY });
+
+    std::vector<FocusConfiguration> release_configuration;
+    release_configuration.push_back({ CALL_FOCUS_TYPE, CALL_FOCUS_RELEASE_PRIORITY });
+    release_configuration.push_back({ ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_RELEASE_PRIORITY });
+    release_configuration.push_back({ ASR_DM_FOCUS_TYPE, ASR_DM_FOCUS_RELEASE_PRIORITY });
+    release_configuration.push_back({ INFO_FOCUS_TYPE, INFO_FOCUS_RELEASE_PRIORITY });
+    release_configuration.push_back({ ALERTS_FOCUS_TYPE, ALERTS_FOCUS_RELEASE_PRIORITY });
+    release_configuration.push_back({ ASR_BEEP_FOCUS_TYPE, ASR_BEEP_FOCUS_RELEASE_PRIORITY });
+    release_configuration.push_back({ MEDIA_FOCUS_TYPE, MEDIA_FOCUS_RELEASE_PRIORITY });
+    release_configuration.push_back({ SOUND_FOCUS_TYPE, SOUND_FOCUS_RELEASE_PRIORITY });
+    release_configuration.push_back({ DUMMY_FOCUS_TYPE, DUMMY_FOCUS_RELEASE_PRIORITY });
+
+    focus_manager->setConfigurations(request_configuration, release_configuration);
 }
 
 void NuguSDKManager::setAdditionalExecutor()
