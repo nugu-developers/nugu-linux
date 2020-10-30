@@ -134,9 +134,10 @@ public:
 
     /**
      * @brief Set focus configurations.
-     * @param[in] configurations focus configurations
+     * @param[in] request configurations for focus request
+     * @param[in] release configurations for focus release
      */
-    virtual void setConfigurations(std::vector<FocusConfiguration>& configurations) = 0;
+    virtual void setConfigurations(std::vector<FocusConfiguration>& request, std::vector<FocusConfiguration>& release) = 0;
 
     /**
      * @brief Stop all focus.
