@@ -28,6 +28,8 @@ static const char* CAPABILITY_VERSION = "1.3";
 
 ASRAgent::ASRAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
+    , asr_user_listener(nullptr)
+    , asr_dm_listener(nullptr)
     , model_path("")
     , epd_type(NUGU_ASR_EPD_TYPE)
     , asr_encoding(NUGU_ASR_ENCODING)
@@ -69,7 +71,6 @@ void ASRAgent::initialize()
     all_context_info = "";
     dialog_id = "";
     uniq = 0;
-    focus_state = FocusState::NONE;
     prev_listening_state = ListeningState::DONE;
     rec_callback = nullptr;
     cur_state = ASRState::IDLE;
@@ -77,6 +78,8 @@ void ASRAgent::initialize()
     asr_cancel = false;
     wakeup_power_noise = 0;
     wakeup_power_speech = 0;
+    asr_user_listener = new ASRAgent::FocusListener(this, focus_manager, true);
+    asr_dm_listener = new ASRAgent::FocusListener(this, focus_manager, false);
 
     speech_recognizer = std::unique_ptr<ISpeechRecognizer>(core_container->createSpeechRecognizer(model_path, epd_attribute));
     speech_recognizer->setListener(this);
@@ -117,6 +120,15 @@ void ASRAgent::deInitialize()
         rec_event = nullptr;
     }
 
+    if (asr_user_listener) {
+        delete asr_user_listener;
+        asr_user_listener = nullptr;
+    }
+    if (asr_dm_listener) {
+        delete asr_dm_listener;
+        asr_dm_listener = nullptr;
+    }
+
     speech_recognizer.reset();
 
     initialized = false;
@@ -149,15 +161,15 @@ void ASRAgent::startRecognition(AsrRecognizeCallback callback)
     saveAllContextInfo();
 
     playsync_manager->postPoneRelease();
-    focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
+    focus_manager->requestFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME, asr_user_listener);
     asr_cancel = false;
 }
 
 void ASRAgent::stopRecognition()
 {
     nugu_dbg("stopRecognition()");
-    focus_manager->unholdFocus(DIALOG_FOCUS_TYPE);
-    focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
+    focus_manager->releaseFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME);
+    focus_manager->releaseFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME);
     asr_cancel = false;
 }
 
@@ -168,22 +180,56 @@ void ASRAgent::cancelRecognition()
     speech_recognizer->stopListening();
 }
 
-void ASRAgent::onFocusChanged(FocusState state)
+ASRAgent::FocusListener::FocusListener(ASRAgent* asr_agent, IFocusManager* focus_manager, bool asr_user)
+    : asr_agent(asr_agent)
+    , focus_manager(focus_manager)
+    , asr_user(asr_user)
 {
-    nugu_info("Focus Changed(%s -> %s)", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
+}
+
+void ASRAgent::FocusListener::onFocusChanged(FocusState state)
+{
+    nugu_info("[%s] Focus Changed(%s -> %s)", asr_user ? "ASRUser" : "ASRDM", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
+    focus_state = state;
 
     switch (state) {
-    case FocusState::FOREGROUND: {
+    case FocusState::FOREGROUND:
+        asr_agent->executeOnForegroundAction(asr_user);
+        break;
+    case FocusState::BACKGROUND:
+        asr_agent->executeOnBackgroundAction(asr_user);
+        break;
+    case FocusState::NONE:
+        asr_agent->executeOnNoneAction(asr_user);
+        break;
+    }
+}
+
+void ASRAgent::executeOnForegroundAction(bool asr_user)
+{
+    if (asr_user) {
         playsync_manager->stopHolding();
 
         std::string id = "id#" + std::to_string(uniq++);
         setListeningId(id);
         speech_recognizer->startListening(id);
-    } break;
-    case FocusState::BACKGROUND:
-        focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
-        break;
-    case FocusState::NONE:
+    } else {
+        setASRState(ASRState::EXPECTING_SPEECH);
+        saveAllContextInfo();
+        focus_manager->requestFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME, asr_user_listener);
+        asr_cancel = false;
+    }
+}
+
+void ASRAgent::executeOnBackgroundAction(bool asr_user)
+{
+    if (asr_user)
+        focus_manager->releaseFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME);
+}
+
+void ASRAgent::executeOnNoneAction(bool asr_user)
+{
+    if (asr_user) {
         playsync_manager->continueRelease();
         playsync_manager->resetHolding();
         speech_recognizer->stopListening();
@@ -197,9 +243,7 @@ void ASRAgent::onFocusChanged(FocusState state)
             setASRState(ASRState::IDLE);
 
         resetExpectSpeechState();
-        break;
     }
-    focus_state = state;
 }
 
 void ASRAgent::preprocessDirective(NuguDirective* ndir)
@@ -258,7 +302,7 @@ bool ASRAgent::receiveCommand(const std::string& from, const std::string& comman
 
     if (convert_command == "releasefocus") {
         if (param.find("TTS") == std::string::npos) {
-            nugu_info("Focus(type: %s) Release", DIALOG_FOCUS_TYPE);
+            nugu_info("Focus(type: %s) Release", ASR_USER_FOCUS_TYPE);
             stopRecognition();
         }
     } else if (convert_command == "cancel") {
@@ -455,7 +499,8 @@ void ASRAgent::parsingExpectSpeech(std::string&& dialog_id, const char* message)
 
     session_manager->activate(es_attr.dialog_id);
     interaction_control_manager->start(InteractionMode::MULTI_TURN, getName());
-    focus_manager->holdFocus(DIALOG_FOCUS_TYPE);
+
+    focus_manager->requestFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME, asr_dm_listener);
 }
 
 void ASRAgent::parsingNotifyResult(const char* message)
@@ -523,12 +568,6 @@ void ASRAgent::parsingCancelRecognize(const char* message)
 
 void ASRAgent::handleExpectSpeech()
 {
-    if (es_attr.is_handle) {
-        setASRState(ASRState::EXPECTING_SPEECH);
-        saveAllContextInfo();
-        focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
-        asr_cancel = false;
-    }
 }
 
 void ASRAgent::onListeningState(ListeningState state, const std::string& id)
@@ -637,7 +676,8 @@ void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error, bool release_focu
 
     if (release_focus) {
         nugu_dbg("request to release focus");
-        focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
+        focus_manager->releaseFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME);
+        focus_manager->releaseFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME);
     }
 }
 
@@ -699,7 +739,7 @@ void ASRAgent::notifyEventResponse(const std::string& msg_id, const std::string&
     // release focus when there are no focus stealer like TTS
     if (data.find("ASR") != std::string::npos && data.find("NotifyResult") != std::string::npos
         && data.find("TTS") == std::string::npos) {
-        nugu_info("Focus(type: %s) Release", DIALOG_FOCUS_TYPE);
+        nugu_info("Focus(type: %s) Release", ASR_USER_FOCUS_TYPE);
         stopRecognition();
     }
 }

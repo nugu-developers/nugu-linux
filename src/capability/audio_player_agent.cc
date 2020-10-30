@@ -154,7 +154,7 @@ void AudioPlayerAgent::suspend()
 
     if (suspend_policy == SuspendPolicy::STOP) {
         if (focus_state != FocusState::NONE)
-            focus_manager->releaseFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME);
+            focus_manager->releaseFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME);
     } else {
         if (focus_state == FocusState::FOREGROUND)
             executeOnBackgroundAction();
@@ -973,7 +973,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     if (focus_state == FocusState::FOREGROUND)
         executeOnForegroundAction();
     else
-        focus_manager->requestFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME, this);
+        focus_manager->requestFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME, this);
 }
 
 void AudioPlayerAgent::parsingPause(const char* message)
@@ -1026,7 +1026,7 @@ void AudioPlayerAgent::parsingStop(const char* message)
 
     if (!playstackctl_ps_id.empty()) {
         is_next_play = false;
-        focus_manager->releaseFocus(CONTENT_FOCUS_TYPE, CAPABILITY_NAME);
+        focus_manager->releaseFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME);
 
         is_finished
             ? playsync_manager->releaseSync(playstackctl_ps_id, getName())

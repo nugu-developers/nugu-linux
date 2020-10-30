@@ -18,6 +18,7 @@
 #define __NUGU_FOCUS_MANAGER_H__
 
 #include <algorithm>
+#include <list>
 #include <map>
 #include <memory>
 
@@ -84,9 +85,10 @@ public:
 private:
     std::map<std::string, int> request_configuration_map;
     std::map<std::string, int> release_configuration_map;
-    std::map<int, std::shared_ptr<FocusResource>> focus_resource_ordered_map;
+    std::list<std::shared_ptr<FocusResource>> focus_resource_ordered_list;
     int focus_hold_priority;
     std::vector<IFocusManagerObserver*> observers;
+    bool processing;
 };
 
 } // NuguCore

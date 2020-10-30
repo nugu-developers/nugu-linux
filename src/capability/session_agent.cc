@@ -122,8 +122,6 @@ void SessionAgent::deactivated(const std::string& dialog_id)
 {
     nugu_dbg("session deactivated: %s", dialog_id.c_str());
 
-    focus_manager->unholdFocus(DIALOG_FOCUS_TYPE);
-
     if (session_listener)
         session_listener->onState(SessionState::INACTIVE, dialog_id);
 }

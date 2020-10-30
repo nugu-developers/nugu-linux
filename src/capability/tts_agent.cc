@@ -102,7 +102,7 @@ void TTSAgent::suspend()
     nugu_dbg("suspend_policy[%d], focus_state => %s", suspend_policy, focus_manager->getStateString(focus_state).c_str());
 
     // TODO: need to manage the context
-    focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
+    focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
 }
 
 void TTSAgent::directiveDataCallback(NuguDirective* ndir, int seq, void* userdata)
@@ -134,7 +134,7 @@ void TTSAgent::getAttachmentData(NuguDirective* ndir, int seq, void* userdata)
         nugu_dbg("tts player state: %d", tts->player->state());
         if (tts->player->state() == MediaPlayerState::IDLE) {
             nugu_warn("TTS play fails, force release the focus");
-            tts->focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
+            tts->focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
         }
     }
 }
@@ -148,7 +148,7 @@ void TTSAgent::onFocusChanged(FocusState state)
         executeOnForegroundAction();
         break;
     case FocusState::BACKGROUND:
-        focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
+        focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
         break;
     case FocusState::NONE:
         stopTTS();
@@ -448,7 +448,7 @@ void TTSAgent::parsingSpeak(const char* message)
     if (focus_state == FocusState::FOREGROUND)
         executeOnForegroundAction();
     else
-        focus_manager->requestFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME, this);
+        focus_manager->requestFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME, this);
 
     if (tts_listener)
         tts_listener->onTTSText(text, dialog_id);
@@ -468,7 +468,7 @@ void TTSAgent::parsingStop(const char* message)
     if (!root["playServiceId"].empty())
         ps_id = root["playServiceId"].asString();
 
-    focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
+    focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
 }
 
 void TTSAgent::postProcessDirective(bool is_cancel)
@@ -518,7 +518,7 @@ void TTSAgent::mediaEventReport(MediaPlayerEvent event)
         nugu_dbg("PLAYING_MEDIA_FINISHED");
         is_finished = true;
         mediaStateChanged(MediaPlayerState::STOPPED);
-        focus_manager->releaseFocus(DIALOG_FOCUS_TYPE, CAPABILITY_NAME);
+        focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
         break;
     default:
         break;
