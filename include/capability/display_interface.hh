@@ -90,7 +90,7 @@ public:
  * @brief audioplayer's display listener interface
  * @see IDisplayListener
  */
-class IAudioPlayerDisplayListener : public IDisplayListener {
+class IAudioPlayerDisplayListener : virtual public IDisplayListener {
 public:
     virtual ~IAudioPlayerDisplayListener() = default;
 
