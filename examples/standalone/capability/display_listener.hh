@@ -23,14 +23,18 @@
 
 using namespace NuguCapability;
 
-class DisplayListener : public IDisplayListener {
+class DisplayListener : virtual public IDisplayListener {
 public:
+    DisplayListener();
     virtual ~DisplayListener() = default;
 
     void renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id) override;
     bool clearDisplay(const std::string& id, bool unconditionally, bool has_next) override;
     void controlDisplay(const std::string& id, ControlType type, ControlDirection direction) override;
     void updateDisplay(const std::string& id, const std::string& json_payload) override;
+
+protected:
+    std::string capability_name;
 
 private:
     const std::map<ControlType, std::string> CONTROL_TYPE_TEXT {

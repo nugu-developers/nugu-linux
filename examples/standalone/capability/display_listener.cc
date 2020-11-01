@@ -18,10 +18,15 @@
 
 #include "display_listener.hh"
 
+DisplayListener::DisplayListener()
+{
+    capability_name = "Display";
+}
+
 void DisplayListener::renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id)
 {
     std::cout << "\033[1;94m"
-              << "[Display] render display template\n"
+              << "[" << capability_name << "] render display template\n"
               << "\t id:" << id.c_str() << std::endl
               << "\t type:" << type.c_str() << std::endl
               << "\t dialog_id:" << dialog_id.c_str()
@@ -31,7 +36,7 @@ void DisplayListener::renderDisplay(const std::string& id, const std::string& ty
 bool DisplayListener::clearDisplay(const std::string& id, bool unconditionally, bool has_next)
 {
     std::cout << "\033[1;94m"
-              << "[Display] clear display template\n"
+              << "[" << capability_name << "] clear display template\n"
               << "\t id:" << id.c_str() << std::endl
               << "\t unconditionally:" << unconditionally << std::endl
               << "\t has_next:" << has_next
@@ -42,7 +47,7 @@ bool DisplayListener::clearDisplay(const std::string& id, bool unconditionally, 
 
 void DisplayListener::controlDisplay(const std::string& id, ControlType type, ControlDirection direction)
 {
-    std::cout << "[Display] control display template\n"
+    std::cout << "[" << capability_name << "] control display template\n"
               << "\t id:" << id.c_str() << std::endl
               << "\t type:" << CONTROL_TYPE_TEXT.at(type) << std::endl
               << "\t direction:" << CONTROL_DIRECTION_TEXT.at(direction) << std::endl;
@@ -50,6 +55,6 @@ void DisplayListener::controlDisplay(const std::string& id, ControlType type, Co
 
 void DisplayListener::updateDisplay(const std::string& id, const std::string& json_payload)
 {
-    std::cout << "[Display] update display template\n"
+    std::cout << "[" << capability_name << "] update display template\n"
               << "\t id:" << id.c_str() << std::endl;
 }

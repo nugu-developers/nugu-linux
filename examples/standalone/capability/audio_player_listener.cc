@@ -18,6 +18,11 @@
 
 #include "audio_player_listener.hh"
 
+AudioPlayerListener::AudioPlayerListener()
+{
+    capability_name = "AudioPlayer";
+}
+
 void AudioPlayerListener::mediaStateChanged(AudioPlayerState state, const std::string& dialog_id)
 {
     std::cout << "[AudioPlayer][id:" << dialog_id << "] ";
@@ -96,38 +101,6 @@ void AudioPlayerListener::requestContentCache(const std::string& key, const std:
 bool AudioPlayerListener::requestToGetCachedContent(const std::string& key, std::string& filepath)
 {
     return false;
-}
-
-void AudioPlayerListener::renderDisplay(const std::string& id, const std::string& type, const std::string& json_payload, const std::string& dialog_id)
-{
-    std::cout << "\033[1;94m"
-              << "[AudioPlayer] render display template\n"
-              << "\t id:" << id.c_str() << std::endl
-              << "\t type:" << type.c_str() << std::endl
-              << "\t dialog_id:" << dialog_id.c_str()
-              << "\033[0m" << std::endl;
-}
-
-bool AudioPlayerListener::clearDisplay(const std::string& id, bool unconditionally, bool has_next)
-{
-    std::cout << "\033[1;94m"
-              << "[AudioPlayer] clear display template\n"
-              << "\t id:" << id.c_str() << std::endl
-              << "\t unconditionally:" << unconditionally << std::endl
-              << "\t has_next:" << has_next
-              << "\033[0m" << std::endl;
-
-    return false;
-}
-
-void AudioPlayerListener::controlDisplay(const std::string& id, ControlType type, ControlDirection direction)
-{
-    std::cout << "[AudioPlayer][id:" << id << "] controlDisplay" << std::endl;
-}
-
-void AudioPlayerListener::updateDisplay(const std::string& id, const std::string& json_payload)
-{
-    std::cout << "[AudioPlayer][id:" << id << "] updateDisplay" << std::endl;
 }
 
 bool AudioPlayerListener::requestLyricsPageAvailable(const std::string& id, bool& visible)

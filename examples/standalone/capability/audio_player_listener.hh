@@ -17,13 +17,15 @@
 #ifndef __AUDIO_PLAYER_LISTENER_H__
 #define __AUDIO_PLAYER_LISTENER_H__
 
+#include "display_listener.hh"
 #include <capability/audio_player_interface.hh>
 
 using namespace NuguCapability;
 
-class AudioPlayerListener : public IAudioPlayerListener {
+class AudioPlayerListener : public IAudioPlayerListener,
+                            public DisplayListener {
 public:
-    AudioPlayerListener() = default;
+    AudioPlayerListener();
     virtual ~AudioPlayerListener() = default;
 
     // implements IAudioPlayerListener
@@ -38,10 +40,6 @@ public:
     bool requestToGetCachedContent(const std::string& key, std::string& filepath) override;
 
     // implements IAudioPlayerDisplayListener
-    void renderDisplay(const std::string& id, const std::string& type, const std::string& json_payload, const std::string& dialog_id) override;
-    bool clearDisplay(const std::string& id, bool unconditionally, bool has_next) override;
-    void controlDisplay(const std::string& id, ControlType type, ControlDirection direction) override;
-    void updateDisplay(const std::string& id, const std::string& json_payload) override;
     bool requestLyricsPageAvailable(const std::string& id, bool& visible) override;
     bool showLyrics(const std::string& id) override;
     bool hideLyrics(const std::string& id) override;
