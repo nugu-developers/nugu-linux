@@ -174,7 +174,7 @@ static void test_playstack_manager_listener(TestFixture* fixture, gconstpointer 
     g_assert(fixture->playstack_manager->getListenerCount() == 0);
 }
 
-static void test_playstack_manager_holdStack(TestFixture* fixture, gconstpointer ignored)
+static void test_playstack_manager_hold_stack(TestFixture* fixture, gconstpointer ignored)
 {
     const auto& playstack_container = fixture->playstack_manager->getPlayStackContainer();
 
@@ -194,7 +194,7 @@ static void test_playstack_manager_holdStack(TestFixture* fixture, gconstpointer
     g_assert(!playstack_container.first.empty());
 }
 
-static void test_playstack_manager_layerPolicy(TestFixture* fixture, gconstpointer ignored)
+static void test_playstack_manager_layer_policy(TestFixture* fixture, gconstpointer ignored)
 {
     const auto& playstack_container = fixture->playstack_manager->getPlayStackContainer();
 
@@ -223,7 +223,7 @@ static void test_playstack_manager_layerPolicy(TestFixture* fixture, gconstpoint
         && playstack_container.first.cbegin()->second == PlayStackLayer::Media);
 }
 
-static void test_playstack_manager_controlHolding(TestFixture* fixture, gconstpointer ignored)
+static void test_playstack_manager_control_holding(TestFixture* fixture, gconstpointer ignored)
 {
     const auto& playstack_container = fixture->playstack_manager->getPlayStackContainer();
 
@@ -239,7 +239,7 @@ static void test_playstack_manager_controlHolding(TestFixture* fixture, gconstpo
     g_assert(fixture->playstack_manager->isActiveHolding());
 }
 
-static void test_playstack_manager_checkStack(TestFixture* fixture, gconstpointer ignored)
+static void test_playstack_manager_check_stack(TestFixture* fixture, gconstpointer ignored)
 {
     fixture->playstack_manager->add("ps_id_1", fixture->ndir_info);
     g_assert(!fixture->playstack_manager->isStackedCondition(fixture->ndir_info));
@@ -250,14 +250,14 @@ static void test_playstack_manager_checkStack(TestFixture* fixture, gconstpointe
     g_assert(!fixture->playstack_manager->isStackedCondition(fixture->ndir_media));
 }
 
-static void test_playstack_manager_checkExpectSpeech(TestFixture* fixture, gconstpointer ignored)
+static void test_playstack_manager_check_expect_speech(TestFixture* fixture, gconstpointer ignored)
 {
     g_assert(!fixture->playstack_manager->hasExpectSpeech(nullptr));
     g_assert(!fixture->playstack_manager->hasExpectSpeech(fixture->ndir_info));
     g_assert(fixture->playstack_manager->hasExpectSpeech(fixture->ndir_expect_speech));
 }
 
-static void test_playstack_manager_checkAddingPlayStack(TestFixture* fixture, gconstpointer ignored)
+static void test_playstack_manager_check_adding_playstack(TestFixture* fixture, gconstpointer ignored)
 {
     fixture->playstack_manager->addListener(fixture->playstack_manager_listener.get());
 
@@ -306,12 +306,12 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/basic", test_playstack_manager_basic);
     G_TEST_ADD_FUNC("/core/PlayStackManager/getStack", test_playstack_manager_get_stack);
     G_TEST_ADD_FUNC("/core/PlayStackManager/listener", test_playstack_manager_listener);
-    G_TEST_ADD_FUNC("/core/PlayStackManager/holdStack", test_playstack_manager_holdStack);
-    G_TEST_ADD_FUNC("/core/PlayStackManager/layerPolicy", test_playstack_manager_layerPolicy);
-    G_TEST_ADD_FUNC("/core/PlayStackManager/controlHolding", test_playstack_manager_controlHolding);
-    G_TEST_ADD_FUNC("/core/PlayStackManager/checkStack", test_playstack_manager_checkStack);
-    G_TEST_ADD_FUNC("/core/PlayStackManager/checkExpectSpeech", test_playstack_manager_checkExpectSpeech);
-    G_TEST_ADD_FUNC("/core/PlayStackManager/checkAddingPlayStack", test_playstack_manager_checkAddingPlayStack);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/holdStack", test_playstack_manager_hold_stack);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/layerPolicy", test_playstack_manager_layer_policy);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/controlHolding", test_playstack_manager_control_holding);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/checkStack", test_playstack_manager_check_stack);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/checkExpectSpeech", test_playstack_manager_check_expect_speech);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/checkAddingPlayStack", test_playstack_manager_check_adding_playstack);
     G_TEST_ADD_FUNC("/core/PlayStackManager/reset", test_playstack_manager_reset);
 
     return g_test_run();
