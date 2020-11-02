@@ -140,7 +140,7 @@ public:
         return extra_data;
     }
 
-    void setHookInonSyncState(std::function<void()> hook_func)
+    void setHookInonSyncState(std::function<void()>&& hook_func)
     {
         inter_hook_func = hook_func;
     }

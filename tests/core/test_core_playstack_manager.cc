@@ -50,7 +50,7 @@ public:
         return ps_ids;
     }
 
-    void setHookInOnStackRemoved(std::function<void()> hook_func)
+    void setHookInOnStackRemoved(std::function<void()>&& hook_func)
     {
         inter_hook_func = hook_func;
     }
