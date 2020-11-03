@@ -533,14 +533,12 @@ void ASRAgent::handleExpectSpeech()
 
 void ASRAgent::onListeningState(ListeningState state, const std::string& id)
 {
+    nugu_dbg("[%s] ListeningState is changed(%s -> %s)", id.c_str(), getListeningStateStr(prev_listening_state).c_str(), getListeningStateStr(state).c_str());
     switch (state) {
     case ListeningState::READY:
-        nugu_dbg("[%s] ListeningState::READY", id.c_str());
         clearResponseTimeout();
         break;
     case ListeningState::LISTENING: {
-        nugu_dbg("[%s] ListeningState::LISTENING", id.c_str());
-
         if (rec_event)
             delete rec_event;
 
@@ -565,60 +563,45 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
         break;
     }
     case ListeningState::SPEECH_START:
-        nugu_dbg("[%s] ListeningState::SPEECH_START", id.c_str());
         setASRState(ASRState::RECOGNIZING);
         break;
     case ListeningState::SPEECH_END:
-        nugu_dbg("[%s] ListeningState::SPEECH_END", id.c_str());
         break;
     case ListeningState::TIMEOUT:
-        nugu_dbg("[%s] ListeningState::TIMEOUT", id.c_str());
         break;
     case ListeningState::FAILED:
-        nugu_dbg("[%s] ListeningState::FAILED", id.c_str());
         break;
     case ListeningState::DONE:
-        nugu_dbg("[%s] ListeningState::DONE", id.c_str());
+        bool close_stream = asr_cancel;
 
-        if (asr_cancel) {
-            nugu_dbg("ASR cancel");
-            setASRState(ASRState::IDLE);
-            if (rec_event) {
-                rec_event->forceClose();
-                delete rec_event;
-                rec_event = nullptr;
-            }
-            break;
-        }
-
-        if (prev_listening_state == ListeningState::READY || prev_listening_state == ListeningState::LISTENING) {
-            nugu_dbg("PrevListeningState::%s", prev_listening_state == ListeningState::READY ? "READY" : "LISTENING");
+        if (prev_listening_state == ListeningState::READY || prev_listening_state == ListeningState::LISTENING
+            || prev_listening_state == ListeningState::SPEECH_START) {
             releaseASRFocus(true, ASRError::UNKNOWN, (request_listening_id == id));
         } else if (prev_listening_state == ListeningState::SPEECH_END) {
-            nugu_dbg("PrevListeningState::SPEECH_END");
-            sendEventRecognize(NULL, 0, true);
+            close_stream = true;
             checkResponseTimeout();
-            setASRState(ASRState::BUSY);
         } else if (prev_listening_state == ListeningState::TIMEOUT) {
-            nugu_dbg("PrevListeningState::TIMEOUT");
-            if (rec_event)
-                rec_event->forceClose();
-
-            sendEventListenTimeout();
             releaseASRFocus(false, ASRError::LISTEN_TIMEOUT, (request_listening_id == id));
+            close_stream = true;
+            sendEventListenTimeout();
         } else if (prev_listening_state == ListeningState::FAILED) {
-            nugu_dbg("PrevListeningState::FAILED");
-            if (rec_event)
-                rec_event->forceClose();
             releaseASRFocus(false, ASRError::LISTEN_FAILED, (request_listening_id == id));
+            close_stream = true;
         }
 
         if (rec_event) {
+            if (close_stream) {
+                nugu_dbg("send attachment end for closing stream");
+                sendEventRecognize(NULL, 0, true);
+            }
+
             delete rec_event;
             rec_event = nullptr;
         }
 
-        if (prev_listening_state != ListeningState::SPEECH_END)
+        if (prev_listening_state == ListeningState::SPEECH_END)
+            setASRState(ASRState::BUSY);
+        else
             setASRState(ASRState::IDLE);
         break;
     }
@@ -649,6 +632,37 @@ bool ASRAgent::isExpectSpeechState()
 ListeningState ASRAgent::getListeningState()
 {
     return prev_listening_state;
+}
+
+std::string ASRAgent::getListeningStateStr(ListeningState state)
+{
+    std::string state_str;
+
+    switch (state) {
+    case ListeningState::READY:
+        state_str = "READY";
+        break;
+    case ListeningState::LISTENING:
+        state_str = "LISTENING";
+        break;
+    case ListeningState::SPEECH_START:
+        state_str = "SPEECH_START";
+        break;
+    case ListeningState::SPEECH_END:
+        state_str = "SPEECH_END";
+        break;
+    case ListeningState::TIMEOUT:
+        state_str = "TIMEOUT";
+        break;
+    case ListeningState::FAILED:
+        state_str = "FAILED";
+        break;
+    case ListeningState::DONE:
+        state_str = "DONE";
+        break;
+    }
+
+    return state_str;
 }
 
 void ASRAgent::resetExpectSpeechState()

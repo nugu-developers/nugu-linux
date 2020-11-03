@@ -81,6 +81,7 @@ public:
     void resetExpectSpeechState();
     bool isExpectSpeechState();
     ListeningState getListeningState();
+    std::string getListeningStateStr(ListeningState state);
 
     void setASRState(ASRState state);
     ASRState getASRState();
