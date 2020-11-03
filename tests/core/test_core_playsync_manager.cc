@@ -29,7 +29,7 @@
 
 using namespace NuguCore;
 
-const unsigned int TIMER_DOWNSCALE_FACTOR = 1;
+const unsigned int TIMER_DOWNSCALE_FACTOR = 10;
 std::mutex mutex;
 std::condition_variable cv;
 
@@ -56,16 +56,16 @@ public:
         if (is_started)
             return;
 
-        worker = std::thread { [&]() {
-            setStarted(true);
-            _cv.notify_one();
+        setStarted(true);
 
+        worker = std::thread { [&]() {
             std::this_thread::sleep_for(std::chrono::microseconds(getInterval() / TIMER_DOWNSCALE_FACTOR));
 
             if (is_started)
                 notifyCallback();
 
             setStarted(false);
+            _cv.notify_one();
         } };
     }
     void stop() override
@@ -187,6 +187,7 @@ typedef struct {
     std::shared_ptr<PlaySyncManagerListener> playsync_manager_listener_snd;
     std::shared_ptr<InteractionControlManager> ic_manager;
     std::shared_ptr<InteractionControlManagerListener> ic_manager_listener;
+    FakeStackTimer* fake_timer;
     DummyExtraInfo* dummy_extra_data;
     DummyExtraInfo* dummy_extra_data_snd;
 
@@ -203,9 +204,10 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
     fixture->playsync_manager_listener_snd = std::make_shared<PlaySyncManagerListener>();
     fixture->ic_manager = std::make_shared<InteractionControlManager>();
     fixture->ic_manager_listener = std::make_shared<InteractionControlManagerListener>();
+    fixture->fake_timer = new FakeStackTimer(mutex, cv);
 
     PlayStackManager* playstack_manager = new PlayStackManager();
-    playstack_manager->setTimer(new FakeStackTimer(mutex, cv));
+    playstack_manager->setTimer(fixture->fake_timer);
     fixture->ic_manager->addListener(fixture->ic_manager_listener.get());
 
     fixture->playsync_manager->setPlayStackManager(playstack_manager);
@@ -245,13 +247,10 @@ static void teardown(TestFixture* fixture, gconstpointer user_data)
     fixture->dummy_extra_data_snd = nullptr;
 }
 
-static void onTimeElapsed(unsigned int duration)
+static void onTimeElapsed(TestFixture* fixture)
 {
-    const unsigned int DELAY = 1500 / TIMER_DOWNSCALE_FACTOR;
     std::unique_lock<std::mutex> lock(mutex);
-
-    if (cv.wait_until(lock, std::chrono::system_clock::now() + std::chrono::microseconds(duration * 1000 / TIMER_DOWNSCALE_FACTOR)) == std::cv_status::no_timeout)
-        std::this_thread::sleep_for(std::chrono::microseconds(DELAY + duration * 1000 / TIMER_DOWNSCALE_FACTOR));
+    cv.wait(lock, [&] { return !fixture->fake_timer->isStarted(); });
 }
 
 #define G_TEST_ADD_FUNC(name, func) \
@@ -463,13 +462,13 @@ static void test_playstack_manager_release_sync(TestFixture* fixture, gconstpoin
     g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
     g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
 
-    onTimeElapsed(7);
+    onTimeElapsed(fixture);
     g_assert(playstacks.find("ps_id_1") == playstacks.cend());
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
 
     // check whether onSyncState is called just one time when all items are released
     fixture->playsync_manager->releaseSync("ps_id_1", "Display");
-    onTimeElapsed(7);
+    onTimeElapsed(fixture);
     g_assert(fixture->playsync_manager_listener->getSameStateCallCount() == 0);
 }
 
@@ -481,7 +480,7 @@ static void test_playstack_manager_release_sync_later(TestFixture* fixture, gcon
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
 
     fixture->playsync_manager->releaseSyncLater("ps_id_1", "AudioPlayer");
-    onTimeElapsed(600);
+    onTimeElapsed(fixture);
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
 }
 
@@ -490,7 +489,7 @@ static void test_playstack_manager_normal_case(TestFixture* fixture, gconstpoint
     sub_test_playstack_manager_preset_sync(fixture, "ps_id_1");
 
     fixture->playsync_manager->releaseSync("ps_id_1", "TTS");
-    onTimeElapsed(7);
+    onTimeElapsed(fixture);
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
 }
 
@@ -515,7 +514,7 @@ static void test_playstack_manager_ignore_render_case(TestFixture* fixture, gcon
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
 
     fixture->playsync_manager->releaseSync("ps_id_1", "TTS");
-    onTimeElapsed(7);
+    onTimeElapsed(fixture);
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
 }
 
@@ -545,7 +544,7 @@ static void test_playstack_manager_handle_info_layer(TestFixture* fixture, gcons
     g_assert(reinterpret_cast<DummyExtraInfo*>(extra_data)->id == "100");
 
     fixture->playsync_manager->releaseSync("ps_id_1", "TTS");
-    onTimeElapsed(7);
+    onTimeElapsed(fixture);
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
 }
 
@@ -557,13 +556,11 @@ static void test_playstack_manager_playstack_holding(TestFixture* fixture, gcons
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
 
     fixture->playsync_manager->releaseSync("ps_id_1", "TTS");
-    onTimeElapsed(3);
     fixture->playsync_manager->stopHolding();
-    onTimeElapsed(5);
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
 
     fixture->playsync_manager->resetHolding();
-    onTimeElapsed(7);
+    onTimeElapsed(fixture);
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
 }
 
@@ -611,7 +608,7 @@ static void test_playstack_manager_media_stacked_case(TestFixture* fixture, gcon
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Released);
 
     fixture->playsync_manager->releaseSync("ps_id_1", "AudioPlayer");
-    onTimeElapsed(7);
+    onTimeElapsed(fixture);
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
 }
 
