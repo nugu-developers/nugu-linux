@@ -81,6 +81,7 @@ private:
         bool isStarted();
         void start(unsigned int sec = 0) override;
         void stop() override;
+        void notifyCallback() override;
 
     private:
         bool is_started = false;
