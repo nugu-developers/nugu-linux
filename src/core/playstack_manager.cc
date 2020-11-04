@@ -74,6 +74,12 @@ void PlayStackManager::StackTimer::stop()
     is_started = false;
 }
 
+void PlayStackManager::StackTimer::notifyCallback()
+{
+    NUGUTimer::notifyCallback();
+    is_started = false;
+}
+
 /*******************************************************************************
  * Define PlayStackManager
  *******************************************************************************/

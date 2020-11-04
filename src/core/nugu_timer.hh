@@ -39,7 +39,7 @@ public:
     void restart(unsigned int sec = 0) override;
 
     void setCallback(timer_callback cb) override;
-    void notifyCallback();
+    virtual void notifyCallback();
 
 private:
     static void timerCallback(void* userdata);
