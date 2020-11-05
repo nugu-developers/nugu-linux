@@ -28,6 +28,7 @@ struct Capability::Impl {
     std::string version;
     std::string ref_dialog_id;
     NuguDirective* cur_ndir = nullptr;
+    NuguDirective* prev_ndir = nullptr;
     std::map<std::string, std::string> referrer_events;
     std::map<std::string, std::string> referrer_dirs;
 
@@ -162,6 +163,7 @@ void Capability::initialize()
 
     pimpl->ref_dialog_id = "";
     pimpl->cur_ndir = nullptr;
+    pimpl->prev_ndir = nullptr;
     pimpl->referrer_events.clear();
     pimpl->referrer_dirs.clear();
     event_result_cbs.clear();
@@ -322,8 +324,7 @@ void Capability::processDirective(NuguDirective* ndir)
             nugu_directive_remove_data_callback(pimpl->cur_ndir);
 
             if (playsync_manager->isConditionToHandlePrevDialog(pimpl->cur_ndir, ndir)) {
-                nugu_dbg("complete previous dialog");
-                directive_sequencer->complete(pimpl->cur_ndir);
+                pimpl->prev_ndir = pimpl->cur_ndir;
             } else {
                 nugu_dbg("cancel previous dialog");
                 directive_sequencer->cancel(nugu_directive_peek_dialog_id(pimpl->cur_ndir));
@@ -357,6 +358,11 @@ void Capability::destroyDirective(NuguDirective* ndir, bool is_cancel)
     is_cancel
         ? directive_sequencer->cancel(nugu_directive_peek_dialog_id(ndir))
         : directive_sequencer->complete(ndir);
+
+    if (pimpl->prev_ndir) {
+        directive_sequencer->complete(pimpl->prev_ndir);
+        pimpl->prev_ndir = nullptr;
+    }
 }
 
 NuguDirective* Capability::getNuguDirective()
