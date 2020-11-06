@@ -190,6 +190,8 @@ ASRAgent::FocusListener::FocusListener(ASRAgent* asr_agent, IFocusManager* focus
 void ASRAgent::FocusListener::onFocusChanged(FocusState state)
 {
     nugu_info("[%s] Focus Changed(%s -> %s)", asr_user ? "ASRUser" : "ASRDM", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
+    FocusState prev_state = focus_state;
+
     focus_state = state;
 
     switch (state) {
@@ -197,7 +199,8 @@ void ASRAgent::FocusListener::onFocusChanged(FocusState state)
         asr_agent->executeOnForegroundAction(asr_user);
         break;
     case FocusState::BACKGROUND:
-        asr_agent->executeOnBackgroundAction(asr_user);
+        if (prev_state == FocusState::FOREGROUND)
+            asr_agent->executeOnBackgroundAction(asr_user);
         break;
     case FocusState::NONE:
         asr_agent->executeOnNoneAction(asr_user);
@@ -207,43 +210,48 @@ void ASRAgent::FocusListener::onFocusChanged(FocusState state)
 
 void ASRAgent::executeOnForegroundAction(bool asr_user)
 {
-    if (asr_user) {
-        playsync_manager->stopHolding();
-
-        std::string id = "id#" + std::to_string(uniq++);
-        setListeningId(id);
-        speech_recognizer->startListening(id);
-    } else {
+    if (!asr_user) {
+        if (!isExpectSpeechState()) {
+            nugu_dbg("cancel the expect speech state");
+            focus_manager->releaseFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME);
+            return;
+        }
         setASRState(ASRState::EXPECTING_SPEECH);
+        playsync_manager->postPoneRelease();
+
         saveAllContextInfo();
-        focus_manager->requestFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME, asr_user_listener);
-        asr_cancel = false;
     }
+    playsync_manager->stopHolding();
+
+    std::string id = "id#" + std::to_string(uniq++);
+    setListeningId(id);
+    speech_recognizer->startListening(id);
+
+    asr_cancel = false;
 }
 
 void ASRAgent::executeOnBackgroundAction(bool asr_user)
 {
-    if (asr_user)
-        focus_manager->releaseFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME);
+    const char* focus_type = asr_user ? ASR_USER_FOCUS_TYPE : ASR_DM_FOCUS_TYPE;
+
+    focus_manager->releaseFocus(focus_type, CAPABILITY_NAME);
 }
 
 void ASRAgent::executeOnNoneAction(bool asr_user)
 {
-    if (asr_user) {
-        playsync_manager->continueRelease();
-        playsync_manager->resetHolding();
-        speech_recognizer->stopListening();
+    playsync_manager->continueRelease();
+    playsync_manager->resetHolding();
+    speech_recognizer->stopListening();
 
-        if (getASRState() == ASRState::LISTENING
-            || getASRState() == ASRState::RECOGNIZING
-            || getASRState() == ASRState::EXPECTING_SPEECH)
-            sendEventStopRecognize();
+    if (getASRState() == ASRState::LISTENING
+        || getASRState() == ASRState::RECOGNIZING
+        || getASRState() == ASRState::EXPECTING_SPEECH)
+        sendEventStopRecognize();
 
-        if (getASRState() == ASRState::BUSY)
-            setASRState(ASRState::IDLE);
+    if (getASRState() == ASRState::BUSY)
+        setASRState(ASRState::IDLE);
 
-        resetExpectSpeechState();
-    }
+    resetExpectSpeechState();
 }
 
 void ASRAgent::preprocessDirective(NuguDirective* ndir)
