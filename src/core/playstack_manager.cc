@@ -163,7 +163,7 @@ bool PlayStackManager::add(const std::string& ps_id, NuguDirective* ndir)
         return false;
     }
 
-    has_adding_playstack = true;
+    has_adding_playstack = hasDisplayRenderingInfo(ndir);
 
     handlePreviousStack(is_stacked);
     return addToContainer(ps_id, layer);
@@ -209,15 +209,7 @@ bool PlayStackManager::isStackedCondition(NuguDirective* ndir)
 
 bool PlayStackManager::hasExpectSpeech(NuguDirective* ndir)
 {
-    if (!ndir) {
-        nugu_warn("The directive is empty.");
-        return false;
-    }
-
-    const char* tmp_ndir_groups = nugu_directive_peek_groups(ndir);
-    std::string ndir_groups = tmp_ndir_groups ? tmp_ndir_groups : "";
-
-    return ndir_groups.find("ASR.ExpectSpeech") != std::string::npos;
+    return hasKeyword(ndir, { "ASR.ExpectSpeech" });
 }
 
 void PlayStackManager::stopHolding()
@@ -308,6 +300,28 @@ void PlayStackManager::handlePreviousStack(bool is_stacked)
 
         clearContainer();
     }
+}
+
+bool PlayStackManager::hasDisplayRenderingInfo(NuguDirective* ndir)
+{
+    return hasKeyword(ndir, { "Display", "AudioPlayer" });
+}
+
+bool PlayStackManager::hasKeyword(NuguDirective* ndir, std::vector<std::string>&& keywords)
+{
+    if (!ndir) {
+        nugu_warn("The directive is empty.");
+        return false;
+    }
+
+    const char* tmp_ndir_groups = nugu_directive_peek_groups(ndir);
+    std::string ndir_groups = tmp_ndir_groups ? tmp_ndir_groups : "";
+
+    for (const auto& keyword : keywords)
+        if (ndir_groups.find(keyword) != std::string::npos)
+            return true;
+
+    return false;
 }
 
 bool PlayStackManager::addToContainer(const std::string& ps_id, PlayStackLayer layer)
