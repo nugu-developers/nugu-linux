@@ -73,7 +73,9 @@ typedef struct {
 
     NuguDirective* ndir_info;
     NuguDirective* ndir_media;
+    NuguDirective* ndir_disp;
     NuguDirective* ndir_expect_speech;
+
 } TestFixture;
 
 static void setup(TestFixture* fixture, gconstpointer user_data)
@@ -84,6 +86,7 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
 
     fixture->ndir_info = createDirective("TTS", "test", "{ \"directives\": [\"TTS.Speak\"] }");
     fixture->ndir_media = createDirective("AudioPlayer", "test", "{ \"directives\": [\"AudioPlayer.Play\"] }");
+    fixture->ndir_disp = createDirective("Display", "test", "{ \"directives\": [\"Display.FullText1\", \"TTS.Speak\"] }");
     fixture->ndir_expect_speech = createDirective("ASR", "test", "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\"] }");
 }
 
@@ -91,6 +94,7 @@ static void teardown(TestFixture* fixture, gconstpointer user_data)
 {
     nugu_directive_unref(fixture->ndir_info);
     nugu_directive_unref(fixture->ndir_media);
+    nugu_directive_unref(fixture->ndir_disp);
     nugu_directive_unref(fixture->ndir_expect_speech);
 
     fixture->playstack_manager_listener.reset();
@@ -261,15 +265,29 @@ static void test_playstack_manager_check_adding_playstack(TestFixture* fixture, 
 {
     fixture->playstack_manager->addListener(fixture->playstack_manager_listener.get());
 
+    fixture->playstack_manager->add("ps_id_1", fixture->ndir_info);
+    g_assert(fixture->playstack_manager_listener->getPlayServiceIds().at(0) == "ps_id_1");
+
+    // has not display rendering info (TTS only)
+    fixture->playstack_manager_listener->setHookInOnStackRemoved([&]() {
+        g_assert(!fixture->playstack_manager->hasAddingPlayStack());
+    });
+
+    fixture->playstack_manager->add("ps_id_2", fixture->ndir_info);
+    g_assert(fixture->playstack_manager_listener->getPlayServiceIds().at(0) == "ps_id_2");
+    g_assert(!fixture->playstack_manager->hasAddingPlayStack());
+
+    // has display rendering info (Display, AudioPlayer)
     fixture->playstack_manager_listener->setHookInOnStackRemoved([&]() {
         g_assert(fixture->playstack_manager->hasAddingPlayStack());
     });
 
-    fixture->playstack_manager->add("ps_id_1", fixture->ndir_info);
-    g_assert(fixture->playstack_manager_listener->getPlayServiceIds().at(0) == "ps_id_1");
+    fixture->playstack_manager->add("ps_id_3", fixture->ndir_disp);
+    g_assert(fixture->playstack_manager_listener->getPlayServiceIds().at(0) == "ps_id_3");
+    g_assert(!fixture->playstack_manager->hasAddingPlayStack());
 
-    fixture->playstack_manager->add("ps_id_2", fixture->ndir_info);
-    g_assert(fixture->playstack_manager_listener->getPlayServiceIds().at(0) == "ps_id_2");
+    fixture->playstack_manager->add("ps_id_4", fixture->ndir_media);
+    g_assert(fixture->playstack_manager_listener->getPlayServiceIds().at(0) == "ps_id_4");
     g_assert(!fixture->playstack_manager->hasAddingPlayStack());
 }
 
