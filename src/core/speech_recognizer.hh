@@ -36,7 +36,7 @@ public:
         std::string model_path;
         int epd_timeout = 0;
         int epd_max_duration = 0;
-        int epd_pause_length = 0;
+        long epd_pause_length = 0;
     };
 
 public:
@@ -48,8 +48,9 @@ public:
     void setListener(ISpeechRecognizerListener* listener) override;
     bool startListening(const std::string& id) override;
     void stopListening() override;
+    void setEpdAttribute(const EpdAttribute& attribute) override;
+    EpdAttribute getEpdAttribute() override;
     bool isMute() override;
-    int getEpdPauseLength() override;
 
 private:
     void initialize(Attribute&& attribute);
@@ -64,7 +65,7 @@ private:
     std::string model_path = "";
     int epd_timeout = 0;
     int epd_max_duration = 0;
-    int epd_pause_length = 0;
+    long epd_pause_length = 0;
 };
 
 } // NuguCore

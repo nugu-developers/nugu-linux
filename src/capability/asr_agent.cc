@@ -24,7 +24,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "ASR";
-static const char* CAPABILITY_VERSION = "1.3";
+static const char* CAPABILITY_VERSION = "1.4";
 
 ASRAgent::ASRAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -35,6 +35,7 @@ ASRAgent::ASRAgent()
     , asr_encoding(NUGU_ASR_ENCODING)
     , response_timeout(NUGU_SERVER_RESPONSE_TIMEOUT_SEC)
     , epd_attribute({})
+    , default_epd_attribute({})
 {
 }
 
@@ -83,6 +84,7 @@ void ASRAgent::initialize()
 
     speech_recognizer = std::unique_ptr<ISpeechRecognizer>(core_container->createSpeechRecognizer(model_path, epd_attribute));
     speech_recognizer->setListener(this);
+    epd_attribute = default_epd_attribute = speech_recognizer->getEpdAttribute();
 
     timer = core_container->createNuguTimer(true);
     timer->setInterval(response_timeout * NUGU_TIMER_UNIT_SEC);
@@ -225,6 +227,7 @@ void ASRAgent::executeOnForegroundAction(bool asr_user)
 
     std::string id = "id#" + std::to_string(uniq++);
     setListeningId(id);
+    speech_recognizer->setEpdAttribute({ epd_attribute.epd_timeout, epd_attribute.epd_max_duration, epd_attribute.epd_pause_length });
     speech_recognizer->startListening(id);
 
     asr_cancel = false;
@@ -252,6 +255,8 @@ void ASRAgent::executeOnNoneAction(bool asr_user)
         setASRState(ASRState::IDLE);
 
     resetExpectSpeechState();
+
+    epd_attribute = default_epd_attribute;
 }
 
 void ASRAgent::preprocessDirective(NuguDirective* ndir)
@@ -481,7 +486,11 @@ void ASRAgent::removeListener(IASRListener* listener)
 
 long ASRAgent::getEpdSilenceInterval()
 {
-    return static_cast<long>(speech_recognizer ? speech_recognizer->getEpdPauseLength() : 0);
+    if (speech_recognizer) {
+        EpdAttribute attribute = speech_recognizer->getEpdAttribute();
+        return attribute.epd_pause_length;
+    }
+    return 0;
 }
 
 std::vector<IASRListener*> ASRAgent::getListener()
@@ -492,6 +501,7 @@ std::vector<IASRListener*> ASRAgent::getListener()
 void ASRAgent::parsingExpectSpeech(std::string&& dialog_id, const char* message)
 {
     Json::Value root;
+    Json::Value epd;
     Json::Reader reader;
 
     if (!reader.parse(message, root)) {
@@ -504,6 +514,21 @@ void ASRAgent::parsingExpectSpeech(std::string&& dialog_id, const char* message)
     es_attr.domain_types = root["domainTypes"];
     es_attr.asr_context = root["asrContext"];
     es_attr.dialog_id = dialog_id;
+
+    epd = root["epd"];
+    if (!epd.empty()) {
+        epd_attribute.epd_timeout = epd["timeoutMilliseconds"].asLargestInt() / 1000;
+        if (epd_attribute.epd_timeout == 0)
+            epd_attribute.epd_timeout = default_epd_attribute.epd_timeout;
+
+        epd_attribute.epd_pause_length = epd["silenceIntervalInMilliseconds"].asLargestInt();
+        if (epd_attribute.epd_pause_length == 0)
+            epd_attribute.epd_pause_length = default_epd_attribute.epd_pause_length;
+
+        epd_attribute.epd_max_duration = epd["maxSpeechDurationMilliseconds"].asLargestInt() / 1000;
+        if (epd_attribute.epd_max_duration == 0)
+            epd_attribute.epd_max_duration = default_epd_attribute.epd_max_duration;
+    }
 
     session_manager->activate(es_attr.dialog_id);
     interaction_control_manager->start(InteractionMode::MULTI_TURN, getName());
