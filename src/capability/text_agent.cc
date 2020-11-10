@@ -22,7 +22,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "Text";
-static const char* CAPABILITY_VERSION = "1.3";
+static const char* CAPABILITY_VERSION = "1.4";
 
 TextAgent::TextAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -94,6 +94,8 @@ void TextAgent::parsingDirective(const char* dname, const char* message)
     // directive name check
     if (!strcmp(dname, "TextSource"))
         parsingTextSource(message);
+    else if (!strcmp(dname, "TextRedirect"))
+        parsingTextRedirect(message);
     else {
         nugu_warn("%s[%s] is not support %s directive",
             getName().c_str(), getVersion().c_str(), dname);
@@ -230,7 +232,7 @@ void TextAgent::sendEventTextInput(TextInputParam&& text_input_param, bool inclu
     sendEvent(&event, capa_helper->makeAllContextInfo(), payload, std::move(cb));
 }
 
-void TextAgent::parsingTextSource(const char* message)
+void TextAgent::parsingTextSource(const char* message, std::string target_ps_id)
 {
     Json::Value root;
     Json::Reader reader;
@@ -245,7 +247,11 @@ void TextAgent::parsingTextSource(const char* message)
 
     text = root["text"].asString();
     token = root["token"].asString();
-    ps_id = root["playServiceId"].asString();
+
+    if (target_ps_id.size() == 0)
+        ps_id = root["playServiceId"].asString();
+    else
+        ps_id = target_ps_id;
 
     if (text.size() == 0 || token.size() == 0) {
         nugu_error("There is no mandatory data in directive message");
@@ -276,6 +282,31 @@ void TextAgent::parsingTextSource(const char* message)
         text_listener->onState(cur_state, cur_dialog_id);
 
     capa_helper->sendCommand("Text", "ASR", "cancel", "");
+}
+
+void TextAgent::parsingTextRedirect(const char* message)
+{
+    Json::Value root;
+    Json::Reader reader;
+    std::string target_ps_id;
+
+    if (cur_state == TextState::BUSY) {
+        nugu_warn("already request nugu service to the server");
+        return;
+    }
+
+    if (!reader.parse(message, root)) {
+        nugu_error("parsing error");
+        return;
+    }
+
+    target_ps_id = root["targetPlayServiceId"].asString();
+    if (target_ps_id.size() == 0) {
+        parsingTextSource(message);
+        return;
+    }
+
+    parsingTextSource(message, target_ps_id);
 }
 
 } // NuguCapability
