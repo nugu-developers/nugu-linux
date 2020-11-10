@@ -1025,9 +1025,6 @@ void AudioPlayerAgent::parsingStop(const char* message)
     playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
     if (!playstackctl_ps_id.empty()) {
-        is_next_play = false;
-        focus_manager->releaseFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME);
-
         is_finished
             ? playsync_manager->releaseSync(playstackctl_ps_id, getName())
             : playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
@@ -1517,6 +1514,9 @@ void AudioPlayerAgent::onSyncState(const std::string& ps_id, PlaySyncState state
     if (state == PlaySyncState::Synced)
         renderDisplay(extra_data);
     else if (state == PlaySyncState::Released) {
+        is_next_play = false;
+        focus_manager->releaseFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME);
+
         clearContext();
         clearDisplay(extra_data);
     }
