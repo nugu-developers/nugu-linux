@@ -48,7 +48,8 @@ private:
     };
 
     void sendEventTextInput(TextInputParam&& text_input_param, bool include_dialog_attribute = true, EventResultCallback cb = nullptr);
-    void parsingTextSource(const char* message);
+    void parsingTextSource(const char* message, std::string target_ps_id = "");
+    void parsingTextRedirect(const char* message);
 
     ITextListener* text_listener;
     INuguTimer* timer;
