@@ -197,7 +197,7 @@ void PlayStackManager::remove(const std::string& ps_id, PlayStackRemoveMode mode
         });
 
         has_long_timer = (mode == PlayStackRemoveMode::Later);
-        timer->setInterval(has_long_timer ? LONG_HOLD_TIME : DEFAULT_HOLD_TIME);
+        timer->setInterval((has_long_timer ? hold_times_sec.long_time : hold_times_sec.normal_time) * NUGU_TIMER_UNIT_SEC);
         timer->start();
     }
 }
@@ -237,6 +237,16 @@ bool PlayStackManager::isActiveHolding()
 bool PlayStackManager::hasAddingPlayStack()
 {
     return has_adding_playstack;
+}
+
+void PlayStackManager::setPlayStackHoldTime(PlayStakcHoldTimes&& hold_times_sec)
+{
+    this->hold_times_sec = hold_times_sec;
+}
+
+PlayStackManager::PlayStakcHoldTimes PlayStackManager::getPlayStackHoldTime()
+{
+    return hold_times_sec;
 }
 
 PlayStackLayer PlayStackManager::getPlayStackLayer(const std::string& ps_id)
