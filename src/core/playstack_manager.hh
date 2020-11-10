@@ -50,6 +50,10 @@ public:
 class PlayStackManager {
 public:
     using PlayStack = std::pair<std::map<std::string, PlayStackLayer>, std::vector<std::string>>;
+    using PlayStakcHoldTimes = struct {
+        unsigned int normal_time;
+        unsigned int long_time;
+    };
 
 public:
     PlayStackManager();
@@ -69,6 +73,8 @@ public:
     void resetHolding();
     bool isActiveHolding();
     bool hasAddingPlayStack();
+    void setPlayStackHoldTime(PlayStakcHoldTimes&& hold_times_sec);
+    PlayStakcHoldTimes getPlayStackHoldTime();
 
     PlayStackLayer getPlayStackLayer(const std::string& ps_id);
     std::vector<std::string> getAllPlayStackItems();
@@ -103,12 +109,13 @@ private:
     template <typename T>
     void removeItemInList(std::vector<T>& list, const T& item);
 
-    const unsigned int DEFAULT_HOLD_TIME = 7 * NUGU_TIMER_UNIT_SEC;
-    const unsigned int LONG_HOLD_TIME = 600 * NUGU_TIMER_UNIT_SEC;
+    const unsigned int DEFAULT_NORMAL_HOLD_TIME_SEC = 7;
+    const unsigned int DEFAULT_LONG_HOLD_TIME_SEC = 600;
 
     PlayStack playstack_container;
     std::vector<IPlayStackManagerListener*> listeners;
     std::unique_ptr<IStackTimer> timer = nullptr;
+    PlayStakcHoldTimes hold_times_sec { DEFAULT_NORMAL_HOLD_TIME_SEC, DEFAULT_LONG_HOLD_TIME_SEC };
 
     bool has_long_timer = false;
     bool has_holding = false;

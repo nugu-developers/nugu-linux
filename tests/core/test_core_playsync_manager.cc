@@ -208,6 +208,7 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
 
     PlayStackManager* playstack_manager = new PlayStackManager();
     playstack_manager->setTimer(fixture->fake_timer);
+    playstack_manager->setPlayStackHoldTime({ 7, 60 });
     fixture->ic_manager->addListener(fixture->ic_manager_listener.get());
 
     fixture->playsync_manager->setPlayStackManager(playstack_manager);
