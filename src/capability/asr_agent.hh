@@ -145,6 +145,7 @@ private:
     std::string asr_encoding;
     int response_timeout;
     EpdAttribute epd_attribute;
+    EpdAttribute default_epd_attribute;
 };
 
 } // NuguCapability

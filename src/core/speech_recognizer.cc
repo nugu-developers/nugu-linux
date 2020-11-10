@@ -106,10 +106,6 @@ void SpeechRecognizer::loop()
     else
         epd_param.sample_rate = 16000;
 
-    epd_param.max_speech_duration = epd_max_duration;
-    epd_param.time_out = epd_timeout;
-    epd_param.pause_length = epd_pause_length;
-
     nugu_dbg("Listening Thread: started");
 
     if (model_path.size()) {
@@ -137,6 +133,13 @@ void SpeechRecognizer::loop()
         is_started = true;
         id = listening_id;
 
+        epd_param.max_speech_duration = epd_max_duration;
+        epd_param.time_out = epd_timeout;
+        epd_param.pause_length = epd_pause_length;
+
+        nugu_dbg("epd_max_duration: %d", epd_max_duration);
+        nugu_dbg("epd_timeout: %d", epd_timeout);
+        nugu_dbg("epd_pause_length: %ld", epd_pause_length);
         nugu_dbg("Listening Thread: asr_is_running=%d", is_running);
         sendListeningEvent(ListeningState::READY, id);
 
@@ -298,16 +301,27 @@ void SpeechRecognizer::stopListening()
     AudioInputProcessor::stop();
 }
 
+void SpeechRecognizer::setEpdAttribute(const EpdAttribute& attribute)
+{
+    epd_timeout = attribute.epd_timeout;
+    epd_max_duration = attribute.epd_max_duration;
+    epd_pause_length = attribute.epd_pause_length;
+}
+
+EpdAttribute SpeechRecognizer::getEpdAttribute()
+{
+    EpdAttribute attribute;
+    attribute.epd_timeout = epd_timeout;
+    attribute.epd_max_duration = epd_max_duration;
+    attribute.epd_pause_length = epd_pause_length;
+    return attribute;
+}
+
 bool SpeechRecognizer::isMute()
 {
     if (!recorder)
         return false;
 
     return recorder->isMute();
-}
-
-int SpeechRecognizer::getEpdPauseLength()
-{
-    return epd_pause_length;
 }
 } // NuguCore

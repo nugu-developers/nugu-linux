@@ -51,6 +51,7 @@ enum class ListeningState {
 typedef struct {
     int epd_timeout; /**< epd timeout sec */
     int epd_max_duration; /**< epd max duration sec */
+    long epd_pause_length; /**< epd pause length msec */
 } EpdAttribute;
 
 /**
@@ -103,16 +104,22 @@ public:
     virtual void stopListening() = 0;
 
     /**
+     * @brief Set EPD attribute
+     * @param[in] attribute EPD attribute
+     */
+    virtual void setEpdAttribute(const EpdAttribute& attribute) = 0;
+
+    /**
+     * @brief Get EPD attribute
+     * @return EPD attribute
+     */
+    virtual EpdAttribute getEpdAttribute() = 0;
+
+    /**
      * @brief Get audio recorder's mute
      * @return mute
      */
     virtual bool isMute() = 0;
-
-    /**
-     * @brief Get epd pause length
-     * @return Pause length
-     */
-    virtual int getEpdPauseLength() = 0;
 };
 
 /**
