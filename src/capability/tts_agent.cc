@@ -465,6 +465,8 @@ void TTSAgent::parsingStop(const char* message)
         return;
     }
 
+    speak_dir = getNuguDirective();
+
     if (!root["playServiceId"].empty())
         ps_id = root["playServiceId"].asString();
 
