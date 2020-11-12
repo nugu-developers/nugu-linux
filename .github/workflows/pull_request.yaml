@@ -1,0 +1,36 @@
+name: Pull Request
+on:
+  pull_request
+jobs:
+  checkpatch_review:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v1
+    - name: Run checkpatch review
+      uses: webispy/checkpatch-action@master
+  build:
+    runs-on: ubuntu-latest
+    needs: checkpatch_review
+    strategy:
+      fail-fast: true
+      matrix:
+        target: [xenial_x64, xenial_arm64, xenial_armhf, bionic_x64, bionic_arm64, bionic_armhf]
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v1
+      with:
+        path: nugu-linux
+    - name: Build
+      run: |
+        whoami
+        pwd
+        ls -la
+        docker run -t --rm --privileged \
+            -v $PWD:$PWD \
+            -v /var/lib/schroot/chroots \
+            -w $PWD/nugu-linux \
+            nugulinux/buildenv:${{ matrix.target }} \
+            sdkbuild.sh
+    - name: Build artifacts
+      run: ls -l
