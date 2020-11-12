@@ -1,0 +1,43 @@
+name: Push
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        target: [xenial_x64, xenial_arm64, xenial_armhf, bionic_x64, bionic_arm64, bionic_armhf]
+    steps:
+    - name: Check out the repo
+      uses: actions/checkout@v1
+      with:
+        path: nugu-linux
+        submodules: true
+    - name: Build
+      run: |
+        whoami
+        pwd
+        ls -la
+        cd ..
+        pwd
+        ls -la
+        chmod 777 $PWD
+        chmod 777 $PWD/nugu-linux
+        ls -la
+        docker run -t --rm --privileged \
+            -v $PWD:$PWD \
+            -v /var/lib/schroot/chroots \
+            -w $PWD/nugu-linux \
+            nugulinux/buildenv:${{ matrix.target }} \
+            sdkbuild.sh
+        ls -la
+        mkdir /tmp/result
+        cp *.deb /tmp/result/
+    - name: Build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: DEB packages
+        path: /tmp/result/
