@@ -76,7 +76,8 @@ public:
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void addListener(IASRListener* listener) override;
     void removeListener(IASRListener* listener) override;
-    long getEpdSilenceInterval() override;
+    void setEpdAttribute(EpdAttribute&& attribute) override;
+    EpdAttribute getEpdAttribute() override;
     std::vector<IASRListener*> getListener();
 
     void resetExpectSpeechState();
@@ -106,12 +107,12 @@ private:
     void cancelRecognition();
 
     class FocusListener : public IFocusResourceListener {
-        public:
-            FocusListener(ASRAgent* asr_agent, IFocusManager* focus_manager, bool asr_user);
-            FocusListener() = default;
-            virtual ~FocusListener() = default;
+    public:
+        FocusListener(ASRAgent* asr_agent, IFocusManager* focus_manager, bool asr_user);
+        FocusListener() = default;
+        virtual ~FocusListener() = default;
 
-            void onFocusChanged(FocusState state) override;
+        void onFocusChanged(FocusState state) override;
 
         ASRAgent* asr_agent = nullptr;
         IFocusManager* focus_manager = nullptr;

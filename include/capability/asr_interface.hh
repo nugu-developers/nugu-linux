@@ -73,8 +73,6 @@ typedef struct {
     std::string epd_type; /**< Epd type : CLIENT, SERVER */
     std::string asr_encoding; /**< Asr encoding type : PARTIAL, COMPLETE */
     int response_timeout; /**< Server response timeout about speech */
-    int epd_timeout; /**< epd timeout sec */
-    int epd_max_duration; /**< epd max duration sec */
 } ASRAttribute;
 
 /**
@@ -181,10 +179,16 @@ public:
     virtual void setAttribute(ASRAttribute&& attribute) = 0;
 
     /**
-     * @brief Get epd silence interval
-     * @return Interval milliseconds
+     * @brief Set EPD attribute
+     * @param[in] attribute EPD attribute
      */
-    virtual long getEpdSilenceInterval() = 0;
+    virtual void setEpdAttribute(EpdAttribute&& attribute) = 0;
+
+    /**
+     * @brief Get EPD attribute
+     * @return EPD attribute
+     */
+    virtual EpdAttribute getEpdAttribute() = 0;
 };
 
 /**
