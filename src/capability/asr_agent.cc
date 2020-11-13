@@ -52,10 +52,6 @@ void ASRAgent::setAttribute(ASRAttribute&& attribute)
 
     if (attribute.response_timeout > 0)
         response_timeout = attribute.response_timeout;
-
-    // It just bypass, because the validation is checked in createSpeechRecognizer().
-    epd_attribute.epd_timeout = attribute.epd_timeout;
-    epd_attribute.epd_max_duration = attribute.epd_max_duration;
 }
 
 void ASRAgent::initialize()
@@ -227,7 +223,7 @@ void ASRAgent::executeOnForegroundAction(bool asr_user)
 
     std::string id = "id#" + std::to_string(uniq++);
     setListeningId(id);
-    speech_recognizer->setEpdAttribute({ epd_attribute.epd_timeout, epd_attribute.epd_max_duration, epd_attribute.epd_pause_length });
+    speech_recognizer->setEpdAttribute(epd_attribute);
     speech_recognizer->startListening(id);
 
     asr_cancel = false;
@@ -484,13 +480,17 @@ void ASRAgent::removeListener(IASRListener* listener)
         asr_listeners.erase(iterator);
 }
 
-long ASRAgent::getEpdSilenceInterval()
+void ASRAgent::setEpdAttribute(EpdAttribute&& attribute)
 {
-    if (speech_recognizer) {
-        EpdAttribute attribute = speech_recognizer->getEpdAttribute();
-        return attribute.epd_pause_length;
-    }
-    return 0;
+    default_epd_attribute = attribute;
+
+    if (!isExpectSpeechState())
+        epd_attribute = attribute;
+}
+
+EpdAttribute ASRAgent::getEpdAttribute()
+{
+    return default_epd_attribute;
 }
 
 std::vector<IASRListener*> ASRAgent::getListener()
