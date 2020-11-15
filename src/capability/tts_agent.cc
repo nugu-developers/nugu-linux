@@ -476,7 +476,6 @@ void TTSAgent::parsingStop(const char* message)
 void TTSAgent::postProcessDirective(bool is_cancel)
 {
     if (speak_dir) {
-        nugu_directive_remove_data_callback(speak_dir);
         destroyDirective(speak_dir, is_cancel);
         speak_dir = nullptr;
     }

@@ -214,7 +214,6 @@ void AudioPlayerAgent::onFocusChanged(FocusState state)
         break;
     case FocusState::NONE:
         if (speak_dir) {
-            nugu_directive_remove_data_callback(speak_dir);
             destroyDirective(speak_dir);
             speak_dir = nullptr;
         }
