@@ -1343,6 +1343,8 @@ void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
         break;
     case MediaPlayerState::PLAYING:
         cur_aplayer_state = AudioPlayerState::PLAYING;
+        playsync_manager->clearHolding();
+
         if (is_paused_by_unfocus) {
             nugu_dbg("force setting previous state for notify to application");
             prev_aplayer_state = AudioPlayerState::PAUSED;
@@ -1356,6 +1358,12 @@ void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
         break;
     case MediaPlayerState::PAUSED:
         cur_aplayer_state = AudioPlayerState::PAUSED;
+
+        if (is_paused_by_unfocus) {
+            playsync_manager->continueRelease();
+            playsync_manager->releaseSyncLater(ps_id, getName());
+        }
+
         if (!is_paused && !is_paused_by_unfocus)
             sendEventPlaybackPaused();
         break;

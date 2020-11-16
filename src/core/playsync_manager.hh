@@ -56,6 +56,7 @@ public:
     void continueRelease() override;
     void stopHolding() override;
     void resetHolding() override;
+    void clearHolding() override;
     bool hasPostPoneRelease();
 
     bool isConditionToHandlePrevDialog(NuguDirective* prev_ndir, NuguDirective* cur_ndir) override;

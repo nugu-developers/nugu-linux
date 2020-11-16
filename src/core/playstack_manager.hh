@@ -71,6 +71,7 @@ public:
     bool hasExpectSpeech(NuguDirective* ndir);
     void stopHolding();
     void resetHolding();
+    void clearHolding();
     bool isActiveHolding();
     bool hasAddingPlayStack();
     void setPlayStackHoldTime(PlayStakcHoldTimes&& hold_times_sec);

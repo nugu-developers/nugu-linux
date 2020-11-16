@@ -187,9 +187,6 @@ void PlayStackManager::remove(const std::string& ps_id, PlayStackRemoveMode mode
         }
     } else if (!is_expect_speech && isStackedCondition(ps_id)) {
         removeFromContainer(ps_id);
-
-        if (has_long_timer)
-            timer->start();
     } else {
         timer->setCallback([&, ps_id]() {
             removeFromContainer(ps_id);
@@ -214,7 +211,7 @@ bool PlayStackManager::hasExpectSpeech(NuguDirective* ndir)
 
 void PlayStackManager::stopHolding()
 {
-    if (timer->isStarted()) {
+    if (timer->isStarted() && !has_long_timer) {
         timer->stop();
         has_holding = true;
     }
@@ -227,6 +224,12 @@ void PlayStackManager::resetHolding()
         is_expect_speech = false;
         has_holding = false;
     }
+}
+
+void PlayStackManager::clearHolding()
+{
+    timer->stop();
+    has_long_timer = false;
 }
 
 bool PlayStackManager::isActiveHolding()
