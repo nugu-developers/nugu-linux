@@ -183,6 +183,11 @@ void PlaySyncManager::resetHolding()
     playstack_manager->resetHolding();
 }
 
+void PlaySyncManager::clearHolding()
+{
+    playstack_manager->clearHolding();
+}
+
 bool PlaySyncManager::hasPostPoneRelease()
 {
     return release_postponed || postponed_release_func;

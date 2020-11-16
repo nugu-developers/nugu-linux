@@ -176,6 +176,11 @@ public:
     virtual void resetHolding() = 0;
 
     /**
+     * @brief Clear timer for releasing sync.
+     */
+    virtual void clearHolding() = 0;
+
+    /**
      * @brief Check whether the previous dialog has to be handled or not
      * @param[in] prev_ndir preivous directive
      * @param[in] cur_ndir current directive

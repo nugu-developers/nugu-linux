@@ -485,6 +485,26 @@ static void test_playstack_manager_release_sync_later(TestFixture* fixture, gcon
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
 }
 
+static void test_playstack_manager_implicit_release_sync_later(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_media);
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    fixture->playsync_manager->startSync("ps_id_1", "AudioPlayer");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+
+    fixture->playsync_manager->postPoneRelease();
+    fixture->playsync_manager->continueRelease();
+    fixture->playsync_manager->releaseSyncLater("ps_id_1", "AudioPlayer");
+    fixture->playsync_manager->clearHolding();
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+
+    fixture->playsync_manager->postPoneRelease();
+    fixture->playsync_manager->continueRelease();
+    fixture->playsync_manager->releaseSyncLater("ps_id_1", "AudioPlayer");
+    onTimeElapsed(fixture);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+}
+
 static void test_playstack_manager_normal_case(TestFixture* fixture, gconstpointer ignored)
 {
     sub_test_playstack_manager_preset_sync(fixture, "ps_id_1");
@@ -734,6 +754,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/releaseSyncImmediately", test_playstack_manager_release_sync_immediately);
     G_TEST_ADD_FUNC("/core/PlayStackManager/releaseSync", test_playstack_manager_release_sync);
     G_TEST_ADD_FUNC("/core/PlayStackManager/releaseSyncLater", test_playstack_manager_release_sync_later);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/implicitReleaseSyncLater", test_playstack_manager_implicit_release_sync_later);
     G_TEST_ADD_FUNC("/core/PlayStackManager/normalCase", test_playstack_manager_normal_case);
     G_TEST_ADD_FUNC("/core/PlayStackManager/stopCase", test_playstack_manager_stop_case);
     G_TEST_ADD_FUNC("/core/PlayStackManager/ignoreRenderCase", test_playstack_manager_ignore_render_case);

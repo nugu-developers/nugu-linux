@@ -240,6 +240,10 @@ static void test_playstack_manager_control_holding(TestFixture* fixture, gconstp
     // reset holding
     fixture->playstack_manager->resetHolding();
     g_assert(fixture->playstack_manager->isActiveHolding());
+
+    // clear holding
+    fixture->playstack_manager->clearHolding();
+    g_assert(!fixture->playstack_manager->isActiveHolding());
 }
 
 static void test_playstack_manager_check_stack(TestFixture* fixture, gconstpointer ignored)
