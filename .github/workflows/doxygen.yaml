@@ -1,0 +1,25 @@
+name: Generate doxygen
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Generate doxygen
+        run: |
+          sudo apt-get install doxygen graphviz
+          doxygen
+
+      - name: Deploy to Github Pages
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ github.token }}
+          BRANCH: gh-pages
+          FOLDER: doc/html
+          CLEAN: true
