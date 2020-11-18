@@ -70,10 +70,10 @@ static void _emit_send_result(int code, HTTP2Request *req)
 	event->code = code;
 
 	if (http2_request_peek_msgid(req))
-		event->msg_id = strdup(http2_request_peek_msgid(req));
+		event->msg_id = g_strdup(http2_request_peek_msgid(req));
 
 	if (http2_request_peek_dialogid(req))
-		event->dialog_id = strdup(http2_request_peek_dialogid(req));
+		event->dialog_id = g_strdup(http2_request_peek_dialogid(req));
 
 	if (code == HTTP2_RESPONSE_OK) {
 		event->success = 1;
@@ -110,14 +110,14 @@ static void _emit_directive_response(HTTP2Request *req, const char *json)
 		event->success = 0;
 
 	if (http2_request_peek_msgid(req))
-		event->event_msg_id = strdup(http2_request_peek_msgid(req));
+		event->event_msg_id = g_strdup(http2_request_peek_msgid(req));
 
 	if (http2_request_peek_dialogid(req))
 		event->event_dialog_id =
-			strdup(http2_request_peek_dialogid(req));
+			g_strdup(http2_request_peek_dialogid(req));
 
 	if (json)
-		event->json = strdup(json);
+		event->json = g_strdup(json);
 
 	if (nugu_equeue_push(NUGU_EQUEUE_TYPE_EVENT_RESPONSE, event) < 0) {
 		nugu_error("nugu_equeue_push failed");

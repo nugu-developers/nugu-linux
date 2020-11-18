@@ -235,7 +235,7 @@ static void _emit_callback(enum nugu_prof_type type, const char *contents)
 	memcpy(data, &_prof_data[type], sizeof(struct nugu_prof_data));
 
 	if (contents)
-		data->contents = strdup(contents);
+		data->contents = g_strdup(contents);
 	else
 		data->contents = NULL;
 

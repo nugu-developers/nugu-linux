@@ -85,13 +85,13 @@ EXPORT_API NuguEvent *nugu_event_new(const char *name_space, const char *name,
 		return NULL;
 	}
 
-	nev->name_space = strdup(name_space);
-	nev->name = strdup(name);
+	nev->name_space = g_strdup(name_space);
+	nev->name = g_strdup(name);
 	nev->dialog_id = nugu_uuid_generate_time();
 	nev->msg_id = nugu_uuid_generate_time();
 	nev->referrer_id = NULL;
 	nev->seq = 0;
-	nev->version = strdup(version);
+	nev->version = g_strdup(version);
 	nev->type = NUGU_EVENT_TYPE_DEFAULT;
 
 	return nev;
@@ -149,7 +149,7 @@ EXPORT_API int nugu_event_set_context(NuguEvent *nev, const char *context)
 	if (nev->context)
 		free(nev->context);
 
-	nev->context = strdup(context);
+	nev->context = g_strdup(context);
 
 	return 0;
 }
@@ -169,7 +169,7 @@ EXPORT_API int nugu_event_set_json(NuguEvent *nev, const char *json)
 		free(nev->json);
 
 	if (json)
-		nev->json = strdup(json);
+		nev->json = g_strdup(json);
 	else
 		nev->json = NULL;
 
@@ -196,7 +196,7 @@ EXPORT_API int nugu_event_set_dialog_id(NuguEvent *nev, const char *dialog_id)
 	if (nev->dialog_id)
 		free(nev->dialog_id);
 
-	nev->dialog_id = strdup(dialog_id);
+	nev->dialog_id = g_strdup(dialog_id);
 
 	return 0;
 }
@@ -217,7 +217,7 @@ EXPORT_API int nugu_event_set_referrer_id(NuguEvent *nev,
 		free(nev->referrer_id);
 
 	if (referrer_id)
-		nev->referrer_id = strdup(referrer_id);
+		nev->referrer_id = g_strdup(referrer_id);
 	else
 		nev->referrer_id = NULL;
 

@@ -135,7 +135,7 @@ static void on_parsing_header(MultipartParser* parser, const char* data,
         } else if (key.compare("Parent-Message-Id") == 0) {
             if (dp->parent_msg_id)
                 free(dp->parent_msg_id);
-            dp->parent_msg_id = strdup(value.c_str());
+            dp->parent_msg_id = g_strdup(value.c_str());
         } else if (key.compare("Filename") == 0) {
             dp->seq = std::stoi(value);
             if (value.find("end") != std::string::npos)
@@ -257,8 +257,8 @@ static void _body_opus(DirParser* dp, const char* parent_msg_id, int seq,
         return;
     }
 
-    item->parent_msg_id = strdup(parent_msg_id);
-    item->media_type = strdup("audio/opus");
+    item->parent_msg_id = g_strdup(parent_msg_id);
+    item->media_type = g_strdup("audio/opus");
     item->seq = seq;
     item->is_end = is_end;
     item->length = length;
@@ -395,7 +395,7 @@ int dir_parser_set_debug_message(DirParser* dp, const char* msg)
     }
 
     if (msg)
-        dp->debug_msg = strdup(msg);
+        dp->debug_msg = g_strdup(msg);
 
     return 0;
 }

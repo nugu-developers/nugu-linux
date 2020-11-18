@@ -1092,7 +1092,7 @@ EXPORT_API int nugu_network_manager_set_token(const char *token)
 	if (_network->token)
 		free(_network->token);
 
-	_network->token = strdup(token);
+	_network->token = g_strdup(token);
 
 	/* Reset the Last-Asr-Event-Time header */
 	if (_network->last_asr) {
@@ -1135,11 +1135,11 @@ EXPORT_API int nugu_network_manager_set_registry_url(const char *urlname)
 #ifdef NUGU_ENV_NETWORK_REGISTRY_SERVER
 	override_value = getenv(NUGU_ENV_NETWORK_REGISTRY_SERVER);
 	if (override_value)
-		_network->registry_url = strdup(override_value);
+		_network->registry_url = g_strdup(override_value);
 	else
-		_network->registry_url = strdup(urlname);
+		_network->registry_url = g_strdup(urlname);
 #else
-	_network->registry_url = strdup(urlname);
+	_network->registry_url = g_strdup(urlname);
 #endif
 
 	return 0;
@@ -1182,7 +1182,7 @@ EXPORT_API int nugu_network_manager_set_useragent(const char *app_version,
 #ifdef NUGU_ENV_NETWORK_USERAGENT
 	override_value = getenv(NUGU_ENV_NETWORK_USERAGENT);
 	if (override_value)
-		_network->useragent = strdup(override_value);
+		_network->useragent = g_strdup(override_value);
 	else
 		_network->useragent = g_strdup_printf(NUGU_USERAGENT_FORMAT,
 						      app_version, more_info);

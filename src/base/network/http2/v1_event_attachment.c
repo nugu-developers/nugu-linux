@@ -61,7 +61,7 @@ V1EventAttachment *v1_event_attachment_new(const char *host)
 	/* Set maximum timeout to 5 seconds */
 	http2_request_set_timeout(attach->req, 5);
 
-	attach->host = strdup(host);
+	attach->host = g_strdup(host);
 
 	return attach;
 }
@@ -97,7 +97,7 @@ void v1_event_attachment_set_query(V1EventAttachment *attach,
 		endstr = "true";
 
 	attach->seq = seq;
-	attach->msgid = strdup(msg_id);
+	attach->msgid = g_strdup(msg_id);
 
 	tmp = g_strdup_printf("%s/v1/event-attachment" QUERY, attach->host,
 			      name_space, name, dialog_id, msg_id, version,
