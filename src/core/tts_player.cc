@@ -15,9 +15,11 @@
  */
 
 #include <algorithm>
-#include <glib.h>
 #include <list>
 #include <map>
+
+#include <stdlib.h>
+#include <glib.h>
 
 #include "base/nugu_decoder.h"
 #include "base/nugu_log.h"
