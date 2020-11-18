@@ -108,10 +108,10 @@ static void _emit_send_result(int code, HTTP2Request *req)
 	event->code = code;
 
 	if (http2_request_peek_msgid(req))
-		event->msg_id = strdup(http2_request_peek_msgid(req));
+		event->msg_id = g_strdup(http2_request_peek_msgid(req));
 
 	if (http2_request_peek_dialogid(req))
-		event->dialog_id = strdup(http2_request_peek_dialogid(req));
+		event->dialog_id = g_strdup(http2_request_peek_dialogid(req));
 
 	if (code == HTTP2_RESPONSE_OK) {
 		event->success = 1;

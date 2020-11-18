@@ -63,14 +63,14 @@ nugu_directive_new(const char *name_space, const char *name,
 	g_return_val_if_fail(groups != NULL, NULL);
 
 	ndir = calloc(1, sizeof(NuguDirective));
-	ndir->name_space = strdup(name_space);
-	ndir->name = strdup(name);
-	ndir->version = strdup(version);
-	ndir->msg_id = strdup(msg_id);
-	ndir->dialog_id = strdup(dialog_id);
-	ndir->referrer_id = strdup(referrer_id);
-	ndir->json = strdup(json);
-	ndir->groups = strdup(groups);
+	ndir->name_space = g_strdup(name_space);
+	ndir->name = g_strdup(name);
+	ndir->version = g_strdup(version);
+	ndir->msg_id = g_strdup(msg_id);
+	ndir->dialog_id = g_strdup(dialog_id);
+	ndir->referrer_id = g_strdup(referrer_id);
+	ndir->json = g_strdup(json);
+	ndir->groups = g_strdup(groups);
 
 	ndir->seq = -1;
 	ndir->is_active = 0;
@@ -226,7 +226,7 @@ EXPORT_API int nugu_directive_set_media_type(NuguDirective *ndir,
 	if (type == NULL)
 		return 0;
 
-	ndir->media_type = strdup(type);
+	ndir->media_type = g_strdup(type);
 
 	return 0;
 }

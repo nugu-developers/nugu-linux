@@ -767,7 +767,7 @@ int http2_request_set_msgid(HTTP2Request *req, const char *msgid)
 		free(req->msg_id);
 
 	if (msgid)
-		req->msg_id = strdup(msgid);
+		req->msg_id = g_strdup(msgid);
 	else
 		req->msg_id = NULL;
 
@@ -789,7 +789,7 @@ int http2_request_set_dialogid(HTTP2Request *req, const char *dialogid)
 		free(req->dialog_id);
 
 	if (dialogid)
-		req->dialog_id = strdup(dialogid);
+		req->dialog_id = g_strdup(dialogid);
 	else
 		req->dialog_id = NULL;
 
@@ -812,7 +812,7 @@ int http2_request_set_profiling_contents(HTTP2Request *req,
 		free(req->profiling_contents);
 
 	if (contents)
-		req->profiling_contents = strdup(contents);
+		req->profiling_contents = g_strdup(contents);
 	else
 		req->profiling_contents = NULL;
 

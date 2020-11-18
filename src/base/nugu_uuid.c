@@ -175,7 +175,7 @@ EXPORT_API char *nugu_uuid_generate_time(void)
 
 	nugu_uuid_convert_base16(buf, sizeof(buf), base16, sizeof(base16));
 
-	return strdup(base16);
+	return g_strdup(base16);
 }
 
 EXPORT_API int nugu_uuid_fill(const struct timespec *time,
