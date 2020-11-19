@@ -1524,7 +1524,6 @@ void AudioPlayerAgent::onSyncState(const std::string& ps_id, PlaySyncState state
         is_next_play = false;
         focus_manager->releaseFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME);
 
-        clearContext();
         clearDisplay(extra_data);
     }
 }
