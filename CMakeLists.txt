@@ -36,9 +36,11 @@ IF (NOT CMAKE_BUILD_TYPE)
 	SET(CMAKE_BUILD_TYPE Debug)
 ENDIF()
 
-# Set default build options
-OPTION(ENABLE_LOG_ANSICOLOR "Enable ansicolor to log message" ON)
-add_feature_info(LOG_ANSICOLOR ENABLE_LOG_ANSICOLOR "ANSI Color to log message")
+# Macro for feature definition (Get all options: cmake -LAH)
+MACRO(DEFINE_FEATURE id default description)
+	OPTION(ENABLE_${id} "Enable - ${description} (Default: ${default})" ${default})
+	add_feature_info(FEATURE_${id} ENABLE_${id} "${description} (Default: ${default})")
+ENDMACRO(DEFINE_FEATURE)
 
 IF (PACKAGING)
 	SET(ASAN_DEFAULT "OFF")
@@ -49,26 +51,30 @@ ELSE()
 		SET(ASAN_DEFAULT "OFF")
 	ENDIF()
 ENDIF()
-OPTION(ENABLE_ASAN "Enable Address Sanitizer" ${ASAN_DEFAULT})
-add_feature_info(SANITIZE_ASAN ENABLE_ASAN "Address Sanitizer")
 
-OPTION(ENABLE_GSTREAMER_PLUGIN "Enable the GStreamer plugin" ON)
-add_feature_info(GSTREAMER_PLUGIN ENABLE_GSTREAMER_PLUGIN "GStreamer plugin")
+# Set default build options
+DEFINE_FEATURE(LOG_ANSICOLOR ON "ANSI Color to log message")
+DEFINE_FEATURE(ASAN ${ASAN_DEFAULT} "Address Sanitizer")
+DEFINE_FEATURE(VENDOR_LIBRARY ON "vendor specific library(nugu_wwd, nugu_epd)")
+DEFINE_FEATURE(OPUS_LIBRARY ON "compile built-in OPUS library")
+DEFINE_FEATURE(OPUS_LIBRARY_FLOAT_API OFF "floating point to OPUS library")
 
-OPTION(ENABLE_OPUS_PLUGIN "Enable the OPUS plugin" ON)
-add_feature_info(OPUS_PLUGIN ENABLE_OPUS_PLUGIN "OPUS plugin")
+DEFINE_FEATURE(DL_LINKING ON "-ldl linking")
+DEFINE_FEATURE(SOCKET_LINKING OFF "-lsocket linking")
 
-OPTION(ENABLE_PORTAUDIO_PLUGIN "Enable the PortAudio plugin" ON)
-add_feature_info(PORTAUDIO_PLUGIN ENABLE_PORTAUDIO_PLUGIN "PortAudio plugin")
+DEFINE_FEATURE(GSTREAMER_PLUGIN ON "GStreamer plugin")
+DEFINE_FEATURE(OPUS_PLUGIN ON "OPUS plugin")
+DEFINE_FEATURE(PORTAUDIO_PLUGIN ON "PortAudio plugin")
 
-OPTION(ENABLE_VENDOR_LIBRARY "Enable the vendor specific library" ON)
-add_feature_info(VENDOR_LIBRARY ENABLE_VENDOR_LIBRARY "vendor specific library(nugu_wwd, nugu_epd)")
-
-OPTION(ENABLE_OPUS_LIBRARY "Enable to compile OPUS library" OFF)
-add_feature_info(OPUS_LIBRARY ENABLE_OPUS_LIBRARY "compile OPUS library")
-
-OPTION(ENABLE_OPUS_LIBRARY_FLOAT_API "Enable float api to OPUS library" OFF)
-add_feature_info(OPUS_LIBRARY_FLOAT_API ENABLE_OPUS_LIBRARY_FLOAT_API "compile with the floating point to OPUS library")
+DEFINE_FEATURE(EXAMPLES_OOB_SETUP ON "Examples - OOB setup")
+DEFINE_FEATURE(EXAMPLES_STANDALONE ON "Examples - standalone")
+DEFINE_FEATURE(EXAMPLES_SIMPLE_TEXT ON "Examples - simple-text")
+DEFINE_FEATURE(EXAMPLES_SIMPLE_ASR ON "Examples - simple-asr")
+DEFINE_FEATURE(EXAMPLES_SIMPLE_PLAY ON "Examples - simple-play")
+DEFINE_FEATURE(EXAMPLES_SIMPLE_TTS ON "Examples - simple-tts")
+DEFINE_FEATURE(EXAMPLES_PROFILING ON "Examples - profiling")
+DEFINE_FEATURE(EXAMPLES_CAP_INJECTION ON "Examples - capability-injection")
+DEFINE_FEATURE(EXAMPLES_RESP_FILTER ON "Examples - response-filter")
 
 # Set NUGU SDK library default dependency
 SET(DEFAULT_LIB_DEPENDENCY
@@ -87,6 +93,18 @@ ENDIF()
 # Therefore, add the library dependency to NUGU SDK instead of NUGU Plugin.
 IF(ENABLE_GSTREAMER_PLUGIN)
 	LIST(APPEND FORCE_LIB_DEPENDENCY gstreamer-1.0 gstreamer-pbutils-1.0 gstreamer-app-1.0)
+ENDIF()
+
+IF(ENABLE_DL_LINKING)
+	SET(LDFLAG_DL "-ldl")
+ELSE()
+	SET(LDFLAG_DL "")
+ENDIF()
+
+IF(ENABLE_SOCKET_LINKING)
+	SET(LDFLAG_SOCKET "-lsocket")
+ELSE()
+	SET(LDFLAG_SOCKET "")
 ENDIF()
 
 # Get CFLAGS and LDFLAGS from pkg-config list
