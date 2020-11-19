@@ -47,9 +47,15 @@ private:
         std::string ps_id;
     };
 
-    void sendEventTextInput(TextInputParam&& text_input_param, bool include_dialog_attribute = true, EventResultCallback cb = nullptr);
-    void parsingTextSource(const char* message, std::string target_ps_id = "");
+    void sendEventTextInput(const TextInputParam& text_input_param, bool include_dialog_attribute = true, EventResultCallback cb = nullptr);
+    void sendEventTextSourceFailed(const TextInputParam& text_input_param, EventResultCallback cb = nullptr);
+    void sendEventTextRedirectFailed(const TextInputParam& text_input_param, EventResultCallback cb = nullptr);
+    void sendEventFailed(std::string&& event_name, const TextInputParam& text_input_param, EventResultCallback cb = nullptr);
+    void parsingTextSource(const char* message);
     void parsingTextRedirect(const char* message);
+    bool handleTextCommonProcess(const TextInputParam& text_input_param);
+
+    const std::string FAIL_EVENT_ERROR_CODE = "NOT_SUPPORTED_STATE";
 
     ITextListener* text_listener;
     INuguTimer* timer;

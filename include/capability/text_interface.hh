@@ -91,7 +91,8 @@ public:
      * @brief Handle text command and return whether consumed.
      * @param[in] text text command
      * @param[in] token received token
-     * @return whether text command is consumed or not
+     * @return whether text command is consumed or not.
+     * If it return true, the event about failure of sending text input is sent to server.
      */
     virtual bool handleTextCommand(const std::string& text, const std::string& token) = 0;
 };
