@@ -22,7 +22,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "Text";
-static const char* CAPABILITY_VERSION = "1.4";
+static const char* CAPABILITY_VERSION = "1.5";
 
 TextAgent::TextAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -149,6 +149,7 @@ void TextAgent::setCapabilityListener(ICapabilityListener* clistener)
 std::string TextAgent::requestTextInput(const std::string& text, const std::string& token, bool include_dialog_attribute)
 {
     nugu_dbg("receive text interface : %s from user app", text.c_str());
+
     if (cur_state == TextState::BUSY) {
         nugu_warn("already request nugu service to the server");
         return "";
@@ -188,10 +189,9 @@ void TextAgent::notifyResponseTimeout()
         text_listener->onState(cur_state, cur_dialog_id);
 }
 
-void TextAgent::sendEventTextInput(TextInputParam&& text_input_param, bool include_dialog_attribute, EventResultCallback cb)
+void TextAgent::sendEventTextInput(const TextInputParam& text_input_param, bool include_dialog_attribute, EventResultCallback cb)
 {
     CapabilityEvent event("TextInput", this);
-    std::string payload = "";
     Json::StyledWriter writer;
     Json::Value root;
 
@@ -223,65 +223,56 @@ void TextAgent::sendEventTextInput(TextInputParam&& text_input_param, bool inclu
         }
     }
 
-    payload = writer.write(root);
-
     cur_dialog_id = event.getDialogRequestId();
-
     playsync_manager->stopHolding();
 
-    sendEvent(&event, capa_helper->makeAllContextInfo(), payload, std::move(cb));
+    sendEvent(&event, capa_helper->makeAllContextInfo(), writer.write(root), std::move(cb));
 }
 
-void TextAgent::parsingTextSource(const char* message, std::string target_ps_id)
+void TextAgent::sendEventTextSourceFailed(const TextInputParam& text_input_param, EventResultCallback cb)
+{
+    sendEventFailed("TextSourceFailed", text_input_param, std::move(cb));
+}
+
+void TextAgent::sendEventTextRedirectFailed(const TextInputParam& text_input_param, EventResultCallback cb)
+{
+    sendEventFailed("TextRedirectFailed", text_input_param, std::move(cb));
+}
+
+void TextAgent::sendEventFailed(std::string&& event_name, const TextInputParam& text_input_param, EventResultCallback cb)
+{
+    Json::Value root;
+    Json::StyledWriter writer;
+
+    if (!text_input_param.ps_id.empty())
+        root["playServiceId"] = text_input_param.ps_id;
+
+    root["token"] = text_input_param.token;
+    root["errorCode"] = FAIL_EVENT_ERROR_CODE;
+
+    cur_dialog_id = sendEvent(event_name, getContextInfo(), writer.write(root), std::move(cb));
+}
+
+void TextAgent::parsingTextSource(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
-    std::string text;
-    std::string token;
-    std::string ps_id;
+    TextInputParam text_input_param;
 
-    if (!reader.parse(message, root)) {
-        nugu_error("parsing error");
-        return;
+    try {
+        if (!reader.parse(message, root))
+            throw std::string { "parsing error" };
+
+        text_input_param.text = root["text"].asString();
+        text_input_param.token = root["token"].asString();
+        text_input_param.ps_id = root["playServiceId"].asString();
+
+        if (!handleTextCommonProcess(text_input_param))
+            throw std::string { "The processing TextSource is incomplete." };
+    } catch (std::string& message) {
+        sendEventTextSourceFailed(text_input_param);
+        nugu_error(message.c_str());
     }
-
-    text = root["text"].asString();
-    token = root["token"].asString();
-
-    if (target_ps_id.size() == 0)
-        ps_id = root["playServiceId"].asString();
-    else
-        ps_id = target_ps_id;
-
-    if (text.size() == 0 || token.size() == 0) {
-        nugu_error("There is no mandatory data in directive message");
-        return;
-    }
-
-    nugu_dbg("receive text interface : %s from mobile app", text.c_str());
-
-    if (cur_state == TextState::BUSY) {
-        nugu_warn("already request nugu service to the server");
-        return;
-    }
-
-    // if application consume text command, it's not process anymore.
-    if (text_listener && text_listener->handleTextCommand(text, token))
-        return;
-
-    if (timer)
-        timer->start();
-
-    cur_state = TextState::BUSY;
-
-    sendEventTextInput({ text, token, ps_id });
-
-    setReferrerDialogRequestId(nugu_directive_peek_name(getNuguDirective()), "");
-
-    if (text_listener)
-        text_listener->onState(cur_state, cur_dialog_id);
-
-    capa_helper->sendCommand("Text", "ASR", "cancel", "");
 }
 
 void TextAgent::parsingTextRedirect(const char* message)
@@ -289,24 +280,57 @@ void TextAgent::parsingTextRedirect(const char* message)
     Json::Value root;
     Json::Reader reader;
     std::string target_ps_id;
+    TextInputParam text_input_param;
+
+    try {
+        if (!reader.parse(message, root))
+            throw std::string { "parsing error" };
+
+        text_input_param.text = root["text"].asString();
+        text_input_param.token = root["token"].asString();
+
+        target_ps_id = root["targetPlayServiceId"].asString();
+        text_input_param.ps_id = !target_ps_id.empty() ? target_ps_id : root["playServiceId"].asString();
+
+        if (!handleTextCommonProcess(text_input_param))
+            throw std::string { "The processing TextRedirect is incomplete." };
+    } catch (std::string& message) {
+        sendEventTextRedirectFailed(text_input_param);
+        nugu_error(message.c_str());
+    }
+}
+
+bool TextAgent::handleTextCommonProcess(const TextInputParam& text_input_param)
+{
+    if (text_input_param.text.empty() || text_input_param.token.empty()) {
+        nugu_error("There is no mandatory data in directive message");
+        return false;
+    }
+
+    nugu_dbg("receive text interface : %s from mobile app", text_input_param.text.c_str());
 
     if (cur_state == TextState::BUSY) {
         nugu_warn("already request nugu service to the server");
-        return;
+        return false;
     }
 
-    if (!reader.parse(message, root)) {
-        nugu_error("parsing error");
-        return;
-    }
+    // if application consume text command, it's not process anymore.
+    if (text_listener && text_listener->handleTextCommand(text_input_param.text, text_input_param.token))
+        return false;
 
-    target_ps_id = root["targetPlayServiceId"].asString();
-    if (target_ps_id.size() == 0) {
-        parsingTextSource(message);
-        return;
-    }
+    if (timer)
+        timer->start();
 
-    parsingTextSource(message, target_ps_id);
+    cur_state = TextState::BUSY;
+
+    sendEventTextInput(text_input_param);
+    setReferrerDialogRequestId(nugu_directive_peek_name(getNuguDirective()), "");
+
+    if (text_listener)
+        text_listener->onState(cur_state, cur_dialog_id);
+
+    capa_helper->sendCommand("Text", "ASR", "cancel", "");
+
+    return true;
 }
-
 } // NuguCapability
