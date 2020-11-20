@@ -157,7 +157,7 @@ void Capability::setNuguCoreContainer(INuguCoreContainer* core_container)
 
 void Capability::initialize()
 {
-    has_attachment = false;
+    destroy_directive_by_agent = false;
     suspended = false;
     suspend_policy = SuspendPolicy::STOP;
 
@@ -341,11 +341,11 @@ void Capability::processDirective(NuguDirective* ndir)
 
         setReferrerDialogRequestId(nugu_directive_peek_name(ndir), nugu_directive_peek_dialog_id(ndir));
 
-        has_attachment = false;
+        destroy_directive_by_agent = false;
         parsingDirective(dname, message);
 
-        // the directive with attachment should destroy by agent
-        if (!has_attachment)
+        // if 'destroy_directive_by_agent' is set to true, the related agent should destroy it by self.
+        if (!destroy_directive_by_agent)
             destroyDirective(ndir);
     }
 }

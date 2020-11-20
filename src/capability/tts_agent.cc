@@ -415,7 +415,7 @@ void TTSAgent::parsingSpeak(const char* message)
         return;
     }
 
-    has_attachment = true;
+    destroy_directive_by_agent = true;
     speak_dir = nullptr;
 
     // set referrer id previous dialog_id
