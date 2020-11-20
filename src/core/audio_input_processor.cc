@@ -59,9 +59,11 @@ void AudioInputProcessor::init(std::string name, std::string& sample, std::strin
     destroy = 0;
     thread = std::thread([this] { this->loop(); });
 
+#ifdef HAVE_PTHREAD_SETNAME_NP
     int ret = pthread_setname_np(thread.native_handle(), name.append("_loop").c_str());
     if (ret < 0)
         nugu_error("pthread_setname_np() failed");
+#endif
 
     /* Wait until thread creation */
     std::unique_lock<std::mutex> lock(mutex);

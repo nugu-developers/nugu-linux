@@ -19,11 +19,16 @@
 #include <pthread.h>
 #include <string.h>
 #include <stdlib.h>
-#include <sys/eventfd.h>
 #include <unistd.h>
 #include <errno.h>
 
 #include <glib.h>
+
+#ifdef HAVE_EVENTFD
+#include <sys/eventfd.h>
+#else
+#include <glib-unix.h>
+#endif
 
 #include "curl/curl.h"
 
@@ -59,8 +64,12 @@ struct _http2_network {
 
 	const char *useragent;
 
-	/* Communicate to thread context from gmainloop */
-	int wakeup_fd;
+	/*
+	 * Communicate to thread context from gmainloop
+	 * - eventfd only uses fds[0].
+	 * - pipe is read with fds[0] and writes with fds[1].
+	 */
+	int wakeup_fds[2];
 	GAsyncQueue *requests;
 
 	/* Handled only within the thread context */
@@ -328,7 +337,7 @@ static void *_loop(void *data)
 		 *
 		 * Refer: https://curl.haxx.se/libcurl/c/curl_multi_wait.html
 		 */
-		extra_fds[0].fd = net->wakeup_fd;
+		extra_fds[0].fd = net->wakeup_fds[0];
 		extra_fds[0].events = CURL_WAIT_POLLIN | CURL_WAIT_POLLPRI;
 		extra_fds[0].revents = 0;
 
@@ -342,9 +351,12 @@ static void *_loop(void *data)
 		 * wakeup by eventfd (add or remove request)
 		 */
 		if (extra_fds[0].revents & extra_fds[0].events) {
-			uint64_t ev = 0;
 			ssize_t nread;
-
+#ifdef HAVE_EVENTFD
+			uint64_t ev = 0;
+#else
+			uint8_t ev = 0;
+#endif
 			nread = read(extra_fds[0].fd, &ev, sizeof(ev));
 			if (nread == -1 || nread != sizeof(ev)) {
 				nugu_error("read failed");
@@ -387,6 +399,9 @@ static void *_loop(void *data)
 HTTP2Network *http2_network_new()
 {
 	struct _http2_network *net;
+#ifndef HAVE_EVENTFD
+	GError *error = NULL;
+#endif
 
 	net = calloc(1, sizeof(struct _http2_network));
 	if (!net) {
@@ -394,7 +409,27 @@ HTTP2Network *http2_network_new()
 		return NULL;
 	}
 
-	net->wakeup_fd = eventfd(0, EFD_CLOEXEC);
+	net->wakeup_fds[0] = -1;
+	net->wakeup_fds[1] = -1;
+
+#ifdef HAVE_EVENTFD
+	net->wakeup_fds[0] = eventfd(0, EFD_CLOEXEC);
+	if (net->wakeup_fds[0] < 0) {
+		nugu_error("eventfd() failed");
+		free(net);
+		return NULL;
+	}
+#else
+	if (g_unix_open_pipe(net->wakeup_fds, FD_CLOEXEC, &error) == FALSE) {
+		nugu_error("g_unix_open_pipe() failed: %s", error->message);
+		g_error_free(error);
+		free(net);
+		return NULL;
+	}
+	nugu_dbg("pipe fds[0] = %d", net->wakeup_fds[0]);
+	nugu_dbg("pipe fds[1] = %d", net->wakeup_fds[1]);
+#endif
+
 	net->requests =
 		g_async_queue_new_full((GDestroyNotify)_request_item_free);
 	net->useragent = nugu_network_manager_peek_useragent();
@@ -428,7 +463,10 @@ void http2_network_free(HTTP2Network *net)
 	if (net->requests)
 		g_async_queue_unref(net->requests);
 
-	close(net->wakeup_fd);
+	if (net->wakeup_fds[0] != -1)
+		close(net->wakeup_fds[0]);
+	if (net->wakeup_fds[1] != -1)
+		close(net->wakeup_fds[1]);
 
 	if (net->sync_init)
 		thread_sync_free(net->sync_init);
@@ -471,15 +509,24 @@ int http2_network_set_last_asr_time(HTTP2Network *net, const char *timestr)
 
 int http2_network_wakeup(HTTP2Network *net)
 {
-	uint64_t ev = 1;
 	ssize_t written;
 
 	g_return_val_if_fail(net != NULL, -1);
 
 	/* wakeup request using eventfd */
-	written = write(net->wakeup_fd, &ev, sizeof(uint64_t));
-	if (written != sizeof(uint64_t))
-		nugu_error("write failed");
+	if (net->wakeup_fds[1] == -1) {
+		uint64_t ev = 1;
+
+		written = write(net->wakeup_fds[0], &ev, sizeof(ev));
+		if (written != sizeof(ev))
+			nugu_error("write failed");
+	} else {
+		uint8_t ev = 1;
+
+		written = write(net->wakeup_fds[1], &ev, sizeof(ev));
+		if (written != sizeof(ev))
+			nugu_error("write failed");
+	}
 
 	return 0;
 }
@@ -608,9 +655,11 @@ int http2_network_start(HTTP2Network *net)
 		return -1;
 	}
 
+#ifdef HAVE_PTHREAD_SETNAME_NP
 	ret = pthread_setname_np(net->thread_id, "http2");
 	if (ret < 0)
 		nugu_error("pthread_setname_np() failed");
+#endif
 
 	/* Wait for thread creation (maximum 5 secs) */
 	if (thread_sync_wait_secs(net->sync_init, 5) != THREAD_SYNC_RESULT_OK) {
