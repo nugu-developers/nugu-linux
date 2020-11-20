@@ -374,8 +374,8 @@ protected:
     /** @brief whether capability initialized */
     bool initialized = false;
 
-    /** @brief whether has attachment */
-    bool has_attachment = false;
+    /** @brief whether destroy received directive by agent */
+    bool destroy_directive_by_agent = false;
 
     /** @brief whether capability suspend */
     bool suspended = false;

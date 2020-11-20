@@ -866,7 +866,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     }
 
     if (source_type == "ATTACHMENT") {
-        has_attachment = true;
+        destroy_directive_by_agent = true;
 
         nugu_dbg("    token => %s", token.c_str());
         nugu_dbg("cur_token => %s", cur_token.c_str());
@@ -942,7 +942,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     cur_token = token;
     ps_id = play_service_id;
 
-    if (has_attachment) {
+    if (destroy_directive_by_agent) {
         cur_player = dynamic_cast<IMediaPlayer*>(tts_player);
         is_tts_activate = true;
         speak_dir = getNuguDirective();
