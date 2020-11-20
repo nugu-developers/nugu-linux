@@ -86,6 +86,11 @@ class SessionAgent;
 class DisplayAgent;
 
 /**
+ * @brief UtilityAgent
+ */
+class UtilityAgent;
+
+/**
  * @brief CapabilityFactory
  */
 class CapabilityFactory {
