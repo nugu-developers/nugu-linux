@@ -153,6 +153,12 @@ void CapabilityCollection::composeCapabilityFactory()
 
         return display_handler.get();
     });
+    factories.emplace("Utility", [&]() {
+        if (!utility_handler)
+            utility_handler = makeCapability<UtilityAgent, IUtilityHandler>(nullptr);
+
+        return utility_handler.get();
+    });
 }
 
 SpeakerInfo CapabilityCollection::makeSpeakerInfo(SpeakerType type, int muted, bool can_control)

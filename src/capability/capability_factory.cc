@@ -24,6 +24,7 @@
 #include "system_agent.hh"
 #include "text_agent.hh"
 #include "tts_agent.hh"
+#include "utility_agent.hh"
 
 #include "capability/capability_factory.hh"
 
@@ -50,5 +51,6 @@ template IMicHandler* CapabilityFactory::makeCapability<MicAgent, IMicHandler>(I
 template ISoundHandler* CapabilityFactory::makeCapability<SoundAgent, ISoundHandler>(ICapabilityListener* listener);
 template ISessionHandler* CapabilityFactory::makeCapability<SessionAgent, ISessionHandler>(ICapabilityListener* listener);
 template IDisplayHandler* CapabilityFactory::makeCapability<DisplayAgent, IDisplayHandler>(ICapabilityListener* listener);
+template IUtilityHandler* CapabilityFactory::makeCapability<UtilityAgent, IUtilityHandler>(ICapabilityListener* listener);
 
 } // NuguCapability

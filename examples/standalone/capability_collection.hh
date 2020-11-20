@@ -21,7 +21,7 @@
 #include <map>
 #include <memory>
 
-#include <capability/session_interface.hh>
+#include <capability/utility_interface.hh>
 
 #include "audio_player_listener.hh"
 #include "display_listener.hh"
@@ -65,6 +65,7 @@ private:
     std::shared_ptr<ISoundHandler> sound_handler = nullptr;
     std::shared_ptr<ISessionHandler> session_handler = nullptr;
     std::shared_ptr<IDisplayHandler> display_handler = nullptr;
+    std::shared_ptr<IUtilityHandler> utility_handler = nullptr;
 
     // Capability listener
     std::shared_ptr<SpeechOperator> speech_operator = nullptr;
