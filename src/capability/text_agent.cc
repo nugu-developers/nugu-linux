@@ -155,11 +155,6 @@ std::string TextAgent::requestTextInput(const std::string& text, const std::stri
         return "";
     }
 
-    if (text.size() == 0) {
-        nugu_error("The mandatory data is not exist.");
-        return "";
-    }
-
     if (timer)
         timer->start();
 
@@ -302,7 +297,7 @@ void TextAgent::parsingTextRedirect(const char* message)
 
 bool TextAgent::handleTextCommonProcess(const TextInputParam& text_input_param)
 {
-    if (text_input_param.text.empty() || text_input_param.token.empty()) {
+    if (text_input_param.token.empty()) {
         nugu_error("There is no mandatory data in directive message");
         return false;
     }
