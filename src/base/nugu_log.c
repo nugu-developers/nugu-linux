@@ -19,7 +19,9 @@
 #include <stdarg.h>
 #include <time.h>
 #include <string.h>
+#ifdef HAVE_SYSCALL
 #include <sys/syscall.h>
+#endif
 #include <syslog.h>
 #include <errno.h>
 #include <sys/types.h>
@@ -244,9 +246,12 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 
 		pthread_threadid_np(NULL, &tid);
 #else
-		int tid = 0;
-
+		int tid;
+#ifdef HAVE_SYSCALL
 		tid = (pid_t)syscall(SYS_gettid);
+#else
+		tid = 0;
+#endif
 #endif
 
 #ifdef NUGU_LOG_USE_ANSICOLOR

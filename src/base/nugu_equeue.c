@@ -17,9 +17,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/eventfd.h>
+#include <errno.h>
 
 #include <glib.h>
+
+#ifdef HAVE_EVENTFD
+#include <sys/eventfd.h>
+#else
+#include <glib-unix.h>
+#endif
 
 #include "base/nugu_log.h"
 #include "base/nugu_equeue.h"
@@ -31,7 +37,11 @@ struct _equeue_typemap {
 };
 
 struct _equeue {
-	int efd;
+	/*
+	 * - eventfd only uses fds[0].
+	 * - pipe is read with fds[0] and writes with fds[1].
+	 */
+	int fds[2];
 	guint source;
 	GAsyncQueue *pendings;
 	struct _equeue_typemap typemap[NUGU_EQUEUE_TYPE_MAX];
@@ -61,7 +71,6 @@ static void on_item_destroy(gpointer data)
 static gboolean on_event(GIOChannel *channel, GIOCondition cond,
 			 gpointer userdata)
 {
-	uint64_t ev = 0;
 	ssize_t nread;
 
 	if (!_equeue) {
@@ -69,10 +78,22 @@ static gboolean on_event(GIOChannel *channel, GIOCondition cond,
 		return FALSE;
 	}
 
-	nread = read(_equeue->efd, &ev, sizeof(ev));
-	if (nread == -1 || nread != sizeof(ev)) {
-		nugu_error("read failed");
-		return TRUE;
+	if (_equeue->fds[1] == -1) {
+		uint64_t ev = 0;
+
+		nread = read(_equeue->fds[0], &ev, sizeof(ev));
+		if (nread == -1 || nread != sizeof(ev)) {
+			nugu_error("read failed: %d, %d", nread, errno);
+			return TRUE;
+		}
+	} else {
+		uint8_t ev = 0;
+
+		nread = read(_equeue->fds[0], &ev, sizeof(ev));
+		if (nread == -1 || nread != sizeof(ev)) {
+			nugu_error("read failed: %d, %d", nread, errno);
+			return TRUE;
+		}
 	}
 
 	while (g_async_queue_length(_equeue->pendings) > 0) {
@@ -100,6 +121,9 @@ static gboolean on_event(GIOChannel *channel, GIOCondition cond,
 EXPORT_API int nugu_equeue_initialize(void)
 {
 	GIOChannel *channel;
+#ifndef HAVE_EVENTFD
+	GError *error = NULL;
+#endif
 
 	pthread_mutex_lock(&_lock);
 
@@ -116,16 +140,32 @@ EXPORT_API int nugu_equeue_initialize(void)
 		return -1;
 	}
 
-	_equeue->efd = eventfd(0, EFD_CLOEXEC);
-	if (_equeue->efd < 0) {
+	_equeue->fds[0] = -1;
+	_equeue->fds[1] = -1;
+
+#ifdef HAVE_EVENTFD
+	_equeue->fds[0] = eventfd(0, EFD_CLOEXEC);
+	if (_equeue->fds[0] < 0) {
 		nugu_error("eventfd() failed");
 		free(_equeue);
 		_equeue = NULL;
 		pthread_mutex_unlock(&_lock);
 		return -1;
 	}
+#else
+	if (g_unix_open_pipe(_equeue->fds, FD_CLOEXEC, &error) == FALSE) {
+		nugu_error("g_unix_open_pipe() failed: %s", error->message);
+		g_error_free(error);
+		free(_equeue);
+		_equeue = NULL;
+		pthread_mutex_unlock(&_lock);
+		return -1;
+	}
+	nugu_dbg("pipe fds[0] = %d", _equeue->fds[0]);
+	nugu_dbg("pipe fds[1] = %d", _equeue->fds[1]);
+#endif
 
-	channel = g_io_channel_unix_new(_equeue->efd);
+	channel = g_io_channel_unix_new(_equeue->fds[0]);
 	_equeue->source = g_io_add_watch(channel, G_IO_IN, on_event, NULL);
 	g_io_channel_unref(channel);
 
@@ -146,8 +186,10 @@ EXPORT_API void nugu_equeue_deinitialize(void)
 		return;
 	}
 
-	if (_equeue->efd != -1)
-		close(_equeue->efd);
+	if (_equeue->fds[0] != -1)
+		close(_equeue->fds[0]);
+	if (_equeue->fds[1] != -1)
+		close(_equeue->fds[1]);
 
 	if (_equeue->source > 0)
 		g_source_remove(_equeue->source);
@@ -181,10 +223,10 @@ EXPORT_API void nugu_equeue_deinitialize(void)
 	pthread_mutex_unlock(&_lock);
 }
 
-EXPORT_API int nugu_equeue_set_handler(enum nugu_equeue_type type,
-			    NuguEqueueCallback callback,
-			    NuguEqueueDestroyCallback destroy_callback,
-			    void *userdata)
+EXPORT_API int
+nugu_equeue_set_handler(enum nugu_equeue_type type, NuguEqueueCallback callback,
+			NuguEqueueDestroyCallback destroy_callback,
+			void *userdata)
 {
 	g_return_val_if_fail(type < NUGU_EQUEUE_TYPE_MAX, -1);
 	g_return_val_if_fail(callback != NULL, -1);
@@ -230,7 +272,6 @@ EXPORT_API int nugu_equeue_unset_handler(enum nugu_equeue_type type)
 EXPORT_API int nugu_equeue_push(enum nugu_equeue_type type, void *data)
 {
 	struct _econtainer *item;
-	uint64_t ev = 1;
 	ssize_t written;
 
 	g_return_val_if_fail(type < NUGU_EQUEUE_TYPE_MAX, -1);
@@ -261,11 +302,25 @@ EXPORT_API int nugu_equeue_push(enum nugu_equeue_type type, void *data)
 
 	g_async_queue_push(_equeue->pendings, item);
 
-	written = write(_equeue->efd, &ev, sizeof(uint64_t));
-	if (written != sizeof(uint64_t)) {
-		nugu_error("write failed");
-		pthread_mutex_unlock(&_lock);
-		return -1;
+	if (_equeue->fds[1] == -1) {
+		uint64_t ev = 1;
+
+		written = write(_equeue->fds[0], &ev, sizeof(ev));
+		if (written != sizeof(ev)) {
+			nugu_error("write failed: %d, %d", written, errno);
+			pthread_mutex_unlock(&_lock);
+			return -1;
+		}
+
+	} else {
+		uint8_t ev = 1;
+
+		written = write(_equeue->fds[1], &ev, sizeof(ev));
+		if (written != sizeof(ev)) {
+			nugu_error("write failed: %d, %d", written, errno);
+			pthread_mutex_unlock(&_lock);
+			return -1;
+		}
 	}
 
 	pthread_mutex_unlock(&_lock);
