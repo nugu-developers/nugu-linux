@@ -17,7 +17,6 @@
 #ifndef __NUGU_DIRECTIVE_SEQUENCER_H__
 #define __NUGU_DIRECTIVE_SEQUENCER_H__
 
-#include <deque>
 #include <map>
 #include <vector>
 
@@ -29,6 +28,9 @@ namespace NuguCore {
 
 using namespace NuguClientKit;
 
+class LookupTable;
+class DialogDirectiveList;
+
 class DirectiveSequencer : public IDirectiveSequencer {
 
 public:
@@ -36,6 +38,7 @@ public:
     virtual ~DirectiveSequencer();
 
     void reset();
+
     void addListener(const std::string& name_space, IDirectiveSequencerListener* listener) override;
     void removeListener(const std::string& name_space, IDirectiveSequencerListener* listener) override;
 
@@ -47,8 +50,6 @@ public:
     bool add(NuguDirective* ndir) override;
 
     using BlockingPolicyMap = std::map<std::string, std::map<std::string, BlockingPolicy>>;
-    using DialogQueueMap = std::map<std::string, std::deque<NuguDirective*>>;
-    using MsgidDirectiveMap = std::map<std::string, NuguDirective*>;
 
 private:
     /**
@@ -60,27 +61,20 @@ private:
     BlockingPolicyMap policy_map;
 
     /**
-     * ["namespace"] = IDirectiveSequencerListener*
+     * ["namespace"] = [ IDirectiveSequencerListener*, ... ]
      */
     std::map<std::string, std::vector<IDirectiveSequencerListener*>> listeners_map;
 
     /**
-     * Lookup table for directive searching when receive an attachment
-     * ["message-id"] = NuguDirective*
+     * Message-id lookup table for directive searching when receive an attachment
      */
-    MsgidDirectiveMap msgid_directive_map;
+    LookupTable* msgid_lookup;
 
     /**
-     * Pending directive queue for dialog-id
-     *   audio_map["dialog-id-a"] = [
-     *     directive-1(block), directive-2(non-block)
-     *   ]
-     *   audio_map["dialog-id-b"] = [ directive-4(block) ]
-     *   visual_map["dialog-id-a"] = [ directive-3(block) ]
-     *   visual_map["dialog-id-b"] = []
+     * Pending / Active directive queue for dialog-id
      */
-    DialogQueueMap audio_map;
-    DialogQueueMap visual_map;
+    DialogDirectiveList* pending;
+    DialogDirectiveList* active;
 
     /**
      * Scheduled directive lists to handle in next idle time
