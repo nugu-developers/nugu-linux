@@ -226,7 +226,7 @@ static void test_sequencer_simple_add(void)
     g_assert(dummy->value == 0);
     nugu_directive_unref(ndir);
 
-    /* Same handler for different namespaces. */
+    /* Corresponding listener */
     dummy->value = 0;
     ndir = directive_new("TTS", "invalid", "dlg1", "msg1");
     g_assert(seq.add(ndir) == true);
@@ -307,8 +307,8 @@ public:
 
             speak_dir = ndir;
 
-            /* Unblock the blocking directive after 500ms */
-            idler = g_timeout_add(500, onTimeout, this);
+            /* Unblock the blocking directive after 100ms */
+            idler = g_timeout_add(100, onTimeout, this);
         } else if (g_strcmp0(nugu_directive_peek_name(ndir), "Quit") == 0) {
             seq->complete(ndir);
             g_main_loop_quit(loop);
@@ -322,7 +322,6 @@ public:
     static gboolean onTimeout(gpointer userdata)
     {
         TTSAgent* agent = static_cast<TTSAgent*>(userdata);
-
         agent->idler = 0;
         agent->speakFinished();
 
@@ -449,8 +448,8 @@ public:
         if (g_strcmp0(nugu_directive_peek_name(ndir), "Block") == 0) {
             block_dir = ndir;
 
-            /* Unblock the blocking directive after 500ms */
-            g_timeout_add(500, onTimeout, this);
+            /* Unblock the blocking directive after 100ms */
+            g_timeout_add(100, onTimeout, this);
         } else if (g_strcmp0(nugu_directive_peek_name(ndir), "Signal") == 0) {
             seq->complete(ndir);
             g_main_loop_quit(loop);
@@ -593,6 +592,287 @@ static void test_sequencer_multi_dialog(void)
     delete tts;
 }
 
+static void test_sequencer_reset(void)
+{
+    DirectiveSequencer seq;
+    CountAgent* counter1 = new CountAgent;
+    NuguDirective* ndir;
+    BlockingPolicy policy;
+
+    g_assert(seq.addPolicy("TTS", "Speak", { BlockingMedium::AUDIO, true }) == true);
+    g_assert(seq.addPolicy("AudioPlayer", "Play", { BlockingMedium::AUDIO, false }) == true);
+
+    policy = seq.getPolicy("TTS", "Speak");
+    g_assert(policy.medium == BlockingMedium::AUDIO);
+    g_assert(policy.isBlocking == true);
+
+    policy = seq.getPolicy("AudioPlayer", "Play");
+    g_assert(policy.medium == BlockingMedium::AUDIO);
+    g_assert(policy.isBlocking == false);
+
+    seq.addListener("Test", counter1);
+    counter1->value = 0;
+    ndir = directive_new("Test", "1", "dlg1", "msg1");
+    g_assert(seq.add(ndir) == true);
+    g_assert(counter1->value == 2);
+    seq.complete(ndir);
+
+    /* Reset all state without listeners */
+    seq.reset();
+
+    /* Policy info removed */
+    policy = seq.getPolicy("TTS", "Speak");
+    g_assert(policy.medium == BlockingMedium::NONE);
+    g_assert(policy.isBlocking == false);
+
+    policy = seq.getPolicy("AudioPlayer", "Play");
+    g_assert(policy.medium == BlockingMedium::NONE);
+    g_assert(policy.isBlocking == false);
+
+    /* Listener info existed */
+    counter1->value = 0;
+    ndir = directive_new("Test", "1", "dlg1", "msg1");
+    g_assert(seq.add(ndir) == true);
+    g_assert(counter1->value == 2);
+
+    seq.complete(ndir);
+    delete counter1;
+}
+
+typedef struct _CallbackData {
+    gpointer agent;
+    NuguDirective* ndir;
+} CallbackData;
+
+class ASyncAgent : public IDirectiveSequencerListener {
+public:
+    ASyncAgent(DirectiveSequencer* seq, GMainLoop* loop, std::string& buffer)
+        : seq(seq)
+        , loop(loop)
+        , buffer(buffer)
+    {
+    }
+    virtual ~ASyncAgent() = default;
+
+    bool onPreHandleDirective(NuguDirective* ndir) override
+    {
+        return false;
+    }
+
+    void onCancelDirective(NuguDirective* ndir) override
+    {
+    }
+
+    bool onHandleDirective(NuguDirective* ndir) override
+    {
+        CallbackData* cd = new CallbackData();
+        cd->agent = this;
+        cd->ndir = ndir;
+
+        /* Append start('S') mark */
+        std::string temp = "[S:";
+        temp.append(nugu_directive_peek_msg_id(ndir));
+        temp.append("]");
+
+        buffer.append(temp);
+        g_idle_add(onIdle, cd);
+        return true;
+    }
+
+    static gboolean onIdle(gpointer userdata)
+    {
+        CallbackData* cd = static_cast<CallbackData*>(userdata);
+        ASyncAgent* agent = static_cast<ASyncAgent*>(cd->agent);
+        bool isExit = false;
+
+        if (g_strcmp0(nugu_directive_peek_msg_id(cd->ndir), "msgquit") == 0)
+            isExit = true;
+
+        /* Append end('E') mark */
+        std::string temp = "[E:";
+        temp.append(nugu_directive_peek_msg_id(cd->ndir));
+        temp.append("]");
+
+        agent->buffer.append(temp);
+        agent->seq->complete(cd->ndir);
+
+        delete cd;
+
+        if (isExit)
+            g_main_loop_quit(agent->loop);
+
+        return FALSE;
+    }
+
+    DirectiveSequencer* seq;
+    GMainLoop* loop;
+    std::string& buffer;
+};
+
+static void test_sequencer_any1(void)
+{
+    DirectiveSequencer seq;
+    NuguDirective* ndir;
+    GMainLoop* loop = g_main_loop_new(NULL, FALSE);
+    std::string buffer;
+    std::string expected = "[S:msg1][E:msg1][S:msg2][E:msg2]"
+                           "[S:msg3][E:msg3][S:msg4][E:msg4]"
+                           "[S:msgquit][E:msgquit]";
+    ASyncAgent* async = new ASyncAgent(&seq, loop, buffer);
+
+    g_assert(seq.addPolicy("TTS", "Speak", { BlockingMedium::AUDIO, true }) == true);
+    g_assert(seq.addPolicy("AudioPlayer", "Play", { BlockingMedium::AUDIO, false }) == true);
+    g_assert(seq.addPolicy("Utility", "Block", { BlockingMedium::ANY, true }) == true);
+
+    seq.addListener("TTS", async);
+    seq.addListener("AudioPlayer", async);
+    seq.addListener("Utility", async);
+    seq.addListener("Extension", async);
+    seq.addListener("Text", async);
+
+    ndir = directive_new("TTS", "Speak", "dlg1", "msg1");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Utility", "Block", "dlg1", "msg2");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Extension", "Action", "dlg1", "msg3");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Utility", "Block", "dlg1", "msg4");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Text", "TextRedirect", "dlg1", "msgquit");
+    g_assert(seq.add(ndir) == true);
+
+    /* Start mainloop */
+    g_main_loop_run(loop);
+    g_main_loop_unref(loop);
+
+    /* check directive handle sequence */
+    g_assert(buffer == expected);
+
+    delete async;
+}
+
+static void test_sequencer_any2(void)
+{
+    DirectiveSequencer seq;
+    NuguDirective* ndir;
+    GMainLoop* loop = g_main_loop_new(NULL, FALSE);
+    std::string buffer;
+    std::string expected = "[S:msg1][S:msg2][E:msg1][E:msg2]"
+                           "[S:msg3][E:msg3][S:msg4][E:msg4]"
+                           "[S:msgquit][E:msgquit]";
+    ASyncAgent* async = new ASyncAgent(&seq, loop, buffer);
+
+    g_assert(seq.addPolicy("TTS", "Speak", { BlockingMedium::AUDIO, true }) == true);
+    g_assert(seq.addPolicy("AudioPlayer", "Play", { BlockingMedium::AUDIO, true }) == true);
+    g_assert(seq.addPolicy("Utility", "Block", { BlockingMedium::ANY, true }) == true);
+    g_assert(seq.addPolicy("Display", "Visual", { BlockingMedium::VISUAL, true }) == true);
+
+    seq.addListener("TTS", async);
+    seq.addListener("AudioPlayer", async);
+    seq.addListener("Utility", async);
+    seq.addListener("Dummy", async);
+    seq.addListener("Display", async);
+
+    ndir = directive_new("AudioPlayer", "Play", "dlg1", "msg1");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Display", "Visual", "dlg1", "msg2");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("AudioPlayer", "Play", "dlg1", "msg3");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Utility", "Block", "dlg1", "msg4");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Dummy", "None", "dlg1", "msgquit");
+    g_assert(seq.add(ndir) == true);
+
+    /* Start mainloop */
+    g_main_loop_run(loop);
+    g_main_loop_unref(loop);
+
+    /* check directive handle sequence */
+    g_assert(buffer == expected);
+
+    delete async;
+}
+
+static void test_sequencer_any3(void)
+{
+    DirectiveSequencer seq;
+    NuguDirective* ndir;
+    GMainLoop* loop = g_main_loop_new(NULL, FALSE);
+    std::string buffer;
+    std::string expected = "[S:msg1][S:msg2][E:msg1][E:msg2]"
+                           "[S:msg3][E:msg3][S:msg4]"
+                           "[S:msgquit][E:msg4][E:msgquit]";
+    ASyncAgent* async = new ASyncAgent(&seq, loop, buffer);
+
+    g_assert(seq.addPolicy("Utility", "Block", { BlockingMedium::ANY, true }) == true);
+
+    seq.addListener("Utility", async);
+    seq.addListener("Dummy", async);
+
+    ndir = directive_new("Dummy", "None", "dlg1", "msg1");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Dummy", "None", "dlg1", "msg2");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Utility", "Block", "dlg1", "msg3");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Dummy", "None", "dlg1", "msg4");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Dummy", "None", "dlg1", "msgquit");
+    g_assert(seq.add(ndir) == true);
+
+    /* Start mainloop */
+    g_main_loop_run(loop);
+    g_main_loop_unref(loop);
+
+    /* check directive handle sequence */
+    g_assert(buffer == expected);
+
+    delete async;
+}
+
+static void test_sequencer_any4(void)
+{
+    DirectiveSequencer seq;
+    NuguDirective* ndir;
+    GMainLoop* loop = g_main_loop_new(NULL, FALSE);
+    std::string buffer;
+    std::string expected = "[S:msg1][E:msg1][S:msg2][E:msg2]"
+                           "[S:msg3][E:msg3][S:msg4][E:msg4]"
+                           "[S:msgquit][E:msgquit]";
+    ASyncAgent* async = new ASyncAgent(&seq, loop, buffer);
+
+    g_assert(seq.addPolicy("Utility", "Block", { BlockingMedium::ANY, true }) == true);
+
+    seq.addListener("Utility", async);
+    seq.addListener("Dummy", async);
+
+    ndir = directive_new("Utility", "Block", "dlg1", "msg1");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Dummy", "None", "dlg1", "msg2");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Utility", "Block", "dlg1", "msg3");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Dummy", "None", "dlg1", "msg4");
+    g_assert(seq.add(ndir) == true);
+    ndir = directive_new("Utility", "Block", "dlg1", "msgquit");
+    g_assert(seq.add(ndir) == true);
+
+    /* Start mainloop */
+    g_main_loop_run(loop);
+    g_main_loop_unref(loop);
+
+    /*
+     * Debug messages comparing expected and actual results.
+     * nugu_error("\n%s\n%s", expected.c_str(), buffer.c_str());
+     */
+
+    /* check directive handle sequence */
+    g_assert(buffer == expected);
+
+    delete async;
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -608,6 +888,11 @@ int main(int argc, char* argv[])
     g_test_add_func("/core/DirectiveSequencer/simple_blocking", test_sequencer_simple_blocking);
     g_test_add_func("/core/DirectiveSequencer/multi_blocking", test_sequencer_multi_blocking);
     g_test_add_func("/core/DirectiveSequencer/multi_dialog", test_sequencer_multi_dialog);
+    g_test_add_func("/core/DirectiveSequencer/reset", test_sequencer_reset);
+    g_test_add_func("/core/DirectiveSequencer/any1", test_sequencer_any1);
+    g_test_add_func("/core/DirectiveSequencer/any2", test_sequencer_any2);
+    g_test_add_func("/core/DirectiveSequencer/any3", test_sequencer_any3);
+    g_test_add_func("/core/DirectiveSequencer/any4", test_sequencer_any4);
 
     return g_test_run();
 }

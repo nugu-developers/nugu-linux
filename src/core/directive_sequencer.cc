@@ -32,69 +32,284 @@ static void dump_policies(const DirectiveSequencer::BlockingPolicyMap& m)
         return;
     }
 
-    nugu_info("--[BlockingPolicy]--");
+    nugu_dbg("--[BlockingPolicy]--");
 
     for (auto& item : m) {
         nugu_dbg("\tNamespace: %s", item.first.c_str());
 
         for (auto& policy : item.second) {
-            nugu_dbg("\t\tName: %s, Medium: %d, Blocking: %d", policy.first.c_str(),
+            nugu_dbg("\t\tName: %s, Medium: %d, Blocking: %d",
+                policy.first.c_str(),
                 policy.second.medium, policy.second.isBlocking);
         }
     }
 }
 
-static void dump_dialog_queue(const DirectiveSequencer::DialogQueueMap& audio, const DirectiveSequencer::DialogQueueMap& visual)
+/**
+ * Lookup Table - String-NuguDirective map
+ *
+ *   Table["message-id"] = NuguDirective*
+ *
+ */
+class LookupTable {
+public:
+    LookupTable(std::string title);
+    virtual ~LookupTable();
+
+    NuguDirective* find(const std::string& id);
+    bool set(const std::string& id, NuguDirective* ndir);
+    void remove(const std::string& id);
+    void dump();
+    void clear();
+
+private:
+    std::string title;
+    std::map<std::string, NuguDirective*> table;
+};
+
+LookupTable::LookupTable(std::string title)
+    : title(title)
 {
-    if (audio.size() == 0) {
-        nugu_dbg("Empty DialogQueue for Medium::AUDIO");
-    } else {
-        nugu_info("--[DialogQueue for Medium::AUDIO]--");
-
-        for (auto& queue : audio) {
-            nugu_dbg("\tDialog-id: '%s'", queue.first.c_str());
-            for (auto& ndir : queue.second) {
-                nugu_dbg("\t\t%s.%s", nugu_directive_peek_namespace(ndir),
-                    nugu_directive_peek_name(ndir));
-            }
-        }
-    }
-
-    if (visual.size() == 0) {
-        nugu_dbg("Empty DialogQueue for Medium::VISUAL");
-    } else {
-        nugu_info("--[DialogQueue for Medium::VISUAL]--");
-
-        for (auto& queue : visual) {
-            nugu_dbg("\tDialog-id: '%s'", queue.first.c_str());
-            for (auto& ndir : queue.second) {
-                nugu_dbg("\t\t%s.%s", nugu_directive_peek_namespace(ndir),
-                    nugu_directive_peek_name(ndir));
-            }
-        }
-    }
 }
 
-static void dump_msgid(const std::map<std::string, NuguDirective*>& m)
+LookupTable::~LookupTable()
 {
-    if (m.size() == 0) {
-        nugu_dbg("Empty msgid lookup table");
+}
+
+NuguDirective* LookupTable::find(const std::string& id)
+{
+    NuguDirective* ndir;
+    std::map<std::string, NuguDirective*>::const_iterator iter;
+
+    iter = table.find(id);
+    if (iter == table.end())
+        return NULL;
+
+    ndir = iter->second;
+    if (!ndir) {
+        nugu_error("internal error: invalid directive");
+        return NULL;
+    }
+
+    return ndir;
+}
+
+bool LookupTable::set(const std::string& id, NuguDirective* ndir)
+{
+    if (ndir == NULL)
+        return false;
+
+    table[id] = ndir;
+
+    return true;
+}
+
+void LookupTable::remove(const std::string& id)
+{
+    table.erase(id);
+}
+
+void LookupTable::clear()
+{
+    table.clear();
+}
+
+void LookupTable::dump()
+{
+    if (table.size() == 0) {
+        nugu_dbg("-- %s: none", title.c_str());
         return;
     }
 
-    nugu_info("--[msgid lookup table]--");
+    nugu_dbg("-- %s items --", title.c_str());
 
-    for (auto& ndir : m) {
-        nugu_dbg("\tMessage-id(%s): %s.%s dialog_id(%s)", ndir.first.c_str(),
+    for (auto& ndir : table) {
+        nugu_dbg("\tMessage-Id(%s): %s.%s dialog_id(%s) msg_id(%s)",
+            ndir.first.c_str(),
             nugu_directive_peek_namespace(ndir.second),
             nugu_directive_peek_name(ndir.second),
-            nugu_directive_peek_dialog_id(ndir.second));
+            nugu_directive_peek_dialog_id(ndir.second),
+            nugu_directive_peek_msg_id(ndir.second));
     }
 }
 
+/**
+ * Dialog-DirectiveList Map
+ *
+ *   DialogListMap["dialog-id-a"] = [
+ *     NuguDirective(block), NuguDirective(non-block)
+ *   ],
+ *   DialogListMap["dialog-id-b"] = [
+ *     NuguDirective(block)
+ *   ]
+ *
+ */
+class DialogDirectiveList {
+public:
+    DialogDirectiveList(std::string title);
+    virtual ~DialogDirectiveList();
+
+    bool push(NuguDirective* ndir);
+    bool isEmpty(const char* dialog_id);
+    bool remove(NuguDirective* ndir);
+    void erase(const char* dialog_id);
+    void clear();
+    void dump();
+    std::vector<NuguDirective*>* getList(const char* dialog_id);
+    NuguDirective* findByMedium(const char* dialog_id, enum nugu_directive_medium medium);
+    bool isBlockByPolicy(NuguDirective* target_dir);
+
+    using DialogListMap = std::map<std::string, std::vector<NuguDirective*>>;
+
+private:
+    std::string title;
+    DialogListMap listmap;
+};
+
+DialogDirectiveList::DialogDirectiveList(std::string title)
+    : title(title)
+{
+}
+
+DialogDirectiveList::~DialogDirectiveList()
+{
+}
+
+bool DialogDirectiveList::push(NuguDirective* ndir)
+{
+    const char* dialog_id = nugu_directive_peek_dialog_id(ndir);
+
+    listmap[dialog_id].push_back(ndir);
+
+    return true;
+}
+
+bool DialogDirectiveList::isEmpty(const char* dialog_id)
+{
+    DialogListMap::iterator iter = listmap.find(dialog_id);
+    if (iter != listmap.end())
+        return false;
+
+    return true;
+}
+
+bool DialogDirectiveList::remove(NuguDirective* ndir)
+{
+    if (ndir == NULL)
+        return false;
+
+    const char* dialog_id = nugu_directive_peek_dialog_id(ndir);
+    DialogListMap::iterator iter = listmap.find(dialog_id);
+    if (iter == listmap.end())
+        return true;
+
+    std::vector<NuguDirective*> dlist = iter->second;
+
+    /* remove the directive from directive list */
+    dlist.erase(
+        std::remove_if(dlist.begin(), dlist.end(),
+            [ndir](NuguDirective* target_ndir) {
+                return (ndir == target_ndir);
+            }),
+        dlist.end());
+
+    iter->second = dlist;
+
+    if (dlist.size() == 0)
+        listmap.erase(dialog_id);
+
+    return true;
+}
+
+NuguDirective* DialogDirectiveList::findByMedium(const char* dialog_id,
+    enum nugu_directive_medium medium)
+{
+    DialogListMap::iterator iter = listmap.find(dialog_id);
+    if (iter == listmap.end())
+        return NULL;
+
+    for (auto& ndir : iter->second) {
+        if (nugu_directive_get_blocking_medium(ndir) == medium)
+            return ndir;
+    }
+
+    return NULL;
+}
+
+bool DialogDirectiveList::isBlockByPolicy(NuguDirective* target_dir)
+{
+    DialogListMap::iterator iter = listmap.find(nugu_directive_peek_dialog_id(target_dir));
+    if (iter == listmap.end())
+        return false;
+
+    for (auto& ndir : iter->second) {
+        if (nugu_directive_get_blocking_medium(ndir)
+            != nugu_directive_get_blocking_medium(target_dir))
+            continue;
+
+        if (nugu_directive_is_blocking(ndir) == 1)
+            return true;
+    }
+
+    return false;
+}
+
+std::vector<NuguDirective*>* DialogDirectiveList::getList(const char* dialog_id)
+{
+    DialogListMap::iterator iter = listmap.find(dialog_id);
+    if (iter == listmap.end())
+        return NULL;
+
+    return &(iter->second);
+}
+
+void DialogDirectiveList::erase(const char* dialog_id)
+{
+    DialogListMap::iterator iter = listmap.find(dialog_id);
+    if (iter == listmap.end())
+        return;
+
+    iter->second.clear();
+    listmap.erase(dialog_id);
+}
+
+void DialogDirectiveList::clear()
+{
+    listmap.clear();
+}
+
+void DialogDirectiveList::dump()
+{
+    if (listmap.size() == 0) {
+        nugu_dbg("-- %s: none", title.c_str());
+        return;
+    }
+
+    nugu_dbg("-- %s items --", title.c_str());
+
+    for (auto& list : listmap) {
+        nugu_dbg("\tDialog-id: '%s'", list.first.c_str());
+        for (auto& ndir : list.second) {
+            nugu_dbg("\t\t'%s.%s' (%s) (%s/%s)",
+                nugu_directive_peek_namespace(ndir),
+                nugu_directive_peek_name(ndir),
+                nugu_directive_peek_msg_id(ndir),
+                nugu_directive_get_blocking_medium_string(ndir),
+                (nugu_directive_is_blocking(ndir) == 1) ? "Block" : "Non-block");
+        }
+    }
+}
+
+/**
+ * DirectiveSequencer
+ */
 DirectiveSequencer::DirectiveSequencer()
     : idler_src(0)
 {
+    msgid_lookup = new LookupTable("Msg-id Lookup table");
+    pending = new DialogDirectiveList("PendingList");
+    active = new DialogDirectiveList("ActiveList");
+
     nugu_network_manager_set_directive_callback(onDirective, this);
     nugu_network_manager_set_attachment_callback(onAttachment, this);
 }
@@ -103,6 +318,11 @@ DirectiveSequencer::~DirectiveSequencer()
 {
     nugu_network_manager_set_directive_callback(NULL, NULL);
     nugu_network_manager_set_attachment_callback(NULL, NULL);
+
+    delete pending;
+    delete active;
+
+    delete msgid_lookup;
 }
 
 void DirectiveSequencer::reset()
@@ -110,22 +330,18 @@ void DirectiveSequencer::reset()
     /* Cancel the pending idler */
     if (idler_src != 0)
         g_source_remove(idler_src);
+    idler_src = 0;
 
     dump_policies(policy_map);
-    dump_dialog_queue(audio_map, visual_map);
-    dump_msgid(msgid_directive_map);
+    pending->dump();
+    active->dump();
+    msgid_lookup->dump();
 
-    /* Remove scheduled(but not yet handled) directives */
-    for (auto& ndir : scheduled_list) {
-        nugu_directive_unref(ndir);
-    }
-
-    idler_src = 0;
     policy_map.clear();
-    msgid_directive_map.clear();
-    audio_map.clear();
-    visual_map.clear();
     scheduled_list.clear();
+    msgid_lookup->clear();
+    pending->clear();
+    active->clear();
 }
 
 /* Callback by network-manager */
@@ -144,19 +360,10 @@ void DirectiveSequencer::onAttachment(const char* parent_msg_id, int seq,
 {
     DirectiveSequencer* sequencer = static_cast<DirectiveSequencer*>(userdata);
     NuguDirective* ndir;
-    DirectiveSequencer::MsgidDirectiveMap::const_iterator iter;
 
-    iter = sequencer->msgid_directive_map.find(parent_msg_id);
-    if (iter == sequencer->msgid_directive_map.end()) {
-        nugu_error("can't find directive for attachment parent_message_id('%s')", parent_msg_id);
+    ndir = sequencer->msgid_lookup->find(parent_msg_id);
+    if (!ndir)
         return;
-    }
-
-    ndir = iter->second;
-    if (!ndir) {
-        nugu_error("internal error: invalid directive");
-        return;
-    }
 
     if (seq == 0)
         nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_FIRST_ATTACHMENT,
@@ -179,7 +386,7 @@ gboolean DirectiveSequencer::onNext(gpointer userdata)
 {
     DirectiveSequencer* sequencer = static_cast<DirectiveSequencer*>(userdata);
 
-    nugu_dbg("idle callback: process next directives");
+    nugu_dbg("idle callback: process next directives (%d)", sequencer->scheduled_list.size());
 
     for (auto& ndir : sequencer->scheduled_list)
         sequencer->handleDirective(ndir);
@@ -188,73 +395,6 @@ gboolean DirectiveSequencer::onNext(gpointer userdata)
     sequencer->scheduled_list.clear();
 
     return FALSE;
-}
-
-bool DirectiveSequencer::complete(NuguDirective* ndir)
-{
-    const char* name_space = nugu_directive_peek_namespace(ndir);
-    const char* name = nugu_directive_peek_name(ndir);
-    const char* msg_id = nugu_directive_peek_msg_id(ndir);
-
-    /* Remove from lookup table */
-    DirectiveSequencer::MsgidDirectiveMap::const_iterator msgid_iter = msgid_directive_map.find(msg_id);
-    if (msgid_iter != msgid_directive_map.end())
-        msgid_directive_map.erase(msgid_iter);
-
-    BlockingPolicy policy = getPolicy(name_space, name);
-
-    nugu_dbg("directive completed: '%s.%s' (medium: %d, isBlocking: %d)",
-        name_space, name, policy.medium, policy.isBlocking);
-
-    DirectiveSequencer::DialogQueueMap* qmap = nullptr;
-
-    if (policy.medium == BlockingMedium::AUDIO) {
-        qmap = &audio_map;
-    } else if (policy.medium == BlockingMedium::VISUAL) {
-        qmap = &visual_map;
-    } else {
-        /* NONE type does not need to check the queue */
-        nugu_directive_unref(ndir);
-        return true;
-    }
-
-    const char* dialog_id = nugu_directive_peek_dialog_id(ndir);
-    DirectiveSequencer::DialogQueueMap::iterator iter = qmap->find(dialog_id);
-
-    /* There is no queue for the dialog */
-    if (iter == qmap->end()) {
-        nugu_directive_unref(ndir);
-        return true;
-    }
-
-    /* The directive does not match the first entry in the queue. */
-    if (iter->second.front() != ndir) {
-        nugu_error("not yet handled blocking directive(%s)", dialog_id);
-        return false;
-    }
-
-    /* Remove the blocking directive from the queue */
-    iter->second.pop_front();
-
-    dump_dialog_queue(audio_map, visual_map);
-
-    /* The queue corresponding to the dialog is empty */
-    if (iter->second.size() == 0) {
-        nugu_dbg("no pending directives. remove the dialog(%s) from map", dialog_id);
-        qmap->erase(dialog_id);
-        nugu_directive_unref(ndir);
-        return true;
-    }
-
-    nugu_directive_unref(ndir);
-
-    /* Add next directive to scheduled list to handle at next idle time */
-    scheduled_list.push_back(iter->second.front());
-
-    if (idler_src == 0)
-        idler_src = g_idle_add(onNext, this);
-
-    return true;
 }
 
 bool DirectiveSequencer::preHandleDirective(NuguDirective* ndir)
@@ -277,8 +417,10 @@ void DirectiveSequencer::handleDirective(NuguDirective* ndir)
     const char* name_space = nugu_directive_peek_namespace(ndir);
     const char* name = nugu_directive_peek_name(ndir);
 
-    nugu_dbg("process the directive '%s.%s'", name_space, name);
+    nugu_info("process the directive '%s.%s'", name_space, name);
     nugu_directive_set_active(ndir, 1);
+
+    active->dump();
 
     for (auto& listener : listeners_map[name_space]) {
         if (listener->onHandleDirective(ndir) == false) {
@@ -294,11 +436,89 @@ void DirectiveSequencer::cancelDirective(NuguDirective* ndir)
     const char* name_space = nugu_directive_peek_namespace(ndir);
     const char* name = nugu_directive_peek_name(ndir);
 
-    nugu_dbg("cancel the directive '%s.%s'", name_space, name);
+    nugu_info("cancel the directive '%s.%s'", name_space, name);
 
     for (auto& listener : listeners_map[name_space]) {
         listener->onCancelDirective(ndir);
     }
+}
+
+bool DirectiveSequencer::complete(NuguDirective* ndir)
+{
+    std::string dialog_id = nugu_directive_peek_dialog_id(ndir);
+    std::vector<NuguDirective*>::iterator iter;
+
+    nugu_info("complete '%s.%s' (medium: %s, isBlocking: %d)",
+        nugu_directive_peek_namespace(ndir),
+        nugu_directive_peek_name(ndir),
+        nugu_directive_get_blocking_medium_string(ndir),
+        nugu_directive_is_blocking(ndir));
+
+    active->remove(ndir);
+    active->dump();
+
+    iter = std::find(scheduled_list.begin(), scheduled_list.end(), ndir);
+    if (iter != scheduled_list.end()) {
+        nugu_dbg("- remove from the scheduled list");
+        scheduled_list.erase(iter);
+    }
+
+    msgid_lookup->remove(nugu_directive_peek_msg_id(ndir));
+    nugu_directive_unref(ndir);
+
+    nugu_dbg("search next pending item");
+
+    std::vector<NuguDirective*>* list = pending->getList(dialog_id.c_str());
+    if (list == NULL) {
+        nugu_dbg("- no pending items");
+        return true;
+    }
+
+    pending->dump();
+
+    for (auto& next_dir : *list) {
+        nugu_dbg("- check '%s.%s' (%s/%s)",
+            nugu_directive_peek_namespace(next_dir),
+            nugu_directive_peek_name(next_dir),
+            nugu_directive_get_blocking_medium_string(next_dir),
+            (nugu_directive_is_blocking(next_dir) == 1) ? "Block" : "Non-block");
+
+        if (active->findByMedium(dialog_id.c_str(), NUGU_DIRECTIVE_MEDIUM_ANY) != NULL) {
+            nugu_dbg("  - Directive[ANY] is already in progress.");
+            break;
+        }
+
+        if (active->isBlockByPolicy(next_dir) == true) {
+            nugu_dbg("  - Same medium is already in progress.");
+            continue;
+        }
+
+        if (nugu_directive_get_blocking_medium(next_dir) == NUGU_DIRECTIVE_MEDIUM_ANY) {
+            if (active->isEmpty(dialog_id.c_str()) == false) {
+                nugu_dbg("  - Another directive is already in progress.");
+                break;
+            }
+        }
+
+        active->push(next_dir);
+
+        /* Add next directive to scheduled list to handle at next idle time */
+        iter = std::find(scheduled_list.begin(), scheduled_list.end(), next_dir);
+        if (iter == scheduled_list.end())
+            scheduled_list.push_back(next_dir);
+    }
+
+    std::for_each(scheduled_list.begin(), scheduled_list.end(),
+        [this](NuguDirective* scheduled_dir) {
+            this->pending->remove(scheduled_dir);
+        });
+
+    nugu_dbg("- search done");
+
+    if (idler_src == 0)
+        idler_src = g_idle_add(onNext, this);
+
+    return true;
 }
 
 bool DirectiveSequencer::add(NuguDirective* ndir)
@@ -309,64 +529,113 @@ bool DirectiveSequencer::add(NuguDirective* ndir)
     }
 
     const char* name_space = nugu_directive_peek_namespace(ndir);
-    const char* name = nugu_directive_peek_name(ndir);
-
     if (listeners_map.find(name_space) == listeners_map.end()) {
         nugu_error("can't find '%s' capability agent", name_space);
         return false;
     }
 
-    BlockingPolicy policy = getPolicy(name_space, name);
     assignPolicy(ndir);
 
-    nugu_dbg("receive '%s.%s' directive (medium: %d, isBlocking: %s)",
-        name_space, name, policy.medium,
-        (policy.isBlocking == true) ? "True" : "False");
+    nugu_info("receive '%s.%s' directive (%s/%s)", name_space,
+        nugu_directive_peek_name(ndir),
+        nugu_directive_get_blocking_medium_string(ndir),
+        (nugu_directive_is_blocking(ndir) == 1) ? "Block" : "Non-block");
 
-    /* Stop propagation if the directive was pre-processed */
+    /**
+     * Stop propagation if the directive was pre-processed.
+     * Pre-handled directive must be dereferenced in corresponding listener.
+     */
     if (preHandleDirective(ndir))
         return true;
 
     /**
-     * Add the directive to the lookup table to quickly find the corresponding
+     * Set the directive to the lookup-table to quickly find the corresponding
      * directive when receiving an attachment.
      */
-    msgid_directive_map[nugu_directive_peek_msg_id(ndir)] = ndir;
+    msgid_lookup->set(nugu_directive_peek_msg_id(ndir), ndir);
 
-    DialogQueueMap* qmap = nullptr;
-
-    if (policy.medium == BlockingMedium::AUDIO) {
-        qmap = &audio_map;
-    } else if (policy.medium == BlockingMedium::VISUAL) {
-        qmap = &visual_map;
-    } else {
-        nugu_dbg("BlockingMedium::NONE type - handle immediately");
-        handleDirective(ndir);
-        return true;
-    }
+    active->dump();
+    pending->dump();
 
     const char* dialog_id = nugu_directive_peek_dialog_id(ndir);
 
-    DialogQueueMap::iterator iter = qmap->find(dialog_id);
-
-    /* There are already blocking directive in the queue */
-    if (iter != qmap->end()) {
-        nugu_dbg("push '%s.%s' to queue due to the previous blocking directive.", name_space, name);
-        iter->second.push_back(ndir);
-        dump_dialog_queue(audio_map, visual_map);
+    if (active->findByMedium(dialog_id, NUGU_DIRECTIVE_MEDIUM_ANY) != NULL) {
+        nugu_dbg("- Directive[ANY] is already in progress.");
+        pending->push(ndir);
+        pending->dump();
         return true;
     }
 
-    nugu_dbg("Handle the directive immediately due to empty queue");
-
-    if (policy.isBlocking) {
-        nugu_dbg("push '%s.%s' to queue due to blocking policy", name_space, name);
-        (*qmap)[dialog_id].push_back(ndir);
+    if (pending->findByMedium(dialog_id, NUGU_DIRECTIVE_MEDIUM_ANY) != NULL) {
+        nugu_dbg("- Directive[ANY] is already pending.");
+        pending->push(ndir);
+        pending->dump();
+        return true;
     }
 
-    dump_dialog_queue(audio_map, visual_map);
+    if (active->isBlockByPolicy(ndir) == true) {
+        nugu_dbg("- Same medium is already in progress.");
+        pending->push(ndir);
+        pending->dump();
+        return true;
+    }
 
+    /* ANY medium can blocked by Audio/Visual/None/Any block policy */
+    if (nugu_directive_get_blocking_medium(ndir) == NUGU_DIRECTIVE_MEDIUM_ANY) {
+        if (active->isEmpty(dialog_id) == false) {
+            nugu_dbg("- Another directive is already in progress.");
+            pending->push(ndir);
+            pending->dump();
+            return true;
+        }
+    }
+
+    active->push(ndir);
     handleDirective(ndir);
+
+    return true;
+}
+
+bool DirectiveSequencer::cancel(const std::string& dialog_id)
+{
+    nugu_dbg("cancel all directives for dialog_id(%s)", dialog_id.c_str());
+
+    /* remove directive from scheduled list */
+    auto new_end = std::remove_if(scheduled_list.begin(), scheduled_list.end(),
+        [dialog_id](NuguDirective* ndir) {
+            return (dialog_id.compare(nugu_directive_peek_dialog_id(ndir)) == 0);
+        });
+    scheduled_list.erase(new_end, scheduled_list.end());
+
+    /* Remove from pending list without cancel notify */
+    std::vector<NuguDirective*>* list = pending->getList(dialog_id.c_str());
+    if (list != NULL) {
+        for (auto& ndir : *list) {
+            msgid_lookup->remove(nugu_directive_peek_msg_id(ndir));
+
+            nugu_directive_unref(ndir);
+        };
+
+        pending->erase(dialog_id.c_str());
+        pending->dump();
+    }
+
+    /* Remove from active list with cancel notify */
+    list = active->getList(dialog_id.c_str());
+    if (list != NULL) {
+        for (auto& ndir : *list) {
+            msgid_lookup->remove(nugu_directive_peek_msg_id(ndir));
+
+            cancelDirective(ndir);
+
+            nugu_directive_unref(ndir);
+        };
+
+        active->erase(dialog_id.c_str());
+        active->dump();
+    }
+
+    msgid_lookup->dump();
 
     return true;
 }
@@ -465,78 +734,6 @@ void DirectiveSequencer::assignPolicy(NuguDirective* ndir)
         medium = NUGU_DIRECTIVE_MEDIUM_ANY;
 
     nugu_directive_set_blocking_policy(ndir, medium, is_block);
-}
-
-bool DirectiveSequencer::cancel(const std::string& dialog_id)
-{
-    DialogQueueMap::iterator audio_iter;
-    DialogQueueMap::iterator visual_iter;
-    DirectiveSequencer::MsgidDirectiveMap::const_iterator msgid_iter;
-
-    nugu_dbg("cancel all directives for dialog_id(%s)", dialog_id.c_str());
-
-    /* remove directive from scheduled list */
-    auto new_end = std::remove_if(scheduled_list.begin(), scheduled_list.end(),
-        [dialog_id](NuguDirective* ndir) {
-            return (dialog_id.compare(nugu_directive_peek_dialog_id(ndir)) == 0);
-        });
-    scheduled_list.erase(new_end, scheduled_list.end());
-
-    audio_iter = audio_map.find(dialog_id);
-    visual_iter = visual_map.find(dialog_id);
-
-    if (audio_iter == audio_map.end() && visual_iter == visual_map.end()) {
-        nugu_error("can't find pending directives for dialog_id(%s)", dialog_id.c_str());
-        return true;
-    }
-
-    dump_msgid(msgid_directive_map);
-
-    /* remove audio queue */
-    if (audio_iter != audio_map.end()) {
-        for (auto& ndir : audio_iter->second) {
-            /* Remove from lookup table */
-            msgid_iter = msgid_directive_map.find(nugu_directive_peek_msg_id(ndir));
-            if (msgid_iter != msgid_directive_map.end())
-                msgid_directive_map.erase(msgid_iter);
-
-            cancelDirective(ndir);
-
-            /* Destroy the directive */
-            nugu_directive_unref(ndir);
-        }
-
-        /* Clear the queue */
-        audio_iter->second.clear();
-
-        audio_map.erase(dialog_id);
-    }
-
-    /* remove visual queue */
-    if (visual_iter != visual_map.end()) {
-        for (auto& ndir : visual_iter->second) {
-            /* Remove from lookup table */
-            msgid_iter = msgid_directive_map.find(nugu_directive_peek_msg_id(ndir));
-            if (msgid_iter != msgid_directive_map.end())
-                msgid_directive_map.erase(msgid_iter);
-
-            cancelDirective(ndir);
-
-            /* Destroy the directive */
-            nugu_directive_unref(ndir);
-        }
-
-        /* Clear the queue */
-        visual_iter->second.clear();
-
-        visual_map.erase(dialog_id);
-    }
-
-    dump_msgid(msgid_directive_map);
-
-    dump_dialog_queue(audio_map, visual_map);
-
-    return true;
 }
 
 }

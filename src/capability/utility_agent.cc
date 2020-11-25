@@ -38,6 +38,8 @@ void UtilityAgent::initialize()
 
     timer = std::unique_ptr<INuguTimer>(core_container->createNuguTimer(true));
 
+    addBlockingPolicy("Block", { BlockingMedium::ANY, true });
+
     initialized = true;
 }
 
