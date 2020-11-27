@@ -34,6 +34,9 @@ struct _nugu_directive {
 	char *referrer_id;
 	char *groups;
 
+	enum nugu_directive_medium policy_medium;
+	int is_policy_block;
+
 	int seq;
 	int is_active;
 	int is_end;
@@ -71,6 +74,9 @@ nugu_directive_new(const char *name_space, const char *name,
 	ndir->referrer_id = g_strdup(referrer_id);
 	ndir->json = g_strdup(json);
 	ndir->groups = g_strdup(groups);
+
+	ndir->policy_medium = NUGU_DIRECTIVE_MEDIUM_NONE;
+	ndir->is_policy_block = 0;
 
 	ndir->seq = -1;
 	ndir->is_active = 0;
@@ -318,6 +324,53 @@ EXPORT_API size_t nugu_directive_get_data_size(NuguDirective *ndir)
 	size = nugu_buffer_get_size(ndir->buf);
 
 	return size;
+}
+
+EXPORT_API int nugu_directive_set_blocking_policy(
+	NuguDirective *ndir, enum nugu_directive_medium medium, int is_block)
+{
+	g_return_val_if_fail(ndir != NULL, -1);
+
+	ndir->policy_medium = medium;
+	ndir->is_policy_block = is_block;
+
+	return 0;
+}
+
+EXPORT_API enum nugu_directive_medium
+nugu_directive_get_blocking_medium(NuguDirective *ndir)
+{
+	g_return_val_if_fail(ndir != NULL, -1);
+
+	return ndir->policy_medium;
+}
+
+EXPORT_API const char *
+nugu_directive_get_blocking_medium_string(NuguDirective *ndir)
+{
+	g_return_val_if_fail(ndir != NULL, NULL);
+
+	switch (ndir->policy_medium) {
+	case NUGU_DIRECTIVE_MEDIUM_ANY:
+		return "ANY";
+	case NUGU_DIRECTIVE_MEDIUM_AUDIO:
+		return "AUDIO";
+	case NUGU_DIRECTIVE_MEDIUM_VISUAL:
+		return "VISUAL";
+	case NUGU_DIRECTIVE_MEDIUM_NONE:
+		return "NONE";
+	default:
+		break;
+	}
+
+	return "----";
+}
+
+EXPORT_API int nugu_directive_is_blocking(NuguDirective *ndir)
+{
+	g_return_val_if_fail(ndir != NULL, -1);
+
+	return ndir->is_policy_block;
 }
 
 EXPORT_API int nugu_directive_set_data_callback(

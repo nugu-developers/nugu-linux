@@ -317,6 +317,7 @@ bool DirectiveSequencer::add(NuguDirective* ndir)
     }
 
     BlockingPolicy policy = getPolicy(name_space, name);
+    assignPolicy(ndir);
 
     nugu_dbg("receive '%s.%s' directive (medium: %d, isBlocking: %s)",
         name_space, name, policy.medium,
@@ -444,6 +445,26 @@ BlockingPolicy DirectiveSequencer::getPolicy(const std::string& name_space,
         return default_policy;
 
     return j->second;
+}
+
+void DirectiveSequencer::assignPolicy(NuguDirective* ndir)
+{
+    int is_block = 0;
+    enum nugu_directive_medium medium = NUGU_DIRECTIVE_MEDIUM_NONE;
+    BlockingPolicy policy = getPolicy(nugu_directive_peek_namespace(ndir),
+        nugu_directive_peek_name(ndir));
+
+    if (policy.isBlocking)
+        is_block = 1;
+
+    if (policy.medium == BlockingMedium::AUDIO)
+        medium = NUGU_DIRECTIVE_MEDIUM_AUDIO;
+    else if (policy.medium == BlockingMedium::VISUAL)
+        medium = NUGU_DIRECTIVE_MEDIUM_VISUAL;
+    else if (policy.medium == BlockingMedium::ANY)
+        medium = NUGU_DIRECTIVE_MEDIUM_ANY;
+
+    nugu_directive_set_blocking_policy(ndir, medium, is_block);
 }
 
 bool DirectiveSequencer::cancel(const std::string& dialog_id)

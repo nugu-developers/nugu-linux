@@ -37,9 +37,10 @@ namespace NuguClientKit {
  * @brief BlockingMedium
  */
 enum class BlockingMedium {
-    AUDIO = 0, /**< Audio related medium */
-    VISUAL = 1, /**< Visual related medium */
-    NONE = 2 /**< None medium */
+    AUDIO = NUGU_DIRECTIVE_MEDIUM_AUDIO, /**< Audio related medium */
+    VISUAL = NUGU_DIRECTIVE_MEDIUM_VISUAL, /**< Visual related medium */
+    NONE = NUGU_DIRECTIVE_MEDIUM_NONE, /**< None medium */
+    ANY = NUGU_DIRECTIVE_MEDIUM_ANY /**< Any medium */
 };
 
 /**

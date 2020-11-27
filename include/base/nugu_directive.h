@@ -45,6 +45,17 @@ extern "C" {
 typedef struct _nugu_directive NuguDirective;
 
 /**
+ * @brief event types
+ */
+enum nugu_directive_medium {
+	NUGU_DIRECTIVE_MEDIUM_AUDIO = 0, /**< BlockingPolicy AUDIO medium */
+	NUGU_DIRECTIVE_MEDIUM_VISUAL = 1, /**< BlockingPolicy VISUAL medium */
+	NUGU_DIRECTIVE_MEDIUM_NONE = 2, /**< BlockingPolicy NONE medium */
+	NUGU_DIRECTIVE_MEDIUM_ANY = 3, /**< BlockingPolicy ANY medium */
+	NUGU_DIRECTIVE_MEDIUM_MAX, /**< maximum value for medium */
+};
+
+/**
  * @brief Callback prototype for receiving an attachment
  */
 typedef void (*NuguDirectiveDataCallback)(NuguDirective *ndir, int seq,
@@ -235,6 +246,52 @@ unsigned char *nugu_directive_get_data(NuguDirective *ndir, size_t *length);
  * @see nugu_directive_get_data()
  */
 size_t nugu_directive_get_data_size(NuguDirective *ndir);
+
+/**
+ * @brief Set the medium of BlockingPolicy for the directive
+ * @param[in] ndir directive object
+ * @param[in] medium medium of BlockingPolicy
+ * @param[in] is_block blocking status (1 = block, 0 = non-block)
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ * @see nugu_directive_get_blocking_medium()
+ * @see nugu_directive_get_blocking_medium_string()
+ * @see nugu_directive_is_blocking()
+ */
+int nugu_directive_set_blocking_policy(NuguDirective *ndir,
+				       enum nugu_directive_medium medium,
+				       int is_block);
+
+/**
+ * @brief Get the medium of BlockingPolicy for the directive
+ * @param[in] ndir directive object
+ * @return medium of BlockingPolicy
+ * @see nugu_directive_set_blocking_policy()
+ * @see nugu_directive_get_blocking_medium_string()
+ */
+enum nugu_directive_medium
+nugu_directive_get_blocking_medium(NuguDirective *ndir);
+
+/**
+ * @brief Get the medium string of BlockingPolicy for the directive
+ * @param[in] ndir directive object
+ * @return medium of BlockingPolicy
+ * @see nugu_directive_set_blocking_policy()
+ * @see nugu_directive_get_blocking_medium()
+ */
+const char *nugu_directive_get_blocking_medium_string(NuguDirective *ndir);
+
+/**
+ * @brief Get the blocking status of BlockingPolicy for the directive
+ * @param[in] ndir directive object
+ * @return blocking status of BlockingPolicy
+ * @retval 0 non-block
+ * @retval 1 block
+ * @retval -1 failure
+ * @see nugu_directive_set_blocking_policy()
+ */
+int nugu_directive_is_blocking(NuguDirective *ndir);
 
 /**
  * @brief Set attachment received event callback
