@@ -115,6 +115,23 @@ static void test_nugu_directive_default(void)
 	g_assert(nugu_directive_close_data(ndir) == 0);
 	g_assert(nugu_directive_is_data_end(ndir) == 1);
 
+	g_assert(nugu_directive_set_blocking_policy(
+			 NULL, NUGU_DIRECTIVE_MEDIUM_ANY, 1) == -1);
+
+	/* default policy: NONE / non-block */
+	g_assert(nugu_directive_get_blocking_medium(ndir) ==
+		 NUGU_DIRECTIVE_MEDIUM_NONE);
+	g_assert(nugu_directive_is_blocking(ndir) == 0);
+
+	/* set/get policy */
+	g_assert(nugu_directive_set_blocking_policy(
+			 ndir, NUGU_DIRECTIVE_MEDIUM_ANY, 1) == 0);
+	g_assert(nugu_directive_get_blocking_medium(ndir) ==
+		 NUGU_DIRECTIVE_MEDIUM_ANY);
+	g_assert_cmpstr(nugu_directive_get_blocking_medium_string(ndir), ==,
+			"ANY");
+	g_assert(nugu_directive_is_blocking(ndir) == 1);
+
 	nugu_directive_unref(ndir);
 }
 

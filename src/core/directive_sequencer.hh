@@ -88,6 +88,8 @@ private:
     std::vector<NuguDirective*> scheduled_list;
     guint idler_src;
 
+    void assignPolicy(NuguDirective* ndir);
+
     bool preHandleDirective(NuguDirective* ndir);
     void handleDirective(NuguDirective* ndir);
     void cancelDirective(NuguDirective* ndir);
