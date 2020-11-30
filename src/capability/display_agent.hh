@@ -19,18 +19,9 @@
 
 #include "capability/display_interface.hh"
 #include "clientkit/capability.hh"
+#include "display_render_helper.hh"
 
 namespace NuguCapability {
-
-struct DisplayRenderInfo {
-    std::string id;
-    std::string type;
-    std::string payload;
-    std::string dialog_id;
-    std::string ps_id;
-    std::string token;
-    bool close = false;
-};
 
 class DisplayAgent : public Capability,
                      public IDisplayHandler,
@@ -76,13 +67,11 @@ private:
     void parsingUpdate(const char* message);
     void parsingTemplates(const char* message);
 
+    DisplayRenderInfo* composeRenderInfo(NuguDirective* ndir, const std::string& ps_id, const std::string& token);
     std::string getTemplateId(const std::string& ps_id);
     std::string getDirectionString(ControlDirection direction);
 
-    void renderDisplay(void* data);
-    void clearDisplay(void* data, bool has_next_render = false);
-
-    std::map<std::string, DisplayRenderInfo*> render_info;
+    std::shared_ptr<DisplayRenderHelper> render_helper;
     IDisplayListener* display_listener;
     std::string disp_cur_ps_id;
     std::string disp_cur_token;

@@ -27,6 +27,7 @@ static const char* CAPABILITY_VERSION = "1.4";
 
 AudioPlayerAgent::AudioPlayerAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
+    , render_helper(std::make_shared<DisplayRenderHelper>())
     , display_listener(nullptr)
 {
 }
@@ -59,8 +60,6 @@ void AudioPlayerAgent::initialize()
     volume_update = false;
     volume = -1;
     template_id = "";
-    template_view = "";
-    template_type = "";
 
     std::string volume_str;
     if (capa_helper->getCapabilityProperty("Speaker", "music", volume_str))
@@ -122,8 +121,6 @@ void AudioPlayerAgent::initialize()
 
 void AudioPlayerAgent::deInitialize()
 {
-    render_infos.clear();
-
     if (media_player) {
         media_player->removeListener(this);
         delete media_player;
@@ -139,6 +136,7 @@ void AudioPlayerAgent::deInitialize()
     cur_player = nullptr;
 
     playsync_manager->removeListener(getName());
+    render_helper->clear();
 
     initialized = false;
 }
@@ -226,8 +224,6 @@ void AudioPlayerAgent::onFocusChanged(FocusState state)
 
         // TODO: integrate with playsync and session manager
         template_id = "";
-        template_view = "";
-        template_type = "";
         break;
     }
     focus_state = state;
@@ -246,10 +242,6 @@ void AudioPlayerAgent::executeOnForegroundAction()
     nugu_dbg("cur_aplayer_state[%s] => %d, player->state() => %s", type.c_str(), cur_aplayer_state, cur_player->stateString(cur_player->state()).c_str());
 
     checkAndUpdateVolume();
-
-    // TODO: integrate with playsync and session manager
-    // if (focus_state == FocusState::BACKGROUND && display_listener)
-    //     display_listener->renderDisplay(template_id, template_type, template_view, template_id);
 
     if (cur_player->state() == MediaPlayerState::PAUSED) {
         if (!cur_player->resume()) {
@@ -458,13 +450,11 @@ void AudioPlayerAgent::preprocessDirective(NuguDirective* ndir)
     }
 
     if (!strcmp(dname, "Play")) {
-        std::string template_id = parsingRenderInfo(ndir, message);
         std::string playstackctl_ps_id = getPlayServiceIdInStackControl(message);
 
-        if (playsync_manager->hasLayer(playstackctl_ps_id, PlayStackLayer::Media))
-            playsync_manager->startSync(playstackctl_ps_id, getName(), &render_infos[template_id]);
-        else
-            playsync_manager->prepareSync(playstackctl_ps_id, ndir);
+        playsync_manager->hasLayer(playstackctl_ps_id, PlayStackLayer::Media)
+            ? playsync_manager->startSync(playstackctl_ps_id, getName(), composeRenderInfo(ndir, message))
+            : playsync_manager->prepareSync(playstackctl_ps_id, ndir);
     }
 }
 
@@ -1245,34 +1235,30 @@ void AudioPlayerAgent::parsingRequestOthersCommand(const char* dname, const char
     sendEventByRequestOthersDirective(dname);
 }
 
-std::string AudioPlayerAgent::parsingRenderInfo(NuguDirective* ndir, const char* message)
+DisplayRenderInfo* AudioPlayerAgent::composeRenderInfo(NuguDirective* ndir, const char* message)
 {
     Json::Value root;
     Json::Reader reader;
     Json::Value meta;
+    Json::StyledWriter writer;
 
     if (!reader.parse(message, root)
         || ((meta = root["audioItem"]["metadata"]).empty() || meta["template"].empty())) {
         nugu_error("parsing error");
-        return "";
+        return nullptr;
     }
 
     // if it has Display, skip to render AudioPlayer's template
     if (std::string { nugu_directive_peek_groups(ndir) }.find("Display") != std::string::npos) {
         nugu_warn("It has the separated display. So skip to parse render info.");
-        return "";
+        return nullptr;
     }
 
-    Json::StyledWriter writer;
-    std::string template_id = nugu_directive_peek_dialog_id(ndir);
-
-    render_infos[template_id] = RenderInfo {
-        meta["template"]["type"].asString(),
-        writer.write(meta["template"]),
-        template_id
-    };
-
-    return template_id;
+    return render_helper->getRenderInfoBuilder()
+        ->setType(meta["template"]["type"].asString())
+        ->setView(writer.write(meta["template"]))
+        ->setDialogId(nugu_directive_peek_dialog_id(ndir))
+        ->build();
 }
 
 void AudioPlayerAgent::clearContext()
@@ -1498,6 +1484,7 @@ void AudioPlayerAgent::setListener(IDisplayListener* listener)
         return;
 
     display_listener = dynamic_cast<IAudioPlayerDisplayListener*>(listener);
+    render_helper->setDisplayListener(display_listener);
 }
 
 void AudioPlayerAgent::removeListener(IDisplayListener* listener)
@@ -1519,48 +1506,17 @@ void AudioPlayerAgent::stopRenderingTimer(const std::string& id)
 void AudioPlayerAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
 {
     if (state == PlaySyncState::Synced)
-        renderDisplay(extra_data);
+        template_id = render_helper->renderDisplay(extra_data);
     else if (state == PlaySyncState::Released) {
         is_next_play = false;
         focus_manager->releaseFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME);
-
-        clearDisplay(extra_data);
+        render_helper->clearDisplay(extra_data, playsync_manager->hasNextPlayStack());
     }
 }
 
 void AudioPlayerAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
 {
-    clearDisplay(extra_datas.first, (extra_datas.second ? true : false));
-    renderDisplay(extra_datas.second);
-}
-
-void AudioPlayerAgent::renderDisplay(void* data)
-{
-    if (!display_listener || !data) {
-        nugu_warn("The DisplayListener or render data is not exist.");
-        return;
-    }
-
-    std::tie(template_type, template_view, template_id) = *reinterpret_cast<RenderInfo*>(data);
-
-    if (!template_id.empty())
-        display_listener->renderDisplay(template_id, template_type, template_view, template_id);
-}
-
-void AudioPlayerAgent::clearDisplay(void* data, bool has_next_render)
-{
-    if (!display_listener || !data) {
-        nugu_warn("The DisplayListener or render data is not exist.");
-        return;
-    }
-
-    std::string template_id;
-    std::tie(std::ignore, std::ignore, template_id) = *reinterpret_cast<RenderInfo*>(data);
-
-    if (!template_id.empty()) {
-        display_listener->clearDisplay(template_id, true, has_next_render || playsync_manager->hasNextPlayStack());
-        render_infos.erase(template_id);
-    }
+    template_id = render_helper->updateDisplay(extra_datas, playsync_manager->hasNextPlayStack());
 }
 
 } // NuguCapability

@@ -22,6 +22,7 @@
 #include "capability/audio_player_interface.hh"
 #include "capability/display_interface.hh"
 #include "clientkit/capability.hh"
+#include "display_render_helper.hh"
 
 namespace NuguCapability {
 
@@ -135,15 +136,12 @@ private:
     void parsingControlLyricsPage(const char* message);
     void parsingRequestPlayCommand(const char* dname, const char* message);
     void parsingRequestOthersCommand(const char* dname, const char* message);
-    std::string parsingRenderInfo(NuguDirective* ndir, const char* message);
+    DisplayRenderInfo* composeRenderInfo(NuguDirective* ndir, const char* message);
 
     void clearContext();
     void checkAndUpdateVolume();
     std::string playbackError(PlaybackError error);
     std::string playerActivity(AudioPlayerState state);
-
-    void renderDisplay(void* data);
-    void clearDisplay(void* data, bool has_next_render = false);
 
     const unsigned int PAUSE_CONTEXT_HOLD_TIME = 60 * 10;
 
@@ -170,11 +168,9 @@ private:
     bool volume_update;
     int volume;
     std::string template_id;
-    std::string template_view;
-    std::string template_type;
+    std::shared_ptr<DisplayRenderHelper> render_helper;
     std::vector<IAudioPlayerListener*> aplayer_listeners;
     IAudioPlayerDisplayListener* display_listener;
-    std::map<std::string, RenderInfo> render_infos;
 };
 
 } // NuguCapability
