@@ -27,6 +27,7 @@ static const char* CAPABILITY_VERSION = "1.6";
 
 DisplayAgent::DisplayAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
+    , render_helper(std::make_shared<DisplayRenderHelper>())
     , display_listener(nullptr)
 {
 }
@@ -51,11 +52,7 @@ void DisplayAgent::initialize()
 void DisplayAgent::deInitialize()
 {
     playsync_manager->removeListener(getName());
-
-    for (auto info : render_info)
-        delete info.second;
-
-    render_info.clear();
+    render_helper->clear();
 
     initialized = false;
 }
@@ -122,59 +119,61 @@ void DisplayAgent::setCapabilityListener(ICapabilityListener* listener)
 
 void DisplayAgent::displayRendered(const std::string& id)
 {
-    if (render_info.find(id) == render_info.end()) {
-        nugu_warn("There is no render infor : %s", id.c_str());
+    auto render_info = render_helper->getRenderInfo(id);
+
+    if (!render_info) {
+        nugu_warn("There is no render info : %s", id.c_str());
         return;
     }
 
-    disp_cur_token = render_info[id]->token;
-    disp_cur_ps_id = render_info[id]->ps_id;
+    disp_cur_token = render_info->token;
+    disp_cur_ps_id = render_info->ps_id;
 }
 
 void DisplayAgent::displayCleared(const std::string& id)
 {
-    if (render_info.find(id) == render_info.end()) {
-        nugu_warn("There is no render infor : %s", id.c_str());
+    auto render_info = render_helper->getRenderInfo(id);
+
+    if (!render_info) {
+        nugu_warn("There is no render info : %s", id.c_str());
         return;
     }
 
-    if (render_info[id]->close)
-        sendEventCloseSucceeded(render_info[id]->ps_id);
+    if (render_info->close)
+        sendEventCloseSucceeded(render_info->ps_id);
 
-    delete render_info[id];
-    render_info.erase(id);
+    render_helper->removedRenderInfo(id);
 
     disp_cur_token = disp_cur_ps_id = "";
 }
 
 void DisplayAgent::elementSelected(const std::string& id, const std::string& item_token)
 {
-    if (render_info.find(id) == render_info.end()) {
-        nugu_warn("There is no render infor : %s", id.c_str());
+    auto render_info = render_helper->getRenderInfo(id);
+
+    if (!render_info) {
+        nugu_warn("There is no render info : %s", id.c_str());
         return;
     }
 
-    disp_cur_token = render_info[id]->token;
-    disp_cur_ps_id = render_info[id]->ps_id;
+    disp_cur_token = render_info->token;
+    disp_cur_ps_id = render_info->ps_id;
 
     sendEventElementSelected(item_token);
 }
 
 void DisplayAgent::informControlResult(const std::string& id, ControlType type, ControlDirection direction)
 {
-    std::string ps_id;
+    auto render_info = render_helper->getRenderInfo(id);
 
-    if (render_info.find(id) == render_info.end()) {
-        nugu_warn("the template(id: %s) is invalid", id.c_str());
+    if (!render_info) {
+        nugu_warn("There is no render info : %s", id.c_str());
         return;
     }
 
-    ps_id = render_info[id]->ps_id;
-
-    if (type == ControlType::Scroll)
-        sendEventControlScrollSucceeded(ps_id, direction);
-    else
-        sendEventControlFocusSucceeded(ps_id, direction);
+    (type == ControlType::Scroll)
+        ? sendEventControlScrollSucceeded(render_info->ps_id, direction)
+        : sendEventControlFocusSucceeded(render_info->ps_id, direction);
 }
 
 void DisplayAgent::setListener(IDisplayListener* listener)
@@ -183,6 +182,7 @@ void DisplayAgent::setListener(IDisplayListener* listener)
         return;
 
     display_listener = listener;
+    render_helper->setDisplayListener(display_listener);
 }
 
 void DisplayAgent::removeListener(IDisplayListener* listener)
@@ -400,11 +400,7 @@ void DisplayAgent::parsingTemplates(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
-    const char* dname;
-    const char* dnamespace;
-
-    dname = nugu_directive_peek_name(getNuguDirective());
-    dnamespace = nugu_directive_peek_namespace(getNuguDirective());
+    NuguDirective* ndir = getNuguDirective();
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -417,7 +413,7 @@ void DisplayAgent::parsingTemplates(const char* message)
     }
 
     if (root["token"].empty()) {
-        if (strcmp(dname, "Custom")) {
+        if (strcmp(nugu_directive_peek_name(ndir), "Custom")) {
             nugu_warn("support to allow empty token for legacy CustomTemplate");
         } else {
             nugu_error("The required parameters are not set");
@@ -425,30 +421,25 @@ void DisplayAgent::parsingTemplates(const char* message)
         }
     }
 
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
+    auto render_info = composeRenderInfo(ndir, root["playServiceId"].asString(), root["token"].asString());
+    playsync_manager->startSync(getPlayServiceIdInStackControl(root["playStackControl"]), getName(), render_info);
+}
 
-    DisplayRenderInfo* info = new DisplayRenderInfo;
-    info->id = std::to_string(tv.tv_sec) + std::to_string(tv.tv_usec);
-    info->type = std::string(dnamespace) + "." + std::string(dname);
-    info->payload = message;
-    info->dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
-    info->ps_id = root["playServiceId"].asString();
-    info->token = root["token"].asString();
-
-    render_info[info->id] = info;
-
-    playsync_manager->startSync(getPlayServiceIdInStackControl(root["playStackControl"]), getName(), info);
+DisplayRenderInfo* DisplayAgent::composeRenderInfo(NuguDirective* ndir, const std::string& ps_id, const std::string& token)
+{
+    return render_helper->getRenderInfoBuilder()
+        ->setType(std::string(nugu_directive_peek_namespace(ndir)) + "." + std::string(nugu_directive_peek_name(ndir)))
+        ->setView(nugu_directive_peek_json(ndir))
+        ->setDialogId(nugu_directive_peek_dialog_id(ndir))
+        ->setPlayServiceId(ps_id)
+        ->setToken(token)
+        ->setPostPoneRemove(true)
+        ->build();
 }
 
 std::string DisplayAgent::getTemplateId(const std::string& ps_id)
 {
-    for (const auto& info : render_info) {
-        if (info.second->ps_id == ps_id) {
-            return info.second->id;
-        }
-    }
-    return "";
+    return render_helper->getTemplateId(ps_id);
 }
 
 std::string DisplayAgent::getDirectionString(ControlDirection direction)
@@ -462,38 +453,14 @@ std::string DisplayAgent::getDirectionString(ControlDirection direction)
 void DisplayAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
 {
     if (state == PlaySyncState::Synced)
-        renderDisplay(extra_data);
+        render_helper->renderDisplay(extra_data);
     else if (state == PlaySyncState::Released)
-        clearDisplay(extra_data);
+        render_helper->clearDisplay(extra_data, playsync_manager->hasNextPlayStack());
 }
 
 void DisplayAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
 {
-    clearDisplay(extra_datas.first, (extra_datas.second ? true : false));
-    renderDisplay(extra_datas.second);
-}
-
-void DisplayAgent::renderDisplay(void* data)
-{
-    if (!display_listener || !data) {
-        nugu_warn("The DisplayListener or render data is not exist.");
-        return;
-    }
-
-    auto render_info = reinterpret_cast<DisplayRenderInfo*>(data);
-    display_listener->renderDisplay(render_info->id, render_info->type, render_info->payload, render_info->dialog_id);
-}
-
-void DisplayAgent::clearDisplay(void* data, bool has_next_render)
-{
-    if (!display_listener || !data) {
-        nugu_warn("The DisplayListener or render data is not exist.");
-        return;
-    }
-
-    auto render_info = reinterpret_cast<DisplayRenderInfo*>(data);
-    this->render_info[render_info->id]->close = true;
-    display_listener->clearDisplay(render_info->id, true, has_next_render || playsync_manager->hasNextPlayStack());
+    render_helper->updateDisplay(extra_datas, playsync_manager->hasNextPlayStack());
 }
 
 } // NuguCapability
