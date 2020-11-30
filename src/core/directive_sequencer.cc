@@ -385,14 +385,15 @@ void DirectiveSequencer::onAttachment(const char* parent_msg_id, int seq,
 gboolean DirectiveSequencer::onNext(gpointer userdata)
 {
     DirectiveSequencer* sequencer = static_cast<DirectiveSequencer*>(userdata);
+    std::vector<NuguDirective*> list = sequencer->scheduled_list;
 
-    nugu_dbg("idle callback: process next directives (%d)", sequencer->scheduled_list.size());
-
-    for (auto& ndir : sequencer->scheduled_list)
-        sequencer->handleDirective(ndir);
-
-    sequencer->idler_src = 0;
     sequencer->scheduled_list.clear();
+    sequencer->idler_src = 0;
+
+    nugu_dbg("idle callback: process next directives (%d)", list.size());
+
+    for (auto& ndir : list)
+        sequencer->handleDirective(ndir);
 
     return FALSE;
 }
