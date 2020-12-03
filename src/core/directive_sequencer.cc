@@ -60,7 +60,7 @@ public:
     bool set(const std::string& id, NuguDirective* ndir);
     void remove(const std::string& id);
     void dump();
-    void clear();
+    void clearWithUnref();
 
 private:
     std::string title;
@@ -109,8 +109,11 @@ void LookupTable::remove(const std::string& id)
     table.erase(id);
 }
 
-void LookupTable::clear()
+void LookupTable::clearWithUnref()
 {
+    for (auto& iter : table)
+        nugu_directive_unref(iter.second);
+
     table.clear();
 }
 
@@ -339,7 +342,7 @@ void DirectiveSequencer::reset()
 
     policy_map.clear();
     scheduled_list.clear();
-    msgid_lookup->clear();
+    msgid_lookup->clearWithUnref();
     pending->clear();
     active->clear();
 }
