@@ -36,6 +36,8 @@ void UtilityAgent::initialize()
         return;
     }
 
+    Capability::initialize();
+
     timer = std::unique_ptr<INuguTimer>(core_container->createNuguTimer(true));
 
     addBlockingPolicy("Block", { BlockingMedium::ANY, true });
