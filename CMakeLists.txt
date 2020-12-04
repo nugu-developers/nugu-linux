@@ -58,7 +58,7 @@ ENDIF()
 DEFINE_FEATURE(LOG_ANSICOLOR ON "ANSI Color to log message")
 DEFINE_FEATURE(ASAN ${ASAN_DEFAULT} "Address Sanitizer")
 DEFINE_FEATURE(VENDOR_LIBRARY ON "vendor specific library(nugu_wwd, nugu_epd)")
-DEFINE_FEATURE(OPUS_LIBRARY ON "compile built-in OPUS library")
+DEFINE_FEATURE(OPUS_LIBRARY OFF "compile built-in OPUS library")
 DEFINE_FEATURE(OPUS_LIBRARY_FLOAT_API OFF "floating point to OPUS library")
 
 DEFINE_FEATURE(DL_LINKING ON "-ldl linking")
