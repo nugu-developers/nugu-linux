@@ -53,7 +53,7 @@ static void dump_policies(const DirectiveSequencer::BlockingPolicyMap& m)
  */
 class LookupTable {
 public:
-    LookupTable(std::string title);
+    LookupTable(const std::string& title);
     virtual ~LookupTable();
 
     NuguDirective* find(const std::string& id);
@@ -67,7 +67,7 @@ private:
     std::map<std::string, NuguDirective*> table;
 };
 
-LookupTable::LookupTable(std::string title)
+LookupTable::LookupTable(const std::string& title)
     : title(title)
 {
 }
@@ -149,7 +149,7 @@ void LookupTable::dump()
  */
 class DialogDirectiveList {
 public:
-    DialogDirectiveList(std::string title);
+    DialogDirectiveList(const std::string& title);
     virtual ~DialogDirectiveList();
 
     bool push(NuguDirective* ndir);
@@ -169,7 +169,7 @@ private:
     DialogListMap listmap;
 };
 
-DialogDirectiveList::DialogDirectiveList(std::string title)
+DialogDirectiveList::DialogDirectiveList(const std::string& title)
     : title(title)
 {
 }
