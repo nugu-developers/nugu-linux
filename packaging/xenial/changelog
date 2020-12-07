@@ -1,3 +1,22 @@
+nugu (0.23.0ubuntu1~xenial) xenial; urgency=medium
+
+  * Fixed PlaySyncManager and PlayStackManager
+  * Fixed FocusManager
+  * Fixed NuguTimer
+  * Fixed Capability
+  * Added Utility interface v1.0
+  * Added ANY medium blocking policy
+  * Added DisplayRenderHelper
+  * Added more build options
+  * Updated Speaker interface v1.2
+  * Updated TTS interface v1.3
+  * Updated Text interface v1.4
+  * Updated ASR interface v1.4
+  * Updated AudioPlayer interface v1.5
+  * Changed CI system - Travis to Github action
+
+ -- nugulinux <nugulinux@gmail.com>  Mon, 7 Dec 2020 11:30:00 +0900
+
 nugu (0.22.0ubuntu1~xenial) xenial; urgency=medium
 
   * Added asr/text request filter example
