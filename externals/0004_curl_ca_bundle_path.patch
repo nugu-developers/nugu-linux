@@ -1,10 +1,11 @@
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -725,6 +725,7 @@ elseif(CURL_CA_PATH_AUTODETECT OR CURL_CA_BUNDLE_AUTODETECT)
+@@ -725,6 +729,8 @@ elseif(CURL_CA_PATH_AUTODETECT OR CURL_CA_BUNDLE_AUTODETECT)
  
    if(CURL_CA_BUNDLE_AUTODETECT)
      set(SEARCH_CA_BUNDLE_PATHS
 +        /opt/share/cert-svc/ca-certificate.crt
++        /opt/etc/ssl/certs/ca-certificates.crt
          /etc/ssl/certs/ca-certificates.crt
          /etc/pki/tls/certs/ca-bundle.crt
          /usr/share/ssl/certs/ca-bundle.crt
