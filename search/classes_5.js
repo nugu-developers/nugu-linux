@@ -44,6 +44,8 @@ var searchData=
   ['ittshandler',['ITTSHandler',['../classNuguCapability_1_1ITTSHandler.html',1,'NuguCapability']]],
   ['ittslistener',['ITTSListener',['../classNuguCapability_1_1ITTSListener.html',1,'NuguCapability']]],
   ['ittsplayer',['ITTSPlayer',['../classNuguClientKit_1_1ITTSPlayer.html',1,'NuguClientKit']]],
+  ['iutilityhandler',['IUtilityHandler',['../classNuguCapability_1_1IUtilityHandler.html',1,'NuguCapability']]],
+  ['iutilitylistener',['IUtilityListener',['../classNuguCapability_1_1IUtilityListener.html',1,'NuguCapability']]],
   ['iwakeuphandler',['IWakeupHandler',['../classNuguClientKit_1_1IWakeupHandler.html',1,'NuguClientKit']]],
   ['iwakeuplistener',['IWakeupListener',['../classNuguClientKit_1_1IWakeupListener.html',1,'NuguClientKit']]]
 ];

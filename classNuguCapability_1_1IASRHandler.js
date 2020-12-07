@@ -8,5 +8,6 @@ var classNuguCapability_1_1IASRHandler =
     [ "addListener", "classNuguCapability_1_1IASRHandler.html#a36f354f3d51036495d0686723c55ce8c", null ],
     [ "removeListener", "classNuguCapability_1_1IASRHandler.html#ad4d340a3517a6f9d9ae6dba03574617e", null ],
     [ "setAttribute", "classNuguCapability_1_1IASRHandler.html#a90ba983d4e72307c739b59d7c870b2de", null ],
-    [ "getEpdSilenceInterval", "classNuguCapability_1_1IASRHandler.html#a21ba6d6e3a66409370184ac4877e0612", null ]
+    [ "setEpdAttribute", "classNuguCapability_1_1IASRHandler.html#afc93c6551640bb44cbd0fc5565f01657", null ],
+    [ "getEpdAttribute", "classNuguCapability_1_1IASRHandler.html#aa3c2e35375d8524d75ac74bba98247ed", null ]
 ];

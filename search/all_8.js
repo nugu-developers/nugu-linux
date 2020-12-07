@@ -25,7 +25,7 @@ var searchData=
   ['inactive',['INACTIVE',['../group__SessionInterface.html#gga4b3903e444431d8dcb96a672d48be180a6b273343c454f9c53dcfc9c4ccf171d2',1,'NuguCapability']]],
   ['inetworkmanager',['INetworkManager',['../classNuguClientKit_1_1INetworkManager.html',1,'NuguClientKit']]],
   ['inetworkmanagerlistener',['INetworkManagerListener',['../classNuguClientKit_1_1INetworkManagerListener.html',1,'NuguClientKit']]],
-  ['info',['Info',['../group__PlayStackManagerInterface.html#gga4095ed0fa5de9f5140dd656317ab44a5a4059b0251f66a18cb56f544728796875',1,'NuguClientKit']]],
+  ['info',['Info',['../group__PlaySyncManagerInterface.html#gga4095ed0fa5de9f5140dd656317ab44a5a4059b0251f66a18cb56f544728796875',1,'NuguClientKit']]],
   ['informcontrolresult',['informControlResult',['../classNuguCapability_1_1IDisplayHandler.html#a00e91ae7940c1ac06ff15bc5509320b2',1,'NuguCapability::IDisplayHandler']]],
   ['informmutechanged',['informMuteChanged',['../classNuguCapability_1_1ISpeakerHandler.html#ab8aa239ae64615cdd181d9bfe9c8a317',1,'NuguCapability::ISpeakerHandler']]],
   ['informvolumechanged',['informVolumeChanged',['../classNuguCapability_1_1ISpeakerHandler.html#a3289a6daa4464d99675303bb0da4fd82',1,'NuguCapability::ISpeakerHandler']]],
@@ -65,6 +65,8 @@ var searchData=
   ['ittshandler',['ITTSHandler',['../classNuguCapability_1_1ITTSHandler.html',1,'NuguCapability']]],
   ['ittslistener',['ITTSListener',['../classNuguCapability_1_1ITTSListener.html',1,'NuguCapability']]],
   ['ittsplayer',['ITTSPlayer',['../classNuguClientKit_1_1ITTSPlayer.html',1,'NuguClientKit']]],
+  ['iutilityhandler',['IUtilityHandler',['../classNuguCapability_1_1IUtilityHandler.html',1,'NuguCapability']]],
+  ['iutilitylistener',['IUtilityListener',['../classNuguCapability_1_1IUtilityListener.html',1,'NuguCapability']]],
   ['iwakeuphandler',['IWakeupHandler',['../classNuguClientKit_1_1IWakeupHandler.html',1,'NuguClientKit']]],
   ['iwakeuplistener',['IWakeupListener',['../classNuguClientKit_1_1IWakeupListener.html',1,'NuguClientKit']]]
 ];

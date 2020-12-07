@@ -21,6 +21,7 @@ var hierarchy =
       [ "NuguCapability::ISystemHandler", "classNuguCapability_1_1ISystemHandler.html", null ],
       [ "NuguCapability::ITextHandler", "classNuguCapability_1_1ITextHandler.html", null ],
       [ "NuguCapability::ITTSHandler", "classNuguCapability_1_1ITTSHandler.html", null ],
+      [ "NuguCapability::IUtilityHandler", "classNuguCapability_1_1IUtilityHandler.html", null ],
       [ "NuguClientKit::Capability", "classNuguClientKit_1_1Capability.html", null ]
     ] ],
     [ "NuguClientKit::ICapabilityListener", "classNuguClientKit_1_1ICapabilityListener.html", [
@@ -36,7 +37,8 @@ var hierarchy =
       [ "NuguCapability::ISpeakerListener", "classNuguCapability_1_1ISpeakerListener.html", null ],
       [ "NuguCapability::ISystemListener", "classNuguCapability_1_1ISystemListener.html", null ],
       [ "NuguCapability::ITextListener", "classNuguCapability_1_1ITextListener.html", null ],
-      [ "NuguCapability::ITTSListener", "classNuguCapability_1_1ITTSListener.html", null ]
+      [ "NuguCapability::ITTSListener", "classNuguCapability_1_1ITTSListener.html", null ],
+      [ "NuguCapability::IUtilityListener", "classNuguCapability_1_1IUtilityListener.html", null ]
     ] ],
     [ "NuguClientKit::IDirectiveSequencer", "classNuguClientKit_1_1IDirectiveSequencer.html", null ],
     [ "NuguClientKit::IDirectiveSequencerListener", "classNuguClientKit_1_1IDirectiveSequencerListener.html", null ],

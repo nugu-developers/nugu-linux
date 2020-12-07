@@ -2,15 +2,17 @@ var group__SpeechRecognizerInterface =
 [
     [ "EpdAttribute", "structNuguClientKit_1_1EpdAttribute.html", [
       [ "epd_timeout", "structNuguClientKit_1_1EpdAttribute.html#a4fcdc24866b9e347447d5bc8212c2943", null ],
-      [ "epd_max_duration", "structNuguClientKit_1_1EpdAttribute.html#a51bf6dd5f5034a36f557aafb67c23be4", null ]
+      [ "epd_max_duration", "structNuguClientKit_1_1EpdAttribute.html#a51bf6dd5f5034a36f557aafb67c23be4", null ],
+      [ "epd_pause_length", "structNuguClientKit_1_1EpdAttribute.html#ad4666cb6d44d941a5e41a8bfc08f7de1", null ]
     ] ],
     [ "ISpeechRecognizer", "classNuguClientKit_1_1ISpeechRecognizer.html", [
       [ "~ISpeechRecognizer", "classNuguClientKit_1_1ISpeechRecognizer.html#a7184f25acabf26bc98effd6a80e67aab", null ],
       [ "setListener", "classNuguClientKit_1_1ISpeechRecognizer.html#a3590f5f5a2ce772209118b62ddaa8ea4", null ],
       [ "startListening", "classNuguClientKit_1_1ISpeechRecognizer.html#a6f32b9d3b823a3cd28be1af47cecd7bc", null ],
       [ "stopListening", "classNuguClientKit_1_1ISpeechRecognizer.html#a4f986b4e62598b626221bcaec1f7f33e", null ],
-      [ "isMute", "classNuguClientKit_1_1ISpeechRecognizer.html#aa40f6a1419ab2c0de8460ee20e8c70eb", null ],
-      [ "getEpdPauseLength", "classNuguClientKit_1_1ISpeechRecognizer.html#a2175d92758fc274694885a82fc4e5140", null ]
+      [ "setEpdAttribute", "classNuguClientKit_1_1ISpeechRecognizer.html#a3a321088712cb74f775063b408ea5bb7", null ],
+      [ "getEpdAttribute", "classNuguClientKit_1_1ISpeechRecognizer.html#aee16fed6329f677315da6429d9d7e80c", null ],
+      [ "isMute", "classNuguClientKit_1_1ISpeechRecognizer.html#aa40f6a1419ab2c0de8460ee20e8c70eb", null ]
     ] ],
     [ "ISpeechRecognizerListener", "classNuguClientKit_1_1ISpeechRecognizerListener.html", [
       [ "~ISpeechRecognizerListener", "classNuguClientKit_1_1ISpeechRecognizerListener.html#a0a771d9fb05736966691ea770a16540c", null ],

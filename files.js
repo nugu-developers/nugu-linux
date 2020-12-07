@@ -35,7 +35,6 @@ var files =
     [ "nugu_timer.h", "nugu__timer_8h.html", "nugu__timer_8h" ],
     [ "nugu_timer_interface.hh", "nugu__timer__interface_8hh.html", "nugu__timer__interface_8hh" ],
     [ "nugu_uuid.h", "nugu__uuid_8h.html", "nugu__uuid_8h" ],
-    [ "playstack_manager_interface.hh", "playstack__manager__interface_8hh.html", "playstack__manager__interface_8hh" ],
     [ "playsync_manager_interface.hh", "playsync__manager__interface_8hh.html", "playsync__manager__interface_8hh" ],
     [ "session_interface.hh", "session__interface_8hh.html", "session__interface_8hh" ],
     [ "session_manager_interface.hh", "session__manager__interface_8hh.html", null ],
@@ -45,5 +44,6 @@ var files =
     [ "system_interface.hh", "system__interface_8hh.html", "system__interface_8hh" ],
     [ "text_interface.hh", "text__interface_8hh.html", "text__interface_8hh" ],
     [ "tts_interface.hh", "tts__interface_8hh.html", "tts__interface_8hh" ],
+    [ "utility_interface.hh", "utility__interface_8hh.html", null ],
     [ "wakeup_interface.hh", "wakeup__interface_8hh.html", "wakeup__interface_8hh" ]
 ];

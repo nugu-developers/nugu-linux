@@ -10,5 +10,6 @@ var group__SDKNuguCapability =
     [ "SpeakerInterface", "group__SpeakerInterface.html", "group__SpeakerInterface" ],
     [ "SystemInterface", "group__SystemInterface.html", "group__SystemInterface" ],
     [ "TextInterface", "group__TextInterface.html", "group__TextInterface" ],
-    [ "TTSInterface", "group__TTSInterface.html", "group__TTSInterface" ]
+    [ "TTSInterface", "group__TTSInterface.html", "group__TTSInterface" ],
+    [ "UtilityInterface", "group__UtilityInterface.html", "group__UtilityInterface" ]
 ];

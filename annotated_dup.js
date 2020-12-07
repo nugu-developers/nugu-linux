@@ -24,6 +24,8 @@ var annotated_dup =
       [ "ITextListener", "classNuguCapability_1_1ITextListener.html", "classNuguCapability_1_1ITextListener" ],
       [ "ITTSHandler", "classNuguCapability_1_1ITTSHandler.html", "classNuguCapability_1_1ITTSHandler" ],
       [ "ITTSListener", "classNuguCapability_1_1ITTSListener.html", "classNuguCapability_1_1ITTSListener" ],
+      [ "IUtilityHandler", "classNuguCapability_1_1IUtilityHandler.html", "classNuguCapability_1_1IUtilityHandler" ],
+      [ "IUtilityListener", "classNuguCapability_1_1IUtilityListener.html", null ],
       [ "SpeakerInfo", "classNuguCapability_1_1SpeakerInfo.html", "classNuguCapability_1_1SpeakerInfo" ],
       [ "TextAttribute", "structNuguCapability_1_1TextAttribute.html", "structNuguCapability_1_1TextAttribute" ],
       [ "TTSAttribute", "structNuguCapability_1_1TTSAttribute.html", "structNuguCapability_1_1TTSAttribute" ]

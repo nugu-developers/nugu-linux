@@ -5,6 +5,7 @@ var searchData=
   ['nugu_5faudio_5fformat',['nugu_audio_format',['../nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4ee',1,'nugu_audio.h']]],
   ['nugu_5faudio_5fsample_5frate',['nugu_audio_sample_rate',['../nugu__audio_8h.html#a45142699425266966bf2e0eed6dad69c',1,'nugu_audio.h']]],
   ['nugu_5fdecoder_5ftype',['nugu_decoder_type',['../group__NuguDecoderDriver.html#ga831d4d8e4fafb2482c0d429b5d904052',1,'nugu_decoder.h']]],
+  ['nugu_5fdirective_5fmedium',['nugu_directive_medium',['../group__NuguDirective.html#gae3bc153e4b821722bfcc20aee94727fd',1,'nugu_directive.h']]],
   ['nugu_5fequeue_5ftype',['nugu_equeue_type',['../group__NuguEventQueue.html#ga54d0f533b2309e92861df75daaa6efcb',1,'nugu_equeue.h']]],
   ['nugu_5fevent_5ftype',['nugu_event_type',['../group__NuguEvent.html#gad962955274c901710ed7946542f0cff4',1,'nugu_event.h']]],
   ['nugu_5flog_5flevel',['nugu_log_level',['../group__Log.html#gaa713331b2690e589ff6a29ea655d1e97',1,'nugu_log.h']]],

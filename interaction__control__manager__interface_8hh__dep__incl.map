@@ -1,8 +1,8 @@
 <map id="interaction_control_manager_interface.hh" name="interaction_control_manager_interface.hh">
-<area shape="rect" id="node2" href="$capability__helper__interface_8hh.html" title="capability_helper_interface.hh" alt="" coords="1129,95,1324,121"/>
-<area shape="rect" id="node3" href="$nugu__core__container__interface_8hh.html" title="nugu_core_container\l_interface.hh" alt="" coords="1155,169,1298,211"/>
-<area shape="rect" id="node4" href="$capability__interface_8hh.html" title="capability_interface.hh" alt="" coords="905,259,1057,285"/>
-<area shape="rect" id="node17" href="$nugu__client_8hh.html" title="nugu_client.hh" alt="" coords="1720,333,1827,360"/>
+<area shape="rect" id="node2" href="$capability__helper__interface_8hh.html" title="capability_helper_interface.hh" alt="" coords="1021,95,1216,121"/>
+<area shape="rect" id="node3" href="$nugu__core__container__interface_8hh.html" title="nugu_core_container\l_interface.hh" alt="" coords="1047,169,1190,211"/>
+<area shape="rect" id="node4" href="$capability__interface_8hh.html" title="capability_interface.hh" alt="" coords="987,259,1139,285"/>
+<area shape="rect" id="node18" href="$nugu__client_8hh.html" title="nugu_client.hh" alt="" coords="1872,333,1979,360"/>
 <area shape="rect" id="node5" href="$asr__interface_8hh.html" title="asr_interface.hh" alt="" coords="5,333,120,360"/>
 <area shape="rect" id="node6" href="$audio__player__interface_8hh.html" title="audio_player_interface.hh" alt="" coords="209,408,380,435"/>
 <area shape="rect" id="node7" href="$capability__factory_8hh.html" title="capability_factory.hh" alt="" coords="195,333,338,360"/>
@@ -14,5 +14,6 @@
 <area shape="rect" id="node13" href="$system__interface_8hh.html" title="system_interface.hh" alt="" coords="1158,333,1298,360"/>
 <area shape="rect" id="node14" href="$text__interface_8hh.html" title="text_interface.hh" alt="" coords="1322,333,1441,360"/>
 <area shape="rect" id="node15" href="$tts__interface_8hh.html" title="tts_interface.hh" alt="" coords="1464,333,1576,360"/>
-<area shape="rect" id="node16" href="$capability_8hh.html" title="capability.hh" alt="" coords="1601,333,1695,360"/>
+<area shape="rect" id="node16" href="$utility__interface_8hh.html" title="utility_interface.hh" alt="" coords="1600,333,1728,360"/>
+<area shape="rect" id="node17" href="$capability_8hh.html" title="capability.hh" alt="" coords="1753,333,1847,360"/>
 </map>

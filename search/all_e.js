@@ -6,6 +6,7 @@ var searchData=
   ['receivecommandall',['receiveCommandAll',['../classNuguClientKit_1_1Capability.html#adf77c76b8685f88041910d0db4a27b16',1,'NuguClientKit::Capability::receiveCommandAll()'],['../classNuguClientKit_1_1ICapabilityInterface.html#a880b93080d0722f676cea3dfdc0f7f39',1,'NuguClientKit::ICapabilityInterface::receiveCommandAll()']]],
   ['recognize_5ferror',['RECOGNIZE_ERROR',['../group__ASRInterface.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21ab7bc01e941b272a54a236e1303aed2a1',1,'NuguCapability']]],
   ['recognizing',['RECOGNIZING',['../group__ASRInterface.html#ggafe4f48f063bafec608e5060090a9543ba437f3cbaf966fe37c60ee219ecb23576',1,'NuguCapability']]],
+  ['registercapabilityforsync',['registerCapabilityForSync',['../classNuguClientKit_1_1IPlaySyncManager.html#a67226c6cb1b77d4ed5825906b5310671',1,'NuguClientKit::IPlaySyncManager']]],
   ['released',['Released',['../group__PlaySyncManagerInterface.html#gga5d9f5e0329e5706191b9a4682615d4d0aea1e34304a5d8ffa7c9b0ed8ede4ef1a',1,'NuguClientKit']]],
   ['releasefocus',['releaseFocus',['../group__FocusManagerInterface.html#gaeefd9d5ae3668c5f18f301f01f23ef6c',1,'NuguClientKit::IFocusManager']]],
   ['releasesync',['releaseSync',['../classNuguClientKit_1_1IPlaySyncManager.html#a573fdad089aacfa994bbd4b90166fe48',1,'NuguClientKit::IPlaySyncManager']]],

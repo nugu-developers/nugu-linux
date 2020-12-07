@@ -11,5 +11,7 @@ var searchData=
   ['updatemetadata',['updateMetaData',['../classNuguCapability_1_1IAudioPlayerDisplayListener.html#a4e5ba3d6f4c43b4410f73afea19169ef',1,'NuguCapability::IAudioPlayerDisplayListener']]],
   ['updateuseractivity',['updateUserActivity',['../classNuguCapability_1_1ISystemHandler.html#a0abd34eae4a26c09b8f4dcb3388c5860',1,'NuguCapability::ISystemHandler']]],
   ['url',['url',['../classNuguClientKit_1_1IMediaPlayer.html#a6c6f3e65e27c64dc4fe5bde9d4ccfbe0',1,'NuguClientKit::IMediaPlayer']]],
+  ['utility_5finterface_2ehh',['utility_interface.hh',['../utility__interface_8hh.html',1,'']]],
+  ['utilityinterface',['UtilityInterface',['../group__UtilityInterface.html',1,'']]],
   ['uuid',['UUID',['../group__uuid.html',1,'']]]
 ];
