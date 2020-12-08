@@ -267,6 +267,40 @@ static void test_session_manager_notify_multi_active_state(TestFixture* fixture,
     g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_2") == 0);
 }
 
+static void test_session_manager_maintain_recent_session_id(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& session_container = fixture->session_manager->getAllSessions();
+    fixture->session_manager->addListener(fixture->session_manager_listener.get());
+
+    fixture->session_manager->activate("dialog_id_1");
+    fixture->session_manager->set("dialog_id_1", { "session_id_1", "ps_id_1" });
+    auto active_session_info = fixture->session_manager->getActiveSessionInfo();
+    g_assert(session_container.size() == 1);
+    g_assert(active_session_info.size() == 1);
+    g_assert(active_session_info[0]["sessionId"].asString() == "session_id_1");
+    g_assert(active_session_info[0]["playServiceId"].asString() == "ps_id_1");
+
+    // extract recent sessionId only if playServiceId is same
+    fixture->session_manager->activate("dialog_id_2");
+    fixture->session_manager->set("dialog_id_2", { "session_id_2", "ps_id_1" });
+    active_session_info = fixture->session_manager->getActiveSessionInfo();
+    g_assert(session_container.size() == 2);
+    g_assert(active_session_info.size() == 1);
+    g_assert(active_session_info[0]["sessionId"].asString() == "session_id_2");
+    g_assert(active_session_info[0]["playServiceId"].asString() == "ps_id_1");
+
+    // separate sessionId if playServiceId is different
+    fixture->session_manager->activate("dialog_id_3");
+    fixture->session_manager->set("dialog_id_3", { "session_id_3", "ps_id_2" });
+    active_session_info = fixture->session_manager->getActiveSessionInfo();
+    g_assert(session_container.size() == 3);
+    g_assert(active_session_info.size() == 2);
+    g_assert(active_session_info[0]["sessionId"].asString() == "session_id_2");
+    g_assert(active_session_info[0]["playServiceId"].asString() == "ps_id_1");
+    g_assert(active_session_info[1]["sessionId"].asString() == "session_id_3");
+    g_assert(active_session_info[1]["playServiceId"].asString() == "ps_id_2");
+}
+
 static void test_session_manager_clear(TestFixture* fixture, gconstpointer ignored)
 {
     fixture->session_manager->addListener(fixture->session_manager_listener.get());
@@ -321,6 +355,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/SessionManager/multiAgentParticipation", test_session_manager_multi_agent_participation);
     G_TEST_ADD_FUNC("/core/SessionManager/notifySingleActiveState", test_session_manager_notify_single_active_state);
     G_TEST_ADD_FUNC("/core/SessionManager/notifyMultiActiveState", test_session_manager_notify_multi_active_state);
+    G_TEST_ADD_FUNC("/core/SessionManager/maintainRecentSessionId", test_session_manager_maintain_recent_session_id);
     G_TEST_ADD_FUNC("/core/SessionManager/clear", test_session_manager_clear);
     G_TEST_ADD_FUNC("/core/SessionManager/reset", test_session_manager_reset);
 
