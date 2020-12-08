@@ -131,18 +131,22 @@ void SessionManager::deactivate(const std::string& dialog_id)
 Json::Value SessionManager::getActiveSessionInfo()
 {
     Json::Value session_info_list;
+    std::map<std::string, std::string> rearranged_sessions;
 
     for (const auto& item : active_list) {
         try {
             auto session = session_map.at(item.first);
-
-            Json::Value session_info;
-            session_info["sessionId"] = session.session_id;
-            session_info["playServiceId"] = session.ps_id;
-            session_info_list.append(session_info);
+            rearranged_sessions[session.ps_id] = session.session_id;
         } catch (std::out_of_range& exception) {
             nugu_warn("The such session is not exist.");
         }
+    }
+
+    for (const auto& session : rearranged_sessions) {
+        Json::Value session_info;
+        session_info["sessionId"] = session.second;
+        session_info["playServiceId"] = session.first;
+        session_info_list.append(session_info);
     }
 
     return session_info_list;
