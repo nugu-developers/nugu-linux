@@ -30,11 +30,15 @@ public:
             session_active_map[dialog_id]++;
         else
             session_active_map.emplace(dialog_id, 1);
+
+        call_count++;
     }
 
     void deactivated(const std::string& dialog_id)
     {
         session_active_map.erase(dialog_id);
+
+        call_count++;
     }
 
     int getSessionActive(const std::string& dialog_id)
@@ -42,8 +46,14 @@ public:
         return session_active_map[dialog_id];
     }
 
+    int getCallCount()
+    {
+        return call_count;
+    }
+
 private:
     std::map<std::string, int> session_active_map;
+    int call_count = 0;
 };
 
 typedef struct {
@@ -301,6 +311,20 @@ static void test_session_manager_maintain_recent_session_id(TestFixture* fixture
     g_assert(active_session_info[1]["playServiceId"].asString() == "ps_id_2");
 }
 
+static void test_session_manager_activate_with_no_set(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->session_manager->addListener(fixture->session_manager_listener.get());
+
+    fixture->session_manager->activate("dialog_id_1");
+    g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_1") == 0);
+    g_assert(fixture->session_manager_listener->getCallCount() == 0);
+    g_assert(fixture->session_manager->getActiveSessionInfo().empty());
+
+    fixture->session_manager->deactivate("dialog_id_1");
+    g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_1") == 0);
+    g_assert(fixture->session_manager_listener->getCallCount() == 0);
+}
+
 static void test_session_manager_clear(TestFixture* fixture, gconstpointer ignored)
 {
     fixture->session_manager->addListener(fixture->session_manager_listener.get());
@@ -356,6 +380,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/SessionManager/notifySingleActiveState", test_session_manager_notify_single_active_state);
     G_TEST_ADD_FUNC("/core/SessionManager/notifyMultiActiveState", test_session_manager_notify_multi_active_state);
     G_TEST_ADD_FUNC("/core/SessionManager/maintainRecentSessionId", test_session_manager_maintain_recent_session_id);
+    G_TEST_ADD_FUNC("/core/SessionManager/activateWithNoSet", test_session_manager_activate_with_no_set);
     G_TEST_ADD_FUNC("/core/SessionManager/clear", test_session_manager_clear);
     G_TEST_ADD_FUNC("/core/SessionManager/reset", test_session_manager_reset);
 

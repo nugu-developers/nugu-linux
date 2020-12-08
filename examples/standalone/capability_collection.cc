@@ -149,6 +149,7 @@ void CapabilityCollection::composeCapabilityFactory()
         if (!display_handler) {
             display_listener = std::make_shared<DisplayListener>();
             display_handler = makeCapability<DisplayAgent, IDisplayHandler>(display_listener.get());
+            display_listener->setDisplayHandler(display_handler.get());
         }
 
         return display_handler.get();

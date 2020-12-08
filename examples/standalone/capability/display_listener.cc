@@ -23,6 +23,12 @@ DisplayListener::DisplayListener()
     capability_name = "Display";
 }
 
+void DisplayListener::setDisplayHandler(IDisplayHandler* display_handler)
+{
+    if (display_handler)
+        this->display_handler = display_handler;
+}
+
 void DisplayListener::renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id)
 {
     std::cout << "\033[1;94m"
@@ -31,6 +37,9 @@ void DisplayListener::renderDisplay(const std::string& id, const std::string& ty
               << "\t type:" << type.c_str() << std::endl
               << "\t dialog_id:" << dialog_id.c_str()
               << "\033[0m" << std::endl;
+
+    if (display_handler)
+        display_handler->displayRendered(id);
 }
 
 bool DisplayListener::clearDisplay(const std::string& id, bool unconditionally, bool has_next)
@@ -41,6 +50,15 @@ bool DisplayListener::clearDisplay(const std::string& id, bool unconditionally, 
               << "\t unconditionally:" << unconditionally << std::endl
               << "\t has_next:" << has_next
               << "\033[0m" << std::endl;
+
+    pending_clear_id = id;
+
+    g_idle_add(
+        [](gpointer userdata) {
+            static_cast<DisplayListener*>(userdata)->displayCleared();
+            return FALSE;
+        },
+        this);
 
     return false;
 }
@@ -57,4 +75,12 @@ void DisplayListener::updateDisplay(const std::string& id, const std::string& js
 {
     std::cout << "[" << capability_name << "] update display template\n"
               << "\t id:" << id.c_str() << std::endl;
+}
+
+void DisplayListener::displayCleared()
+{
+    if (display_handler)
+        display_handler->displayCleared(pending_clear_id);
+
+    pending_clear_id.clear();
 }

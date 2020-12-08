@@ -17,6 +17,7 @@
 #ifndef __DISPLAY_LISTENER_H__
 #define __DISPLAY_LISTENER_H__
 
+#include <glib.h>
 #include <map>
 
 #include <capability/display_interface.hh>
@@ -28,10 +29,12 @@ public:
     DisplayListener();
     virtual ~DisplayListener() = default;
 
+    void setDisplayHandler(IDisplayHandler* display_handler);
     void renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id) override;
     bool clearDisplay(const std::string& id, bool unconditionally, bool has_next) override;
     void controlDisplay(const std::string& id, ControlType type, ControlDirection direction) override;
     void updateDisplay(const std::string& id, const std::string& json_payload) override;
+    void displayCleared();
 
 protected:
     std::string capability_name;
@@ -46,6 +49,9 @@ private:
         { ControlDirection::NEXT, "Next" },
         { ControlDirection::PREVIOUS, "Previous" }
     };
+
+    IDisplayHandler* display_handler = nullptr;
+    std::string pending_clear_id;
 };
 
 #endif /* __DISPLAY_LISTENER_H__ */

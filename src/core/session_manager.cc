@@ -116,9 +116,10 @@ void SessionManager::deactivate(const std::string& dialog_id)
         std::remove_if(active_list.begin(), active_list.end(),
             [&](std::pair<std::string, int>& item) {
                 if (item.first == dialog_id && (--item.second) < 1) {
-                    session_map.erase(dialog_id);
-
-                    notifyActiveState(dialog_id, false);
+                    if (session_map.find(dialog_id) != session_map.end()) {
+                        session_map.erase(dialog_id);
+                        notifyActiveState(dialog_id, false);
+                    }
 
                     return true;
                 }

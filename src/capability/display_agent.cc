@@ -69,8 +69,10 @@ void DisplayAgent::preprocessDirective(NuguDirective* ndir)
         return;
     }
 
-    if (strcmp(dname, "Action") && strcmp(dname, "ControlFocus") && strcmp(dname, "ControlScroll") && strcmp(dname, "Update"))
+    if (strcmp(dname, "Action") && strcmp(dname, "ControlFocus") && strcmp(dname, "ControlScroll") && strcmp(dname, "Update")) {
         playsync_manager->prepareSync(getPlayServiceIdInStackControl(message), ndir);
+        session_manager->activate(nugu_directive_peek_dialog_id(ndir));
+    }
 }
 
 void DisplayAgent::parsingDirective(const char* dname, const char* message)
@@ -142,6 +144,7 @@ void DisplayAgent::displayCleared(const std::string& id)
     if (render_info->close)
         sendEventCloseSucceeded(render_info->ps_id);
 
+    session_manager->deactivate(render_info->dialog_id);
     render_helper->removedRenderInfo(id);
 
     disp_cur_token = disp_cur_ps_id = "";
