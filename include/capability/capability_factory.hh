@@ -91,6 +91,11 @@ class DisplayAgent;
 class UtilityAgent;
 
 /**
+ * @brief ExtensionAgent
+ */
+class ExtensionAgent;
+
+/**
  * @brief CapabilityFactory
  */
 class CapabilityFactory {
