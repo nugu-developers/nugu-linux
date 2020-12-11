@@ -160,6 +160,15 @@ void CapabilityCollection::composeCapabilityFactory()
 
         return utility_handler.get();
     });
+    factories.emplace("Extension", [&]() {
+        if (!extension_handler) {
+            extension_listener = std::make_shared<ExtensionListener>();
+            extension_handler = makeCapability<ExtensionAgent, IExtensionHandler>(extension_listener.get());
+            extension_listener->setExtensionHandler(extension_handler.get());
+        }
+
+        return extension_handler.get();
+    });
 }
 
 SpeakerInfo CapabilityCollection::makeSpeakerInfo(SpeakerType type, int muted, bool can_control)

@@ -17,6 +17,7 @@
 #include "asr_agent.hh"
 #include "audio_player_agent.hh"
 #include "display_agent.hh"
+#include "extension_agent.hh"
 #include "mic_agent.hh"
 #include "session_agent.hh"
 #include "sound_agent.hh"
@@ -52,5 +53,6 @@ template ISoundHandler* CapabilityFactory::makeCapability<SoundAgent, ISoundHand
 template ISessionHandler* CapabilityFactory::makeCapability<SessionAgent, ISessionHandler>(ICapabilityListener* listener);
 template IDisplayHandler* CapabilityFactory::makeCapability<DisplayAgent, IDisplayHandler>(ICapabilityListener* listener);
 template IUtilityHandler* CapabilityFactory::makeCapability<UtilityAgent, IUtilityHandler>(ICapabilityListener* listener);
+template IExtensionHandler* CapabilityFactory::makeCapability<ExtensionAgent, IExtensionHandler>(ICapabilityListener* listener);
 
 } // NuguCapability
