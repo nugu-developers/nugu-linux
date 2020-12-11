@@ -53,6 +53,7 @@ void DisplayAgent::deInitialize()
 {
     playsync_manager->removeListener(getName());
     render_helper->clear();
+    session_dialog_ids.clear();
 
     initialized = false;
 }
@@ -69,10 +70,8 @@ void DisplayAgent::preprocessDirective(NuguDirective* ndir)
         return;
     }
 
-    if (strcmp(dname, "Action") && strcmp(dname, "ControlFocus") && strcmp(dname, "ControlScroll") && strcmp(dname, "Update")) {
+    if (strcmp(dname, "Action") && strcmp(dname, "ControlFocus") && strcmp(dname, "ControlScroll") && strcmp(dname, "Update"))
         playsync_manager->prepareSync(getPlayServiceIdInStackControl(message), ndir);
-        session_manager->activate(nugu_directive_peek_dialog_id(ndir));
-    }
 }
 
 void DisplayAgent::parsingDirective(const char* dname, const char* message)
@@ -144,8 +143,8 @@ void DisplayAgent::displayCleared(const std::string& id)
     if (render_info->close)
         sendEventCloseSucceeded(render_info->ps_id);
 
-    session_manager->deactivate(render_info->dialog_id);
     render_helper->removedRenderInfo(id);
+    deactiveSession();
 
     disp_cur_token = disp_cur_ps_id = "";
 }
@@ -395,6 +394,8 @@ void DisplayAgent::parsingUpdate(const char* message)
         return;
     }
 
+    activateSession(getNuguDirective());
+
     if (display_listener)
         display_listener->updateDisplay(template_id, message);
 }
@@ -424,8 +425,25 @@ void DisplayAgent::parsingTemplates(const char* message)
         }
     }
 
+    activateSession(ndir);
+
     auto render_info = composeRenderInfo(ndir, root["playServiceId"].asString(), root["token"].asString());
     playsync_manager->startSync(getPlayServiceIdInStackControl(root["playStackControl"]), getName(), render_info);
+}
+
+void DisplayAgent::activateSession(NuguDirective* ndir)
+{
+    std::string dialog_id = nugu_directive_peek_dialog_id(ndir);
+    session_dialog_ids.emplace(dialog_id);
+    session_manager->activate(dialog_id);
+}
+
+void DisplayAgent::deactiveSession()
+{
+    for (const auto& session_dialog_id : session_dialog_ids)
+        session_manager->deactivate(session_dialog_id);
+
+    session_dialog_ids.clear();
 }
 
 DisplayRenderInfo* DisplayAgent::composeRenderInfo(NuguDirective* ndir, const std::string& ps_id, const std::string& token)

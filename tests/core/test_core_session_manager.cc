@@ -16,6 +16,7 @@
 
 #include <glib.h>
 #include <memory>
+#include <set>
 #include <string>
 
 #include "session_manager.hh"
@@ -44,6 +45,11 @@ public:
     int getSessionActive(const std::string& dialog_id)
     {
         return session_active_map[dialog_id];
+    }
+
+    bool isSessionActive(const std::string& dialog_id)
+    {
+        return session_active_map[dialog_id] > 0;
     }
 
     int getCallCount()
@@ -216,6 +222,47 @@ static void test_session_manager_multi_agent_participation(TestFixture* fixture,
     g_assert(fixture->session_manager->getActiveSessionInfo().empty());
 }
 
+static void test_session_manager_maintain_multi_session(TestFixture* fixture, gconstpointer ignored)
+{
+    std::set<std::string> holding_dialogIds;
+    fixture->session_manager->addListener(fixture->session_manager_listener.get());
+
+    // [1] receive dialog_1 [Display.Templates, Session.Set, ASR.ExpectSpeech]
+    fixture->session_manager->activate("dialog_id_1"); // Display.Templates
+    fixture->session_manager->set("dialog_id_1", { "session_id_1", "ps_id_1" }); // Session.Set
+    fixture->session_manager->activate("dialog_id_1"); // ASR.ExpectSpeech
+
+    // [2] ASR.ExpectSpeech is ended, but Display is not closed
+    fixture->session_manager->deactivate("dialog_id_1"); // ASR.ExpectSpeech
+    holding_dialogIds.emplace("dialog_id_1");
+
+    g_assert(fixture->session_manager_listener->isSessionActive("dialog_id_1"));
+    g_assert(fixture->session_manager->getActiveSessionInfo().size() == 1);
+
+    // [3] receive dialog_2 [Display.Update, Session.Set, ASR.ExpectSpeech]
+    fixture->session_manager->activate("dialog_id_2"); // Display.Update
+    fixture->session_manager->set("dialog_id_2", { "session_id_2", "ps_id_2" }); // Session.Set
+    fixture->session_manager->activate("dialog_id_2"); // ASR.ExpectSpeech
+
+    // [4] ASR.ExpectSpeech is ended, but Display is not closed.
+    fixture->session_manager->deactivate("dialog_id_2"); // ASR.ExpectSpeech
+    holding_dialogIds.emplace("dialog_id_2");
+
+    g_assert(fixture->session_manager_listener->isSessionActive("dialog_id_1"));
+    g_assert(fixture->session_manager_listener->isSessionActive("dialog_id_2"));
+    g_assert(fixture->session_manager->getActiveSessionInfo().size() == 2);
+
+    // [5] Display cleared
+    for (const auto& holding_dialogId : holding_dialogIds)
+        fixture->session_manager->deactivate(holding_dialogId);
+
+    g_assert(!fixture->session_manager_listener->isSessionActive("dialog_id_1"));
+    g_assert(!fixture->session_manager_listener->isSessionActive("dialog_id_2"));
+    g_assert(fixture->session_manager->getActiveSessionInfo().empty());
+
+    holding_dialogIds.clear();
+}
+
 static void test_session_manager_notify_single_active_state(TestFixture* fixture, gconstpointer ignored)
 {
     fixture->session_manager->addListener(fixture->session_manager_listener.get());
@@ -280,7 +327,6 @@ static void test_session_manager_notify_multi_active_state(TestFixture* fixture,
 static void test_session_manager_maintain_recent_session_id(TestFixture* fixture, gconstpointer ignored)
 {
     const auto& session_container = fixture->session_manager->getAllSessions();
-    fixture->session_manager->addListener(fixture->session_manager_listener.get());
 
     fixture->session_manager->activate("dialog_id_1");
     fixture->session_manager->set("dialog_id_1", { "session_id_1", "ps_id_1" });
@@ -316,12 +362,12 @@ static void test_session_manager_activate_with_no_set(TestFixture* fixture, gcon
     fixture->session_manager->addListener(fixture->session_manager_listener.get());
 
     fixture->session_manager->activate("dialog_id_1");
-    g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_1") == 0);
+    g_assert(!fixture->session_manager_listener->isSessionActive("dialog_id_1"));
     g_assert(fixture->session_manager_listener->getCallCount() == 0);
     g_assert(fixture->session_manager->getActiveSessionInfo().empty());
 
     fixture->session_manager->deactivate("dialog_id_1");
-    g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_1") == 0);
+    g_assert(!fixture->session_manager_listener->isSessionActive("dialog_id_1"));
     g_assert(fixture->session_manager_listener->getCallCount() == 0);
 }
 
@@ -333,16 +379,16 @@ static void test_session_manager_clear(TestFixture* fixture, gconstpointer ignor
     fixture->session_manager->set("dialog_id_1", { "session_id_1", "ps_id_1" });
     fixture->session_manager->set("dialog_id_2", { "session_id_2", "ps_id_2" });
     g_assert(!fixture->session_manager->getActiveSessionInfo().empty());
-    g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_1") == 1);
+    g_assert(fixture->session_manager_listener->isSessionActive("dialog_id_1"));
 
     fixture->session_manager->activate("dialog_id_2");
     fixture->session_manager->activate("dialog_id_2");
-    g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_2") == 1);
+    g_assert(fixture->session_manager_listener->isSessionActive("dialog_id_2"));
 
     fixture->session_manager->clear();
     g_assert(fixture->session_manager->getActiveSessionInfo().empty());
-    g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_1") == 0);
-    g_assert(fixture->session_manager_listener->getSessionActive("dialog_id_2") == 0);
+    g_assert(!fixture->session_manager_listener->isSessionActive("dialog_id_1"));
+    g_assert(!fixture->session_manager_listener->isSessionActive("dialog_id_2"));
 }
 
 static void test_session_manager_reset(TestFixture* fixture, gconstpointer ignored)
@@ -377,6 +423,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/SessionManager/singleActive", test_session_manager_single_active);
     G_TEST_ADD_FUNC("/core/SessionManager/multiActive", test_session_manager_multi_active);
     G_TEST_ADD_FUNC("/core/SessionManager/multiAgentParticipation", test_session_manager_multi_agent_participation);
+    G_TEST_ADD_FUNC("/core/SessionManager/maintainMultiSession", test_session_manager_maintain_multi_session);
     G_TEST_ADD_FUNC("/core/SessionManager/notifySingleActiveState", test_session_manager_notify_single_active_state);
     G_TEST_ADD_FUNC("/core/SessionManager/notifyMultiActiveState", test_session_manager_notify_multi_active_state);
     G_TEST_ADD_FUNC("/core/SessionManager/maintainRecentSessionId", test_session_manager_maintain_recent_session_id);

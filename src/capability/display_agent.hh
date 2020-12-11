@@ -17,6 +17,8 @@
 #ifndef __NUGU_DISPLAY_AGENT_H__
 #define __NUGU_DISPLAY_AGENT_H__
 
+#include <set>
+
 #include "capability/display_interface.hh"
 #include "clientkit/capability.hh"
 #include "display_render_helper.hh"
@@ -67,10 +69,14 @@ private:
     void parsingUpdate(const char* message);
     void parsingTemplates(const char* message);
 
+    void activateSession(NuguDirective* ndir);
+    void deactiveSession();
+
     DisplayRenderInfo* composeRenderInfo(NuguDirective* ndir, const std::string& ps_id, const std::string& token);
     std::string getTemplateId(const std::string& ps_id);
     std::string getDirectionString(ControlDirection direction);
 
+    std::set<std::string> session_dialog_ids;
     std::shared_ptr<DisplayRenderHelper> render_helper;
     IDisplayListener* display_listener;
     std::string disp_cur_ps_id;
