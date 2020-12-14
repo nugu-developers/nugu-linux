@@ -96,6 +96,11 @@ class UtilityAgent;
 class ExtensionAgent;
 
 /**
+ * @brief ChipsAgent
+ */
+class ChipsAgent;
+
+/**
  * @brief CapabilityFactory
  */
 class CapabilityFactory {
