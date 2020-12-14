@@ -169,6 +169,14 @@ void CapabilityCollection::composeCapabilityFactory()
 
         return extension_handler.get();
     });
+    factories.emplace("Chips", [&]() {
+        if (!chips_handler) {
+            chips_listener = std::make_shared<ChipsListener>();
+            chips_handler = makeCapability<ChipsAgent, IChipsHandler>(chips_listener.get());
+        }
+
+        return chips_handler.get();
+    });
 }
 
 SpeakerInfo CapabilityCollection::makeSpeakerInfo(SpeakerType type, int muted, bool can_control)

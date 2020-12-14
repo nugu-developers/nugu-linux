@@ -24,6 +24,7 @@
 #include <capability/utility_interface.hh>
 
 #include "audio_player_listener.hh"
+#include "chips_listener.hh"
 #include "display_listener.hh"
 #include "extension_listener.hh"
 #include "mic_listener.hh"
@@ -68,6 +69,7 @@ private:
     std::shared_ptr<IDisplayHandler> display_handler = nullptr;
     std::shared_ptr<IUtilityHandler> utility_handler = nullptr;
     std::shared_ptr<IExtensionHandler> extension_handler = nullptr;
+    std::shared_ptr<IChipsHandler> chips_handler = nullptr;
 
     // Capability listener
     std::shared_ptr<SpeechOperator> speech_operator = nullptr;
@@ -81,6 +83,7 @@ private:
     std::shared_ptr<SessionListener> session_listener = nullptr;
     std::shared_ptr<DisplayListener> display_listener = nullptr;
     std::shared_ptr<ExtensionListener> extension_listener = nullptr;
+    std::shared_ptr<ChipsListener> chips_listener = nullptr;
 
     std::map<std::string, std::function<ICapabilityInterface*()>> factories;
 };
