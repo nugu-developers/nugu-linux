@@ -30,6 +30,43 @@ DisplayAgent::DisplayAgent()
     , render_helper(std::make_shared<DisplayRenderHelper>())
     , display_listener(nullptr)
 {
+    template_names = {
+        "FullText1",
+        "FullText2",
+        "FullText3",
+        "ImageText1",
+        "ImageText2",
+        "ImageText3",
+        "ImageText4",
+        "TextList1",
+        "TextList2",
+        "TextList3",
+        "TextList4",
+        "ImageList1",
+        "ImageList2",
+        "ImageList3",
+        "Weather1",
+        "Weather2",
+        "Weather3",
+        "Weather4",
+        "Weather5",
+        "FullImage",
+        "Score1",
+        "Score2",
+        "SearchList1",
+        "SearchList2",
+        "UnifiedSearch1",
+        "CommerceList",
+        "CommerceOption",
+        "CommercePrice",
+        "CommerceInfo",
+        "Call1",
+        "Call2",
+        "Call3",
+        "Timer",
+        "Dummy",
+        "CustomTemplate"
+    };
 }
 
 void DisplayAgent::initialize()
@@ -45,6 +82,9 @@ void DisplayAgent::initialize()
     disp_cur_token = "";
 
     playsync_manager->addListener(getName(), this);
+
+    for (const auto& template_name : template_names)
+        addBlockingPolicy(template_name, { BlockingMedium::AUDIO, true });
 
     initialized = true;
 }
