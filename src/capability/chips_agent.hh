@@ -28,6 +28,8 @@ public:
     ChipsAgent();
     virtual ~ChipsAgent() = default;
 
+    void initialize() override;
+
     void parsingDirective(const char* dname, const char* message) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void updateInfoForContext(Json::Value& ctx) override;

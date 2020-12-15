@@ -29,6 +29,20 @@ ChipsAgent::ChipsAgent()
 {
 }
 
+void ChipsAgent::initialize()
+{
+    if (initialized) {
+        nugu_warn("It's already initialized.");
+        return;
+    }
+
+    Capability::initialize();
+
+    addBlockingPolicy("Render", { BlockingMedium::AUDIO, true });
+
+    initialized = true;
+}
+
 void ChipsAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)
