@@ -18,11 +18,11 @@
 
 #include "chips_listener.hh"
 
-void ChipsListener::onReceiveRender(const std::vector<ChipContent>& contents)
+void ChipsListener::onReceiveRender(ChipsInfo&& chips_info)
 {
-    if (!contents.empty())
-        std::cout << "[Chips]\n";
+    if (!chips_info.contents.empty())
+        std::cout << "[Chips] target:" << chips_info.target << std::endl;
 
-    for (const auto& content : contents)
-        std::cout << "\ttext:" << content.text << std::endl;
+    for (const auto& content : chips_info.contents)
+        std::cout << " - text:" << content.text << std::endl;
 }

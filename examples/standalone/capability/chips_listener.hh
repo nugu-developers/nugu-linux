@@ -25,7 +25,7 @@ class ChipsListener : public IChipsListener {
 public:
     virtual ~ChipsListener() = default;
 
-    void onReceiveRender(const std::vector<ChipContent>& contents) override;
+    void onReceiveRender(ChipsInfo&& chips_info) override;
 };
 
 #endif /* __CHIPS_LISTENER_H__ */

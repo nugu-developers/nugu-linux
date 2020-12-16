@@ -35,14 +35,20 @@ using namespace NuguClientKit;
  */
 
 /**
- * @brief Model for holding chips elements.
+ * @brief Model for holding chips Info.
  * @see IChipsListener::onReceiveRender
  */
 typedef struct {
-    std::string type; /**< chips type : ACTION, GENERAL */
-    std::string text; /**< text for voice command guide */
-    std::string token; /**< token which is used to send TextInput event */
-} ChipContent;
+    struct Content {
+        std::string type; /**< chips type : ACTION, GENERAL */
+        std::string text; /**< text for voice command guide */
+        std::string token; /**< token which is used to send TextInput event */
+    };
+
+    std::string play_service_id; /**< playServiceId */
+    std::string target; /**< target for rendering voice command guide */
+    std::vector<Content> contents; /**< chip content list */
+} ChipsInfo;
 
 /**
  * @brief chips listener interface
@@ -55,9 +61,9 @@ public:
 
     /**
      * @brief Notified when receiving Render directive from server.
-     * @param[in] contents received datas for rendering voice command guide
+     * @param[in] chips_info received datas for rendering voice command guide
      */
-    virtual void onReceiveRender(const std::vector<ChipContent>& contents) = 0;
+    virtual void onReceiveRender(ChipsInfo&& chips_info) = 0;
 };
 
 /**
