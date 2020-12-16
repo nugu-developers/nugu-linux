@@ -71,9 +71,6 @@ void ChipsAgent::parsingRender(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
-    Json::Value chips;
-
-    std::vector<ChipContent> contents;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -85,27 +82,22 @@ void ChipsAgent::parsingRender(const char* message)
         return;
     }
 
-    nugu_dbg("chips target: ", root["target"].asString().c_str());
+    ChipsInfo chips_info;
+    chips_info.play_service_id = root["playServiceId"].asString();
+    chips_info.target = root["target"].asString();
 
-    chips = root["chips"]; // type(Action, General), text
+    for (const auto& chip : root["chips"]) {
+        if (chip["type"].empty() || chip["text"].empty())
+            continue;
 
-    for (int i = 0; i < (int)chips.size(); i++) {
-        if (chips[i]["type"].empty() || chips[i]["text"].empty()) {
-            nugu_error("There is no mandatory data in directive message");
-            return;
-        }
-
-        ChipContent content;
-        content.type = chips[i]["type"].asString();
-        content.text = chips[i]["text"].asString();
-        content.token = chips[i]["token"].asString();
-        contents.emplace_back(content);
-
-        nugu_dbg("[%d] type: %s, text: %s, token: %s", i, content.type.c_str(), content.text.c_str(), content.token.c_str());
+        chips_info.contents.emplace_back(ChipsInfo::Content {
+            chip["type"].asString(),
+            chip["text"].asString(),
+            chip["token"].asString() });
     }
 
     if (chips_listener)
-        chips_listener->onReceiveRender(contents);
+        chips_listener->onReceiveRender(std::move(chips_info));
 }
 
 } // NuguCapability
