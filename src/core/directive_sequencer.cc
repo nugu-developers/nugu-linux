@@ -611,11 +611,13 @@ bool DirectiveSequencer::cancel(const std::string& dialog_id)
         });
     scheduled_list.erase(new_end, scheduled_list.end());
 
-    /* Remove from pending list without cancel notify */
+    /* Remove from pending list with cancel notify */
     std::vector<NuguDirective*>* list = pending->getList(dialog_id.c_str());
     if (list != NULL) {
         for (auto& ndir : *list) {
             msgid_lookup->remove(nugu_directive_peek_msg_id(ndir));
+
+            cancelDirective(ndir);
 
             nugu_directive_unref(ndir);
         };
