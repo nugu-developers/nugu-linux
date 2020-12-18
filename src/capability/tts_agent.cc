@@ -56,6 +56,7 @@ void TTSAgent::initialize()
     cur_token = "";
     is_prehandling = false;
     is_finished = false;
+    is_stopped_by_explicit = false;
     volume_update = false;
     volume = -1;
     speak_dir = nullptr;
@@ -153,8 +154,10 @@ void TTSAgent::onFocusChanged(FocusState state)
     case FocusState::NONE:
         stopTTS();
 
-        if (!playsync_manager->hasLayer(playstackctl_ps_id, PlayStackLayer::Media))
-            playsync_manager->releaseSync(playstackctl_ps_id, getName());
+        if (!playsync_manager->hasLayer(playstackctl_ps_id, PlayStackLayer::Media)) {
+            is_stopped_by_explicit ? playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName())
+                                   : playsync_manager->releaseSync(playstackctl_ps_id, getName());
+        }
 
         break;
     }
@@ -415,6 +418,7 @@ void TTSAgent::parsingSpeak(const char* message)
         return;
     }
 
+    is_stopped_by_explicit = false;
     destroy_directive_by_agent = true;
     speak_dir = nullptr;
 
@@ -465,6 +469,7 @@ void TTSAgent::parsingStop(const char* message)
         return;
     }
 
+    is_stopped_by_explicit = true;
     speak_dir = getNuguDirective();
 
     if (!root["playServiceId"].empty())

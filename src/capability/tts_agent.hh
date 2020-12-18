@@ -82,6 +82,7 @@ private:
     std::string cur_token;
     bool is_prehandling;
     bool is_finished;
+    bool is_stopped_by_explicit;
     bool volume_update;
     int volume;
 
