@@ -143,15 +143,17 @@ void SpeechRecognizer::loop()
         nugu_dbg("Listening Thread: asr_is_running=%d", is_running);
         sendListeningEvent(ListeningState::READY, id);
 
-        if (epd_client_start(model_file.c_str(), epd_param) < 0) {
-            nugu_error("epd_client_start() failed");
-            break;
-        };
+        if (epd_client_start(model_file.c_str(), epd_param) < 0 || !recorder->start()) {
+            nugu_error("epd_client_start() failed or recorder->start() failed");
 
-        if (!recorder->start()) {
-            nugu_error("recorder->start() failed.");
-            break;
-        }
+            is_running = false;
+            recorder->stop();
+            epd_client_release();
+
+            sendListeningEvent(ListeningState::FAILED, id);
+            sendListeningEvent(ListeningState::DONE, id);
+            continue;
+        };
 
         sendListeningEvent(ListeningState::LISTENING, id);
 
