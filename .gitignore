@@ -4,7 +4,7 @@ nbproject
 .project
 .cproject
 
-build/
+build*
 
 # Binary
 *.o

@@ -166,7 +166,6 @@ EXPORT_API NuguRecorder *nugu_recorder_new(const char *name,
 	NuguRecorder *rec;
 
 	g_return_val_if_fail(name != NULL, NULL);
-	g_return_val_if_fail(driver != NULL, NULL);
 
 	rec = g_malloc0(sizeof(struct _nugu_recorder));
 	rec->name = g_strdup(name);
@@ -193,7 +192,6 @@ EXPORT_API NuguRecorder *nugu_recorder_new(const char *name,
 EXPORT_API void nugu_recorder_free(NuguRecorder *rec)
 {
 	g_return_if_fail(rec != NULL);
-	g_return_if_fail(rec->driver != NULL);
 
 	pthread_mutex_lock(&rec->lock);
 
@@ -269,9 +267,9 @@ EXPORT_API int nugu_recorder_set_property(NuguRecorder *rec,
 EXPORT_API int nugu_recorder_start(NuguRecorder *rec)
 {
 	g_return_val_if_fail(rec != NULL, -1);
-	g_return_val_if_fail(rec->driver != NULL, -1);
 
-	if (rec->driver->ops->start == NULL) {
+	if (rec->driver == NULL || rec->driver->ops == NULL ||
+	    rec->driver->ops->start == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
@@ -289,9 +287,9 @@ EXPORT_API int nugu_recorder_start(NuguRecorder *rec)
 EXPORT_API int nugu_recorder_stop(NuguRecorder *rec)
 {
 	g_return_val_if_fail(rec != NULL, -1);
-	g_return_val_if_fail(rec->driver != NULL, -1);
 
-	if (rec->driver->ops->stop == NULL) {
+	if (rec->driver == NULL || rec->driver->ops == NULL ||
+	    rec->driver->ops->stop == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}

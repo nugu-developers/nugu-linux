@@ -181,12 +181,6 @@ EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver,
 	NuguPcm *pcm;
 
 	g_return_val_if_fail(name != NULL, NULL);
-	g_return_val_if_fail(driver != NULL, NULL);
-
-	if (driver->ops->create == NULL) {
-		nugu_error("Not supported");
-		return NULL;
-	}
 
 	pcm = g_malloc0(sizeof(struct _nugu_pcm));
 	if (!pcm) {
@@ -217,8 +211,14 @@ EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver,
 
 	pthread_mutex_init(&pcm->mutex, NULL);
 
+	if (driver == NULL || driver->ops == NULL ||
+	    driver->ops->create == NULL) {
+		nugu_warn("Not supported");
+		return pcm;
+	}
+
 	if (pcm->driver->ops->create(pcm->driver, pcm, pcm->property) < 0) {
-		nugu_error("pcm create failed");
+		nugu_error("can't create nugu_pcm");
 		g_free(pcm->name);
 		nugu_buffer_free(pcm->buf, 1);
 		g_free(pcm);
@@ -233,12 +233,13 @@ EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver,
 EXPORT_API void nugu_pcm_free(NuguPcm *pcm)
 {
 	g_return_if_fail(pcm != NULL);
-	g_return_if_fail(pcm->driver != NULL);
 
-	if (pcm->driver->ops->destroy)
-		pcm->driver->ops->destroy(pcm->driver, pcm);
+	if (pcm->driver) {
+		pcm->driver->ref_count--;
 
-	pcm->driver->ref_count--;
+		if (pcm->driver->ops && pcm->driver->ops->destroy)
+			pcm->driver->ops->destroy(pcm->driver, pcm);
+	}
 
 	g_free(pcm->name);
 	nugu_buffer_free(pcm->buf, 1);
@@ -296,13 +297,14 @@ EXPORT_API NuguPcm *nugu_pcm_find(const char *name)
 EXPORT_API int nugu_pcm_start(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
-	g_return_val_if_fail(pcm->driver != NULL, -1);
 
-	if (pcm->driver->ops->start == NULL) {
+	nugu_pcm_clear_buffer(pcm);
+
+	if (pcm->driver == NULL || pcm->driver->ops == NULL ||
+	    pcm->driver->ops->start == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
-	nugu_pcm_clear_buffer(pcm);
 
 	return pcm->driver->ops->start(pcm->driver, pcm);
 }
@@ -310,13 +312,14 @@ EXPORT_API int nugu_pcm_start(NuguPcm *pcm)
 EXPORT_API int nugu_pcm_stop(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
-	g_return_val_if_fail(pcm->driver != NULL, -1);
 
-	if (pcm->driver->ops->stop == NULL) {
+	nugu_pcm_clear_buffer(pcm);
+
+	if (pcm->driver == NULL || pcm->driver->ops == NULL ||
+	    pcm->driver->ops->stop == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
-	nugu_pcm_clear_buffer(pcm);
 
 	return pcm->driver->ops->stop(pcm->driver, pcm);
 }
@@ -324,9 +327,9 @@ EXPORT_API int nugu_pcm_stop(NuguPcm *pcm)
 EXPORT_API int nugu_pcm_pause(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
-	g_return_val_if_fail(pcm->driver != NULL, -1);
 
-	if (pcm->driver->ops->pause == NULL) {
+	if (pcm->driver == NULL || pcm->driver->ops == NULL ||
+	    pcm->driver->ops->pause == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
@@ -337,9 +340,9 @@ EXPORT_API int nugu_pcm_pause(NuguPcm *pcm)
 EXPORT_API int nugu_pcm_resume(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
-	g_return_val_if_fail(pcm->driver != NULL, -1);
 
-	if (pcm->driver->ops->resume == NULL) {
+	if (pcm->driver == NULL || pcm->driver->ops == NULL ||
+	    pcm->driver->ops->resume == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
@@ -350,17 +353,18 @@ EXPORT_API int nugu_pcm_resume(NuguPcm *pcm)
 EXPORT_API int nugu_pcm_set_volume(NuguPcm *pcm, int volume)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
-	g_return_val_if_fail(pcm->driver != NULL, -1);
+
+	if (pcm->driver == NULL || pcm->driver->ops == NULL ||
+	    pcm->driver->ops->set_volume == NULL) {
+		nugu_error("Not supported");
+		return -1;
+	}
 
 	if (volume < NUGU_SET_VOLUME_MIN)
 		volume = NUGU_SET_VOLUME_MIN;
 	else if (volume > NUGU_SET_VOLUME_MAX)
 		volume = NUGU_SET_VOLUME_MAX;
 
-	if (pcm->driver->ops->set_volume == NULL) {
-		nugu_error("Not supported");
-		return -1;
-	}
 	if (pcm->driver->ops->set_volume(pcm->driver, pcm, volume)) {
 		nugu_error("volume is not changed");
 		return -1;
@@ -381,8 +385,9 @@ EXPORT_API int nugu_pcm_get_volume(NuguPcm *pcm)
 
 EXPORT_API int nugu_pcm_get_duration(NuguPcm *pcm)
 {
-	g_return_val_if_fail(pcm != NULL, -1);
 	int samplerate;
+
+	g_return_val_if_fail(pcm != NULL, -1);
 
 	switch (pcm->property.samplerate) {
 	case NUGU_AUDIO_SAMPLE_RATE_8K:
@@ -411,9 +416,9 @@ EXPORT_API int nugu_pcm_get_duration(NuguPcm *pcm)
 EXPORT_API int nugu_pcm_get_position(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
-	g_return_val_if_fail(pcm->driver != NULL, -1);
 
-	if (pcm->driver->ops->get_position == NULL) {
+	if (pcm->driver == NULL || pcm->driver->ops == NULL ||
+	    pcm->driver->ops->get_position == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
@@ -512,7 +517,6 @@ EXPORT_API int nugu_pcm_push_data(NuguPcm *pcm, const char *data, size_t size,
 	g_return_val_if_fail(pcm->buf != NULL, -1);
 	g_return_val_if_fail(data != NULL, -1);
 	g_return_val_if_fail(size > 0, -1);
-	g_return_val_if_fail(pcm->driver != NULL, -1);
 
 	pthread_mutex_lock(&pcm->mutex);
 
@@ -524,7 +528,7 @@ EXPORT_API int nugu_pcm_push_data(NuguPcm *pcm, const char *data, size_t size,
 
 	pthread_mutex_unlock(&pcm->mutex);
 
-	if (pcm->driver->ops->push_data)
+	if (pcm->driver && pcm->driver->ops && pcm->driver->ops->push_data)
 		pcm->driver->ops->push_data(pcm->driver, pcm, data, size,
 					    pcm->is_last);
 	return ret;
@@ -533,7 +537,6 @@ EXPORT_API int nugu_pcm_push_data(NuguPcm *pcm, const char *data, size_t size,
 EXPORT_API int nugu_pcm_push_data_done(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
-	g_return_val_if_fail(pcm->driver != NULL, -1);
 
 	pthread_mutex_lock(&pcm->mutex);
 
@@ -541,7 +544,7 @@ EXPORT_API int nugu_pcm_push_data_done(NuguPcm *pcm)
 
 	pthread_mutex_unlock(&pcm->mutex);
 
-	if (pcm->driver->ops->push_data)
+	if (pcm->driver && pcm->driver->ops && pcm->driver->ops->push_data)
 		pcm->driver->ops->push_data(pcm->driver, pcm, NULL, 0, 1);
 
 	return 0;

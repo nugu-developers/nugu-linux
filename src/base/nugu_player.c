@@ -162,9 +162,6 @@ EXPORT_API NuguPlayer *nugu_player_new(const char *name,
 	NuguPlayer *player;
 
 	g_return_val_if_fail(name != NULL, NULL);
-	g_return_val_if_fail(driver != NULL, NULL);
-	g_return_val_if_fail(driver->ops != NULL, NULL);
-	g_return_val_if_fail(driver->ops->create != NULL, NULL);
 
 	player = g_malloc0(sizeof(struct _nugu_player));
 	if (!player) {
@@ -176,6 +173,12 @@ EXPORT_API NuguPlayer *nugu_player_new(const char *name,
 	player->driver = driver;
 	player->volume = NUGU_SET_VOLUME_DEFAULT;
 	player->status = NUGU_MEDIA_STATUS_STOPPED;
+
+	if (driver == NULL || driver->ops == NULL ||
+	    driver->ops->create == NULL) {
+		nugu_warn("Not supported");
+		return player;
+	}
 
 	if (player->driver->ops->create(player->driver, player) < 0) {
 		nugu_error("can't create nugu_player");
@@ -192,12 +195,13 @@ EXPORT_API NuguPlayer *nugu_player_new(const char *name,
 EXPORT_API void nugu_player_free(NuguPlayer *player)
 {
 	g_return_if_fail(player != NULL);
-	g_return_if_fail(player->driver != NULL);
-	g_return_if_fail(player->driver->ops != NULL);
-	g_return_if_fail(player->driver->ops->destroy != NULL);
 
-	player->driver->ref_count--;
-	player->driver->ops->destroy(player->driver, player);
+	if (player->driver) {
+		player->driver->ref_count--;
+
+		if (player->driver->ops && player->driver->ops->destroy)
+			player->driver->ops->destroy(player->driver, player);
+	}
 
 	g_free(player->playurl);
 	g_free(player->name);
@@ -253,10 +257,10 @@ EXPORT_API NuguPlayer *nugu_player_find(const char *name)
 EXPORT_API int nugu_player_set_source(NuguPlayer *player, const char *url)
 {
 	g_return_val_if_fail(player != NULL, -1);
-	g_return_val_if_fail(player->driver != NULL, -1);
 	g_return_val_if_fail(url != NULL, -1);
 
-	if (player->driver->ops->set_source == NULL) {
+	if (player->driver == NULL || player->driver->ops == NULL ||
+	    player->driver->ops->set_source == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
@@ -272,9 +276,9 @@ EXPORT_API int nugu_player_set_source(NuguPlayer *player, const char *url)
 EXPORT_API int nugu_player_start(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
-	g_return_val_if_fail(player->driver != NULL, -1);
 
-	if (player->driver->ops->start == NULL) {
+	if (player->driver == NULL || player->driver->ops == NULL ||
+	    player->driver->ops->start == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
@@ -287,9 +291,9 @@ EXPORT_API int nugu_player_start(NuguPlayer *player)
 EXPORT_API int nugu_player_stop(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
-	g_return_val_if_fail(player->driver != NULL, -1);
 
-	if (player->driver->ops->stop == NULL) {
+	if (player->driver == NULL || player->driver->ops == NULL ||
+	    player->driver->ops->stop == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
@@ -299,9 +303,9 @@ EXPORT_API int nugu_player_stop(NuguPlayer *player)
 EXPORT_API int nugu_player_pause(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
-	g_return_val_if_fail(player->driver != NULL, -1);
 
-	if (player->driver->ops->pause == NULL) {
+	if (player->driver == NULL || player->driver->ops == NULL ||
+	    player->driver->ops->pause == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
@@ -312,9 +316,9 @@ EXPORT_API int nugu_player_pause(NuguPlayer *player)
 EXPORT_API int nugu_player_resume(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
-	g_return_val_if_fail(player->driver != NULL, -1);
 
-	if (player->driver->ops->resume == NULL) {
+	if (player->driver == NULL || player->driver->ops == NULL ||
+	    player->driver->ops->resume == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
@@ -325,9 +329,9 @@ EXPORT_API int nugu_player_resume(NuguPlayer *player)
 EXPORT_API int nugu_player_seek(NuguPlayer *player, int sec)
 {
 	g_return_val_if_fail(player != NULL, -1);
-	g_return_val_if_fail(player->driver != NULL, -1);
 
-	if (player->driver->ops->seek == NULL) {
+	if (player->driver == NULL || player->driver->ops == NULL ||
+	    player->driver->ops->seek == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
@@ -338,9 +342,9 @@ EXPORT_API int nugu_player_seek(NuguPlayer *player, int sec)
 EXPORT_API int nugu_player_set_volume(NuguPlayer *player, int vol)
 {
 	g_return_val_if_fail(player != NULL, -1);
-	g_return_val_if_fail(player->driver != NULL, -1);
 
-	if (player->driver->ops->set_volume == NULL) {
+	if (player->driver == NULL || player->driver->ops == NULL ||
+	    player->driver->ops->set_volume == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
@@ -366,9 +370,9 @@ EXPORT_API int nugu_player_get_volume(NuguPlayer *player)
 EXPORT_API int nugu_player_get_duration(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
-	g_return_val_if_fail(player->driver != NULL, -1);
 
-	if (player->driver->ops->get_duration == NULL) {
+	if (player->driver == NULL || player->driver->ops == NULL ||
+	    player->driver->ops->get_duration == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
@@ -378,9 +382,9 @@ EXPORT_API int nugu_player_get_duration(NuguPlayer *player)
 EXPORT_API int nugu_player_get_position(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
-	g_return_val_if_fail(player->driver != NULL, -1);
 
-	if (player->driver->ops->get_position == NULL) {
+	if (player->driver == NULL || player->driver->ops == NULL ||
+	    player->driver->ops->get_position == NULL) {
 		nugu_error("Not supported");
 		return -1;
 	}
@@ -390,13 +394,7 @@ EXPORT_API int nugu_player_get_position(NuguPlayer *player)
 
 EXPORT_API enum nugu_media_status nugu_player_get_status(NuguPlayer *player)
 {
-	g_return_val_if_fail(player != NULL, -1);
-	g_return_val_if_fail(player->driver != NULL, -1);
-
-	if (player->driver->ops->get_position == NULL) {
-		nugu_error("Not supported");
-		return -1;
-	}
+	g_return_val_if_fail(player != NULL, NUGU_MEDIA_STATUS_STOPPED);
 
 	return player->status;
 }
