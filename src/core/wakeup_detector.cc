@@ -121,14 +121,16 @@ void WakeupDetector::loop()
         nugu_dbg("Wakeup Thread: kwd_is_running=%d", is_running);
         sendWakeupEvent(WakeupState::DETECTING, id);
 
-        if (kwd_initialize(model_net_file.c_str(), model_search_file.c_str()) < 0) {
-            nugu_error("kwd_initialize() failed");
-            break;
-        }
+        if (kwd_initialize(model_net_file.c_str(), model_search_file.c_str()) < 0
+            || !recorder->start()) {
+            nugu_error("kwd_initialize() or recorder->start() failed");
 
-        if (!recorder->start()) {
-            nugu_error("recorder->start() failed.");
-            break;
+            is_running = false;
+            kwd_deinitialize();
+
+            sendWakeupEvent(WakeupState::FAIL, id);
+            sendWakeupEvent(WakeupState::DONE, id);
+            continue;
         }
 
         pcm_size = recorder->getAudioFrameSize();
