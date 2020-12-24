@@ -334,6 +334,12 @@ public:
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     /**
+     * @brief Set directive cancel policy
+     * @param[in] cancel_policy policy object
+     */
+    void setCancelPolicy(DirectiveCancelPolicy&& cancel_policy) override;
+
+    /**
      * @brief Process command from other objects.
      * @param[in] from capability who send the command
      * @param[in] command command

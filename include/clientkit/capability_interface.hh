@@ -20,6 +20,7 @@
 #include <functional>
 #include <json/json.h>
 #include <list>
+#include <set>
 #include <string>
 
 #include <base/nugu_directive.h>
@@ -37,6 +38,14 @@ namespace NuguClientKit {
  *
  * @{
  */
+
+/**
+ * @brief Policy about canceling directives which are belong to the specific dialog id.
+ */
+typedef struct {
+    bool cancel_all; /**< cancel all directives or selections */
+    std::set<std::string> dir_groups; /**< directive groups for canceling */
+} DirectiveCancelPolicy;
 
 /**
  * @brief capability listener interface
@@ -213,6 +222,12 @@ public:
      * @param[in] clistener listener
      */
     virtual void setCapabilityListener(ICapabilityListener* clistener) = 0;
+
+    /**
+     * @brief Set directive cancel policy
+     * @param[in] cancel_policy policy object
+     */
+    virtual void setCancelPolicy(DirectiveCancelPolicy&& cancel_policy) = 0;
 };
 
 /**
