@@ -41,11 +41,6 @@
 #define HEXDUMP_LINE_BUFSIZE                                                   \
 	(8 + (HEXDUMP_COLUMN_SIZE * 3) + 3 + 3 + (HEXDUMP_COLUMN_SIZE) + 2)
 
-#ifdef __APPLE__
-#define FMT_TID "%5" PRIu64 " "
-#else
-#define FMT_TID "%5d "
-#endif
 
 static enum nugu_log_system _log_system = NUGU_LOG_SYSTEM_STDERR;
 static enum nugu_log_prefix _log_prefix_fields = NUGU_LOG_PREFIX_DEFAULT;
@@ -234,40 +229,27 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 
 	if (_log_prefix_fields & NUGU_LOG_PREFIX_PID) {
 		pid = getpid();
-		if (len > 0)
-			len += snprintf(prefix + len, 7, "%5d ", pid);
-		else
-			len += snprintf(prefix, 7, "%d ", pid);
+		len += sprintf(prefix + len, "%d ", pid);
 	}
 
 	if (_log_prefix_fields & NUGU_LOG_PREFIX_TID) {
-#ifdef __APPLE__
-		uint64_t tid = 0;
-
-		pthread_threadid_np(NULL, &tid);
-#else
 		int tid;
 #ifdef HAVE_SYSCALL
 		tid = (pid_t)syscall(SYS_gettid);
 #else
-		tid = 0;
-#endif
+		tid = (pid_t)gettid();
 #endif
 
 #ifdef NUGU_LOG_USE_ANSICOLOR
-#ifdef __APPLE__
-		if (len > 0 && pid != 0 && (uint64_t)pid != tid)
-#else
 		if (len > 0 && pid != 0 && pid != tid)
-#endif
-			len += snprintf(prefix + len, 18,
-					NUGU_ANSI_COLOR_DARKGRAY FMT_TID
-						NUGU_ANSI_COLOR_NORMAL,
-					tid);
+			len += sprintf(prefix + len,
+				       NUGU_ANSI_COLOR_DARKGRAY
+				       "%d " NUGU_ANSI_COLOR_NORMAL,
+				       tid);
 		else
-			len += snprintf(prefix + len, 7, FMT_TID, tid);
+			len += sprintf(prefix + len, "%d ", tid);
 #else
-		len += snprintf(prefix + len, 7, FMT_TID, tid);
+		len += sprintf(prefix + len, "%d ", tid);
 #endif
 	}
 
