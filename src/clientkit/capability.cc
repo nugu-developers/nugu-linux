@@ -29,6 +29,7 @@ struct Capability::Impl {
     std::string ref_dialog_id;
     NuguDirective* cur_ndir = nullptr;
     NuguDirective* prev_ndir = nullptr;
+    DirectiveCancelPolicy cancel_policy = { true };
     std::map<std::string, std::string> referrer_events;
     std::map<std::string, std::string> referrer_dirs;
 
@@ -452,6 +453,11 @@ bool Capability::Impl::parseEventResultDesc(const std::string& desc, std::string
 
 void Capability::setCapabilityListener(ICapabilityListener* clistener)
 {
+}
+
+void Capability::setCancelPolicy(DirectiveCancelPolicy&& cancel_policy)
+{
+    pimpl->cancel_policy = cancel_policy;
 }
 
 bool Capability::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
