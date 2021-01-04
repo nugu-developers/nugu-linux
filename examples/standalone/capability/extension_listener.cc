@@ -24,10 +24,13 @@ void ExtensionListener::setExtensionHandler(IExtensionHandler* extension_handler
         this->extension_handler = extension_handler;
 }
 
-void ExtensionListener::receiveAction(const std::string& data)
+void ExtensionListener::receiveAction(const std::string& data, const std::string& ps_id, const std::string& dialog_id)
 {
-    std::cout << "[Extension] " << data << std::endl;
+    std::cout << "[Extension] receive action\n"
+              << "- playServiceId:" << ps_id << std::endl
+              << "- dialogId:" << dialog_id << std::endl
+              << "- data:" << data << std::endl;
 
     if (extension_handler)
-        extension_handler->ActionSucceeded();
+        extension_handler->actionSucceeded();
 }

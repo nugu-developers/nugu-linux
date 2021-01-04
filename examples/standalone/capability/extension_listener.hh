@@ -26,7 +26,7 @@ public:
     virtual ~ExtensionListener() = default;
 
     void setExtensionHandler(IExtensionHandler* extension_handler);
-    void receiveAction(const std::string& data) override;
+    void receiveAction(const std::string& data, const std::string& ps_id, const std::string& dialog_id) override;
 
 private:
     IExtensionHandler* extension_handler = nullptr;

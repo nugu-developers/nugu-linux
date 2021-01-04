@@ -35,13 +35,13 @@ public:
     void setContextInformation(const std::string& ctx) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void parsingDirective(const char* dname, const char* message) override;
-    void ActionSucceeded() override;
-    void ActionFailed() override;
-    void CommandIssued(const std::string& data) override;
+    void actionSucceeded() override;
+    void actionFailed() override;
+    void commandIssued(const std::string& ps_id, const std::string& data) override;
 
 private:
     void postProcessDirective();
-    void sendEventCommandIssued(const std::string& data, EventResultCallback cb = nullptr);
+    void sendEventCommandIssued(const std::string& ps_id, const std::string& data, EventResultCallback cb = nullptr);
     void sendEventCommon(std::string&& ename, EventResultCallback cb = nullptr);
     void parsingAction(const char* message);
 
