@@ -45,8 +45,10 @@ public:
     /**
      * @brief Notified when receiving Action directive from server.
      * @param[in] data received raw data
+     * @param[in] ps_id received playServiceId
+     * @param[in] dialog_id dialogId of received action
      */
-    virtual void receiveAction(const std::string& data) = 0;
+    virtual void receiveAction(const std::string& data, const std::string& ps_id, const std::string& dialog_id) = 0;
 };
 
 /**
@@ -66,18 +68,19 @@ public:
     /**
      * @brief Call if handling action succeed
      */
-    virtual void ActionSucceeded() = 0;
+    virtual void actionSucceeded() = 0;
 
     /**
      * @brief Call if handling action fail
      */
-    virtual void ActionFailed() = 0;
+    virtual void actionFailed() = 0;
 
     /**
      * @brief Request the specific command to Play
+     * @param[in] ps_id playServiceId for handling request
      * @param[in] data raw data to request
      */
-    virtual void CommandIssued(const std::string& data) = 0;
+    virtual void commandIssued(const std::string& ps_id, const std::string& data) = 0;
 };
 
 /**

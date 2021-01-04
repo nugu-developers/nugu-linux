@@ -93,21 +93,21 @@ void ExtensionAgent::parsingDirective(const char* dname, const char* message)
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
 }
 
-void ExtensionAgent::ActionSucceeded()
+void ExtensionAgent::actionSucceeded()
 {
     postProcessDirective();
     sendEventCommon("ActionSucceeded");
 }
 
-void ExtensionAgent::ActionFailed()
+void ExtensionAgent::actionFailed()
 {
     postProcessDirective();
     sendEventCommon("ActionFailed");
 }
 
-void ExtensionAgent::CommandIssued(const std::string& data)
+void ExtensionAgent::commandIssued(const std::string& ps_id, const std::string& data)
 {
-    sendEventCommandIssued(data);
+    sendEventCommandIssued(ps_id, data);
 }
 
 void ExtensionAgent::postProcessDirective()
@@ -118,7 +118,7 @@ void ExtensionAgent::postProcessDirective()
     }
 }
 
-void ExtensionAgent::sendEventCommandIssued(const std::string& data, EventResultCallback cb)
+void ExtensionAgent::sendEventCommandIssued(const std::string& ps_id, const std::string& data, EventResultCallback cb)
 {
     Json::StyledWriter writer;
     Json::Value root;
@@ -164,9 +164,9 @@ void ExtensionAgent::parsingAction(const char* message)
         destroy_directive_by_agent = true;
         action_dir = getNuguDirective();
 
-        extension_listener->receiveAction(action);
+        extension_listener->receiveAction(action, ps_id, nugu_directive_peek_dialog_id(action_dir));
     } else {
-        ActionFailed();
+        actionFailed();
     }
 }
 
