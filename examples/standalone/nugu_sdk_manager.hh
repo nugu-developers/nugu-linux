@@ -78,6 +78,7 @@ private:
 
     bool sdk_initialized = false;
     bool is_network_error = false;
+    bool mic_mute = false;
 };
 
 #endif /* __NUGU_SDK_MANAGER_H__ */

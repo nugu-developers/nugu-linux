@@ -28,14 +28,15 @@
 class NuguSampleManager {
 public:
     using TextCommander = std::function<void(const std::string&, bool)>;
-    using PlayStackRetriever = std::function<std::string()>;
+    using StatusRetriever = std::function<std::string()>;
     using Command = std::pair<std::string, std::function<void(int& flag)>>;
     using Commands = std::pair<std::vector<std::string>, std::map<std::string, Command>>;
     using Commander = struct {
         bool is_connected;
         int text_input;
         TextCommander text_commander;
-        PlayStackRetriever playstack_retriever;
+        StatusRetriever playstack_retriever;
+        StatusRetriever mic_status_retriever;
     };
 
     class CommandBuilder {
@@ -62,7 +63,8 @@ public:
     bool handleArguments(const int& argc, char** argv);
     void handleNetworkResult(bool is_connected, bool is_show_cmd = true);
     void setTextCommander(TextCommander&& text_commander);
-    void setPlayStackRetriever(PlayStackRetriever&& playstack_retriever);
+    void setPlayStackRetriever(StatusRetriever&& playstack_retriever);
+    void setMicStatusRetriever(StatusRetriever&& mic_status_retriever);
 
     const std::string& getModelPath();
     CommandBuilder* getCommandBuilder();

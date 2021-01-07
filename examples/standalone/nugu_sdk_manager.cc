@@ -84,9 +84,8 @@ void NuguSDKManager::composeSDKCommands()
                          flag = TEXT_INPUT_TYPE_2;
                      } })
         ->add("m", { "set mic mute", [&](int& flag) {
-                        static bool mute = false;
-                        mute = !mute;
-                        !mute ? mic_handler->enable() : mic_handler->disable();
+                        mic_mute = !mic_mute;
+                        !mic_mute ? mic_handler->enable() : mic_handler->disable();
                     } })
         ->add("sa", { "suspend all", [&](int& flag) {
                          nugu_core_container->getCapabilityHelper()->suspendAll();
@@ -159,27 +158,29 @@ void NuguSDKManager::setDefaultSoundLayerPolicy()
     auto capability_helper(nugu_core_container->getCapabilityHelper());
     auto focus_manager = capability_helper->getFocusManager();
 
-    std::vector<FocusConfiguration> request_configuration;
-    request_configuration.push_back({ CALL_FOCUS_TYPE, CALL_FOCUS_REQUEST_PRIORITY });
-    request_configuration.push_back({ ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_REQUEST_PRIORITY });
-    request_configuration.push_back({ INFO_FOCUS_TYPE, INFO_FOCUS_REQUEST_PRIORITY });
-    request_configuration.push_back({ ASR_DM_FOCUS_TYPE, ASR_DM_FOCUS_REQUEST_PRIORITY });
-    request_configuration.push_back({ ALERTS_FOCUS_TYPE, ALERTS_FOCUS_REQUEST_PRIORITY });
-    request_configuration.push_back({ ASR_BEEP_FOCUS_TYPE, ASR_BEEP_FOCUS_REQUEST_PRIORITY });
-    request_configuration.push_back({ MEDIA_FOCUS_TYPE, MEDIA_FOCUS_REQUEST_PRIORITY });
-    request_configuration.push_back({ SOUND_FOCUS_TYPE, SOUND_FOCUS_REQUEST_PRIORITY });
-    request_configuration.push_back({ DUMMY_FOCUS_TYPE, DUMMY_FOCUS_REQUEST_PRIORITY });
+    std::vector<FocusConfiguration> request_configuration {
+        { CALL_FOCUS_TYPE, CALL_FOCUS_REQUEST_PRIORITY },
+        { ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_REQUEST_PRIORITY },
+        { INFO_FOCUS_TYPE, INFO_FOCUS_REQUEST_PRIORITY },
+        { ASR_DM_FOCUS_TYPE, ASR_DM_FOCUS_REQUEST_PRIORITY },
+        { ALERTS_FOCUS_TYPE, ALERTS_FOCUS_REQUEST_PRIORITY },
+        { ASR_BEEP_FOCUS_TYPE, ASR_BEEP_FOCUS_REQUEST_PRIORITY },
+        { MEDIA_FOCUS_TYPE, MEDIA_FOCUS_REQUEST_PRIORITY },
+        { SOUND_FOCUS_TYPE, SOUND_FOCUS_REQUEST_PRIORITY },
+        { DUMMY_FOCUS_TYPE, DUMMY_FOCUS_REQUEST_PRIORITY }
+    };
 
-    std::vector<FocusConfiguration> release_configuration;
-    release_configuration.push_back({ CALL_FOCUS_TYPE, CALL_FOCUS_RELEASE_PRIORITY });
-    release_configuration.push_back({ ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_RELEASE_PRIORITY });
-    release_configuration.push_back({ ASR_DM_FOCUS_TYPE, ASR_DM_FOCUS_RELEASE_PRIORITY });
-    release_configuration.push_back({ INFO_FOCUS_TYPE, INFO_FOCUS_RELEASE_PRIORITY });
-    release_configuration.push_back({ ALERTS_FOCUS_TYPE, ALERTS_FOCUS_RELEASE_PRIORITY });
-    release_configuration.push_back({ ASR_BEEP_FOCUS_TYPE, ASR_BEEP_FOCUS_RELEASE_PRIORITY });
-    release_configuration.push_back({ MEDIA_FOCUS_TYPE, MEDIA_FOCUS_RELEASE_PRIORITY });
-    release_configuration.push_back({ SOUND_FOCUS_TYPE, SOUND_FOCUS_RELEASE_PRIORITY });
-    release_configuration.push_back({ DUMMY_FOCUS_TYPE, DUMMY_FOCUS_RELEASE_PRIORITY });
+    std::vector<FocusConfiguration> release_configuration {
+        { CALL_FOCUS_TYPE, CALL_FOCUS_RELEASE_PRIORITY },
+        { ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_RELEASE_PRIORITY },
+        { ASR_DM_FOCUS_TYPE, ASR_DM_FOCUS_RELEASE_PRIORITY },
+        { INFO_FOCUS_TYPE, INFO_FOCUS_RELEASE_PRIORITY },
+        { ALERTS_FOCUS_TYPE, ALERTS_FOCUS_RELEASE_PRIORITY },
+        { ASR_BEEP_FOCUS_TYPE, ASR_BEEP_FOCUS_RELEASE_PRIORITY },
+        { MEDIA_FOCUS_TYPE, MEDIA_FOCUS_RELEASE_PRIORITY },
+        { SOUND_FOCUS_TYPE, SOUND_FOCUS_RELEASE_PRIORITY },
+        { DUMMY_FOCUS_TYPE, DUMMY_FOCUS_RELEASE_PRIORITY }
+    };
 
     focus_manager->setConfigurations(request_configuration, release_configuration);
 }
@@ -201,6 +202,9 @@ void NuguSDKManager::setAdditionalExecutor()
             playstack_text.pop_back();
 
         return playstack_text;
+    });
+    nugu_sample_manager->setMicStatusRetriever([&]() {
+        return mic_mute ? "OFF" : "ON";
     });
 }
 
