@@ -1089,6 +1089,145 @@ static void test_sequencer_any4_sync(void)
     delete sync;
 }
 
+class IgnoreAgent : public IDirectiveSequencerListener {
+public:
+    IgnoreAgent(std::string& buffer)
+        : buffer(buffer)
+    {
+    }
+    virtual ~IgnoreAgent() = default;
+
+    bool onPreHandleDirective(NuguDirective* ndir) override
+    {
+        return false;
+    }
+
+    void onCancelDirective(NuguDirective* ndir) override
+    {
+        /* Append cancel('C') mark */
+        std::string temp = "[C:";
+        temp.append(nugu_directive_peek_msg_id(ndir));
+        temp.append("]");
+
+        buffer.append(temp);
+    }
+
+    bool onHandleDirective(NuguDirective* ndir) override
+    {
+        /* Append start('S') mark */
+        std::string temp = "[S:";
+        temp.append(nugu_directive_peek_msg_id(ndir));
+        temp.append("]");
+
+        buffer.append(temp);
+
+        return true;
+    }
+
+    std::string& buffer;
+};
+
+static gboolean _cancel_after_TTS_Speak(gpointer data)
+{
+    DirectiveSequencer* seq = (DirectiveSequencer*)data;
+
+    seq->cancel("dlg1", { "PhoneCall.MakeCall", "Utility.Block", "Dummy.dead" });
+
+    return FALSE;
+}
+
+static void test_sequencer_cancel1(void)
+{
+    DirectiveSequencer seq;
+    NuguDirective* ndir;
+    GMainLoop* loop = g_main_loop_new(NULL, FALSE);
+    std::string buffer;
+    std::string expected = "[S:msg1][E:msg1][S:msg4][S:msgquit]"
+                           "[E:msg4][E:msgquit]";
+    ASyncAgent* async = new ASyncAgent(&seq, loop, buffer);
+
+    g_assert(seq.addPolicy("TTS", "Speak", { BlockingMedium::AUDIO, true }) == true);
+    g_assert(seq.addPolicy("Utility", "Block", { BlockingMedium::ANY, true }) == true);
+
+    seq.addListener("TTS", async);
+    seq.addListener("PhoneCall", async);
+    seq.addListener("Utility", async);
+    seq.addListener("Dummy", async);
+
+    ndir = directive_new("TTS", "Speak", "dlg1", "msg1");
+    g_assert(seq.add(ndir) == true);
+
+    g_idle_add(_cancel_after_TTS_Speak, &seq);
+
+    ndir = directive_new("Utility", "Block", "dlg1", "msg2");
+    g_assert(seq.add(ndir) == true);
+
+    ndir = directive_new("PhoneCall", "MakeCall", "dlg1", "msg3");
+    g_assert(seq.add(ndir) == true);
+
+    ndir = directive_new("Dummy", "alive", "dlg1", "msg4");
+    g_assert(seq.add(ndir) == true);
+
+    ndir = directive_new("Dummy", "dead", "dlg1", "msg5");
+    g_assert(seq.add(ndir) == true);
+
+    ndir = directive_new("Dummy", "quit", "dlg1", "msgquit");
+    g_assert(seq.add(ndir) == true);
+
+    /* Start mainloop */
+    g_main_loop_run(loop);
+    g_main_loop_unref(loop);
+
+    /* check directive handle sequence */
+    g_assert(buffer == expected);
+
+    delete async;
+}
+
+static void test_sequencer_cancel2(void)
+{
+    DirectiveSequencer seq;
+    NuguDirective *ndir, *speak_dir;
+    std::string buffer;
+    std::string expected = "[S:msg1][C:msg3][C:msg2][S:msg4][S:msg5][C:msg4][C:msg5]";
+
+    IgnoreAgent* agent = new IgnoreAgent(buffer);
+
+    g_assert(seq.addPolicy("TTS", "Speak", { BlockingMedium::AUDIO, true }) == true);
+    g_assert(seq.addPolicy("Utility", "Block", { BlockingMedium::ANY, true }) == true);
+
+    seq.addListener("TTS", agent);
+    seq.addListener("Utility", agent);
+    seq.addListener("PhoneCall", agent);
+
+    speak_dir = directive_new("TTS", "Speak", "dlg1", "msg1");
+    g_assert(seq.add(speak_dir) == true);
+
+    ndir = directive_new("Utility", "Block", "dlg1", "msg2");
+    g_assert(seq.add(ndir) == true);
+
+    ndir = directive_new("PhoneCall", "MakeCall", "dlg1", "msg3");
+    g_assert(seq.add(ndir) == true);
+
+    /* Groups are sorted in ascending order by default. */
+    seq.cancel("dlg1", { "Utility.Block", "PhoneCall.MakeCall" });
+    seq.complete(speak_dir);
+
+    ndir = directive_new("TTS", "Dummy", "dlg1", "msg4");
+    g_assert(seq.add(ndir) == true);
+
+    ndir = directive_new("TTS", "Dummy", "dlg1", "msg5");
+    g_assert(seq.add(ndir) == true);
+
+    /* Cancel all(msg4, msg5) directives */
+    seq.cancel("dlg1");
+
+    /* check directive handle sequence */
+    g_assert(buffer == expected);
+
+    delete agent;
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -1113,6 +1252,8 @@ int main(int argc, char* argv[])
     g_test_add_func("/core/DirectiveSequencer/any3_sync", test_sequencer_any3_sync);
     g_test_add_func("/core/DirectiveSequencer/any4", test_sequencer_any4);
     g_test_add_func("/core/DirectiveSequencer/any4_sync", test_sequencer_any4_sync);
+    g_test_add_func("/core/DirectiveSequencer/cancel1", test_sequencer_cancel1);
+    g_test_add_func("/core/DirectiveSequencer/cancel2", test_sequencer_cancel2);
 
     return g_test_run();
 }

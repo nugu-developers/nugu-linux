@@ -46,6 +46,7 @@ public:
     BlockingPolicy getPolicy(const std::string& name_space, const std::string& name) override;
 
     bool cancel(const std::string& dialog_id) override;
+    bool cancel(const std::string& dialog_id, std::set<std::string> groups) override;
     bool complete(NuguDirective* ndir) override;
     bool add(NuguDirective* ndir) override;
 
@@ -87,6 +88,7 @@ private:
     bool preHandleDirective(NuguDirective* ndir);
     void handleDirective(NuguDirective* ndir);
     void cancelDirective(NuguDirective* ndir);
+    void nextDirective(const std::string& dialog_id);
 
     /* Network manager callback */
     static void onDirective(NuguDirective* ndir, void* userdata);

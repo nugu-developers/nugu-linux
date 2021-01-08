@@ -19,6 +19,8 @@
 
 #include <base/nugu_directive.h>
 
+#include <set>
+
 namespace NuguClientKit {
 
 /**
@@ -134,6 +136,17 @@ public:
      * @retval false failure
      */
     virtual bool cancel(const std::string& dialog_id) = 0;
+
+    /**
+     * @brief Cancels specific pending directives related to the dialog_id.
+     * The canceled directives are freed.
+     * @param[in] dialog_id dialog-request-id
+     * @param[in] groups list of directives('{Namespace}.{Name}')
+     * @return result
+     * @retval true success
+     * @retval false failure
+     */
+    virtual bool cancel(const std::string& dialog_id, std::set<std::string> groups) = 0;
 
     /**
      * @brief Complete the blocking directive. The NuguDirective object will be destroyed.
