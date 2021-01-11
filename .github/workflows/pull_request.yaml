@@ -18,25 +18,9 @@ jobs:
         with:
           submodules: true
       - name: Run clang-tidy review
-        run: |
-          docker run -t --rm -v $PWD:$PWD -w $PWD nugulinux/devenv:bionic /bin/bash -c "run_codereview.sh nugu-linux externals"
-          if [ ! -f "report.json" ]; then
-              echo "code checker error"
-              exit 1
-          fi
-          count=$(cat report.json | jq '.count')
-          if [ "$count" -gt "0" ]; then
-              for ((i=0; i<$count; i++))
-              do
-                  file=$(cat report.json | jq -r '.issues['$i'].file')
-                  line=$(cat report.json | jq -r '.issues['$i'].line')
-                  message=$(cat report.json | jq -r '.issues['$i'].message')
-
-                  echo "::warning file=$file,line=$line::$message"
-              done
-              rm report.json
-              exit 1
-          fi
+        uses: kimhyungrok/clang-tidy-action@v1
+        with:
+          exclude: 'externals'
 
   build:
     runs-on: ubuntu-latest
