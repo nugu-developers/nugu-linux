@@ -91,7 +91,7 @@ public:
     void notifyEventResponse(const std::string& msg_id, const std::string& data, bool success) override;
 
 private:
-    void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);
+    void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr, bool include_all_context = false);
 
     // implements ISpeechRecognizerListener
     void onListeningState(ListeningState state, const std::string& id) override;
