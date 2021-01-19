@@ -250,7 +250,7 @@ void DisplayAgent::sendEventElementSelected(const std::string& item_token)
     // TBD: postback
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload);
+    sendEvent(ename, capa_helper->makeAllContextInfo(), payload);
 }
 
 void DisplayAgent::sendEventCloseSucceeded(const std::string& ps_id)

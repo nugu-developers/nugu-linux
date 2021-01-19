@@ -350,7 +350,7 @@ std::string AudioPlayerAgent::requestFavoriteCommand(bool current_favorite)
     root["favorite"] = current_favorite;
     payload = writer.write(root);
 
-    std::string id = sendEvent(ename, getContextInfo(), payload);
+    std::string id = sendEvent(ename, capa_helper->makeAllContextInfo(), payload);
     nugu_dbg("user request dialog id: %s", id.c_str());
     return id;
 }
@@ -381,7 +381,7 @@ std::string AudioPlayerAgent::requestRepeatCommand(RepeatType current_repeat)
     }
     payload = writer.write(root);
 
-    std::string id = sendEvent(ename, getContextInfo(), payload);
+    std::string id = sendEvent(ename, capa_helper->makeAllContextInfo(), payload);
     nugu_dbg("user request dialog id: %s", id.c_str());
     return id;
 }
@@ -402,7 +402,7 @@ std::string AudioPlayerAgent::requestShuffleCommand(bool current_shuffle)
     root["shuffle"] = current_shuffle;
     payload = writer.write(root);
 
-    std::string id = sendEvent(ename, getContextInfo(), payload);
+    std::string id = sendEvent(ename, capa_helper->makeAllContextInfo(), payload);
     nugu_dbg("user request dialog id: %s", id.c_str());
     return id;
 }
@@ -562,7 +562,7 @@ void AudioPlayerAgent::sendEventPlaybackStarted(EventResultCallback cb)
 
 void AudioPlayerAgent::sendEventPlaybackFinished(EventResultCallback cb)
 {
-    sendEventCommon("PlaybackFinished", std::move(cb));
+    sendEventCommon("PlaybackFinished", std::move(cb), true);
 }
 
 void AudioPlayerAgent::sendEventPlaybackStopped(EventResultCallback cb)
@@ -707,13 +707,13 @@ void AudioPlayerAgent::sendEventControlLyricsPageFailed(const std::string& direc
 void AudioPlayerAgent::sendEventRequestPlayCommandIssued(const std::string& dname, const std::string& payload, EventResultCallback cb)
 {
     std::string ename = dname + "Issued";
-    sendEvent(ename, getContextInfo(), payload, std::move(cb));
+    sendEvent(ename, capa_helper->makeAllContextInfo(), payload, std::move(cb));
 }
 
 void AudioPlayerAgent::sendEventByRequestOthersDirective(const std::string& dname, EventResultCallback cb)
 {
     std::string ename = dname + "Issued";
-    sendEventCommon(ename, std::move(cb));
+    sendEventCommon(ename, std::move(cb), true);
 }
 
 void AudioPlayerAgent::sendEventRequestCommandFailed(const std::string& play_service_id, const std::string& type, const std::string& reason, EventResultCallback cb)
@@ -772,12 +772,11 @@ void AudioPlayerAgent::sendEventProgressReportIntervalElapsed(EventResultCallbac
 
 std::string AudioPlayerAgent::sendEventByDisplayInterface(const std::string& command, EventResultCallback cb)
 {
-    return sendEventCommon(command, std::move(cb));
+    return sendEventCommon(command, std::move(cb), true);
 }
 
-std::string AudioPlayerAgent::sendEventCommon(const std::string& ename, EventResultCallback cb)
+std::string AudioPlayerAgent::sendEventCommon(const std::string& ename, EventResultCallback cb, bool include_all_context)
 {
-    std::string payload = "";
     Json::StyledWriter writer;
     Json::Value root;
     long offset = cur_player->position() * 1000;
@@ -790,9 +789,8 @@ std::string AudioPlayerAgent::sendEventCommon(const std::string& ename, EventRes
     root["token"] = cur_token;
     root["playServiceId"] = ps_id;
     root["offsetInMilliseconds"] = std::to_string(offset);
-    payload = writer.write(root);
 
-    return sendEvent(ename, getContextInfo(), payload, std::move(cb));
+    return sendEvent(ename, include_all_context ? capa_helper->makeAllContextInfo() : getContextInfo(), writer.write(root), std::move(cb));
 }
 
 bool AudioPlayerAgent::isContentCached(const std::string& key, std::string& playurl)

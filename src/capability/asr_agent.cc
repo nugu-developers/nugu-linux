@@ -431,7 +431,7 @@ void ASRAgent::sendEventResponseTimeout(EventResultCallback cb)
 
 void ASRAgent::sendEventListenTimeout(EventResultCallback cb)
 {
-    sendEventCommon("ListenTimeout", std::move(cb));
+    sendEventCommon("ListenTimeout", std::move(cb), true);
 }
 
 void ASRAgent::sendEventListenFailed(EventResultCallback cb)
@@ -444,7 +444,7 @@ void ASRAgent::sendEventStopRecognize(EventResultCallback cb)
     sendEventCommon("StopRecognize", std::move(cb));
 }
 
-void ASRAgent::sendEventCommon(const std::string& ename, EventResultCallback cb)
+void ASRAgent::sendEventCommon(const std::string& ename, EventResultCallback cb, bool include_all_context)
 {
     std::string payload = "";
 
@@ -456,7 +456,7 @@ void ASRAgent::sendEventCommon(const std::string& ename, EventResultCallback cb)
         payload = writer.write(root);
     }
 
-    sendEvent(ename, getContextInfo(), payload, std::move(cb));
+    sendEvent(ename, include_all_context ? capa_helper->makeAllContextInfo() : getContextInfo(), payload, std::move(cb));
 }
 
 void ASRAgent::setCapabilityListener(ICapabilityListener* clistener)

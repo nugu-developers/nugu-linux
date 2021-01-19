@@ -124,7 +124,7 @@ public:
     void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override;
 
 private:
-    std::string sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);
+    std::string sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr, bool include_all_context = false);
 
     bool isContentCached(const std::string& key, std::string& playurl);
     void parsingPlay(const char* message);
