@@ -93,6 +93,7 @@ int PlaySyncManager::getListenerCount()
 void PlaySyncManager::prepareSync(const std::string& ps_id, NuguDirective* ndir)
 {
     clearPostPonedRelease();
+    clearHolding();
 
     if (!playstack_manager->add(ps_id, ndir)) {
         nugu_warn("The condition is not satisfied to prepare sync.");
