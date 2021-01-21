@@ -514,9 +514,10 @@ void DirectiveSequencer::nextDirective(const std::string& dialog_id)
     pending->dump();
 
     for (auto& next_dir : *list) {
-        nugu_dbg("- check '%s.%s' (%s/%s)",
+        nugu_dbg("- check '%s.%s' (%s) (%s/%s)",
             nugu_directive_peek_namespace(next_dir),
             nugu_directive_peek_name(next_dir),
+            nugu_directive_peek_msg_id(next_dir),
             nugu_directive_get_blocking_medium_string(next_dir),
             (nugu_directive_is_blocking(next_dir) == 1) ? "Block" : "Non-block");
 
@@ -537,6 +538,7 @@ void DirectiveSequencer::nextDirective(const std::string& dialog_id)
             }
         }
 
+        nugu_dbg("  - Push to active + scheduled list");
         active->push(next_dir);
 
         /* Add next directive to scheduled list to handle at next idle time */
@@ -701,21 +703,26 @@ bool DirectiveSequencer::cancel(const std::string& dialog_id, std::set<std::stri
         nugu_dbg(" - %s", name.c_str());
     }
 
+    pending->dump();
+    active->dump();
+
     /* remove directive from scheduled list */
     auto new_end = std::remove_if(scheduled_list.begin(), scheduled_list.end(),
         [dialog_id, groups](NuguDirective* ndir) {
             if (dialog_id.compare(nugu_directive_peek_dialog_id(ndir)) != 0)
                 return false;
 
-            nugu_dbg("- found dialog(%s) from scheduled list",
-                nugu_directive_peek_dialog_id(ndir));
+            nugu_dbg("- found '%s.%s' (%s) from scheduled list",
+                nugu_directive_peek_namespace(ndir),
+                nugu_directive_peek_name(ndir),
+                nugu_directive_peek_msg_id(ndir));
 
             for (const auto& name : groups) {
                 std::string temp = nugu_directive_peek_namespace(ndir);
                 temp.append(".").append(nugu_directive_peek_name(ndir));
 
                 if (temp == name) {
-                    nugu_dbg("ignore the %s directive from scheduled list", temp.c_str());
+                    nugu_dbg("  -> remove from scheduled list");
                     return true;
                 }
             }
@@ -725,30 +732,31 @@ bool DirectiveSequencer::cancel(const std::string& dialog_id, std::set<std::stri
     scheduled_list.erase(new_end, scheduled_list.end());
 
     for (const auto& name : groups) {
-        nugu_dbg("check '%s' to cancel from pending/active list", name.c_str());
-
-        /* Remove from pending list with cancel notify */
-        pending->removeByName(dialog_id, name, [=](NuguDirective* ndir) {
-            nugu_dbg("- found directive(%s.%s) from pending list",
-                nugu_directive_peek_namespace(ndir), nugu_directive_peek_name(ndir));
-
-            msgid_lookup->remove(nugu_directive_peek_msg_id(ndir));
-            cancelDirective(ndir);
-            nugu_directive_unref(ndir);
-        });
-        pending->dump();
+        nugu_dbg("- find '%s' from active and pending list", name.c_str());
 
         /* Remove from active list with cancel notify */
         active->removeByName(dialog_id, name, [=](NuguDirective* ndir) {
-            nugu_dbg("- found directive(%s.%s) from active list",
+            nugu_dbg("  - found '%s.%s' from active list",
                 nugu_directive_peek_namespace(ndir), nugu_directive_peek_name(ndir));
 
             msgid_lookup->remove(nugu_directive_peek_msg_id(ndir));
             cancelDirective(ndir);
             nugu_directive_unref(ndir);
         });
-        active->dump();
+
+        /* Remove from pending list with cancel notify */
+        pending->removeByName(dialog_id, name, [=](NuguDirective* ndir) {
+            nugu_dbg("  - found '%s.%s' from pending list",
+                nugu_directive_peek_namespace(ndir), nugu_directive_peek_name(ndir));
+
+            msgid_lookup->remove(nugu_directive_peek_msg_id(ndir));
+            cancelDirective(ndir);
+            nugu_directive_unref(ndir);
+        });
     }
+
+    pending->dump();
+    active->dump();
 
     /* If the list of scheduled and active in dialog-id is empty, prepare the next pending directive */
     bool needNext = true;
