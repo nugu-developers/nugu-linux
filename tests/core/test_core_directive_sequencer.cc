@@ -1091,8 +1091,9 @@ static void test_sequencer_any4_sync(void)
 
 class IgnoreAgent : public IDirectiveSequencerListener {
 public:
-    IgnoreAgent(std::string& buffer)
-        : buffer(buffer)
+    IgnoreAgent(GMainLoop* loop, std::string& buffer)
+        : loop(loop)
+        , buffer(buffer)
     {
     }
     virtual ~IgnoreAgent() = default;
@@ -1121,20 +1122,15 @@ public:
 
         buffer.append(temp);
 
+        if (g_strcmp0(nugu_directive_peek_msg_id(ndir), "msgquit") == 0)
+            g_main_loop_quit(loop);
+
         return true;
     }
 
+    GMainLoop* loop;
     std::string& buffer;
 };
-
-static gboolean _cancel_after_TTS_Speak(gpointer data)
-{
-    DirectiveSequencer* seq = (DirectiveSequencer*)data;
-
-    seq->cancel("dlg1", { "PhoneCall.MakeCall", "Utility.Block", "Dummy.dead" });
-
-    return FALSE;
-}
 
 static void test_sequencer_cancel1(void)
 {
@@ -1157,7 +1153,20 @@ static void test_sequencer_cancel1(void)
     ndir = directive_new("TTS", "Speak", "dlg1", "msg1");
     g_assert(seq.add(ndir) == true);
 
-    g_idle_add(_cancel_after_TTS_Speak, &seq);
+    /**
+     * Group cancel after 'TTS.Speak'.
+     * ('TTS.Speak' is first completed by the async agent.)
+     * 'Dummy.alive' (msg4) is activated after this idle callback.
+     */
+    g_idle_add(
+        [](gpointer userdata) -> int {
+            DirectiveSequencer* seq = (DirectiveSequencer*)userdata;
+
+            seq->cancel("dlg1", { "PhoneCall.MakeCall", "Utility.Block", "Dummy.dead" });
+
+            return FALSE;
+        },
+        &seq);
 
     ndir = directive_new("Utility", "Block", "dlg1", "msg2");
     g_assert(seq.add(ndir) == true);
@@ -1191,7 +1200,7 @@ static void test_sequencer_cancel2(void)
     std::string buffer;
     std::string expected = "[S:msg1][C:msg3][C:msg2][S:msg4][S:msg5][C:msg4][C:msg5]";
 
-    IgnoreAgent* agent = new IgnoreAgent(buffer);
+    IgnoreAgent* agent = new IgnoreAgent(NULL, buffer);
 
     g_assert(seq.addPolicy("TTS", "Speak", { BlockingMedium::AUDIO, true }) == true);
     g_assert(seq.addPolicy("Utility", "Block", { BlockingMedium::ANY, true }) == true);
@@ -1228,6 +1237,91 @@ static void test_sequencer_cancel2(void)
     delete agent;
 }
 
+struct cancel3_data {
+    DirectiveSequencer* seq;
+    NuguDirective* speak_dir;
+};
+
+static void test_sequencer_cancel3(void)
+{
+    DirectiveSequencer seq;
+    NuguDirective *ndir, *speak_dir;
+    GMainLoop* loop = g_main_loop_new(NULL, FALSE);
+    std::string buffer;
+    std::string expected = "[S:msg1][C:msg3][C:msg2][C:msg4][S:msgquit][C:msgquit]";
+    struct cancel3_data data;
+
+    IgnoreAgent* agent = new IgnoreAgent(loop, buffer);
+
+    g_assert(seq.addPolicy("TTS", "Speak", { BlockingMedium::AUDIO, true }) == true);
+    g_assert(seq.addPolicy("Utility", "Block", { BlockingMedium::ANY, true }) == true);
+
+    seq.addListener("TTS", agent);
+    seq.addListener("Utility", agent);
+    seq.addListener("Extension", agent);
+    seq.addListener("Text", agent);
+
+    speak_dir = directive_new("TTS", "Speak", "dlg1", "msg1");
+    g_assert(seq.add(speak_dir) == true);
+
+    ndir = directive_new("Utility", "Block", "dlg1", "msg2");
+    g_assert(seq.add(ndir) == true);
+
+    ndir = directive_new("Extension", "Action", "dlg1", "msg3");
+    g_assert(seq.add(ndir) == true);
+
+    ndir = directive_new("Utility", "Block", "dlg1", "msg4");
+    g_assert(seq.add(ndir) == true);
+
+    ndir = directive_new("Text", "TextRedirect", "dlg1", "msgquit");
+    g_assert(seq.add(ndir) == true);
+
+    data.seq = &seq;
+    data.speak_dir = speak_dir;
+
+    /**
+     * Cancel the 'Extension.Action' and Complete the 'TTS.Speak'.
+     * 'Utility.Block' (msg2) is activated after this idle callback.
+     */
+    g_idle_add(
+        [](gpointer userdata) -> int {
+            struct cancel3_data* data = (struct cancel3_data*)userdata;
+
+            data->seq->cancel("dlg1", { "Extension.Action" });
+            data->seq->complete(data->speak_dir);
+
+            return FALSE;
+        },
+        &data);
+
+    /**
+     * Cancel 'Utility.Block' to clear blocking status.
+     * 'Text.TextRedirect' (msgquit) is activated after this idle callback.
+     */
+    g_idle_add(
+        [](gpointer userdata) -> int {
+            struct cancel3_data* data = (struct cancel3_data*)userdata;
+
+            /* Cancel the 'msg2' and 'msg4' directives */
+            data->seq->cancel("dlg1", { "Utility.Block" });
+
+            return FALSE;
+        },
+        &data);
+
+    /* Start mainloop */
+    g_main_loop_run(loop);
+    g_main_loop_unref(loop);
+
+    /* Cancel all remain directives */
+    seq.cancel("dlg1");
+
+    /* check directive handle sequence */
+    g_assert(buffer == expected);
+
+    delete agent;
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -1254,6 +1348,7 @@ int main(int argc, char* argv[])
     g_test_add_func("/core/DirectiveSequencer/any4_sync", test_sequencer_any4_sync);
     g_test_add_func("/core/DirectiveSequencer/cancel1", test_sequencer_cancel1);
     g_test_add_func("/core/DirectiveSequencer/cancel2", test_sequencer_cancel2);
+    g_test_add_func("/core/DirectiveSequencer/cancel3", test_sequencer_cancel3);
 
     return g_test_run();
 }
