@@ -356,9 +356,19 @@ void Capability::destroyDirective(NuguDirective* ndir, bool is_cancel)
     if (pimpl->cur_ndir && ndir == pimpl->cur_ndir) {
         nugu_directive_remove_data_callback(pimpl->cur_ndir);
 
-        is_cancel
-            ? directive_sequencer->cancel(nugu_directive_peek_dialog_id(pimpl->cur_ndir))
-            : directive_sequencer->complete(pimpl->cur_ndir);
+        if (is_cancel) {
+            std::string dialog_id = nugu_directive_peek_dialog_id(pimpl->cur_ndir);
+
+            if (pimpl->cancel_policy.cancel_all) {
+                directive_sequencer->cancel(dialog_id);
+            } else {
+                directive_sequencer->complete(pimpl->cur_ndir);
+                directive_sequencer->cancel(dialog_id, pimpl->cancel_policy.dir_groups);
+            }
+
+        } else {
+            directive_sequencer->complete(pimpl->cur_ndir);
+        }
 
         pimpl->cur_ndir = nullptr;
     }
