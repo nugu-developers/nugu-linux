@@ -199,9 +199,9 @@ bool PlaySyncManager::isConditionToHandlePrevDialog(NuguDirective* prev_ndir, Nu
     return playstack_manager->isStackedCondition(cur_ndir) && !playstack_manager->hasExpectSpeech(prev_ndir);
 }
 
-bool PlaySyncManager::hasLayer(const std::string& ps_id, PlayStackLayer layer)
+bool PlaySyncManager::hasActivity(const std::string& ps_id, PlayStackActivity activity)
 {
-    return playstack_manager->getPlayStackLayer(ps_id) == layer;
+    return playstack_manager->getPlayStackActivity(ps_id) == activity;
 }
 
 bool PlaySyncManager::hasNextPlayStack()

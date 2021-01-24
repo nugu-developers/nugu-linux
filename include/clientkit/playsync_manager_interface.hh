@@ -47,14 +47,14 @@ enum class PlaySyncState {
 };
 
 /**
- * @brief PlayStack Layer Type
+ * @brief PlayStack Activity Type
  */
-enum class PlayStackLayer {
-    None, /**< No Layer */
-    Alert, /**< Alert Layer */
-    Call, /**< Call Layer */
-    Info, /**< Info Layer */
-    Media /**< Media Layer */
+enum class PlayStackActivity {
+    None, /**< No Activity */
+    Alert, /**< Alert Activity */
+    Call, /**< Call Activity */
+    TTS, /**< TTS Activity */
+    Media /**< Media Activity */
 };
 
 /**
@@ -189,12 +189,12 @@ public:
     virtual bool isConditionToHandlePrevDialog(NuguDirective* prev_ndir, NuguDirective* cur_ndir) = 0;
 
     /**
-     * @brief Check whether the specific playstack exist.
+     * @brief Check whether the specific playstack activity exist.
      * @param[in] ps_id play service id
-     * @param[in] layer playstack layer
+     * @param[in] activity playstack activity
      * @return true if has to be handled, otherwise false
      */
-    virtual bool hasLayer(const std::string& ps_id, PlayStackLayer layer) = 0;
+    virtual bool hasActivity(const std::string& ps_id, PlayStackActivity activity) = 0;
 
     /**
      * @brief Check whether the next playstack to handle exists.

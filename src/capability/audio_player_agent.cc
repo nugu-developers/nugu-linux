@@ -452,7 +452,7 @@ void AudioPlayerAgent::preprocessDirective(NuguDirective* ndir)
     if (!strcmp(dname, "Play")) {
         std::string playstackctl_ps_id = getPlayServiceIdInStackControl(message);
 
-        playsync_manager->hasLayer(playstackctl_ps_id, PlayStackLayer::Media)
+        playsync_manager->hasActivity(playstackctl_ps_id, PlayStackActivity::Media)
             ? playsync_manager->startSync(playstackctl_ps_id, getName(), composeRenderInfo(ndir, message))
             : playsync_manager->prepareSync(playstackctl_ps_id, ndir);
     }

@@ -154,7 +154,7 @@ void TTSAgent::onFocusChanged(FocusState state)
     case FocusState::NONE:
         stopTTS();
 
-        if (!playsync_manager->hasLayer(playstackctl_ps_id, PlayStackLayer::Media)) {
+        if (!playsync_manager->hasActivity(playstackctl_ps_id, PlayStackActivity::Media)) {
             is_stopped_by_explicit ? playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName())
                                    : playsync_manager->releaseSync(playstackctl_ps_id, getName());
         }
