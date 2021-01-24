@@ -134,8 +134,8 @@ static void test_playstack_manager_get_stack(TestFixture* fixture, gconstpointer
 
     fixture->playstack_manager->add("ps_id_1", fixture->ndir_info);
     g_assert(fixture->playstack_manager->getAllPlayStackItems().at(0) == "ps_id_1");
-    g_assert(fixture->playstack_manager->getPlayStackLayer("") == PlayStackLayer::None);
-    g_assert(fixture->playstack_manager->getPlayStackLayer("ps_id_1") == PlayStackLayer::Info);
+    g_assert(fixture->playstack_manager->getPlayStackActivity("") == PlayStackActivity::None);
+    g_assert(fixture->playstack_manager->getPlayStackActivity("ps_id_1") == PlayStackActivity::TTS);
 
     fixture->playstack_manager->remove("ps_id_1", PlayStackRemoveMode::Immediately);
     fixture->playstack_manager->add("ps_id_2", fixture->ndir_media);
@@ -206,13 +206,13 @@ static void test_playstack_manager_layer_policy(TestFixture* fixture, gconstpoin
     fixture->playstack_manager->add("ps_id_2", fixture->ndir_info);
     g_assert(playstack_container.first.size() == 1
         && playstack_container.first.cbegin()->first == "ps_id_2"
-        && playstack_container.first.cbegin()->second == PlayStackLayer::Info);
+        && playstack_container.first.cbegin()->second == PlayStackActivity::TTS);
 
     // Info to Media -> replace
     fixture->playstack_manager->add("ps_id_3", fixture->ndir_media);
     g_assert(playstack_container.first.size() == 1
         && playstack_container.first.cbegin()->first == "ps_id_3"
-        && playstack_container.first.cbegin()->second == PlayStackLayer::Media);
+        && playstack_container.first.cbegin()->second == PlayStackActivity::Media);
 
     // Media to Info -> stacked
     fixture->playstack_manager->add("ps_id_4", fixture->ndir_info);
@@ -223,7 +223,7 @@ static void test_playstack_manager_layer_policy(TestFixture* fixture, gconstpoin
     fixture->playstack_manager->add("ps_id_5", fixture->ndir_media);
     g_assert(playstack_container.first.size() == 1
         && playstack_container.first.cbegin()->first == "ps_id_5"
-        && playstack_container.first.cbegin()->second == PlayStackLayer::Media);
+        && playstack_container.first.cbegin()->second == PlayStackActivity::Media);
 }
 
 static void test_playstack_manager_control_holding(TestFixture* fixture, gconstpointer ignored)

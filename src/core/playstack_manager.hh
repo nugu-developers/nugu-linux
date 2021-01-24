@@ -49,7 +49,7 @@ public:
 
 class PlayStackManager {
 public:
-    using PlayStack = std::pair<std::map<std::string, PlayStackLayer>, std::vector<std::string>>;
+    using PlayStack = std::pair<std::map<std::string, PlayStackActivity>, std::vector<std::string>>;
     using PlayStakcHoldTimes = struct {
         unsigned int normal_time;
         unsigned int long_time;
@@ -77,7 +77,7 @@ public:
     void setPlayStackHoldTime(PlayStakcHoldTimes&& hold_times_sec);
     PlayStakcHoldTimes getPlayStackHoldTime();
 
-    PlayStackLayer getPlayStackLayer(const std::string& ps_id);
+    PlayStackActivity getPlayStackActivity(const std::string& ps_id);
     std::vector<std::string> getAllPlayStackItems();
     const PlayStack& getPlayStackContainer();
     std::set<bool> getFlagSet();
@@ -95,16 +95,16 @@ private:
     };
 
 private:
-    PlayStackLayer extractPlayStackLayer(NuguDirective* ndir);
+    PlayStackActivity extractPlayStackActivity(NuguDirective* ndir);
     std::string getNoneMediaLayerStack();
     void handlePreviousStack(bool is_stacked);
     bool hasDisplayRenderingInfo(NuguDirective* ndir);
     bool hasKeyword(NuguDirective* ndir, std::vector<std::string>&& keywords);
-    bool addToContainer(const std::string& ps_id, PlayStackLayer layer);
+    bool addToContainer(const std::string& ps_id, PlayStackActivity activity);
     void removeFromContainer(const std::string& ps_id);
     void notifyStackRemoved(const std::string& ps_id);
     void clearContainer();
-    bool isStackedCondition(PlayStackLayer layer);
+    bool isStackedCondition(PlayStackActivity activity);
     bool isStackedCondition(const std::string& ps_id);
 
     template <typename T>

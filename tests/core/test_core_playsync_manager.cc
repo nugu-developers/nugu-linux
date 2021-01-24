@@ -589,9 +589,9 @@ static void test_playstack_manager_check_playstack_layer(TestFixture* fixture, g
 {
     fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_media);
     fixture->playsync_manager->startSync("ps_id_1", "TTS");
-    g_assert(!fixture->playsync_manager->hasLayer("", PlayStackLayer::Media));
-    g_assert(fixture->playsync_manager->hasLayer("ps_id_1", PlayStackLayer::Media));
-    g_assert(!fixture->playsync_manager->hasLayer("ps_id_1", PlayStackLayer::Info));
+    g_assert(!fixture->playsync_manager->hasActivity("", PlayStackActivity::Media));
+    g_assert(fixture->playsync_manager->hasActivity("ps_id_1", PlayStackActivity::Media));
+    g_assert(!fixture->playsync_manager->hasActivity("ps_id_1", PlayStackActivity::TTS));
 }
 
 static void test_playstack_manager_recv_callback_only_participants(TestFixture* fixture, gconstpointer ignored)
@@ -623,7 +623,7 @@ static void test_playstack_manager_media_stacked_case(TestFixture* fixture, gcon
 {
     sub_test_playstack_manager_preset_media_stacked(fixture);
 
-    // It released info layer immediately if the media is stacked
+    // It released TTS activity immediately if the media is stacked
     fixture->playsync_manager->releaseSync("ps_id_2", "TTS");
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Released);
@@ -760,7 +760,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/ignoreRenderCase", test_playstack_manager_ignore_render_case);
     G_TEST_ADD_FUNC("/core/PlayStackManager/handleInfoLayer", test_playstack_manager_handle_info_layer);
     G_TEST_ADD_FUNC("/core/PlayStackManager/playstackHolding", test_playstack_manager_playstack_holding);
-    G_TEST_ADD_FUNC("/core/PlayStackManager/checkPlayStackLayer", test_playstack_manager_check_playstack_layer);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/checkPlayStackActivity", test_playstack_manager_check_playstack_layer);
     G_TEST_ADD_FUNC("/core/PlayStackManager/recvCallbackOnlyParticipants", test_playstack_manager_recv_callback_only_participants);
     G_TEST_ADD_FUNC("/core/PlayStackManager/mediaStackedCase", test_playstack_manager_media_stacked_case);
     G_TEST_ADD_FUNC("/core/PlayStackManager/postPoneRelease", test_playstack_manager_postpone_release);

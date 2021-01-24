@@ -27,11 +27,11 @@ namespace NuguCore {
 
 namespace Debug {
     // NOLINTNEXTLINE (cert-err58-cpp)
-    const std::map<PlayStackLayer, std::string> PLAYSTACK_LAYER_TEXT {
-        { PlayStackLayer::Alert, "[Alert] " },
-        { PlayStackLayer::Call, "[Call] " },
-        { PlayStackLayer::Info, "[Info] " },
-        { PlayStackLayer::Media, "[Media] " },
+    const std::map<PlayStackActivity, std::string> PLAYSTACK_ACTIVITY_TEXT {
+        { PlayStackActivity::Alert, "[Alert] " },
+        { PlayStackActivity::Call, "[Call] " },
+        { PlayStackActivity::TTS, "[TTS] " },
+        { PlayStackActivity::Media, "[Media] " },
     };
 
     void showPlayStack(const PlayStackManager::PlayStack& playstack_container)
@@ -40,8 +40,8 @@ namespace Debug {
 
         for (const auto& item : playstack_container.second) {
             try {
-                const std::string& layer = PLAYSTACK_LAYER_TEXT.at(playstack_container.first.at(item));
-                playstack_log.append(layer).append(item).append("\n");
+                const std::string& activity = PLAYSTACK_ACTIVITY_TEXT.at(playstack_container.first.at(item));
+                playstack_log.append(activity).append(item).append("\n");
             } catch (std::out_of_range& exception) {
                 // pass silently
             }
@@ -154,11 +154,11 @@ bool PlayStackManager::add(const std::string& ps_id, NuguDirective* ndir)
         return false;
     }
 
-    PlayStackLayer layer = extractPlayStackLayer(ndir);
+    PlayStackActivity activity = extractPlayStackActivity(ndir);
     is_expect_speech = hasExpectSpeech(ndir);
-    is_stacked = isStackedCondition(layer);
+    is_stacked = isStackedCondition(activity);
 
-    if ((playstack_container.first.find(ps_id) != playstack_container.first.end()) && getPlayStackLayer(ps_id) == layer) {
+    if ((playstack_container.first.find(ps_id) != playstack_container.first.end()) && getPlayStackActivity(ps_id) == activity) {
         nugu_warn("%s is already added.", ps_id.c_str());
         return false;
     }
@@ -166,7 +166,7 @@ bool PlayStackManager::add(const std::string& ps_id, NuguDirective* ndir)
     has_adding_playstack = hasDisplayRenderingInfo(ndir);
 
     handlePreviousStack(is_stacked);
-    return addToContainer(ps_id, layer);
+    return addToContainer(ps_id, activity);
 }
 
 void PlayStackManager::remove(const std::string& ps_id, PlayStackRemoveMode mode)
@@ -201,7 +201,7 @@ void PlayStackManager::remove(const std::string& ps_id, PlayStackRemoveMode mode
 
 bool PlayStackManager::isStackedCondition(NuguDirective* ndir)
 {
-    return ndir && isStackedCondition(extractPlayStackLayer(ndir));
+    return ndir && isStackedCondition(extractPlayStackActivity(ndir));
 }
 
 bool PlayStackManager::hasExpectSpeech(NuguDirective* ndir)
@@ -252,13 +252,13 @@ PlayStackManager::PlayStakcHoldTimes PlayStackManager::getPlayStackHoldTime()
     return hold_times_sec;
 }
 
-PlayStackLayer PlayStackManager::getPlayStackLayer(const std::string& ps_id)
+PlayStackActivity PlayStackManager::getPlayStackActivity(const std::string& ps_id)
 {
     try {
         return playstack_container.first.at(ps_id);
     } catch (std::out_of_range& exception) {
-        nugu_warn("The related PlayStackLayer is not exist.");
-        return PlayStackLayer::None;
+        nugu_warn("The related PlayStackActivity is not exist.");
+        return PlayStackActivity::None;
     }
 }
 
@@ -280,24 +280,24 @@ std::set<bool> PlayStackManager::getFlagSet()
     return { has_long_timer, has_holding, is_expect_speech, is_stacked };
 }
 
-PlayStackLayer PlayStackManager::extractPlayStackLayer(NuguDirective* ndir)
+PlayStackActivity PlayStackManager::extractPlayStackActivity(NuguDirective* ndir)
 {
     std::string groups = nugu_directive_peek_groups(ndir);
 
     if (groups.find("AudioPlayer") != std::string::npos)
-        return PlayStackLayer::Media;
+        return PlayStackActivity::Media;
     else if (groups.find("NuguCall") != std::string::npos)
-        return PlayStackLayer::Call;
+        return PlayStackActivity::Call;
     else if (groups.find("Alerts") != std::string::npos)
-        return PlayStackLayer::Alert;
+        return PlayStackActivity::Alert;
     else
-        return PlayStackLayer::Info;
+        return PlayStackActivity::TTS;
 }
 
 std::string PlayStackManager::getNoneMediaLayerStack()
 {
     for (const auto& item : playstack_container.first)
-        if (item.second != PlayStackLayer::Media)
+        if (item.second != PlayStackActivity::Media)
             return item.first;
 
     return "";
@@ -337,14 +337,14 @@ bool PlayStackManager::hasKeyword(NuguDirective* ndir, std::vector<std::string>&
     return false;
 }
 
-bool PlayStackManager::addToContainer(const std::string& ps_id, PlayStackLayer layer)
+bool PlayStackManager::addToContainer(const std::string& ps_id, PlayStackActivity activity)
 {
     if (playstack_container.first.find(ps_id) != playstack_container.first.end()) {
         nugu_warn("%s is already added.", ps_id.c_str());
         return false;
     }
 
-    playstack_container.first.emplace(ps_id, layer);
+    playstack_container.first.emplace(ps_id, activity);
     playstack_container.second.emplace_back(ps_id);
 
     has_adding_playstack = false;
@@ -384,19 +384,19 @@ void PlayStackManager::clearContainer()
     playstack_container.second.clear();
 }
 
-bool PlayStackManager::isStackedCondition(PlayStackLayer layer)
+bool PlayStackManager::isStackedCondition(PlayStackActivity activity)
 {
     auto result = std::find_if(playstack_container.first.cbegin(), playstack_container.first.cend(),
-        [](const std::pair<std::string, PlayStackLayer>& item) {
-            return item.second == PlayStackLayer::Media;
+        [](const std::pair<std::string, PlayStackActivity>& item) {
+            return item.second == PlayStackActivity::Media;
         });
 
-    return result != playstack_container.first.cend() && layer != PlayStackLayer::Media;
+    return result != playstack_container.first.cend() && activity != PlayStackActivity::Media;
 }
 
 bool PlayStackManager::isStackedCondition(const std::string& ps_id)
 {
-    return isStackedCondition(getPlayStackLayer(ps_id));
+    return isStackedCondition(getPlayStackActivity(ps_id));
 }
 
 template <typename T>
