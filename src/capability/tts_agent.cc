@@ -475,7 +475,9 @@ void TTSAgent::parsingStop(const char* message)
     if (!root["playServiceId"].empty())
         ps_id = root["playServiceId"].asString();
 
-    focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
+    (cur_state == MediaPlayerState::PLAYING)
+        ? (void)focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME)
+        : playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
 }
 
 void TTSAgent::postProcessDirective(bool is_cancel)
