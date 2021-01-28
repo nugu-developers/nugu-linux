@@ -100,6 +100,11 @@ public:
     virtual void notifyHasMultiTurn() = 0;
 
     /**
+     * @brief Check whether multi-turn is active
+     */
+    virtual bool isMultiTurnActive() = 0;
+
+    /**
      * @brief Clear all about interaction mode
      */
     virtual void clear() = 0;

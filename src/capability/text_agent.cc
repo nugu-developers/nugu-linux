@@ -49,10 +49,13 @@ void TextAgent::initialize()
     cur_state = TextState::IDLE;
     cur_dialog_id = "";
     dir_groups = "";
+    interaction_mode = InteractionMode::NONE;
+    handle_interaction_control = false;
 
     timer = core_container->createNuguTimer(true);
     timer->setInterval(response_timeout * NUGU_TIMER_UNIT_SEC);
     timer->setCallback([&]() {
+        finishInteractionControl();
         notifyResponseTimeout();
     });
 
@@ -169,6 +172,10 @@ std::string TextAgent::requestTextInput(const std::string& text, const std::stri
     if (text_listener)
         text_listener->onState(cur_state, cur_dialog_id);
 
+    // for relaying multi-turn states until text request is finished, if ASR is multi-turn
+    if (!handle_interaction_control && interaction_control_manager->isMultiTurnActive())
+        startInteractionControl(InteractionMode::MULTI_TURN);
+
     capa_helper->sendCommand("Text", "ASR", "cancel", "");
 
     return cur_dialog_id;
@@ -283,13 +290,15 @@ void TextAgent::parsingTextRedirect(const char* message)
 
         text_input_param.text = root["text"].asString();
         text_input_param.token = root["token"].asString();
-
         target_ps_id = root["targetPlayServiceId"].asString();
         text_input_param.ps_id = !target_ps_id.empty() ? target_ps_id : root["playServiceId"].asString();
+
+        startInteractionControl(getInteractionMode(root["interactionControl"]));
 
         if (!handleTextCommonProcess(text_input_param))
             throw std::string { "The processing TextRedirect is incomplete." };
     } catch (std::string& message) {
+        finishInteractionControl();
         sendEventTextRedirectFailed(text_input_param);
         nugu_error(message.c_str());
     }
@@ -328,4 +337,26 @@ bool TextAgent::handleTextCommonProcess(const TextInputParam& text_input_param)
 
     return true;
 }
+
+void TextAgent::notifyEventResponse(const std::string& msg_id, const std::string& data, bool success)
+{
+    finishInteractionControl();
+}
+
+void TextAgent::startInteractionControl(InteractionMode&& mode)
+{
+    interaction_mode = mode;
+    interaction_control_manager->start(interaction_mode, getName());
+    handle_interaction_control = true;
+}
+
+void TextAgent::finishInteractionControl()
+{
+    if (handle_interaction_control) {
+        interaction_control_manager->finish(interaction_mode, getName());
+        interaction_mode = InteractionMode::NONE;
+        handle_interaction_control = false;
+    }
+}
+
 } // NuguCapability
