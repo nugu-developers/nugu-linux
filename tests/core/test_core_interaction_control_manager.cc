@@ -164,6 +164,51 @@ static void test_interaction_control_manager_multi_requester(TestFixture* fixtur
     g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { false, 1 }));
 }
 
+static void test_interaction_control_manager_mixed_mode_multi_requester(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->ic_manager->addListener(fixture->ic_manager_listener.get());
+    g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { false, 0 }));
+
+    // case-1 : first request is MULTI_TURN mode
+    fixture->ic_manager->start(InteractionMode::MULTI_TURN, "requester_1");
+    g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { true, 1 }));
+
+    fixture->ic_manager->start(InteractionMode::NONE, "requester_2");
+    g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { true, 1 }));
+
+    fixture->ic_manager->finish(InteractionMode::MULTI_TURN, "requester_1");
+    g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { false, 1 }));
+
+    fixture->ic_manager->finish(InteractionMode::NONE, "requester_2");
+    g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { false, 1 }));
+
+    // case-2 : first request is NONE mode
+    fixture->ic_manager->start(InteractionMode::NONE, "requester_1");
+    g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { false, 1 }));
+
+    fixture->ic_manager->start(InteractionMode::MULTI_TURN, "requester_2");
+    g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { true, 1 }));
+
+    fixture->ic_manager->finish(InteractionMode::NONE, "requester_1");
+    g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { true, 1 }));
+
+    fixture->ic_manager->finish(InteractionMode::MULTI_TURN, "requester_2");
+    g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { false, 1 }));
+
+    // case-3 : try to finish not started requester
+    fixture->ic_manager->start(InteractionMode::MULTI_TURN, "requester_1");
+    g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { true, 1 }));
+
+    fixture->ic_manager->finish(InteractionMode::NONE, "requester_2");
+    g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { true, 1 }));
+
+    fixture->ic_manager->finish(InteractionMode::MULTI_TURN, "requester_2");
+    g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { true, 1 }));
+
+    fixture->ic_manager->finish(InteractionMode::MULTI_TURN, "requester_1");
+    g_assert(fixture->ic_manager_listener->getModeChecker() == (TestModeChecker { false, 1 }));
+}
+
 static void test_interaction_control_manager_has_multi_turn(TestFixture* fixture, gconstpointer ignored)
 {
     fixture->ic_manager->addListener(fixture->ic_manager_listener.get());
@@ -171,6 +216,18 @@ static void test_interaction_control_manager_has_multi_turn(TestFixture* fixture
 
     fixture->ic_manager->notifyHasMultiTurn();
     g_assert(fixture->ic_manager_listener->hasMultiTurn());
+}
+
+static void test_interaction_control_manager_check_multi_turn_active(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->ic_manager->addListener(fixture->ic_manager_listener.get());
+    g_assert(!fixture->ic_manager->isMultiTurnActive());
+
+    fixture->ic_manager->start(InteractionMode::MULTI_TURN, "requester_1");
+    g_assert(fixture->ic_manager->isMultiTurnActive());
+
+    fixture->ic_manager->finish(InteractionMode::MULTI_TURN, "requester_1");
+    g_assert(!fixture->ic_manager->isMultiTurnActive());
 }
 
 static void test_interaction_control_manager_clear(TestFixture* fixture, gconstpointer ignored)
@@ -214,7 +271,9 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/InteractionControlManager/listener", test_interaction_control_manager_listener);
     G_TEST_ADD_FUNC("/core/InteractionControlManager/singleRequester", test_interaction_control_manager_single_requester);
     G_TEST_ADD_FUNC("/core/InteractionControlManager/multiRequester", test_interaction_control_manager_multi_requester);
+    G_TEST_ADD_FUNC("/core/InteractionControlManager/mixedModeMultiRequester", test_interaction_control_manager_mixed_mode_multi_requester);
     G_TEST_ADD_FUNC("/core/InteractionControlManager/hasMultiTurn", test_interaction_control_manager_has_multi_turn);
+    G_TEST_ADD_FUNC("/core/InteractionControlManager/checkMultiTurnActive", test_interaction_control_manager_check_multi_turn_active);
     G_TEST_ADD_FUNC("/core/InteractionControlManager/clear", test_interaction_control_manager_clear);
     G_TEST_ADD_FUNC("/core/InteractionControlManager/reset", test_interaction_control_manager_reset);
 

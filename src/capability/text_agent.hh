@@ -54,6 +54,9 @@ private:
     void parsingTextSource(const char* message);
     void parsingTextRedirect(const char* message);
     bool handleTextCommonProcess(const TextInputParam& text_input_param);
+    void notifyEventResponse(const std::string& msg_id, const std::string& data, bool success) override;
+    void startInteractionControl(InteractionMode&& mode);
+    void finishInteractionControl();
 
     const std::string FAIL_EVENT_ERROR_CODE = "NOT_SUPPORTED_STATE";
 
@@ -63,6 +66,8 @@ private:
     TextState cur_state;
     std::string cur_dialog_id;
     std::string dir_groups;
+    InteractionMode interaction_mode;
+    bool handle_interaction_control;
 
     // attribute
     int response_timeout;

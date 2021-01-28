@@ -69,6 +69,11 @@ void InteractionControlManager::notifyHasMultiTurn()
         listener->onHasMultiTurn();
 }
 
+bool InteractionControlManager::isMultiTurnActive()
+{
+    return !requester_set.empty();
+}
+
 void InteractionControlManager::start(InteractionMode mode, const std::string& requester)
 {
     if (mode != InteractionMode::MULTI_TURN) {

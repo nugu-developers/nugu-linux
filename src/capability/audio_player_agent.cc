@@ -205,6 +205,11 @@ void AudioPlayerAgent::onFocusChanged(FocusState state)
 
     switch (state) {
     case FocusState::FOREGROUND:
+        if (interaction_control_manager->isMultiTurnActive()) {
+            nugu_info("The multi-turn is active. So, it ignore intermediate foreground focus. ");
+            return;
+        }
+
         executeOnForegroundAction();
         break;
     case FocusState::BACKGROUND:
