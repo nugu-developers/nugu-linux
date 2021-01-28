@@ -250,7 +250,7 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync,
 	struct _v2_events *event;
 	int ret;
 	unsigned char buf[8];
-	char boundary[17];
+	char boundary[34] = "nugusdk.boundary.";
 	DirParser *parser;
 	NuguBuffer *buffer;
 
@@ -289,11 +289,11 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync,
 	dir_parser_set_end_callback(parser, _end_cb, event->req);
 
 	nugu_uuid_fill_random(buf, sizeof(buf));
-	nugu_uuid_convert_base16(buf, sizeof(buf), boundary, sizeof(boundary));
-	boundary[16] = '\0';
+	nugu_uuid_convert_base16(buf, sizeof(buf), boundary + strlen(boundary),
+				 sizeof(boundary));
+	boundary[33] = '\0';
 
-	event->boundary =
-		(unsigned char *)g_strdup_printf("%s--%s", CRLF, boundary);
+	event->boundary = (unsigned char *)g_strdup_printf("--%s", boundary);
 	event->b_len = strlen((char *)event->boundary);
 	event->sync = is_sync;
 	event->net = net;
@@ -413,10 +413,10 @@ int v2_events_send_binary(V2Events *event, const char *msgid, int seq,
 	g_free(part_header);
 
 	/* Body */
-	if (data != NULL && length > 0) {
+	if (data != NULL && length > 0)
 		http2_request_add_send_data(event->req, data, length);
-		http2_request_add_send_data(event->req, U_CRLF, 2);
-	}
+
+	http2_request_add_send_data(event->req, U_CRLF, 2);
 
 	/* Boundary */
 	http2_request_add_send_data(event->req, event->boundary, event->b_len);
