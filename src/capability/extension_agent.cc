@@ -120,7 +120,7 @@ void ExtensionAgent::postProcessDirective()
 
 void ExtensionAgent::sendEventCommandIssued(const std::string& ps_id, const std::string& data, EventResultCallback cb)
 {
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     root["playServiceId"] = ps_id;
@@ -131,7 +131,7 @@ void ExtensionAgent::sendEventCommandIssued(const std::string& ps_id, const std:
 
 void ExtensionAgent::sendEventCommon(std::string&& ename, EventResultCallback cb)
 {
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     root["playServiceId"] = ps_id;
@@ -158,7 +158,7 @@ void ExtensionAgent::parsingAction(const char* message)
     }
 
     if (extension_listener) {
-        Json::StyledWriter writer;
+        Json::FastWriter writer;
         std::string action = writer.write(data);
 
         destroy_directive_by_agent = true;

@@ -138,7 +138,7 @@ void SoundAgent::sendEventCommon(std::string&& event_name, EventResultCallback c
         return;
     }
 
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     root["playServiceId"] = play_service_id;

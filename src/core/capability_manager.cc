@@ -237,7 +237,7 @@ ICapabilityInterface* CapabilityManager::findCapability(const std::string& cname
 
 std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::Value& ctx)
 {
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
     Json::Value client;
 
@@ -265,7 +265,7 @@ std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::V
 
 std::string CapabilityManager::makeAllContextInfo()
 {
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
     Json::Value ctx;
     Json::Value client;

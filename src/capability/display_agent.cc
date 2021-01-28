@@ -242,7 +242,7 @@ void DisplayAgent::sendEventElementSelected(const std::string& item_token)
 {
     std::string ename = "ElementSelected";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     root["playServiceId"] = disp_cur_ps_id;
@@ -265,7 +265,7 @@ void DisplayAgent::sendEventCloseFailed(const std::string& ps_id)
 void DisplayAgent::sendEventClose(const std::string& ename, const std::string& ps_id)
 {
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     root["playServiceId"] = ps_id;
@@ -297,7 +297,7 @@ void DisplayAgent::sendEventControlScrollFailed(const std::string& ps_id, Contro
 void DisplayAgent::sendEventControl(const std::string& ename, const std::string& ps_id, ControlDirection direction)
 {
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     root["playServiceId"] = ps_id;

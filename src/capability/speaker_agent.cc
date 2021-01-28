@@ -257,7 +257,7 @@ void SpeakerAgent::sendEventCommon(const std::string& ps_id, const std::string& 
 {
     std::string payload = "";
     Json::Value root;
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
 
     if (ps_id.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
