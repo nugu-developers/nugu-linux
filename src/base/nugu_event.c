@@ -24,36 +24,48 @@
 #include "base/nugu_uuid.h"
 #include "base/nugu_event.h"
 
+/**
+ * {
+ *   "context": %s,
+ *   "event": {
+ *     "header": {
+ *       "dialogRequestId": "%s",
+ *       "messageId": "%s",
+ *       "name": "%s",
+ *       "namespace": "%s",
+ *       "version": "%s"
+ *     },
+ *     "payload": %s
+ *   }
+ * }
+ */
 #define TPL_EVENT                                                              \
-	"{\n"                                                                  \
-	"  \"context\": %s,\n"                                                 \
-	"  \"event\": {\n"                                                     \
-	"    \"header\": {\n"                                                  \
-	"      \"dialogRequestId\": \"%s\",\n"                                 \
-	"      \"messageId\": \"%s\",\n"                                       \
-	"      \"name\": \"%s\",\n"                                            \
-	"      \"namespace\": \"%s\",\n"                                       \
-	"      \"version\": \"%s\"\n"                                          \
-	"    },\n"                                                             \
-	"    \"payload\": %s\n"                                                \
-	"  }\n"                                                                \
-	"}"
+	"{ \"context\": %s, \"event\": { \"header\": {"                        \
+	" \"dialogRequestId\": \"%s\", \"messageId\": \"%s\","                 \
+	" \"name\": \"%s\", \"namespace\": \"%s\", \"version\": \"%s\" },"    \
+	" \"payload\": %s } }"
 
+/**
+ * {
+ *   "context": %s,
+ *   "event": {
+ *     "header": {
+ *       "referrerDialogRequestId": "%s",
+ *       "dialogRequestId": "%s",
+ *       "messageId": "%s",
+ *       "name": "%s",
+ *       "namespace": "%s",
+ *       "version": "%s"
+ *     },
+ *     "payload": %s
+ *   }
+ * }
+ */
 #define TPL_EVENT_REFERRER                                                     \
-	"{\n"                                                                  \
-	"  \"context\": %s,\n"                                                 \
-	"  \"event\": {\n"                                                     \
-	"    \"header\": {\n"                                                  \
-	"      \"referrerDialogRequestId\": \"%s\",\n"                         \
-	"      \"dialogRequestId\": \"%s\",\n"                                 \
-	"      \"messageId\": \"%s\",\n"                                       \
-	"      \"name\": \"%s\",\n"                                            \
-	"      \"namespace\": \"%s\",\n"                                       \
-	"      \"version\": \"%s\"\n"                                          \
-	"    },\n"                                                             \
-	"    \"payload\": %s\n"                                                \
-	"  }\n"                                                                \
-	"}"
+	"{ \"context\": %s, \"event\": { \"header\": {"                        \
+	" \"referrerDialogRequestId\": \"%s\", \"dialogRequestId\": \"%s\","   \
+	" \"messageId\": \"%s\", \"name\": \"%s\", \"namespace\": \"%s\","     \
+	" \"version\": \"%s\" }, \"payload\": %s } }"
 
 struct _nugu_event {
 	char *name_space;
@@ -143,6 +155,8 @@ EXPORT_API const char *nugu_event_peek_version(NuguEvent *nev)
 
 EXPORT_API int nugu_event_set_context(NuguEvent *nev, const char *context)
 {
+	int length;
+
 	g_return_val_if_fail(nev != NULL, -1);
 	g_return_val_if_fail(context != NULL, -1);
 
@@ -150,6 +164,11 @@ EXPORT_API int nugu_event_set_context(NuguEvent *nev, const char *context)
 		free(nev->context);
 
 	nev->context = g_strdup(context);
+
+	/* Remove trailing '\n' */
+	length = strlen(nev->context);
+	if (length > 0 && nev->context[length - 1] == '\n')
+		nev->context[length - 1] = '\0';
 
 	return 0;
 }
@@ -163,15 +182,24 @@ EXPORT_API const char *nugu_event_peek_context(NuguEvent *nev)
 
 EXPORT_API int nugu_event_set_json(NuguEvent *nev, const char *json)
 {
+	int length;
+
 	g_return_val_if_fail(nev != NULL, -1);
 
-	if (nev->json)
+	if (nev->json) {
 		free(nev->json);
-
-	if (json)
-		nev->json = g_strdup(json);
-	else
 		nev->json = NULL;
+	}
+
+	if (!json)
+		return 0;
+
+	nev->json = g_strdup(json);
+
+	/* Remove trailing '\n' */
+	length = strlen(nev->json);
+	if (length > 0 && nev->json[length - 1] == '\n')
+		nev->json[length - 1] = '\0';
 
 	return 0;
 }

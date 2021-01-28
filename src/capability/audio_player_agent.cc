@@ -338,7 +338,7 @@ std::string AudioPlayerAgent::requestFavoriteCommand(bool current_favorite)
 {
     std::string ename = "FavoriteCommandIssued";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     if (ps_id.size() == 0) {
@@ -359,7 +359,7 @@ std::string AudioPlayerAgent::requestRepeatCommand(RepeatType current_repeat)
 {
     std::string ename = "RepeatCommandIssued";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     if (ps_id.size() == 0) {
@@ -390,7 +390,7 @@ std::string AudioPlayerAgent::requestShuffleCommand(bool current_shuffle)
 {
     std::string ename = "ShuffleCommandIssued";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     if (ps_id.size() == 0) {
@@ -569,7 +569,7 @@ void AudioPlayerAgent::sendEventPlaybackStopped(EventResultCallback cb)
 {
     std::string ename = "PlaybackStopped";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
     long offset = cur_player->position() * 1000;
 
@@ -603,7 +603,7 @@ void AudioPlayerAgent::sendEventShowLyricsSucceeded(EventResultCallback cb)
 {
     std::string ename = "ShowLyricsSucceeded";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     if (ps_id.size() == 0) {
@@ -621,7 +621,7 @@ void AudioPlayerAgent::sendEventShowLyricsFailed(EventResultCallback cb)
 {
     std::string ename = "EventShowLyricsFailed";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     root["playServiceId"] = ps_id;
@@ -634,7 +634,7 @@ void AudioPlayerAgent::sendEventHideLyricsSucceeded(EventResultCallback cb)
 {
     std::string ename = "HideLyricsSucceeded";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     if (ps_id.size() == 0) {
@@ -652,7 +652,7 @@ void AudioPlayerAgent::sendEventHideLyricsFailed(EventResultCallback cb)
 {
     std::string ename = "HideLyricsFailed";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     if (ps_id.size() == 0) {
@@ -670,7 +670,7 @@ void AudioPlayerAgent::sendEventControlLyricsPageSucceeded(const std::string& di
 {
     std::string ename = "ControlLyricsPageSucceeded";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     if (ps_id.size() == 0 || direction.size() == 0) {
@@ -689,7 +689,7 @@ void AudioPlayerAgent::sendEventControlLyricsPageFailed(const std::string& direc
 {
     std::string ename = "ControlLyricsPageFailed";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     if (ps_id.size() == 0 || direction.size() == 0) {
@@ -720,7 +720,7 @@ void AudioPlayerAgent::sendEventRequestCommandFailed(const std::string& play_ser
 {
     std::string ename = "RequestCommandFailed";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     root["token"] = cur_token;
@@ -736,7 +736,7 @@ void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::str
 {
     std::string ename = "PlaybackFailed";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
     long offset = cur_player->position() * 1000;
 
@@ -777,7 +777,7 @@ std::string AudioPlayerAgent::sendEventByDisplayInterface(const std::string& com
 
 std::string AudioPlayerAgent::sendEventCommon(const std::string& ename, EventResultCallback cb, bool include_all_context)
 {
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
     long offset = cur_player->position() * 1000;
 

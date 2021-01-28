@@ -346,7 +346,7 @@ std::string TTSAgent::sendEventSpeechPlay(const std::string& token, const std::s
 {
     std::string ename = "SpeechPlay";
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
     std::string skml = text;
 
@@ -373,7 +373,7 @@ std::string TTSAgent::sendEventSpeechPlay(const std::string& token, const std::s
 void TTSAgent::sendEventCommon(CapabilityEvent* event, const std::string& token, EventResultCallback cb)
 {
     std::string payload = "";
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     if (!event) {

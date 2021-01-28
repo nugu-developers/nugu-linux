@@ -104,7 +104,7 @@ void MicAgent::sendEventCommon(const std::string& ename, EventResultCallback cb)
 {
     std::string payload = "";
     Json::Value root;
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
 
     root["playServiceId"] = ps_id;
     if (cur_status == MicStatus::ON)

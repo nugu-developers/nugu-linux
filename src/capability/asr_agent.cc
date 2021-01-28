@@ -332,7 +332,7 @@ bool ASRAgent::getProperty(const std::string& property, std::string& value)
         value = es_attr.play_service_id;
     } else if (property == "es.asrContext") {
         if (!es_attr.asr_context.empty()) {
-            Json::StyledWriter writer;
+            Json::FastWriter writer;
             value = writer.write(es_attr.asr_context);
         }
     } else {
@@ -378,7 +378,7 @@ std::string ASRAgent::getRecognizeDialogId()
 
 void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_end, EventResultCallback cb)
 {
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
     std::string payload = "";
 
@@ -449,7 +449,7 @@ void ASRAgent::sendEventCommon(const std::string& ename, EventResultCallback cb,
     std::string payload = "";
 
     if (es_attr.is_handle) {
-        Json::StyledWriter writer;
+        Json::FastWriter writer;
         Json::Value root;
 
         root["playServiceId"] = es_attr.play_service_id;

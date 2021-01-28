@@ -187,7 +187,7 @@ void TextAgent::notifyResponseTimeout()
 void TextAgent::sendEventTextInput(const TextInputParam& text_input_param, bool include_dialog_attribute, EventResultCallback cb)
 {
     CapabilityEvent event("TextInput", this);
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
     Json::Value root;
 
     root["text"] = text_input_param.text;
@@ -237,7 +237,7 @@ void TextAgent::sendEventTextRedirectFailed(const TextInputParam& text_input_par
 void TextAgent::sendEventFailed(std::string&& event_name, const TextInputParam& text_input_param, EventResultCallback cb)
 {
     Json::Value root;
-    Json::StyledWriter writer;
+    Json::FastWriter writer;
 
     if (!text_input_param.ps_id.empty())
         root["playServiceId"] = text_input_param.ps_id;
