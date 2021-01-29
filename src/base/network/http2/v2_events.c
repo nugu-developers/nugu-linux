@@ -53,6 +53,7 @@ struct _v2_events {
 	unsigned char *boundary;
 	size_t b_len;
 	int sync;
+	gboolean first_data;
 	HTTP2Network *net;
 	enum nugu_event_type type;
 };
@@ -298,6 +299,7 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync,
 	event->sync = is_sync;
 	event->net = net;
 	event->type = type;
+	event->first_data = TRUE;
 
 	http2_request_set_method(event->req, HTTP2_REQUEST_METHOD_POST);
 	http2_request_set_content_type(
@@ -318,10 +320,6 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync,
 	http2_request_set_body_callback(event->req, _on_body, parser);
 	http2_request_set_finish_callback(event->req, _on_finish, NULL);
 	http2_request_set_destroy_callback(event->req, _on_destroy, parser);
-
-	/* Boundary (no preamble data) */
-	http2_request_add_send_data(event->req, event->boundary, event->b_len);
-	http2_request_add_send_data(event->req, U_CRLF, 2);
 
 	ret = http2_network_add_request(event->net, event->req);
 	if (ret < 0) {
@@ -368,6 +366,14 @@ int v2_events_send_json(V2Events *event, const char *data, size_t length)
 
 	http2_request_set_profiling_contents(event->req, data);
 
+	/* Boundary for 1st multipart data */
+	if (event->first_data) {
+		http2_request_add_send_data(event->req, event->boundary,
+					    event->b_len);
+		http2_request_add_send_data(event->req, U_CRLF, 2);
+		event->first_data = FALSE;
+	}
+
 	/* Body header */
 	http2_request_add_send_data(event->req,
 				    (unsigned char *)PART_HEADER_JSON,
@@ -406,6 +412,14 @@ int v2_events_send_binary(V2Events *event, const char *msgid, int seq,
 				      length, msgid);
 
 	http2_request_lock_send_data(event->req);
+
+	/* Boundary for 1st multipart data */
+	if (event->first_data) {
+		http2_request_add_send_data(event->req, event->boundary,
+					    event->b_len);
+		http2_request_add_send_data(event->req, U_CRLF, 2);
+		event->first_data = FALSE;
+	}
 
 	/* Body header */
 	http2_request_add_send_data(event->req, (unsigned char *)part_header,
