@@ -39,9 +39,13 @@ IF(ENABLE_PORTAUDIO_PLUGIN)
 	pkg_check_modules(portaudio REQUIRED portaudio-2.0 alsa)
 	SET(PORTAUDIO_PLUGINS
 		portaudio
-		portaudio_recorder
-		portaudio_pcm_sync
-		portaudio_pcm_async)
+		portaudio_recorder)
+
+	IF(NOT ENABLE_GSTREAMER_PCM_PLUGIN)
+		SET(PORTAUDIO_PLUGINS ${PORTAUDIO_PLUGINS}
+			portaudio_pcm_sync
+			portaudio_pcm_async)
+	ENDIF()
 
 	FOREACH(plugin ${PORTAUDIO_PLUGINS})
 		ADD_LIBRARY(${plugin} SHARED ${plugin}.c)
@@ -57,8 +61,12 @@ ENDIF(ENABLE_PORTAUDIO_PLUGIN)
 # gstreamer plugin
 IF(ENABLE_GSTREAMER_PLUGIN)
 	SET(GSTREAMER_PLUGINS
-		gstreamer
-		gstreamer_pcm)
+		gstreamer)
+
+	IF(ENABLE_GSTREAMER_PCM_PLUGIN)
+		SET(GSTREAMER_PLUGINS ${GSTREAMER_PLUGINS}
+			gstreamer_pcm)
+	ENDIF()
 
 	FOREACH(plugin ${GSTREAMER_PLUGINS})
 		ADD_LIBRARY(${plugin} SHARED ${plugin}.c)
