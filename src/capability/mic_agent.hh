@@ -37,13 +37,13 @@ public:
     void disable() override;
 
 private:
-    void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr);
+    void sendEventCommon(std::string&& ename, EventResultCallback cb = nullptr);
     void sendEventSetMicSucceeded(EventResultCallback cb = nullptr);
     void sendEventSetMicFailed(EventResultCallback cb = nullptr);
 
-    void control(bool enable, bool send_event = false);
-
     void parsingSetMic(const char* message);
+    void control(bool enable, bool send_event = false);
+    std::string getCurrentMicStatusText();
 
     IMicListener* mic_listener;
     MicStatus cur_status;
