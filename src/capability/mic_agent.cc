@@ -66,10 +66,7 @@ void MicAgent::updateInfoForContext(Json::Value& ctx)
     Json::Value mic;
 
     mic["version"] = getVersion();
-    if (cur_status == MicStatus::ON)
-        mic["micStatus"] = "ON";
-    else
-        mic["micStatus"] = "OFF";
+    mic["micStatus"] = getCurrentMicStatusText();
 
     ctx[getName()] = mic;
 }
@@ -100,20 +97,15 @@ void MicAgent::sendEventSetMicFailed(EventResultCallback cb)
     sendEventCommon("SetMicFailed", std::move(cb));
 }
 
-void MicAgent::sendEventCommon(const std::string& ename, EventResultCallback cb)
+void MicAgent::sendEventCommon(std::string&& ename, EventResultCallback cb)
 {
-    std::string payload = "";
     Json::Value root;
     Json::FastWriter writer;
 
     root["playServiceId"] = ps_id;
-    if (cur_status == MicStatus::ON)
-        root["micStatus"] = "ON";
-    else
-        root["micStatus"] = "OFF";
-    payload = writer.write(root);
+    root["micStatus"] = getCurrentMicStatusText();
 
-    sendEvent(ename, getContextInfo(), payload, std::move(cb));
+    sendEvent(ename, getContextInfo(), writer.write(root), std::move(cb));
 }
 
 void MicAgent::parsingSetMic(const char* message)
@@ -141,11 +133,7 @@ void MicAgent::parsingSetMic(const char* message)
 void MicAgent::control(bool enable, bool send_event)
 {
     MicStatus pre_status = cur_status;
-
-    if (enable)
-        cur_status = MicStatus::ON;
-    else
-        cur_status = MicStatus::OFF;
+    cur_status = enable ? MicStatus::ON : MicStatus::OFF;
 
     if (cur_status == pre_status)
         return;
@@ -157,6 +145,11 @@ void MicAgent::control(bool enable, bool send_event)
 
     if (mic_listener)
         mic_listener->micStatusChanged(cur_status);
+}
+
+std::string MicAgent::getCurrentMicStatusText()
+{
+    return (cur_status == MicStatus::ON) ? "ON" : "OFF";
 }
 
 } // NuguCapability
