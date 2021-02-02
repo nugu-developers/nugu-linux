@@ -24,6 +24,7 @@
 
 #include "capability_collection.hh"
 #include "nugu_sample_manager.hh"
+#include "speaker_status.hh"
 
 class NuguSDKManager : public IFocusManagerObserver,
                        public INetworkManagerListener,
@@ -78,7 +79,8 @@ private:
 
     bool sdk_initialized = false;
     bool is_network_error = false;
-    bool mic_mute = false;
+
+    SpeakerStatus* speaker_status;
 };
 
 #endif /* __NUGU_SDK_MANAGER_H__ */

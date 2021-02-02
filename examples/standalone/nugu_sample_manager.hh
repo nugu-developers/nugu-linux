@@ -37,6 +37,7 @@ public:
         TextCommander text_commander;
         StatusRetriever playstack_retriever;
         StatusRetriever mic_status_retriever;
+        StatusRetriever volume_status_retriever;
     };
 
     class CommandBuilder {
@@ -65,6 +66,7 @@ public:
     void setTextCommander(TextCommander&& text_commander);
     void setPlayStackRetriever(StatusRetriever&& playstack_retriever);
     void setMicStatusRetriever(StatusRetriever&& mic_status_retriever);
+    void setVolumeStatusRetriever(StatusRetriever&& volume_status_retriever);
 
     const std::string& getModelPath();
     CommandBuilder* getCommandBuilder();

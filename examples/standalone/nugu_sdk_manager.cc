@@ -33,6 +33,7 @@ void msg_info(std::string&& message)
 NuguSDKManager::NuguSDKManager(NuguSampleManager* nugu_sample_manager)
 {
     this->nugu_sample_manager = nugu_sample_manager;
+    speaker_status = SpeakerStatus::getInstance();
 }
 
 void NuguSDKManager::setup()
@@ -84,8 +85,7 @@ void NuguSDKManager::composeSDKCommands()
                          flag = TEXT_INPUT_TYPE_2;
                      } })
         ->add("m", { "set mic mute", [&](int& flag) {
-                        mic_mute = !mic_mute;
-                        !mic_mute ? mic_handler->enable() : mic_handler->disable();
+                        speaker_status->isMicMute() ? mic_handler->enable() : mic_handler->disable();
                     } })
         ->add("sa", { "suspend all", [&](int& flag) {
                          nugu_core_container->getCapabilityHelper()->suspendAll();
@@ -204,7 +204,10 @@ void NuguSDKManager::setAdditionalExecutor()
         return playstack_text;
     });
     nugu_sample_manager->setMicStatusRetriever([&]() {
-        return mic_mute ? "OFF" : "ON";
+        return speaker_status->isMicMute() ? "OFF" : "ON";
+    });
+    nugu_sample_manager->setVolumeStatusRetriever([&]() {
+        return speaker_status->isSpeakerMute() ? "MUTE" : std::to_string(speaker_status->getNUGUVolume());
     });
 }
 
@@ -214,6 +217,8 @@ void NuguSDKManager::deleteInstance()
     nugu_client.reset();
     capa_collection.reset();
     on_init_func = nullptr;
+
+    speaker_status->destroyInstance();
 }
 
 void NuguSDKManager::initSDK()
@@ -224,6 +229,7 @@ void NuguSDKManager::initSDK()
     }
 
     composeSDKCommands();
+    speaker_status->setDefaultValues(SpeakerStatus::DefaultValues { false, false, NUGU_SPEAKER_DEFAULT_VOLUME });
 
     if (!nugu_client->initialize()) {
         msg_error("> It failed to initialize NUGU SDK. Please Check authorization.");

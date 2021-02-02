@@ -435,7 +435,7 @@ bool AudioPlayerAgent::setMute(bool mute)
     if (!cur_player)
         return false;
 
-    if (cur_player->setMute(mute))
+    if (!cur_player->setMute(mute))
         return false;
 
     nugu_dbg("media player's mute(%d) changed..", mute);
