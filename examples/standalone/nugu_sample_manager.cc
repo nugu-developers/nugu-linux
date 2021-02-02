@@ -139,6 +139,11 @@ void NuguSampleManager::setMicStatusRetriever(StatusRetriever&& mic_status_retri
     commander.mic_status_retriever = mic_status_retriever;
 }
 
+void NuguSampleManager::setVolumeStatusRetriever(StatusRetriever&& volume_status_retriever)
+{
+    commander.volume_status_retriever = volume_status_retriever;
+}
+
 const std::string& NuguSampleManager::getModelPath()
 {
     return model_path;
@@ -229,7 +234,8 @@ void NuguSampleManager::showPrompt(void)
         // show current PlayStack info
         if (commander.is_connected) {
             std::cout << C_GREEN
-                      << "[MIC] " << (commander.mic_status_retriever ? commander.mic_status_retriever() : "") << " / "
+                      << "[Volume] " << (commander.volume_status_retriever ? commander.volume_status_retriever() : "") << " / "
+                      << "[MIC] " << (commander.mic_status_retriever ? commander.mic_status_retriever() : "") << std::endl
                       << "[PlayStack] " << (commander.playstack_retriever ? commander.playstack_retriever() : "")
                       << std::endl;
         }

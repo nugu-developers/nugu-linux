@@ -17,14 +17,19 @@
 #include <iostream>
 
 #include "speaker_listener.hh"
+#include "speaker_status.hh"
 
 void SpeakerListener::requestSetVolume(const std::string& ps_id, SpeakerType type, int volume, bool linear)
 {
     std::cout << "[Speaker] type: " << (int)type << ", volume: " << volume << ", linear: " << linear << std::endl;
     bool success = false;
 
-    if (type == SpeakerType::NUGU && nugu_speaker_volume)
+    if (type == SpeakerType::NUGU && nugu_speaker_volume) {
         success = nugu_speaker_volume(volume);
+
+        if (success)
+            SpeakerStatus::getInstance()->setNUGUVolume(volume);
+    }
 
     if (speaker_handler) {
         speaker_handler->informVolumeChanged(type, volume);
@@ -37,8 +42,12 @@ void SpeakerListener::requestSetMute(const std::string& ps_id, SpeakerType type,
     std::cout << "[Speaker] type: " << (int)type << ", mute: " << mute << std::endl;
     bool success = false;
 
-    if (type == SpeakerType::NUGU && nugu_speaker_mute)
+    if (type == SpeakerType::NUGU && nugu_speaker_mute) {
         success = nugu_speaker_mute(mute);
+
+        if (success)
+            SpeakerStatus::getInstance()->setSpeakerMute(mute);
+    }
 
     if (speaker_handler) {
         speaker_handler->informMuteChanged(type, mute);

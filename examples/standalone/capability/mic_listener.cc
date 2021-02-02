@@ -17,16 +17,19 @@
 #include <iostream>
 
 #include "mic_listener.hh"
+#include "speaker_status.hh"
 
 void MicListener::micStatusChanged(MicStatus& status)
 {
     switch (status) {
     case MicStatus::ON:
         std::cout << "[MIC] ON..." << std::endl;
+        SpeakerStatus::getInstance()->setMicMute(false);
         break;
 
     case MicStatus::OFF:
         std::cout << "[MIC] OFF..." << std::endl;
+        SpeakerStatus::getInstance()->setMicMute(true);
         break;
     }
 }
