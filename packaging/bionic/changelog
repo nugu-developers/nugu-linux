@@ -1,3 +1,21 @@
+nugu (0.24.0ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed PlaySyncManager clearance  
+  * Fixed TTSAgent
+  * Added Extension interface v1.1
+  * Added Chips interface v1.1
+  * Added DirectiveSequencer partial cancel
+  * Applied directive blocking policy
+  * Applied activity and playstack policy
+  * Updated TextAgent
+  * Updated context scope of some events 
+  * Updated network multipart rule
+  * Updated session management flow
+  * Updated nugu log readability  
+  * Updated nugu_sample UI
+  
+ -- nugulinux <nugulinux@gmail.com>  Wed, 3 Feb 2020 10:30:00 +0900
+
 nugu (0.23.0ubuntu1~bionic) bionic; urgency=medium
 
   * Fixed PlaySyncManager and PlayStackManager
