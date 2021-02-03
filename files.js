@@ -6,8 +6,12 @@ var files =
     [ "capability_factory.hh", "capability__factory_8hh.html", null ],
     [ "capability_helper_interface.hh", "capability__helper__interface_8hh.html", null ],
     [ "capability_interface.hh", "capability__interface_8hh.html", null ],
+    [ "chips_interface.hh", "chips__interface_8hh.html", [
+      [ "Content", "structNuguCapability_1_1ChipsInfo_1_1Content.html", "structNuguCapability_1_1ChipsInfo_1_1Content" ]
+    ] ],
     [ "directive_sequencer_interface.hh", "directive__sequencer__interface_8hh.html", "directive__sequencer__interface_8hh" ],
     [ "display_interface.hh", "display__interface_8hh.html", "display__interface_8hh" ],
+    [ "extension_interface.hh", "extension__interface_8hh.html", null ],
     [ "focus_manager_interface.hh", "focus__manager__interface_8hh.html", "focus__manager__interface_8hh" ],
     [ "interaction_control_manager_interface.hh", "interaction__control__manager__interface_8hh.html", "interaction__control__manager__interface_8hh" ],
     [ "media_player_interface.hh", "media__player__interface_8hh.html", "media__player__interface_8hh" ],

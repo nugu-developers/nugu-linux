@@ -22,6 +22,7 @@ var searchData=
   ['onnone',['onNone',['../classNuguCapability_1_1IASRListener.html#aba55f5cb3892f44a2c9c32ba70bd3723',1,'NuguCapability::IASRListener']]],
   ['onpartial',['onPartial',['../classNuguCapability_1_1IASRListener.html#a2395171f2c033b205f880f14b9a6646f',1,'NuguCapability::IASRListener']]],
   ['onprehandledirective',['onPreHandleDirective',['../classNuguClientKit_1_1IDirectiveSequencerListener.html#a1584fc8a779dd085e084feccc93f903a',1,'NuguClientKit::IDirectiveSequencerListener']]],
+  ['onreceiverender',['onReceiveRender',['../classNuguCapability_1_1IChipsListener.html#aab0b89ee337385790da682812eaa3645',1,'NuguCapability::IChipsListener']]],
   ['onrecorddata',['onRecordData',['../classNuguClientKit_1_1ISpeechRecognizerListener.html#ac5f1316c6f5043860b1de11a08bc81fc',1,'NuguClientKit::ISpeechRecognizerListener']]],
   ['onrevoke',['onRevoke',['../classNuguCapability_1_1ISystemListener.html#a97c81de9026508c37ce20c81350da903',1,'NuguCapability::ISystemListener']]],
   ['onstate',['onState',['../classNuguCapability_1_1IASRListener.html#adf5f438140b02a9251d3488192ec14b8',1,'NuguCapability::IASRListener::onState()'],['../classNuguCapability_1_1ISessionListener.html#a6fad5654bd092325bbb97f556667faa3',1,'NuguCapability::ISessionListener::onState()'],['../classNuguCapability_1_1ITextListener.html#a3c9939d7e4f2a9c699b538eba5871c86',1,'NuguCapability::ITextListener::onState()']]],

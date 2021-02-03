@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.23.0</span>
+   &#160;<span id="projectnumber">0.24.0</span>
    </div>
   </td>
  </tr>
@@ -91,16 +91,17 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1IDirectiveSequen
   <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#aad121a31ef4e21203430d4ff20035053">addListener</a>(const std::string &amp;name_space, IDirectiveSequencerListener *listener)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a58e146063347cf40e2dac38e728674af">addPolicy</a>(const std::string &amp;name_space, const std::string &amp;name, BlockingPolicy policy)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
   <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a6e7fb841d186057c4b2e256292672c06">cancel</a>(const std::string &amp;dialog_id)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a90ea647f44a1c899d3afd170eed5dbef">complete</a>(NuguDirective *ndir)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a8dd736f2a022b3c51766beda1cc1d209">getPolicy</a>(const std::string &amp;name_space, const std::string &amp;name)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a9ff3b3c00fe65bb5e0ca211c5eaa8388">removeListener</a>(const std::string &amp;name_space, IDirectiveSequencerListener *listener)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
-  <tr bgcolor="#f0f0f0"><td class="entry"><b>~IDirectiveSequencer</b>()=default (defined in <a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a>)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a95a0ba5128c7367497a6089dc07fc744">cancel</a>(const std::string &amp;dialog_id, std::set&lt; std::string &gt; groups)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a90ea647f44a1c899d3afd170eed5dbef">complete</a>(NuguDirective *ndir)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a8dd736f2a022b3c51766beda1cc1d209">getPolicy</a>(const std::string &amp;name_space, const std::string &amp;name)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a9ff3b3c00fe65bb5e0ca211c5eaa8388">removeListener</a>(const std::string &amp;name_space, IDirectiveSequencerListener *listener)=0</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a></td><td class="entry"><span class="mlabel">pure virtual</span></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>~IDirectiveSequencer</b>()=default (defined in <a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a>)</td><td class="entry"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">NuguClientKit::IDirectiveSequencer</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
 </table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Dec 7 2020 02:36:52 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed Feb 3 2021 04:54:42 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

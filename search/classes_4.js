@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['focusconfiguration',['FocusConfiguration',['../structNuguClientKit_1_1FocusConfiguration.html',1,'NuguClientKit']]]
+  ['epdattribute',['EpdAttribute',['../structNuguClientKit_1_1EpdAttribute.html',1,'NuguClientKit']]]
 ];

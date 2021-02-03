@@ -19,7 +19,7 @@ var group__PlaySyncManagerInterface =
       [ "resetHolding", "classNuguClientKit_1_1IPlaySyncManager.html#aac5186353e255533370547434447791f", null ],
       [ "clearHolding", "classNuguClientKit_1_1IPlaySyncManager.html#a1a0e795464aba59343d48f35ce7ad25c", null ],
       [ "isConditionToHandlePrevDialog", "classNuguClientKit_1_1IPlaySyncManager.html#a9b8b814ba34f90cb7a3c55b05abf8728", null ],
-      [ "hasLayer", "classNuguClientKit_1_1IPlaySyncManager.html#a68ebb8daed979861665da7670a6cdd28", null ],
+      [ "hasActivity", "classNuguClientKit_1_1IPlaySyncManager.html#aec1d0b6c858178b591362fff289f5473", null ],
       [ "hasNextPlayStack", "classNuguClientKit_1_1IPlaySyncManager.html#a7a690e691ce704a5fa593ed1df23f9b6", null ],
       [ "getAllPlayStackItems", "classNuguClientKit_1_1IPlaySyncManager.html#a2741b98b7ba7b565b65fd894ac7026a5", null ]
     ] ],
@@ -34,11 +34,11 @@ var group__PlaySyncManagerInterface =
       [ "Synced", "group__PlaySyncManagerInterface.html#gga5d9f5e0329e5706191b9a4682615d4d0a5befab0dde764b6dd8b24a34dc30afa7", null ],
       [ "Released", "group__PlaySyncManagerInterface.html#gga5d9f5e0329e5706191b9a4682615d4d0aea1e34304a5d8ffa7c9b0ed8ede4ef1a", null ]
     ] ],
-    [ "PlayStackLayer", "group__PlaySyncManagerInterface.html#ga4095ed0fa5de9f5140dd656317ab44a5", [
-      [ "None", "group__PlaySyncManagerInterface.html#gga4095ed0fa5de9f5140dd656317ab44a5a6adf97f83acf6453d4a6a4b1070f3754", null ],
-      [ "Alert", "group__PlaySyncManagerInterface.html#gga4095ed0fa5de9f5140dd656317ab44a5ab92071d61c88498171928745ca53078b", null ],
-      [ "Call", "group__PlaySyncManagerInterface.html#gga4095ed0fa5de9f5140dd656317ab44a5ac3755e61202abd74da5885d2e9c9160e", null ],
-      [ "Info", "group__PlaySyncManagerInterface.html#gga4095ed0fa5de9f5140dd656317ab44a5a4059b0251f66a18cb56f544728796875", null ],
-      [ "Media", "group__PlaySyncManagerInterface.html#gga4095ed0fa5de9f5140dd656317ab44a5a3b563524fdb17b4a86590470d40bef74", null ]
+    [ "PlayStackActivity", "group__PlaySyncManagerInterface.html#ga42c294733588594b84ae16137eb054c5", [
+      [ "None", "group__PlaySyncManagerInterface.html#gga42c294733588594b84ae16137eb054c5a6adf97f83acf6453d4a6a4b1070f3754", null ],
+      [ "Alert", "group__PlaySyncManagerInterface.html#gga42c294733588594b84ae16137eb054c5ab92071d61c88498171928745ca53078b", null ],
+      [ "Call", "group__PlaySyncManagerInterface.html#gga42c294733588594b84ae16137eb054c5ac3755e61202abd74da5885d2e9c9160e", null ],
+      [ "TTS", "group__PlaySyncManagerInterface.html#gga42c294733588594b84ae16137eb054c5a4616606d5a8590d8c1d305d50dce2f73", null ],
+      [ "Media", "group__PlaySyncManagerInterface.html#gga42c294733588594b84ae16137eb054c5a3b563524fdb17b4a86590470d40bef74", null ]
     ] ]
 ];

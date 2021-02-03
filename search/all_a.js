@@ -4,7 +4,7 @@ var searchData=
   ['makecapability',['makeCapability',['../classNuguCapability_1_1CapabilityFactory.html#a46d96b1bc96903f02905c92ba8794bf6',1,'NuguCapability::CapabilityFactory']]],
   ['makecontextinfo',['makeContextInfo',['../classNuguClientKit_1_1ICapabilityHelper.html#ad0ad702511967625952dce147e81e14f',1,'NuguClientKit::ICapabilityHelper']]],
   ['max',['max',['../classNuguCapability_1_1SpeakerInfo.html#a63a909bad5c32807cf6a3a79f3cae003',1,'NuguCapability::SpeakerInfo']]],
-  ['media',['Media',['../group__PlaySyncManagerInterface.html#gga4095ed0fa5de9f5140dd656317ab44a5a3b563524fdb17b4a86590470d40bef74',1,'NuguClientKit::Media()'],['../group__Media.html',1,'(Global Namespace)']]],
+  ['media',['Media',['../group__PlaySyncManagerInterface.html#gga42c294733588594b84ae16137eb054c5a3b563524fdb17b4a86590470d40bef74',1,'NuguClientKit::Media()'],['../group__Media.html',1,'(Global Namespace)']]],
   ['media_5fplayer_5finterface_2ehh',['media_player_interface.hh',['../media__player__interface_8hh.html',1,'']]],
   ['mediachanged',['mediaChanged',['../classNuguClientKit_1_1IMediaPlayerListener.html#a7a3835846590a14e39e136a296e44a6c',1,'NuguClientKit::IMediaPlayerListener']]],
   ['mediaeventreport',['mediaEventReport',['../classNuguCapability_1_1IAudioPlayerListener.html#a594c036c982c41c2bcd2bb49da7efd81',1,'NuguCapability::IAudioPlayerListener::mediaEventReport()'],['../classNuguClientKit_1_1IMediaPlayerListener.html#a964a8591d9ac1b981216e09a74d4950b',1,'NuguClientKit::IMediaPlayerListener::mediaEventReport()']]],

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['epdattribute',['EpdAttribute',['../structNuguClientKit_1_1EpdAttribute.html',1,'NuguClientKit']]]
+  ['directivecancelpolicy',['DirectiveCancelPolicy',['../structNuguClientKit_1_1DirectiveCancelPolicy.html',1,'NuguClientKit']]]
 ];

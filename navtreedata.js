@@ -36,13 +36,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classNuguClientKit_1_1ICapabilityHelper.html#a0512c8c6e3e5ff4507d350ea6c0c303e",
-"functions_enum.html",
-"group__Log.html#gad0a2da9659565a13c2eb166f504bef63",
-"group__NuguDirective.html#ggae3bc153e4b821722bfcc20aee94727fdab74f2629ca667bbee05214a1864e5ded",
-"group__NuguPlugin.html#ga878a6a31bb675c3d82b52ec5d1c317ed",
-"group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadcaea03ed3780236cc98b0bcc33afa3af54",
-"nugu__audio_8h.html#a9a3bd436c48f57a8e6b424533e1b3c85"
+"classNuguClientKit_1_1Capability.html#af1a294ba01c24abb0bc222467138964d",
+"display__interface_8hh.html",
+"group__Log.html#ga9dfe5ed26e2a83b98f8cda52a44d41cc",
+"group__NuguDirective.html#gad021258775a6b0215783c285fe187e39",
+"group__NuguPlayerDriver.html#ga7e0b399dac80988b9ece94dfa0efd262",
+"group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadcab2548748baa1c5abdfb04aa1357f793b",
+"media__player__interface_8hh_source.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

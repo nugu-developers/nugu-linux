@@ -9,5 +9,7 @@ var searchData=
   ['epdattribute',['EpdAttribute',['../structNuguClientKit_1_1EpdAttribute.html',1,'NuguClientKit']]],
   ['eventresultcallback',['EventResultCallback',['../classNuguClientKit_1_1ICapabilityInterface.html#a5b8577c3b5d15d48ff4e267b0bdcd125',1,'NuguClientKit::ICapabilityInterface']]],
   ['expecting_5fspeech',['EXPECTING_SPEECH',['../group__ASRInterface.html#ggafe4f48f063bafec608e5060090a9543ba2ad686da9d27bb3646616a1620173f83',1,'NuguCapability']]],
+  ['extension_5finterface_2ehh',['extension_interface.hh',['../extension__interface_8hh.html',1,'']]],
+  ['extensioninterface',['ExtensionInterface',['../group__ExtensionInterface.html',1,'']]],
   ['event_20queue',['Event Queue',['../group__NuguEventQueue.html',1,'']]]
 ];

@@ -29,7 +29,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">0.23.0</span>
+   &#160;<span id="projectnumber">0.24.0</span>
    </div>
   </td>
  </tr>
@@ -122,9 +122,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a2741b98b7ba7b565b65fd894ac7026a5"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a2741b98b7ba7b565b65fd894ac7026a5">getAllPlayStackItems</a> ()=0</td></tr>
 <tr class="memdesc:a2741b98b7ba7b565b65fd894ac7026a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get all items which are stored in playstack.  <a href="#a2741b98b7ba7b565b65fd894ac7026a5">More...</a><br /></td></tr>
 <tr class="separator:a2741b98b7ba7b565b65fd894ac7026a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68ebb8daed979861665da7670a6cdd28"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a68ebb8daed979861665da7670a6cdd28">hasLayer</a> (const std::string &amp;ps_id, <a class="el" href="group__PlaySyncManagerInterface.html#ga4095ed0fa5de9f5140dd656317ab44a5">PlayStackLayer</a> layer)=0</td></tr>
-<tr class="memdesc:a68ebb8daed979861665da7670a6cdd28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the specific playstack exist.  <a href="#a68ebb8daed979861665da7670a6cdd28">More...</a><br /></td></tr>
-<tr class="separator:a68ebb8daed979861665da7670a6cdd28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec1d0b6c858178b591362fff289f5473"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#aec1d0b6c858178b591362fff289f5473">hasActivity</a> (const std::string &amp;ps_id, <a class="el" href="group__PlaySyncManagerInterface.html#ga42c294733588594b84ae16137eb054c5">PlayStackActivity</a> activity)=0</td></tr>
+<tr class="memdesc:aec1d0b6c858178b591362fff289f5473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the specific playstack activity exist.  <a href="#aec1d0b6c858178b591362fff289f5473">More...</a><br /></td></tr>
+<tr class="separator:aec1d0b6c858178b591362fff289f5473"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a690e691ce704a5fa593ed1df23f9b6"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a7a690e691ce704a5fa593ed1df23f9b6">hasNextPlayStack</a> ()=0</td></tr>
 <tr class="memdesc:a7a690e691ce704a5fa593ed1df23f9b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the next playstack to handle exists.  <a href="#a7a690e691ce704a5fa593ed1df23f9b6">More...</a><br /></td></tr>
 <tr class="separator:a7a690e691ce704a5fa593ed1df23f9b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -605,8 +605,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a68ebb8daed979861665da7670a6cdd28"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68ebb8daed979861665da7670a6cdd28">&#9670;&nbsp;</a></span>hasLayer()</h2>
+<a id="aec1d0b6c858178b591362fff289f5473"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec1d0b6c858178b591362fff289f5473">&#9670;&nbsp;</a></span>hasActivity()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -615,7 +615,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool NuguClientKit::IPlaySyncManager::hasLayer </td>
+          <td class="memname">virtual bool NuguClientKit::IPlaySyncManager::hasActivity </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>ps_id</em>, </td>
@@ -623,8 +623,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__PlaySyncManagerInterface.html#ga4095ed0fa5de9f5140dd656317ab44a5">PlayStackLayer</a>&#160;</td>
-          <td class="paramname"><em>layer</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__PlaySyncManagerInterface.html#ga42c294733588594b84ae16137eb054c5">PlayStackActivity</a>&#160;</td>
+          <td class="paramname"><em>activity</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -639,11 +639,11 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 </table>
 </div><div class="memdoc">
 
-<p>Check whether the specific playstack exist. </p>
+<p>Check whether the specific playstack activity exist. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">ps_id</td><td>play service id </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">layer</td><td>playstack layer </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">activity</td><td>playstack activity </td></tr>
   </table>
   </dd>
 </dl>
@@ -716,7 +716,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">IPlaySyncManager</a></li>
-    <li class="footer">Generated on Mon Dec 7 2020 02:36:52 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed Feb 3 2021 04:54:42 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

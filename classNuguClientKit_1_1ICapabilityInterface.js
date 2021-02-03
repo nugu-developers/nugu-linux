@@ -26,5 +26,6 @@ var classNuguClientKit_1_1ICapabilityInterface =
     [ "receiveCommandAll", "classNuguClientKit_1_1ICapabilityInterface.html#a880b93080d0722f676cea3dfdc0f7f39", null ],
     [ "getProperty", "classNuguClientKit_1_1ICapabilityInterface.html#a54ca2094bb03d7c304502728b2049f95", null ],
     [ "getProperties", "classNuguClientKit_1_1ICapabilityInterface.html#a5fd925f55b21c594d45d7cc6f6416cd4", null ],
-    [ "setCapabilityListener", "classNuguClientKit_1_1ICapabilityInterface.html#a924d11bcb69848094ba34699fec5ebf5", null ]
+    [ "setCapabilityListener", "classNuguClientKit_1_1ICapabilityInterface.html#a924d11bcb69848094ba34699fec5ebf5", null ],
+    [ "setCancelPolicy", "classNuguClientKit_1_1ICapabilityInterface.html#aaf19f7635391d5e6b323a5d17716596e", null ]
 ];

@@ -2,6 +2,7 @@ var searchData=
 [
   ['ringbuffer',['RingBuffer',['../group__NuguRingBuffer.html',1,'']]],
   ['ready',['READY',['../group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317ea2baa69eafc7204f3bd8648eba580c489',1,'NuguClientKit::READY()'],['../group__SpeechRecognizerInterface.html#ggaae383c251ee0fa6e96e4c53b9f5d9a3aa2baa69eafc7204f3bd8648eba580c489',1,'NuguClientKit::READY()']]],
+  ['receiveaction',['receiveAction',['../classNuguCapability_1_1IExtensionListener.html#a971aae59ea70aaef3ab33a4b28102822',1,'NuguCapability::IExtensionListener']]],
   ['receivecommand',['receiveCommand',['../classNuguClientKit_1_1Capability.html#a980b5998d6aef6322d79ffb98ba11012',1,'NuguClientKit::Capability::receiveCommand()'],['../classNuguClientKit_1_1ICapabilityInterface.html#a95cfe85442962851f698fad3007ecb8c',1,'NuguClientKit::ICapabilityInterface::receiveCommand()']]],
   ['receivecommandall',['receiveCommandAll',['../classNuguClientKit_1_1Capability.html#adf77c76b8685f88041910d0db4a27b16',1,'NuguClientKit::Capability::receiveCommandAll()'],['../classNuguClientKit_1_1ICapabilityInterface.html#a880b93080d0722f676cea3dfdc0f7f39',1,'NuguClientKit::ICapabilityInterface::receiveCommandAll()']]],
   ['recognize_5ferror',['RECOGNIZE_ERROR',['../group__ASRInterface.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21ab7bc01e941b272a54a236e1303aed2a1',1,'NuguCapability']]],

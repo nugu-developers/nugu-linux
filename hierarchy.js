@@ -5,15 +5,20 @@ var hierarchy =
     [ "NuguClientKit::NuguClient::CapabilityBuilder", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html", null ],
     [ "NuguClientKit::CapabilityEvent", "classNuguClientKit_1_1CapabilityEvent.html", null ],
     [ "NuguCapability::CapabilityFactory", "classNuguCapability_1_1CapabilityFactory.html", null ],
+    [ "NuguCapability::ChipsInfo", "structNuguCapability_1_1ChipsInfo.html", null ],
+    [ "NuguCapability::ChipsInfo::Content", "structNuguCapability_1_1ChipsInfo_1_1Content.html", null ],
+    [ "NuguClientKit::DirectiveCancelPolicy", "structNuguClientKit_1_1DirectiveCancelPolicy.html", null ],
     [ "NuguClientKit::EpdAttribute", "structNuguClientKit_1_1EpdAttribute.html", null ],
     [ "NuguClientKit::FocusConfiguration", "structNuguClientKit_1_1FocusConfiguration.html", null ],
     [ "NuguClientKit::ICapabilityHelper", "classNuguClientKit_1_1ICapabilityHelper.html", null ],
     [ "NuguClientKit::ICapabilityInterface", "classNuguClientKit_1_1ICapabilityInterface.html", [
       [ "NuguCapability::IASRHandler", "classNuguCapability_1_1IASRHandler.html", null ],
       [ "NuguCapability::IAudioPlayerHandler", "classNuguCapability_1_1IAudioPlayerHandler.html", null ],
+      [ "NuguCapability::IChipsHandler", "classNuguCapability_1_1IChipsHandler.html", null ],
       [ "NuguCapability::IDisplayHandler", "classNuguCapability_1_1IDisplayHandler.html", [
         [ "NuguCapability::IAudioPlayerHandler", "classNuguCapability_1_1IAudioPlayerHandler.html", null ]
       ] ],
+      [ "NuguCapability::IExtensionHandler", "classNuguCapability_1_1IExtensionHandler.html", null ],
       [ "NuguCapability::IMicHandler", "classNuguCapability_1_1IMicHandler.html", null ],
       [ "NuguCapability::ISessionHandler", "classNuguCapability_1_1ISessionHandler.html", null ],
       [ "NuguCapability::ISoundHandler", "classNuguCapability_1_1ISoundHandler.html", null ],
@@ -26,11 +31,13 @@ var hierarchy =
     ] ],
     [ "NuguClientKit::ICapabilityListener", "classNuguClientKit_1_1ICapabilityListener.html", [
       [ "NuguCapability::IASRListener", "classNuguCapability_1_1IASRListener.html", null ],
+      [ "NuguCapability::IChipsListener", "classNuguCapability_1_1IChipsListener.html", null ],
       [ "NuguCapability::IDisplayListener", "classNuguCapability_1_1IDisplayListener.html", [
         [ "NuguCapability::IAudioPlayerDisplayListener", "classNuguCapability_1_1IAudioPlayerDisplayListener.html", [
           [ "NuguCapability::IAudioPlayerListener", "classNuguCapability_1_1IAudioPlayerListener.html", null ]
         ] ]
       ] ],
+      [ "NuguCapability::IExtensionListener", "classNuguCapability_1_1IExtensionListener.html", null ],
       [ "NuguCapability::IMicListener", "classNuguCapability_1_1IMicListener.html", null ],
       [ "NuguCapability::ISessionListener", "classNuguCapability_1_1ISessionListener.html", null ],
       [ "NuguCapability::ISoundListener", "classNuguCapability_1_1ISoundListener.html", null ],
