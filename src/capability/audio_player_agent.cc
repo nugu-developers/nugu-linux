@@ -1247,7 +1247,7 @@ DisplayRenderInfo* AudioPlayerAgent::composeRenderInfo(NuguDirective* ndir, cons
 
     if (!reader.parse(message, root)
         || ((meta = root["audioItem"]["metadata"]).empty() || meta["template"].empty())) {
-        nugu_error("parsing error");
+        nugu_warn("no rendering info");
         return nullptr;
     }
 
