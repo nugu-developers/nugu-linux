@@ -26,6 +26,33 @@
 #include "nugu_sample_manager.hh"
 #include "speaker_status.hh"
 
+class SpeakerController {
+public:
+    using CapabilityHandler = struct {
+        ITTSHandler* tts;
+        IAudioPlayerHandler* audio_player;
+        ISpeakerHandler* speaker;
+    };
+
+public:
+    SpeakerController();
+    virtual ~SpeakerController() = default;
+
+    void setCapabilityHandler(CapabilityHandler&& handler);
+    void setVolumeUp();
+    void setVolumeDown();
+    void toggleMute();
+
+private:
+    void composeVolumeControl();
+    void composeMuteControl();
+    void adjustVolume(int volume);
+
+    std::function<bool(int)> nugu_speaker_volume = nullptr;
+    std::function<bool(bool)> nugu_speaker_mute = nullptr;
+    CapabilityHandler capability_handler {};
+};
+
 class NuguSDKManager : public IFocusManagerObserver,
                        public INetworkManagerListener,
                        public IInteractionControlManagerListener {
@@ -63,24 +90,24 @@ private:
     const int TEXT_INPUT_TYPE_1 = 1;
     const int TEXT_INPUT_TYPE_2 = 2;
 
-    NuguSampleManager* nugu_sample_manager = nullptr;
+    std::shared_ptr<SpeakerController> speaker_controller = nullptr;
     std::shared_ptr<NuguClient> nugu_client = nullptr;
     std::shared_ptr<CapabilityCollection> capa_collection = nullptr;
     std::shared_ptr<IWakeupHandler> wakeup_handler = nullptr;
+    NuguSampleManager* nugu_sample_manager = nullptr;
     INuguCoreContainer* nugu_core_container = nullptr;
     IPlaySyncManager* playsync_manager = nullptr;
     INetworkManager* network_manager = nullptr;
     SpeechOperator* speech_operator = nullptr;
     ITextHandler* text_handler = nullptr;
     IMicHandler* mic_handler = nullptr;
+    SpeakerStatus* speaker_status = nullptr;
 
     std::function<void()> on_init_func = nullptr;
     std::function<void()> on_fail_func = nullptr;
 
     bool sdk_initialized = false;
     bool is_network_error = false;
-
-    SpeakerStatus* speaker_status;
 };
 
 #endif /* __NUGU_SDK_MANAGER_H__ */

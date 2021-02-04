@@ -30,10 +30,96 @@ void msg_info(std::string&& message)
 }
 }
 
+/*******************************************************************************
+ * define SpeakerController
+ ******************************************************************************/
+
+SpeakerController::SpeakerController()
+{
+    composeVolumeControl();
+    composeMuteControl();
+}
+
+void SpeakerController::setCapabilityHandler(CapabilityHandler&& handler)
+{
+    capability_handler = handler;
+}
+
+void SpeakerController::composeVolumeControl()
+{
+    nugu_speaker_volume = [&](int volume) {
+        if (capability_handler.tts && !capability_handler.tts->setVolume(volume))
+            return false;
+
+        if (capability_handler.audio_player && !capability_handler.audio_player->setVolume(volume))
+            return false;
+
+        return true;
+    };
+}
+
+void SpeakerController::composeMuteControl()
+{
+    nugu_speaker_mute = [&](bool mute) {
+        if (!capability_handler.tts)
+            return false;
+
+        capability_handler.tts->stopTTS();
+
+        if (capability_handler.audio_player && !capability_handler.audio_player->setMute(mute))
+            return false;
+
+        return true;
+    };
+}
+
+void SpeakerController::setVolumeUp()
+{
+    int set_volume = SpeakerStatus::getInstance()->getNUGUVolume() + NUGU_SPEAKER_DEFAULT_STEP;
+
+    if (set_volume > NUGU_SPEAKER_MAX_VOLUME)
+        return;
+
+    adjustVolume(set_volume);
+}
+
+void SpeakerController::setVolumeDown()
+{
+    int set_volume = SpeakerStatus::getInstance()->getNUGUVolume() - NUGU_SPEAKER_DEFAULT_STEP;
+
+    if (set_volume < NUGU_SPEAKER_MIN_VOLUME)
+        return;
+
+    adjustVolume(set_volume);
+}
+
+void SpeakerController::adjustVolume(int volume)
+{
+    if (nugu_speaker_volume(volume)) {
+        SpeakerStatus::getInstance()->setNUGUVolume(volume);
+        capability_handler.speaker->informVolumeChanged(SpeakerType::NUGU, volume);
+    }
+}
+
+void SpeakerController::toggleMute()
+{
+    int set_mute = !SpeakerStatus::getInstance()->isSpeakerMute();
+
+    if (nugu_speaker_mute(set_mute)) {
+        SpeakerStatus::getInstance()->setSpeakerMute(set_mute);
+        capability_handler.speaker->informMuteChanged(SpeakerType::NUGU, set_mute);
+    }
+}
+
+/*******************************************************************************
+ * define NuguSDKManager
+ ******************************************************************************/
+
 NuguSDKManager::NuguSDKManager(NuguSampleManager* nugu_sample_manager)
 {
     this->nugu_sample_manager = nugu_sample_manager;
     speaker_status = SpeakerStatus::getInstance();
+    speaker_controller = std::make_shared<SpeakerController>();
 }
 
 void NuguSDKManager::setup()
@@ -84,8 +170,17 @@ void NuguSDKManager::composeSDKCommands()
         ->add("t2", { "text input (ignore dialog attribute)", [&](int& flag) {
                          flag = TEXT_INPUT_TYPE_2;
                      } })
-        ->add("m", { "set mic mute", [&](int& flag) {
+        ->add("m", { "set mic mute/unmute", [&](int& flag) {
                         speaker_status->isMicMute() ? mic_handler->enable() : mic_handler->disable();
+                    } })
+        ->add("sm", { "set speaker mute/unmute", [&](int& flag) {
+                         speaker_controller->toggleMute();
+                     } })
+        ->add("+", { "set speaker volume up", [&](int& flag) {
+                        speaker_controller->setVolumeUp();
+                    } })
+        ->add("-", { "set speaker volume down", [&](int& flag) {
+                        speaker_controller->setVolumeDown();
                     } })
         ->add("sa", { "suspend all", [&](int& flag) {
                          nugu_core_container->getCapabilityHelper()->suspendAll();
@@ -129,24 +224,28 @@ void NuguSDKManager::registerCapabilities()
         return;
 
     auto asr_handler(capa_collection->getCapability<IASRHandler>("ASR"));
+    auto tts_handler(capa_collection->getCapability<ITTSHandler>("TTS"));
+    auto audio_player_handler(capa_collection->getCapability<IAudioPlayerHandler>("AudioPlayer"));
+    auto speaker_handler(capa_collection->getCapability<ISpeakerHandler>("Speaker"));
     text_handler = capa_collection->getCapability<ITextHandler>("Text");
     mic_handler = capa_collection->getCapability<IMicHandler>("Mic");
 
+    speaker_controller->setCapabilityHandler({ tts_handler, audio_player_handler, speaker_handler });
     asr_handler->setAttribute(ASRAttribute { nugu_sample_manager->getModelPath() });
     setAdditionalExecutor();
 
     // create capability instance
     nugu_client->getCapabilityBuilder()
         ->add(capa_collection->getCapability<ISystemHandler>("System"))
-        ->add(capa_collection->getCapability<ISpeakerHandler>("Speaker"))
-        ->add(capa_collection->getCapability<ITTSHandler>("TTS"))
-        ->add(capa_collection->getCapability<IAudioPlayerHandler>("AudioPlayer"))
         ->add(capa_collection->getCapability<ISoundHandler>("Sound"))
         ->add(capa_collection->getCapability<ISessionHandler>("Session"))
         ->add(capa_collection->getCapability<IDisplayHandler>("Display"))
         ->add(capa_collection->getCapability<IUtilityHandler>("Utility"))
         ->add(capa_collection->getCapability<IExtensionHandler>("Extension"))
         ->add(capa_collection->getCapability<IChipsHandler>("Chips"))
+        ->add(audio_player_handler)
+        ->add(speaker_handler)
+        ->add(tts_handler)
         ->add(asr_handler)
         ->add(text_handler)
         ->add(mic_handler)
