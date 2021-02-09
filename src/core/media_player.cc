@@ -399,10 +399,13 @@ bool MediaPlayer::setMute(bool mute)
     for (auto l : d->listeners)
         l->muteChanged(d->mute);
 
-    if (d->mute)
+    if (d->mute) {
         nugu_player_set_volume(d->player, MEDIA_MUTE_SETTING);
-    else
+        // for flushing previous frame, because it's played as previous volume level in a short time.
+        seek(position());
+    } else {
         nugu_player_set_volume(d->player, d->volume);
+    }
 
     return true;
 }
