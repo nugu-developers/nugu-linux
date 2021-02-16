@@ -44,9 +44,9 @@ DEFAULT_JSON_OAUTH = """{
 }
 """
 
-authorization_base_url = OAUTH2_URL + '/v1/auth/oauth/authorize'
-token_url = OAUTH2_URL + '/v1/auth/oauth/token'
-revoke_url = OAUTH2_URL + '/v1/auth/oauth/revoke'
+authorization_base_url = OAUTH2_URL + 'v1/auth/oauth/authorize'
+token_url = OAUTH2_URL + 'v1/auth/oauth/token'
+revoke_url = OAUTH2_URL + 'v1/auth/oauth/revoke'
 redirect_uri = 'http://localhost:8080/callback'
 
 app = Flask(__name__)
