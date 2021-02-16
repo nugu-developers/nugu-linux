@@ -56,8 +56,7 @@ bool FocusResource::operator>(const FocusResource& resource)
 }
 
 FocusManager::FocusManager()
-    : focus_hold_priority(-1)
-    , processing(false)
+    : processing(false)
 {
     observers.clear();
 
@@ -97,14 +96,15 @@ bool FocusManager::requestFocus(const std::string& type, const std::string& name
         return false;
     }
 
-    if (request_configuration_map.find(type) == request_configuration_map.end()) {
+    if (request_configuration_map.find(type) == request_configuration_map.end()
+        || release_configuration_map.find(type) == release_configuration_map.end()) {
         nugu_error("The focus[%s] is not exist in focus configuration", type.c_str());
         return false;
     }
 
-    if (focus_hold_priority == request_configuration_map[type]) {
-        nugu_info("[%s] - Reset HOLD (priority - rel:%d)", type.c_str(), focus_hold_priority);
-        focus_hold_priority = -1;
+    if (focus_hold_type == type) {
+        nugu_info("[%s] - Reset HOLD (priority - req:%d, rel:%d)", type.c_str(), request_configuration_map[focus_hold_type], release_configuration_map[focus_hold_type]);
+        focus_hold_type = "";
     }
 
     std::shared_ptr<FocusResource> activate_focus;
@@ -154,8 +154,8 @@ bool FocusManager::requestFocus(const std::string& type, const std::string& name
     }
 
     bool higher_hold = false;
-    if (request_priority > focus_hold_priority && focus_hold_priority != -1) {
-        nugu_info("[%s] - HOLD requestFocus (priority - rel:%d)", type.c_str(), release_priority);
+    if (focus_hold_type.size() && request_priority > request_configuration_map[focus_hold_type]) {
+        nugu_info("[%s] - HOLD requestFocus (priority - req:%d, rel:%d)", type.c_str(), request_configuration_map[focus_hold_type], release_configuration_map[focus_hold_type]);
         higher_hold = true;
     }
 
@@ -220,10 +220,11 @@ bool FocusManager::releaseFocus(const std::string& type, const std::string& name
 
     // activate highest focus
     std::shared_ptr<FocusResource> activate_focus = focus_resource_ordered_list.front();
-    if (activate_focus->release_priority > focus_hold_priority && focus_hold_priority != -1) {
-        nugu_info("[%s] - HOLD releaseFocus (priority - rel:%d)", release_focus_type.c_str(), activate_focus->release_priority);
+    if (focus_hold_type.size() && activate_focus->release_priority > release_configuration_map[focus_hold_type]) {
+        nugu_info("[%s] - HOLD requestFocus (priority - req:%d, rel:%d)", type.c_str(), request_configuration_map[focus_hold_type], release_configuration_map[focus_hold_type]);
         return true;
     }
+
 
     nugu_info("[%s - %s] - FOREGROUND (priority - req:%d, rel:%d)", activate_focus->type.c_str(), activate_focus->name.c_str(), activate_focus->request_priority, activate_focus->release_priority);
     activate_focus->setState(FocusState::FOREGROUND);
@@ -237,14 +238,19 @@ bool FocusManager::holdFocus(const std::string& type)
         return false;
     }
 
-    focus_hold_priority = release_configuration_map[type];
-    nugu_info("[%s] - HOLD (priority - rel:%d)", type.c_str(), focus_hold_priority);
+    focus_hold_type = type;
+    nugu_info("[%s] - HOLD (priority - req:%d, rel:%d)", type.c_str(), request_configuration_map[type], release_configuration_map[type]);
     return true;
 }
 
 bool FocusManager::unholdFocus(const std::string& type)
 {
-    nugu_info("[%s] - UNHOLD (priority - rel:%d)", type.c_str(), focus_hold_priority);
+    nugu_info("[%s] - UNHOLD (priority - req:%d, rel:%d)", type.c_str(), request_configuration_map[focus_hold_type], release_configuration_map[focus_hold_type]);
+
+    if (focus_hold_type != type)
+        return false;
+
+    focus_hold_type = "";
 
     // get current activated focus
     if (focus_resource_ordered_list.size() == 0)
@@ -256,7 +262,6 @@ bool FocusManager::unholdFocus(const std::string& type)
         activate_focus->setState(FocusState::FOREGROUND);
     }
 
-    focus_hold_priority = -1;
     return true;
 }
 
