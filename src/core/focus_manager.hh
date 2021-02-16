@@ -86,7 +86,7 @@ private:
     std::map<std::string, int> request_configuration_map;
     std::map<std::string, int> release_configuration_map;
     std::list<std::shared_ptr<FocusResource>> focus_resource_ordered_list;
-    int focus_hold_priority;
+    std::string focus_hold_type;
     std::vector<IFocusManagerObserver*> observers;
     bool processing;
 };

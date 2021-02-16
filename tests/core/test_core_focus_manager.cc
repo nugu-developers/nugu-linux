@@ -471,6 +471,16 @@ static void test_focusmanager_release_resource_with_hold_higher_resource(ntimerF
 
 static void test_focusmanager_request_same_holded_resource_and_auto_unhold(ntimerFixture* fixture, gconstpointer ignored)
 {
+    std::vector<FocusConfiguration> request_configuration;
+    request_configuration.push_back({ ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_REQUEST_PRIORITY });
+    request_configuration.push_back({ MEDIA_FOCUS_TYPE, MEDIA_FOCUS_REQUEST_PRIORITY });
+
+    std::vector<FocusConfiguration> release_configuration;
+    release_configuration.push_back({ ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_RELEASE_PRIORITY });
+    release_configuration.push_back({ MEDIA_FOCUS_TYPE, MEDIA_FOCUS_RELEASE_PRIORITY });
+
+    fixture->focus_manager->setConfigurations(request_configuration, release_configuration);
+
     g_assert(HOLD_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE));
 
     // unhold focus because of request with same priority
