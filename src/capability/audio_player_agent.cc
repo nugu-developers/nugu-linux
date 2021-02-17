@@ -541,6 +541,7 @@ void AudioPlayerAgent::setCapabilityListener(ICapabilityListener* listener)
 {
     if (listener) {
         addListener(dynamic_cast<IAudioPlayerListener*>(listener));
+        setListener(dynamic_cast<IAudioPlayerDisplayListener*>(listener));
     }
 }
 
