@@ -24,7 +24,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "ASR";
-static const char* CAPABILITY_VERSION = "1.4";
+static const char* CAPABILITY_VERSION = "1.5";
 
 ASRAgent::ASRAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -37,6 +37,21 @@ ASRAgent::ASRAgent()
     , epd_attribute({})
     , default_epd_attribute({})
 {
+    asr_state_texts = {
+        { ASRState::IDLE, "IDLE" },
+        { ASRState::EXPECTING_SPEECH, "EXPECTING_SPEECH" },
+        { ASRState::LISTENING, "LISTENING" },
+        { ASRState::RECOGNIZING, "RECOGNIZING" },
+        { ASRState::BUSY, "BUSY" }
+    };
+
+    asr_initiator_texts = {
+        { ASRInitiator::WAKE_UP_WORD, "WAKE_UP_WORD" },
+        { ASRInitiator::PRESS_AND_HOLD, "PRESS_AND_HOLD" },
+        { ASRInitiator::TAP, "TAP" },
+        { ASRInitiator::EXPECT_SPEECH, "EXPECT_SPEECH" },
+        { ASRInitiator::EARSET, "EARSET" }
+    };
 }
 
 void ASRAgent::setAttribute(ASRAttribute&& attribute)
@@ -70,6 +85,7 @@ void ASRAgent::initialize()
     uniq = 0;
     prev_listening_state = ListeningState::DONE;
     rec_callback = nullptr;
+    asr_initiator = NONE_INITIATOR;
     cur_state = ASRState::IDLE;
     request_listening_id = "";
     asr_cancel = false;
@@ -137,14 +153,14 @@ void ASRAgent::suspend()
     stopRecognition();
 }
 
-void ASRAgent::startRecognition(float power_noise, float power_speech, AsrRecognizeCallback callback)
+void ASRAgent::startRecognition(float power_noise, float power_speech, ASRInitiator initiator, AsrRecognizeCallback callback)
 {
     wakeup_power_noise = power_noise;
     wakeup_power_speech = power_speech;
-    startRecognition(std::move(callback));
+    startRecognition(initiator, std::move(callback));
 }
 
-void ASRAgent::startRecognition(AsrRecognizeCallback callback)
+void ASRAgent::startRecognition(ASRInitiator initiator, AsrRecognizeCallback callback)
 {
     if (callback)
         rec_callback = std::move(callback);
@@ -155,6 +171,8 @@ void ASRAgent::startRecognition(AsrRecognizeCallback callback)
             rec_callback("");
         return;
     }
+
+    asr_initiator = initiator;
 
     saveAllContextInfo();
 
@@ -293,6 +311,15 @@ void ASRAgent::updateInfoForContext(Json::Value& ctx)
     Json::Value asr;
 
     asr["version"] = getVersion();
+    asr["engine"] = "skt";
+    asr["state"] = asr_state_texts.at(cur_state);
+
+    try {
+        asr["initiator"] = asr_initiator_texts.at(asr_initiator);
+    } catch (const std::out_of_range& oor) {
+        asr["initiator"] = Json::nullValue;
+    }
+
     ctx[getName()] = asr;
 }
 

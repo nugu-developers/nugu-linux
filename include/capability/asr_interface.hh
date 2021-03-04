@@ -53,6 +53,18 @@ enum class ASRState {
 };
 
 /**
+ * @brief ASR initiator list
+ * @see IASRHandler::startRecognition
+ */
+enum class ASRInitiator {
+    WAKE_UP_WORD, /**< initiated by wakeup */
+    PRESS_AND_HOLD, /**< initiated by button press and hold */
+    TAP, /**< initiated by button tap */
+    EXPECT_SPEECH, /**< initiated by ASR.EXPECT_SPEECH directive */
+    EARSET /**< initiated by earset voice command */
+};
+
+/**
  * @brief ASR error list
  * @see IASRListener::onError
  */
@@ -145,15 +157,17 @@ public:
      * @brief Turn on the microphone and start speech recognition (support multi-wakeup)
      * @param[in] power_noise min wakeup power value
      * @param[in] power_speech max wakeup power value
+     * @param[in] initiator asr initiator
      * @param[in] callback asr recognize callback
      */
-    virtual void startRecognition(float power_noise, float power_speech, AsrRecognizeCallback callback = nullptr) = 0;
+    virtual void startRecognition(float power_noise, float power_speech, ASRInitiator initiator = ASRInitiator::TAP, AsrRecognizeCallback callback = nullptr) = 0;
 
     /**
      * @brief Turn on the microphone and start speech recognition
+     * @param[in] initiator asr initiator
      * @param[in] callback asr recognize callback
      */
-    virtual void startRecognition(AsrRecognizeCallback callback = nullptr) = 0;
+    virtual void startRecognition(ASRInitiator initiator = ASRInitiator::TAP, AsrRecognizeCallback callback = nullptr) = 0;
 
     /**
      * @brief Turn off the microphone and stop speech recognition

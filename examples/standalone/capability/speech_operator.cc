@@ -85,7 +85,7 @@ void SpeechOperator::onWakeupState(WakeupDetectState state, float power_noise, f
         msg::wakeup::state("wakeup detected (power: " + std::to_string(power_noise) + ", " + std::to_string(power_speech) + ")");
 
         stopWakeup();
-        startListening(power_noise, power_speech);
+        startListening(power_noise, power_speech, ASRInitiator::WAKE_UP_WORD);
 
         break;
     case WakeupDetectState::WAKEUP_FAIL:
@@ -118,7 +118,7 @@ void SpeechOperator::startListeningWithWakeup()
     startWakeup();
 }
 
-void SpeechOperator::startListening(float noise, float speech)
+void SpeechOperator::startListening(float noise, float speech, ASRInitiator initiator)
 {
     stopListening();
 
@@ -128,9 +128,9 @@ void SpeechOperator::startListening(float noise, float speech)
     }
 
     if (noise && speech)
-        asr_handler->startRecognition(noise, speech, [&](const std::string& dialog_id) {});
+        asr_handler->startRecognition(noise, speech, initiator);
     else
-        asr_handler->startRecognition([&](const std::string& dialog_id) {});
+        asr_handler->startRecognition(initiator);
 }
 
 void SpeechOperator::stopListeningAndWakeup()

@@ -40,7 +40,7 @@ public:
     void setWakeupHandler(IWakeupHandler* wakeup_handler);
     void setASRHandler(IASRHandler* asr_handler);
     void startListeningWithWakeup();
-    void startListening(float noise = 0, float speech = 0);
+    void startListening(float noise = 0, float speech = 0, ASRInitiator initiator = ASRInitiator::TAP);
     void stopListeningAndWakeup();
 
 private:

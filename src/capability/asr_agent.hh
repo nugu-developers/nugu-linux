@@ -45,8 +45,8 @@ public:
     void deInitialize() override;
     void suspend() override;
 
-    void startRecognition(float power_noise, float power_speech, AsrRecognizeCallback callback = nullptr) override;
-    void startRecognition(AsrRecognizeCallback callback = nullptr) override;
+    void startRecognition(float power_noise, float power_speech, ASRInitiator initiator = ASRInitiator::TAP, AsrRecognizeCallback callback = nullptr) override;
+    void startRecognition(ASRInitiator initiator = ASRInitiator::TAP, AsrRecognizeCallback callback = nullptr) override;
     void stopRecognition() override;
 
     void preprocessDirective(NuguDirective* ndir) override;
@@ -120,6 +120,8 @@ private:
         bool asr_user = false;
     };
 
+    const ASRInitiator NONE_INITIATOR = static_cast<ASRInitiator>(-1);
+
     ExpectSpeechAttr es_attr;
     CapabilityEvent* rec_event;
     INuguTimer* timer;
@@ -130,7 +132,10 @@ private:
     std::vector<IASRListener*> asr_listeners;
     ListeningState prev_listening_state;
     AsrRecognizeCallback rec_callback;
+    ASRInitiator asr_initiator;
     ASRState cur_state;
+    std::map<ASRInitiator, std::string> asr_initiator_texts;
+    std::map<ASRState, std::string> asr_state_texts;
     std::string request_listening_id;
     bool asr_cancel;
 
