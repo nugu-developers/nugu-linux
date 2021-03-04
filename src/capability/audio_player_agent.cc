@@ -23,7 +23,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "AudioPlayer";
-static const char* CAPABILITY_VERSION = "1.5";
+static const char* CAPABILITY_VERSION = "1.6";
 
 AudioPlayerAgent::AudioPlayerAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
