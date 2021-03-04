@@ -138,7 +138,7 @@ public:
                 text_handler->requestTextInput(text_value);
             } else {
                 std::cout << "Start ASR Recognition !" << std::endl;
-                asr_handler->startRecognition([&](const std::string& dialog_id) {
+                asr_handler->startRecognition(ASRInitiator::TAP, [&](const std::string& dialog_id) {
                     std::cout << "ASR request dialog id: " << dialog_id << std::endl;
                 });
             }
