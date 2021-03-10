@@ -263,17 +263,17 @@ void TextAgent::parsingTextSource(const char* message)
 
     try {
         if (!reader.parse(message, root))
-            throw std::string { "parsing error" };
+            throw "parsing error";
 
         text_input_param.text = root["text"].asString();
         text_input_param.token = root["token"].asString();
         text_input_param.ps_id = root["playServiceId"].asString();
 
         if (!handleTextCommonProcess(text_input_param))
-            throw std::string { "The processing TextSource is incomplete." };
-    } catch (std::string& message) {
+            throw "The processing TextSource is incomplete.";
+    } catch (const char* message) {
         sendEventTextSourceFailed(text_input_param);
-        nugu_error(message.c_str());
+        nugu_error(message);
     }
 }
 
@@ -286,7 +286,7 @@ void TextAgent::parsingTextRedirect(const char* message)
 
     try {
         if (!reader.parse(message, root))
-            throw std::string { "parsing error" };
+            throw "parsing error";
 
         text_input_param.text = root["text"].asString();
         text_input_param.token = root["token"].asString();
@@ -296,11 +296,11 @@ void TextAgent::parsingTextRedirect(const char* message)
         startInteractionControl(getInteractionMode(root["interactionControl"]));
 
         if (!handleTextCommonProcess(text_input_param))
-            throw std::string { "The processing TextRedirect is incomplete." };
-    } catch (std::string& message) {
+            throw "The processing TextRedirect is incomplete.";
+    } catch (const char* message) {
         finishInteractionControl();
         sendEventTextRedirectFailed(text_input_param);
-        nugu_error(message.c_str());
+        nugu_error(message);
     }
 }
 

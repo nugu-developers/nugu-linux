@@ -55,7 +55,7 @@ public:
 
     // overriding INetworkManagerListener
     void onEventSendResult(const char* msg_id, bool success, int code) override;
-    void onEventResponse(const char* msg_id, const char* data, bool success) override;
+    void onEventResponse(const char* msg_id, const char* data, bool success) noexcept override;
 
     void setWakeupWord(const std::string& word);
     std::string getWakeupWord();

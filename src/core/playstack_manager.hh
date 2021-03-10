@@ -77,7 +77,7 @@ public:
     void setPlayStackHoldTime(PlayStakcHoldTimes&& hold_times_sec);
     PlayStakcHoldTimes getPlayStackHoldTime();
 
-    PlayStackActivity getPlayStackActivity(const std::string& ps_id);
+    PlayStackActivity getPlayStackActivity(const std::string& ps_id) noexcept;
     std::vector<std::string> getAllPlayStackItems();
     const PlayStack& getPlayStackContainer();
     std::set<bool> getFlagSet();

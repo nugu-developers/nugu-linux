@@ -214,7 +214,7 @@ void SpeakerAgent::updateSpeakerMute(SpeakerType type, bool mute)
     }
 }
 
-bool SpeakerAgent::getSpeakerType(const std::string& name, SpeakerType& type)
+bool SpeakerAgent::getSpeakerType(const std::string& name, SpeakerType& type) noexcept
 {
     try {
         type = speaker_types_for_names.at(name);
@@ -224,7 +224,7 @@ bool SpeakerAgent::getSpeakerType(const std::string& name, SpeakerType& type)
     }
 }
 
-std::string SpeakerAgent::getSpeakerName(const SpeakerType& type)
+std::string SpeakerAgent::getSpeakerName(const SpeakerType& type) noexcept
 {
     try {
         return speaker_names_for_types.at(type);

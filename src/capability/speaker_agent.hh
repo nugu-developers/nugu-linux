@@ -56,8 +56,8 @@ private:
 
     void updateSpeakerVolume(SpeakerType type, int volume);
     void updateSpeakerMute(SpeakerType type, bool mute);
-    bool getSpeakerType(const std::string& name, SpeakerType& type);
-    std::string getSpeakerName(const SpeakerType& type);
+    bool getSpeakerType(const std::string& name, SpeakerType& type) noexcept;
+    std::string getSpeakerName(const SpeakerType& type) noexcept;
 
     std::map<SpeakerType, std::unique_ptr<SpeakerInfo>> speakers;
     std::map<SpeakerType, std::string> speaker_names_for_types;

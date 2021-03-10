@@ -70,7 +70,7 @@ public:
     void onStackRemoved(const std::string& ps_id) override;
 
 private:
-    void updateExtraData(const std::string& ps_id, const std::string& requester, void* extra_data);
+    void updateExtraData(const std::string& ps_id, const std::string& requester, void* extra_data) noexcept;
     void notifyStateChanged(const std::string& ps_id, PlaySyncState state);
     bool isConditionToSyncAction(const std::string& ps_id, const std::string& requester, PlaySyncState state);
     void rawReleaseSync(const std::string& ps_id, const std::string& requester, PlayStackRemoveMode stack_remove_mode);

@@ -27,7 +27,7 @@ static const char* CAPABILITY_VERSION = "1.6";
 
 DisplayAgent::DisplayAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
-    , render_helper(std::make_shared<DisplayRenderHelper>())
+    , render_helper(std::unique_ptr<DisplayRenderHelper>(new DisplayRenderHelper()))
     , display_listener(nullptr)
 {
     template_names = {

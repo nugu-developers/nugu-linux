@@ -168,7 +168,7 @@ private:
     bool volume_update;
     int volume;
     std::string template_id;
-    std::shared_ptr<DisplayRenderHelper> render_helper;
+    std::unique_ptr<DisplayRenderHelper> render_helper;
     std::vector<IAudioPlayerListener*> aplayer_listeners;
     IAudioPlayerDisplayListener* display_listener;
 };

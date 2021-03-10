@@ -78,7 +78,7 @@ private:
 
     std::set<std::string> template_names;
     std::set<std::string> session_dialog_ids;
-    std::shared_ptr<DisplayRenderHelper> render_helper;
+    std::unique_ptr<DisplayRenderHelper> render_helper;
     IDisplayListener* display_listener;
     std::string disp_cur_ps_id;
     std::string disp_cur_token;
