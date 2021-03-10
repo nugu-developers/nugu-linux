@@ -136,7 +136,7 @@ void DisplayRenderHelper::setRenderInfo(DisplayRenderInfo* render_info)
     render_infos.emplace(render_info->id, render_info);
 }
 
-DisplayRenderInfo* DisplayRenderHelper::getRenderInfo(const std::string& id)
+DisplayRenderInfo* DisplayRenderHelper::getRenderInfo(const std::string& id) noexcept
 {
     try {
         return render_infos.at(id);
@@ -187,7 +187,7 @@ void DisplayRenderHelper::clearDisplay(void* data, bool has_next_render)
     render_info->postpone_remove ? setRenderClose(id) : removedRenderInfo(id);
 }
 
-void DisplayRenderHelper::setRenderClose(const std::string& id)
+void DisplayRenderHelper::setRenderClose(const std::string& id) noexcept
 {
     try {
         render_infos.at(id)->close = true;
@@ -196,7 +196,7 @@ void DisplayRenderHelper::setRenderClose(const std::string& id)
     }
 }
 
-void DisplayRenderHelper::removedRenderInfo(const std::string& id)
+void DisplayRenderHelper::removedRenderInfo(const std::string& id) noexcept
 {
     try {
         delete render_infos.at(id);

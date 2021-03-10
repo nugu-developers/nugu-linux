@@ -240,7 +240,7 @@ void PlaySyncManager::onStackRemoved(const std::string& ps_id)
     playstack_map.erase(ps_id);
 }
 
-void PlaySyncManager::updateExtraData(const std::string& ps_id, const std::string& requester, void* extra_data)
+void PlaySyncManager::updateExtraData(const std::string& ps_id, const std::string& requester, void* extra_data) noexcept
 {
     try {
         auto& playsync_element = playstack_map.at(ps_id).at(requester);

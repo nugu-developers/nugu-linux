@@ -195,7 +195,7 @@ void CapabilityManager::onEventSendResult(const char* msg_id, bool success, int 
     events.erase(msg_id);
 }
 
-void CapabilityManager::onEventResponse(const char* msg_id, const char* data, bool success)
+void CapabilityManager::onEventResponse(const char* msg_id, const char* data, bool success) noexcept
 {
     if (!success)
         nugu_error("can't receive event response: msg_id=%s", msg_id);

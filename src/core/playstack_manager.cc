@@ -252,7 +252,7 @@ PlayStackManager::PlayStakcHoldTimes PlayStackManager::getPlayStackHoldTime()
     return hold_times_sec;
 }
 
-PlayStackActivity PlayStackManager::getPlayStackActivity(const std::string& ps_id)
+PlayStackActivity PlayStackManager::getPlayStackActivity(const std::string& ps_id) noexcept
 {
     try {
         return playstack_container.first.at(ps_id);
