@@ -233,6 +233,8 @@ void ASRAgent::executeOnForegroundAction(bool asr_user)
             return;
         }
         setASRState(ASRState::EXPECTING_SPEECH);
+        asr_initiator = ASRInitiator::EXPECT_SPEECH;
+
         playsync_manager->postPoneRelease();
 
         saveAllContextInfo();
