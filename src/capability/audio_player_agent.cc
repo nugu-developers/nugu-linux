@@ -1024,6 +1024,8 @@ void AudioPlayerAgent::parsingStop(const char* message)
 
         capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
     }
+
+    cur_url.clear();
 }
 
 void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
