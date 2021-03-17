@@ -244,11 +244,13 @@ void AudioPlayerAgent::executeOnForegroundAction()
     }
 
     std::string type = is_tts_activate ? "attachment" : "streaming";
-    nugu_dbg("cur_aplayer_state[%s] => %d, player->state() => %s", type.c_str(), cur_aplayer_state, cur_player->stateString(cur_player->state()).c_str());
+    nugu_dbg("cur_aplayer_state[%s] => %d, player->state() => %s, is_finished: %d", type.c_str(), cur_aplayer_state, cur_player->stateString(cur_player->state()).c_str(), is_finished);
 
     checkAndUpdateVolume();
 
-    if (cur_player->state() == MediaPlayerState::PAUSED) {
+    if (cur_player->state() == MediaPlayerState::STOPPED && is_finished) {
+        nugu_dbg("The media has already been played.");
+    } else if (cur_player->state() == MediaPlayerState::PAUSED) {
         if (!cur_player->resume()) {
             nugu_error("resume media(%s) failed", type.c_str());
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
