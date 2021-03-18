@@ -56,6 +56,7 @@ public:
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
     bool receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
+    void receiveCommandAll(const std::string& command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     static void directiveDataCallback(NuguDirective* ndir, int seq, void* userdata);
@@ -152,6 +153,9 @@ private:
     FocusState focus_state;
     bool is_tts_activate;
     bool is_next_play;
+    bool has_play_directive;
+    std::string play_directive_dialog_id;
+    bool receive_new_play_directive;
 
     AudioPlayerState cur_aplayer_state;
     AudioPlayerState prev_aplayer_state;

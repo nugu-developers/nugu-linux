@@ -45,6 +45,9 @@ void AudioPlayerAgent::initialize()
     focus_state = FocusState::NONE;
     is_tts_activate = false;
     is_next_play = false;
+    has_play_directive = false;
+    play_directive_dialog_id = "";
+    receive_new_play_directive = false;
     cur_aplayer_state = AudioPlayerState::IDLE;
     prev_aplayer_state = AudioPlayerState::IDLE;
     is_paused = false;
@@ -248,7 +251,9 @@ void AudioPlayerAgent::executeOnForegroundAction()
 
     checkAndUpdateVolume();
 
-    if (cur_player->state() == MediaPlayerState::STOPPED && is_finished) {
+    if (receive_new_play_directive) {
+        nugu_dbg("The media has been expired and does not play.");
+    } else if (cur_player->state() == MediaPlayerState::STOPPED && is_finished) {
         nugu_dbg("The media has already been played.");
     } else if (cur_player->state() == MediaPlayerState::PAUSED) {
         if (!cur_player->resume()) {
@@ -537,6 +542,24 @@ bool AudioPlayerAgent::receiveCommand(const std::string& from, const std::string
     }
 
     return true;
+}
+
+void AudioPlayerAgent::receiveCommandAll(const std::string& command, const std::string& param)
+{
+    std::string convert_command;
+    convert_command.resize(command.size());
+    std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
+
+    if (receive_new_play_directive)
+        return;
+
+    if (convert_command == "receive_directive_group") {
+        if (param.find("AudioPlayer.Play") != std::string::npos)
+            has_play_directive = true;
+    } else if (convert_command == "directive_dialog_id") {
+        if (has_play_directive && param != play_directive_dialog_id)
+            receive_new_play_directive = true;
+    }
 }
 
 void AudioPlayerAgent::setCapabilityListener(ICapabilityListener* listener)
@@ -959,6 +982,10 @@ void AudioPlayerAgent::parsingPlay(const char* message)
             return;
         }
     }
+
+    play_directive_dialog_id = dialog_id;
+    receive_new_play_directive = false;
+    has_play_directive = false;
 
     if (suspended && suspend_policy == SuspendPolicy::STOP) {
         nugu_dbg("AudioPlayer is suspended!!");
