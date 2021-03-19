@@ -269,6 +269,9 @@ void TextAgent::parsingTextSource(const char* message)
         text_input_param.token = root["token"].asString();
         text_input_param.ps_id = root["playServiceId"].asString();
 
+        if (!handle_interaction_control && interaction_control_manager->isMultiTurnActive())
+            startInteractionControl(InteractionMode::MULTI_TURN);
+
         if (!handleTextCommonProcess(text_input_param))
             throw "The processing TextSource is incomplete.";
     } catch (const char* message) {
