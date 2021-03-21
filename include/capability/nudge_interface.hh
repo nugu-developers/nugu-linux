@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NUGU_UTILITY_INTERFACE_H__
-#define __NUGU_UTILITY_INTERFACE_H__
+#ifndef __NUGU_NUDGE_INTERFACE_H__
+#define __NUGU_NUDGE_INTERFACE_H__
 
 #include <clientkit/capability_interface.hh>
 
@@ -24,32 +24,32 @@ namespace NuguCapability {
 using namespace NuguClientKit;
 
 /**
- * @file utility_interface.hh
- * @defgroup UtilityInterface UtilityInterface
+ * @file nudge_interface.hh
+ * @defgroup NudgeInterface NudgeInterface
  * @ingroup SDKNuguCapability
- * @brief Utility capability interface
+ * @brief Nudge capability interface
  *
- * It's for blocking directive set which is located in the rear.
+ * It's for managing the state and context of nudge dux
  *
  * @{
  */
 
 /**
- * @brief utility listener interface
- * @see IUtilityHandler
+ * @brief nudge listener interface
+ * @see INudgeHandler
  */
-class IUtilityListener : public ICapabilityListener {
+class INudgeListener : public ICapabilityListener {
 public:
-    virtual ~IUtilityListener() = default;
+    virtual ~INudgeListener() = default;
 };
 
 /**
- * @brief utility handler interface
- * @see IUtilityListener
+ * @brief nudge handler interface
+ * @see INudgeListener
  */
-class IUtilityHandler : virtual public ICapabilityInterface {
+class INudgeHandler : virtual public ICapabilityInterface {
 public:
-    virtual ~IUtilityHandler() = default;
+    virtual ~INudgeHandler() = default;
 };
 
 /**
@@ -58,4 +58,4 @@ public:
 
 } // NuguCapability
 
-#endif /* __NUGU_UTILITY_INTERFACE_H__ */
+#endif /* __NUGU_NUDGE_INTERFACE_H__ */

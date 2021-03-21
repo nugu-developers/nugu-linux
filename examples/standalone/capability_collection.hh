@@ -21,6 +21,7 @@
 #include <map>
 #include <memory>
 
+#include <capability/nudge_interface.hh>
 #include <capability/utility_interface.hh>
 
 #include "audio_player_listener.hh"
@@ -70,6 +71,7 @@ private:
     std::unique_ptr<IUtilityHandler> utility_handler = nullptr;
     std::unique_ptr<IExtensionHandler> extension_handler = nullptr;
     std::unique_ptr<IChipsHandler> chips_handler = nullptr;
+    std::unique_ptr<INudgeHandler> nudge_handler = nullptr;
 
     // Capability listener
     std::unique_ptr<SpeechOperator> speech_operator = nullptr;

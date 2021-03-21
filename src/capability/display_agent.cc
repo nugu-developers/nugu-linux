@@ -183,6 +183,8 @@ void DisplayAgent::displayCleared(const std::string& id)
     if (render_info->close)
         sendEventCloseSucceeded(render_info->ps_id);
 
+    capa_helper->sendCommand("Display", "Nudge", "clearNudge", render_info->dialog_id);
+
     render_helper->removedRenderInfo(id);
     deactiveSession();
 

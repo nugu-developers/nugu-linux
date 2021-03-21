@@ -776,8 +776,10 @@ void ASRAgent::resetExpectSpeechState()
     if (!es_attr.dialog_id.empty())
         session_manager->deactivate(es_attr.dialog_id);
 
-    if (es_attr.is_handle)
+    if (es_attr.is_handle) {
+        capa_helper->sendCommand("ASR", "Nudge", "clearNudge", es_attr.dialog_id);
         es_attr = {};
+    }
 
     listen_timeout_fail_beep = true;
 
