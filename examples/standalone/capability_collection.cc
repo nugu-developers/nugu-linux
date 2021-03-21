@@ -152,6 +152,12 @@ void CapabilityCollection::composeCapabilityFactory()
 
         return chips_handler.get();
     });
+    factories.emplace("Nudge", [&]() {
+        if (!nudge_handler)
+            nudge_handler = makeCapability<NudgeAgent, INudgeHandler>(nullptr);
+
+        return nudge_handler.get();
+    });
 }
 
 void CapabilityCollection::composeSpeakerInterface()

@@ -38,6 +38,7 @@ public:
 
     void preprocessDirective(NuguDirective* ndir) override;
     void parsingDirective(const char* dname, const char* message) override;
+    void cancelDirective(NuguDirective* ndir) override;
     void updateInfoForContext(Json::Value& ctx) override;
 
     void stopTTS() override;
@@ -66,6 +67,7 @@ private:
     void parsingSpeak(const char* message);
     void parsingStop(const char* message);
     void postProcessDirective(bool is_cancel = false);
+    void sendClearNudgeCommand(NuguDirective* ndir);
 
     void checkAndUpdateVolume();
     void mediaStateChanged(MediaPlayerState state) override;

@@ -191,6 +191,7 @@ void TTSAgent::stopTTS()
 {
     MediaPlayerState pre_state = cur_state;
 
+    sendClearNudgeCommand(speak_dir);
     postProcessDirective();
 
     if (player)
@@ -268,6 +269,11 @@ void TTSAgent::parsingDirective(const char* dname, const char* message)
     } else {
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
     }
+}
+
+void TTSAgent::cancelDirective(NuguDirective* ndir)
+{
+    sendClearNudgeCommand(ndir);
 }
 
 void TTSAgent::updateInfoForContext(Json::Value& ctx)
@@ -486,6 +492,11 @@ void TTSAgent::postProcessDirective(bool is_cancel)
         destroyDirective(speak_dir, is_cancel);
         speak_dir = nullptr;
     }
+}
+void TTSAgent::sendClearNudgeCommand(NuguDirective* ndir)
+{
+    if (ndir)
+        capa_helper->sendCommand("TTS", "Nudge", "clearNudge", nugu_directive_peek_dialog_id(ndir));
 }
 
 void TTSAgent::setCapabilityListener(ICapabilityListener* clistener)
