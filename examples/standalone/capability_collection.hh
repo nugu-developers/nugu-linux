@@ -39,7 +39,6 @@
 using namespace NuguClientKit;
 
 class CapabilityCollection {
-
 public:
     CapabilityCollection();
     virtual ~CapabilityCollection() = default;
@@ -54,36 +53,37 @@ public:
 
 private:
     void composeCapabilityFactory();
+    void composeSpeakerInterface();
     SpeakerInfo makeSpeakerInfo(SpeakerType type, int muted = NUGU_SPEAKER_UNABLE_CONTROL, bool can_control = false);
 
     // Capability instance
-    std::shared_ptr<ISystemHandler> system_handler = nullptr;
-    std::shared_ptr<IASRHandler> asr_handler = nullptr;
-    std::shared_ptr<ITTSHandler> tts_handler = nullptr;
-    std::shared_ptr<IAudioPlayerHandler> audio_player_handler = nullptr;
-    std::shared_ptr<ITextHandler> text_handler = nullptr;
-    std::shared_ptr<ISpeakerHandler> speaker_handler = nullptr;
-    std::shared_ptr<IMicHandler> mic_handler = nullptr;
-    std::shared_ptr<ISoundHandler> sound_handler = nullptr;
-    std::shared_ptr<ISessionHandler> session_handler = nullptr;
-    std::shared_ptr<IDisplayHandler> display_handler = nullptr;
-    std::shared_ptr<IUtilityHandler> utility_handler = nullptr;
-    std::shared_ptr<IExtensionHandler> extension_handler = nullptr;
-    std::shared_ptr<IChipsHandler> chips_handler = nullptr;
+    std::unique_ptr<ISystemHandler> system_handler = nullptr;
+    std::unique_ptr<IASRHandler> asr_handler = nullptr;
+    std::unique_ptr<ITTSHandler> tts_handler = nullptr;
+    std::unique_ptr<IAudioPlayerHandler> audio_player_handler = nullptr;
+    std::unique_ptr<ITextHandler> text_handler = nullptr;
+    std::unique_ptr<ISpeakerHandler> speaker_handler = nullptr;
+    std::unique_ptr<IMicHandler> mic_handler = nullptr;
+    std::unique_ptr<ISoundHandler> sound_handler = nullptr;
+    std::unique_ptr<ISessionHandler> session_handler = nullptr;
+    std::unique_ptr<IDisplayHandler> display_handler = nullptr;
+    std::unique_ptr<IUtilityHandler> utility_handler = nullptr;
+    std::unique_ptr<IExtensionHandler> extension_handler = nullptr;
+    std::unique_ptr<IChipsHandler> chips_handler = nullptr;
 
     // Capability listener
-    std::shared_ptr<SpeechOperator> speech_operator = nullptr;
-    std::shared_ptr<TTSListener> tts_listener = nullptr;
-    std::shared_ptr<AudioPlayerListener> aplayer_listener = nullptr;
-    std::shared_ptr<SystemListener> system_listener = nullptr;
-    std::shared_ptr<TextListener> text_listener = nullptr;
-    std::shared_ptr<SpeakerListener> speaker_listener = nullptr;
-    std::shared_ptr<MicListener> mic_listener = nullptr;
-    std::shared_ptr<SoundListener> sound_listener = nullptr;
-    std::shared_ptr<SessionListener> session_listener = nullptr;
-    std::shared_ptr<DisplayListener> display_listener = nullptr;
-    std::shared_ptr<ExtensionListener> extension_listener = nullptr;
-    std::shared_ptr<ChipsListener> chips_listener = nullptr;
+    std::unique_ptr<SpeechOperator> speech_operator = nullptr;
+    std::unique_ptr<TTSListener> tts_listener = nullptr;
+    std::unique_ptr<AudioPlayerListener> aplayer_listener = nullptr;
+    std::unique_ptr<SystemListener> system_listener = nullptr;
+    std::unique_ptr<TextListener> text_listener = nullptr;
+    std::unique_ptr<SpeakerListener> speaker_listener = nullptr;
+    std::unique_ptr<MicListener> mic_listener = nullptr;
+    std::unique_ptr<SoundListener> sound_listener = nullptr;
+    std::unique_ptr<SessionListener> session_listener = nullptr;
+    std::unique_ptr<DisplayListener> display_listener = nullptr;
+    std::unique_ptr<ExtensionListener> extension_listener = nullptr;
+    std::unique_ptr<ChipsListener> chips_listener = nullptr;
 
     std::map<std::string, std::function<ICapabilityInterface*()>> factories;
 };
