@@ -20,14 +20,20 @@
 
 namespace {
 template <typename T, typename V>
-std::shared_ptr<V> makeCapability(ICapabilityListener* listener)
+std::unique_ptr<V> makeCapability(ICapabilityListener* listener)
 {
-    return std::shared_ptr<V>(CapabilityFactory::makeCapability<T, V>(listener));
+    return std::unique_ptr<V>(CapabilityFactory::makeCapability<T, V>(listener));
+}
+
+template <typename T, typename... Ts>
+std::unique_ptr<T> make_unique(Ts&&... params)
+{
+    return std::unique_ptr<T>(new T(std::forward<Ts>(params)...));
 }
 }
 
 CapabilityCollection::CapabilityCollection()
-    : speech_operator(std::make_shared<SpeechOperator>())
+    : speech_operator(make_unique<SpeechOperator>())
 {
     composeCapabilityFactory();
 }
@@ -41,23 +47,23 @@ void CapabilityCollection::composeCapabilityFactory()
 {
     factories.emplace("System", [&]() {
         if (!system_handler) {
-            system_listener = std::make_shared<SystemListener>();
+            system_listener = make_unique<SystemListener>();
             system_handler = makeCapability<SystemAgent, ISystemHandler>(system_listener.get());
         }
 
         return system_handler.get();
     });
     factories.emplace("ASR", [&]() {
-        if (!asr_handler)
+        if (!asr_handler) {
             asr_handler = makeCapability<ASRAgent, IASRHandler>(speech_operator->getASRListener());
-
-        speech_operator->setASRHandler(asr_handler.get());
+            speech_operator->setASRHandler(asr_handler.get());
+        }
 
         return asr_handler.get();
     });
     factories.emplace("TTS", [&]() {
         if (!tts_handler) {
-            tts_listener = std::make_shared<TTSListener>();
+            tts_listener = make_unique<TTSListener>();
             tts_handler = makeCapability<TTSAgent, ITTSHandler>(tts_listener.get());
         }
 
@@ -65,7 +71,7 @@ void CapabilityCollection::composeCapabilityFactory()
     });
     factories.emplace("AudioPlayer", [&]() {
         if (!audio_player_handler) {
-            aplayer_listener = std::make_shared<AudioPlayerListener>();
+            aplayer_listener = make_unique<AudioPlayerListener>();
             audio_player_handler = makeCapability<AudioPlayerAgent, IAudioPlayerHandler>(aplayer_listener.get());
         }
 
@@ -73,7 +79,7 @@ void CapabilityCollection::composeCapabilityFactory()
     });
     factories.emplace("Text", [&]() {
         if (!text_handler) {
-            text_listener = std::make_shared<TextListener>();
+            text_listener = make_unique<TextListener>();
             text_handler = makeCapability<TextAgent, ITextHandler>(text_listener.get());
         }
 
@@ -81,46 +87,16 @@ void CapabilityCollection::composeCapabilityFactory()
     });
     factories.emplace("Speaker", [&]() {
         if (!speaker_handler) {
-            speaker_listener = std::make_shared<SpeakerListener>();
+            speaker_listener = make_unique<SpeakerListener>();
             speaker_handler = makeCapability<SpeakerAgent, ISpeakerHandler>(speaker_listener.get());
-
-            // compose SpeakerInfo
-            std::map<SpeakerType, SpeakerInfo> speakers {
-                { SpeakerType::NUGU, makeSpeakerInfo(SpeakerType::NUGU, 0, true) },
-                { SpeakerType::MUSIC, makeSpeakerInfo(SpeakerType::MUSIC) },
-                { SpeakerType::RINGTON, makeSpeakerInfo(SpeakerType::RINGTON) },
-                { SpeakerType::CALL, makeSpeakerInfo(SpeakerType::CALL) },
-                { SpeakerType::NOTIFICATION, makeSpeakerInfo(SpeakerType::NOTIFICATION) },
-                { SpeakerType::ALARM, makeSpeakerInfo(SpeakerType::ALARM) },
-                { SpeakerType::VOICE_COMMAND, makeSpeakerInfo(SpeakerType::VOICE_COMMAND) },
-                { SpeakerType::NAVIGATION, makeSpeakerInfo(SpeakerType::NAVIGATION) },
-                { SpeakerType::SYSTEM_SOUND, makeSpeakerInfo(SpeakerType::SYSTEM_SOUND) },
-            };
-
-            speaker_handler->setSpeakerInfo(speakers);
-            speaker_listener->setSpeakerHandler(speaker_handler.get());
-            speaker_listener->setVolumeNuguSpeakerCallback([&](int volume) {
-                if (tts_handler && !tts_handler->setVolume(volume))
-                    return false;
-                if (audio_player_handler && !audio_player_handler->setVolume(volume))
-                    return false;
-                return true;
-            });
-            speaker_listener->setMuteNuguSpeakerCallback([&](bool mute) {
-                if (!tts_handler)
-                    return false;
-                tts_handler->stopTTS();
-                if (audio_player_handler && !audio_player_handler->setMute(mute))
-                    return false;
-                return true;
-            });
+            composeSpeakerInterface();
         }
 
         return speaker_handler.get();
     });
     factories.emplace("Mic", [&]() {
         if (!mic_handler) {
-            mic_listener = std::make_shared<MicListener>();
+            mic_listener = make_unique<MicListener>();
             mic_handler = makeCapability<MicAgent, IMicHandler>(mic_listener.get());
             mic_handler->enable();
         }
@@ -129,7 +105,7 @@ void CapabilityCollection::composeCapabilityFactory()
     });
     factories.emplace("Sound", [&]() {
         if (!sound_handler) {
-            sound_listener = std::make_shared<SoundListener>();
+            sound_listener = make_unique<SoundListener>();
             sound_handler = makeCapability<SoundAgent, ISoundHandler>(sound_listener.get());
             sound_listener->setSoundHandler(sound_handler.get());
         }
@@ -138,7 +114,7 @@ void CapabilityCollection::composeCapabilityFactory()
     });
     factories.emplace("Session", [&]() {
         if (!session_handler) {
-            session_listener = std::make_shared<SessionListener>();
+            session_listener = make_unique<SessionListener>();
             session_handler = makeCapability<SessionAgent, ISessionHandler>(session_listener.get());
         }
 
@@ -146,7 +122,7 @@ void CapabilityCollection::composeCapabilityFactory()
     });
     factories.emplace("Display", [&]() {
         if (!display_handler) {
-            display_listener = std::make_shared<DisplayListener>();
+            display_listener = make_unique<DisplayListener>();
             display_handler = makeCapability<DisplayAgent, IDisplayHandler>(display_listener.get());
             display_listener->setDisplayHandler(display_handler.get());
         }
@@ -161,7 +137,7 @@ void CapabilityCollection::composeCapabilityFactory()
     });
     factories.emplace("Extension", [&]() {
         if (!extension_handler) {
-            extension_listener = std::make_shared<ExtensionListener>();
+            extension_listener = make_unique<ExtensionListener>();
             extension_handler = makeCapability<ExtensionAgent, IExtensionHandler>(extension_listener.get());
             extension_listener->setExtensionHandler(extension_handler.get());
         }
@@ -170,11 +146,48 @@ void CapabilityCollection::composeCapabilityFactory()
     });
     factories.emplace("Chips", [&]() {
         if (!chips_handler) {
-            chips_listener = std::make_shared<ChipsListener>();
+            chips_listener = make_unique<ChipsListener>();
             chips_handler = makeCapability<ChipsAgent, IChipsHandler>(chips_listener.get());
         }
 
         return chips_handler.get();
+    });
+}
+
+void CapabilityCollection::composeSpeakerInterface()
+{
+    if (!speaker_handler || !speaker_listener)
+        return;
+
+    // compose SpeakerInfo
+    std::map<SpeakerType, SpeakerInfo> speakers {
+        { SpeakerType::NUGU, makeSpeakerInfo(SpeakerType::NUGU, 0, true) },
+        { SpeakerType::MUSIC, makeSpeakerInfo(SpeakerType::MUSIC) },
+        { SpeakerType::RINGTON, makeSpeakerInfo(SpeakerType::RINGTON) },
+        { SpeakerType::CALL, makeSpeakerInfo(SpeakerType::CALL) },
+        { SpeakerType::NOTIFICATION, makeSpeakerInfo(SpeakerType::NOTIFICATION) },
+        { SpeakerType::ALARM, makeSpeakerInfo(SpeakerType::ALARM) },
+        { SpeakerType::VOICE_COMMAND, makeSpeakerInfo(SpeakerType::VOICE_COMMAND) },
+        { SpeakerType::NAVIGATION, makeSpeakerInfo(SpeakerType::NAVIGATION) },
+        { SpeakerType::SYSTEM_SOUND, makeSpeakerInfo(SpeakerType::SYSTEM_SOUND) },
+    };
+
+    speaker_handler->setSpeakerInfo(speakers);
+    speaker_listener->setSpeakerHandler(speaker_handler.get());
+    speaker_listener->setVolumeNuguSpeakerCallback([&](int volume) {
+        if (tts_handler && !tts_handler->setVolume(volume))
+            return false;
+        if (audio_player_handler && !audio_player_handler->setVolume(volume))
+            return false;
+        return true;
+    });
+    speaker_listener->setMuteNuguSpeakerCallback([&](bool mute) {
+        if (!tts_handler)
+            return false;
+        tts_handler->stopTTS();
+        if (audio_player_handler && !audio_player_handler->setMute(mute))
+            return false;
+        return true;
     });
 }
 
