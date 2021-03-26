@@ -1,3 +1,19 @@
+nugu (1.0.0ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed handling ASR initiator
+  * Fixed MediaPlayer mute
+  * Fixed nugu_oob_server url issue
+  * Added nugu_sample speaker volume/mute control
+  * Applied ASR interface v1.5
+  * Applied AudioPlayer interface v1.6
+  * Updated FocusManager
+  * Updated AudioPlayerAgent
+  * Updated TextAgent
+  * Updated pcm plugin build
+  * Optimized smart pointer usages
+
+ -- nugulinux <nugulinux@gmail.com>  Tue, 30 Mar 2021 11:30:00 +0900
+
 nugu (0.24.0ubuntu1~bionic) bionic; urgency=medium
 
   * Fixed PlaySyncManager clearance  
