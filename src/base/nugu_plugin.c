@@ -165,14 +165,22 @@ EXPORT_API int nugu_plugin_load_directory(const char *dirpath)
 {
 	const gchar *file;
 	gchar *filename;
+	gchar *env_dirpath;
+	const char *plugin_path;
 	NuguPlugin *p;
 	GDir *dir;
 
-	g_return_val_if_fail(dirpath != NULL, -1);
+	env_dirpath = getenv(NUGU_ENV_PLUGIN_PATH);
+	if (env_dirpath)
+		plugin_path = (const char *)env_dirpath;
+	else
+		plugin_path = dirpath;
 
-	dir = g_dir_open(dirpath, 0, NULL);
+	g_return_val_if_fail(plugin_path != NULL, -1);
+
+	dir = g_dir_open(plugin_path, 0, NULL);
 	if (!dir) {
-		nugu_error("g_dir_open(%s) failed", dirpath);
+		nugu_error("g_dir_open(%s) failed", plugin_path);
 		return -1;
 	}
 
@@ -181,7 +189,7 @@ EXPORT_API int nugu_plugin_load_directory(const char *dirpath)
 		    g_str_has_suffix(file, ".so") == FALSE)
 			continue;
 
-		filename = g_build_filename(dirpath, file, NULL);
+		filename = g_build_filename(plugin_path, file, NULL);
 		p = nugu_plugin_new_from_file(filename);
 		if (!p) {
 			g_free(filename);
