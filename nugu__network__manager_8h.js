@@ -1,9 +1,9 @@
 var nugu__network__manager_8h =
 [
     [ "NUGU_NETWORK_MAX_ADDRESS", "group__nugu__network.html#gac814994ac3d63c81b6c7d2ec6eac6e19", null ],
-    [ "NuguNetworkStatus", "group__nugu__network.html#ga8dab4468127c6da36406cfeaf85612ef", null ],
+    [ "NuguNetworkStatus", "group__nugu__network.html#gadfe4221b82d456908c2fdc21a62a526b", null ],
     [ "NuguNetworkManagerStatusCallback", "group__nugu__network.html#gafb84bd35bc012bf64d434c2e08e94f01", null ],
-    [ "NuguNetworkHandoffStatus", "group__nugu__network.html#ga3f80c9aee71e930d412527fc33f252df", null ],
+    [ "NuguNetworkHandoffStatus", "group__nugu__network.html#gaf3009eba6e203b17f69ffabd0555dae2", null ],
     [ "NuguNetworkManagerHandoffStatusCallback", "group__nugu__network.html#ga0f14153574656e566c68d26295a33916", null ],
     [ "NuguNetworkManagerEventSendNotifyCallback", "group__nugu__network.html#ga1d74a13221968b12acbc256af5aa115b", null ],
     [ "NuguNetworkManagerEventDataSendNotifyCallback", "group__nugu__network.html#ga08b86a177632c92b4aed4827976877b6", null ],
@@ -11,7 +11,7 @@ var nugu__network__manager_8h =
     [ "NuguNetworkManagerEventResponseCallback", "group__nugu__network.html#ga0a64654ecf6ef2e8ed4e7f26ffec4121", null ],
     [ "NuguNetworkManagerDirectiveCallback", "group__nugu__network.html#gabe4e495b8cb71683c8d16ca4de9b144c", null ],
     [ "NuguNetworkManagerAttachmentCallback", "group__nugu__network.html#gac87483a62a92587958888b9c28d6772e", null ],
-    [ "NuguNetworkServerPolicy", "group__nugu__network.html#gaf7107d354bbaa909bcc0a45e16c4138c", null ],
+    [ "NuguNetworkServerPolicy", "group__nugu__network.html#ga43408e1e143f09f083464fe30d2d7b54", null ],
     [ "nugu_network_status", "group__nugu__network.html#gab3b96f22ffa5e42cc058222a04a129c4", [
       [ "NUGU_NETWORK_DISCONNECTED", "group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4ab0ae183c7eb1cbe7496b59f796f11d08", null ],
       [ "NUGU_NETWORK_CONNECTING", "group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a8a1871ebd99b8eb45a62e720c3d0e260", null ],

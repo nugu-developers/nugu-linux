@@ -26,7 +26,7 @@ var group__PlaySyncManagerInterface =
     [ "IPlaySyncManagerListener", "classNuguClientKit_1_1IPlaySyncManagerListener.html", [
       [ "~IPlaySyncManagerListener", "classNuguClientKit_1_1IPlaySyncManagerListener.html#afa13820115fa84e0b55f04b48a66ef43", null ],
       [ "onSyncState", "classNuguClientKit_1_1IPlaySyncManagerListener.html#a90652fef37148893c1cf37545acf19d1", null ],
-      [ "onDataChanged", "classNuguClientKit_1_1IPlaySyncManagerListener.html#a695ff4e1f416b799e86863819d1e5403", null ]
+      [ "onDataChanged", "classNuguClientKit_1_1IPlaySyncManagerListener.html#af80ed395842fd2b50e9e6fa1b166775f", null ]
     ] ],
     [ "PlaySyncState", "group__PlaySyncManagerInterface.html#ga5d9f5e0329e5706191b9a4682615d4d0", [
       [ "None", "group__PlaySyncManagerInterface.html#gga5d9f5e0329e5706191b9a4682615d4d0a6adf97f83acf6453d4a6a4b1070f3754", null ],

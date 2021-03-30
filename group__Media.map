@@ -1,3 +1,4 @@
 <map id="Media" name="Media">
-<area shape="rect" id="node2" href="$group__SDKBase.html" title="SDK Base" alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node1" title="media management" alt="" coords="139,5,201,31"/>
+<area shape="rect" id="node2" href="$group__SDKBase.html" title="@breif Base infrastructure API" alt="" coords="5,5,91,31"/>
 </map>

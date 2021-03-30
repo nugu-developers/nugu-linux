@@ -10,6 +10,13 @@ var asr__interface_8hh =
       [ "RECOGNIZING", "asr__interface_8hh.html#ggafe4f48f063bafec608e5060090a9543ba437f3cbaf966fe37c60ee219ecb23576", null ],
       [ "BUSY", "asr__interface_8hh.html#ggafe4f48f063bafec608e5060090a9543ba802706a9238e2928077f97736854bad4", null ]
     ] ],
+    [ "ASRInitiator", "asr__interface_8hh.html#ga0dd27d783b014cca3e5aca7510b36f8a", [
+      [ "WAKE_UP_WORD", "asr__interface_8hh.html#gga0dd27d783b014cca3e5aca7510b36f8aa646e5558f4e20f45fbd651b653f8dbc3", null ],
+      [ "PRESS_AND_HOLD", "asr__interface_8hh.html#gga0dd27d783b014cca3e5aca7510b36f8aa56d48be09b7b10cc583583453bc87a9b", null ],
+      [ "TAP", "asr__interface_8hh.html#gga0dd27d783b014cca3e5aca7510b36f8aafcd6420c60a17418a6de745d6546d966", null ],
+      [ "EXPECT_SPEECH", "asr__interface_8hh.html#gga0dd27d783b014cca3e5aca7510b36f8aae93ac2a078fa28db0eb331bf67e35021", null ],
+      [ "EARSET", "asr__interface_8hh.html#gga0dd27d783b014cca3e5aca7510b36f8aa6f9af525f01e8f64a9d550cfd8484613", null ]
+    ] ],
     [ "ASRError", "asr__interface_8hh.html#ga9aa11256d9ce8a3aa14ac9a24e1d8e21", [
       [ "RESPONSE_TIMEOUT", "asr__interface_8hh.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21a0bc1f3f491e9717b6ff83103a014d496", null ],
       [ "LISTEN_TIMEOUT", "asr__interface_8hh.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21a54a62829eeacbac64ad20c96ade3b58d", null ],

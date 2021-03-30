@@ -1,3 +1,4 @@
 <map id="Timer" name="Timer">
-<area shape="rect" id="node1" href="$group__SDKBase.html" title="SDK Base" alt="" coords="5,5,91,32"/>
+<area shape="rect" id="node1" href="$group__SDKBase.html" title="@breif Base infrastructure API" alt="" coords="5,5,91,31"/>
+<area shape="rect" id="node2" title="Timer manipulation functions." alt="" coords="139,5,199,31"/>
 </map>
