@@ -561,8 +561,6 @@ void ASRAgent::parsingExpectSpeech(std::string&& dialog_id, const char* message)
 
     session_manager->activate(es_attr.dialog_id);
     interaction_control_manager->start(InteractionMode::MULTI_TURN, getName());
-
-    focus_manager->requestFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME, asr_dm_listener);
 }
 
 void ASRAgent::parsingNotifyResult(const char* message)
@@ -630,6 +628,7 @@ void ASRAgent::parsingCancelRecognize(const char* message)
 
 void ASRAgent::handleExpectSpeech()
 {
+    focus_manager->requestFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME, asr_dm_listener);
 }
 
 void ASRAgent::onListeningState(ListeningState state, const std::string& id)

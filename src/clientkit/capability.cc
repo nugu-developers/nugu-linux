@@ -353,6 +353,11 @@ void Capability::processDirective(NuguDirective* ndir)
 
 void Capability::destroyDirective(NuguDirective* ndir, bool is_cancel)
 {
+    if (pimpl->prev_ndir) {
+        directive_sequencer->complete(pimpl->prev_ndir);
+        pimpl->prev_ndir = nullptr;
+    }
+
     if (pimpl->cur_ndir && ndir == pimpl->cur_ndir) {
         nugu_directive_remove_data_callback(pimpl->cur_ndir);
 
@@ -371,11 +376,6 @@ void Capability::destroyDirective(NuguDirective* ndir, bool is_cancel)
         }
 
         pimpl->cur_ndir = nullptr;
-    }
-
-    if (pimpl->prev_ndir) {
-        directive_sequencer->complete(pimpl->prev_ndir);
-        pimpl->prev_ndir = nullptr;
     }
 }
 
