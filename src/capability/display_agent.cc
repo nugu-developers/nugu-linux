@@ -23,7 +23,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "Display";
-static const char* CAPABILITY_VERSION = "1.6";
+static const char* CAPABILITY_VERSION = "1.7";
 
 DisplayAgent::DisplayAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
