@@ -738,6 +738,26 @@ static void test_playstack_manager_check_next_playstack(TestFixture* fixture, gc
     g_assert(!fixture->playsync_manager->hasNextPlayStack());
 }
 
+static void test_playstack_manager_clear(TestFixture* fixture, gconstpointer ignored)
+{
+    sub_test_playstack_manager_preset_media_stacked(fixture);
+
+    const auto& playstacks = fixture->playsync_manager->getPlayStacks();
+
+    g_assert(!playstacks.empty());
+    g_assert(!fixture->playsync_manager->getAllPlayStackItems().empty());
+    g_assert(!fixture->playsync_manager->hasPostPoneRelease());
+
+    fixture->playsync_manager->postPoneRelease();
+    g_assert(fixture->playsync_manager->hasPostPoneRelease());
+
+    fixture->playsync_manager->clear();
+
+    g_assert(playstacks.empty());
+    g_assert(fixture->playsync_manager->getAllPlayStackItems().empty());
+    g_assert(!fixture->playsync_manager->hasPostPoneRelease());
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -770,6 +790,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/reset", test_playstack_manager_reset);
     G_TEST_ADD_FUNC("/core/PlayStackManager/registerCapabilityForSync", test_playstack_manager_register_capability_for_sync);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkNextPlayStack", test_playstack_manager_check_next_playstack);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/clear", test_playstack_manager_clear);
 
     return g_test_run();
 }

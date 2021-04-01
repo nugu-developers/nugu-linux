@@ -181,6 +181,11 @@ public:
     virtual void clearHolding() = 0;
 
     /**
+     * @brief Clear all playstack info.
+     */
+    virtual void clear() = 0;
+
+    /**
      * @brief Check whether the previous dialog has to be handled or not
      * @param[in] prev_ndir preivous directive
      * @param[in] cur_ndir current directive
