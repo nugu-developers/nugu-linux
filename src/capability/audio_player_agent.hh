@@ -152,7 +152,7 @@ private:
     NuguDirective* speak_dir;
     FocusState focus_state;
     bool is_tts_activate;
-    bool is_next_play;
+    bool stop_reason_by_play_another;
     bool has_play_directive;
     std::string play_directive_dialog_id;
     bool receive_new_play_directive;
