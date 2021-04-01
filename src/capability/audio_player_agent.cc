@@ -44,7 +44,7 @@ void AudioPlayerAgent::initialize()
     speak_dir = nullptr;
     focus_state = FocusState::NONE;
     is_tts_activate = false;
-    is_next_play = false;
+    stop_reason_by_play_another = false;
     has_play_directive = false;
     play_directive_dialog_id = "";
     receive_new_play_directive = false;
@@ -612,12 +612,10 @@ void AudioPlayerAgent::sendEventPlaybackStopped(EventResultCallback cb)
     root["token"] = cur_token;
     root["playServiceId"] = ps_id;
     root["offsetInMilliseconds"] = std::to_string(offset);
-    root["reason"] = is_next_play ? "PLAY_ANOTHER" : "STOP";
+    root["reason"] = stop_reason_by_play_another ? "PLAY_ANOTHER" : "STOP";
     payload = writer.write(root);
 
     sendEvent(ename, getContextInfo(), payload, std::move(cb));
-
-    is_next_play = false;
 }
 
 void AudioPlayerAgent::sendEventPlaybackPaused(EventResultCallback cb)
@@ -945,11 +943,15 @@ void AudioPlayerAgent::parsingPlay(const char* message)
             setReferrerDialogRequestId(dname, pre_ref_dialog_id);
 
         nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_FINISHED);
-        is_next_play = true;
+
+        stop_reason_by_play_another = (ps_id == play_service_id);
+
         if (!cur_player->stop()) {
             nugu_error("stop media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
         }
+
+        stop_reason_by_play_another = false;
 
         std::string id = nugu_directive_peek_dialog_id(getNuguDirective());
         setReferrerDialogRequestId(dname, id);
@@ -1543,7 +1545,6 @@ void AudioPlayerAgent::onSyncState(const std::string& ps_id, PlaySyncState state
     if (state == PlaySyncState::Synced)
         template_id = render_helper->renderDisplay(extra_data);
     else if (state == PlaySyncState::Released) {
-        is_next_play = false;
         focus_manager->releaseFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME);
         render_helper->clearDisplay(extra_data, playsync_manager->hasNextPlayStack());
     }
