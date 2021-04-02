@@ -22,11 +22,22 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "Chips";
-static const char* CAPABILITY_VERSION = "1.1";
+static const char* CAPABILITY_VERSION = "1.2";
 
 ChipsAgent::ChipsAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
 {
+    targets = {
+        { "DM", ChipsTarget::DM },
+        { "LISTEN", ChipsTarget::LISTEN },
+        { "SPEAKING", ChipsTarget::SPEAKING }
+    };
+
+    chips_types = {
+        { "NUDGE", ChipsType::NUDGE },
+        { "ACTION", ChipsType::ACTION },
+        { "GENERAL", ChipsType::GENERAL }
+    };
 }
 
 void ChipsAgent::initialize()
@@ -72,32 +83,34 @@ void ChipsAgent::parsingRender(const char* message)
     Json::Value root;
     Json::Reader reader;
 
-    if (!reader.parse(message, root)) {
-        nugu_error("parsing error");
-        return;
+    try {
+        if (!reader.parse(message, root))
+            throw std::logic_error("parsing error");
+
+        if (root["playServiceId"].empty() || root["target"].empty() || root["chips"].empty())
+            throw std::logic_error("The required parameters are not set");
+
+        ChipsInfo chips_info;
+        chips_info.play_service_id = root["playServiceId"].asString();
+        chips_info.target = targets.at(root["target"].asString());
+
+        for (const auto& chip : root["chips"]) {
+            if (chip["type"].empty() || chip["text"].empty())
+                continue;
+
+            chips_info.contents.emplace_back(ChipsInfo::Content {
+                chips_types.at(chip["type"].asString()),
+                chip["text"].asString(),
+                chip["token"].asString() });
+        }
+
+        if (chips_listener)
+            chips_listener->onReceiveRender(std::move(chips_info));
+    } catch (std::out_of_range& e) {
+        nugu_error("The target or chip.type is invalid");
+    } catch (std::logic_error& e) {
+        nugu_error(e.what());
     }
-
-    if (root["playServiceId"].empty() || root["target"].empty() || root["chips"].empty()) {
-        nugu_error("The required parameters are not set");
-        return;
-    }
-
-    ChipsInfo chips_info;
-    chips_info.play_service_id = root["playServiceId"].asString();
-    chips_info.target = root["target"].asString();
-
-    for (const auto& chip : root["chips"]) {
-        if (chip["type"].empty() || chip["text"].empty())
-            continue;
-
-        chips_info.contents.emplace_back(ChipsInfo::Content {
-            chip["type"].asString(),
-            chip["text"].asString(),
-            chip["token"].asString() });
-    }
-
-    if (chips_listener)
-        chips_listener->onReceiveRender(std::move(chips_info));
 }
 
 } // NuguCapability

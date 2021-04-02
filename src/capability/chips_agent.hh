@@ -38,6 +38,8 @@ private:
     void parsingRender(const char* message);
 
     IChipsListener* chips_listener = nullptr;
+    std::map<std::string, ChipsTarget> targets;
+    std::map<std::string, ChipsType> chips_types;
 };
 
 } // NuguCapability
