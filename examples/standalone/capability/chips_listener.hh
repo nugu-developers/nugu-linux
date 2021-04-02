@@ -23,9 +23,13 @@ using namespace NuguCapability;
 
 class ChipsListener : public IChipsListener {
 public:
+    ChipsListener();
     virtual ~ChipsListener() = default;
 
     void onReceiveRender(ChipsInfo&& chips_info) override;
+
+private:
+    std::map<ChipsTarget, std::string> target_texts;
 };
 
 #endif /* __CHIPS_LISTENER_H__ */

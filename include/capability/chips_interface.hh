@@ -35,18 +35,36 @@ using namespace NuguClientKit;
  */
 
 /**
+ * @brief Chips Target
+ */
+enum class ChipsTarget {
+    DM, /**< active with ASR.ExpectSpeech + Session.Set directives */
+    LISTEN, /**< active with ASR.ExpectSpeech directive */
+    SPEAKING /**< active with TTS.Speak directive */
+};
+
+/**
+ * @brief Chips Type
+ */
+enum class ChipsType {
+    NUDGE, /**< Nudge UI type */
+    ACTION, /**< Action Button type */
+    GENERAL /**< Default type */
+};
+
+/**
  * @brief Model for holding chips Info.
  * @see IChipsListener::onReceiveRender
  */
 typedef struct {
     struct Content {
-        std::string type; /**< chips type : ACTION, GENERAL */
+        ChipsType type; /**< chips type */
         std::string text; /**< text for voice command guide */
         std::string token; /**< token which is used to send TextInput event */
     };
 
     std::string play_service_id; /**< playServiceId */
-    std::string target; /**< target for rendering voice command guide */
+    ChipsTarget target; /**< target for rendering voice command guide */
     std::vector<Content> contents; /**< chip content list */
 } ChipsInfo;
 
@@ -54,7 +72,6 @@ typedef struct {
  * @brief chips listener interface
  * @see IChipsHandler
  */
-
 class IChipsListener : public ICapabilityListener {
 public:
     virtual ~IChipsListener() = default;
