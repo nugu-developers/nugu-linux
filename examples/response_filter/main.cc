@@ -88,7 +88,7 @@ public:
         std::cout << "ASR complete result: " << text << ", request dialog id: " << dialog_id << std::endl;
     }
 
-    void onError(ASRError error, const std::string& dialog_id)
+    void onError(ASRError error, const std::string& dialog_id, bool listen_timeout_fail_beep)
     {
         switch (error) {
         case ASRError::RESPONSE_TIMEOUT:

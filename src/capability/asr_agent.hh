@@ -138,6 +138,7 @@ private:
     std::map<ASRState, std::string> asr_state_texts;
     std::string request_listening_id;
     bool asr_cancel;
+    bool listen_timeout_fail_beep;
 
     FocusListener* asr_user_listener;
     FocusListener* asr_dm_listener;

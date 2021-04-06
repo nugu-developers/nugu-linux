@@ -213,7 +213,7 @@ void SpeechOperator::onComplete(const std::string& text, const std::string& dial
     msg::asr::callback(__FUNCTION__, dialog_id, text);
 }
 
-void SpeechOperator::onError(ASRError error, const std::string& dialog_id)
+void SpeechOperator::onError(ASRError error, const std::string& dialog_id, bool listen_timeout_fail_beep)
 {
     switch (error) {
     case ASRError::RESPONSE_TIMEOUT: {

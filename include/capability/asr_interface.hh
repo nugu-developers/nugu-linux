@@ -128,8 +128,9 @@ public:
      * @brief Report an error occurred during speech recognition to the user.
      * @param[in] error ASR error
      * @param[in] dialog_id dialog request id
+     * @param[in] listen_timeout_fail_beep whether to play fail beep or not when listen-timeout occurred
      */
-    virtual void onError(ASRError error, const std::string& dialog_id) = 0;
+    virtual void onError(ASRError error, const std::string& dialog_id, bool listen_timeout_fail_beep = true) = 0;
 
     /**
      * @brief Speech recognition is canceled.
