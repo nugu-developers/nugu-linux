@@ -353,6 +353,11 @@ std::string AudioPlayerAgent::requestFavoriteCommand(bool current_favorite)
     Json::FastWriter writer;
     Json::Value root;
 
+    if (cur_url.empty()) {
+        nugu_warn("there is no media content in the playlist.");
+        return "";
+    }
+
     if (ps_id.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
         return "";
@@ -373,6 +378,11 @@ std::string AudioPlayerAgent::requestRepeatCommand(RepeatType current_repeat)
     std::string payload = "";
     Json::FastWriter writer;
     Json::Value root;
+
+    if (cur_url.empty()) {
+        nugu_warn("there is no media content in the playlist.");
+        return "";
+    }
 
     if (ps_id.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
@@ -404,6 +414,11 @@ std::string AudioPlayerAgent::requestShuffleCommand(bool current_shuffle)
     std::string payload = "";
     Json::FastWriter writer;
     Json::Value root;
+
+    if (cur_url.empty()) {
+        nugu_warn("there is no media content in the playlist.");
+        return "";
+    }
 
     if (ps_id.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
@@ -801,6 +816,11 @@ void AudioPlayerAgent::sendEventProgressReportIntervalElapsed(EventResultCallbac
 
 std::string AudioPlayerAgent::sendEventByDisplayInterface(const std::string& command, EventResultCallback cb)
 {
+    if (cur_url.empty()) {
+        nugu_warn("there is no media content in the playlist.");
+        return "";
+    }
+
     return sendEventCommon(command, std::move(cb), true);
 }
 
