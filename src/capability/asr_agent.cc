@@ -24,7 +24,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "ASR";
-static const char* CAPABILITY_VERSION = "1.5";
+static const char* CAPABILITY_VERSION = "1.6";
 
 ASRAgent::ASRAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -89,6 +89,7 @@ void ASRAgent::initialize()
     cur_state = ASRState::IDLE;
     request_listening_id = "";
     asr_cancel = false;
+    listen_timeout_fail_beep = true;
     wakeup_power_noise = 0;
     wakeup_power_speech = 0;
     asr_user_listener = new ASRAgent::FocusListener(this, focus_manager, true);
@@ -559,6 +560,10 @@ void ASRAgent::parsingExpectSpeech(std::string&& dialog_id, const char* message)
             epd_attribute.epd_max_duration = default_epd_attribute.epd_max_duration;
     }
 
+    listen_timeout_fail_beep = !root["listenTimeoutFailBeep"].empty()
+        ? root["listenTimeoutFailBeep"].asBool()
+        : true;
+
     session_manager->activate(es_attr.dialog_id);
     interaction_control_manager->start(InteractionMode::MULTI_TURN, getName());
 }
@@ -715,7 +720,7 @@ void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error, bool release_focu
         if (is_cancel)
             asr_listener->onCancel(getRecognizeDialogId());
         else
-            asr_listener->onError(error, getRecognizeDialogId());
+            asr_listener->onError(error, getRecognizeDialogId(), listen_timeout_fail_beep);
     }
 
     if (release_focus) {
@@ -773,6 +778,8 @@ void ASRAgent::resetExpectSpeechState()
 
     if (es_attr.is_handle)
         es_attr = {};
+
+    listen_timeout_fail_beep = true;
 
     interaction_control_manager->finish(InteractionMode::MULTI_TURN, getName());
 }

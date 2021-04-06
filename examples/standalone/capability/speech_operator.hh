@@ -33,7 +33,7 @@ public:
     void onNone(const std::string& dialog_id) override;
     void onPartial(const std::string& text, const std::string& dialog_id) override;
     void onComplete(const std::string& text, const std::string& dialog_id) override;
-    void onError(ASRError error, const std::string& dialog_id) override;
+    void onError(ASRError error, const std::string& dialog_id, bool listen_timeout_fail_beep) override;
     void onCancel(const std::string& dialog_id) override;
 
     IASRListener* getASRListener();
