@@ -90,6 +90,18 @@ public:
     virtual ~ITTSHandler() = default;
 
     /**
+     * @brief Add the ITTSListener object
+     * @param[in] listener ITTSListener object
+     */
+    virtual void addListener(ITTSListener* listener) = 0;
+
+    /**
+     * @brief Remove the ITTSListener object
+     * @param[in] listener ITTSListener object
+     */
+    virtual void removeListener(ITTSListener* listener) = 0;
+
+    /**
      * @brief Stop currently speech.
      */
     virtual void stopTTS() = 0;
