@@ -31,7 +31,6 @@ static const char* CAPABILITY_VERSION = "1.3";
 
 TTSAgent::TTSAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
-    , tts_listener(nullptr)
     , tts_engine(NUGU_TTS_ENGINE)
 {
 }
@@ -197,8 +196,9 @@ void TTSAgent::stopTTS()
     if (player)
         player->stop();
 
-    if (tts_listener && pre_state != MediaPlayerState::STOPPED && pre_state != MediaPlayerState::IDLE)
-        tts_listener->onTTSCancel(dialog_id);
+    if (pre_state != MediaPlayerState::STOPPED && pre_state != MediaPlayerState::IDLE)
+        for (const auto& tts_listener : tts_listeners)
+            tts_listener->onTTSCancel(dialog_id);
 }
 
 std::string TTSAgent::requestTTS(const std::string& text, const std::string& play_service_id, const std::string& referrer_id)
@@ -319,7 +319,7 @@ void TTSAgent::sendEventSpeechStarted(const std::string& token, EventResultCallb
         event.getDialogRequestId().c_str(),
         event.getMessageId().c_str(), NULL);
 
-    if (tts_listener)
+    for (const auto& tts_listener : tts_listeners)
         tts_listener->onTTSState(TTSState::TTS_SPEECH_START, dialog_id);
 }
 
@@ -333,7 +333,7 @@ void TTSAgent::sendEventSpeechFinished(const std::string& token, EventResultCall
         event.getDialogRequestId().c_str(),
         event.getMessageId().c_str(), NULL);
 
-    if (tts_listener)
+    for (const auto& tts_listener : tts_listeners)
         tts_listener->onTTSState(TTSState::TTS_SPEECH_FINISH, dialog_id);
 }
 
@@ -460,7 +460,7 @@ void TTSAgent::parsingSpeak(const char* message)
     else
         focus_manager->requestFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME, this);
 
-    if (tts_listener)
+    for (const auto& tts_listener : tts_listeners)
         tts_listener->onTTSText(text, dialog_id);
 }
 
@@ -502,7 +502,21 @@ void TTSAgent::sendClearNudgeCommand(NuguDirective* ndir)
 void TTSAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)
-        tts_listener = dynamic_cast<ITTSListener*>(clistener);
+        addListener(dynamic_cast<ITTSListener*>(clistener));
+}
+
+void TTSAgent::addListener(ITTSListener* listener)
+{
+    if (listener && std::find(tts_listeners.begin(), tts_listeners.end(), listener) == tts_listeners.end())
+        tts_listeners.emplace_back(listener);
+}
+
+void TTSAgent::removeListener(ITTSListener* listener)
+{
+    auto iterator = std::find(tts_listeners.begin(), tts_listeners.end(), listener);
+
+    if (iterator != tts_listeners.end())
+        tts_listeners.erase(iterator);
 }
 
 void TTSAgent::mediaStateChanged(MediaPlayerState state)

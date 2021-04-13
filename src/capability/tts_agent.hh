@@ -53,6 +53,8 @@ public:
     void sendEventSpeechStopped(const std::string& token, EventResultCallback cb = nullptr);
     std::string sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id = "", EventResultCallback cb = nullptr);
     void setCapabilityListener(ICapabilityListener* clistener) override;
+    void addListener(ITTSListener* listener) override;
+    void removeListener(ITTSListener* listener) override;
 
     static void directiveDataCallback(NuguDirective* ndir, int seq, void* userdata);
     static void getAttachmentData(NuguDirective* ndir, int seq, void* userdata);
@@ -93,7 +95,7 @@ private:
     std::string dialog_id;
     std::string ps_id;
     std::string playstackctl_ps_id;
-    ITTSListener* tts_listener;
+    std::vector<ITTSListener*> tts_listeners;
 
     // attribute
     std::string tts_engine;
