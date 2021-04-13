@@ -592,7 +592,7 @@ void ASRAgent::parsingNotifyResult(const char* message)
 
     clearResponseTimeout();
 
-    for (auto asr_listener : asr_listeners) {
+    for (const auto& asr_listener : asr_listeners) {
         if (state == "PARTIAL")
             asr_listener->onPartial(result, getRecognizeDialogId());
         else if (state == "COMPLETE")
@@ -716,7 +716,7 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
 
 void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error, bool release_focus)
 {
-    for (auto asr_listener : asr_listeners) {
+    for (const auto& asr_listener : asr_listeners) {
         if (is_cancel)
             asr_listener->onCancel(getRecognizeDialogId());
         else
@@ -803,7 +803,7 @@ void ASRAgent::setASRState(ASRState state)
 
     cur_state = state;
 
-    for (auto asr_listener : asr_listeners)
+    for (const auto& asr_listener : asr_listeners)
         asr_listener->onState(state, getRecognizeDialogId());
 }
 
