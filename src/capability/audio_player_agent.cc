@@ -846,7 +846,7 @@ bool AudioPlayerAgent::isContentCached(const std::string& key, std::string& play
 {
     std::string filepath;
 
-    for (auto aplayer_listener : aplayer_listeners) {
+    for (const auto& aplayer_listener : aplayer_listeners) {
         if (aplayer_listener->requestToGetCachedContent(key, filepath)) {
             playurl = filepath;
             return true;
@@ -932,7 +932,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
             nugu_dbg("the content(key: %s) is cached in %s", cache_key.c_str(), filepath.c_str());
             url = filepath;
         } else {
-            for (auto aplayer_listener : aplayer_listeners)
+            for (const auto& aplayer_listener : aplayer_listeners)
                 aplayer_listener->requestContentCache(cache_key, url);
         }
     }
@@ -1121,24 +1121,24 @@ void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
         else if (repeat == "ALL")
             type = RepeatType::ALL;
 
-        for (auto aplayer_listener : aplayer_listeners)
+        for (const auto& aplayer_listener : aplayer_listeners)
             aplayer_listener->repeatChanged(type, dialog_id);
     }
     if (!settings["favorite"].empty()) {
         bool favorite = settings["favorite"].asBool();
 
-        for (auto aplayer_listener : aplayer_listeners)
+        for (const auto& aplayer_listener : aplayer_listeners)
             aplayer_listener->favoriteChanged(favorite, dialog_id);
     }
     if (!settings["shuffle"].empty()) {
         bool shuffle = settings["shuffle"].asBool();
 
-        for (auto aplayer_listener : aplayer_listeners)
+        for (const auto& aplayer_listener : aplayer_listeners)
             aplayer_listener->shuffleChanged(shuffle, dialog_id);
     }
 
     if (!template_id.empty()) {
-        for (auto aplayer_listener : aplayer_listeners)
+        for (const auto& aplayer_listener : aplayer_listeners)
             aplayer_listener->updateMetaData(template_id, writer.write(root["metadata"]));
     }
 }
@@ -1429,7 +1429,7 @@ void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
     if (prev_aplayer_state == cur_aplayer_state)
         return;
 
-    for (auto aplayer_listener : aplayer_listeners)
+    for (const auto& aplayer_listener : aplayer_listeners)
         aplayer_listener->mediaStateChanged(cur_aplayer_state, cur_dialog_id);
 
     if ((is_paused || is_paused_by_unfocus) && cur_aplayer_state == AudioPlayerState::PAUSED) {
@@ -1447,14 +1447,14 @@ void AudioPlayerAgent::mediaEventReport(MediaPlayerEvent event)
         nugu_warn("INVALID_MEDIA_URL");
         sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INVALID_REQUEST, "media source is wrong");
 
-        for (auto aplayer_listener : aplayer_listeners)
+        for (const auto& aplayer_listener : aplayer_listeners)
             aplayer_listener->mediaEventReport(AudioPlayerEvent::INVALID_URL, cur_dialog_id);
         break;
     case MediaPlayerEvent::LOADING_MEDIA_FAILED:
         nugu_warn("LOADING_MEDIA_FAILED");
         sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_SERVICE_UNAVAILABLE, "player can't load the media");
 
-        for (auto aplayer_listener : aplayer_listeners)
+        for (const auto& aplayer_listener : aplayer_listeners)
             aplayer_listener->mediaEventReport(AudioPlayerEvent::LOAD_FAILED, cur_dialog_id);
         break;
     case MediaPlayerEvent::LOADING_MEDIA_SUCCESS:
@@ -1466,7 +1466,7 @@ void AudioPlayerAgent::mediaEventReport(MediaPlayerEvent event)
         mediaStateChanged(MediaPlayerState::STOPPED);
         break;
     case MediaPlayerEvent::PLAYING_MEDIA_UNDERRUN:
-        for (auto aplayer_listener : aplayer_listeners) {
+        for (const auto& aplayer_listener : aplayer_listeners) {
             aplayer_listener->mediaEventReport(AudioPlayerEvent::UNDERRUN, cur_dialog_id);
         }
         break;
@@ -1481,7 +1481,7 @@ void AudioPlayerAgent::mediaChanged(const std::string& url)
 
 void AudioPlayerAgent::durationChanged(int duration)
 {
-    for (auto aplayer_listener : aplayer_listeners)
+    for (const auto& aplayer_listener : aplayer_listeners)
         aplayer_listener->durationChanged(duration);
 }
 
@@ -1493,7 +1493,7 @@ void AudioPlayerAgent::positionChanged(int position)
     if (report_interval_time > 0 && ((position % (int)(report_interval_time / 1000)) == 0))
         sendEventProgressReportIntervalElapsed();
 
-    for (auto aplayer_listener : aplayer_listeners)
+    for (const auto& aplayer_listener : aplayer_listeners)
         aplayer_listener->positionChanged(position);
 }
 
