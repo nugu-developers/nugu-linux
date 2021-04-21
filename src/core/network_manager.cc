@@ -14,7 +14,12 @@
  * limitations under the License.
  */
 
+#include <string.h>
+#include <glib.h>
+
 #include <algorithm>
+
+#include "json/json.h"
 
 #include "base/nugu_log.h"
 #include "base/nugu_network_manager.h"
@@ -163,9 +168,78 @@ std::vector<INetworkManagerListener*> NetworkManager::getListener()
 
 bool NetworkManager::setToken(std::string token)
 {
+    /* JWT format consist of 3 parts (header, payload, signature) */
+    gchar **jwt = g_strsplit(token.c_str(), ".", -1);
+    if (jwt == NULL) {
+        nugu_error("invalid JWT token format");
+        return false;
+    }
+
+    if (jwt[0] == NULL || jwt[1] == NULL) {
+        nugu_error("invalid JWT token format");
+        g_strfreev(jwt);
+        return false;
+    }
+
+    /* add optional padding('==') for base64 decoding */
+    gchar *tmp = g_strdup_printf("%s==", jwt[1]);
+
+    g_strfreev(jwt);
+
+    gsize out_len = 0;
+    guchar *payload = g_base64_decode(tmp, &out_len);
+    g_free(tmp);
+
+    if (payload == NULL || out_len <= 0) {
+        nugu_error("invalid token (decoding error)");
+        return false;
+    }
+
+    /* generate null-terminated string from decoding result */
+    gchar *json_text = (gchar *)g_malloc(out_len + 1);
+    memcpy(json_text, payload, out_len);
+    json_text[out_len] = 0;
+    g_free(payload);
+
+    nugu_dbg("JWT payload: %s", json_text);
+
+    /* find the 'device:S.I.D.' from the scope */
+    Json::Reader reader;
+    Json::Value root;
+
+    if (!reader.parse(json_text, root)) {
+        nugu_error("Payload parsing error");
+        g_free(json_text);
+        return false;
+    }
+
+    g_free(json_text);
+
+    bool is_connection_oriented = false;
+
+    Json::Value scope = root["scope"];
+    if (scope.isArray()) {
+        Json::ArrayIndex scope_len = scope.size();
+        for (Json::ArrayIndex i = 0; i < scope_len; ++i) {
+            nugu_dbg("scope[%d] = %s", i, scope[i].asCString());
+            if (scope[i].asString() == "device:S.I.D.") {
+                is_connection_oriented = true;
+                break;
+            }
+        }
+    }
+
     if (nugu_network_manager_set_token(token.c_str()) < 0) {
         nugu_error("network set token failed");
         return false;
+    }
+
+    if (is_connection_oriented) {
+        nugu_dbg("Connection oriented!");
+        nugu_network_manager_set_connection_type(NUGU_NETWORK_CONNECTION_ORIENTED);
+    } else {
+        nugu_dbg("Connection ondemand! (connect when sending an event)");
+        nugu_network_manager_set_connection_type(NUGU_NETWORK_CONNECTION_ONDEMAND);
     }
 
     return true;

@@ -73,6 +73,7 @@ struct _nugu_network {
 	char *token;
 	char *useragent;
 	char *last_asr;
+	NuguNetworkConnectionType connection_type;
 
 	/* Registry */
 	char *registry_url;
@@ -681,6 +682,7 @@ static NetworkManager *nugu_network_manager_new(void)
 
 	nm->cur_status = NUGU_NETWORK_DISCONNECTED;
 	nm->step = STEP_IDLE;
+	nm->connection_type = NUGU_NETWORK_CONNECTION_ONDEMAND;
 
 	return nm;
 }
@@ -1212,4 +1214,28 @@ EXPORT_API const char *nugu_network_manager_peek_last_asr_time(void)
 	}
 
 	return _network->last_asr;
+}
+
+EXPORT_API int
+nugu_network_manager_set_connection_type(NuguNetworkConnectionType ctype)
+{
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return -1;
+	}
+
+	_network->connection_type = ctype;
+
+	return 0;
+}
+
+EXPORT_API NuguNetworkConnectionType
+nugu_network_manager_get_connection_type(void)
+{
+	if (!_network) {
+		nugu_error("network manager not initialized");
+		return NUGU_NETWORK_CONNECTION_ONDEMAND;
+	}
+
+	return _network->connection_type;
 }
