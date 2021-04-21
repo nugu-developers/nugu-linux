@@ -131,7 +131,7 @@ public:
     virtual bool disconnect() = 0;
 
     /**
-     * @brief Set the access token value.
+     * @brief Set the access token value. The connection type is automatically set through token analysis.
      * @param[in] token access token
      * @return result
      * @retval 0 success

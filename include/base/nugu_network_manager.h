@@ -48,6 +48,7 @@ extern "C" {
  *   - Connection recovered: CONNECTED -> CONNECTING -> CONNECTED
  *   - Recovery failed: CONNECTED -> CONNECTING -> DISCONNECTED
  *   - Token error: CONNECTED -> CONNECTING -> TOKEN_ERROR -> DISCONNECTED
+ *
  * @see nugu_network_manager_set_status()
  * @see nugu_network_manager_get_status()
  * @see NetworkManagerStatusCallback
@@ -58,6 +59,16 @@ typedef enum nugu_network_status {
 	NUGU_NETWORK_CONNECTED, /**< Network connected */
 	NUGU_NETWORK_TOKEN_ERROR /**< Token error */
 } NuguNetworkStatus;
+
+/**
+ * @brief network connection type
+ * @see nugu_network_manager_set_connection_type()
+ * @see nugu_network_manager_get_connection_type()
+ */
+typedef enum nugu_network_connection_type {
+	NUGU_NETWORK_CONNECTION_ORIENTED, /**< Always connected */
+	NUGU_NETWORK_CONNECTION_ONDEMAND /**< Connect when sending an event */
+} NuguNetworkConnectionType;
 
 /**
  * @brief Callback prototype for receiving network status events
@@ -371,12 +382,14 @@ int nugu_network_manager_reset_connection(void);
  * @return result
  * @retval 0 success
  * @retval -1 failure
+ * @see nugu_network_manager_peek_token()
  */
 int nugu_network_manager_set_token(const char *token);
 
 /**
  * @brief Get the access token value.
  * @return access token value. Please do not modify the data manually.
+ * @see nugu_network_manager_set_token()
  */
 const char *nugu_network_manager_peek_token(void);
 
@@ -386,12 +399,14 @@ const char *nugu_network_manager_peek_token(void);
  * @return result
  * @retval 0 success
  * @retval -1 failure
+ * @see nugu_network_manager_peek_registry_url()
  */
 int nugu_network_manager_set_registry_url(const char *urlname);
 
 /**
  * @brief Get the device gateway registry url.
  * @return gateway registry url. Please do not modify the data manually.
+ * @see nugu_network_manager_set_registry_url()
  */
 const char *nugu_network_manager_peek_registry_url(void);
 
@@ -402,6 +417,7 @@ const char *nugu_network_manager_peek_registry_url(void);
  * @return result
  * @retval 0 success
  * @retval -1 failure
+ * @see nugu_network_manager_peek_useragent()
  */
 int nugu_network_manager_set_useragent(const char *app_version,
 				       const char *additional_info);
@@ -409,6 +425,7 @@ int nugu_network_manager_set_useragent(const char *app_version,
 /**
  * @brief Get the UserAgent information.
  * @return UserAgent information. Please do not modify the data manually.
+ * @see nugu_network_manager_set_useragent()
  */
 const char *nugu_network_manager_peek_useragent(void);
 
@@ -417,6 +434,23 @@ const char *nugu_network_manager_peek_useragent(void);
  * @return Last-Asr-Event-Time. Please do not modify the data manually.
  */
 const char *nugu_network_manager_peek_last_asr_time(void);
+
+/**
+ * @brief Set the connection type.
+ * @param ctype connection type
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ * @see nugu_network_manager_get_connection_type()
+ */
+int nugu_network_manager_set_connection_type(NuguNetworkConnectionType ctype);
+
+/**
+ * @brief Get the connection type.
+ * @return network connection type
+ * @see nugu_network_manager_set_connection_type()
+ */
+NuguNetworkConnectionType nugu_network_manager_get_connection_type(void);
 
 /**
  * @}
