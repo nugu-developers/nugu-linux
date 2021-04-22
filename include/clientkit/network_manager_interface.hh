@@ -36,8 +36,9 @@ namespace NuguClientKit {
 
 enum class NetworkStatus {
     DISCONNECTED, /**< Network disconnected */
-    CONNECTED, /**< Network connected */
-    CONNECTING /**< Connection in progress */
+    CONNECTING, /**< Connection in progress */
+    READY, /**< Network ready for ondemand connection type */
+    CONNECTED /**< Network connected */
 };
 
 enum class NetworkError {

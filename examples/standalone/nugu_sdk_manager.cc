@@ -414,6 +414,15 @@ void NuguSDKManager::onStatusChanged(NetworkStatus status)
             on_fail_func();
 
         break;
+    case NetworkStatus::READY:
+        msg_info("Network ready.");
+        is_network_error = false;
+        nugu_sample_manager->handleNetworkResult(true);
+
+        if (on_init_func)
+            on_init_func();
+
+        break;
     case NetworkStatus::CONNECTED:
         msg_info("Network connected.");
         is_network_error = false;
