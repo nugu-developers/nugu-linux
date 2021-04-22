@@ -50,7 +50,7 @@ int dg_server_is_retry_over(DGServer *server);
 void dg_server_increse_retry_count(DGServer *server);
 void dg_server_reset_retry_count(DGServer *server);
 
-int dg_server_send_event(DGServer *server, NuguEvent *nev, int is_sync);
+int dg_server_send_event(DGServer *server, NuguEvent *nev);
 int dg_server_send_attachment(DGServer *server, NuguEvent *nev, int is_end,
 			      size_t length, unsigned char *data);
 int dg_server_force_close_event(DGServer *server, NuguEvent *nev);

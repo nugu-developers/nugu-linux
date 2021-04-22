@@ -28,7 +28,6 @@
 #include "dg_types.h"
 
 #include "directives_parser.h"
-#include "threadsync.h"
 #include "http2_request.h"
 #include "v2_events.h"
 
@@ -52,7 +51,6 @@ struct _v2_events {
 	HTTP2Request *req;
 	unsigned char *boundary;
 	size_t b_len;
-	int sync;
 	gboolean first_data;
 	HTTP2Network *net;
 	enum nugu_event_type type;
@@ -185,9 +183,6 @@ static size_t _on_body(HTTP2Request *req, char *buffer, size_t size,
 /* invoked in a thread loop */
 static void _on_finish(HTTP2Request *req, void *userdata)
 {
-	if (userdata)
-		thread_sync_signal(userdata);
-
 	if (http2_request_get_result(req) == HTTP2_RESULT_OK)
 		return;
 
@@ -244,7 +239,7 @@ static void _end_cb(DirParser *dp, void *userdata)
 	}
 }
 
-V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync,
+V2Events *v2_events_new(const char *host, HTTP2Network *net,
 			enum nugu_event_type type)
 {
 	char *tmp;
@@ -296,7 +291,6 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync,
 
 	event->boundary = (unsigned char *)g_strdup_printf("--%s", boundary);
 	event->b_len = strlen((char *)event->boundary);
-	event->sync = is_sync;
 	event->net = net;
 	event->type = type;
 	event->first_data = TRUE;
@@ -458,14 +452,9 @@ static void _on_send_done(HTTP2Request *req, void *userdata)
 
 int v2_events_send_done(V2Events *event)
 {
-	ThreadSync *sync = NULL;
-
 	g_return_val_if_fail(event != NULL, -1);
 
-	if (event->sync)
-		sync = thread_sync_new();
-
-	http2_request_set_finish_callback(event->req, _on_finish, sync);
+	http2_request_set_finish_callback(event->req, _on_finish, NULL);
 	http2_request_set_send_complete_callback(event->req, _on_send_done,
 						 event->net);
 
@@ -479,11 +468,6 @@ int v2_events_send_done(V2Events *event)
 	http2_request_close_send_data(event->req);
 	http2_request_unlock_send_data(event->req);
 	http2_network_resume_request(event->net, event->req);
-
-	if (sync) {
-		thread_sync_wait_secs(sync, 5);
-		thread_sync_free(sync);
-	}
 
 	return 0;
 }

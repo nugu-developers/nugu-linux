@@ -274,7 +274,6 @@ NuguNetworkStatus nugu_network_manager_get_status(void);
 /**
  * @brief Send the event to server
  * @param[in] nev event object
- * @param[in] is_sync synchronized blocking event(is_sync=1) or not(is_sync=0)
  * @return result
  * @retval 0 success
  * @retval -1 failure
@@ -282,7 +281,7 @@ NuguNetworkStatus nugu_network_manager_get_status(void);
  * @see nugu_network_manager_send_event_data()
  * @see nugu_network_manager_force_close_event()
  */
-int nugu_network_manager_send_event(NuguEvent *nev, int is_sync);
+int nugu_network_manager_send_event(NuguEvent *nev);
 
 /**
  * @brief Send the attachment data of event to server

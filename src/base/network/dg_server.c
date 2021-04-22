@@ -55,18 +55,17 @@ struct _dg_server {
 	int use_events;
 	GHashTable *pending_events;
 
-	int (*send_event)(DGServer *server, NuguEvent *nev, const char *payload,
-			  int is_sync);
+	int (*send_event)(DGServer *server, NuguEvent *nev,
+			  const char *payload);
 	int (*send_attachment)(DGServer *server, NuguEvent *nev, int is_end,
 			       size_t length, unsigned char *data);
 };
 
-static int _send_v1_event(DGServer *server, NuguEvent *nev, const char *payload,
-			  int is_sync)
+static int _send_v1_event(DGServer *server, NuguEvent *nev, const char *payload)
 {
 	V1Event *e;
 
-	e = v1_event_new(server->host, is_sync);
+	e = v1_event_new(server->host);
 	if (!e)
 		return -1;
 
@@ -79,12 +78,11 @@ static int _send_v1_event(DGServer *server, NuguEvent *nev, const char *payload,
 }
 
 static int _send_v2_events(DGServer *server, NuguEvent *nev,
-			   const char *payload, int is_sync)
+			   const char *payload)
 {
 	V2Events *e;
 
-	e = v2_events_new(server->host, server->net, is_sync,
-			  nugu_event_get_type(nev));
+	e = v2_events_new(server->host, server->net, nugu_event_get_type(nev));
 	if (!e)
 		return -1;
 
@@ -378,7 +376,7 @@ void dg_server_reset_retry_count(DGServer *server)
 	server->retry_count = 0;
 }
 
-int dg_server_send_event(DGServer *server, NuguEvent *nev, int is_sync)
+int dg_server_send_event(DGServer *server, NuguEvent *nev)
 {
 	char *payload;
 	int ret;
@@ -398,7 +396,7 @@ int dg_server_send_event(DGServer *server, NuguEvent *nev, int is_sync)
 			    nugu_event_peek_dialog_id(nev),
 			    nugu_event_peek_msg_id(nev), payload);
 
-	ret = server->send_event(server, nev, payload, is_sync);
+	ret = server->send_event(server, nev, payload);
 	g_free(payload);
 
 	if (ret < 0) {
