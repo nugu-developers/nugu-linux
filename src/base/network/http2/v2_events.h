@@ -25,7 +25,7 @@ extern "C" {
 
 typedef struct _v2_events V2Events;
 
-V2Events *v2_events_new(const char *host, HTTP2Network *net, int is_sync,
+V2Events *v2_events_new(const char *host, HTTP2Network *net,
 			enum nugu_event_type type);
 void v2_events_free(V2Events *event);
 

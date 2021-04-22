@@ -25,7 +25,7 @@ extern "C" {
 
 typedef struct _v1_event V1Event;
 
-V1Event *v1_event_new(const char *host, int is_sync);
+V1Event *v1_event_new(const char *host);
 void v1_event_free(V1Event *event);
 
 int v1_event_set_json(V1Event *event, const char *data, size_t length);

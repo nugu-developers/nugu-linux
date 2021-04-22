@@ -92,9 +92,8 @@ public:
      * @brief Send event to server.
      * @param[in] context context info
      * @param[in] payload payload info
-     * @param[in] is_sync whether synchronized blocking event
      */
-    void sendEvent(const std::string& context, const std::string& payload, bool is_sync = false);
+    void sendEvent(const std::string& context, const std::string& payload);
 
     /**
      * @brief Send attachment event to server.
@@ -284,19 +283,17 @@ public:
      * @param[in] name event name
      * @param[in] context context info
      * @param[in] payload payload info
-     * @param[in] is_sync whether synchronized blocking event
      * @return event's request dialog id
      */
-    std::string sendEvent(const std::string& name, const std::string& context, const std::string& payload, EventResultCallback cb = nullptr, bool is_sync = false);
+    std::string sendEvent(const std::string& name, const std::string& context, const std::string& payload, EventResultCallback cb = nullptr);
 
     /**
      * @brief Send event to server.
      * @param[in] event CapabilityEvent instance
      * @param[in] context context info
      * @param[in] payload payload info
-     * @param[in] is_sync whether synchronized blocking event
      */
-    void sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload, EventResultCallback cb = nullptr, bool is_sync = false);
+    void sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload, EventResultCallback cb = nullptr);
 
     /**
      * @brief Send attachment event to server.

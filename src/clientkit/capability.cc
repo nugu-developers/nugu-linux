@@ -92,7 +92,7 @@ void CapabilityEvent::forceClose()
     nugu_network_manager_force_close_event(pimpl->event);
 }
 
-void CapabilityEvent::sendEvent(const std::string& context, const std::string& payload, bool is_sync)
+void CapabilityEvent::sendEvent(const std::string& context, const std::string& payload)
 {
     if (pimpl->event == NULL) {
         nugu_error("event is NULL");
@@ -111,12 +111,8 @@ void CapabilityEvent::sendEvent(const std::string& context, const std::string& p
 
     pimpl->capability->getCapabilityHelper()->sendCommand(pimpl->capability->getName(), "System", "activity", "");
 
-    if (is_sync) {
-        nugu_network_manager_send_event(pimpl->event, 1);
-    } else {
-        pimpl->capability->getCapabilityHelper()->requestEventResult(pimpl->event);
-        nugu_network_manager_send_event(pimpl->event, 0);
-    }
+    pimpl->capability->getCapabilityHelper()->requestEventResult(pimpl->event);
+    nugu_network_manager_send_event(pimpl->event);
 }
 
 void CapabilityEvent::sendAttachmentEvent(bool is_end, size_t size, unsigned char* data)
@@ -403,16 +399,16 @@ bool Capability::getProperties(const std::string& property, std::list<std::strin
     return true;
 }
 
-std::string Capability::sendEvent(const std::string& name, const std::string& context, const std::string& payload, EventResultCallback cb, bool is_sync)
+std::string Capability::sendEvent(const std::string& name, const std::string& context, const std::string& payload, EventResultCallback cb)
 {
     CapabilityEvent event(name, this);
 
-    sendEvent(&event, context, payload, std::move(cb), is_sync);
+    sendEvent(&event, context, payload, std::move(cb));
 
     return event.getDialogRequestId();
 }
 
-void Capability::sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload, EventResultCallback cb, bool is_sync)
+void Capability::sendEvent(CapabilityEvent* event, const std::string& context, const std::string& payload, EventResultCallback cb)
 {
     if (!event)
         return;
@@ -426,7 +422,7 @@ void Capability::sendEvent(CapabilityEvent* event, const std::string& context, c
     else
         addEventResultCallback(ename, std::move(cb));
 
-    event->sendEvent(context, payload, is_sync);
+    event->sendEvent(context, payload);
 }
 
 void Capability::sendAttachmentEvent(CapabilityEvent* event, bool is_end, size_t size, unsigned char* data)

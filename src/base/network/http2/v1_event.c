@@ -24,16 +24,14 @@
 
 #include "dg_types.h"
 
-#include "threadsync.h"
 #include "http2_request.h"
 #include "v1_event.h"
 
 struct _v1_event {
 	HTTP2Request *req;
-	int sync;
 };
 
-V1Event *v1_event_new(const char *host, int is_sync)
+V1Event *v1_event_new(const char *host)
 {
 	char *tmp;
 	struct _v1_event *event;
@@ -45,8 +43,6 @@ V1Event *v1_event_new(const char *host, int is_sync)
 		nugu_error_nomem();
 		return NULL;
 	}
-
-	event->sync = is_sync;
 
 	event->req = http2_request_new();
 	http2_request_set_method(event->req, HTTP2_REQUEST_METHOD_POST);
@@ -137,9 +133,6 @@ static void _on_finish(HTTP2Request *req, void *userdata)
 {
 	int code;
 
-	if (userdata)
-		thread_sync_signal(userdata);
-
 	code = http2_request_get_response_code(req);
 
 	_emit_send_result(code, req);
@@ -151,15 +144,11 @@ static void _on_finish(HTTP2Request *req, void *userdata)
 int v1_event_send_with_free(V1Event *event, HTTP2Network *net)
 {
 	int ret;
-	ThreadSync *sync = NULL;
 
 	g_return_val_if_fail(event != NULL, -1);
 	g_return_val_if_fail(net != NULL, -1);
 
-	if (event->sync)
-		sync = thread_sync_new();
-
-	http2_request_set_finish_callback(event->req, _on_finish, sync);
+	http2_request_set_finish_callback(event->req, _on_finish, NULL);
 
 	ret = http2_network_add_request(net, event->req);
 	if (ret < 0)
@@ -169,11 +158,6 @@ int v1_event_send_with_free(V1Event *event, HTTP2Network *net)
 	event->req = NULL;
 
 	v1_event_free(event);
-
-	if (sync) {
-		thread_sync_wait_secs(sync, 5);
-		thread_sync_free(sync);
-	}
 
 	return ret;
 }
