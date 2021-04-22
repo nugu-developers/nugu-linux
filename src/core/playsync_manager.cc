@@ -15,6 +15,7 @@
  */
 
 #include <algorithm>
+#include <stdexcept>
 
 #include "base/nugu_log.h"
 #include "playsync_manager.hh"
