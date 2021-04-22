@@ -34,8 +34,8 @@ static NuguPcmDriver *pcm_driver;
 
 static int _dumpfile_open(const char *path, const char *prefix)
 {
-	char ymd[9];
-	char hms[7];
+	char ymd[32];
+	char hms[32];
 	time_t now;
 	struct tm now_tm;
 	char *buf = NULL;
@@ -44,10 +44,10 @@ static int _dumpfile_open(const char *path, const char *prefix)
 	now = time(NULL);
 	localtime_r(&now, &now_tm);
 
-	snprintf(ymd, 9, "%04d%02d%02d", now_tm.tm_year + 1900,
+	snprintf(ymd, sizeof(ymd), "%04d%02d%02d", now_tm.tm_year + 1900,
 		 now_tm.tm_mon + 1, now_tm.tm_mday);
-	snprintf(hms, 7, "%02d%02d%02d", now_tm.tm_hour, now_tm.tm_min,
-		 now_tm.tm_sec);
+	snprintf(hms, sizeof(hms), "%02d%02d%02d", now_tm.tm_hour,
+		 now_tm.tm_min, now_tm.tm_sec);
 
 	if (path)
 		buf = g_strdup_printf("%s/%s_%s_%s.dat", path, prefix, ymd,
