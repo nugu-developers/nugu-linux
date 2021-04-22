@@ -36,6 +36,8 @@
 #include "network/dg_server.h"
 #include "network/dg_types.h"
 
+#define ONDEMAND_CONNECTION_TIMEOUT_SECS 30
+
 enum connection_step {
 	STEP_IDLE, /**< Idle */
 	STEP_INVALID_TOKEN,
@@ -64,6 +66,7 @@ static const char * const _debug_connection_step[] = {
 static const char * const _debug_status_strmap[] = {
 	[NUGU_NETWORK_DISCONNECTED] = "NUGU_NETWORK_DISCONNECTED",
 	[NUGU_NETWORK_CONNECTING] = "NUGU_NETWORK_CONNECTING",
+	[NUGU_NETWORK_READY] = "NUGU_NETWORK_READY",
 	[NUGU_NETWORK_CONNECTED] = "NUGU_NETWORK_CONNECTED",
 	[NUGU_NETWORK_TOKEN_ERROR] = "NUGU_NETWORK_TOKEN_ERROR",
 };
@@ -74,6 +77,8 @@ struct _nugu_network {
 	char *useragent;
 	char *last_asr;
 	NuguNetworkConnectionType connection_type;
+
+	guint src_ondemand_timeout;
 
 	/* Registry */
 	char *registry_url;
@@ -213,6 +218,27 @@ static void on_destroy_event_response(void *data)
 	free(item);
 }
 
+static gboolean _on_ondemand_timeout(gpointer userdata)
+{
+	NetworkManager *nm = userdata;
+
+	if (!nm)
+		return FALSE;
+
+	nugu_info("ondemand connection timeout!");
+
+	nm->src_ondemand_timeout = 0;
+	nm->serverinfo = NULL;
+
+	if (!nm->server)
+		return FALSE;
+
+	dg_server_free(nm->server);
+	nm->server = NULL;
+
+	return FALSE;
+}
+
 static void on_event_response(enum nugu_equeue_type type, void *data,
 			      void *userdata)
 {
@@ -229,12 +255,28 @@ static void on_event_response(enum nugu_equeue_type type, void *data,
 	nm->event_response_callback(item->success, item->event_msg_id,
 				    item->event_dialog_id, item->json,
 				    nm->event_response_callback_userdata);
+
+	if (nm->connection_type == NUGU_NETWORK_CONNECTION_ONDEMAND) {
+		if (nm->src_ondemand_timeout > 0)
+			g_source_remove(nm->src_ondemand_timeout);
+
+		nm->src_ondemand_timeout =
+			g_timeout_add_seconds(ONDEMAND_CONNECTION_TIMEOUT_SECS,
+					      _on_ondemand_timeout, nm);
+	}
 }
 
 static void _update_status(NetworkManager *nm, NuguNetworkStatus new_status)
 {
 	if (nm->cur_status == new_status) {
 		nugu_dbg("ignore same status: %s (%d)",
+			 _debug_status_strmap[new_status], new_status);
+		return;
+	}
+
+	if (nm->connection_type == NUGU_NETWORK_CONNECTION_ONDEMAND &&
+	    new_status == NUGU_NETWORK_CONNECTED) {
+		nugu_dbg("%s (%d) status is not allowed on ONDEMAND type",
 			 _debug_status_strmap[new_status], new_status);
 		return;
 	}
@@ -364,6 +406,36 @@ static void _try_connect_to_handoff(NetworkManager *nm)
 	_start_registry(nm);
 }
 
+static int _assign_server(NetworkManager *nm)
+{
+	/* Determine which server candidates to use ondemand */
+	if (nm->serverinfo == NULL) {
+		nugu_dbg("start with first server in the list");
+		nm->serverinfo = nm->server_list;
+	} else {
+		nugu_dbg("start with next server");
+		nm->serverinfo = nm->serverinfo->next;
+	}
+
+	for (; nm->serverinfo; nm->serverinfo = nm->serverinfo->next) {
+		nm->server = dg_server_new(nm->serverinfo->data);
+		if (!nm->server) {
+			nugu_error("dg_server_new() failed. try next server");
+			continue;
+		}
+
+		_log_server_info(nm, nm->server);
+
+		return 0;
+	}
+
+	nugu_error("fail to assign all servers");
+	nm->serverinfo = NULL;
+	_update_status(nm, NUGU_NETWORK_DISCONNECTED);
+
+	return -1;
+}
+
 static void _try_connect_to_servers(NetworkManager *nm)
 {
 	/* server already assigned. retry to connect */
@@ -472,7 +544,11 @@ static void _process_connecting(NetworkManager *nm,
 			dg_registry_free(nm->registry);
 			nm->registry = NULL;
 		}
-		_process_connecting(nm, STEP_SERVER_CONNECTING);
+
+		if (nm->connection_type == NUGU_NETWORK_CONNECTION_ORIENTED)
+			_process_connecting(nm, STEP_SERVER_CONNECTING);
+		else
+			_update_status(nm, NUGU_NETWORK_READY);
 		break;
 
 	case STEP_SERVER_CONNECTING:
@@ -506,9 +582,13 @@ static void _process_connecting(NetworkManager *nm,
 					NUGU_NETWORK_HANDOFF_COMPLETED,
 					nm->handoff_callback_userdata);
 		}
-		dg_server_start_health_check(nm->server, &(nm->policy));
+
 		dg_server_reset_retry_count(nm->server);
-		_update_status(nm, NUGU_NETWORK_CONNECTED);
+
+		if (nm->connection_type == NUGU_NETWORK_CONNECTION_ORIENTED) {
+			dg_server_start_health_check(nm->server, &(nm->policy));
+			_update_status(nm, NUGU_NETWORK_CONNECTED);
+		}
 		break;
 
 	case STEP_SERVER_FAILED:
@@ -690,6 +770,9 @@ static NetworkManager *nugu_network_manager_new(void)
 static void nugu_network_manager_free(NetworkManager *nm)
 {
 	g_return_if_fail(nm != NULL);
+
+	if (nm->src_ondemand_timeout > 0)
+		g_source_remove(nm->src_ondemand_timeout);
 
 	if (nm->server_list)
 		g_list_free_full(nm->server_list, free);
@@ -949,14 +1032,28 @@ EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
 		return -1;
 	}
 
-	if (!_network->server) {
-		nugu_error("not connected");
-		return -1;
-	}
-
 	if (nugu_event_peek_context(nev) == NULL) {
 		nugu_error("context must not null");
 		return -1;
+	}
+
+	if (_network->connection_type == NUGU_NETWORK_CONNECTION_ORIENTED) {
+		if (!_network->server) {
+			nugu_error("server not ready");
+			return -1;
+		}
+	} else {
+		if (!_network->server) {
+			if (_assign_server(_network) < 0) {
+				nugu_error("can't use server");
+				return -1;
+			}
+		}
+
+		if (_network->src_ondemand_timeout > 0) {
+			g_source_remove(_network->src_ondemand_timeout);
+			_network->src_ondemand_timeout = 0;
+		}
 	}
 
 	if (_network->event_send_callback)

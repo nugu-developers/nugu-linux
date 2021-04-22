@@ -40,17 +40,23 @@ static void _status(NuguNetworkStatus status, void* userdata)
         for (auto listener : listeners) {
             listener->onStatusChanged(NetworkStatus::DISCONNECTED);
         }
-    } else if (status == NUGU_NETWORK_CONNECTED) {
-        nugu_info("Network connected");
-
-        for (auto listener : listeners) {
-            listener->onStatusChanged(NetworkStatus::CONNECTED);
-        }
     } else if (status == NUGU_NETWORK_CONNECTING) {
         nugu_info("Network connecting");
 
         for (auto listener : listeners) {
             listener->onStatusChanged(NetworkStatus::CONNECTING);
+        }
+    } else if (status == NUGU_NETWORK_READY) {
+        nugu_info("Network ready");
+
+        for (auto listener : listeners) {
+            listener->onStatusChanged(NetworkStatus::READY);
+        }
+    } else if (status == NUGU_NETWORK_CONNECTED) {
+        nugu_info("Network connected");
+
+        for (auto listener : listeners) {
+            listener->onStatusChanged(NetworkStatus::CONNECTED);
         }
     } else if (status == NUGU_NETWORK_TOKEN_ERROR) {
         nugu_error("Network token error");

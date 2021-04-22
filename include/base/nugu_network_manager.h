@@ -39,12 +39,17 @@ extern "C" {
 /**
  * @brief network status
  *
- * Basic connection status flow
+ * Basic connection status flow for connection-oriented
  *   - Normal connection: DISCONNECTED -> CONNECTING -> CONNECTED
  *   - Connection failed: DISCONNECTED -> CONNECTING -> DISCONNECTED
  *   - Token error: DISCONNECTED -> CONNECTING -> TOKEN_ERROR -> DISCONNECTED
  *
- * Connection recovery flow
+ * Basic connection status flow for connection-ondemand
+ *   - Normal connection: DISCONNECTED -> CONNECTING -> READY
+ *   - Connection failed: DISCONNECTED -> CONNECTING -> DISCONNECTED
+ *   - Token error: DISCONNECTED -> CONNECTING -> TOKEN_ERROR -> DISCONNECTED
+ *
+ * Connection recovery flow for connection-oriented
  *   - Connection recovered: CONNECTED -> CONNECTING -> CONNECTED
  *   - Recovery failed: CONNECTED -> CONNECTING -> DISCONNECTED
  *   - Token error: CONNECTED -> CONNECTING -> TOKEN_ERROR -> DISCONNECTED
@@ -56,6 +61,7 @@ extern "C" {
 typedef enum nugu_network_status {
 	NUGU_NETWORK_DISCONNECTED, /**< Network disconnected */
 	NUGU_NETWORK_CONNECTING, /**< Connection in progress */
+	NUGU_NETWORK_READY, /**< Network ready for ondemand connection type */
 	NUGU_NETWORK_CONNECTED, /**< Network connected */
 	NUGU_NETWORK_TOKEN_ERROR /**< Token error */
 } NuguNetworkStatus;
