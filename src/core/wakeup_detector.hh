@@ -59,6 +59,7 @@ public:
     void setListener(IWakeupDetectorListener* listener);
     bool startWakeup(const std::string& id);
     void stopWakeup();
+    void changeModel(const std::string& model_path);
 
 private:
     void initialize(Attribute&& attribute);
@@ -66,14 +67,17 @@ private:
     void sendWakeupEvent(WakeupState state, const std::string& id, float noise = 0, float speech = 0);
     void setPower(float power);
     void getPower(float& noise, float& speech);
+    void setModelFile(const std::string& model_path);
 
     IWakeupDetectorListener* listener = nullptr;
 
     // attribute
-    std::string model_path = "";
     float power_speech[POWER_SPEECH_PERIOD];
     float power_noise[POWER_NOISE_PERIOD];
     int power_index = 0;
+
+    std::string model_net_file;
+    std::string model_search_file;
 };
 
 } // NuguCore

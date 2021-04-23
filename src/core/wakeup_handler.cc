@@ -88,4 +88,9 @@ void WakeupHandler::setWakeupId(const std::string& id)
     nugu_dbg("startListening with new id(%s)", request_wakeup_id.c_str());
 }
 
+void WakeupHandler::changeModel(const std::string& model_path)
+{
+    wakeup_detector->changeModel(model_path);
+}
+
 } // NuguCore

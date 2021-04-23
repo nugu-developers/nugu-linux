@@ -72,7 +72,7 @@ void WakeupDetector::initialize(Attribute&& attribute)
     std::string format = !attribute.format.empty() ? attribute.format : KWD_FORMAT;
     std::string channel = !attribute.channel.empty() ? attribute.channel : KWD_CHANNEL;
 
-    model_path = !attribute.model_path.empty() ? attribute.model_path : MODEL_PATH;
+    setModelFile(!attribute.model_path.empty() ? attribute.model_path : MODEL_PATH);
 
     AudioInputProcessor::init("kwd", sample, format, channel);
 
@@ -85,20 +85,8 @@ void WakeupDetector::loop()
 {
     NUGUTimer* timer = new NUGUTimer(true);
     int pcm_size;
-    std::string model_net_file;
-    std::string model_search_file;
 
     nugu_dbg("Wakeup Thread: started");
-
-    if (model_path.size()) {
-        nugu_dbg("model path: %s", model_path.c_str());
-
-        model_net_file = model_path + "/" + WAKEUP_NET_MODEL_FILE;
-        nugu_dbg("kwd model net-file: %s", model_net_file.c_str());
-
-        model_search_file = model_path + "/" + WAKEUP_SEARCH_MODEL_FILE;
-        nugu_dbg("kwd model search-file: %s", model_search_file.c_str());
-    }
 
     mutex.lock();
     thread_created = true;
@@ -242,6 +230,17 @@ void WakeupDetector::stopWakeup()
     AudioInputProcessor::stop();
 }
 
+void WakeupDetector::changeModel(const std::string& model_path)
+{
+    if (model_path.empty()) {
+        nugu_warn("The model path is empty.");
+        return;
+    }
+
+    stopWakeup();
+    setModelFile(model_path);
+}
+
 void WakeupDetector::setPower(float power)
 {
     power_noise[power_index % POWER_NOISE_PERIOD] = power;
@@ -268,6 +267,22 @@ void WakeupDetector::getPower(float& noise, float& speech)
     }
     if (max)
         speech = max;
+}
+
+void WakeupDetector::setModelFile(const std::string& model_path)
+{
+    if (model_path.empty()) {
+        nugu_warn("The model path is empty.");
+        return;
+    }
+
+    std::lock_guard<std::mutex> lock(mutex);
+
+    model_net_file = model_path + "/" + WAKEUP_NET_MODEL_FILE;
+    nugu_dbg("kwd model net-file: %s", model_net_file.c_str());
+
+    model_search_file = model_path + "/" + WAKEUP_SEARCH_MODEL_FILE;
+    nugu_dbg("kwd model search-file: %s", model_search_file.c_str());
 }
 
 } // NuguCore
