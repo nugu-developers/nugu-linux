@@ -31,42 +31,42 @@ namespace NuguCore {
 static void _status(NuguNetworkStatus status, void* userdata)
 {
     NetworkManager* instance = static_cast<NetworkManager*>(userdata);
-    auto listeners = instance->getListener();
+    const auto& listeners = instance->getListener();
 
     // send nugu network disconnected info to user for inducing checking auth info
     if (status == NUGU_NETWORK_DISCONNECTED) {
         nugu_info("Network disconnected");
 
-        for (auto listener : listeners) {
+        for (const auto& listener : listeners) {
             listener->onStatusChanged(NetworkStatus::DISCONNECTED);
         }
     } else if (status == NUGU_NETWORK_CONNECTING) {
         nugu_info("Network connecting");
 
-        for (auto listener : listeners) {
+        for (const auto& listener : listeners) {
             listener->onStatusChanged(NetworkStatus::CONNECTING);
         }
     } else if (status == NUGU_NETWORK_READY) {
         nugu_info("Network ready");
 
-        for (auto listener : listeners) {
+        for (const auto& listener : listeners) {
             listener->onStatusChanged(NetworkStatus::READY);
         }
     } else if (status == NUGU_NETWORK_CONNECTED) {
         nugu_info("Network connected");
 
-        for (auto listener : listeners) {
+        for (const auto& listener : listeners) {
             listener->onStatusChanged(NetworkStatus::CONNECTED);
         }
     } else if (status == NUGU_NETWORK_TOKEN_ERROR) {
         nugu_error("Network token error");
 
-        for (auto listener : listeners) {
+        for (const auto& listener : listeners) {
             listener->onError(NetworkError::TOKEN_ERROR);
         }
     } else {
         nugu_error("Network unknown error");
-        for (auto listener : listeners) {
+        for (const auto& listener : listeners) {
             listener->onError(NetworkError::UNKNOWN);
         }
     }
@@ -80,8 +80,8 @@ static void eventSendNotifyCallback(NuguEvent* event, void* userdata)
     }
 
     NetworkManager* instance = static_cast<NetworkManager*>(userdata);
-    auto listeners = instance->getListener();
-    for (auto listener : listeners)
+    const auto& listeners = instance->getListener();
+    for (const auto& listener : listeners)
         listener->onEventSend(event);
 }
 
@@ -93,8 +93,8 @@ static void eventDataSendNotifyCallback(NuguEvent* event, int is_end, size_t len
     }
 
     NetworkManager* instance = static_cast<NetworkManager*>(userdata);
-    auto listeners = instance->getListener();
-    for (auto listener : listeners)
+    const auto& listeners = instance->getListener();
+    for (const auto& listener : listeners)
         listener->onEventAttachmentSend(event, nugu_event_get_seq(event),
             (is_end == 1) ? true : false, length, data);
 }
@@ -107,8 +107,8 @@ static void eventSendResultCallback(int success, const char* msg_id, const char*
     }
 
     NetworkManager* instance = static_cast<NetworkManager*>(userdata);
-    auto listeners = instance->getListener();
-    for (auto listener : listeners) {
+    const auto& listeners = instance->getListener();
+    for (const auto& listener : listeners) {
         bool result = success == 1 ? true : false;
         listener->onEventSendResult(msg_id, result, code);
     }
@@ -124,8 +124,8 @@ static void eventResponseCallback(int success,
     }
 
     NetworkManager* instance = static_cast<NetworkManager*>(userdata);
-    auto listeners = instance->getListener();
-    for (auto listener : listeners) {
+    const auto& listeners = instance->getListener();
+    for (const auto& listener : listeners) {
         bool result = success == 1 ? true : false;
         listener->onEventResponse(event_msg_id, json, result);
     }
