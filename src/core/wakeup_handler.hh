@@ -38,7 +38,7 @@ public:
     bool startWakeup() override;
     void stopWakeup() override;
     void onWakeupState(WakeupState state, const std::string& id, float noise, float speech) override;
-
+    void changeModel(const std::string& model_path) override;
     void setWakeupId(const std::string& id);
 
 private:

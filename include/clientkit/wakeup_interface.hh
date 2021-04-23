@@ -82,6 +82,12 @@ public:
      * @brief Stop the wakeup detection
      */
     virtual void stopWakeup() = 0;
+
+    /**
+     * @brief Change wakeup word model
+     * @param[in] model_path model file path
+     */
+    virtual void changeModel(const std::string& model_path) = 0;
 };
 
 /**
