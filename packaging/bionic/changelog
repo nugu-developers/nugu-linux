@@ -1,3 +1,19 @@
+nugu (1.1.0ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed FocusManager
+  * Added Nudge interface v1.0
+  * Added network on-demand connection
+  * Applied Display interface v1.7
+  * Applied Chips interface v1.2
+  * Applied ASR interface v1.6
+  * Updated ITTSHandler
+  * Updated IWakeupHandler
+  * Updated ASRAgent
+  * Updated AudioPlayerAgent
+  * Updated PlaySyncManager
+
+ -- nugulinux <nugulinux@gmail.com>  Tue, 27 Apr 2021 18:30:00 +0900
+
 nugu (1.0.0ubuntu1~bionic) bionic; urgency=medium
 
   * Fixed handling ASR initiator
