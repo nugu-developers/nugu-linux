@@ -4,7 +4,8 @@ var group__WakeupInterface =
       [ "~IWakeupHandler", "classNuguClientKit_1_1IWakeupHandler.html#a538df6480701a3b241d1d1c28f455146", null ],
       [ "setListener", "classNuguClientKit_1_1IWakeupHandler.html#ac5725f07b3b20a9ff39b18261df4280c", null ],
       [ "startWakeup", "classNuguClientKit_1_1IWakeupHandler.html#af03bb635a82ec3143d534ca5b8f90413", null ],
-      [ "stopWakeup", "classNuguClientKit_1_1IWakeupHandler.html#a26800967ca4b90caa23359f629361acc", null ]
+      [ "stopWakeup", "classNuguClientKit_1_1IWakeupHandler.html#a26800967ca4b90caa23359f629361acc", null ],
+      [ "changeModel", "classNuguClientKit_1_1IWakeupHandler.html#aa3d32f85853d19202ec17507afc33c05", null ]
     ] ],
     [ "IWakeupListener", "classNuguClientKit_1_1IWakeupListener.html", [
       [ "~IWakeupListener", "classNuguClientKit_1_1IWakeupListener.html#a0588a6789cfdfaad012505d21a6874c0", null ],

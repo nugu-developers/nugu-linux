@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.1.0</span>
    </div>
   </td>
  </tr>
@@ -136,24 +136,29 @@ $(document).ready(function(){initNavTree('tts__interface_8hh_source.html',''); i
 <div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1ITTSHandler.html">ITTSHandler</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1ITTSHandler.html#af250d2068fc2a6f6edc49b70360cbaa5">stopTTS</a>() = 0;</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="classNuguCapability_1_1ITTSHandler.html#ae249a2ec54c8e52dc26624a18f0a8ba1">requestTTS</a>(<span class="keyword">const</span> std::string&amp; text, <span class="keyword">const</span> std::string&amp; play_service_id, <span class="keyword">const</span> std::string&amp; referrer_id = <span class="stringliteral">&quot;&quot;</span>) = 0;</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classNuguCapability_1_1ITTSHandler.html#a7dabffea5b4e697e1c8d084e51645ca4">setVolume</a>(<span class="keywordtype">int</span> volume) = 0;</div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1ITTSHandler.html#a4ea89acbbbc0b36c8e1058200a99fe6a">setAttribute</a>(<a class="code" href="structNuguCapability_1_1TTSAttribute.html">TTSAttribute</a>&amp;&amp; attribute) = 0;</div>
-<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;};</div>
-<div class="line"><a name="l00118"></a><span class="lineno">  118</span>&#160; </div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;} <span class="comment">// NuguCapability</span></div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_TTS_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1ITTSHandler.html#ac6fb7834ac4d069d15d6f4cbbb2a1af9">addListener</a>(<a class="code" href="classNuguCapability_1_1ITTSListener.html">ITTSListener</a>* listener) = 0;</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1ITTSHandler.html#a9c959df237c27076c37fb812d22baf7b">removeListener</a>(<a class="code" href="classNuguCapability_1_1ITTSListener.html">ITTSListener</a>* listener) = 0;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1ITTSHandler.html#af250d2068fc2a6f6edc49b70360cbaa5">stopTTS</a>() = 0;</div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="classNuguCapability_1_1ITTSHandler.html#ae249a2ec54c8e52dc26624a18f0a8ba1">requestTTS</a>(<span class="keyword">const</span> std::string&amp; text, <span class="keyword">const</span> std::string&amp; play_service_id, <span class="keyword">const</span> std::string&amp; referrer_id = <span class="stringliteral">&quot;&quot;</span>) = 0;</div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classNuguCapability_1_1ITTSHandler.html#a7dabffea5b4e697e1c8d084e51645ca4">setVolume</a>(<span class="keywordtype">int</span> volume) = 0;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
+<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1ITTSHandler.html#a4ea89acbbbc0b36c8e1058200a99fe6a">setAttribute</a>(<a class="code" href="structNuguCapability_1_1TTSAttribute.html">TTSAttribute</a>&amp;&amp; attribute) = 0;</div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;};</div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;} <span class="comment">// NuguCapability</span></div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160; </div>
+<div class="line"><a name="l00137"></a><span class="lineno">  137</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_TTS_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassNuguCapability_1_1ITTSHandler_html_ae249a2ec54c8e52dc26624a18f0a8ba1"><div class="ttname"><a href="classNuguCapability_1_1ITTSHandler.html#ae249a2ec54c8e52dc26624a18f0a8ba1">NuguCapability::ITTSHandler::requestTTS</a></div><div class="ttdeci">virtual std::string requestTTS(const std::string &amp;text, const std::string &amp;play_service_id, const std::string &amp;referrer_id=&quot;&quot;)=0</div><div class="ttdoc">request the sentence to speech.</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITTSListener_html_a37f5ce98e06f5e81c87369eb08f9ef6a"><div class="ttname"><a href="classNuguCapability_1_1ITTSListener.html#a37f5ce98e06f5e81c87369eb08f9ef6a">NuguCapability::ITTSListener::onTTSState</a></div><div class="ttdeci">virtual void onTTSState(TTSState state, const std::string &amp;dialog_id)=0</div><div class="ttdoc">Report changes in the speech state to the user.</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITTSHandler_html"><div class="ttname"><a href="classNuguCapability_1_1ITTSHandler.html">NuguCapability::ITTSHandler</a></div><div class="ttdoc">tts handler interface</div><div class="ttdef"><b>Definition:</b> tts_interface.hh:88</div></div>
 <div class="ttc" id="agroup__TTSInterface_html_gga7d4f4423b5757b9a2b029a5ce5fbcccfa334b1664f6e8ae94f40877279035593b"><div class="ttname"><a href="group__TTSInterface.html#gga7d4f4423b5757b9a2b029a5ce5fbcccfa334b1664f6e8ae94f40877279035593b">NuguCapability::TTSState::TTS_SPEECH_FINISH</a></div><div class="ttdeci">@ TTS_SPEECH_FINISH</div></div>
+<div class="ttc" id="aclassNuguCapability_1_1ITTSHandler_html_ac6fb7834ac4d069d15d6f4cbbb2a1af9"><div class="ttname"><a href="classNuguCapability_1_1ITTSHandler.html#ac6fb7834ac4d069d15d6f4cbbb2a1af9">NuguCapability::ITTSHandler::addListener</a></div><div class="ttdeci">virtual void addListener(ITTSListener *listener)=0</div><div class="ttdoc">Add the ITTSListener object.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:64</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITTSHandler_html_a4ea89acbbbc0b36c8e1058200a99fe6a"><div class="ttname"><a href="classNuguCapability_1_1ITTSHandler.html#a4ea89acbbbc0b36c8e1058200a99fe6a">NuguCapability::ITTSHandler::setAttribute</a></div><div class="ttdeci">virtual void setAttribute(TTSAttribute &amp;&amp;attribute)=0</div><div class="ttdoc">Set attribute about speech synthesizer.</div></div>
 <div class="ttc" id="agroup__TTSInterface_html_gga7d4f4423b5757b9a2b029a5ce5fbcccfa6bd04d658b5dee0510833fa07ead4543"><div class="ttname"><a href="group__TTSInterface.html#gga7d4f4423b5757b9a2b029a5ce5fbcccfa6bd04d658b5dee0510833fa07ead4543">NuguCapability::TTSState::TTS_SPEECH_START</a></div><div class="ttdeci">@ TTS_SPEECH_START</div></div>
@@ -165,13 +170,14 @@ $(document).ready(function(){initNavTree('tts__interface_8hh_source.html',''); i
 <div class="ttc" id="aclassNuguCapability_1_1ITTSHandler_html_a7dabffea5b4e697e1c8d084e51645ca4"><div class="ttname"><a href="classNuguCapability_1_1ITTSHandler.html#a7dabffea5b4e697e1c8d084e51645ca4">NuguCapability::ITTSHandler::setVolume</a></div><div class="ttdeci">virtual bool setVolume(int volume)=0</div><div class="ttdoc">set pcm player's volume</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITTSHandler_html_af250d2068fc2a6f6edc49b70360cbaa5"><div class="ttname"><a href="classNuguCapability_1_1ITTSHandler.html#af250d2068fc2a6f6edc49b70360cbaa5">NuguCapability::ITTSHandler::stopTTS</a></div><div class="ttdeci">virtual void stopTTS()=0</div><div class="ttdoc">Stop currently speech.</div></div>
 <div class="ttc" id="acapability__interface_8hh_html"><div class="ttname"><a href="capability__interface_8hh.html">capability_interface.hh</a></div></div>
+<div class="ttc" id="aclassNuguCapability_1_1ITTSHandler_html_a9c959df237c27076c37fb812d22baf7b"><div class="ttname"><a href="classNuguCapability_1_1ITTSHandler.html#a9c959df237c27076c37fb812d22baf7b">NuguCapability::ITTSHandler::removeListener</a></div><div class="ttdeci">virtual void removeListener(ITTSListener *listener)=0</div><div class="ttdoc">Remove the ITTSListener object.</div></div>
 <div class="ttc" id="agroup__TTSInterface_html_ga7d4f4423b5757b9a2b029a5ce5fbcccf"><div class="ttname"><a href="group__TTSInterface.html#ga7d4f4423b5757b9a2b029a5ce5fbcccf">NuguCapability::TTSState</a></div><div class="ttdeci">TTSState</div><div class="ttdoc">TTSState.</div><div class="ttdef"><b>Definition:</b> tts_interface.hh:42</div></div>
 <div class="ttc" id="astructNuguCapability_1_1TTSAttribute_html_a3d27107d98ea2fbdff928b47ffa7c432"><div class="ttname"><a href="structNuguCapability_1_1TTSAttribute.html#a3d27107d98ea2fbdff928b47ffa7c432">NuguCapability::TTSAttribute::tts_engine</a></div><div class="ttdeci">std::string tts_engine</div><div class="ttdef"><b>Definition:</b> tts_interface.hh:51</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fe91053431442a18fd8b50c6b5c5d672.html">capability</a></li><li class="navelem"><a class="el" href="tts__interface_8hh.html">tts_interface.hh</a></li>
-    <li class="footer">Generated on Tue Mar 30 2021 04:50:49 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Apr 27 2021 10:56:56 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

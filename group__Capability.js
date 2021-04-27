@@ -29,8 +29,8 @@ var group__Capability =
       [ "processDirective", "classNuguClientKit_1_1Capability.html#af1a294ba01c24abb0bc222467138964d", null ],
       [ "destroyDirective", "classNuguClientKit_1_1Capability.html#aa03298b48d3d73bd0d7c6f1b512c4650", null ],
       [ "getNuguDirective", "classNuguClientKit_1_1Capability.html#a8354027497ae65feca713f52fee1381e", null ],
-      [ "sendEvent", "classNuguClientKit_1_1Capability.html#aa1dc3ec2be4d9fa905992a19a544f98c", null ],
-      [ "sendEvent", "classNuguClientKit_1_1Capability.html#a87e138d8d1879c2ac18f95291299feed", null ],
+      [ "sendEvent", "classNuguClientKit_1_1Capability.html#ab2bcadc604f0295ee1a55c93f45f9a62", null ],
+      [ "sendEvent", "classNuguClientKit_1_1Capability.html#a233ad398b3fa59f8dcb864582b118387", null ],
       [ "sendAttachmentEvent", "classNuguClientKit_1_1Capability.html#a18e7780526e9ee387be62b327b268c5a", null ],
       [ "getProperty", "classNuguClientKit_1_1Capability.html#ac6183da2d32a23d4e8f14184adaece3c", null ],
       [ "getProperties", "classNuguClientKit_1_1Capability.html#a517562d581457af86a33bb304ccdc0e4", null ],
@@ -62,7 +62,7 @@ var group__Capability =
       [ "setDialogRequestId", "classNuguClientKit_1_1CapabilityEvent.html#af27155047a57dd5720218b515849d9e6", null ],
       [ "setType", "classNuguClientKit_1_1CapabilityEvent.html#af8c710dcae336efecc912ad40b1a4dc7", null ],
       [ "forceClose", "classNuguClientKit_1_1CapabilityEvent.html#ac02f80f01da658db759c118dec31cf55", null ],
-      [ "sendEvent", "classNuguClientKit_1_1CapabilityEvent.html#ae9eca3258e413f288a973a927e6f3f4b", null ],
+      [ "sendEvent", "classNuguClientKit_1_1CapabilityEvent.html#a4b3ecb7b84f133dfa4075fec87af39e5", null ],
       [ "sendAttachmentEvent", "classNuguClientKit_1_1CapabilityEvent.html#a855cb351fa7f623a9d5c147d0c42c1d6", null ]
     ] ]
 ];

@@ -1,8 +1,5 @@
 var searchData=
 [
-  ['wake_5fup_5fword_2037',['WAKE_UP_WORD',['../group__ASRInterface.html#gga0dd27d783b014cca3e5aca7510b36f8aa646e5558f4e20f45fbd651b653f8dbc3',1,'NuguCapability']]],
-  ['wakeup_5fdetected_2038',['WAKEUP_DETECTED',['../group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a414bbfd491b2bcc1fe2538cff08c2c28',1,'NuguClientKit']]],
-  ['wakeup_5fdetecting_2039',['WAKEUP_DETECTING',['../group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119aaa5bf1ece51d36575b3f26c570899008',1,'NuguClientKit']]],
-  ['wakeup_5ffail_2040',['WAKEUP_FAIL',['../group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a7b2e84d7ac904c69cc66b63252822dbe',1,'NuguClientKit']]],
-  ['withdrawn_5fuser_2041',['WITHDRAWN_USER',['../group__SystemInterface.html#gga210ca95bced11e44b9558947bb31a2eba61edd86da66e7b719182d760a0427ffd',1,'NuguCapability']]]
+  ['visual_2074',['VISUAL',['../group__DirectiveSequencerInterface.html#gga27f22301768541185c29c12af55aa862a8daf3496602a64f00b16ce266e7084dc',1,'NuguClientKit']]],
+  ['voice_5fcommand_2075',['VOICE_COMMAND',['../group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698ab077c1bf8325593593f2bc2db6b009ba',1,'NuguCapability']]]
 ];

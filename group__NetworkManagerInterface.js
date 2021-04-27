@@ -21,8 +21,9 @@ var group__NetworkManagerInterface =
     ] ],
     [ "NetworkStatus", "group__NetworkManagerInterface.html#ga385a69cab88c2d456247e254424bf809", [
       [ "DISCONNECTED", "group__NetworkManagerInterface.html#gga385a69cab88c2d456247e254424bf809a99c8ce56e7ab246445d3b134724428f3", null ],
-      [ "CONNECTED", "group__NetworkManagerInterface.html#gga385a69cab88c2d456247e254424bf809aa5afd6edd5336d91316964e493936858", null ],
-      [ "CONNECTING", "group__NetworkManagerInterface.html#gga385a69cab88c2d456247e254424bf809a9a14f95e151eec641316e7c784ce832d", null ]
+      [ "CONNECTING", "group__NetworkManagerInterface.html#gga385a69cab88c2d456247e254424bf809a9a14f95e151eec641316e7c784ce832d", null ],
+      [ "READY", "group__NetworkManagerInterface.html#gga385a69cab88c2d456247e254424bf809a2baa69eafc7204f3bd8648eba580c489", null ],
+      [ "CONNECTED", "group__NetworkManagerInterface.html#gga385a69cab88c2d456247e254424bf809aa5afd6edd5336d91316964e493936858", null ]
     ] ],
     [ "NetworkError", "group__NetworkManagerInterface.html#ga6aff79e2435c590ea44de8c43754e015", [
       [ "TOKEN_ERROR", "group__NetworkManagerInterface.html#gga6aff79e2435c590ea44de8c43754e015ade5fb169ea8d8790ec07c79a01246313", null ],

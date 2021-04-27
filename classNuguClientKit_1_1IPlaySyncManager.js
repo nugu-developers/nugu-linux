@@ -17,6 +17,7 @@ var classNuguClientKit_1_1IPlaySyncManager =
     [ "stopHolding", "classNuguClientKit_1_1IPlaySyncManager.html#a8a9dfd81efab9b66881e31d57713d392", null ],
     [ "resetHolding", "classNuguClientKit_1_1IPlaySyncManager.html#aac5186353e255533370547434447791f", null ],
     [ "clearHolding", "classNuguClientKit_1_1IPlaySyncManager.html#a1a0e795464aba59343d48f35ce7ad25c", null ],
+    [ "clear", "classNuguClientKit_1_1IPlaySyncManager.html#aa2f2b27e5e833ced20d1bd3e3572dd94", null ],
     [ "isConditionToHandlePrevDialog", "classNuguClientKit_1_1IPlaySyncManager.html#a9b8b814ba34f90cb7a3c55b05abf8728", null ],
     [ "hasActivity", "classNuguClientKit_1_1IPlaySyncManager.html#aec1d0b6c858178b591362fff289f5473", null ],
     [ "hasNextPlayStack", "classNuguClientKit_1_1IPlaySyncManager.html#a7a690e691ce704a5fa593ed1df23f9b6", null ],

@@ -1,6 +1,10 @@
 var searchData=
 [
-  ['unauthorized_5frequest_5fexception_2032',['UNAUTHORIZED_REQUEST_EXCEPTION',['../group__SystemInterface.html#ggae95aa9037a85a223126f51c1efcbe671a073b62332ae9f9b319a9d1867ccdcf90',1,'NuguCapability']]],
-  ['underrun_2033',['UNDERRUN',['../group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910a5fac8c63be4469a35faa1ccde324a3a7',1,'NuguCapability']]],
-  ['unknown_2034',['UNKNOWN',['../group__ASRInterface.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21a696b031073e74bf2cb98e5ef201d4aa3',1,'NuguCapability::UNKNOWN()'],['../group__NetworkManagerInterface.html#gga6aff79e2435c590ea44de8c43754e015a696b031073e74bf2cb98e5ef201d4aa3',1,'NuguClientKit::UNKNOWN()']]]
+  ['tap_2064',['TAP',['../group__ASRInterface.html#gga0dd27d783b014cca3e5aca7510b36f8aafcd6420c60a17418a6de745d6546d966',1,'NuguCapability']]],
+  ['timeout_2065',['TIMEOUT',['../group__SpeechRecognizerInterface.html#ggaae383c251ee0fa6e96e4c53b9f5d9a3aa070a0fb40f6c308ab544b227660aadff',1,'NuguClientKit']]],
+  ['token_5ferror_2066',['TOKEN_ERROR',['../group__NetworkManagerInterface.html#gga6aff79e2435c590ea44de8c43754e015ade5fb169ea8d8790ec07c79a01246313',1,'NuguClientKit']]],
+  ['tts_2067',['TTS',['../group__PlaySyncManagerInterface.html#gga42c294733588594b84ae16137eb054c5a4616606d5a8590d8c1d305d50dce2f73',1,'NuguClientKit']]],
+  ['tts_5fspeaking_5fexception_2068',['TTS_SPEAKING_EXCEPTION',['../group__SystemInterface.html#ggae95aa9037a85a223126f51c1efcbe671a4728a21f19c4b81a354edbcd5a1ad9c1',1,'NuguCapability']]],
+  ['tts_5fspeech_5ffinish_2069',['TTS_SPEECH_FINISH',['../group__TTSInterface.html#gga7d4f4423b5757b9a2b029a5ce5fbcccfa334b1664f6e8ae94f40877279035593b',1,'NuguCapability']]],
+  ['tts_5fspeech_5fstart_2070',['TTS_SPEECH_START',['../group__TTSInterface.html#gga7d4f4423b5757b9a2b029a5ce5fbcccfa6bd04d658b5dee0510833fa07ead4543',1,'NuguCapability']]]
 ];

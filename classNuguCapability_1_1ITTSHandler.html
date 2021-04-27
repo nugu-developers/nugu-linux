@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.1.0</span>
    </div>
   </td>
  </tr>
@@ -119,6 +119,12 @@ $(document).ready(function(){initNavTree('classNuguCapability_1_1ITTSHandler.htm
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:ac6fb7834ac4d069d15d6f4cbbb2a1af9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1ITTSHandler.html#ac6fb7834ac4d069d15d6f4cbbb2a1af9">addListener</a> (<a class="el" href="classNuguCapability_1_1ITTSListener.html">ITTSListener</a> *listener)=0</td></tr>
+<tr class="memdesc:ac6fb7834ac4d069d15d6f4cbbb2a1af9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the <a class="el" href="classNuguCapability_1_1ITTSListener.html" title="tts listener interface">ITTSListener</a> object.  <a href="classNuguCapability_1_1ITTSHandler.html#ac6fb7834ac4d069d15d6f4cbbb2a1af9">More...</a><br /></td></tr>
+<tr class="separator:ac6fb7834ac4d069d15d6f4cbbb2a1af9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c959df237c27076c37fb812d22baf7b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1ITTSHandler.html#a9c959df237c27076c37fb812d22baf7b">removeListener</a> (<a class="el" href="classNuguCapability_1_1ITTSListener.html">ITTSListener</a> *listener)=0</td></tr>
+<tr class="memdesc:a9c959df237c27076c37fb812d22baf7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the <a class="el" href="classNuguCapability_1_1ITTSListener.html" title="tts listener interface">ITTSListener</a> object.  <a href="classNuguCapability_1_1ITTSHandler.html#a9c959df237c27076c37fb812d22baf7b">More...</a><br /></td></tr>
+<tr class="separator:a9c959df237c27076c37fb812d22baf7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae249a2ec54c8e52dc26624a18f0a8ba1"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1ITTSHandler.html#ae249a2ec54c8e52dc26624a18f0a8ba1">requestTTS</a> (const std::string &amp;text, const std::string &amp;play_service_id, const std::string &amp;referrer_id=&quot;&quot;)=0</td></tr>
 <tr class="memdesc:ae249a2ec54c8e52dc26624a18f0a8ba1"><td class="mdescLeft">&#160;</td><td class="mdescRight">request the sentence to speech.  <a href="classNuguCapability_1_1ITTSHandler.html#ae249a2ec54c8e52dc26624a18f0a8ba1">More...</a><br /></td></tr>
 <tr class="separator:ae249a2ec54c8e52dc26624a18f0a8ba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -220,6 +226,74 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>tts handler interface </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguCapability_1_1ITTSListener.html" title="tts listener interface">ITTSListener</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ac6fb7834ac4d069d15d6f4cbbb2a1af9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6fb7834ac4d069d15d6f4cbbb2a1af9">&#9670;&nbsp;</a></span>addListener()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguCapability::ITTSHandler::addListener </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classNuguCapability_1_1ITTSListener.html">ITTSListener</a> *&#160;</td>
+          <td class="paramname"><em>listener</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Add the <a class="el" href="classNuguCapability_1_1ITTSListener.html" title="tts listener interface">ITTSListener</a> object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">listener</td><td><a class="el" href="classNuguCapability_1_1ITTSListener.html" title="tts listener interface">ITTSListener</a> object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9c959df237c27076c37fb812d22baf7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c959df237c27076c37fb812d22baf7b">&#9670;&nbsp;</a></span>removeListener()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguCapability::ITTSHandler::removeListener </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classNuguCapability_1_1ITTSListener.html">ITTSListener</a> *&#160;</td>
+          <td class="paramname"><em>listener</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Remove the <a class="el" href="classNuguCapability_1_1ITTSListener.html" title="tts listener interface">ITTSListener</a> object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">listener</td><td><a class="el" href="classNuguCapability_1_1ITTSListener.html" title="tts listener interface">ITTSListener</a> object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ae249a2ec54c8e52dc26624a18f0a8ba1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae249a2ec54c8e52dc26624a18f0a8ba1">&#9670;&nbsp;</a></span>requestTTS()</h2>
 
@@ -350,7 +424,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguCapability</b></li><li class="navelem"><a class="el" href="classNuguCapability_1_1ITTSHandler.html">ITTSHandler</a></li>
-    <li class="footer">Generated on Tue Mar 30 2021 04:50:50 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Apr 27 2021 10:56:56 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

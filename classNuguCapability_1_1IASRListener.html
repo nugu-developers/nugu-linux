@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.1.0</span>
    </div>
   </td>
  </tr>
@@ -125,9 +125,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:acd823bdf21a98bc80ed20207cfc88999"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IASRListener.html#acd823bdf21a98bc80ed20207cfc88999">onComplete</a> (const std::string &amp;text, const std::string &amp;dialog_id)=0</td></tr>
 <tr class="memdesc:acd823bdf21a98bc80ed20207cfc88999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Speech recognition results which are reported naturally in situations based on the entire speech.  <a href="classNuguCapability_1_1IASRListener.html#acd823bdf21a98bc80ed20207cfc88999">More...</a><br /></td></tr>
 <tr class="separator:acd823bdf21a98bc80ed20207cfc88999"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a734c0362353a8e5a7a1694162e8004"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IASRListener.html#a8a734c0362353a8e5a7a1694162e8004">onError</a> (<a class="el" href="group__ASRInterface.html#ga9aa11256d9ce8a3aa14ac9a24e1d8e21">ASRError</a> error, const std::string &amp;dialog_id)=0</td></tr>
-<tr class="memdesc:a8a734c0362353a8e5a7a1694162e8004"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report an error occurred during speech recognition to the user.  <a href="classNuguCapability_1_1IASRListener.html#a8a734c0362353a8e5a7a1694162e8004">More...</a><br /></td></tr>
-<tr class="separator:a8a734c0362353a8e5a7a1694162e8004"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14209e11ff08651e11b5d5c0cc2c323b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IASRListener.html#a14209e11ff08651e11b5d5c0cc2c323b">onError</a> (<a class="el" href="group__ASRInterface.html#ga9aa11256d9ce8a3aa14ac9a24e1d8e21">ASRError</a> error, const std::string &amp;dialog_id, bool listen_timeout_fail_beep=true)=0</td></tr>
+<tr class="memdesc:a14209e11ff08651e11b5d5c0cc2c323b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report an error occurred during speech recognition to the user.  <a href="classNuguCapability_1_1IASRListener.html#a14209e11ff08651e11b5d5c0cc2c323b">More...</a><br /></td></tr>
+<tr class="separator:a14209e11ff08651e11b5d5c0cc2c323b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba55f5cb3892f44a2c9c32ba70bd3723"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IASRListener.html#aba55f5cb3892f44a2c9c32ba70bd3723">onNone</a> (const std::string &amp;dialog_id)=0</td></tr>
 <tr class="memdesc:aba55f5cb3892f44a2c9c32ba70bd3723"><td class="mdescLeft">&#160;</td><td class="mdescRight">No speech recognition results.  <a href="classNuguCapability_1_1IASRListener.html#aba55f5cb3892f44a2c9c32ba70bd3723">More...</a><br /></td></tr>
 <tr class="separator:aba55f5cb3892f44a2c9c32ba70bd3723"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -314,8 +314,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a8a734c0362353a8e5a7a1694162e8004"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a734c0362353a8e5a7a1694162e8004">&#9670;&nbsp;</a></span>onError()</h2>
+<a id="a14209e11ff08651e11b5d5c0cc2c323b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14209e11ff08651e11b5d5c0cc2c323b">&#9670;&nbsp;</a></span>onError()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -333,7 +333,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>dialog_id</em>&#160;</td>
+          <td class="paramname"><em>dialog_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>listen_timeout_fail_beep</em> = <code>true</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -353,6 +359,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">error</td><td>ASR error </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>dialog request id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">listen_timeout_fail_beep</td><td>whether to play fail beep or not when listen-timeout occurred </td></tr>
   </table>
   </dd>
 </dl>
@@ -402,7 +409,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguCapability</b></li><li class="navelem"><a class="el" href="classNuguCapability_1_1IASRListener.html">IASRListener</a></li>
-    <li class="footer">Generated on Tue Mar 30 2021 04:50:50 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Apr 27 2021 10:56:56 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

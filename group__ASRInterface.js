@@ -24,7 +24,7 @@ var group__ASRInterface =
       [ "onNone", "classNuguCapability_1_1IASRListener.html#aba55f5cb3892f44a2c9c32ba70bd3723", null ],
       [ "onPartial", "classNuguCapability_1_1IASRListener.html#a2395171f2c033b205f880f14b9a6646f", null ],
       [ "onComplete", "classNuguCapability_1_1IASRListener.html#acd823bdf21a98bc80ed20207cfc88999", null ],
-      [ "onError", "classNuguCapability_1_1IASRListener.html#a8a734c0362353a8e5a7a1694162e8004", null ],
+      [ "onError", "classNuguCapability_1_1IASRListener.html#a14209e11ff08651e11b5d5c0cc2c323b", null ],
       [ "onCancel", "classNuguCapability_1_1IASRListener.html#afd6df670314542e5bce36444921258f6", null ]
     ] ],
     [ "ASRState", "group__ASRInterface.html#gafe4f48f063bafec608e5060090a9543b", [

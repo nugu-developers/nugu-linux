@@ -10,6 +10,7 @@ var group__nugu__network =
     ] ],
     [ "NUGU_NETWORK_MAX_ADDRESS", "group__nugu__network.html#gac814994ac3d63c81b6c7d2ec6eac6e19", null ],
     [ "NuguNetworkStatus", "group__nugu__network.html#gadfe4221b82d456908c2fdc21a62a526b", null ],
+    [ "NuguNetworkConnectionType", "group__nugu__network.html#gae79e25fbc09bf8c929c7765a60aad35e", null ],
     [ "NuguNetworkManagerStatusCallback", "group__nugu__network.html#gafb84bd35bc012bf64d434c2e08e94f01", null ],
     [ "NuguNetworkHandoffStatus", "group__nugu__network.html#gaf3009eba6e203b17f69ffabd0555dae2", null ],
     [ "NuguNetworkManagerHandoffStatusCallback", "group__nugu__network.html#ga0f14153574656e566c68d26295a33916", null ],
@@ -23,8 +24,13 @@ var group__nugu__network =
     [ "nugu_network_status", "group__nugu__network.html#gab3b96f22ffa5e42cc058222a04a129c4", [
       [ "NUGU_NETWORK_DISCONNECTED", "group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4ab0ae183c7eb1cbe7496b59f796f11d08", null ],
       [ "NUGU_NETWORK_CONNECTING", "group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a8a1871ebd99b8eb45a62e720c3d0e260", null ],
+      [ "NUGU_NETWORK_READY", "group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a419e61fe56c227ab24f87edd217cbe49", null ],
       [ "NUGU_NETWORK_CONNECTED", "group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a9b9a320a23cfa4c1882c18f3ad153e1f", null ],
       [ "NUGU_NETWORK_TOKEN_ERROR", "group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a6daa9efc152da3f99d19f913c7dda2ce", null ]
+    ] ],
+    [ "nugu_network_connection_type", "group__nugu__network.html#gaa38b1ee160b9d56753141579a5b1b990", [
+      [ "NUGU_NETWORK_CONNECTION_ORIENTED", "group__nugu__network.html#ggaa38b1ee160b9d56753141579a5b1b990a7ae172da0158d75acdb65df588e7d7f3", null ],
+      [ "NUGU_NETWORK_CONNECTION_ONDEMAND", "group__nugu__network.html#ggaa38b1ee160b9d56753141579a5b1b990a6538a9bebcd9956d538df2cde1c27bab", null ]
     ] ],
     [ "nugu_network_handoff_status", "group__nugu__network.html#ga054a32d8fa42531f9768a32499142c93", [
       [ "NUGU_NETWORK_HANDOFF_FAILED", "group__nugu__network.html#gga054a32d8fa42531f9768a32499142c93ae0e7e412946a8c19ed2f534e3145b2eb", null ],
@@ -46,7 +52,7 @@ var group__nugu__network =
     [ "nugu_network_manager_set_attachment_callback", "group__nugu__network.html#gab568a55d3d5165e193b7640c81c72578", null ],
     [ "nugu_network_manager_set_status", "group__nugu__network.html#ga43e79f0c044fd2848987f0953cfcb930", null ],
     [ "nugu_network_manager_get_status", "group__nugu__network.html#gae092f03eddf78dbc7b4138fdfccf67ae", null ],
-    [ "nugu_network_manager_send_event", "group__nugu__network.html#gadfd7f5ce83fe0afc18e1a3bbd4dedc59", null ],
+    [ "nugu_network_manager_send_event", "group__nugu__network.html#ga93d037f96f08bd7de3b8e32c637319e7", null ],
     [ "nugu_network_manager_send_event_data", "group__nugu__network.html#gac8a5a41821ad77b0e964dd79a218ac41", null ],
     [ "nugu_network_manager_force_close_event", "group__nugu__network.html#gaebdb534329b4da2286cb528dc1d8020e", null ],
     [ "nugu_network_manager_initialize", "group__nugu__network.html#ga78d3264b36e057e7ffc70eefa77b0260", null ],
@@ -61,5 +67,7 @@ var group__nugu__network =
     [ "nugu_network_manager_peek_registry_url", "group__nugu__network.html#ga72a662214e4e9a073e6911295599d5a1", null ],
     [ "nugu_network_manager_set_useragent", "group__nugu__network.html#gad996b56722f2aeade89d5591d76f4d22", null ],
     [ "nugu_network_manager_peek_useragent", "group__nugu__network.html#ga146c04f3badde8f76fcdd0469e1ac329", null ],
-    [ "nugu_network_manager_peek_last_asr_time", "group__nugu__network.html#ga90ac485b01cb3a3b486777602a339d16", null ]
+    [ "nugu_network_manager_peek_last_asr_time", "group__nugu__network.html#ga90ac485b01cb3a3b486777602a339d16", null ],
+    [ "nugu_network_manager_set_connection_type", "group__nugu__network.html#gad7e2b54d792863884e0876e38fd4040e", null ],
+    [ "nugu_network_manager_get_connection_type", "group__nugu__network.html#gad44f4a1190be0013d97925c4b449bc82", null ]
 ];

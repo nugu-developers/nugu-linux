@@ -17,6 +17,8 @@ var annotated_dup =
       [ "IExtensionListener", "classNuguCapability_1_1IExtensionListener.html", "classNuguCapability_1_1IExtensionListener" ],
       [ "IMicHandler", "classNuguCapability_1_1IMicHandler.html", "classNuguCapability_1_1IMicHandler" ],
       [ "IMicListener", "classNuguCapability_1_1IMicListener.html", "classNuguCapability_1_1IMicListener" ],
+      [ "INudgeHandler", "classNuguCapability_1_1INudgeHandler.html", "classNuguCapability_1_1INudgeHandler" ],
+      [ "INudgeListener", "classNuguCapability_1_1INudgeListener.html", "classNuguCapability_1_1INudgeListener" ],
       [ "ISessionHandler", "classNuguCapability_1_1ISessionHandler.html", "classNuguCapability_1_1ISessionHandler" ],
       [ "ISessionListener", "classNuguCapability_1_1ISessionListener.html", "classNuguCapability_1_1ISessionListener" ],
       [ "ISoundHandler", "classNuguCapability_1_1ISoundHandler.html", "classNuguCapability_1_1ISoundHandler" ],
@@ -30,7 +32,7 @@ var annotated_dup =
       [ "ITTSHandler", "classNuguCapability_1_1ITTSHandler.html", "classNuguCapability_1_1ITTSHandler" ],
       [ "ITTSListener", "classNuguCapability_1_1ITTSListener.html", "classNuguCapability_1_1ITTSListener" ],
       [ "IUtilityHandler", "classNuguCapability_1_1IUtilityHandler.html", "classNuguCapability_1_1IUtilityHandler" ],
-      [ "IUtilityListener", "classNuguCapability_1_1IUtilityListener.html", null ],
+      [ "IUtilityListener", "classNuguCapability_1_1IUtilityListener.html", "classNuguCapability_1_1IUtilityListener" ],
       [ "SpeakerInfo", "classNuguCapability_1_1SpeakerInfo.html", "classNuguCapability_1_1SpeakerInfo" ],
       [ "TextAttribute", "structNuguCapability_1_1TextAttribute.html", "structNuguCapability_1_1TextAttribute" ],
       [ "TTSAttribute", "structNuguCapability_1_1TTSAttribute.html", "structNuguCapability_1_1TTSAttribute" ]

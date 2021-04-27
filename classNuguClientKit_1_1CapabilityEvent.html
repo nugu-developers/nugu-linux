@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.1.0</span>
    </div>
   </td>
  </tr>
@@ -116,9 +116,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <tr class="memitem:a855cb351fa7f623a9d5c147d0c42c1d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1CapabilityEvent.html#a855cb351fa7f623a9d5c147d0c42c1d6">sendAttachmentEvent</a> (bool is_end, size_t size, unsigned char *data)</td></tr>
 <tr class="memdesc:a855cb351fa7f623a9d5c147d0c42c1d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send attachment event to server.  <a href="classNuguClientKit_1_1CapabilityEvent.html#a855cb351fa7f623a9d5c147d0c42c1d6">More...</a><br /></td></tr>
 <tr class="separator:a855cb351fa7f623a9d5c147d0c42c1d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9eca3258e413f288a973a927e6f3f4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1CapabilityEvent.html#ae9eca3258e413f288a973a927e6f3f4b">sendEvent</a> (const std::string &amp;context, const std::string &amp;payload, bool is_sync=false)</td></tr>
-<tr class="memdesc:ae9eca3258e413f288a973a927e6f3f4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send event to server.  <a href="classNuguClientKit_1_1CapabilityEvent.html#ae9eca3258e413f288a973a927e6f3f4b">More...</a><br /></td></tr>
-<tr class="separator:ae9eca3258e413f288a973a927e6f3f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b3ecb7b84f133dfa4075fec87af39e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1CapabilityEvent.html#a4b3ecb7b84f133dfa4075fec87af39e5">sendEvent</a> (const std::string &amp;context, const std::string &amp;payload)</td></tr>
+<tr class="memdesc:a4b3ecb7b84f133dfa4075fec87af39e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send event to server.  <a href="classNuguClientKit_1_1CapabilityEvent.html#a4b3ecb7b84f133dfa4075fec87af39e5">More...</a><br /></td></tr>
+<tr class="separator:a4b3ecb7b84f133dfa4075fec87af39e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af27155047a57dd5720218b515849d9e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1CapabilityEvent.html#af27155047a57dd5720218b515849d9e6">setDialogRequestId</a> (const std::string &amp;id)</td></tr>
 <tr class="memdesc:af27155047a57dd5720218b515849d9e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set dialog request id.  <a href="classNuguClientKit_1_1CapabilityEvent.html#af27155047a57dd5720218b515849d9e6">More...</a><br /></td></tr>
 <tr class="separator:af27155047a57dd5720218b515849d9e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -241,8 +241,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 
 </div>
 </div>
-<a id="ae9eca3258e413f288a973a927e6f3f4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9eca3258e413f288a973a927e6f3f4b">&#9670;&nbsp;</a></span>sendEvent()</h2>
+<a id="a4b3ecb7b84f133dfa4075fec87af39e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b3ecb7b84f133dfa4075fec87af39e5">&#9670;&nbsp;</a></span>sendEvent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -257,13 +257,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>payload</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>is_sync</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>payload</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -278,7 +272,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">context</td><td>context info </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">payload</td><td>payload info </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">is_sync</td><td>whether synchronized blocking event </td></tr>
   </table>
   </dd>
 </dl>
@@ -338,7 +331,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="clas
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1CapabilityEvent.html">CapabilityEvent</a></li>
-    <li class="footer">Generated on Tue Mar 30 2021 04:50:50 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Apr 27 2021 10:56:56 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
