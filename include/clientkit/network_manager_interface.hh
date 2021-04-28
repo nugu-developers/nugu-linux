@@ -138,7 +138,7 @@ public:
      * @retval 0 success
      * @retval -1 failure
      */
-    virtual bool setToken(std::string token) = 0;
+    virtual bool setToken(const std::string& token) = 0;
 
     /**
      * @brief Set the device gateway registry url.
@@ -147,7 +147,7 @@ public:
      * @retval 0 success
      * @retval -1 failure
      */
-    virtual bool setRegistryUrl(std::string url) = 0;
+    virtual bool setRegistryUrl(const std::string& url) = 0;
 
     /**
      * @brief Set the HTTP header UserAgent information.
@@ -157,7 +157,7 @@ public:
      * @retval 0 success
      * @retval -1 failure
      */
-    virtual bool setUserAgent(std::string app_version, std::string additional_info = "") = 0;
+    virtual bool setUserAgent(const std::string& app_version, const std::string& additional_info = "") = 0;
 };
 
 /**
