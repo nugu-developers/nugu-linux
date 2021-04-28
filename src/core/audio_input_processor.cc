@@ -46,7 +46,7 @@ AudioInputProcessor::~AudioInputProcessor()
     }
 }
 
-void AudioInputProcessor::init(std::string name, std::string& sample, std::string& format, std::string& channel)
+void AudioInputProcessor::init(std::string&& name, std::string& sample, std::string& format, std::string& channel)
 {
     if (is_initialized) {
         nugu_dbg("It's already initialized.");

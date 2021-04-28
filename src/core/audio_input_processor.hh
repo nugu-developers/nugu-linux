@@ -36,7 +36,7 @@ public:
     virtual ~AudioInputProcessor();
 
 protected:
-    void init(std::string name, std::string& sample, std::string& format, std::string& channel);
+    void init(std::string&& name, std::string& sample, std::string& format, std::string& channel);
     bool start(const std::function<void()>& extra_func = nullptr);
     void stop();
     void sendEvent(const std::function<void()>& action = nullptr);
