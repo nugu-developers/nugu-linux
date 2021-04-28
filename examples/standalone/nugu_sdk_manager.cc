@@ -28,6 +28,12 @@ void msg_info(std::string&& message)
 {
     NuguSampleManager::info(std::move(message));
 }
+
+template <typename T, typename... Ts>
+std::unique_ptr<T> make_unique(Ts&&... params)
+{
+    return std::unique_ptr<T>(new T(std::forward<Ts>(params)...));
+}
 }
 
 /*******************************************************************************
@@ -119,7 +125,7 @@ NuguSDKManager::NuguSDKManager(NuguSampleManager* nugu_sample_manager)
 {
     this->nugu_sample_manager = nugu_sample_manager;
     speaker_status = SpeakerStatus::getInstance();
-    speaker_controller = std::make_shared<SpeakerController>();
+    speaker_controller = make_unique<SpeakerController>();
 }
 
 void NuguSDKManager::setup()
@@ -193,8 +199,8 @@ void NuguSDKManager::composeSDKCommands()
 
 void NuguSDKManager::createInstance()
 {
-    nugu_client = std::make_shared<NuguClient>();
-    capa_collection = std::make_shared<CapabilityCollection>();
+    nugu_client = make_unique<NuguClient>();
+    capa_collection = make_unique<CapabilityCollection>();
     nugu_core_container = nugu_client->getNuguCoreContainer();
     speech_operator = capa_collection->getSpeechOperator();
     network_manager = nugu_client->getNetworkManager();
@@ -213,7 +219,7 @@ void NuguSDKManager::createInstance()
     network_manager->setUserAgent("0.2.0");
 
     on_init_func = [&]() {
-        wakeup_handler = std::shared_ptr<IWakeupHandler>(nugu_core_container->createWakeupHandler(nugu_sample_manager->getModelPath()));
+        wakeup_handler = std::unique_ptr<IWakeupHandler>(nugu_core_container->createWakeupHandler(nugu_sample_manager->getModelPath()));
         speech_operator->setWakeupHandler(wakeup_handler.get());
     };
 }
