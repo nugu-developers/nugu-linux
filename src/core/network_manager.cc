@@ -172,7 +172,7 @@ std::vector<INetworkManagerListener*> NetworkManager::getListener()
     return listeners;
 }
 
-bool NetworkManager::setToken(std::string token)
+bool NetworkManager::setToken(const std::string& token)
 {
     /* JWT format consist of 3 parts (header, payload, signature) */
     gchar **jwt = g_strsplit(token.c_str(), ".", -1);
@@ -251,7 +251,7 @@ bool NetworkManager::setToken(std::string token)
     return true;
 }
 
-bool NetworkManager::setRegistryUrl(std::string url)
+bool NetworkManager::setRegistryUrl(const std::string& url)
 {
     if (nugu_network_manager_set_registry_url(url.c_str()) < 0) {
         nugu_error("network set registry url failed");
@@ -261,7 +261,7 @@ bool NetworkManager::setRegistryUrl(std::string url)
     return true;
 }
 
-bool NetworkManager::setUserAgent(std::string app_version, std::string additional_info)
+bool NetworkManager::setUserAgent(const std::string& app_version, const std::string& additional_info)
 {
     if (nugu_network_manager_set_useragent(app_version.c_str(), additional_info.c_str()) < 0) {
         nugu_error("network set useragent failed");

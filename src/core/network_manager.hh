@@ -35,9 +35,9 @@ public:
     std::vector<INetworkManagerListener*> getListener();
     bool connect() override;
     bool disconnect() override;
-    bool setToken(std::string token) override;
-    bool setRegistryUrl(std::string url) override;
-    bool setUserAgent(std::string app_version, std::string additional_info) override;
+    bool setToken(const std::string& token) override;
+    bool setRegistryUrl(const std::string& url) override;
+    bool setUserAgent(const std::string& app_version, const std::string& additional_info) override;
 
 private:
     std::vector<INetworkManagerListener*> listeners;
