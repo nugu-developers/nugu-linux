@@ -90,10 +90,10 @@ private:
     const int TEXT_INPUT_TYPE_1 = 1;
     const int TEXT_INPUT_TYPE_2 = 2;
 
-    std::shared_ptr<SpeakerController> speaker_controller = nullptr;
-    std::shared_ptr<NuguClient> nugu_client = nullptr;
-    std::shared_ptr<CapabilityCollection> capa_collection = nullptr;
-    std::shared_ptr<IWakeupHandler> wakeup_handler = nullptr;
+    std::unique_ptr<SpeakerController> speaker_controller = nullptr;
+    std::unique_ptr<NuguClient> nugu_client = nullptr;
+    std::unique_ptr<CapabilityCollection> capa_collection = nullptr;
+    std::unique_ptr<IWakeupHandler> wakeup_handler = nullptr;
     NuguSampleManager* nugu_sample_manager = nullptr;
     INuguCoreContainer* nugu_core_container = nullptr;
     IPlaySyncManager* playsync_manager = nullptr;
