@@ -99,56 +99,56 @@ void nugu_directive_unref(NuguDirective *ndir);
  * @param[in] ndir directive object
  * @return namespace. Please don't free the data manually.
  */
-const char *nugu_directive_peek_namespace(NuguDirective *ndir);
+const char *nugu_directive_peek_namespace(const NuguDirective *ndir);
 
 /**
  * @brief Get the name of directive
  * @param[in] ndir directive object
  * @return name. Please don't free the data manually.
  */
-const char *nugu_directive_peek_name(NuguDirective *ndir);
+const char *nugu_directive_peek_name(const NuguDirective *ndir);
 
 /**
  * @brief Get the group of directive
  * @param[in] ndir directive object
  * @return groups. Please don't free the data manually.
  */
-const char *nugu_directive_peek_groups(NuguDirective *ndir);
+const char *nugu_directive_peek_groups(const NuguDirective *ndir);
 
 /**
  * @brief Get the version of directive
  * @param[in] ndir directive object
  * @return version. Please don't free the data manually.
  */
-const char *nugu_directive_peek_version(NuguDirective *ndir);
+const char *nugu_directive_peek_version(const NuguDirective *ndir);
 
 /**
  * @brief Get the message-id of directive
  * @param[in] ndir directive object
  * @return message-id. Please don't free the data manually.
  */
-const char *nugu_directive_peek_msg_id(NuguDirective *ndir);
+const char *nugu_directive_peek_msg_id(const NuguDirective *ndir);
 
 /**
  * @brief Get the dialog-request-id of directive
  * @param[in] ndir directive object
  * @return dialog-request-id. Please don't free the data manually.
  */
-const char *nugu_directive_peek_dialog_id(NuguDirective *ndir);
+const char *nugu_directive_peek_dialog_id(const NuguDirective *ndir);
 
 /**
  * @brief Get the referer-dialog-request-id of directive
  * @param[in] ndir directive object
  * @return referrer-dialog-request-id. Please don't free the data manually.
  */
-const char *nugu_directive_peek_referrer_id(NuguDirective *ndir);
+const char *nugu_directive_peek_referrer_id(const NuguDirective *ndir);
 
 /**
  * @brief Get the payload of directive
  * @param[in] ndir directive object
  * @return json type payload. Please don't free the data manually.
  */
-const char *nugu_directive_peek_json(NuguDirective *ndir);
+const char *nugu_directive_peek_json(const NuguDirective *ndir);
 
 /**
  * @brief Get the active status of directive.
@@ -160,7 +160,7 @@ const char *nugu_directive_peek_json(NuguDirective *ndir);
  * @retval -1 failure
  * @see nugu_directive_set_active()
  */
-int nugu_directive_is_active(NuguDirective *ndir);
+int nugu_directive_is_active(const NuguDirective *ndir);
 
 /**
  * @brief Set the active status of directive.
@@ -208,7 +208,7 @@ int nugu_directive_close_data(NuguDirective *ndir);
  * @retval -1 failure
  * @see nugu_directive_close_data()
  */
-int nugu_directive_is_data_end(NuguDirective *ndir);
+int nugu_directive_is_data_end(const NuguDirective *ndir);
 
 /**
  * @brief Set the attachment mime type
@@ -227,7 +227,7 @@ int nugu_directive_set_media_type(NuguDirective *ndir, const char *type);
  * @return mime type
  * @see nugu_directive_set_media_type()
  */
-const char *nugu_directive_peek_media_type(NuguDirective *ndir);
+const char *nugu_directive_peek_media_type(const NuguDirective *ndir);
 
 /**
  * @brief Get the attachment data received so far.
@@ -245,7 +245,7 @@ unsigned char *nugu_directive_get_data(NuguDirective *ndir, size_t *length);
  * @return size of attachment data
  * @see nugu_directive_get_data()
  */
-size_t nugu_directive_get_data_size(NuguDirective *ndir);
+size_t nugu_directive_get_data_size(const NuguDirective *ndir);
 
 /**
  * @brief Set the medium of BlockingPolicy for the directive
@@ -271,7 +271,7 @@ int nugu_directive_set_blocking_policy(NuguDirective *ndir,
  * @see nugu_directive_get_blocking_medium_string()
  */
 enum nugu_directive_medium
-nugu_directive_get_blocking_medium(NuguDirective *ndir);
+nugu_directive_get_blocking_medium(const NuguDirective *ndir);
 
 /**
  * @brief Get the medium string of BlockingPolicy for the directive
@@ -280,7 +280,8 @@ nugu_directive_get_blocking_medium(NuguDirective *ndir);
  * @see nugu_directive_set_blocking_policy()
  * @see nugu_directive_get_blocking_medium()
  */
-const char *nugu_directive_get_blocking_medium_string(NuguDirective *ndir);
+const char *
+nugu_directive_get_blocking_medium_string(const NuguDirective *ndir);
 
 /**
  * @brief Get the blocking status of BlockingPolicy for the directive
@@ -291,7 +292,7 @@ const char *nugu_directive_get_blocking_medium_string(NuguDirective *ndir);
  * @retval -1 failure
  * @see nugu_directive_set_blocking_policy()
  */
-int nugu_directive_is_blocking(NuguDirective *ndir);
+int nugu_directive_is_blocking(const NuguDirective *ndir);
 
 /**
  * @brief Set attachment received event callback
