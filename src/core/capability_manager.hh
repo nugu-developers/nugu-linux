@@ -27,6 +27,7 @@
 #include "focus_manager.hh"
 #include "interaction_control_manager.hh"
 #include "playsync_manager.hh"
+#include "routine_manager.hh"
 #include "session_manager.hh"
 
 namespace NuguCore {
@@ -47,6 +48,7 @@ public:
     SessionManager* getSessionManager();
     InteractionControlManager* getInteractionControlManager();
     DirectiveSequencer* getDirectiveSequencer();
+    RoutineManager* getRoutineManager();
 
     void addCapability(const std::string& cname, ICapabilityInterface* cap);
     void removeCapability(const std::string& cname);
@@ -90,6 +92,7 @@ private:
     std::unique_ptr<SessionManager> session_manager;
     std::unique_ptr<DirectiveSequencer> directive_sequencer;
     std::unique_ptr<InteractionControlManager> interaction_control_manager;
+    std::unique_ptr<RoutineManager> routine_manager;
 };
 
 } // NuguCore
