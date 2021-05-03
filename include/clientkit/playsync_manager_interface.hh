@@ -156,6 +156,11 @@ public:
     virtual void releaseSyncImmediately(const std::string& ps_id, const std::string& requester) = 0;
 
     /**
+     * @brief Release sync all capability agents unconditionally.
+     */
+    virtual void releaseSyncUnconditionally() = 0;
+
+    /**
      * @brief Postpone already started release if exist.
      */
     virtual void postPoneRelease() = 0;
@@ -186,7 +191,7 @@ public:
     virtual void clear() = 0;
 
     /**
-     * @brief Check whether the previous dialog has to be handled or not
+     * @brief Check whether the previous dialog has to be handled or not.
      * @param[in] prev_ndir preivous directive
      * @param[in] cur_ndir current directive
      * @return true if has to be handled, otherwise false
