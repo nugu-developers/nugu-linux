@@ -25,6 +25,7 @@
 #include <clientkit/focus_manager_interface.hh>
 #include <clientkit/interaction_control_manager_interface.hh>
 #include <clientkit/playsync_manager_interface.hh>
+#include <clientkit/routine_manager_interface.hh>
 #include <clientkit/session_manager_interface.hh>
 
 namespace NuguClientKit {
@@ -75,6 +76,12 @@ public:
      * @return IDirectiveSequencer instance
      */
     virtual IDirectiveSequencer* getDirectiveSequencer() = 0;
+
+    /**
+     * @brief Get IRoutineManager instance
+     * @return IRoutineManager instance
+     */
+    virtual IRoutineManager* getRoutineManager() = 0;
 
     /**
      * @brief Set Audio Recorder mute/unmute

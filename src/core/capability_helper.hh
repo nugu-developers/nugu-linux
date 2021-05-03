@@ -34,6 +34,7 @@ public:
     ISessionManager* getSessionManager() override;
     IInteractionControlManager* getInteractionControlManager() override;
     IDirectiveSequencer* getDirectiveSequencer() override;
+    IRoutineManager* getRoutineManager() override;
 
     bool setMute(bool mute) override;
     bool sendCommand(const std::string& from, const std::string& to, const std::string& command, const std::string& param) override;

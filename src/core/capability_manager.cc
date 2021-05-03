@@ -33,6 +33,7 @@ CapabilityManager::CapabilityManager()
     , session_manager(std::unique_ptr<SessionManager>(new SessionManager()))
     , directive_sequencer(std::unique_ptr<DirectiveSequencer>(new DirectiveSequencer()))
     , interaction_control_manager(std::unique_ptr<InteractionControlManager>(new InteractionControlManager()))
+    , routine_manager(std::unique_ptr<RoutineManager>(new RoutineManager()))
 {
     wword = WAKEUP_WORD;
 
@@ -72,6 +73,7 @@ void CapabilityManager::resetInstance()
     session_manager->reset();
     directive_sequencer->reset();
     interaction_control_manager->reset();
+    routine_manager->reset();
 }
 
 bool CapabilityManager::onPreHandleDirective(NuguDirective* ndir)
@@ -251,6 +253,13 @@ std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::V
             continue;
 
         ctx[icap->getName()]["version"] = icap->getVersion();
+
+        // TODO : It need to generalize not to handle each capability directly.
+        if (icap->getName() == "Routine") {
+            std::string routine_activity;
+            icap->getProperty("routineActivity", routine_activity);
+            ctx["Routine"]["routineActivity"] = routine_activity;
+        }
     }
 
     client["wakeupWord"] = wword;
@@ -380,6 +389,11 @@ InteractionControlManager* CapabilityManager::getInteractionControlManager()
 DirectiveSequencer* CapabilityManager::getDirectiveSequencer()
 {
     return directive_sequencer.get();
+}
+
+RoutineManager* CapabilityManager::getRoutineManager()
+{
+    return routine_manager.get();
 }
 
 } // NuguCore

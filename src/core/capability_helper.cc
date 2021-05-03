@@ -72,6 +72,11 @@ IDirectiveSequencer* CapabilityHelper::getDirectiveSequencer()
     return CapabilityManager::getInstance()->getDirectiveSequencer();
 }
 
+IRoutineManager* CapabilityHelper::getRoutineManager()
+{
+    return CapabilityManager::getInstance()->getRoutineManager();
+}
+
 bool CapabilityHelper::setMute(bool mute)
 {
     return AudioRecorderManager::getInstance()->setMute(mute);

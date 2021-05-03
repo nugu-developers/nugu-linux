@@ -5,7 +5,8 @@ SET(UNIT_TESTS
 	test_core_session_manager
 	test_core_playstack_manager
 	test_core_playsync_manager
-	test_core_interaction_control_manager)
+	test_core_interaction_control_manager
+	test_core_routine_manager)
 
 # Add Compile Sources with Mock for test
 SET(test_core_nugu_timer_srcs
@@ -16,6 +17,7 @@ SET(test_core_session_manager_srcs ../../src/core/session_manager.cc)
 SET(test_core_playstack_manager_srcs ../../src/core/playstack_manager.cc)
 SET(test_core_playsync_manager_srcs ../../src/core/playsync_manager.cc)
 SET(test_core_interaction_control_manager_srcs ../../src/core/interaction_control_manager.cc)
+SET(test_core_routine_manager_srcs ../../src/core/routine_manager.cc)
 
 FOREACH(test ${UNIT_TESTS})
 	SET(SRC ${test}.cc)
