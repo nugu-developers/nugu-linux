@@ -481,6 +481,9 @@ void AudioPlayerAgent::preprocessDirective(NuguDirective* ndir)
     }
 
     if (!strcmp(dname, "Play")) {
+        if (routine_manager->isConditionToStop(ndir))
+            routine_manager->stop();
+
         std::string playstackctl_ps_id = getPlayServiceIdInStackControl(message);
 
         playsync_manager->hasActivity(playstackctl_ps_id, PlayStackActivity::Media)

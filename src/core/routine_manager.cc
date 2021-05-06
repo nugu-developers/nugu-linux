@@ -24,6 +24,7 @@ namespace NuguCore {
 RoutineManager::RoutineManager()
     : timer(std::unique_ptr<NUGUTimer>(new NUGUTimer(true)))
 {
+    stop_directive_filter = { "ASR.ExpectSpeech", "AudioPlayer.Play" };
 }
 
 RoutineManager::~RoutineManager()
@@ -207,9 +208,20 @@ bool RoutineManager::isConditionToStop(const NuguDirective* ndir)
         return false;
     }
 
-    if (!isRoutineAlive() || hasRoutineDirective(ndir)
-        || isActionProgress(nugu_directive_peek_dialog_id(ndir)))
+    if (!isRoutineAlive() || hasRoutineDirective(ndir))
         return false;
+
+    if (isActionProgress(nugu_directive_peek_dialog_id(ndir))) {
+        if (hasNext()) {
+            std::string dir_groups = nugu_directive_peek_groups(ndir);
+
+            for (const auto& stop_directive : stop_directive_filter)
+                if (dir_groups.find(stop_directive) != std::string::npos)
+                    return true;
+        }
+
+        return false;
+    }
 
     return true;
 }

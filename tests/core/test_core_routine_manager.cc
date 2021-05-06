@@ -39,6 +39,13 @@ using RoutineTestData = struct {
     Json::Value post_delay_msec;
 };
 
+using DirectiveElement = struct {
+    std::string name_space;
+    std::string name;
+    std::string dialog_id;
+    std::string groups;
+};
+
 class FakeTimer final : public NUGUTimer {
 public:
     FakeTimer(std::mutex& mutex, std::condition_variable& cv)
@@ -161,10 +168,21 @@ private:
     RoutineActivity activity = RoutineActivity::IDLE;
 };
 
-static NuguDirective* createDirective(const std::string& name_space, const std::string& name, const std::string& groups)
+static NuguDirective* createDirective(DirectiveElement&& element)
 {
-    return nugu_directive_new(name_space.c_str(), name.c_str(), "1.0", "message_1", "dialog_1",
-        "referrer_1", "{}", groups.c_str());
+    return nugu_directive_new(element.name_space.c_str(), element.name.c_str(), "1.0",
+        "message_1", element.dialog_id.c_str(), "referrer_1", "{}", element.groups.c_str());
+}
+
+static void changeDialogId(NuguDirective*& ndir, std::string&& dialog_id)
+{
+    std::string name_space = nugu_directive_peek_namespace(ndir);
+    std::string name = nugu_directive_peek_namespace(ndir);
+    std::string groups = nugu_directive_peek_groups(ndir);
+
+    nugu_directive_unref(ndir);
+
+    ndir = createDirective({ name_space, name, dialog_id, groups });
 }
 
 typedef struct {
@@ -175,6 +193,8 @@ typedef struct {
     FakeTimer* fake_timer;
     NuguDirective* ndir_info;
     NuguDirective* ndir_routine;
+    NuguDirective* ndir_media;
+    NuguDirective* ndir_dm;
 } TestFixture;
 
 static void setup(TestFixture* fixture, gconstpointer user_data)
@@ -201,16 +221,22 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
             { "DATA", "ps_id_3", "", Json::Value("DATA_VALUE") },
         });
 
-    fixture->ndir_info = createDirective("TTS", "Speak",
-        "{ \"directives\": [\"TTS.Speak\"] }");
-    fixture->ndir_routine = createDirective("Routine", "Continue",
-        "{ \"directives\": [\"TTS.Speak\", \"Routine.Continue\"] }");
+    fixture->ndir_info = createDirective({ "TTS", "Speak", "dialog_1",
+        "{ \"directives\": [\"TTS.Speak\"] }" });
+    fixture->ndir_routine = createDirective({ "Routine", "Continue", "dialog_1",
+        "{ \"directives\": [\"TTS.Speak\", \"Routine.Continue\"] }" });
+    fixture->ndir_media = createDirective({ "AudioPlayer", "Play", "dialog_1",
+        "{ \"directives\": [\"TTS.Speak\", \"AudioPlayer.Play\"] }" });
+    fixture->ndir_dm = createDirective({ "ASR", "ExpectSpeech", "dialog_1",
+        "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\"] }" });
 }
 
 static void teardown(TestFixture* fixture, gconstpointer user_data)
 {
     nugu_directive_unref(fixture->ndir_info);
     nugu_directive_unref(fixture->ndir_routine);
+    nugu_directive_unref(fixture->ndir_media);
+    nugu_directive_unref(fixture->ndir_dm);
 
     fixture->routine_manager_listener.reset();
     fixture->routine_manager_listener_snd.reset();
@@ -491,11 +517,26 @@ static void test_routine_manager_check_condition_to_stop(TestFixture* fixture, g
     g_assert(!fixture->routine_manager->isConditionToStop(fixture->ndir_info));
     g_assert(!fixture->routine_manager->isConditionToStop(fixture->ndir_routine));
 
-    // The received directive is for another play, not routine action. (stop if routine directive not exist )
+    // The received directive has ASR.ExpectSpeech or AudioPlayer.Play in progressing middle action. (stop)
+    g_assert(fixture->routine_manager->isConditionToStop(fixture->ndir_dm));
+    g_assert(fixture->routine_manager->isConditionToStop(fixture->ndir_media));
+
+    // The received directive is for another play, not routine action. (stop if routine directive not exist)
     fixture->routine_manager->finish();
     g_assert(fixture->routine_manager->isActionProgress("dialog_2"));
     g_assert(fixture->routine_manager->isConditionToStop(fixture->ndir_info));
     g_assert(!fixture->routine_manager->isConditionToStop(fixture->ndir_routine));
+
+    // progress last action
+    fixture->routine_manager->finish();
+    g_assert(fixture->routine_manager->isRoutineAlive());
+    g_assert(fixture->routine_manager->isActionProgress("dialog_3"));
+
+    // The received directive has ASR.ExpectSpeech or AudioPlayer.Play in progressing last action. (not stop)
+    changeDialogId(fixture->ndir_dm, "dialog_3");
+    changeDialogId(fixture->ndir_media, "dialog_3");
+    g_assert(!fixture->routine_manager->isConditionToStop(fixture->ndir_dm));
+    g_assert(!fixture->routine_manager->isConditionToStop(fixture->ndir_media));
 
     // The routine is not activated. (not stop)
     fixture->routine_manager->stop();
