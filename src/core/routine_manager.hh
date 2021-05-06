@@ -90,6 +90,7 @@ private:
     const std::string ACTION_TYPE_DATA = "DATA";
 
     std::vector<IRoutineManagerListener*> listeners;
+    std::vector<std::string> stop_directive_filter;
     RoutineActivity activity = RoutineActivity::IDLE;
     std::unique_ptr<INuguTimer> timer = nullptr;
     TextRequester text_requester = nullptr;
