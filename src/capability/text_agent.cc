@@ -74,7 +74,7 @@ void TextAgent::initialize()
 
     // for handling routine action about text request
     routine_manager->setTextRequester([&](const std::string& token, const std::string& text, const std::string& ps_id) {
-        return requestTextInput(text, token, ps_id);
+        return requestTextInput({ text, token, ps_id }, true);
     });
 
     initialized = true;
@@ -156,43 +156,19 @@ void TextAgent::setCapabilityListener(ICapabilityListener* clistener)
 
 std::string TextAgent::requestTextInput(const std::string& text, const std::string& token, bool include_dialog_attribute)
 {
-    nugu_dbg("receive text interface : %s from user app", text.c_str());
-
-    if (cur_state == TextState::BUSY) {
-        nugu_warn("already request nugu service to the server");
-        return "";
-    }
-
-    if (timer)
-        timer->start();
-
-    if (timer_msec)
-        timer_msec->start();
-
-    cur_state = TextState::BUSY;
-
-    sendEventTextInput({ text, token }, include_dialog_attribute);
-
-    if (routine_manager->isRoutineProgress())
-        routine_manager->interrupt();
-
-    nugu_dbg("user request id: %s", cur_dialog_id.c_str());
-    if (text_listener)
-        text_listener->onState(cur_state, cur_dialog_id);
-
-    capa_helper->sendCommand("Text", "ASR", "cancel", "");
-
-    return cur_dialog_id;
+    return requestTextInput({ text, token, "" }, false, include_dialog_attribute);
 }
 
-std::string TextAgent::requestTextInput(const std::string& text, const std::string& token, const std::string& ps_id)
+std::string TextAgent::requestTextInput(TextInputParam&& text_input_param, bool routine_play, bool include_dialog_attribute)
 {
+    nugu_dbg("receive text interface : %s from user app", text_input_param.text.c_str());
+
     if (cur_state == TextState::BUSY) {
         nugu_warn("already request nugu service to the server");
         return "";
     }
 
-    if (text.empty() || token.empty()) {
+    if (text_input_param.text.empty()) {
         nugu_error("The mandatory data is not exist.");
         return "";
     }
@@ -204,10 +180,13 @@ std::string TextAgent::requestTextInput(const std::string& text, const std::stri
         timer_msec->start();
 
     cur_state = TextState::BUSY;
-    sendEventTextInput({ text, token, ps_id });
+
+    sendEventTextInput(text_input_param, include_dialog_attribute);
+
+    if (!routine_play && routine_manager->isRoutineProgress())
+        routine_manager->interrupt();
 
     nugu_dbg("user request id: %s", cur_dialog_id.c_str());
-
     if (text_listener)
         text_listener->onState(cur_state, cur_dialog_id);
 
