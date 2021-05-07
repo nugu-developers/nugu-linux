@@ -253,13 +253,6 @@ std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::V
             continue;
 
         ctx[icap->getName()]["version"] = icap->getVersion();
-
-        // TODO : It need to generalize not to handle each capability directly.
-        if (icap->getName() == "Routine") {
-            std::string routine_activity;
-            icap->getProperty("routineActivity", routine_activity);
-            ctx["Routine"]["routineActivity"] = routine_activity;
-        }
     }
 
     client["wakeupWord"] = wword;
