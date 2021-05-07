@@ -38,7 +38,6 @@ public:
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     std::string requestTextInput(const std::string& text, const std::string& token = "", bool include_dialog_attribute = true) override;
-    std::string requestTextInput(const std::string& text, const std::string& token, const std::string& ps_id);
 
     void notifyResponseTimeout();
 
@@ -49,6 +48,7 @@ private:
         std::string ps_id;
     };
 
+    std::string requestTextInput(TextInputParam&& text_input_param, bool routine_play, bool include_dialog_attribute = true);
     void sendEventTextInput(const TextInputParam& text_input_param, bool include_dialog_attribute = true, EventResultCallback cb = nullptr);
     void sendEventTextSourceFailed(const TextInputParam& text_input_param, EventResultCallback cb = nullptr);
     void sendEventTextRedirectFailed(const TextInputParam& text_input_param, EventResultCallback cb = nullptr);
