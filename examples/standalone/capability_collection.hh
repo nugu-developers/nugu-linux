@@ -45,10 +45,14 @@ public:
     CapabilityCollection();
     virtual ~CapabilityCollection() = default;
 
-    template <typename T>
+    template <typename T = ICapabilityInterface>
     T* getCapability(const std::string& capability_name)
     {
-        return dynamic_cast<T*>(factories[capability_name]());
+        try {
+            return dynamic_cast<T*>(factories.at(capability_name)());
+        } catch (std::out_of_range& exception) {
+            return nullptr;
+        }
     }
 
     SpeechOperator* getSpeechOperator();
