@@ -368,6 +368,12 @@ public:
     virtual std::string getContextInfo();
 
     /**
+     * @brief Update the compact context information of the capability agent.
+     * @param[in] ctx capability agent's context
+     */
+    virtual void updateCompactContext(Json::Value& ctx);
+
+    /**
      * @brief Get ICapabilityHelper instance for using NuguCore functions.
      * @return ICapabilityHelper instance
      */
