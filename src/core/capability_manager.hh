@@ -62,7 +62,7 @@ public:
     void setWakeupWord(const std::string& word);
     std::string getWakeupWord();
 
-    std::string makeContextInfo(const std::string& cname, Json::Value& ctx);
+    std::string makeContextInfo(const std::string& cname, Json::Value& cap_ctx);
     std::string makeAllContextInfo();
 
     bool isSupportDirectiveVersion(const std::string& version, ICapabilityInterface* cap);
@@ -81,6 +81,7 @@ public:
 
 private:
     ICapabilityInterface* findCapability(const std::string& cname);
+    Json::Value getBaseContextInfo(Json::Value& supported_interfaces, Json::Value&& playstack);
 
     static CapabilityManager* instance;
     std::map<std::string, ICapabilityInterface*> caps;

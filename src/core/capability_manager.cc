@@ -24,6 +24,7 @@ namespace NuguCore {
 
 // define default property values
 static const char* WAKEUP_WORD = "아리아";
+static const char* CONTEXT_OS = "Linux";
 
 CapabilityManager* CapabilityManager::instance = nullptr;
 
@@ -237,58 +238,49 @@ ICapabilityInterface* CapabilityManager::findCapability(const std::string& cname
     return caps[cname];
 }
 
-std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::Value& ctx)
+std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::Value& cap_ctx)
 {
     Json::FastWriter writer;
-    Json::Value root;
-    Json::Value client;
 
     for (const auto& cap : caps) {
-        ICapabilityInterface* icap = cap.second;
-        if (icap->getName() == cname)
+        if (cap.second->getName() == cname)
             continue;
 
-        // The delegation interface is supported by v1.1 or higher.
-        if (icap->getName() == "Delegation" && icap->getVersion() == "1.0")
-            continue;
-
-        ctx[icap->getName()]["version"] = icap->getVersion();
+        cap.second->updateCompactContext(cap_ctx);
     }
 
-    client["wakeupWord"] = wword;
-    client["os"] = "Linux";
-    client["playStack"] = Json::arrayValue;
-
-    root["supportedInterfaces"] = ctx;
-    root["client"] = client;
-
-    return writer.write(root);
+    return writer.write(getBaseContextInfo(cap_ctx, Json::arrayValue));
 }
 
 std::string CapabilityManager::makeAllContextInfo()
 {
     Json::FastWriter writer;
+    Json::Value cap_ctx;
+    Json::Value playstack_ctx = Json::arrayValue;
+    const auto& playstacks = playsync_manager->getAllPlayStackItems();
+
+    for (const auto& cap : caps)
+        cap.second->updateInfoForContext(cap_ctx);
+
+    for (const auto& playstack : playstacks)
+        playstack_ctx.append(playstack);
+
+    return writer.write(getBaseContextInfo(cap_ctx, std::move(playstack_ctx)));
+}
+
+Json::Value CapabilityManager::getBaseContextInfo(Json::Value& supported_interfaces, Json::Value&& playstack)
+{
     Json::Value root;
-    Json::Value ctx;
     Json::Value client;
 
-    for (const auto& iter : caps)
-        iter.second->updateInfoForContext(ctx);
-
     client["wakeupWord"] = wword;
-    client["os"] = "Linux";
-    client["playStack"] = Json::arrayValue;
+    client["os"] = CONTEXT_OS;
+    client["playStack"] = playstack;
 
-    // compose playStack info
-    const auto& playstack = playsync_manager->getAllPlayStackItems();
-
-    for (const auto& element : playstack)
-        client["playStack"].append(element);
-
-    root["supportedInterfaces"] = ctx;
+    root["supportedInterfaces"] = supported_interfaces;
     root["client"] = client;
 
-    return writer.write(root);
+    return root;
 }
 
 bool CapabilityManager::isSupportDirectiveVersion(const std::string& version, ICapabilityInterface* cap)

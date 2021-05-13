@@ -180,6 +180,12 @@ public:
     virtual void updateInfoForContext(Json::Value& ctx) = 0;
 
     /**
+     * @brief Update the compact context information of the capability agent.
+     * @param[in] ctx capability agent's context
+     */
+    virtual void updateCompactContext(Json::Value& ctx) = 0;
+
+    /**
      * @brief Process command from other objects.
      * @param[in] from capability who send the command
      * @param[in] command command

@@ -490,6 +490,11 @@ std::string Capability::getContextInfo()
     return capa_helper->makeContextInfo(getName(), ctx);
 }
 
+void Capability::updateCompactContext(Json::Value& ctx)
+{
+    ctx[getName()]["version"] = getVersion();
+}
+
 ICapabilityHelper* Capability::getCapabilityHelper()
 {
     return capa_helper;
