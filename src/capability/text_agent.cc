@@ -311,8 +311,7 @@ void TextAgent::parsingTextRedirect(const char* message)
 
         text_input_param.text = root["text"].asString();
         text_input_param.token = root["token"].asString();
-        target_ps_id = root["targetPlayServiceId"].asString();
-        text_input_param.ps_id = !target_ps_id.empty() ? target_ps_id : root["playServiceId"].asString();
+        text_input_param.ps_id = root["targetPlayServiceId"].asString();
 
         startInteractionControl(getInteractionMode(root["interactionControl"]));
 
