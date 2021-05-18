@@ -369,6 +369,10 @@ bool ASRAgent::getProperty(const std::string& property, std::string& value)
             Json::FastWriter writer;
             value = writer.write(es_attr.asr_context);
         }
+    } else if (property == "focusState") {
+        if (asr_dm_listener->focus_state == FocusState::FOREGROUND
+            || asr_user_listener->focus_state == FocusState::FOREGROUND)
+            value = focus_manager->getStateString(FocusState::FOREGROUND);
     } else {
         nugu_error("invalid property: %s", property.c_str());
         return false;

@@ -23,7 +23,8 @@
 namespace NuguCapability {
 
 class TextAgent final : public Capability,
-                        public ITextHandler {
+                        public ITextHandler,
+                        public IFocusResourceListener {
 public:
     TextAgent();
     virtual ~TextAgent() = default;
@@ -40,6 +41,9 @@ public:
     std::string requestTextInput(const std::string& text, const std::string& token = "", bool include_dialog_attribute = true) override;
 
     void notifyResponseTimeout();
+
+    // implements IFocusResourceListener
+    void onFocusChanged(FocusState state) override;
 
 private:
     using TextInputParam = struct {
@@ -59,6 +63,8 @@ private:
     void notifyEventResponse(const std::string& msg_id, const std::string& data, bool success) override;
     void startInteractionControl(InteractionMode&& mode);
     void finishInteractionControl();
+    void requestFocus();
+    void releaseFocus();
 
     const std::string FAIL_EVENT_ERROR_CODE = "NOT_SUPPORTED_STATE";
 
@@ -70,6 +76,7 @@ private:
     std::string dir_groups;
     InteractionMode interaction_mode;
     bool handle_interaction_control;
+    FocusState focus_state;
 
     // attribute
     int response_timeout;
