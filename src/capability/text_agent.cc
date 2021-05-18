@@ -51,6 +51,7 @@ void TextAgent::initialize()
     dir_groups = "";
     interaction_mode = InteractionMode::NONE;
     handle_interaction_control = false;
+    focus_state = FocusState::NONE;
 
     timer = core_container->createNuguTimer(true);
     timer->setInterval(response_timeout * NUGU_TIMER_UNIT_SEC);
@@ -247,6 +248,7 @@ void TextAgent::sendEventTextInput(const TextInputParam& text_input_param, bool 
     playsync_manager->stopHolding();
 
     sendEvent(&event, capa_helper->makeAllContextInfo(), writer.write(root), std::move(cb));
+    requestFocus();
 }
 
 void TextAgent::sendEventTextSourceFailed(const TextInputParam& text_input_param, EventResultCallback cb)
@@ -361,6 +363,7 @@ bool TextAgent::handleTextCommonProcess(const TextInputParam& text_input_param)
 void TextAgent::notifyEventResponse(const std::string& msg_id, const std::string& data, bool success)
 {
     finishInteractionControl();
+    releaseFocus();
 }
 
 void TextAgent::startInteractionControl(InteractionMode&& mode)
@@ -377,6 +380,30 @@ void TextAgent::finishInteractionControl()
         interaction_mode = InteractionMode::NONE;
         handle_interaction_control = false;
     }
+}
+
+void TextAgent::onFocusChanged(FocusState state)
+{
+    nugu_info("Focus Changed(%s -> %s)", focus_manager->getStateString(state).c_str(), focus_manager->getStateString(state).c_str());
+    focus_state = state;
+}
+
+void TextAgent::requestFocus()
+{
+    // When sending TextInput event, if the ASR has foreground focus,
+    // it's possible to behave abnormally, like background media is not resumed.
+    // So, as relaying ASR focus, it prevent abnormal behavior.
+    std::string asr_focus_state;
+    capa_helper->getCapabilityProperty("ASR", "focusState", asr_focus_state);
+
+    if (asr_focus_state == "FOREGROUND")
+        focus_manager->requestFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME, this);
+}
+
+void TextAgent::releaseFocus()
+{
+    if (focus_state != FocusState::NONE)
+        focus_manager->releaseFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME);
 }
 
 } // NuguCapability
