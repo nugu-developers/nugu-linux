@@ -135,16 +135,15 @@ void MicAgent::control(bool enable, bool send_event)
     MicStatus pre_status = cur_status;
     cur_status = enable ? MicStatus::ON : MicStatus::OFF;
 
-    if (cur_status == pre_status)
-        return;
+    if (cur_status != pre_status) {
+        capa_helper->setMute(cur_status == MicStatus::OFF);
 
-    capa_helper->setMute(cur_status == MicStatus::OFF);
+        if (mic_listener)
+            mic_listener->micStatusChanged(cur_status);
+    }
 
     if (send_event)
         sendEventSetMicSucceeded();
-
-    if (mic_listener)
-        mic_listener->micStatusChanged(cur_status);
 }
 
 std::string MicAgent::getCurrentMicStatusText()
