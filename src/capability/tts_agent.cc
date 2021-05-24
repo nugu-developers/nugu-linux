@@ -487,9 +487,17 @@ void TTSAgent::parsingStop(const char* message)
     if (!root["playServiceId"].empty())
         ps_id = root["playServiceId"].asString();
 
-    (cur_state == MediaPlayerState::PLAYING)
-        ? (void)focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME)
-        : playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
+    if (cur_state == MediaPlayerState::PLAYING) {
+        focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
+    } else {
+        std::string asr_focus_state;
+        capa_helper->getCapabilityProperty("ASR", "focusState", asr_focus_state);
+
+        if (asr_focus_state == "FOREGROUND")
+            capa_helper->sendCommand("TTS", "ASR", "releaseFocus", "");
+
+        playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
+    }
 }
 
 void TTSAgent::postProcessDirective(bool is_cancel)
