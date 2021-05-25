@@ -19,6 +19,7 @@ SET(NUGU_REGISTRY_URL "https://reg-http.sktnugu.com")
 
 SET(version ${VERSION})
 SET(prefix ${CMAKE_INSTALL_PREFIX})
+SET(datadir ${CMAKE_INSTALL_FULL_DATAROOTDIR}/nugu)
 SET(bindir "${prefix}/${CMAKE_INSTALL_BINDIR}")
 SET(plugindir "${CMAKE_INSTALL_FULL_LIBDIR}/nugu")
 
@@ -218,6 +219,9 @@ IF(ENABLE_LOG_ANSICOLOR)
 	ADD_DEFINITIONS(-DNUGU_LOG_USE_ANSICOLOR)
 ENDIF()
 
+# Set asset file path
+ADD_DEFINITIONS(-DNUGU_ASSET_PATH="${datadir}")
+
 # Global definitions
 ADD_DEFINITIONS(
 	# Run-time buffer overflow detection
@@ -254,6 +258,9 @@ INSTALL(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
 # Install pkgconfig
 CONFIGURE_FILE(nugu.pc.in ${CMAKE_BINARY_DIR}/nugu.pc @ONLY)
 INSTALL(FILES ${CMAKE_BINARY_DIR}/nugu.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
+
+# Install asset files
+INSTALL(DIRECTORY assets/model DESTINATION ${datadir})
 
 ENABLE_TESTING()
 

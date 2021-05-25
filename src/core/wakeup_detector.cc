@@ -31,7 +31,6 @@ namespace NuguCore {
 static const char* KWD_SAMPLERATE = "16k";
 static const char* KWD_FORMAT = "s16le";
 static const char* KWD_CHANNEL = "1";
-static const char* MODEL_PATH = "./";
 
 WakeupDetector::WakeupDetector()
 {
@@ -72,7 +71,7 @@ void WakeupDetector::initialize(Attribute&& attribute)
     std::string format = !attribute.format.empty() ? attribute.format : KWD_FORMAT;
     std::string channel = !attribute.channel.empty() ? attribute.channel : KWD_CHANNEL;
 
-    setModelFile(!attribute.model_path.empty() ? attribute.model_path : MODEL_PATH);
+    setModelFile(attribute.model_net_file, attribute.model_search_file);
 
     AudioInputProcessor::init("kwd", sample, format, channel);
 
@@ -230,15 +229,15 @@ void WakeupDetector::stopWakeup()
     AudioInputProcessor::stop();
 }
 
-void WakeupDetector::changeModel(const std::string& model_path)
+void WakeupDetector::changeModel(const std::string& model_net_file, const std::string& model_search_file)
 {
-    if (model_path.empty()) {
+    if (model_net_file.empty() || model_search_file.empty()) {
         nugu_warn("The model path is empty.");
         return;
     }
 
     stopWakeup();
-    setModelFile(model_path);
+    setModelFile(model_net_file, model_search_file);
 }
 
 void WakeupDetector::setPower(float power)
@@ -269,19 +268,19 @@ void WakeupDetector::getPower(float& noise, float& speech)
         speech = max;
 }
 
-void WakeupDetector::setModelFile(const std::string& model_path)
+void WakeupDetector::setModelFile(const std::string& model_net_file, const std::string& model_search_file)
 {
-    if (model_path.empty()) {
-        nugu_warn("The model path is empty.");
+    if (model_net_file.empty() || model_search_file.empty()) {
+        nugu_warn("The model net or search file is empty.");
         return;
     }
 
     std::lock_guard<std::mutex> lock(mutex);
 
-    model_net_file = model_path + "/" + WAKEUP_NET_MODEL_FILE;
+    this->model_net_file = model_net_file;
     nugu_dbg("kwd model net-file: %s", model_net_file.c_str());
 
-    model_search_file = model_path + "/" + WAKEUP_SEARCH_MODEL_FILE;
+    this->model_search_file = model_search_file;
     nugu_dbg("kwd model search-file: %s", model_search_file.c_str());
 }
 

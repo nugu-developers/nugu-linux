@@ -28,6 +28,14 @@ class SpeechOperator : public IWakeupListener,
 public:
     virtual ~SpeechOperator() = default;
 
+    IASRListener* getASRListener();
+    void setWakeupHandler(IWakeupHandler* wakeup_handler, const std::string& wakeup_word);
+    void setASRHandler(IASRHandler* asr_handler);
+    void startListeningWithWakeup();
+    void startListening(float noise = 0, float speech = 0, ASRInitiator initiator = ASRInitiator::TAP);
+    void stopListeningAndWakeup();
+    bool changeWakeupWord(const WakeupModelFile& model_file, const std::string& wakeup_word);
+
     void onWakeupState(WakeupDetectState state, float power_noise, float power_speech) override;
     void onState(ASRState state, const std::string& dialog_id) override;
     void onNone(const std::string& dialog_id) override;
@@ -36,13 +44,6 @@ public:
     void onError(ASRError error, const std::string& dialog_id, bool listen_timeout_fail_beep) override;
     void onCancel(const std::string& dialog_id) override;
 
-    IASRListener* getASRListener();
-    void setWakeupHandler(IWakeupHandler* wakeup_handler);
-    void setASRHandler(IASRHandler* asr_handler);
-    void startListeningWithWakeup();
-    void startListening(float noise = 0, float speech = 0, ASRInitiator initiator = ASRInitiator::TAP);
-    void stopListeningAndWakeup();
-
 private:
     void startWakeup();
     void stopWakeup();
@@ -50,6 +51,7 @@ private:
 
     IWakeupHandler* wakeup_handler = nullptr;
     IASRHandler* asr_handler = nullptr;
+    std::string wakeup_word;
 };
 
 #endif /* __SPEECH_OPERATOR_H__ */

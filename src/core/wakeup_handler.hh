@@ -31,14 +31,14 @@ using namespace NuguClientKit;
 class WakeupHandler : public IWakeupHandler,
                       public IWakeupDetectorListener {
 public:
-    WakeupHandler(const std::string& model_path = "");
-    ~WakeupHandler();
+    explicit WakeupHandler(const WakeupModelFile& model_file);
+    virtual ~WakeupHandler() = default;
 
     void setListener(IWakeupListener* listener) override;
     bool startWakeup() override;
     void stopWakeup() override;
     void onWakeupState(WakeupState state, const std::string& id, float noise, float speech) override;
-    void changeModel(const std::string& model_path) override;
+    void changeModel(const WakeupModelFile& model_file) override;
     void setWakeupId(const std::string& id);
 
 private:
