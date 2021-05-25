@@ -18,6 +18,7 @@
 #ifndef __NUGU_SDK_MANAGER_H__
 #define __NUGU_SDK_MANAGER_H__
 
+#include <map>
 #include <memory>
 
 #include <clientkit/nugu_client.hh>
@@ -87,8 +88,14 @@ private:
     void reset();
     void exit();
 
+    void changeWakeupWord();
+
     const int TEXT_INPUT_TYPE_1 = 1;
     const int TEXT_INPUT_TYPE_2 = 2;
+
+    const std::string WAKEUP_WORD_ARIA = "아리아";
+    const std::string WAKEUP_WORD_TINKERBELL = "팅커벨";
+    const std::string DEFAULT_WAKEUP_WORD = WAKEUP_WORD_ARIA;
 
     std::unique_ptr<SpeakerController> speaker_controller = nullptr;
     std::unique_ptr<NuguClient> nugu_client = nullptr;
@@ -108,6 +115,9 @@ private:
 
     bool sdk_initialized = false;
     bool is_network_error = false;
+
+    std::string wakeup_word = DEFAULT_WAKEUP_WORD;
+    std::map<std::string, std::string> wakeup_model_paths;
 };
 
 #endif /* __NUGU_SDK_MANAGER_H__ */

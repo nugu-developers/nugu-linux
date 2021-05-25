@@ -28,10 +28,6 @@ WakeupHandler::WakeupHandler(const std::string& model_path)
     wakeup_detector->setListener(this);
 }
 
-WakeupHandler::~WakeupHandler()
-{
-}
-
 void WakeupHandler::setListener(IWakeupListener* listener)
 {
     this->listener = listener;

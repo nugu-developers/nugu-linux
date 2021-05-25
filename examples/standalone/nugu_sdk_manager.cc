@@ -126,6 +126,13 @@ NuguSDKManager::NuguSDKManager(NuguSampleManager* nugu_sample_manager)
     this->nugu_sample_manager = nugu_sample_manager;
     speaker_status = SpeakerStatus::getInstance();
     speaker_controller = make_unique<SpeakerController>();
+
+    std::string model_path = nugu_sample_manager->getModelPath();
+
+    wakeup_model_paths = {
+        { WAKEUP_WORD_ARIA, model_path + "aria" },
+        { WAKEUP_WORD_TINKERBELL, model_path + "tinkerbell" }
+    };
 }
 
 void NuguSDKManager::setup()
@@ -161,6 +168,9 @@ void NuguSDKManager::composeExecuteCommands()
 void NuguSDKManager::composeSDKCommands()
 {
     nugu_sample_manager->getCommandBuilder()
+        ->add("cw", { "change wakeup word", [&](int& flag) {
+                         changeWakeupWord();
+                     } })
         ->add("w", { "start listening with wakeup", [&](int& flag) {
                         speech_operator->startListeningWithWakeup();
                     } })
@@ -194,7 +204,7 @@ void NuguSDKManager::composeSDKCommands()
         ->add("ra", { "restore all", [&](int& flag) {
                          nugu_core_container->getCapabilityHelper()->restoreAll();
                      } })
-        ->compose("w");
+        ->compose("cw");
 }
 
 void NuguSDKManager::createInstance()
@@ -219,8 +229,8 @@ void NuguSDKManager::createInstance()
     network_manager->setUserAgent("0.2.0");
 
     on_init_func = [&]() {
-        wakeup_handler = std::unique_ptr<IWakeupHandler>(nugu_core_container->createWakeupHandler(nugu_sample_manager->getModelPath()));
-        speech_operator->setWakeupHandler(wakeup_handler.get());
+        wakeup_handler = std::unique_ptr<IWakeupHandler>(nugu_core_container->createWakeupHandler(wakeup_model_paths[wakeup_word]));
+        speech_operator->setWakeupHandler(wakeup_handler.get(), wakeup_word);
     };
 }
 
@@ -386,6 +396,14 @@ void NuguSDKManager::exit()
     deInitSDK(true);
     deleteInstance();
     nugu_sample_manager->quit();
+}
+
+void NuguSDKManager::changeWakeupWord()
+{
+    wakeup_word = (wakeup_word == WAKEUP_WORD_ARIA) ? WAKEUP_WORD_TINKERBELL : WAKEUP_WORD_ARIA;
+
+    if (speech_operator->changeWakeupWord(wakeup_model_paths[wakeup_word], wakeup_word))
+        nugu_client->setWakeupWord(wakeup_word);
 }
 
 /*******************************************************************************

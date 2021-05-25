@@ -94,7 +94,7 @@ private:
 
     GMainLoop* loop;
     GMainContext* context = nullptr;
-    std::string model_path = "./";
+    std::string model_path;
     bool is_prepared = false;
 
     Commands commands {};

@@ -32,7 +32,7 @@ class WakeupHandler : public IWakeupHandler,
                       public IWakeupDetectorListener {
 public:
     WakeupHandler(const std::string& model_path = "");
-    ~WakeupHandler();
+    virtual ~WakeupHandler() = default;
 
     void setListener(IWakeupListener* listener) override;
     bool startWakeup() override;

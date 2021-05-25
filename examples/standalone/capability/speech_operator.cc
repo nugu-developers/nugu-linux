@@ -75,36 +75,20 @@ void error(const std::string& message)
 }
 }
 
-void SpeechOperator::onWakeupState(WakeupDetectState state, float power_noise, float power_speech)
-{
-    switch (state) {
-    case WakeupDetectState::WAKEUP_DETECTING:
-        msg::wakeup::state("wakeup detecting...");
-        break;
-    case WakeupDetectState::WAKEUP_DETECTED:
-        msg::wakeup::state("wakeup detected (power: " + std::to_string(power_noise) + ", " + std::to_string(power_speech) + ")");
-
-        stopWakeup();
-        startListening(power_noise, power_speech, ASRInitiator::WAKE_UP_WORD);
-
-        break;
-    case WakeupDetectState::WAKEUP_FAIL:
-        msg::wakeup::state("wakeup fail");
-        break;
-    }
-}
-
 IASRListener* SpeechOperator::getASRListener()
 {
     return this;
 }
 
-void SpeechOperator::setWakeupHandler(IWakeupHandler* wakeup_handler)
+void SpeechOperator::setWakeupHandler(IWakeupHandler* wakeup_handler, const std::string& wakeup_word)
 {
     this->wakeup_handler = wakeup_handler;
 
     if (this->wakeup_handler)
         wakeup_handler->setListener(this);
+
+    if (!wakeup_word.empty())
+        this->wakeup_word = wakeup_word;
 }
 
 void SpeechOperator::setASRHandler(IASRHandler* asr_handler)
@@ -139,6 +123,21 @@ void SpeechOperator::stopListeningAndWakeup()
     stopWakeup();
 }
 
+bool SpeechOperator::changeWakeupWord(const std::string& model_path, const std::string& wakeup_word)
+{
+    if (!wakeup_handler || model_path.empty() || wakeup_word.empty())
+        return false;
+
+    stopListening();
+
+    wakeup_handler->changeModel(model_path);
+    this->wakeup_word = wakeup_word;
+
+    msg::wakeup::state("Wakeup word is changed to " + wakeup_word);
+
+    return true;
+}
+
 void SpeechOperator::startWakeup()
 {
     if (!wakeup_handler) {
@@ -163,6 +162,25 @@ void SpeechOperator::stopListening()
     }
 
     asr_handler->stopRecognition();
+}
+
+void SpeechOperator::onWakeupState(WakeupDetectState state, float power_noise, float power_speech)
+{
+    switch (state) {
+    case WakeupDetectState::WAKEUP_DETECTING:
+        msg::wakeup::state("wakeup detecting (" + wakeup_word + ")...");
+        break;
+    case WakeupDetectState::WAKEUP_DETECTED:
+        msg::wakeup::state("wakeup detected (power: " + std::to_string(power_noise) + ", " + std::to_string(power_speech) + ")");
+
+        stopWakeup();
+        startListening(power_noise, power_speech, ASRInitiator::WAKE_UP_WORD);
+
+        break;
+    case WakeupDetectState::WAKEUP_FAIL:
+        msg::wakeup::state("wakeup fail");
+        break;
+    }
 }
 
 void SpeechOperator::onState(ASRState state, const std::string& dialog_id)
