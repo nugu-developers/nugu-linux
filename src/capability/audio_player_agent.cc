@@ -155,7 +155,7 @@ void AudioPlayerAgent::suspend()
 
     if (suspend_policy == SuspendPolicy::STOP) {
         if (focus_state != FocusState::NONE)
-            focus_manager->releaseFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME);
+            playsync_manager->releaseSyncImmediately(ps_id, getName());
     } else {
         if (focus_state == FocusState::FOREGROUND)
             executeOnBackgroundAction();
@@ -170,12 +170,12 @@ void AudioPlayerAgent::restore()
         return;
     }
 
+    suspended = false;
+
     nugu_dbg("suspend_policy[%d], focus_state => %s", suspend_policy, focus_manager->getStateString(focus_state).c_str());
 
-    if (suspend_policy == SuspendPolicy::PAUSE && focus_state != FocusState::NONE)
+    if (focus_state == FocusState::FOREGROUND)
         executeOnForegroundAction();
-
-    suspended = false;
 }
 
 void AudioPlayerAgent::directiveDataCallback(NuguDirective* ndir, int seq, void* userdata)
@@ -208,15 +208,6 @@ void AudioPlayerAgent::onFocusChanged(FocusState state)
 
     switch (state) {
     case FocusState::FOREGROUND:
-        if (interaction_control_manager->isMultiTurnActive()) {
-            nugu_info("The multi-turn is active. So, it ignore intermediate foreground focus. ");
-            return;
-        }
-        if (routine_manager->isRoutineAlive()) {
-            nugu_info("Routine is alive. So, it ignore intermediate foreground focus. ");
-            return;
-        }
-
         executeOnForegroundAction();
         break;
     case FocusState::BACKGROUND:
@@ -235,7 +226,7 @@ void AudioPlayerAgent::onFocusChanged(FocusState state)
         }
 
         // TODO: integrate with playsync and session manager
-        template_id = "";
+        cur_url = template_id = "";
         break;
     }
     focus_state = state;
@@ -244,6 +235,21 @@ void AudioPlayerAgent::onFocusChanged(FocusState state)
 void AudioPlayerAgent::executeOnForegroundAction()
 {
     nugu_dbg("executeOnForegroundAction()");
+
+    if (suspended) {
+        nugu_warn("AudioPlayer is suspended, please restore AudioPlayer.");
+        return;
+    }
+
+    if (interaction_control_manager->isMultiTurnActive()) {
+        nugu_info("The multi-turn is active. So, it ignore intermediate foreground focus. ");
+        return;
+    }
+
+    if (routine_manager->isRoutineAlive()) {
+        nugu_info("Routine is alive. So, it ignore intermediate foreground focus. ");
+        return;
+    }
 
     if (is_paused) {
         nugu_warn("AudioPlayer is pause mode caused by directive(PAUSE)");
@@ -1016,11 +1022,6 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     receive_new_play_directive = false;
     has_play_directive = false;
 
-    if (suspended && suspend_policy == SuspendPolicy::STOP) {
-        nugu_dbg("AudioPlayer is suspended!!");
-        return;
-    }
-
     if (focus_state == FocusState::FOREGROUND)
         executeOnForegroundAction();
     else
@@ -1313,7 +1314,7 @@ DisplayRenderInfo* AudioPlayerAgent::composeRenderInfo(NuguDirective* ndir, cons
     }
 
     // if it has Display, skip to render AudioPlayer's template
-    if (std::string { nugu_directive_peek_groups(ndir) }.find("Display") != std::string::npos) {
+    if (std::string{ nugu_directive_peek_groups(ndir) }.find("Display") != std::string::npos) {
         nugu_warn("It has the separated display. So skip to parse render info.");
         return nullptr;
     }
