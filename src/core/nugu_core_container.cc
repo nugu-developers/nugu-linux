@@ -38,9 +38,9 @@ INetworkManager* NuguCoreContainer::createNetworkManager()
     return new NetworkManager();
 }
 
-IWakeupHandler* NuguCoreContainer::createWakeupHandler(const std::string& model_path)
+IWakeupHandler* NuguCoreContainer::createWakeupHandler(const WakeupModelFile& model_file)
 {
-    return new WakeupHandler(model_path);
+    return new WakeupHandler(model_file);
 }
 
 ISpeechRecognizer* NuguCoreContainer::createSpeechRecognizer(const std::string& model_path, const EpdAttribute& epd_attr)

@@ -30,7 +30,7 @@ public:
     INetworkManager* createNetworkManager();
 
     // implements INuguCoreContainer
-    IWakeupHandler* createWakeupHandler(const std::string& model_path = "") override;
+    IWakeupHandler* createWakeupHandler(const WakeupModelFile& model_file) override;
     ISpeechRecognizer* createSpeechRecognizer(const std::string& model_path = "", const EpdAttribute& epd_attr = {}) override;
     IMediaPlayer* createMediaPlayer() override;
     ITTSPlayer* createTTSPlayer() override;

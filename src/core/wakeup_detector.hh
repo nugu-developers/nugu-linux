@@ -19,9 +19,6 @@
 
 #include "audio_input_processor.hh"
 
-#define WAKEUP_NET_MODEL_FILE "nugu_model_wakeup_net.raw"
-#define WAKEUP_SEARCH_MODEL_FILE "nugu_model_wakeup_search.raw"
-
 #define POWER_SPEECH_PERIOD 7 // (140ms * 10 = 1400 ms) / 200ms
 #define POWER_NOISE_PERIOD 35 // (140ms * 50 = 70000 ms) / 200ms
 
@@ -45,10 +42,11 @@ public:
 class WakeupDetector : public AudioInputProcessor {
 public:
     using Attribute = struct {
+        std::string model_net_file;
+        std::string model_search_file;
         std::string sample;
         std::string format;
         std::string channel;
-        std::string model_path;
     };
 
 public:
@@ -59,7 +57,7 @@ public:
     void setListener(IWakeupDetectorListener* listener);
     bool startWakeup(const std::string& id);
     void stopWakeup();
-    void changeModel(const std::string& model_path);
+    void changeModel(const std::string& model_net_file, const std::string& model_search_file);
 
 private:
     void initialize(Attribute&& attribute);
@@ -67,7 +65,7 @@ private:
     void sendWakeupEvent(WakeupState state, const std::string& id, float noise = 0, float speech = 0);
     void setPower(float power);
     void getPower(float& noise, float& speech);
-    void setModelFile(const std::string& model_path);
+    void setModelFile(const std::string& model_net_file, const std::string& model_search_file);
 
     IWakeupDetectorListener* listener = nullptr;
 

@@ -46,9 +46,9 @@ public:
 
     /**
      * @brief Create WakeupHandler instance
-     * @param[in] model_path required model file path
+     * @param[in] model_file WakeupModelFile object
      */
-    virtual IWakeupHandler* createWakeupHandler(const std::string& model_path = "") = 0;
+    virtual IWakeupHandler* createWakeupHandler(const WakeupModelFile& model_file) = 0;
 
     /**
      * @brief Create SpeechRecognizer instance

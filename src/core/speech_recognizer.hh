@@ -20,7 +20,7 @@
 #include "audio_input_processor.hh"
 #include "clientkit/speech_recognizer_interface.hh"
 
-#define EPD_MODEL_FILE "nugu_model_epd.raw"
+#define EPD_MODEL_FILE "skt_epd_model.raw"
 
 namespace NuguCore {
 

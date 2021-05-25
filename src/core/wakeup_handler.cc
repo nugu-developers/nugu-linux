@@ -21,15 +21,11 @@
 
 namespace NuguCore {
 
-WakeupHandler::WakeupHandler(const std::string& model_path)
-    : wakeup_detector(std::unique_ptr<WakeupDetector>(new WakeupDetector(WakeupDetector::Attribute { "", "", "", model_path })))
+WakeupHandler::WakeupHandler(const WakeupModelFile& model_file)
+    : wakeup_detector(std::unique_ptr<WakeupDetector>(new WakeupDetector(WakeupDetector::Attribute { model_file.net, model_file.search })))
     , uniq(0)
 {
     wakeup_detector->setListener(this);
-}
-
-WakeupHandler::~WakeupHandler()
-{
 }
 
 void WakeupHandler::setListener(IWakeupListener* listener)
@@ -88,9 +84,9 @@ void WakeupHandler::setWakeupId(const std::string& id)
     nugu_dbg("startListening with new id(%s)", request_wakeup_id.c_str());
 }
 
-void WakeupHandler::changeModel(const std::string& model_path)
+void WakeupHandler::changeModel(const WakeupModelFile& model_file)
 {
-    wakeup_detector->changeModel(model_path);
+    wakeup_detector->changeModel(model_file.net, model_file.search);
 }
 
 } // NuguCore
