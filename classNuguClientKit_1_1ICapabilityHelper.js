@@ -6,6 +6,7 @@ var classNuguClientKit_1_1ICapabilityHelper =
     [ "getSessionManager", "classNuguClientKit_1_1ICapabilityHelper.html#a6c3f8cc5bb60c2fe7d31ee4e81e7539d", null ],
     [ "getInteractionControlManager", "classNuguClientKit_1_1ICapabilityHelper.html#a9da5ffb469ea9681ab7bf0dabd40a3fa", null ],
     [ "getDirectiveSequencer", "classNuguClientKit_1_1ICapabilityHelper.html#abc0cd2ae78dbb4add7649b71cc779029", null ],
+    [ "getRoutineManager", "classNuguClientKit_1_1ICapabilityHelper.html#a6e53652c2f0ebda0c1332d86eeba7532", null ],
     [ "setMute", "classNuguClientKit_1_1ICapabilityHelper.html#a03910a4b3b8b4b7bc35fc446c9d9da38", null ],
     [ "sendCommand", "classNuguClientKit_1_1ICapabilityHelper.html#a73c6d5dcdebe665f2aa416d43dce0a70", null ],
     [ "requestEventResult", "classNuguClientKit_1_1ICapabilityHelper.html#ae9588e1c419854bc2d76e340b822a5da", null ],

@@ -1,18 +1,19 @@
 <map id="NuguClientKit::ICapabilityListener" name="NuguClientKit::ICapabilityListener">
-<area shape="rect" id="node1" title="capability listener interface" alt="" coords="5,341,196,382"/>
+<area shape="rect" id="node1" title="capability listener interface" alt="" coords="5,374,196,415"/>
 <area shape="rect" id="node2" href="$classNuguCapability_1_1IASRListener.html" title="ASR listener interface." alt="" coords="256,5,467,32"/>
 <area shape="rect" id="node3" href="$classNuguCapability_1_1IChipsListener.html" title="chips listener interface" alt="" coords="251,56,472,83"/>
 <area shape="rect" id="node4" href="$classNuguCapability_1_1IDisplayListener.html" title="display listener interface" alt="" coords="270,107,453,149"/>
 <area shape="rect" id="node7" href="$classNuguCapability_1_1IExtensionListener.html" title="extension listener interface" alt="" coords="263,173,460,214"/>
 <area shape="rect" id="node8" href="$classNuguCapability_1_1IMicListener.html" title="mic listener interface" alt="" coords="257,239,465,265"/>
 <area shape="rect" id="node9" href="$classNuguCapability_1_1INudgeListener.html" title="nudge listener interface" alt="" coords="248,289,475,316"/>
-<area shape="rect" id="node10" href="$classNuguCapability_1_1ISessionListener.html" title="session listener interface" alt="" coords="270,341,453,382"/>
-<area shape="rect" id="node11" href="$classNuguCapability_1_1ISoundListener.html" title="sound listener interface" alt="" coords="249,407,474,433"/>
-<area shape="rect" id="node12" href="$classNuguCapability_1_1ISpeakerListener.html" title="speaker listener interface" alt="" coords="269,458,454,499"/>
-<area shape="rect" id="node13" href="$classNuguCapability_1_1ISystemListener.html" title="system listener interface" alt="" coords="244,524,479,551"/>
-<area shape="rect" id="node14" href="$classNuguCapability_1_1ITextListener.html" title="text listener interface" alt="" coords="255,575,467,601"/>
-<area shape="rect" id="node15" href="$classNuguCapability_1_1ITTSListener.html" title="tts listener interface" alt="" coords="257,625,466,652"/>
-<area shape="rect" id="node16" href="$classNuguCapability_1_1IUtilityListener.html" title="utility listener interface" alt="" coords="275,677,448,718"/>
+<area shape="rect" id="node10" href="$classNuguCapability_1_1IRoutineListener.html" title="routine listener interface" alt="" coords="270,341,453,382"/>
+<area shape="rect" id="node11" href="$classNuguCapability_1_1ISessionListener.html" title="session listener interface" alt="" coords="270,406,453,447"/>
+<area shape="rect" id="node12" href="$classNuguCapability_1_1ISoundListener.html" title="sound listener interface" alt="" coords="249,472,474,499"/>
+<area shape="rect" id="node13" href="$classNuguCapability_1_1ISpeakerListener.html" title="speaker listener interface" alt="" coords="269,523,454,565"/>
+<area shape="rect" id="node14" href="$classNuguCapability_1_1ISystemListener.html" title="system listener interface" alt="" coords="244,589,479,616"/>
+<area shape="rect" id="node15" href="$classNuguCapability_1_1ITextListener.html" title="text listener interface" alt="" coords="255,640,467,667"/>
+<area shape="rect" id="node16" href="$classNuguCapability_1_1ITTSListener.html" title="tts listener interface" alt="" coords="257,691,466,717"/>
+<area shape="rect" id="node17" href="$classNuguCapability_1_1IUtilityListener.html" title="utility listener interface" alt="" coords="275,742,448,783"/>
 <area shape="rect" id="node5" href="$classNuguCapability_1_1IAudioPlayerDisplayListener.html" title="audioplayer&#39;s display listener interface" alt="" coords="527,107,737,149"/>
 <area shape="rect" id="node6" href="$classNuguCapability_1_1IAudioPlayerListener.html" title="audioplayer listener interface" alt="" coords="785,107,996,149"/>
 </map>

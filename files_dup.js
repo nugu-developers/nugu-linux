@@ -39,6 +39,8 @@ var files_dup =
     [ "nugu_timer_interface.hh", "nugu__timer__interface_8hh.html", "nugu__timer__interface_8hh" ],
     [ "nugu_uuid.h", "nugu__uuid_8h.html", "nugu__uuid_8h" ],
     [ "playsync_manager_interface.hh", "playsync__manager__interface_8hh.html", "playsync__manager__interface_8hh" ],
+    [ "routine_interface.hh", "routine__interface_8hh.html", null ],
+    [ "routine_manager_interface.hh", "routine__manager__interface_8hh.html", "routine__manager__interface_8hh" ],
     [ "session_interface.hh", "session__interface_8hh.html", "session__interface_8hh" ],
     [ "session_manager_interface.hh", "session__manager__interface_8hh.html", null ],
     [ "sound_interface.hh", "sound__interface_8hh.html", "sound__interface_8hh" ],

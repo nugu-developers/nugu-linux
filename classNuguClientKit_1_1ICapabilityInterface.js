@@ -22,6 +22,7 @@ var classNuguClientKit_1_1ICapabilityInterface =
     [ "cancelDirective", "classNuguClientKit_1_1ICapabilityInterface.html#a66b731780d30bd7515fd2d93fc53cd61", null ],
     [ "processDirective", "classNuguClientKit_1_1ICapabilityInterface.html#a32b3c3172d411f9d4b87c172f2066078", null ],
     [ "updateInfoForContext", "classNuguClientKit_1_1ICapabilityInterface.html#a743711b81aacc194fef39f00d5c5c5d7", null ],
+    [ "updateCompactContext", "classNuguClientKit_1_1ICapabilityInterface.html#a35cb7a70ab375759297182954084e859", null ],
     [ "receiveCommand", "classNuguClientKit_1_1ICapabilityInterface.html#a95cfe85442962851f698fad3007ecb8c", null ],
     [ "receiveCommandAll", "classNuguClientKit_1_1ICapabilityInterface.html#a880b93080d0722f676cea3dfdc0f7f39", null ],
     [ "getProperty", "classNuguClientKit_1_1ICapabilityInterface.html#a54ca2094bb03d7c304502728b2049f95", null ],

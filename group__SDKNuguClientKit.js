@@ -12,6 +12,7 @@ var group__SDKNuguClientKit =
     [ "NuguCoreContainerInterface", "group__NuguCoreContainerInterface.html", "group__NuguCoreContainerInterface" ],
     [ "NuguTimerInterface", "group__NuguTimerInterface.html", "group__NuguTimerInterface" ],
     [ "PlaySyncManagerInterface", "group__PlaySyncManagerInterface.html", "group__PlaySyncManagerInterface" ],
+    [ "RoutineManagerInterface", "group__RoutineManagerInterface.html", "group__RoutineManagerInterface" ],
     [ "SessionManagerInterface", "group__SessionManagerInterface.html", "group__SessionManagerInterface" ],
     [ "SpeechRecognizerInterface", "group__SpeechRecognizerInterface.html", "group__SpeechRecognizerInterface" ],
     [ "WakeupInterface", "group__WakeupInterface.html", "group__WakeupInterface" ]

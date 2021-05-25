@@ -40,6 +40,7 @@ var group__Capability =
       [ "receiveCommandAll", "classNuguClientKit_1_1Capability.html#adf77c76b8685f88041910d0db4a27b16", null ],
       [ "parsingDirective", "classNuguClientKit_1_1Capability.html#a3289c47ce9c38309540d111e3fad4998", null ],
       [ "getContextInfo", "classNuguClientKit_1_1Capability.html#a48ef514fde84116ad1d653626b432f5a", null ],
+      [ "updateCompactContext", "classNuguClientKit_1_1Capability.html#a7fd014b5d3cde7350137ef332f6c680f", null ],
       [ "getCapabilityHelper", "classNuguClientKit_1_1Capability.html#a3b57ca76e07f7ffe56bcf1c738be059b", null ],
       [ "initialized", "classNuguClientKit_1_1Capability.html#ac208e94ea13143d4503824230d04c296", null ],
       [ "destroy_directive_by_agent", "classNuguClientKit_1_1Capability.html#a2b7910d3feda791de178d7dcc82ee30d", null ],
@@ -51,6 +52,7 @@ var group__Capability =
       [ "session_manager", "classNuguClientKit_1_1Capability.html#a3fa525ae220091b2dbab1bdc1a5b7139", null ],
       [ "interaction_control_manager", "classNuguClientKit_1_1Capability.html#a0f3b7c451056a734824e98de6a98bb40", null ],
       [ "directive_sequencer", "classNuguClientKit_1_1Capability.html#a8658b77a46b306bfb8289c2220fd099b", null ],
+      [ "routine_manager", "classNuguClientKit_1_1Capability.html#a24064f01e45072bb5cc6aeabe2bed400", null ],
       [ "suspend_policy", "classNuguClientKit_1_1Capability.html#a55e1b7727b78c2e7cf57c2cebc6f195a", null ]
     ] ],
     [ "CapabilityEvent", "classNuguClientKit_1_1CapabilityEvent.html", [
