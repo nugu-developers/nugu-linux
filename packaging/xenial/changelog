@@ -1,3 +1,17 @@
+nugu (1.2.0ubuntu1~xenial) xenial; urgency=medium
+
+  * Fixed nugu_sample constructing capability
+  * Added Routine interface v1.2
+  * Added RoutineManager
+  * Added nugu_oob_server OAuth2 client credentials
+  * Added PlaySyncManager release sync API
+  * Updated TextAgent
+  * Updated MicAgent
+  * Updated TTSAgent
+  * Updated CapabilityManager
+
+ -- nugulinux <nugulinux@gmail.com>  Tue, 25 May 2021 14:30:00 +0900
+
 nugu (1.1.0ubuntu1~xenial) xenial; urgency=medium
 
   * Fixed FocusManager
