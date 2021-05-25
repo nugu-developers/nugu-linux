@@ -10,7 +10,7 @@ nugu (1.2.0ubuntu1~bionic) bionic; urgency=medium
   * Updated TTSAgent
   * Updated CapabilityManager
 
- -- nugulinux <nugulinux@gmail.com>  Tue, 25 May, 2021 14:30:00 +0900
+ -- nugulinux <nugulinux@gmail.com>  Tue, 25 May 2021 14:30:00 +0900
 
 nugu (1.1.0ubuntu1~bionic) bionic; urgency=medium
 
