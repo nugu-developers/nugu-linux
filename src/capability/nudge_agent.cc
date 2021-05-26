@@ -45,7 +45,7 @@ void NudgeAgent::initialize()
 
     state_checkers.clear();
     dialog_id.clear();
-    nudgu_info = Json::nullValue;
+    nudge_info = Json::nullValue;
 
     initialized = true;
 }
@@ -62,8 +62,8 @@ void NudgeAgent::updateInfoForContext(Json::Value& ctx)
 
     nudge["version"] = getVersion();
 
-    if (!nudgu_info.empty())
-        nudge["nudgeInfo"] = nudgu_info;
+    if (!nudge_info.empty())
+        nudge["nudgeInfo"] = nudge_info;
 
     ctx[getName()] = nudge;
 }
@@ -116,7 +116,7 @@ void NudgeAgent::parsingAppend(const char* message)
         return;
     }
 
-    nudgu_info = root["nudgeInfo"];
+    nudge_info = root["nudgeInfo"];
 }
 
 bool NudgeAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
@@ -144,7 +144,7 @@ void NudgeAgent::updateNudgeState(const std::string& filter, const std::string& 
 
     if (state_checkers.empty()) {
         this->dialog_id.clear();
-        nudgu_info = Json::nullValue;
+        nudge_info = Json::nullValue;
     }
 }
 

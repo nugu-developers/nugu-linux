@@ -44,7 +44,7 @@ private:
 
     std::set<std::string> state_checkers;
     std::string dialog_id;
-    Json::Value nudgu_info;
+    Json::Value nudge_info;
 };
 
 } // NuguCapability
