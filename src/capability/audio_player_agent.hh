@@ -59,9 +59,6 @@ public:
     void receiveCommandAll(const std::string& command, const std::string& param) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
-    static void directiveDataCallback(NuguDirective* ndir, int seq, void* userdata);
-    static void getAttachmentData(NuguDirective* ndir, void* userdata);
-
     // implements IAudioPlayerHandler
     void addListener(IAudioPlayerListener* listener) override;
     void removeListener(IAudioPlayerListener* listener) override;
@@ -78,10 +75,6 @@ public:
     bool setVolume(int volume) override;
     bool setMute(bool mute) override;
 
-    void onFocusChanged(FocusState state) override;
-    void executeOnForegroundAction();
-    void executeOnBackgroundAction();
-
     void displayRendered(const std::string& id) override;
     void displayCleared(const std::string& id) override;
     void elementSelected(const std::string& id, const std::string& item_token) override;
@@ -90,6 +83,22 @@ public:
     void removeListener(IDisplayListener* listener) override;
     void stopRenderingTimer(const std::string& id) override;
 
+    void mediaStateChanged(MediaPlayerState state) override;
+    void mediaEventReport(MediaPlayerEvent event) override;
+
+    void mediaChanged(const std::string& url) override;
+    void durationChanged(int duration) override;
+    void positionChanged(int position) override;
+    void volumeChanged(int volume) override;
+    void muteChanged(int mute) override;
+
+    // implements IPlaySyncManagerListener, IFocusResourceListener
+    void onFocusChanged(FocusState state) override;
+    void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data) override;
+    void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override;
+
+private:
+    std::string sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr, bool include_all_context = false);
     void sendEventPlaybackStarted(EventResultCallback cb = nullptr);
     void sendEventPlaybackFinished(EventResultCallback cb = nullptr);
     void sendEventPlaybackStopped(EventResultCallback cb = nullptr);
@@ -109,24 +118,6 @@ public:
     void sendEventRequestPlayCommandIssued(const std::string& dname, const std::string& payload, EventResultCallback cb = nullptr);
     void sendEventRequestCommandFailed(const std::string& play_service_id, const std::string& type, const std::string& reason, EventResultCallback cb = nullptr);
 
-    void mediaStateChanged(MediaPlayerState state) override;
-    void mediaEventReport(MediaPlayerEvent event) override;
-    void mediaFinished();
-    void mediaLoaded();
-
-    void mediaChanged(const std::string& url) override;
-    void durationChanged(int duration) override;
-    void positionChanged(int position) override;
-    void volumeChanged(int volume) override;
-    void muteChanged(int mute) override;
-
-    // implements IPlaySyncManagerListener
-    void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data) override;
-    void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override;
-
-private:
-    std::string sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr, bool include_all_context = false);
-
     bool isContentCached(const std::string& key, std::string& playurl);
     void parsingPlay(const char* message);
     void parsingPause(const char* message);
@@ -141,8 +132,14 @@ private:
 
     void clearContext();
     void checkAndUpdateVolume();
+    void executeOnForegroundAction();
+    void executeOnBackgroundAction();
+
     std::string playbackError(PlaybackError error);
     std::string playerActivity(AudioPlayerState state);
+
+    static void directiveDataCallback(NuguDirective* ndir, int seq, void* userdata);
+    static void getAttachmentData(NuguDirective* ndir, void* userdata);
 
     const unsigned int PAUSE_CONTEXT_HOLD_TIME = 60 * 10;
 

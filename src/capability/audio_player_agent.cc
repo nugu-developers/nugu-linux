@@ -178,134 +178,144 @@ void AudioPlayerAgent::restore()
         executeOnForegroundAction();
 }
 
-void AudioPlayerAgent::directiveDataCallback(NuguDirective* ndir, int seq, void* userdata)
+void AudioPlayerAgent::preprocessDirective(NuguDirective* ndir)
 {
-    getAttachmentData(ndir, userdata);
+    const char* dname;
+    const char* message;
+
+    if (!ndir
+        || !(dname = nugu_directive_peek_name(ndir))
+        || !(message = nugu_directive_peek_json(ndir))) {
+        nugu_error("The directive info is not exist.");
+        return;
+    }
+
+    if (!strcmp(dname, "Play")) {
+        if (routine_manager->isConditionToStop(ndir))
+            routine_manager->stop();
+
+        std::string playstackctl_ps_id = getPlayServiceIdInStackControl(message);
+
+        playsync_manager->hasActivity(playstackctl_ps_id, PlayStackActivity::Media)
+            ? playsync_manager->startSync(playstackctl_ps_id, getName(), composeRenderInfo(ndir, message))
+            : playsync_manager->prepareSync(playstackctl_ps_id, ndir);
+    }
 }
 
-void AudioPlayerAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
+void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
 {
-    AudioPlayerAgent* agent = static_cast<AudioPlayerAgent*>(userdata);
-    unsigned char* buf;
-    size_t length = 0;
+    nugu_dbg("message: %s", message);
 
-    buf = nugu_directive_get_data(ndir, &length);
-    if (buf) {
-        agent->tts_player->write_audio((const char*)buf, length);
-        free(buf);
-    }
+    is_paused = strcmp(dname, "Pause") == 0;
 
-    if (nugu_directive_is_data_end(ndir)) {
-        agent->tts_player->write_done();
-        agent->destroyDirective(ndir);
-        agent->speak_dir = nullptr;
-    }
+    // directive name check
+    if (!strcmp(dname, "Play"))
+        parsingPlay(message);
+    else if (!strcmp(dname, "Pause"))
+        parsingPause(message);
+    else if (!strcmp(dname, "Stop"))
+        parsingStop(message);
+    else if (!strcmp(dname, "UpdateMetadata"))
+        parsingUpdateMetadata(message);
+    else if (!strcmp(dname, "ShowLyrics"))
+        parsingShowLyrics(message);
+    else if (!strcmp(dname, "HideLyrics"))
+        parsingHideLyrics(message);
+    else if (!strcmp(dname, "ControlLyricsPage"))
+        parsingControlLyricsPage(message);
+    else if (!strcmp(dname, "RequestPlayCommand"))
+        parsingRequestPlayCommand(dname, message);
+    else if (!strcmp(dname, "RequestResumeCommand")
+        || !strcmp(dname, "RequestNextCommand")
+        || !strcmp(dname, "RequestPreviousCommand")
+        || !strcmp(dname, "RequestPauseCommand")
+        || !strcmp(dname, "RequestStopCommand"))
+        parsingRequestOthersCommand(dname, message);
+    else
+        nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
 }
 
-void AudioPlayerAgent::onFocusChanged(FocusState state)
+void AudioPlayerAgent::updateInfoForContext(Json::Value& ctx)
 {
-    nugu_info("Focus Changed(%s -> %s)", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
+    Json::Value aplayer;
+    double offset = cur_player->position() * 1000;
+    double duration = cur_player->duration() * 1000;
 
-    switch (state) {
-    case FocusState::FOREGROUND:
-        executeOnForegroundAction();
-        break;
-    case FocusState::BACKGROUND:
-        executeOnBackgroundAction();
-        break;
-    case FocusState::NONE:
-        if (speak_dir) {
-            destroyDirective(speak_dir);
-            speak_dir = nullptr;
-        }
-
-        nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_FINISHED);
-        if (!cur_player->stop()) {
-            nugu_error("stop media failed");
-            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
-        }
-
-        // TODO: integrate with playsync and session manager
-        cur_url = template_id = "";
-        break;
+    aplayer["version"] = getVersion();
+    aplayer["playerActivity"] = playerActivity(cur_aplayer_state);
+    aplayer["offsetInMilliseconds"] = offset;
+    if (ps_id.size())
+        aplayer["playServiceId"] = ps_id;
+    if (cur_aplayer_state != AudioPlayerState::IDLE && cur_token.size()) {
+        aplayer["token"] = cur_token;
+        if (duration)
+            aplayer["durationInMilliseconds"] = duration;
     }
-    focus_state = state;
+    if (display_listener) {
+        bool visible = false;
+        if (display_listener->requestLyricsPageAvailable(template_id, visible))
+            aplayer["lyricsVisible"] = visible;
+    }
+
+    ctx[getName()] = aplayer;
 }
 
-void AudioPlayerAgent::executeOnForegroundAction()
+bool AudioPlayerAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
 {
-    nugu_dbg("executeOnForegroundAction()");
+    std::string convert_command;
+    convert_command.resize(command.size());
+    std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
 
-    if (suspended) {
-        nugu_warn("AudioPlayer is suspended, please restore AudioPlayer.");
-        return;
-    }
-
-    if (interaction_control_manager->isMultiTurnActive()) {
-        nugu_info("The multi-turn is active. So, it ignore intermediate foreground focus. ");
-        return;
-    }
-
-    if (routine_manager->isRoutineAlive()) {
-        nugu_info("Routine is alive. So, it ignore intermediate foreground focus. ");
-        return;
-    }
-
-    if (is_paused) {
-        nugu_warn("AudioPlayer is pause mode caused by directive(PAUSE)");
-        return;
-    }
-
-    std::string type = is_tts_activate ? "attachment" : "streaming";
-    nugu_dbg("cur_aplayer_state[%s] => %d, player->state() => %s, is_finished: %d", type.c_str(), cur_aplayer_state, cur_player->stateString(cur_player->state()).c_str(), is_finished);
-
-    checkAndUpdateVolume();
-
-    if (receive_new_play_directive) {
-        nugu_dbg("The media has been expired and does not play.");
-    } else if (cur_player->state() == MediaPlayerState::STOPPED && is_finished) {
-        nugu_dbg("The media has already been played.");
-    } else if (cur_player->state() == MediaPlayerState::PAUSED) {
-        if (!cur_player->resume()) {
-            nugu_error("resume media(%s) failed", type.c_str());
-            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
-                "player can't resume media");
-        }
+    if (!convert_command.compare("setvolume")) {
+        cur_player->setVolume(std::stoi(param));
     } else {
-        nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_STARTED);
+        nugu_error("invalid command: %s", command.c_str());
+        return false;
+    }
 
-        if (!cur_player->play()) {
-            nugu_error("play media(%s) failed", type.c_str());
-            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
-                "player can't play media");
-        }
-        if (is_tts_activate) {
-            if (nugu_directive_get_data_size(speak_dir) > 0)
-                getAttachmentData(speak_dir, this);
+    return true;
+}
 
-            if (speak_dir)
-                nugu_directive_set_data_callback(speak_dir, directiveDataCallback, this);
-        }
+void AudioPlayerAgent::receiveCommandAll(const std::string& command, const std::string& param)
+{
+    std::string convert_command;
+    convert_command.resize(command.size());
+    std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
+
+    if (receive_new_play_directive)
+        return;
+
+    if (convert_command == "receive_directive_group") {
+        if (param.find("AudioPlayer.Play") != std::string::npos)
+            has_play_directive = true;
+    } else if (convert_command == "directive_dialog_id") {
+        if (has_play_directive && param != play_directive_dialog_id)
+            receive_new_play_directive = true;
     }
 }
 
-void AudioPlayerAgent::executeOnBackgroundAction()
+void AudioPlayerAgent::setCapabilityListener(ICapabilityListener* listener)
 {
-    nugu_dbg("executeOnBackgroundAction()");
-
-    nugu_dbg("is_finished: %d, cur_player->state(): %d", is_finished, cur_player->state());
-
-    MediaPlayerState state = cur_player->state();
-
-    if (state == MediaPlayerState::PLAYING || state == MediaPlayerState::PREPARE
-        || state == MediaPlayerState::READY) {
-        is_paused_by_unfocus = true;
-        if (!cur_player->pause()) {
-            nugu_error("pause media failed");
-            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
-                "player can't pause");
-        }
+    if (listener) {
+        addListener(dynamic_cast<IAudioPlayerListener*>(listener));
+        setListener(dynamic_cast<IAudioPlayerDisplayListener*>(listener));
     }
+}
+
+void AudioPlayerAgent::addListener(IAudioPlayerListener* listener)
+{
+    auto iterator = std::find(aplayer_listeners.begin(), aplayer_listeners.end(), listener);
+
+    if (iterator == aplayer_listeners.end())
+        aplayer_listeners.emplace_back(listener);
+}
+
+void AudioPlayerAgent::removeListener(IAudioPlayerListener* listener)
+{
+    auto iterator = std::find(aplayer_listeners.begin(), aplayer_listeners.end(), listener);
+
+    if (iterator != aplayer_listeners.end())
+        aplayer_listeners.erase(iterator);
 }
 
 std::string AudioPlayerAgent::play()
@@ -474,144 +484,244 @@ bool AudioPlayerAgent::setMute(bool mute)
     return true;
 }
 
-void AudioPlayerAgent::preprocessDirective(NuguDirective* ndir)
+void AudioPlayerAgent::displayRendered(const std::string& id)
 {
-    const char* dname;
-    const char* message;
+    // TODO: integrate with playsync and session manager
+}
 
-    if (!ndir
-        || !(dname = nugu_directive_peek_name(ndir))
-        || !(message = nugu_directive_peek_json(ndir))) {
-        nugu_error("The directive info is not exist.");
+void AudioPlayerAgent::displayCleared(const std::string& id)
+{
+    // TODO: integrate with playsync and session manager
+}
+
+void AudioPlayerAgent::elementSelected(const std::string& id, const std::string& item_token)
+{
+    // ignore
+}
+
+void AudioPlayerAgent::informControlResult(const std::string& id, ControlType type, ControlDirection direction)
+{
+    sendEventControlLyricsPageSucceeded(direction == ControlDirection::NEXT ? "NEXT" : "PREVIOUS");
+}
+
+void AudioPlayerAgent::setListener(IDisplayListener* listener)
+{
+    if (listener == nullptr)
+        return;
+
+    display_listener = dynamic_cast<IAudioPlayerDisplayListener*>(listener);
+    render_helper->setDisplayListener(display_listener);
+}
+
+void AudioPlayerAgent::removeListener(IDisplayListener* listener)
+{
+    if (listener == nullptr)
+        return;
+
+    auto audio_display_listener = dynamic_cast<IAudioPlayerDisplayListener*>(listener);
+
+    if (audio_display_listener == display_listener)
+        display_listener = nullptr;
+}
+
+void AudioPlayerAgent::stopRenderingTimer(const std::string& id)
+{
+    // TODO: integrate with playsync and session manager
+}
+
+void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
+{
+    switch (state) {
+    case MediaPlayerState::IDLE:
+        cur_aplayer_state = AudioPlayerState::IDLE;
+        break;
+    case MediaPlayerState::PREPARE:
+    case MediaPlayerState::READY:
+        prev_aplayer_state = AudioPlayerState::IDLE;
+        return;
+        break;
+    case MediaPlayerState::PLAYING:
+        cur_aplayer_state = AudioPlayerState::PLAYING;
+        playsync_manager->clearHolding();
+
+        if (is_paused_by_unfocus) {
+            nugu_dbg("force setting previous state for notify to application");
+            prev_aplayer_state = AudioPlayerState::PAUSED;
+        } else {
+            if (prev_aplayer_state == AudioPlayerState::PAUSED)
+                sendEventPlaybackResumed();
+            else
+                sendEventPlaybackStarted();
+        }
+        is_paused_by_unfocus = false;
+        break;
+    case MediaPlayerState::PAUSED:
+        cur_aplayer_state = AudioPlayerState::PAUSED;
+
+        if (is_paused_by_unfocus) {
+            playsync_manager->continueRelease();
+            playsync_manager->releaseSyncLater(ps_id, getName());
+        }
+
+        if (!is_paused && !is_paused_by_unfocus)
+            sendEventPlaybackPaused();
+        break;
+    case MediaPlayerState::STOPPED:
+        if (is_finished) {
+            cur_aplayer_state = AudioPlayerState::FINISHED;
+            sendEventPlaybackFinished();
+        } else {
+            cur_aplayer_state = AudioPlayerState::STOPPED;
+            sendEventPlaybackStopped();
+        }
+        is_paused = false;
+        is_paused_by_unfocus = false;
+        break;
+    default:
+        break;
+    }
+    nugu_info("[audioplayer state] %s -> %s", playerActivity(prev_aplayer_state).c_str(), playerActivity(cur_aplayer_state).c_str());
+
+    if (prev_aplayer_state == cur_aplayer_state)
+        return;
+
+    for (const auto& aplayer_listener : aplayer_listeners)
+        aplayer_listener->mediaStateChanged(cur_aplayer_state, cur_dialog_id);
+
+    if ((is_paused || is_paused_by_unfocus) && cur_aplayer_state == AudioPlayerState::PAUSED) {
+        nugu_info("[audioplayer state] skip to save prev_aplayer_state");
         return;
     }
 
-    if (!strcmp(dname, "Play")) {
-        if (routine_manager->isConditionToStop(ndir))
-            routine_manager->stop();
+    prev_aplayer_state = cur_aplayer_state;
+}
 
-        std::string playstackctl_ps_id = getPlayServiceIdInStackControl(message);
+void AudioPlayerAgent::mediaEventReport(MediaPlayerEvent event)
+{
+    switch (event) {
+    case MediaPlayerEvent::INVALID_MEDIA_URL:
+        nugu_warn("INVALID_MEDIA_URL");
+        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INVALID_REQUEST, "media source is wrong");
 
-        playsync_manager->hasActivity(playstackctl_ps_id, PlayStackActivity::Media)
-            ? playsync_manager->startSync(playstackctl_ps_id, getName(), composeRenderInfo(ndir, message))
-            : playsync_manager->prepareSync(playstackctl_ps_id, ndir);
+        for (const auto& aplayer_listener : aplayer_listeners)
+            aplayer_listener->mediaEventReport(AudioPlayerEvent::INVALID_URL, cur_dialog_id);
+        break;
+    case MediaPlayerEvent::LOADING_MEDIA_FAILED:
+        nugu_warn("LOADING_MEDIA_FAILED");
+        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_SERVICE_UNAVAILABLE, "player can't load the media");
+
+        for (const auto& aplayer_listener : aplayer_listeners)
+            aplayer_listener->mediaEventReport(AudioPlayerEvent::LOAD_FAILED, cur_dialog_id);
+        break;
+    case MediaPlayerEvent::LOADING_MEDIA_SUCCESS:
+        nugu_dbg("LOADING_MEDIA_SUCCESS");
+        break;
+    case MediaPlayerEvent::PLAYING_MEDIA_FINISHED:
+        nugu_dbg("PLAYING_MEDIA_FINISHED");
+        is_finished = true;
+        mediaStateChanged(MediaPlayerState::STOPPED);
+        break;
+    case MediaPlayerEvent::PLAYING_MEDIA_UNDERRUN:
+        for (const auto& aplayer_listener : aplayer_listeners) {
+            aplayer_listener->mediaEventReport(AudioPlayerEvent::UNDERRUN, cur_dialog_id);
+        }
+        break;
+    default:
+        break;
     }
 }
 
-void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
+void AudioPlayerAgent::mediaChanged(const std::string& url)
 {
-    nugu_dbg("message: %s", message);
-
-    is_paused = strcmp(dname, "Pause") == 0;
-
-    // directive name check
-    if (!strcmp(dname, "Play"))
-        parsingPlay(message);
-    else if (!strcmp(dname, "Pause"))
-        parsingPause(message);
-    else if (!strcmp(dname, "Stop"))
-        parsingStop(message);
-    else if (!strcmp(dname, "UpdateMetadata"))
-        parsingUpdateMetadata(message);
-    else if (!strcmp(dname, "ShowLyrics"))
-        parsingShowLyrics(message);
-    else if (!strcmp(dname, "HideLyrics"))
-        parsingHideLyrics(message);
-    else if (!strcmp(dname, "ControlLyricsPage"))
-        parsingControlLyricsPage(message);
-    else if (!strcmp(dname, "RequestPlayCommand"))
-        parsingRequestPlayCommand(dname, message);
-    else if (!strcmp(dname, "RequestResumeCommand")
-        || !strcmp(dname, "RequestNextCommand")
-        || !strcmp(dname, "RequestPreviousCommand")
-        || !strcmp(dname, "RequestPauseCommand")
-        || !strcmp(dname, "RequestStopCommand"))
-        parsingRequestOthersCommand(dname, message);
-    else
-        nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
 }
 
-void AudioPlayerAgent::updateInfoForContext(Json::Value& ctx)
+void AudioPlayerAgent::durationChanged(int duration)
 {
-    Json::Value aplayer;
-    double offset = cur_player->position() * 1000;
-    double duration = cur_player->duration() * 1000;
-
-    aplayer["version"] = getVersion();
-    aplayer["playerActivity"] = playerActivity(cur_aplayer_state);
-    aplayer["offsetInMilliseconds"] = offset;
-    if (ps_id.size())
-        aplayer["playServiceId"] = ps_id;
-    if (cur_aplayer_state != AudioPlayerState::IDLE && cur_token.size()) {
-        aplayer["token"] = cur_token;
-        if (duration)
-            aplayer["durationInMilliseconds"] = duration;
-    }
-    if (display_listener) {
-        bool visible = false;
-        if (display_listener->requestLyricsPageAvailable(template_id, visible))
-            aplayer["lyricsVisible"] = visible;
-    }
-
-    ctx[getName()] = aplayer;
+    for (const auto& aplayer_listener : aplayer_listeners)
+        aplayer_listener->durationChanged(duration);
 }
 
-bool AudioPlayerAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
+void AudioPlayerAgent::positionChanged(int position)
 {
-    std::string convert_command;
-    convert_command.resize(command.size());
-    std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
+    if (report_delay_time > 0 && ((report_delay_time / 1000) == position))
+        sendEventProgressReportDelayElapsed();
 
-    if (!convert_command.compare("setvolume")) {
-        cur_player->setVolume(std::stoi(param));
-    } else {
-        nugu_error("invalid command: %s", command.c_str());
-        return false;
-    }
+    if (report_interval_time > 0 && ((position % (int)(report_interval_time / 1000)) == 0))
+        sendEventProgressReportIntervalElapsed();
 
-    return true;
+    for (const auto& aplayer_listener : aplayer_listeners)
+        aplayer_listener->positionChanged(position);
 }
 
-void AudioPlayerAgent::receiveCommandAll(const std::string& command, const std::string& param)
+void AudioPlayerAgent::volumeChanged(int volume)
 {
-    std::string convert_command;
-    convert_command.resize(command.size());
-    std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
+}
 
-    if (receive_new_play_directive)
-        return;
+void AudioPlayerAgent::muteChanged(int mute)
+{
+}
 
-    if (convert_command == "receive_directive_group") {
-        if (param.find("AudioPlayer.Play") != std::string::npos)
-            has_play_directive = true;
-    } else if (convert_command == "directive_dialog_id") {
-        if (has_play_directive && param != play_directive_dialog_id)
-            receive_new_play_directive = true;
+void AudioPlayerAgent::onFocusChanged(FocusState state)
+{
+    nugu_info("Focus Changed(%s -> %s)", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
+
+    switch (state) {
+    case FocusState::FOREGROUND:
+        executeOnForegroundAction();
+        break;
+    case FocusState::BACKGROUND:
+        executeOnBackgroundAction();
+        break;
+    case FocusState::NONE:
+        if (speak_dir) {
+            destroyDirective(speak_dir);
+            speak_dir = nullptr;
+        }
+
+        nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_FINISHED);
+        if (!cur_player->stop()) {
+            nugu_error("stop media failed");
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't stop");
+        }
+
+        // TODO: integrate with playsync and session manager
+        cur_url = template_id = "";
+        break;
+    }
+    focus_state = state;
+}
+
+void AudioPlayerAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
+{
+    if (state == PlaySyncState::Synced)
+        template_id = render_helper->renderDisplay(extra_data);
+    else if (state == PlaySyncState::Released) {
+        focus_manager->releaseFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME);
+        render_helper->clearDisplay(extra_data, playsync_manager->hasNextPlayStack());
     }
 }
 
-void AudioPlayerAgent::setCapabilityListener(ICapabilityListener* listener)
+void AudioPlayerAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
 {
-    if (listener) {
-        addListener(dynamic_cast<IAudioPlayerListener*>(listener));
-        setListener(dynamic_cast<IAudioPlayerDisplayListener*>(listener));
+    template_id = render_helper->updateDisplay(extra_datas, playsync_manager->hasNextPlayStack());
+}
+
+std::string AudioPlayerAgent::sendEventCommon(const std::string& ename, EventResultCallback cb, bool include_all_context)
+{
+    Json::FastWriter writer;
+    Json::Value root;
+    long offset = cur_player->position() * 1000;
+
+    if (offset < 0 || cur_token.size() == 0 || ps_id.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
+        return "";
     }
-}
 
-void AudioPlayerAgent::addListener(IAudioPlayerListener* listener)
-{
-    auto iterator = std::find(aplayer_listeners.begin(), aplayer_listeners.end(), listener);
+    root["token"] = cur_token;
+    root["playServiceId"] = ps_id;
+    root["offsetInMilliseconds"] = std::to_string(offset);
 
-    if (iterator == aplayer_listeners.end())
-        aplayer_listeners.emplace_back(listener);
-}
-
-void AudioPlayerAgent::removeListener(IAudioPlayerListener* listener)
-{
-    auto iterator = std::find(aplayer_listeners.begin(), aplayer_listeners.end(), listener);
-
-    if (iterator != aplayer_listeners.end())
-        aplayer_listeners.erase(iterator);
+    return sendEvent(ename, include_all_context ? capa_helper->makeAllContextInfo() : getContextInfo(), writer.write(root), std::move(cb));
 }
 
 void AudioPlayerAgent::sendEventPlaybackStarted(EventResultCallback cb)
@@ -654,6 +764,54 @@ void AudioPlayerAgent::sendEventPlaybackPaused(EventResultCallback cb)
 void AudioPlayerAgent::sendEventPlaybackResumed(EventResultCallback cb)
 {
     sendEventCommon("PlaybackResumed", std::move(cb));
+}
+
+void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::string& reason, EventResultCallback cb)
+{
+    std::string ename = "PlaybackFailed";
+    std::string payload = "";
+    Json::FastWriter writer;
+    Json::Value root;
+    long offset = cur_player->position() * 1000;
+
+    if (offset < 0 || cur_token.size() == 0 || ps_id.size() == 0) {
+        nugu_error("there is something wrong [%s]", ename.c_str());
+        return;
+    }
+
+    root["token"] = cur_token;
+    root["playServiceId"] = ps_id;
+    root["offsetInMilliseconds"] = std::to_string(offset);
+    root["error"]["type"] = playbackError(err);
+    root["error"]["message"] = reason;
+    root["currentPlaybackState"]["token"] = cur_token;
+    root["currentPlaybackState"]["offsetInMilliseconds"] = std::to_string(offset);
+    root["currentPlaybackState"]["playActivity"] = playerActivity(cur_aplayer_state);
+    payload = writer.write(root);
+
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
+}
+
+void AudioPlayerAgent::sendEventProgressReportDelayElapsed(EventResultCallback cb)
+{
+    nugu_dbg("report_delay_time: %d, position: %d", report_delay_time / 1000, cur_player->position());
+    sendEventCommon("ProgressReportDelayElapsed", std::move(cb));
+}
+
+void AudioPlayerAgent::sendEventProgressReportIntervalElapsed(EventResultCallback cb)
+{
+    nugu_dbg("report_interval_time: %d, position: %d", report_interval_time / 1000, cur_player->position());
+    sendEventCommon("ProgressReportIntervalElapsed", std::move(cb));
+}
+
+std::string AudioPlayerAgent::sendEventByDisplayInterface(const std::string& command, EventResultCallback cb)
+{
+    if (cur_url.empty()) {
+        nugu_warn("there is no media content in the playlist.");
+        return "";
+    }
+
+    return sendEventCommon(command, std::move(cb), true);
 }
 
 void AudioPlayerAgent::sendEventShowLyricsSucceeded(EventResultCallback cb)
@@ -761,16 +919,16 @@ void AudioPlayerAgent::sendEventControlLyricsPageFailed(const std::string& direc
     sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
-void AudioPlayerAgent::sendEventRequestPlayCommandIssued(const std::string& dname, const std::string& payload, EventResultCallback cb)
-{
-    std::string ename = dname + "Issued";
-    sendEvent(ename, capa_helper->makeAllContextInfo(), payload, std::move(cb));
-}
-
 void AudioPlayerAgent::sendEventByRequestOthersDirective(const std::string& dname, EventResultCallback cb)
 {
     std::string ename = dname + "Issued";
     sendEventCommon(ename, std::move(cb), true);
+}
+
+void AudioPlayerAgent::sendEventRequestPlayCommandIssued(const std::string& dname, const std::string& payload, EventResultCallback cb)
+{
+    std::string ename = dname + "Issued";
+    sendEvent(ename, capa_helper->makeAllContextInfo(), payload, std::move(cb));
 }
 
 void AudioPlayerAgent::sendEventRequestCommandFailed(const std::string& play_service_id, const std::string& type, const std::string& reason, EventResultCallback cb)
@@ -787,72 +945,6 @@ void AudioPlayerAgent::sendEventRequestCommandFailed(const std::string& play_ser
     payload = writer.write(root);
 
     sendEvent(ename, getContextInfo(), payload, std::move(cb));
-}
-
-void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::string& reason, EventResultCallback cb)
-{
-    std::string ename = "PlaybackFailed";
-    std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
-    long offset = cur_player->position() * 1000;
-
-    if (offset < 0 || cur_token.size() == 0 || ps_id.size() == 0) {
-        nugu_error("there is something wrong [%s]", ename.c_str());
-        return;
-    }
-
-    root["token"] = cur_token;
-    root["playServiceId"] = ps_id;
-    root["offsetInMilliseconds"] = std::to_string(offset);
-    root["error"]["type"] = playbackError(err);
-    root["error"]["message"] = reason;
-    root["currentPlaybackState"]["token"] = cur_token;
-    root["currentPlaybackState"]["offsetInMilliseconds"] = std::to_string(offset);
-    root["currentPlaybackState"]["playActivity"] = playerActivity(cur_aplayer_state);
-    payload = writer.write(root);
-
-    sendEvent(ename, getContextInfo(), payload, std::move(cb));
-}
-
-void AudioPlayerAgent::sendEventProgressReportDelayElapsed(EventResultCallback cb)
-{
-    nugu_dbg("report_delay_time: %d, position: %d", report_delay_time / 1000, cur_player->position());
-    sendEventCommon("ProgressReportDelayElapsed", std::move(cb));
-}
-
-void AudioPlayerAgent::sendEventProgressReportIntervalElapsed(EventResultCallback cb)
-{
-    nugu_dbg("report_interval_time: %d, position: %d", report_interval_time / 1000, cur_player->position());
-    sendEventCommon("ProgressReportIntervalElapsed", std::move(cb));
-}
-
-std::string AudioPlayerAgent::sendEventByDisplayInterface(const std::string& command, EventResultCallback cb)
-{
-    if (cur_url.empty()) {
-        nugu_warn("there is no media content in the playlist.");
-        return "";
-    }
-
-    return sendEventCommon(command, std::move(cb), true);
-}
-
-std::string AudioPlayerAgent::sendEventCommon(const std::string& ename, EventResultCallback cb, bool include_all_context)
-{
-    Json::FastWriter writer;
-    Json::Value root;
-    long offset = cur_player->position() * 1000;
-
-    if (offset < 0 || cur_token.size() == 0 || ps_id.size() == 0) {
-        nugu_error("there is something wrong [%s]", ename.c_str());
-        return "";
-    }
-
-    root["token"] = cur_token;
-    root["playServiceId"] = ps_id;
-    root["offsetInMilliseconds"] = std::to_string(offset);
-
-    return sendEvent(ename, include_all_context ? capa_helper->makeAllContextInfo() : getContextInfo(), writer.write(root), std::move(cb));
 }
 
 bool AudioPlayerAgent::isContentCached(const std::string& key, std::string& playurl)
@@ -1314,7 +1406,7 @@ DisplayRenderInfo* AudioPlayerAgent::composeRenderInfo(NuguDirective* ndir, cons
     }
 
     // if it has Display, skip to render AudioPlayer's template
-    if (std::string{ nugu_directive_peek_groups(ndir) }.find("Display") != std::string::npos) {
+    if (std::string { nugu_directive_peek_groups(ndir) }.find("Display") != std::string::npos) {
         nugu_warn("It has the separated display. So skip to parse render info.");
         return nullptr;
     }
@@ -1330,6 +1422,92 @@ void AudioPlayerAgent::clearContext()
 {
     nugu_info("clear AudioPlayer's Context");
     ps_id = cur_token = "";
+}
+
+void AudioPlayerAgent::checkAndUpdateVolume()
+{
+    if (volume_update && media_player && tts_player) {
+        nugu_dbg("media player's volume(%d) is changed", volume);
+        media_player->setVolume(volume);
+        tts_player->setVolume(volume);
+        volume_update = false;
+    }
+}
+
+void AudioPlayerAgent::executeOnForegroundAction()
+{
+    nugu_dbg("executeOnForegroundAction()");
+
+    if (suspended) {
+        nugu_warn("AudioPlayer is suspended, please restore AudioPlayer.");
+        return;
+    }
+
+    if (interaction_control_manager->isMultiTurnActive()) {
+        nugu_info("The multi-turn is active. So, it ignore intermediate foreground focus. ");
+        return;
+    }
+
+    if (routine_manager->isRoutineAlive()) {
+        nugu_info("Routine is alive. So, it ignore intermediate foreground focus. ");
+        return;
+    }
+
+    if (is_paused) {
+        nugu_warn("AudioPlayer is pause mode caused by directive(PAUSE)");
+        return;
+    }
+
+    std::string type = is_tts_activate ? "attachment" : "streaming";
+    nugu_dbg("cur_aplayer_state[%s] => %d, player->state() => %s, is_finished: %d", type.c_str(), cur_aplayer_state, cur_player->stateString(cur_player->state()).c_str(), is_finished);
+
+    checkAndUpdateVolume();
+
+    if (receive_new_play_directive) {
+        nugu_dbg("The media has been expired and does not play.");
+    } else if (cur_player->state() == MediaPlayerState::STOPPED && is_finished) {
+        nugu_dbg("The media has already been played.");
+    } else if (cur_player->state() == MediaPlayerState::PAUSED) {
+        if (!cur_player->resume()) {
+            nugu_error("resume media(%s) failed", type.c_str());
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
+                "player can't resume media");
+        }
+    } else {
+        nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_STARTED);
+
+        if (!cur_player->play()) {
+            nugu_error("play media(%s) failed", type.c_str());
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
+                "player can't play media");
+        }
+        if (is_tts_activate) {
+            if (nugu_directive_get_data_size(speak_dir) > 0)
+                getAttachmentData(speak_dir, this);
+
+            if (speak_dir)
+                nugu_directive_set_data_callback(speak_dir, directiveDataCallback, this);
+        }
+    }
+}
+
+void AudioPlayerAgent::executeOnBackgroundAction()
+{
+    nugu_dbg("executeOnBackgroundAction()");
+
+    nugu_dbg("is_finished: %d, cur_player->state(): %d", is_finished, cur_player->state());
+
+    MediaPlayerState state = cur_player->state();
+
+    if (state == MediaPlayerState::PLAYING || state == MediaPlayerState::PREPARE
+        || state == MediaPlayerState::READY) {
+        is_paused_by_unfocus = true;
+        if (!cur_player->pause()) {
+            nugu_error("pause media failed");
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
+                "player can't pause");
+        }
+    }
 }
 
 std::string AudioPlayerAgent::playbackError(PlaybackError error)
@@ -1381,206 +1559,27 @@ std::string AudioPlayerAgent::playerActivity(AudioPlayerState state)
     return activity;
 }
 
-void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
+void AudioPlayerAgent::directiveDataCallback(NuguDirective* ndir, int seq, void* userdata)
 {
-    switch (state) {
-    case MediaPlayerState::IDLE:
-        cur_aplayer_state = AudioPlayerState::IDLE;
-        break;
-    case MediaPlayerState::PREPARE:
-    case MediaPlayerState::READY:
-        prev_aplayer_state = AudioPlayerState::IDLE;
-        return;
-        break;
-    case MediaPlayerState::PLAYING:
-        cur_aplayer_state = AudioPlayerState::PLAYING;
-        playsync_manager->clearHolding();
+    getAttachmentData(ndir, userdata);
+}
 
-        if (is_paused_by_unfocus) {
-            nugu_dbg("force setting previous state for notify to application");
-            prev_aplayer_state = AudioPlayerState::PAUSED;
-        } else {
-            if (prev_aplayer_state == AudioPlayerState::PAUSED)
-                sendEventPlaybackResumed();
-            else
-                sendEventPlaybackStarted();
-        }
-        is_paused_by_unfocus = false;
-        break;
-    case MediaPlayerState::PAUSED:
-        cur_aplayer_state = AudioPlayerState::PAUSED;
+void AudioPlayerAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
+{
+    AudioPlayerAgent* agent = static_cast<AudioPlayerAgent*>(userdata);
+    unsigned char* buf;
+    size_t length = 0;
 
-        if (is_paused_by_unfocus) {
-            playsync_manager->continueRelease();
-            playsync_manager->releaseSyncLater(ps_id, getName());
-        }
-
-        if (!is_paused && !is_paused_by_unfocus)
-            sendEventPlaybackPaused();
-        break;
-    case MediaPlayerState::STOPPED:
-        if (is_finished) {
-            cur_aplayer_state = AudioPlayerState::FINISHED;
-            sendEventPlaybackFinished();
-        } else {
-            cur_aplayer_state = AudioPlayerState::STOPPED;
-            sendEventPlaybackStopped();
-        }
-        is_paused = false;
-        is_paused_by_unfocus = false;
-        break;
-    default:
-        break;
-    }
-    nugu_info("[audioplayer state] %s -> %s", playerActivity(prev_aplayer_state).c_str(), playerActivity(cur_aplayer_state).c_str());
-
-    if (prev_aplayer_state == cur_aplayer_state)
-        return;
-
-    for (const auto& aplayer_listener : aplayer_listeners)
-        aplayer_listener->mediaStateChanged(cur_aplayer_state, cur_dialog_id);
-
-    if ((is_paused || is_paused_by_unfocus) && cur_aplayer_state == AudioPlayerState::PAUSED) {
-        nugu_info("[audioplayer state] skip to save prev_aplayer_state");
-        return;
+    buf = nugu_directive_get_data(ndir, &length);
+    if (buf) {
+        agent->tts_player->write_audio((const char*)buf, length);
+        free(buf);
     }
 
-    prev_aplayer_state = cur_aplayer_state;
-}
-
-void AudioPlayerAgent::mediaEventReport(MediaPlayerEvent event)
-{
-    switch (event) {
-    case MediaPlayerEvent::INVALID_MEDIA_URL:
-        nugu_warn("INVALID_MEDIA_URL");
-        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INVALID_REQUEST, "media source is wrong");
-
-        for (const auto& aplayer_listener : aplayer_listeners)
-            aplayer_listener->mediaEventReport(AudioPlayerEvent::INVALID_URL, cur_dialog_id);
-        break;
-    case MediaPlayerEvent::LOADING_MEDIA_FAILED:
-        nugu_warn("LOADING_MEDIA_FAILED");
-        sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_SERVICE_UNAVAILABLE, "player can't load the media");
-
-        for (const auto& aplayer_listener : aplayer_listeners)
-            aplayer_listener->mediaEventReport(AudioPlayerEvent::LOAD_FAILED, cur_dialog_id);
-        break;
-    case MediaPlayerEvent::LOADING_MEDIA_SUCCESS:
-        nugu_dbg("LOADING_MEDIA_SUCCESS");
-        break;
-    case MediaPlayerEvent::PLAYING_MEDIA_FINISHED:
-        nugu_dbg("PLAYING_MEDIA_FINISHED");
-        is_finished = true;
-        mediaStateChanged(MediaPlayerState::STOPPED);
-        break;
-    case MediaPlayerEvent::PLAYING_MEDIA_UNDERRUN:
-        for (const auto& aplayer_listener : aplayer_listeners) {
-            aplayer_listener->mediaEventReport(AudioPlayerEvent::UNDERRUN, cur_dialog_id);
-        }
-        break;
-    default:
-        break;
+    if (nugu_directive_is_data_end(ndir)) {
+        agent->tts_player->write_done();
+        agent->destroyDirective(ndir);
+        agent->speak_dir = nullptr;
     }
 }
-
-void AudioPlayerAgent::mediaChanged(const std::string& url)
-{
-}
-
-void AudioPlayerAgent::durationChanged(int duration)
-{
-    for (const auto& aplayer_listener : aplayer_listeners)
-        aplayer_listener->durationChanged(duration);
-}
-
-void AudioPlayerAgent::positionChanged(int position)
-{
-    if (report_delay_time > 0 && ((report_delay_time / 1000) == position))
-        sendEventProgressReportDelayElapsed();
-
-    if (report_interval_time > 0 && ((position % (int)(report_interval_time / 1000)) == 0))
-        sendEventProgressReportIntervalElapsed();
-
-    for (const auto& aplayer_listener : aplayer_listeners)
-        aplayer_listener->positionChanged(position);
-}
-
-void AudioPlayerAgent::volumeChanged(int volume)
-{
-}
-
-void AudioPlayerAgent::muteChanged(int mute)
-{
-}
-
-void AudioPlayerAgent::checkAndUpdateVolume()
-{
-    if (volume_update && media_player && tts_player) {
-        nugu_dbg("media player's volume(%d) is changed", volume);
-        media_player->setVolume(volume);
-        tts_player->setVolume(volume);
-        volume_update = false;
-    }
-}
-
-void AudioPlayerAgent::displayRendered(const std::string& id)
-{
-    // TODO: integrate with playsync and session manager
-}
-
-void AudioPlayerAgent::displayCleared(const std::string& id)
-{
-    // TODO: integrate with playsync and session manager
-}
-
-void AudioPlayerAgent::elementSelected(const std::string& id, const std::string& item_token)
-{
-    // ignore
-}
-
-void AudioPlayerAgent::informControlResult(const std::string& id, ControlType type, ControlDirection direction)
-{
-    sendEventControlLyricsPageSucceeded(direction == ControlDirection::NEXT ? "NEXT" : "PREVIOUS");
-}
-
-void AudioPlayerAgent::setListener(IDisplayListener* listener)
-{
-    if (listener == nullptr)
-        return;
-
-    display_listener = dynamic_cast<IAudioPlayerDisplayListener*>(listener);
-    render_helper->setDisplayListener(display_listener);
-}
-
-void AudioPlayerAgent::removeListener(IDisplayListener* listener)
-{
-    if (listener == nullptr)
-        return;
-
-    auto audio_display_listener = dynamic_cast<IAudioPlayerDisplayListener*>(listener);
-
-    if (audio_display_listener == display_listener)
-        display_listener = nullptr;
-}
-
-void AudioPlayerAgent::stopRenderingTimer(const std::string& id)
-{
-    // TODO: integrate with playsync and session manager
-}
-
-void AudioPlayerAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
-{
-    if (state == PlaySyncState::Synced)
-        template_id = render_helper->renderDisplay(extra_data);
-    else if (state == PlaySyncState::Released) {
-        focus_manager->releaseFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME);
-        render_helper->clearDisplay(extra_data, playsync_manager->hasNextPlayStack());
-    }
-}
-
-void AudioPlayerAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
-{
-    template_id = render_helper->updateDisplay(extra_datas, playsync_manager->hasNextPlayStack());
-}
-
 } // NuguCapability
