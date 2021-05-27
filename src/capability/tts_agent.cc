@@ -107,138 +107,6 @@ void TTSAgent::suspend()
     focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
 }
 
-void TTSAgent::directiveDataCallback(NuguDirective* ndir, int seq, void* userdata)
-{
-    getAttachmentData(ndir, seq, userdata);
-}
-
-void TTSAgent::getAttachmentData(NuguDirective* ndir, int seq, void* userdata)
-{
-    TTSAgent* tts = static_cast<TTSAgent*>(userdata);
-    unsigned char* buf;
-    size_t length = 0;
-
-    buf = nugu_directive_get_data(ndir, &length);
-    if (buf) {
-        if (seq == 0 && length > TTS_FIRST_ATTACHMENT_LIMIT) {
-            nugu_dbg("first attachment is too big(%d > %d)", length, TTS_FIRST_ATTACHMENT_LIMIT);
-            tts->player->write_audio((const char*)buf, TTS_FIRST_ATTACHMENT_LIMIT);
-            tts->player->write_audio((const char*)buf + TTS_FIRST_ATTACHMENT_LIMIT, length - TTS_FIRST_ATTACHMENT_LIMIT);
-        } else {
-            tts->player->write_audio((const char*)buf, length);
-        }
-        free(buf);
-    }
-
-    if (nugu_directive_is_data_end(ndir)) {
-        tts->player->write_done();
-
-        nugu_dbg("tts player state: %d", tts->player->state());
-        if (tts->player->state() == MediaPlayerState::IDLE) {
-            nugu_warn("TTS play fails, force release the focus");
-            tts->focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
-        }
-    }
-}
-
-void TTSAgent::onFocusChanged(FocusState state)
-{
-    nugu_info("Focus Changed(%s -> %s)", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
-
-    switch (state) {
-    case FocusState::FOREGROUND:
-        executeOnForegroundAction();
-        break;
-    case FocusState::BACKGROUND:
-        focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
-        break;
-    case FocusState::NONE:
-        stopTTS();
-
-        if (!playsync_manager->hasActivity(playstackctl_ps_id, PlayStackActivity::Media)) {
-            is_stopped_by_explicit ? playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName())
-                                   : playsync_manager->releaseSync(playstackctl_ps_id, getName());
-        }
-
-        break;
-    }
-    focus_state = state;
-}
-
-void TTSAgent::executeOnForegroundAction()
-{
-    nugu_dbg("executeOnForegroundAction()");
-
-    checkAndUpdateVolume();
-
-    if (!player->play()) {
-        nugu_error("play() failed");
-        if (speak_dir) {
-            nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_FAILED,
-                nugu_directive_peek_dialog_id(speak_dir),
-                nugu_directive_peek_msg_id(speak_dir), NULL);
-        }
-    }
-
-    if (speak_dir) {
-        if (nugu_directive_get_data_size(speak_dir) > 0)
-            getAttachmentData(speak_dir, 0, this);
-
-        nugu_directive_set_data_callback(speak_dir, directiveDataCallback, this);
-    }
-}
-
-void TTSAgent::stopTTS()
-{
-    MediaPlayerState pre_state = cur_state;
-
-    sendClearNudgeCommand(speak_dir);
-    postProcessDirective(!is_finished && routine_manager->hasRoutineDirective(speak_dir));
-
-    if (player)
-        player->stop();
-
-    if (pre_state != MediaPlayerState::STOPPED && pre_state != MediaPlayerState::IDLE)
-        for (const auto& tts_listener : tts_listeners)
-            tts_listener->onTTSCancel(dialog_id);
-}
-
-std::string TTSAgent::requestTTS(const std::string& text, const std::string& play_service_id, const std::string& referrer_id)
-{
-    std::string token;
-    char* uuid;
-
-    uuid = nugu_uuid_generate_time();
-    token = uuid;
-    free(uuid);
-
-    if (referrer_id.size())
-        setReferrerDialogRequestId("TTSAgent.requestTTS", referrer_id);
-
-    std::string id = sendEventSpeechPlay(token, text, play_service_id);
-    nugu_dbg("user request dialog id: %s", id.c_str());
-
-    setReferrerDialogRequestId("TTSAgent.requestTTS", "");
-    return id;
-}
-
-bool TTSAgent::setVolume(int volume)
-{
-    nugu_dbg("set pcm player's volume: %d", volume);
-
-    if (this->volume == volume)
-        return true;
-
-    this->volume = volume;
-    volume_update = true;
-
-    if (focus_state == FocusState::FOREGROUND)
-        checkAndUpdateVolume();
-    else
-        nugu_dbg("Reserved to change pcm player's volume(%d)", volume);
-    return true;
-}
-
 void TTSAgent::preprocessDirective(NuguDirective* ndir)
 {
     const char* dname;
@@ -315,6 +183,142 @@ void TTSAgent::updateInfoForContext(Json::Value& ctx)
     ctx[getName()] = tts;
 }
 
+void TTSAgent::stopTTS()
+{
+    MediaPlayerState pre_state = cur_state;
+
+    sendClearNudgeCommand(speak_dir);
+    postProcessDirective(!is_finished && routine_manager->hasRoutineDirective(speak_dir));
+
+    if (player)
+        player->stop();
+
+    if (pre_state != MediaPlayerState::STOPPED && pre_state != MediaPlayerState::IDLE)
+        for (const auto& tts_listener : tts_listeners)
+            tts_listener->onTTSCancel(dialog_id);
+}
+
+std::string TTSAgent::requestTTS(const std::string& text, const std::string& play_service_id, const std::string& referrer_id)
+{
+    std::string token;
+    char* uuid;
+
+    uuid = nugu_uuid_generate_time();
+    token = uuid;
+    free(uuid);
+
+    if (referrer_id.size())
+        setReferrerDialogRequestId("TTSAgent.requestTTS", referrer_id);
+
+    std::string id = sendEventSpeechPlay(token, text, play_service_id);
+    nugu_dbg("user request dialog id: %s", id.c_str());
+
+    setReferrerDialogRequestId("TTSAgent.requestTTS", "");
+    return id;
+}
+
+bool TTSAgent::setVolume(int volume)
+{
+    nugu_dbg("set pcm player's volume: %d", volume);
+
+    if (this->volume == volume)
+        return true;
+
+    this->volume = volume;
+    volume_update = true;
+
+    if (focus_state == FocusState::FOREGROUND)
+        checkAndUpdateVolume();
+    else
+        nugu_dbg("Reserved to change pcm player's volume(%d)", volume);
+    return true;
+}
+
+void TTSAgent::setCapabilityListener(ICapabilityListener* clistener)
+{
+    if (clistener)
+        addListener(dynamic_cast<ITTSListener*>(clistener));
+}
+
+void TTSAgent::addListener(ITTSListener* listener)
+{
+    if (listener && std::find(tts_listeners.begin(), tts_listeners.end(), listener) == tts_listeners.end())
+        tts_listeners.emplace_back(listener);
+}
+
+void TTSAgent::removeListener(ITTSListener* listener)
+{
+    auto iterator = std::find(tts_listeners.begin(), tts_listeners.end(), listener);
+
+    if (iterator != tts_listeners.end())
+        tts_listeners.erase(iterator);
+}
+
+void TTSAgent::onFocusChanged(FocusState state)
+{
+    nugu_info("Focus Changed(%s -> %s)", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
+
+    switch (state) {
+    case FocusState::FOREGROUND:
+        executeOnForegroundAction();
+        break;
+    case FocusState::BACKGROUND:
+        focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
+        break;
+    case FocusState::NONE:
+        stopTTS();
+
+        if (!playsync_manager->hasActivity(playstackctl_ps_id, PlayStackActivity::Media)) {
+            is_stopped_by_explicit ? playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName())
+                                   : playsync_manager->releaseSync(playstackctl_ps_id, getName());
+        }
+
+        break;
+    }
+    focus_state = state;
+}
+
+void TTSAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
+{
+    if (ps_id.empty() || playstackctl_ps_id != ps_id) {
+        nugu_warn("The PlayServiceId is not matched with current's.");
+        return;
+    }
+
+    if (state == PlaySyncState::Released && !is_finished && !is_prehandling) {
+        postProcessDirective(true);
+        suspend();
+    }
+}
+
+void TTSAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
+{
+}
+
+void TTSAgent::sendEventCommon(CapabilityEvent* event, const std::string& token, EventResultCallback cb)
+{
+    std::string payload = "";
+    Json::FastWriter writer;
+    Json::Value root;
+
+    if (!event) {
+        nugu_error("event is NULL");
+        return;
+    }
+
+    if (token.size() == 0) {
+        nugu_error("there is something wrong [%s]", event->getName().c_str());
+        return;
+    }
+
+    root["token"] = token;
+    if (ps_id.size())
+        root["playServiceId"] = ps_id;
+    payload = writer.write(root);
+
+    sendEvent(event, getContextInfo(), payload, std::move(cb));
+}
+
 void TTSAgent::sendEventSpeechStarted(const std::string& token, EventResultCallback cb)
 {
     CapabilityEvent event("SpeechStarted", this);
@@ -380,30 +384,6 @@ std::string TTSAgent::sendEventSpeechPlay(const std::string& token, const std::s
     payload = writer.write(root);
 
     return sendEvent(ename, getContextInfo(), payload, std::move(cb));
-}
-
-void TTSAgent::sendEventCommon(CapabilityEvent* event, const std::string& token, EventResultCallback cb)
-{
-    std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
-
-    if (!event) {
-        nugu_error("event is NULL");
-        return;
-    }
-
-    if (token.size() == 0) {
-        nugu_error("there is something wrong [%s]", event->getName().c_str());
-        return;
-    }
-
-    root["token"] = token;
-    if (ps_id.size())
-        root["playServiceId"] = ps_id;
-    payload = writer.write(root);
-
-    sendEvent(event, getContextInfo(), payload, std::move(cb));
 }
 
 void TTSAgent::parsingSpeak(const char* message)
@@ -507,30 +487,43 @@ void TTSAgent::postProcessDirective(bool is_cancel)
         speak_dir = nullptr;
     }
 }
+
 void TTSAgent::sendClearNudgeCommand(NuguDirective* ndir)
 {
     if (ndir)
         capa_helper->sendCommand("TTS", "Nudge", "clearNudge", nugu_directive_peek_dialog_id(ndir));
 }
 
-void TTSAgent::setCapabilityListener(ICapabilityListener* clistener)
+void TTSAgent::executeOnForegroundAction()
 {
-    if (clistener)
-        addListener(dynamic_cast<ITTSListener*>(clistener));
+    nugu_dbg("executeOnForegroundAction()");
+
+    checkAndUpdateVolume();
+
+    if (!player->play()) {
+        nugu_error("play() failed");
+        if (speak_dir) {
+            nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_FAILED,
+                nugu_directive_peek_dialog_id(speak_dir),
+                nugu_directive_peek_msg_id(speak_dir), NULL);
+        }
+    }
+
+    if (speak_dir) {
+        if (nugu_directive_get_data_size(speak_dir) > 0)
+            getAttachmentData(speak_dir, 0, this);
+
+        nugu_directive_set_data_callback(speak_dir, directiveDataCallback, this);
+    }
 }
 
-void TTSAgent::addListener(ITTSListener* listener)
+void TTSAgent::checkAndUpdateVolume()
 {
-    if (listener && std::find(tts_listeners.begin(), tts_listeners.end(), listener) == tts_listeners.end())
-        tts_listeners.emplace_back(listener);
-}
-
-void TTSAgent::removeListener(ITTSListener* listener)
-{
-    auto iterator = std::find(tts_listeners.begin(), tts_listeners.end(), listener);
-
-    if (iterator != tts_listeners.end())
-        tts_listeners.erase(iterator);
+    if (volume_update && player) {
+        nugu_dbg("pcm player's volume(%d) is changed", volume);
+        player->setVolume(volume);
+        volume_update = false;
+    }
 }
 
 void TTSAgent::mediaStateChanged(MediaPlayerState state)
@@ -592,30 +585,38 @@ void TTSAgent::muteChanged(int mute)
 {
 }
 
-void TTSAgent::checkAndUpdateVolume()
+void TTSAgent::directiveDataCallback(NuguDirective* ndir, int seq, void* userdata)
 {
-    if (volume_update && player) {
-        nugu_dbg("pcm player's volume(%d) is changed", volume);
-        player->setVolume(volume);
-        volume_update = false;
-    }
+    getAttachmentData(ndir, seq, userdata);
 }
 
-void TTSAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
+void TTSAgent::getAttachmentData(NuguDirective* ndir, int seq, void* userdata)
 {
-    if (ps_id.empty() || playstackctl_ps_id != ps_id) {
-        nugu_warn("The PlayServiceId is not matched with current's.");
-        return;
+    TTSAgent* tts = static_cast<TTSAgent*>(userdata);
+    unsigned char* buf;
+    size_t length = 0;
+
+    buf = nugu_directive_get_data(ndir, &length);
+    if (buf) {
+        if (seq == 0 && length > TTS_FIRST_ATTACHMENT_LIMIT) {
+            nugu_dbg("first attachment is too big(%d > %d)", length, TTS_FIRST_ATTACHMENT_LIMIT);
+            tts->player->write_audio((const char*)buf, TTS_FIRST_ATTACHMENT_LIMIT);
+            tts->player->write_audio((const char*)buf + TTS_FIRST_ATTACHMENT_LIMIT, length - TTS_FIRST_ATTACHMENT_LIMIT);
+        } else {
+            tts->player->write_audio((const char*)buf, length);
+        }
+        free(buf);
     }
 
-    if (state == PlaySyncState::Released && !is_finished && !is_prehandling) {
-        postProcessDirective(true);
-        suspend();
-    }
-}
+    if (nugu_directive_is_data_end(ndir)) {
+        tts->player->write_done();
 
-void TTSAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
-{
+        nugu_dbg("tts player state: %d", tts->player->state());
+        if (tts->player->state() == MediaPlayerState::IDLE) {
+            nugu_warn("TTS play fails, force release the focus");
+            tts->focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
+        }
+    }
 }
 
 } // NuguCapability

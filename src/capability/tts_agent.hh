@@ -45,33 +45,32 @@ public:
     std::string requestTTS(const std::string& text, const std::string& play_service_id, const std::string& referrer_id = "") override;
     bool setVolume(int volume) override;
 
-    void onFocusChanged(FocusState state) override;
-    void executeOnForegroundAction();
-
-    void sendEventSpeechStarted(const std::string& token, EventResultCallback cb = nullptr);
-    void sendEventSpeechFinished(const std::string& token, EventResultCallback cb = nullptr);
-    void sendEventSpeechStopped(const std::string& token, EventResultCallback cb = nullptr);
-    std::string sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id = "", EventResultCallback cb = nullptr);
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void addListener(ITTSListener* listener) override;
     void removeListener(ITTSListener* listener) override;
 
-    static void directiveDataCallback(NuguDirective* ndir, int seq, void* userdata);
-    static void getAttachmentData(NuguDirective* ndir, int seq, void* userdata);
-
-    // implements IPlaySyncManagerListener
+    // implements IPlaySyncManagerListener, IFocusResourceListener
+    void onFocusChanged(FocusState state) override;
     void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data) override;
     void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override;
 
 private:
+    // send event
     void sendEventCommon(CapabilityEvent* event, const std::string& token, EventResultCallback cb = nullptr);
+    void sendEventSpeechStarted(const std::string& token, EventResultCallback cb = nullptr);
+    void sendEventSpeechFinished(const std::string& token, EventResultCallback cb = nullptr);
+    void sendEventSpeechStopped(const std::string& token, EventResultCallback cb = nullptr);
+    std::string sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id = "", EventResultCallback cb = nullptr);
+
     // parsing directive
     void parsingSpeak(const char* message);
     void parsingStop(const char* message);
+
     void postProcessDirective(bool is_cancel = false);
     void sendClearNudgeCommand(NuguDirective* ndir);
-
+    void executeOnForegroundAction();
     void checkAndUpdateVolume();
+
     void mediaStateChanged(MediaPlayerState state) override;
     void mediaEventReport(MediaPlayerEvent event) override;
     void mediaChanged(const std::string& url) override;
@@ -79,6 +78,9 @@ private:
     void positionChanged(int position) override;
     void volumeChanged(int volume) override;
     void muteChanged(int mute) override;
+
+    static void directiveDataCallback(NuguDirective* ndir, int seq, void* userdata);
+    static void getAttachmentData(NuguDirective* ndir, int seq, void* userdata);
 
     ITTSPlayer* player;
     MediaPlayerState cur_state;
