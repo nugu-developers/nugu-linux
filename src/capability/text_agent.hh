@@ -40,8 +40,6 @@ public:
 
     std::string requestTextInput(const std::string& text, const std::string& token = "", bool include_dialog_attribute = true) override;
 
-    void notifyResponseTimeout();
-
     // implements IFocusResourceListener
     void onFocusChanged(FocusState state) override;
 
@@ -61,6 +59,7 @@ private:
     void parsingTextRedirect(const char* message);
     bool handleTextCommonProcess(const TextInputParam& text_input_param);
     void notifyEventResponse(const std::string& msg_id, const std::string& data, bool success) override;
+    void notifyResponseTimeout();
     void startInteractionControl(InteractionMode&& mode);
     void finishInteractionControl();
     void requestFocus();
