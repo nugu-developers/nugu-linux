@@ -48,6 +48,11 @@ public:
     void removeListener(IDisplayListener* listener) override;
     void stopRenderingTimer(const std::string& id) override;
 
+    // implements IPlaySyncManagerListener
+    void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data) override;
+    void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override;
+
+private:
     void sendEventElementSelected(const std::string& item_token);
     void sendEventCloseSucceeded(const std::string& ps_id);
     void sendEventCloseFailed(const std::string& ps_id);
@@ -55,14 +60,9 @@ public:
     void sendEventControlFocusFailed(const std::string& ps_id, ControlDirection direction);
     void sendEventControlScrollSucceeded(const std::string& ps_id, ControlDirection direction);
     void sendEventControlScrollFailed(const std::string& ps_id, ControlDirection direction);
-
-    // implements IPlaySyncManagerListener
-    void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data) override;
-    void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override;
-
-private:
     void sendEventClose(const std::string& ename, const std::string& ps_id);
     void sendEventControl(const std::string& ename, const std::string& ps_id, ControlDirection direction);
+
     void parsingClose(const char* message);
     void parsingControlFocus(const char* message);
     void parsingControlScroll(const char* message);
