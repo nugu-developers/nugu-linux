@@ -160,6 +160,12 @@ std::string TextAgent::requestTextInput(const std::string& text, const std::stri
     return requestTextInput({ text, token, "" }, false, include_dialog_attribute);
 }
 
+void TextAgent::onFocusChanged(FocusState state)
+{
+    nugu_info("Focus Changed(%s -> %s)", focus_manager->getStateString(state).c_str(), focus_manager->getStateString(state).c_str());
+    focus_state = state;
+}
+
 std::string TextAgent::requestTextInput(TextInputParam&& text_input_param, bool routine_play, bool include_dialog_attribute)
 {
     nugu_dbg("receive text interface : %s from user app", text_input_param.text.c_str());
@@ -198,16 +204,6 @@ std::string TextAgent::requestTextInput(TextInputParam&& text_input_param, bool 
     capa_helper->sendCommand("Text", "ASR", "cancel", "");
 
     return cur_dialog_id;
-}
-
-void TextAgent::notifyResponseTimeout()
-{
-    if (text_listener)
-        text_listener->onError(TextError::RESPONSE_TIMEOUT, cur_dialog_id);
-
-    cur_state = TextState::IDLE;
-    if (text_listener)
-        text_listener->onState(cur_state, cur_dialog_id);
 }
 
 void TextAgent::sendEventTextInput(const TextInputParam& text_input_param, bool include_dialog_attribute, EventResultCallback cb)
@@ -366,6 +362,16 @@ void TextAgent::notifyEventResponse(const std::string& msg_id, const std::string
     releaseFocus();
 }
 
+void TextAgent::notifyResponseTimeout()
+{
+    if (text_listener)
+        text_listener->onError(TextError::RESPONSE_TIMEOUT, cur_dialog_id);
+
+    cur_state = TextState::IDLE;
+    if (text_listener)
+        text_listener->onState(cur_state, cur_dialog_id);
+}
+
 void TextAgent::startInteractionControl(InteractionMode&& mode)
 {
     interaction_mode = mode;
@@ -380,12 +386,6 @@ void TextAgent::finishInteractionControl()
         interaction_mode = InteractionMode::NONE;
         handle_interaction_control = false;
     }
-}
-
-void TextAgent::onFocusChanged(FocusState state)
-{
-    nugu_info("Focus Changed(%s -> %s)", focus_manager->getStateString(state).c_str(), focus_manager->getStateString(state).c_str());
-    focus_state = state;
 }
 
 void TextAgent::requestFocus()
