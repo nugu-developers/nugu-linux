@@ -240,6 +240,19 @@ void DisplayAgent::stopRenderingTimer(const std::string& id)
     // TBD
 }
 
+void DisplayAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
+{
+    if (state == PlaySyncState::Synced)
+        render_helper->renderDisplay(extra_data);
+    else if (state == PlaySyncState::Released)
+        render_helper->clearDisplay(extra_data, playsync_manager->hasNextPlayStack());
+}
+
+void DisplayAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
+{
+    render_helper->updateDisplay(extra_datas, playsync_manager->hasNextPlayStack());
+}
+
 void DisplayAgent::sendEventElementSelected(const std::string& item_token)
 {
     std::string ename = "ElementSelected";
@@ -264,17 +277,6 @@ void DisplayAgent::sendEventCloseFailed(const std::string& ps_id)
 {
     sendEventClose("CloseFailed", ps_id);
 }
-void DisplayAgent::sendEventClose(const std::string& ename, const std::string& ps_id)
-{
-    std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
-
-    root["playServiceId"] = ps_id;
-    payload = writer.write(root);
-
-    sendEvent(ename, getContextInfo(), payload);
-}
 
 void DisplayAgent::sendEventControlFocusSucceeded(const std::string& ps_id, ControlDirection direction)
 {
@@ -294,6 +296,18 @@ void DisplayAgent::sendEventControlScrollSucceeded(const std::string& ps_id, Con
 void DisplayAgent::sendEventControlScrollFailed(const std::string& ps_id, ControlDirection direction)
 {
     sendEventControl("ControlScrollFailed", ps_id, direction);
+}
+
+void DisplayAgent::sendEventClose(const std::string& ename, const std::string& ps_id)
+{
+    std::string payload = "";
+    Json::FastWriter writer;
+    Json::Value root;
+
+    root["playServiceId"] = ps_id;
+    payload = writer.write(root);
+
+    sendEvent(ename, getContextInfo(), payload);
 }
 
 void DisplayAgent::sendEventControl(const std::string& ename, const std::string& ps_id, ControlDirection direction)
@@ -511,19 +525,6 @@ std::string DisplayAgent::getDirectionString(ControlDirection direction)
         return "PREVIOUS";
     else
         return "NEXT";
-}
-
-void DisplayAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
-{
-    if (state == PlaySyncState::Synced)
-        render_helper->renderDisplay(extra_data);
-    else if (state == PlaySyncState::Released)
-        render_helper->clearDisplay(extra_data, playsync_manager->hasNextPlayStack());
-}
-
-void DisplayAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
-{
-    render_helper->updateDisplay(extra_datas, playsync_manager->hasNextPlayStack());
 }
 
 } // NuguCapability
