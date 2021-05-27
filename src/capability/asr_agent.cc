@@ -194,92 +194,6 @@ void ASRAgent::stopRecognition()
     asr_cancel = false;
 }
 
-void ASRAgent::cancelRecognition()
-{
-    nugu_dbg("cancelRecognition()");
-    asr_cancel = true;
-    speech_recognizer->stopListening();
-}
-
-ASRAgent::FocusListener::FocusListener(ASRAgent* asr_agent, IFocusManager* focus_manager, bool asr_user)
-    : asr_agent(asr_agent)
-    , focus_manager(focus_manager)
-    , asr_user(asr_user)
-{
-}
-
-void ASRAgent::FocusListener::onFocusChanged(FocusState state)
-{
-    nugu_info("[%s] Focus Changed(%s -> %s)", asr_user ? "ASRUser" : "ASRDM", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
-    FocusState prev_state = focus_state;
-
-    focus_state = state;
-
-    switch (state) {
-    case FocusState::FOREGROUND:
-        asr_agent->executeOnForegroundAction(asr_user);
-        break;
-    case FocusState::BACKGROUND:
-        if (prev_state == FocusState::FOREGROUND)
-            asr_agent->executeOnBackgroundAction(asr_user);
-        break;
-    case FocusState::NONE:
-        asr_agent->executeOnNoneAction(asr_user);
-        break;
-    }
-}
-
-void ASRAgent::executeOnForegroundAction(bool asr_user)
-{
-    if (!asr_user) {
-        if (!isExpectSpeechState()) {
-            nugu_dbg("cancel the expect speech state");
-            focus_manager->releaseFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME);
-            return;
-        }
-        setASRState(ASRState::EXPECTING_SPEECH);
-        asr_initiator = ASRInitiator::EXPECT_SPEECH;
-
-        playsync_manager->postPoneRelease();
-
-        saveAllContextInfo();
-    }
-    playsync_manager->stopHolding();
-
-    std::string id = "id#" + std::to_string(uniq++);
-    setListeningId(id);
-    speech_recognizer->setEpdAttribute(epd_attribute);
-    speech_recognizer->startListening(id);
-
-    asr_cancel = false;
-}
-
-void ASRAgent::executeOnBackgroundAction(bool asr_user)
-{
-    const char* focus_type = asr_user ? ASR_USER_FOCUS_TYPE : ASR_DM_FOCUS_TYPE;
-
-    focus_manager->releaseFocus(focus_type, CAPABILITY_NAME);
-}
-
-void ASRAgent::executeOnNoneAction(bool asr_user)
-{
-    playsync_manager->continueRelease();
-    playsync_manager->resetHolding();
-    speech_recognizer->stopListening();
-
-    if (getASRState() == ASRState::LISTENING
-        || getASRState() == ASRState::RECOGNIZING
-        || getASRState() == ASRState::EXPECTING_SPEECH)
-        sendEventStopRecognize();
-
-    if (getASRState() == ASRState::BUSY)
-        setASRState(ASRState::IDLE);
-
-    resetExpectSpeechState();
-
-    epd_attribute = default_epd_attribute;
-}
-
 void ASRAgent::preprocessDirective(NuguDirective* ndir)
 {
     const char* dname;
@@ -296,11 +210,6 @@ void ASRAgent::preprocessDirective(NuguDirective* ndir)
         parsingExpectSpeech(std::string(nugu_directive_peek_dialog_id(ndir)), message);
 }
 
-void ASRAgent::cancelDirective(NuguDirective* ndir)
-{
-    resetExpectSpeechState();
-}
-
 void ASRAgent::parsingDirective(const char* dname, const char* message)
 {
     if (!strcmp(dname, "ExpectSpeech"))
@@ -311,6 +220,11 @@ void ASRAgent::parsingDirective(const char* dname, const char* message)
         parsingCancelRecognize(message);
     else
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
+}
+
+void ASRAgent::cancelDirective(NuguDirective* ndir)
+{
+    resetExpectSpeechState();
 }
 
 void ASRAgent::updateInfoForContext(Json::Value& ctx)
@@ -328,11 +242,6 @@ void ASRAgent::updateInfoForContext(Json::Value& ctx)
     }
 
     ctx[getName()] = asr;
-}
-
-void ASRAgent::saveAllContextInfo()
-{
-    all_context_info = capa_helper->makeAllContextInfo();
 }
 
 bool ASRAgent::receiveCommand(const std::string& from, const std::string& command, const std::string& param)
@@ -397,21 +306,68 @@ bool ASRAgent::getProperties(const std::string& property, std::list<std::string>
     return true;
 }
 
-void ASRAgent::checkResponseTimeout()
+void ASRAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
-    if (timer)
-        timer->start();
+    if (clistener)
+        addListener(dynamic_cast<IASRListener*>(clistener));
 }
 
-void ASRAgent::clearResponseTimeout()
+void ASRAgent::addListener(IASRListener* listener)
 {
-    if (timer)
-        timer->stop();
+    if (listener && std::find(asr_listeners.begin(), asr_listeners.end(), listener) == asr_listeners.end()) {
+        asr_listeners.emplace_back(listener);
+    }
 }
 
-std::string ASRAgent::getRecognizeDialogId()
+void ASRAgent::removeListener(IASRListener* listener)
 {
-    return dialog_id;
+    auto iterator = std::find(asr_listeners.begin(), asr_listeners.end(), listener);
+
+    if (iterator != asr_listeners.end())
+        asr_listeners.erase(iterator);
+}
+
+void ASRAgent::setEpdAttribute(EpdAttribute&& attribute)
+{
+    default_epd_attribute = attribute;
+
+    if (!isExpectSpeechState())
+        epd_attribute = attribute;
+}
+
+EpdAttribute ASRAgent::getEpdAttribute()
+{
+    return default_epd_attribute;
+}
+
+std::vector<IASRListener*> ASRAgent::getListener()
+{
+    return asr_listeners;
+}
+
+void ASRAgent::notifyEventResponse(const std::string& msg_id, const std::string& data, bool success)
+{
+    // release focus when there are no focus stealer like TTS
+    if (data.find("ASR") != std::string::npos && data.find("NotifyResult") != std::string::npos
+        && data.find("TTS") == std::string::npos) {
+        nugu_info("Focus(type: %s) Release", ASR_USER_FOCUS_TYPE);
+        stopRecognition();
+    }
+}
+
+void ASRAgent::sendEventCommon(const std::string& ename, EventResultCallback cb, bool include_all_context)
+{
+    std::string payload = "";
+
+    if (es_attr.is_handle) {
+        Json::FastWriter writer;
+        Json::Value root;
+
+        root["playServiceId"] = es_attr.play_service_id;
+        payload = writer.write(root);
+    }
+
+    sendEvent(ename, include_all_context ? capa_helper->makeAllContextInfo() : getContextInfo(), payload, std::move(cb));
 }
 
 void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_end, EventResultCallback cb)
@@ -480,60 +436,6 @@ void ASRAgent::sendEventListenFailed(EventResultCallback cb)
 void ASRAgent::sendEventStopRecognize(EventResultCallback cb)
 {
     sendEventCommon("StopRecognize", std::move(cb));
-}
-
-void ASRAgent::sendEventCommon(const std::string& ename, EventResultCallback cb, bool include_all_context)
-{
-    std::string payload = "";
-
-    if (es_attr.is_handle) {
-        Json::FastWriter writer;
-        Json::Value root;
-
-        root["playServiceId"] = es_attr.play_service_id;
-        payload = writer.write(root);
-    }
-
-    sendEvent(ename, include_all_context ? capa_helper->makeAllContextInfo() : getContextInfo(), payload, std::move(cb));
-}
-
-void ASRAgent::setCapabilityListener(ICapabilityListener* clistener)
-{
-    if (clistener)
-        addListener(dynamic_cast<IASRListener*>(clistener));
-}
-
-void ASRAgent::addListener(IASRListener* listener)
-{
-    if (listener && std::find(asr_listeners.begin(), asr_listeners.end(), listener) == asr_listeners.end()) {
-        asr_listeners.emplace_back(listener);
-    }
-}
-
-void ASRAgent::removeListener(IASRListener* listener)
-{
-    auto iterator = std::find(asr_listeners.begin(), asr_listeners.end(), listener);
-
-    if (iterator != asr_listeners.end())
-        asr_listeners.erase(iterator);
-}
-
-void ASRAgent::setEpdAttribute(EpdAttribute&& attribute)
-{
-    default_epd_attribute = attribute;
-
-    if (!isExpectSpeechState())
-        epd_attribute = attribute;
-}
-
-EpdAttribute ASRAgent::getEpdAttribute()
-{
-    return default_epd_attribute;
-}
-
-std::vector<IASRListener*> ASRAgent::getListener()
-{
-    return asr_listeners;
 }
 
 void ASRAgent::parsingExpectSpeech(std::string&& dialog_id, const char* message)
@@ -722,6 +624,49 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
     prev_listening_state = state;
 }
 
+/*
+ * The callback is invoked in the thread context.
+ */
+void ASRAgent::onRecordData(unsigned char* buf, int length)
+{
+    sendEventRecognize((unsigned char*)buf, length, false);
+}
+
+void ASRAgent::saveAllContextInfo()
+{
+    all_context_info = capa_helper->makeAllContextInfo();
+}
+
+std::string ASRAgent::getRecognizeDialogId()
+{
+    return dialog_id;
+}
+
+void ASRAgent::setListeningId(const std::string& id)
+{
+    request_listening_id = id;
+    nugu_dbg("startListening with new id(%s)", request_listening_id.c_str());
+}
+
+void ASRAgent::checkResponseTimeout()
+{
+    if (timer)
+        timer->start();
+}
+
+void ASRAgent::clearResponseTimeout()
+{
+    if (timer)
+        timer->stop();
+}
+
+void ASRAgent::cancelRecognition()
+{
+    nugu_dbg("cancelRecognition()");
+    asr_cancel = true;
+    speech_recognizer->stopListening();
+}
+
 void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error, bool release_focus)
 {
     for (const auto& asr_listener : asr_listeners) {
@@ -740,9 +685,55 @@ void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error, bool release_focu
     routine_manager->stop();
 }
 
-bool ASRAgent::isExpectSpeechState()
+void ASRAgent::executeOnForegroundAction(bool asr_user)
 {
-    return es_attr.is_handle;
+    if (!asr_user) {
+        if (!isExpectSpeechState()) {
+            nugu_dbg("cancel the expect speech state");
+            focus_manager->releaseFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME);
+            return;
+        }
+        setASRState(ASRState::EXPECTING_SPEECH);
+        asr_initiator = ASRInitiator::EXPECT_SPEECH;
+
+        playsync_manager->postPoneRelease();
+
+        saveAllContextInfo();
+    }
+    playsync_manager->stopHolding();
+
+    std::string id = "id#" + std::to_string(uniq++);
+    setListeningId(id);
+    speech_recognizer->setEpdAttribute(epd_attribute);
+    speech_recognizer->startListening(id);
+
+    asr_cancel = false;
+}
+
+void ASRAgent::executeOnBackgroundAction(bool asr_user)
+{
+    const char* focus_type = asr_user ? ASR_USER_FOCUS_TYPE : ASR_DM_FOCUS_TYPE;
+
+    focus_manager->releaseFocus(focus_type, CAPABILITY_NAME);
+}
+
+void ASRAgent::executeOnNoneAction(bool asr_user)
+{
+    playsync_manager->continueRelease();
+    playsync_manager->resetHolding();
+    speech_recognizer->stopListening();
+
+    if (getASRState() == ASRState::LISTENING
+        || getASRState() == ASRState::RECOGNIZING
+        || getASRState() == ASRState::EXPECTING_SPEECH)
+        sendEventStopRecognize();
+
+    if (getASRState() == ASRState::BUSY)
+        setASRState(ASRState::IDLE);
+
+    resetExpectSpeechState();
+
+    epd_attribute = default_epd_attribute;
 }
 
 ListeningState ASRAgent::getListeningState()
@@ -781,29 +772,6 @@ std::string ASRAgent::getListeningStateStr(ListeningState state)
     return state_str;
 }
 
-void ASRAgent::resetExpectSpeechState()
-{
-    if (!es_attr.dialog_id.empty())
-        session_manager->deactivate(es_attr.dialog_id);
-
-    if (es_attr.is_handle) {
-        capa_helper->sendCommand("ASR", "Nudge", "clearNudge", es_attr.dialog_id);
-        es_attr = {};
-    }
-
-    listen_timeout_fail_beep = true;
-
-    interaction_control_manager->finish(InteractionMode::MULTI_TURN, getName());
-}
-
-/*
- * The callback is invoked in the thread context.
- */
-void ASRAgent::onRecordData(unsigned char* buf, int length)
-{
-    sendEventRecognize((unsigned char*)buf, length, false);
-}
-
 void ASRAgent::setASRState(ASRState state)
 {
     if (state == cur_state)
@@ -822,19 +790,51 @@ ASRState ASRAgent::getASRState()
     return cur_state;
 }
 
-void ASRAgent::setListeningId(const std::string& id)
+void ASRAgent::resetExpectSpeechState()
 {
-    request_listening_id = id;
-    nugu_dbg("startListening with new id(%s)", request_listening_id.c_str());
+    if (!es_attr.dialog_id.empty())
+        session_manager->deactivate(es_attr.dialog_id);
+
+    if (es_attr.is_handle) {
+        capa_helper->sendCommand("ASR", "Nudge", "clearNudge", es_attr.dialog_id);
+        es_attr = {};
+    }
+
+    listen_timeout_fail_beep = true;
+
+    interaction_control_manager->finish(InteractionMode::MULTI_TURN, getName());
 }
 
-void ASRAgent::notifyEventResponse(const std::string& msg_id, const std::string& data, bool success)
+bool ASRAgent::isExpectSpeechState()
 {
-    // release focus when there are no focus stealer like TTS
-    if (data.find("ASR") != std::string::npos && data.find("NotifyResult") != std::string::npos
-        && data.find("TTS") == std::string::npos) {
-        nugu_info("Focus(type: %s) Release", ASR_USER_FOCUS_TYPE);
-        stopRecognition();
+    return es_attr.is_handle;
+}
+
+ASRAgent::FocusListener::FocusListener(ASRAgent* asr_agent, IFocusManager* focus_manager, bool asr_user)
+    : asr_agent(asr_agent)
+    , focus_manager(focus_manager)
+    , asr_user(asr_user)
+{
+}
+
+void ASRAgent::FocusListener::onFocusChanged(FocusState state)
+{
+    nugu_info("[%s] Focus Changed(%s -> %s)", asr_user ? "ASRUser" : "ASRDM", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
+    FocusState prev_state = focus_state;
+
+    focus_state = state;
+
+    switch (state) {
+    case FocusState::FOREGROUND:
+        asr_agent->executeOnForegroundAction(asr_user);
+        break;
+    case FocusState::BACKGROUND:
+        if (prev_state == FocusState::FOREGROUND)
+            asr_agent->executeOnBackgroundAction(asr_user);
+        break;
+    case FocusState::NONE:
+        asr_agent->executeOnNoneAction(asr_user);
+        break;
     }
 }
 

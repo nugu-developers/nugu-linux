@@ -50,28 +50,13 @@ public:
     void stopRecognition() override;
 
     void preprocessDirective(NuguDirective* ndir) override;
-    void cancelDirective(NuguDirective* ndir) override;
     void parsingDirective(const char* dname, const char* message) override;
+    void cancelDirective(NuguDirective* ndir) override;
     void updateInfoForContext(Json::Value& ctx) override;
-    void saveAllContextInfo();
 
     bool receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
     bool getProperty(const std::string& property, std::string& value) override;
     bool getProperties(const std::string& property, std::list<std::string>& values) override;
-    void checkResponseTimeout();
-    void clearResponseTimeout();
-
-    std::string getRecognizeDialogId();
-
-    void sendEventRecognize(unsigned char* data, size_t length, bool is_end, EventResultCallback cb = nullptr);
-    void sendEventResponseTimeout(EventResultCallback cb = nullptr);
-    void sendEventListenTimeout(EventResultCallback cb = nullptr);
-    void sendEventListenFailed(EventResultCallback cb = nullptr);
-    void sendEventStopRecognize(EventResultCallback cb = nullptr);
-
-    void executeOnForegroundAction(bool asr_user);
-    void executeOnBackgroundAction(bool asr_user);
-    void executeOnNoneAction(bool asr_user);
 
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void addListener(IASRListener* listener) override;
@@ -80,22 +65,16 @@ public:
     EpdAttribute getEpdAttribute() override;
     std::vector<IASRListener*> getListener();
 
-    void resetExpectSpeechState();
-    bool isExpectSpeechState();
-    ListeningState getListeningState();
-    std::string getListeningStateStr(ListeningState state);
-
-    void setASRState(ASRState state);
-    ASRState getASRState();
-    void setListeningId(const std::string& id);
     void notifyEventResponse(const std::string& msg_id, const std::string& data, bool success) override;
 
 private:
+    // send event
     void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr, bool include_all_context = false);
-
-    // implements ISpeechRecognizerListener
-    void onListeningState(ListeningState state, const std::string& id) override;
-    void onRecordData(unsigned char* buf, int length) override;
+    void sendEventRecognize(unsigned char* data, size_t length, bool is_end, EventResultCallback cb = nullptr);
+    void sendEventResponseTimeout(EventResultCallback cb = nullptr);
+    void sendEventListenTimeout(EventResultCallback cb = nullptr);
+    void sendEventListenFailed(EventResultCallback cb = nullptr);
+    void sendEventStopRecognize(EventResultCallback cb = nullptr);
 
     // parsing directive
     void parsingExpectSpeech(std::string&& dialog_id, const char* message);
@@ -103,8 +82,29 @@ private:
     void parsingCancelRecognize(const char* message);
     void handleExpectSpeech();
 
-    void releaseASRFocus(bool is_cancel, ASRError error, bool release_focus = true);
+    // implements ISpeechRecognizerListener
+    void onListeningState(ListeningState state, const std::string& id) override;
+    void onRecordData(unsigned char* buf, int length) override;
+
+    void saveAllContextInfo();
+    std::string getRecognizeDialogId();
+    void setListeningId(const std::string& id);
+
+    void checkResponseTimeout();
+    void clearResponseTimeout();
+
     void cancelRecognition();
+    void releaseASRFocus(bool is_cancel, ASRError error, bool release_focus = true);
+    void executeOnForegroundAction(bool asr_user);
+    void executeOnBackgroundAction(bool asr_user);
+    void executeOnNoneAction(bool asr_user);
+
+    ListeningState getListeningState();
+    std::string getListeningStateStr(ListeningState state);
+    void setASRState(ASRState state);
+    ASRState getASRState();
+    void resetExpectSpeechState();
+    bool isExpectSpeechState();
 
     class FocusListener : public IFocusResourceListener {
     public:
