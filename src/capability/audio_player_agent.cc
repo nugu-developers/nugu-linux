@@ -41,6 +41,7 @@ void AudioPlayerAgent::initialize()
 
     Capability::initialize();
 
+    suspended_stop_policy = false;
     speak_dir = nullptr;
     focus_state = FocusState::NONE;
     is_tts_activate = false;
@@ -146,7 +147,7 @@ void AudioPlayerAgent::deInitialize()
 
 void AudioPlayerAgent::suspend()
 {
-    if (suspended) {
+    if (suspended_stop_policy) {
         nugu_dbg("already do suspend action");
         return;
     }
@@ -156,26 +157,27 @@ void AudioPlayerAgent::suspend()
     if (suspend_policy == SuspendPolicy::STOP) {
         if (focus_state != FocusState::NONE)
             playsync_manager->releaseSyncImmediately(ps_id, getName());
+
+        suspended_stop_policy = true;
     } else {
         if (focus_state == FocusState::FOREGROUND)
             executeOnBackgroundAction();
     }
-    suspended = true;
 }
 
 void AudioPlayerAgent::restore()
 {
-    if (!suspended) {
+    if (suspend_policy == SuspendPolicy::STOP && !suspended_stop_policy) {
         nugu_dbg("do not suspend action yet");
         return;
     }
-
-    suspended = false;
 
     nugu_dbg("suspend_policy[%d], focus_state => %s", suspend_policy, focus_manager->getStateString(focus_state).c_str());
 
     if (focus_state == FocusState::FOREGROUND)
         executeOnForegroundAction();
+
+    suspended_stop_policy = false;
 }
 
 void AudioPlayerAgent::preprocessDirective(NuguDirective* ndir)
@@ -1438,8 +1440,8 @@ void AudioPlayerAgent::executeOnForegroundAction()
 {
     nugu_dbg("executeOnForegroundAction()");
 
-    if (suspended) {
-        nugu_warn("AudioPlayer is suspended, please restore AudioPlayer.");
+    if (suspended_stop_policy) {
+        nugu_warn("AudioPlayer is suspended with stop policy, please restore AudioPlayer.");
         return;
     }
 
