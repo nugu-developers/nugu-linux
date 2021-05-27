@@ -153,6 +153,7 @@ private:
     bool has_play_directive;
     std::string play_directive_dialog_id;
     bool receive_new_play_directive;
+    bool suspended_stop_policy;
 
     AudioPlayerState cur_aplayer_state;
     AudioPlayerState prev_aplayer_state;
