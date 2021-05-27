@@ -40,12 +40,13 @@ public:
     void synchronizeState() override;
     void updateUserActivity() override;
 
+private:
+    // send event
     void sendEventSynchronizeState(EventResultCallback cb = nullptr);
     void sendEventUserInactivityReport(int seconds, EventResultCallback cb = nullptr);
     void sendEventEcho(EventResultCallback cb = nullptr);
     void sendEventDisconnect(EventResultCallback cb = nullptr);
 
-private:
     // parsing directive
     void parsingResetUserInactivity(const char* message);
     void parsingHandoffConnection(const char* message);
