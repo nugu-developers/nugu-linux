@@ -378,7 +378,7 @@ std::string AudioPlayerAgent::requestFavoriteCommand(bool current_favorite)
     Json::FastWriter writer;
     Json::Value root;
 
-    if (cur_url.empty()) {
+    if (!is_tts_activate && cur_url.empty()) {
         nugu_warn("there is no media content in the playlist.");
         return "";
     }
@@ -404,7 +404,7 @@ std::string AudioPlayerAgent::requestRepeatCommand(RepeatType current_repeat)
     Json::FastWriter writer;
     Json::Value root;
 
-    if (cur_url.empty()) {
+    if (!is_tts_activate && cur_url.empty()) {
         nugu_warn("there is no media content in the playlist.");
         return "";
     }
@@ -440,7 +440,7 @@ std::string AudioPlayerAgent::requestShuffleCommand(bool current_shuffle)
     Json::FastWriter writer;
     Json::Value root;
 
-    if (cur_url.empty()) {
+    if (!is_tts_activate && cur_url.empty()) {
         nugu_warn("there is no media content in the playlist.");
         return "";
     }
@@ -811,7 +811,7 @@ void AudioPlayerAgent::sendEventProgressReportIntervalElapsed(EventResultCallbac
 
 std::string AudioPlayerAgent::sendEventByDisplayInterface(const std::string& command, EventResultCallback cb)
 {
-    if (cur_url.empty()) {
+    if (!is_tts_activate && cur_url.empty()) {
         nugu_warn("there is no media content in the playlist.");
         return "";
     }
