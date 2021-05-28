@@ -153,9 +153,10 @@ public:
 
     /**
      * @brief Request the audio player to stop the current content.
-     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
+     * @param[in] direct_access control mediaplayer via sending event or directly access
+     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string (only used direct_access is false)
      */
-    virtual std::string stop() = 0;
+    virtual std::string stop(bool direct_access = false) = 0;
 
     /**
      * @brief Request the audio player to play the next content.
@@ -171,15 +172,17 @@ public:
 
     /**
      * @brief Request the audio player to pause the current content.
-     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
+     * @param[in] direct_access control mediaplayer via sending event or directly access
+     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string (only used direct_access is false)
      */
-    virtual std::string pause() = 0;
+    virtual std::string pause(bool direct_access = false) = 0;
 
     /**
      * @brief Request the audio player to resume the current content.
-     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string
+     * @param[in] direct_access control mediaplayer via sending event or directly access
+     * @return dialog request id if a NUGU service request succeeds with user text, otherwise empty string (only used direct_access is false)
      */
-    virtual std::string resume() = 0;
+    virtual std::string resume(bool direct_access = false) = 0;
 
     /**
      * @brief Request the audio player to move the current content section.

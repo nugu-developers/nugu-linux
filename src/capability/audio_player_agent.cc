@@ -323,45 +323,83 @@ void AudioPlayerAgent::removeListener(IAudioPlayerListener* listener)
 
 std::string AudioPlayerAgent::play()
 {
-    std::string id = sendEventByDisplayInterface("PlayCommandIssued");
+    std::string id = sendEventByMediaPlayerControl("PlayCommandIssued");
     nugu_dbg("user request dialog id: %s", id.c_str());
     return id;
 }
 
-std::string AudioPlayerAgent::stop()
+std::string AudioPlayerAgent::stop(bool direct_access)
 {
-    std::string id = sendEventByDisplayInterface("StopCommandIssued");
-    skip_intermediate_foreground_focus = !id.empty();
-    nugu_dbg("user request dialog id: %s", id.c_str());
+    std::string id;
+
+    if (direct_access) {
+        nugu_dbg("user request to stop media directly");
+        playsync_manager->releaseSyncImmediately(ps_id, getName());
+        cur_url.clear();
+    } else {
+        id = sendEventByMediaPlayerControl("StopCommandIssued");
+        skip_intermediate_foreground_focus = !id.empty();
+        nugu_dbg("user request dialog id: %s", id.c_str());
+    }
     return id;
 }
 
 std::string AudioPlayerAgent::next()
 {
-    std::string id = sendEventByDisplayInterface("NextCommandIssued");
+    std::string id = sendEventByMediaPlayerControl("NextCommandIssued");
     nugu_dbg("user request dialog id: %s", id.c_str());
     return id;
 }
 
 std::string AudioPlayerAgent::prev()
 {
-    std::string id = sendEventByDisplayInterface("PreviousCommandIssued");
+    std::string id = sendEventByMediaPlayerControl("PreviousCommandIssued");
     nugu_dbg("user request dialog id: %s", id.c_str());
     return id;
 }
 
-std::string AudioPlayerAgent::pause()
+std::string AudioPlayerAgent::pause(bool direct_access)
 {
-    std::string id = sendEventByDisplayInterface("PauseCommandIssued");
-    skip_intermediate_foreground_focus = !id.empty();
-    nugu_dbg("user request dialog id: %s", id.c_str());
+    std::string id;
+
+    if (direct_access) {
+        nugu_dbg("user request to pause media directly");
+        if (!is_tts_activate && cur_url.empty()) {
+            nugu_warn("there is no media content in the playlist.");
+            return "";
+        }
+
+        if (!cur_player->pause()) {
+            nugu_error("pause media failed");
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't pause");
+        }
+    } else {
+        id = sendEventByMediaPlayerControl("PauseCommandIssued");
+        skip_intermediate_foreground_focus = !id.empty();
+        nugu_dbg("user request dialog id: %s", id.c_str());
+    }
     return id;
 }
 
-std::string AudioPlayerAgent::resume()
+std::string AudioPlayerAgent::resume(bool direct_access)
 {
-    std::string id = sendEventByDisplayInterface("PlayCommandIssued");
-    nugu_dbg("user request dialog id: %s", id.c_str());
+    std::string id;
+
+    if (direct_access) {
+        nugu_dbg("user request to resume media directly");
+        if (!is_tts_activate && cur_url.empty()) {
+            nugu_warn("there is no media content in the playlist.");
+            return "";
+        }
+
+        if (!cur_player->resume()) {
+            nugu_error("resume media failed");
+            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't resume media");
+        }
+    } else {
+        id = sendEventByMediaPlayerControl("PlayCommandIssued");
+        nugu_dbg("user request dialog id: %s", id.c_str());
+    }
     return id;
 }
 
@@ -809,7 +847,7 @@ void AudioPlayerAgent::sendEventProgressReportIntervalElapsed(EventResultCallbac
     sendEventCommon("ProgressReportIntervalElapsed", std::move(cb));
 }
 
-std::string AudioPlayerAgent::sendEventByDisplayInterface(const std::string& command, EventResultCallback cb)
+std::string AudioPlayerAgent::sendEventByMediaPlayerControl(const std::string& command, EventResultCallback cb)
 {
     if (!is_tts_activate && cur_url.empty()) {
         nugu_warn("there is no media content in the playlist.");

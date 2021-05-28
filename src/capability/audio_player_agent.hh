@@ -63,11 +63,11 @@ public:
     void addListener(IAudioPlayerListener* listener) override;
     void removeListener(IAudioPlayerListener* listener) override;
     std::string play() override;
-    std::string stop() override;
+    std::string stop(bool direct_access) override;
     std::string next() override;
     std::string prev() override;
-    std::string pause() override;
-    std::string resume() override;
+    std::string pause(bool direct_access) override;
+    std::string resume(bool direct_access) override;
     void seek(int msec) override;
     std::string requestFavoriteCommand(bool current_favorite) override;
     std::string requestRepeatCommand(RepeatType current_repeat) override;
@@ -107,7 +107,7 @@ private:
     void sendEventPlaybackFailed(PlaybackError err, const std::string& reason, EventResultCallback cb = nullptr);
     void sendEventProgressReportDelayElapsed(EventResultCallback cb = nullptr);
     void sendEventProgressReportIntervalElapsed(EventResultCallback cb = nullptr);
-    std::string sendEventByDisplayInterface(const std::string& command, EventResultCallback cb = nullptr);
+    std::string sendEventByMediaPlayerControl(const std::string& command, EventResultCallback cb = nullptr);
     void sendEventShowLyricsSucceeded(EventResultCallback cb = nullptr);
     void sendEventShowLyricsFailed(EventResultCallback cb = nullptr);
     void sendEventHideLyricsSucceeded(EventResultCallback cb = nullptr);
