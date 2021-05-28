@@ -54,7 +54,8 @@ enum class AudioPlayerEvent {
     UNDERRUN, /**< This event is occurred when the content is reloaded because of bad quality network */
     LOAD_FAILED, /**< This event is occurred when the content is not loaded successfully */
     LOAD_DONE, /**< This event is occurred when the content is loaded successfully */
-    INVALID_URL /**< This event is occurred when the content is not valid url */
+    INVALID_URL, /**< This event is occurred when the content is not valid url */
+    HOLD_PAUSE /**< This event is occurred when the agent receives a pause directive, it blocks content playback until another directive is received. */
 };
 
 /**
