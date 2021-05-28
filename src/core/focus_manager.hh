@@ -73,6 +73,7 @@ public:
     void stopForegroundFocus() override;
 
     std::string getStateString(FocusState state) override;
+    FocusState convertToFocusState(const std::string& state_text) override;
 
     void addObserver(IFocusManagerObserver* observer) override;
     void removeObserver(IFocusManagerObserver* observer) override;
@@ -83,6 +84,10 @@ public:
     void printConfigurations();
 
 private:
+    const std::string FOCUS_STATE_FOREGROUND = "FOREGROUND";
+    const std::string FOCUS_STATE_BACKGROUND = "BACKGROUND";
+    const std::string FOCUS_STATE_NONE = "NONE";
+
     std::map<std::string, int> request_configuration_map;
     std::map<std::string, int> release_configuration_map;
     std::list<std::shared_ptr<FocusResource>> focus_resource_ordered_list;
