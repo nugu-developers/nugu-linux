@@ -330,8 +330,8 @@ std::string AudioPlayerAgent::play()
 
 std::string AudioPlayerAgent::stop()
 {
-    skip_intermediate_foreground_focus = true;
     std::string id = sendEventByDisplayInterface("StopCommandIssued");
+    skip_intermediate_foreground_focus = !id.empty();
     nugu_dbg("user request dialog id: %s", id.c_str());
     return id;
 }
@@ -352,8 +352,8 @@ std::string AudioPlayerAgent::prev()
 
 std::string AudioPlayerAgent::pause()
 {
-    skip_intermediate_foreground_focus = true;
     std::string id = sendEventByDisplayInterface("PauseCommandIssued");
+    skip_intermediate_foreground_focus = !id.empty();
     nugu_dbg("user request dialog id: %s", id.c_str());
     return id;
 }
