@@ -49,6 +49,7 @@ void AudioPlayerAgent::initialize()
     has_play_directive = false;
     play_directive_dialog_id = "";
     receive_new_play_directive = false;
+    skip_intermediate_foreground_focus = false;
     cur_aplayer_state = AudioPlayerState::IDLE;
     prev_aplayer_state = AudioPlayerState::IDLE;
     is_paused = false;
@@ -329,6 +330,7 @@ std::string AudioPlayerAgent::play()
 
 std::string AudioPlayerAgent::stop()
 {
+    skip_intermediate_foreground_focus = true;
     std::string id = sendEventByDisplayInterface("StopCommandIssued");
     nugu_dbg("user request dialog id: %s", id.c_str());
     return id;
@@ -350,6 +352,7 @@ std::string AudioPlayerAgent::prev()
 
 std::string AudioPlayerAgent::pause()
 {
+    skip_intermediate_foreground_focus = true;
     std::string id = sendEventByDisplayInterface("PauseCommandIssued");
     nugu_dbg("user request dialog id: %s", id.c_str());
     return id;
@@ -949,6 +952,11 @@ void AudioPlayerAgent::sendEventRequestCommandFailed(const std::string& play_ser
     sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
+void AudioPlayerAgent::notifyEventResponse(const std::string& msg_id, const std::string& data, bool success)
+{
+    skip_intermediate_foreground_focus = false;
+}
+
 bool AudioPlayerAgent::isContentCached(const std::string& key, std::string& playurl)
 {
     std::string filepath;
@@ -1436,29 +1444,42 @@ void AudioPlayerAgent::checkAndUpdateVolume()
     }
 }
 
-void AudioPlayerAgent::executeOnForegroundAction()
+bool AudioPlayerAgent::hasToSkipForegroundAction()
 {
-    nugu_dbg("executeOnForegroundAction()");
-
     if (suspended_stop_policy) {
         nugu_warn("AudioPlayer is suspended with stop policy, please restore AudioPlayer.");
-        return;
+        return true;
     }
 
     if (interaction_control_manager->isMultiTurnActive()) {
-        nugu_info("The multi-turn is active. So, it ignore intermediate foreground focus. ");
-        return;
+        nugu_info("The multi-turn is active. So, it ignore intermediate foreground focus.");
+        return true;
     }
 
     if (routine_manager->isRoutineAlive()) {
-        nugu_info("Routine is alive. So, it ignore intermediate foreground focus. ");
-        return;
+        nugu_info("Routine is alive. So, it ignore intermediate foreground focus.");
+        return true;
     }
 
     if (is_paused) {
         nugu_warn("AudioPlayer is pause mode caused by directive(PAUSE)");
-        return;
+        return true;
     }
+
+    if (skip_intermediate_foreground_focus) {
+        nugu_warn("Skip intermediate foreground focus");
+        return true;
+    }
+
+    return false;
+}
+
+void AudioPlayerAgent::executeOnForegroundAction()
+{
+    if (hasToSkipForegroundAction())
+        return;
+
+    nugu_dbg("executeOnForegroundAction()");
 
     std::string type = is_tts_activate ? "attachment" : "streaming";
     nugu_dbg("cur_aplayer_state[%s] => %d, player->state() => %s, is_finished: %d", type.c_str(), cur_aplayer_state, cur_player->stateString(cur_player->state()).c_str(), is_finished);

@@ -117,6 +117,7 @@ private:
     void sendEventByRequestOthersDirective(const std::string& dname, EventResultCallback cb = nullptr);
     void sendEventRequestPlayCommandIssued(const std::string& dname, const std::string& payload, EventResultCallback cb = nullptr);
     void sendEventRequestCommandFailed(const std::string& play_service_id, const std::string& type, const std::string& reason, EventResultCallback cb = nullptr);
+    void notifyEventResponse(const std::string& msg_id, const std::string& data, bool success) override;
 
     bool isContentCached(const std::string& key, std::string& playurl);
     void parsingPlay(const char* message);
@@ -132,6 +133,7 @@ private:
 
     void clearContext();
     void checkAndUpdateVolume();
+    bool hasToSkipForegroundAction();
     void executeOnForegroundAction();
     void executeOnBackgroundAction();
 
@@ -154,6 +156,7 @@ private:
     std::string play_directive_dialog_id;
     bool receive_new_play_directive;
     bool suspended_stop_policy;
+    bool skip_intermediate_foreground_focus;
 
     AudioPlayerState cur_aplayer_state;
     AudioPlayerState prev_aplayer_state;
