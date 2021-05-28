@@ -1150,6 +1150,10 @@ void AudioPlayerAgent::parsingPause(const char* message)
         playsync_manager->releaseSyncLater(playserviceid, getName());
 
         cur_dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
+
+        for (const auto& aplayer_listener : aplayer_listeners)
+            aplayer_listener->mediaEventReport(AudioPlayerEvent::HOLD_PAUSE, cur_dialog_id);
+
         if (!cur_player->pause()) {
             nugu_error("pause media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't pause");
