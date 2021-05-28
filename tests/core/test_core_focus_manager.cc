@@ -685,6 +685,27 @@ static void test_focusmanager_request_resource_hold_and_unhold_with_different_re
     ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::FOREGROUND);
 }
 
+static void test_focusmanager_convert_state_text_to_focusstate_enum(ntimerFixture* fixture, gconstpointer ignored)
+{
+    FocusManager* focus_manager = fixture->focus_manager;
+    const std::string FOREGROUND_STATE = focus_manager->getStateString(FocusState::FOREGROUND);
+    const std::string BACKGROUND_STATE = focus_manager->getStateString(FocusState::BACKGROUND);
+    const std::string NONE_STATE = focus_manager->getStateString(FocusState::NONE);
+
+    // check normal case
+    g_assert(focus_manager->convertToFocusState(FOREGROUND_STATE) == FocusState::FOREGROUND);
+    g_assert(focus_manager->convertToFocusState(BACKGROUND_STATE) == FocusState::BACKGROUND);
+    g_assert(focus_manager->convertToFocusState(NONE_STATE) == FocusState::NONE);
+
+    // check abnormal case (incorrect text)
+    try {
+        focus_manager->convertToFocusState("abcd");
+        g_test_fail();
+    } catch (std::out_of_range& exception) {
+        g_assert_nonnull(exception.what());
+    }
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -727,6 +748,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/FocusManager/NoStealResourceWithHigherResourceByRequestPriority", test_focusmanager_no_steal_resource_with_higher_resource_request_priority);
     G_TEST_ADD_FUNC("/core/FocusManager/ReleaseResourcesByReleasePriority", test_focusmanager_release_resources_by_release_priority);
     G_TEST_ADD_FUNC("/core/FocusManager/RequestResourceHoldAndUnHoldWithDifferentRequestReleasePriority", test_focusmanager_request_resource_hold_and_unhold_with_different_request_release_priority);
+    G_TEST_ADD_FUNC("/core/FocusManager/ConvertStateTextToFocusStateEnum", test_focusmanager_convert_state_text_to_focusstate_enum);
 
     return g_test_run();
 }

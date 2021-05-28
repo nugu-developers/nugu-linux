@@ -226,7 +226,6 @@ bool FocusManager::releaseFocus(const std::string& type, const std::string& name
         return true;
     }
 
-
     nugu_info("[%s - %s] - FOREGROUND (priority - req:%d, rel:%d)", activate_focus->type.c_str(), activate_focus->name.c_str(), activate_focus->request_priority, activate_focus->release_priority);
     activate_focus->setState(FocusState::FOREGROUND);
     return true;
@@ -337,17 +336,29 @@ std::string FocusManager::getStateString(FocusState state)
 
     switch (state) {
     case FocusState::NONE:
-        name = "NONE";
+        name = FOCUS_STATE_NONE;
         break;
     case FocusState::FOREGROUND:
-        name = "FOREGROUND";
+        name = FOCUS_STATE_FOREGROUND;
         break;
     case FocusState::BACKGROUND:
-        name = "BACKGROUND";
+        name = FOCUS_STATE_BACKGROUND;
         break;
     }
 
     return name;
+}
+
+FocusState FocusManager::convertToFocusState(const std::string& state_text)
+{
+    if (state_text == FOCUS_STATE_FOREGROUND)
+        return FocusState::FOREGROUND;
+    else if (state_text == FOCUS_STATE_BACKGROUND)
+        return FocusState::BACKGROUND;
+    else if (state_text == FOCUS_STATE_NONE)
+        return FocusState::NONE;
+    else
+        throw std::out_of_range("The such FocusState is not exist.");
 }
 
 void FocusManager::onFocusChanged(const std::string& type, const std::string& name, FocusState state)

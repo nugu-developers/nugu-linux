@@ -396,8 +396,12 @@ void TextAgent::requestFocus()
     std::string asr_focus_state;
     capa_helper->getCapabilityProperty("ASR", "focusState", asr_focus_state);
 
-    if (asr_focus_state == "FOREGROUND")
-        focus_manager->requestFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME, this);
+    try {
+        if (focus_manager->convertToFocusState(asr_focus_state) == FocusState::FOREGROUND)
+            focus_manager->requestFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME, this);
+    } catch (std::out_of_range& exception) {
+        nugu_warn("The matched FocusState is not exist");
+    }
 }
 
 void TextAgent::releaseFocus()

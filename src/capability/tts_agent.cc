@@ -473,8 +473,12 @@ void TTSAgent::parsingStop(const char* message)
         std::string asr_focus_state;
         capa_helper->getCapabilityProperty("ASR", "focusState", asr_focus_state);
 
-        if (asr_focus_state == "FOREGROUND")
-            capa_helper->sendCommand("TTS", "ASR", "releaseFocus", "");
+        try {
+            if (focus_manager->convertToFocusState(asr_focus_state) == FocusState::FOREGROUND)
+                capa_helper->sendCommand("TTS", "ASR", "releaseFocus", "");
+        } catch (std::out_of_range& exception) {
+            nugu_warn("The matched FocusState is not exist");
+        }
 
         playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
     }

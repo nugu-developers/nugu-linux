@@ -181,6 +181,14 @@ public:
     virtual std::string getStateString(FocusState state) = 0;
 
     /**
+     * @brief Convert state text to matched FocusState enum.
+     * @param[in] state_text state text
+     * @throw std::out_of_range exception thrown if matched FocusState not exist
+     * @return FocusState enum
+     */
+    virtual FocusState convertToFocusState(const std::string& state_text) = 0;
+
+    /**
      * @brief Add the Observer object
      * @param[in] observer observer object
      */
