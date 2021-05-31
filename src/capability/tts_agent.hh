@@ -70,6 +70,7 @@ private:
     void sendClearNudgeCommand(NuguDirective* ndir);
     void executeOnForegroundAction();
     void checkAndUpdateVolume();
+    bool isSpeakTextEmpty(const std::string& raw_text);
 
     void mediaStateChanged(MediaPlayerState state) override;
     void mediaEventReport(MediaPlayerEvent event) override;

@@ -410,7 +410,7 @@ void TTSAgent::parsingSpeak(const char* message)
         return;
     }
 
-    is_stopped_by_explicit = false;
+    is_stopped_by_explicit = isSpeakTextEmpty(text);
     destroy_directive_by_agent = true;
     speak_dir = nullptr;
 
@@ -528,6 +528,11 @@ void TTSAgent::checkAndUpdateVolume()
         player->setVolume(volume);
         volume_update = false;
     }
+}
+
+bool TTSAgent::isSpeakTextEmpty(const std::string& raw_text)
+{
+    return raw_text.find("></skml>") != std::string::npos;
 }
 
 void TTSAgent::mediaStateChanged(MediaPlayerState state)
