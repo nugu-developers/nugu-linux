@@ -61,8 +61,14 @@ void AudioPlayerListener::mediaEventReport(AudioPlayerEvent event, const std::st
     case AudioPlayerEvent::INVALID_URL:
         std::cout << "INVALID_URL\n";
         break;
-    case AudioPlayerEvent::HOLD_PAUSE:
-        std::cout << "HOLD_PAUSE\n";
+    case AudioPlayerEvent::PAUSE_BY_DIRECTIVE:
+        std::cout << "PAUSE_BY_DIRECTIVE\n";
+        break;
+    case AudioPlayerEvent::PAUSE_BY_FOCUS:
+        std::cout << "PAUSE_BY_FOCUS\n";
+        break;
+    case AudioPlayerEvent::PAUSE_BY_APPLICATION:
+        std::cout << "PAUSE_BY_APPLICATION\n";
         break;
     default:
         break;
