@@ -369,6 +369,14 @@ std::string AudioPlayerAgent::pause(bool direct_access)
             return "";
         }
 
+        if (cur_aplayer_state != AudioPlayerState::PLAYING) {
+            nugu_warn("there is no playing media content in the playlist.");
+            return "";
+        }
+
+        for (const auto& aplayer_listener : aplayer_listeners)
+            aplayer_listener->mediaEventReport(AudioPlayerEvent::PAUSE_BY_APPLICATION, cur_dialog_id);
+
         if (!cur_player->pause()) {
             nugu_error("pause media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "player can't pause");
@@ -1190,7 +1198,7 @@ void AudioPlayerAgent::parsingPause(const char* message)
         cur_dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
 
         for (const auto& aplayer_listener : aplayer_listeners)
-            aplayer_listener->mediaEventReport(AudioPlayerEvent::HOLD_PAUSE, cur_dialog_id);
+            aplayer_listener->mediaEventReport(AudioPlayerEvent::PAUSE_BY_DIRECTIVE, cur_dialog_id);
 
         if (!cur_player->pause()) {
             nugu_error("pause media failed");
@@ -1567,6 +1575,10 @@ void AudioPlayerAgent::executeOnBackgroundAction()
     if (state == MediaPlayerState::PLAYING || state == MediaPlayerState::PREPARE
         || state == MediaPlayerState::READY) {
         is_paused_by_unfocus = true;
+
+        for (const auto& aplayer_listener : aplayer_listeners)
+            aplayer_listener->mediaEventReport(AudioPlayerEvent::PAUSE_BY_FOCUS, cur_dialog_id);
+
         if (!cur_player->pause()) {
             nugu_error("pause media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,

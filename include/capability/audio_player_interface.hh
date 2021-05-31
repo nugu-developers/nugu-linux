@@ -55,7 +55,9 @@ enum class AudioPlayerEvent {
     LOAD_FAILED, /**< This event is occurred when the content is not loaded successfully */
     LOAD_DONE, /**< This event is occurred when the content is loaded successfully */
     INVALID_URL, /**< This event is occurred when the content is not valid url */
-    HOLD_PAUSE /**< This event is occurred when the agent receives a pause directive, it blocks content playback until another directive is received. */
+    PAUSE_BY_DIRECTIVE, /**< This event is occurred when the agent receives a pause directive, it blocks content playback until another directive is received. */
+    PAUSE_BY_FOCUS,  /**< This event is occurred when the agent loses focus by another higher focus */
+    PAUSE_BY_APPLICATION /**< This event is occurred when the application pause the mediaplayer directly access */
 };
 
 /**
