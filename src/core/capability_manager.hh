@@ -17,6 +17,7 @@
 #ifndef __NUGU_CAPABILITY_AGENT_H__
 #define __NUGU_CAPABILITY_AGENT_H__
 
+#include <deque>
 #include <map>
 #include <memory>
 
@@ -82,6 +83,9 @@ public:
 private:
     ICapabilityInterface* findCapability(const std::string& cname);
     Json::Value getBaseContextInfo(Json::Value& supported_interfaces, Json::Value&& playstack);
+    bool isConditionToSendCommand(const NuguDirective* ndir);
+
+    const unsigned int PROGRESS_DIALOGS_MAX = 5;
 
     static CapabilityManager* instance;
     std::map<std::string, ICapabilityInterface*> caps;
@@ -94,6 +98,8 @@ private:
     std::unique_ptr<DirectiveSequencer> directive_sequencer;
     std::unique_ptr<InteractionControlManager> interaction_control_manager;
     std::unique_ptr<RoutineManager> routine_manager;
+    std::set<std::string> no_command_directive_filter;
+    std::deque<std::string> progress_dialogs;
 };
 
 } // NuguCore

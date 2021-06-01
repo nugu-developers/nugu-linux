@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <algorithm>
 #include <cmath>
 #include <cstring>
 
@@ -37,6 +38,7 @@ CapabilityManager::CapabilityManager()
     , routine_manager(std::unique_ptr<RoutineManager>(new RoutineManager()))
 {
     wword = WAKEUP_WORD;
+    no_command_directive_filter = { "System.Noop" };
 
     playsync_manager->setInteractionControlManager(interaction_control_manager.get());
 }
@@ -110,8 +112,10 @@ bool CapabilityManager::onHandleDirective(NuguDirective* ndir)
         return false;
     }
 
-    sendCommandAll("receive_directive_group", nugu_directive_peek_groups(ndir));
-    sendCommandAll("directive_dialog_id", nugu_directive_peek_dialog_id(ndir));
+    if (isConditionToSendCommand(ndir)) {
+        sendCommandAll("receive_directive_group", nugu_directive_peek_groups(ndir));
+        sendCommandAll("directive_dialog_id", nugu_directive_peek_dialog_id(ndir));
+    }
 
     nugu_info("processDirective - [%s.%s]", cap->getName().c_str(), nugu_directive_peek_name(ndir));
     cap->processDirective(ndir);
@@ -232,10 +236,11 @@ std::string CapabilityManager::getWakeupWord()
 
 ICapabilityInterface* CapabilityManager::findCapability(const std::string& cname)
 {
-    if (caps.find(cname) == caps.end())
+    try {
+        return caps.at(cname);
+    } catch (std::out_of_range& exception) {
         return nullptr;
-
-    return caps[cname];
+    }
 }
 
 std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::Value& cap_ctx)
@@ -379,6 +384,28 @@ DirectiveSequencer* CapabilityManager::getDirectiveSequencer()
 RoutineManager* CapabilityManager::getRoutineManager()
 {
     return routine_manager.get();
+}
+
+bool CapabilityManager::isConditionToSendCommand(const NuguDirective* ndir)
+{
+    std::string dnamespace = nugu_directive_peek_namespace(ndir);
+    std::string dname = nugu_directive_peek_name(ndir);
+    std::string dialog_id = nugu_directive_peek_dialog_id(ndir);
+    std::string directive { dnamespace + "." + dname };
+
+    if (no_command_directive_filter.find(directive) != no_command_directive_filter.cend())
+        return false;
+
+    if (std::find(progress_dialogs.cbegin(), progress_dialogs.cend(), dialog_id) != progress_dialogs.cend())
+        return false;
+
+    // pop oldest elements from progress_dialogs container if it exceed max size
+    if (progress_dialogs.size() > PROGRESS_DIALOGS_MAX)
+        progress_dialogs.pop_front();
+
+    progress_dialogs.emplace_back(dialog_id);
+
+    return true;
 }
 
 } // NuguCore
