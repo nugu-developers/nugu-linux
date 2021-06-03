@@ -22,7 +22,6 @@ using namespace NuguClientKit;
 int main(int argc, char** argv)
 {
     auto nugu_sample_manager(std::make_shared<NuguSampleManager>());
-    auto nugu_sdk_manager(std::make_shared<NuguSDKManager>(nugu_sample_manager.get()));
 
     if (!nugu_sample_manager->handleArguments(argc, argv))
         return EXIT_FAILURE;
@@ -32,6 +31,7 @@ int main(int argc, char** argv)
         return EXIT_FAILURE;
     }
 
+    auto nugu_sdk_manager(std::make_shared<NuguSDKManager>(nugu_sample_manager.get()));
     nugu_sample_manager->prepare();
     nugu_sdk_manager->setup();
     nugu_sample_manager->runLoop();
