@@ -666,6 +666,10 @@ void AudioPlayerAgent::mediaEventReport(MediaPlayerEvent event)
         break;
     case MediaPlayerEvent::LOADING_MEDIA_SUCCESS:
         nugu_dbg("LOADING_MEDIA_SUCCESS");
+
+        for (const auto& aplayer_listener : aplayer_listeners)
+            aplayer_listener->mediaEventReport(AudioPlayerEvent::LOAD_DONE, cur_dialog_id);
+
         break;
     case MediaPlayerEvent::PLAYING_MEDIA_FINISHED:
         nugu_dbg("PLAYING_MEDIA_FINISHED");
