@@ -159,7 +159,6 @@ void PlaySyncManager::releaseSyncLater(const std::string& ps_id, const std::stri
 
 void PlaySyncManager::releaseSyncImmediately(const std::string& ps_id, const std::string& requester)
 {
-    clearPostPonedRelease();
     rawReleaseSync(ps_id, requester, PlayStackRemoveMode::Immediately);
 }
 
