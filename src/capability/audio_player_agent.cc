@@ -333,9 +333,12 @@ std::string AudioPlayerAgent::stop(bool direct_access)
     std::string id;
 
     if (direct_access) {
+        if (cur_token.empty()) {
+            nugu_warn("there is no media content in the playlist.");
+            return "";
+        }
         nugu_dbg("user request to stop media directly");
         playsync_manager->releaseSyncImmediately(ps_id, getName());
-        cur_url.clear();
     } else {
         id = sendEventByMediaPlayerControl("StopCommandIssued");
         skip_intermediate_foreground_focus = !id.empty();
@@ -364,7 +367,7 @@ std::string AudioPlayerAgent::pause(bool direct_access)
 
     if (direct_access) {
         nugu_dbg("user request to pause media directly");
-        if (!is_tts_activate && cur_url.empty()) {
+        if (cur_token.empty()) {
             nugu_warn("there is no media content in the playlist.");
             return "";
         }
@@ -395,7 +398,7 @@ std::string AudioPlayerAgent::resume(bool direct_access)
 
     if (direct_access) {
         nugu_dbg("user request to resume media directly");
-        if (!is_tts_activate && cur_url.empty()) {
+        if (cur_token.empty()) {
             nugu_warn("there is no media content in the playlist.");
             return "";
         }
@@ -424,7 +427,7 @@ std::string AudioPlayerAgent::requestFavoriteCommand(bool current_favorite)
     Json::FastWriter writer;
     Json::Value root;
 
-    if (!is_tts_activate && cur_url.empty()) {
+    if (cur_token.empty()) {
         nugu_warn("there is no media content in the playlist.");
         return "";
     }
@@ -450,7 +453,7 @@ std::string AudioPlayerAgent::requestRepeatCommand(RepeatType current_repeat)
     Json::FastWriter writer;
     Json::Value root;
 
-    if (!is_tts_activate && cur_url.empty()) {
+    if (cur_token.empty()) {
         nugu_warn("there is no media content in the playlist.");
         return "";
     }
@@ -486,7 +489,7 @@ std::string AudioPlayerAgent::requestShuffleCommand(bool current_shuffle)
     Json::FastWriter writer;
     Json::Value root;
 
-    if (!is_tts_activate && cur_url.empty()) {
+    if (cur_token.empty()) {
         nugu_warn("there is no media content in the playlist.");
         return "";
     }
@@ -741,6 +744,7 @@ void AudioPlayerAgent::onFocusChanged(FocusState state)
 
         // TODO: integrate with playsync and session manager
         cur_url = template_id = "";
+        clearContext();
         break;
     }
     focus_state = state;
@@ -861,7 +865,7 @@ void AudioPlayerAgent::sendEventProgressReportIntervalElapsed(EventResultCallbac
 
 std::string AudioPlayerAgent::sendEventByMediaPlayerControl(const std::string& command, EventResultCallback cb)
 {
-    if (!is_tts_activate && cur_url.empty()) {
+    if (cur_token.empty()) {
         nugu_warn("there is no media content in the playlist.");
         return "";
     }
@@ -1188,6 +1192,11 @@ void AudioPlayerAgent::parsingPause(const char* message)
     std::string playserviceid;
     std::string active_playserviceid;
 
+    if (cur_token.empty()) {
+        nugu_warn("there is no media content in the playlist.");
+        return;
+    }
+
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
         return;
@@ -1225,6 +1234,11 @@ void AudioPlayerAgent::parsingStop(const char* message)
     Json::Reader reader;
     std::string playstackctl_ps_id;
 
+    if (cur_token.empty()) {
+        nugu_warn("there is no media content in the playlist.");
+        return;
+    }
+
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
         return;
@@ -1240,7 +1254,7 @@ void AudioPlayerAgent::parsingStop(const char* message)
         capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
     }
 
-    cur_url.clear();
+    clearContext();
 }
 
 void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
@@ -1250,6 +1264,11 @@ void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
     Json::Reader reader;
     Json::StyledWriter writer;
     std::string playserviceid;
+
+    if (cur_token.empty()) {
+        nugu_warn("there is no media content in the playlist.");
+        return;
+    }
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -1318,6 +1337,11 @@ void AudioPlayerAgent::parsingShowLyrics(const char* message)
         return;
     }
 
+    if (cur_token.empty()) {
+        nugu_warn("there is no media content in the playlist.");
+        return;
+    }
+
     playserviceid = root["playServiceId"].asString();
     if (playserviceid.size() == 0) {
         nugu_error("There is no mandatory data in directive message");
@@ -1340,6 +1364,11 @@ void AudioPlayerAgent::parsingHideLyrics(const char* message)
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
+        return;
+    }
+
+    if (cur_token.empty()) {
+        nugu_warn("there is no media content in the playlist.");
         return;
     }
 
@@ -1367,6 +1396,11 @@ void AudioPlayerAgent::parsingControlLyricsPage(const char* message)
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
+        return;
+    }
+
+    if (cur_token.empty()) {
+        nugu_warn("there is no media content in the playlist.");
         return;
     }
 
@@ -1398,6 +1432,11 @@ void AudioPlayerAgent::parsingRequestPlayCommand(const char* dname, const char* 
     Json::Reader reader;
     std::string play_service_id;
     std::string payload;
+
+    if (cur_token.empty()) {
+        nugu_warn("there is no media content in the playlist.");
+        return;
+    }
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
