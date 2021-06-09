@@ -15,6 +15,7 @@
  */
 
 #include <string.h>
+#include <regex>
 
 #include "base/nugu_log.h"
 #include "base/nugu_prof.h"
@@ -532,7 +533,14 @@ void TTSAgent::checkAndUpdateVolume()
 
 bool TTSAgent::isSpeakTextEmpty(const std::string& raw_text)
 {
-    return raw_text.find("></skml>") != std::string::npos;
+    const std::regex pattern("\\<.*?\\>");
+    std::string text = regex_replace(raw_text, pattern, "");
+    nugu_dbg("plain_text = [%s]", text.c_str());
+
+    if (text.size() == 0)
+        return true;
+
+    return false;
 }
 
 void TTSAgent::mediaStateChanged(MediaPlayerState state)
