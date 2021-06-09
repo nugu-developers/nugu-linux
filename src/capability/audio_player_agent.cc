@@ -1433,11 +1433,6 @@ void AudioPlayerAgent::parsingRequestPlayCommand(const char* dname, const char* 
     std::string play_service_id;
     std::string payload;
 
-    if (cur_token.empty()) {
-        nugu_warn("there is no media content in the playlist.");
-        return;
-    }
-
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
         return;
