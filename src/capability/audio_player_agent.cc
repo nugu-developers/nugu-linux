@@ -285,6 +285,11 @@ void AudioPlayerAgent::receiveCommandAll(const std::string& command, const std::
     convert_command.resize(command.size());
     std::transform(command.cbegin(), command.cend(), convert_command.begin(), ::tolower);
 
+    if (convert_command == "network_disconnected") {
+        skip_intermediate_foreground_focus = false;
+        return;
+    }
+
     if (receive_new_play_directive)
         return;
 

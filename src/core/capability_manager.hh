@@ -57,6 +57,7 @@ public:
     void requestEventResult(NuguEvent* event);
 
     // overriding INetworkManagerListener
+    void onStatusChanged(NetworkStatus status) override;
     void onEventSendResult(const char* msg_id, bool success, int code) override;
     void onEventResponse(const char* msg_id, const char* data, bool success) noexcept override;
 
