@@ -178,6 +178,12 @@ void CapabilityManager::requestEventResult(NuguEvent* event)
     nugu_dbg("request event[%s] result - %s", msg_id, event_desc.c_str());
 }
 
+void CapabilityManager::onStatusChanged(NetworkStatus status)
+{
+    if (status == NetworkStatus::DISCONNECTED)
+        sendCommandAll("network_disconnected", "");
+}
+
 void CapabilityManager::onEventSendResult(const char* msg_id, bool success, int code)
 {
     if (events.find(msg_id) == events.end()) {
