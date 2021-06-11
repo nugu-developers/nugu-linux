@@ -50,6 +50,14 @@ public:
 class IRoutineHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IRoutineHandler() = default;
+
+    /**
+     * @brief start routine using by data which is composed of Routine.Start directive.
+     * @param[in] dialog_id dialog id
+     * @param[in] data Routine.Start directive payload
+     * @return whether starting routine is success or not
+     */
+    virtual bool startRoutine(const std::string& dialog_id, const std::string& data) = 0;
 };
 
 /**

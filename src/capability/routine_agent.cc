@@ -52,6 +52,12 @@ void RoutineAgent::initialize()
 
     timer = std::unique_ptr<INuguTimer>(core_container->createNuguTimer(true));
 
+    addReferrerEvents("Started", "Start");
+    addReferrerEvents("Failed", "Start");
+    addReferrerEvents("Stopped", "Start");
+    addReferrerEvents("Finished", "Start");
+    addReferrerEvents("ActionTriggered", "Start");
+
     addBlockingPolicy("Continue", { BlockingMedium::AUDIO, false });
 
     initialized = true;
@@ -153,6 +159,34 @@ void RoutineAgent::clearRoutineInfo()
     actions.clear();
 }
 
+bool RoutineAgent::startRoutine(const std::string& dialog_id, const std::string& data)
+{
+    Json::Value root;
+    Json::Reader reader;
+
+    try {
+        setReferrerDialogRequestId("Start", dialog_id);
+
+        if (!reader.parse(data, root))
+            throw "parsing error";
+
+        if (root["playServiceId"].empty() || root["token"].empty() || root["actions"].empty())
+            throw "There is no mandatory data in directive message";
+
+        play_service_id = root["playServiceId"].asString();
+        token = root["token"].asString();
+        actions = root["actions"];
+
+        if (!routine_manager->start(token, actions))
+            throw "Routine start is failed";
+    } catch (const char* message) {
+        nugu_error(message);
+        return false;
+    }
+
+    return true;
+}
+
 /*******************************************************************************
  * parse directive
  ******************************************************************************/
@@ -173,27 +207,8 @@ void RoutineAgent::parsingDirective(const char* dname, const char* message)
 
 void RoutineAgent::parsingStart(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
-
-    try {
-        if (!reader.parse(message, root))
-            throw "parsing error";
-
-        if (root["playServiceId"].empty() || root["token"].empty() || root["actions"].empty())
-            throw "There is no mandatory data in directive message";
-
-        play_service_id = root["playServiceId"].asString();
-        token = root["token"].asString();
-        actions = root["actions"];
-
-        if (!routine_manager->start(token, actions))
-            throw "Routine start is failed";
-
-    } catch (const char* message) {
+    if (!startRoutine(nugu_directive_peek_dialog_id(getNuguDirective()), message))
         sendEventFailed();
-        nugu_error(message);
-    }
 }
 
 void RoutineAgent::parsingStop(const char* message)

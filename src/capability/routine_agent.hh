@@ -37,6 +37,7 @@ public:
     void updateInfoForContext(Json::Value& ctx) override;
     bool getProperty(const std::string& property, std::string& value) override;
     void parsingDirective(const char* dname, const char* message) override;
+    bool startRoutine(const std::string& dialog_id, const std::string& data) override;
 
 private:
     // implements IRoutineManagerListener
