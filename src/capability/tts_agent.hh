@@ -52,7 +52,6 @@ public:
     // implements IPlaySyncManagerListener, IFocusResourceListener
     void onFocusChanged(FocusState state) override;
     void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data) override;
-    void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override;
 
 private:
     // send event

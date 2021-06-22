@@ -74,6 +74,7 @@ public:
 private:
     void updateExtraData(const std::string& ps_id, const std::string& requester, void* extra_data) noexcept;
     void notifyStateChanged(const std::string& ps_id, PlaySyncState state);
+    void notifyStackChanged(std::pair<std::string, std::string>&& ps_ids);
     bool isConditionToSyncAction(const std::string& ps_id, const std::string& requester, PlaySyncState state);
     void rawReleaseSync(const std::string& ps_id, const std::string& requester, PlayStackRemoveMode stack_remove_mode);
     void clearContainer();
