@@ -116,6 +116,11 @@ class RoutineAgent;
 class PhoneCallAgent;
 
 /**
+ * @brief MessageAgent
+ */
+class MessageAgent;
+
+/**
  * @brief CapabilityFactory
  */
 class CapabilityFactory {
