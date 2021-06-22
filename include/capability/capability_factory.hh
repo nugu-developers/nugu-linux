@@ -111,6 +111,11 @@ class NudgeAgent;
 class RoutineAgent;
 
 /**
+ * @brief MessageAgent
+ */
+class MessageAgent;
+
+/**
  * @brief CapabilityFactory
  */
 class CapabilityFactory {

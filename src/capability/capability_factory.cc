@@ -19,6 +19,7 @@
 #include "chips_agent.hh"
 #include "display_agent.hh"
 #include "extension_agent.hh"
+#include "message_agent.hh"
 #include "mic_agent.hh"
 #include "nudge_agent.hh"
 #include "routine_agent.hh"
@@ -60,4 +61,5 @@ template IExtensionHandler* CapabilityFactory::makeCapability<ExtensionAgent, IE
 template IChipsHandler* CapabilityFactory::makeCapability<ChipsAgent, IChipsHandler>(ICapabilityListener* listener);
 template INudgeHandler* CapabilityFactory::makeCapability<NudgeAgent, INudgeHandler>(ICapabilityListener* listener);
 template IRoutineHandler* CapabilityFactory::makeCapability<RoutineAgent, IRoutineHandler>(ICapabilityListener* listener);
+template IMessageHandler* CapabilityFactory::makeCapability<MessageAgent, IMessageHandler>(ICapabilityListener* listener);
 } // NuguCapability
