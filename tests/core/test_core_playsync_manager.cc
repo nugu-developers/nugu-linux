@@ -22,6 +22,7 @@
 #include <map>
 #include <memory>
 #include <mutex>
+#include <set>
 #include <thread>
 
 #include "interaction_control_manager.hh"
@@ -116,6 +117,15 @@ public:
         this->extra_data = extra_datas.second;
     }
 
+    void onStackChanged(const std::pair<std::string, std::string>& ps_ids) override
+    {
+        if (!ps_ids.first.empty())
+            playstacks.emplace(ps_ids.first);
+
+        if (!ps_ids.second.empty())
+            playstacks.erase(ps_ids.second);
+    }
+
     PlaySyncState getSyncState(const std::string& ps_id)
     {
         try {
@@ -145,8 +155,14 @@ public:
         inter_hook_func = hook_func;
     }
 
+    const std::set<std::string>& getPlaystacks()
+    {
+        return playstacks;
+    }
+
 private:
     std::map<std::string, PlaySyncState> sync_state_map;
+    std::set<std::string> playstacks;
     PlaySyncState state = PlaySyncState::None;
     void* extra_data = nullptr;
     int same_state_call_count = 0;
@@ -754,6 +770,17 @@ static void test_playstack_manager_check_next_playstack(TestFixture* fixture, gc
     g_assert(!fixture->playsync_manager->hasNextPlayStack());
 }
 
+static void test_playstack_manager_check_on_stack_changed_callback(TestFixture* fixture, gconstpointer ignored)
+{
+    sub_test_playstack_manager_preset_sync(fixture, "ps_id_1");
+
+    const auto& playstacks(fixture->playsync_manager_listener->getPlaystacks());
+    g_assert(playstacks.find("ps_id_1") != playstacks.end());
+
+    fixture->playsync_manager->releaseSyncImmediately("ps_id_1", "TTS");
+    g_assert(playstacks.find("ps_id_1") == playstacks.end());
+}
+
 static void test_playstack_manager_clear(TestFixture* fixture, gconstpointer ignored)
 {
     sub_test_playstack_manager_preset_media_stacked(fixture);
@@ -807,6 +834,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/reset", test_playstack_manager_reset);
     G_TEST_ADD_FUNC("/core/PlayStackManager/registerCapabilityForSync", test_playstack_manager_register_capability_for_sync);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkNextPlayStack", test_playstack_manager_check_next_playstack);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/checkOnStackChangedCallback", test_playstack_manager_check_on_stack_changed_callback);
     G_TEST_ADD_FUNC("/core/PlayStackManager/clear", test_playstack_manager_clear);
 
     return g_test_run();

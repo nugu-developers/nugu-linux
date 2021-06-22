@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <string.h>
 #include <regex>
+#include <string.h>
 
 #include "base/nugu_log.h"
 #include "base/nugu_prof.h"
@@ -290,10 +290,6 @@ void TTSAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* 
         postProcessDirective(true);
         suspend();
     }
-}
-
-void TTSAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
-{
 }
 
 void TTSAgent::sendEventCommon(CapabilityEvent* event, const std::string& token, EventResultCallback cb)

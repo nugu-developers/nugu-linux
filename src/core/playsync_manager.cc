@@ -237,10 +237,13 @@ const PlaySyncManager::PlayStacks& PlaySyncManager::getPlayStacks()
 
 void PlaySyncManager::onStackAdded(const std::string& ps_id)
 {
+    notifyStackChanged({ ps_id, "" });
 }
 
 void PlaySyncManager::onStackRemoved(const std::string& ps_id)
 {
+    notifyStackChanged({ "", ps_id });
+
     if (playstack_map.find(ps_id) == playstack_map.cend()) {
         nugu_warn("The PlaySyncContainer is not exist.");
         return;
@@ -286,6 +289,12 @@ void PlaySyncManager::notifyStateChanged(const std::string& ps_id, PlaySyncState
             nugu_warn("The requester is not exist.");
         }
     }
+}
+
+void PlaySyncManager::notifyStackChanged(std::pair<std::string, std::string>&& ps_ids)
+{
+    for (const auto& listener : listener_map)
+        listener.second->onStackChanged(ps_ids);
 }
 
 bool PlaySyncManager::isConditionToSyncAction(const std::string& ps_id, const std::string& requester, PlaySyncState state)
