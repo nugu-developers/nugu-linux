@@ -1,3 +1,18 @@
+nugu (1.3.0ubuntu1~xenial) xenial; urgency=medium
+
+  * Fixed AudioPlayer suspend/restore
+  * Added EPD/KWD model files
+  * Added FocusManager convertToFocusState API
+  * Added PlaySyncManager onStackChanged API
+  * Updated AudioPlayerAgent
+  * Updated TTSAgent
+  * Updated CapabilityManager
+  * Updated PlaySyncManager
+  * Updated nugu_sample
+  * Updated libnugu/libnugu-example packaging
+
+ -- nugulinux <nugulinux@gmail.com>  Tue, 29 Jun 2021 14:30:00 +0900
+
 nugu (1.2.0ubuntu1~xenial) xenial; urgency=medium
 
   * Fixed nugu_sample constructing capability
