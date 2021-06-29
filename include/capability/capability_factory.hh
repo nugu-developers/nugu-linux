@@ -111,6 +111,11 @@ class NudgeAgent;
 class RoutineAgent;
 
 /**
+ * @brief PhoneCallAgent
+ */
+class PhoneCallAgent;
+
+/**
  * @brief CapabilityFactory
  */
 class CapabilityFactory {
