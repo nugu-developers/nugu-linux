@@ -27,8 +27,9 @@ var group__PlaySyncManagerInterface =
     ] ],
     [ "IPlaySyncManagerListener", "classNuguClientKit_1_1IPlaySyncManagerListener.html", [
       [ "~IPlaySyncManagerListener", "classNuguClientKit_1_1IPlaySyncManagerListener.html#afa13820115fa84e0b55f04b48a66ef43", null ],
-      [ "onSyncState", "classNuguClientKit_1_1IPlaySyncManagerListener.html#a90652fef37148893c1cf37545acf19d1", null ],
-      [ "onDataChanged", "classNuguClientKit_1_1IPlaySyncManagerListener.html#af80ed395842fd2b50e9e6fa1b166775f", null ]
+      [ "onSyncState", "classNuguClientKit_1_1IPlaySyncManagerListener.html#a255b59b068d4478b5ead4b6aa12c4f46", null ],
+      [ "onDataChanged", "classNuguClientKit_1_1IPlaySyncManagerListener.html#a083c20c7187973da7917c5d9279804b8", null ],
+      [ "onStackChanged", "classNuguClientKit_1_1IPlaySyncManagerListener.html#a8aa0d286ec7d21711644a6c8a9b0bc1b", null ]
     ] ],
     [ "PlaySyncState", "group__PlaySyncManagerInterface.html#ga5d9f5e0329e5706191b9a4682615d4d0", [
       [ "None", "group__PlaySyncManagerInterface.html#gga5d9f5e0329e5706191b9a4682615d4d0a6adf97f83acf6453d4a6a4b1070f3754", null ],

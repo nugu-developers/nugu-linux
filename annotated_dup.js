@@ -74,7 +74,8 @@ var annotated_dup =
       [ "IWakeupHandler", "classNuguClientKit_1_1IWakeupHandler.html", "classNuguClientKit_1_1IWakeupHandler" ],
       [ "IWakeupListener", "classNuguClientKit_1_1IWakeupListener.html", "classNuguClientKit_1_1IWakeupListener" ],
       [ "NuguClient", "classNuguClientKit_1_1NuguClient.html", "classNuguClientKit_1_1NuguClient" ],
-      [ "Session", "structNuguClientKit_1_1Session.html", "structNuguClientKit_1_1Session" ]
+      [ "Session", "structNuguClientKit_1_1Session.html", "structNuguClientKit_1_1Session" ],
+      [ "WakeupModelFile", "structNuguClientKit_1_1WakeupModelFile.html", "structNuguClientKit_1_1WakeupModelFile" ]
     ] ],
     [ "nugu_audio_property", "structnugu__audio__property.html", "structnugu__audio__property" ],
     [ "nugu_decoder_driver_ops", "structnugu__decoder__driver__ops.html", "structnugu__decoder__driver__ops" ],

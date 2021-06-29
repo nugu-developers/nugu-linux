@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.2.0</span>
+   &#160;<span id="projectnumber">1.3.0</span>
    </div>
   </td>
  </tr>
@@ -118,7 +118,7 @@ $(document).ready(function(){initNavTree('nugu__core__container__interface_8hh_s
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguClientKit_1_1INuguCoreContainer.html">INuguCoreContainer</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classNuguClientKit_1_1IWakeupHandler.html">IWakeupHandler</a>* <a class="code" href="classNuguClientKit_1_1INuguCoreContainer.html#afcaf2009b84f60ff1f1ade40632042ee">createWakeupHandler</a>(<span class="keyword">const</span> std::string&amp; model_path = <span class="stringliteral">&quot;&quot;</span>) = 0;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classNuguClientKit_1_1IWakeupHandler.html">IWakeupHandler</a>* <a class="code" href="classNuguClientKit_1_1INuguCoreContainer.html#afb5319d8108fbab13847f159ff274e33">createWakeupHandler</a>(<span class="keyword">const</span> <a class="code" href="structNuguClientKit_1_1WakeupModelFile.html">WakeupModelFile</a>&amp; model_file) = 0;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classNuguClientKit_1_1ISpeechRecognizer.html">ISpeechRecognizer</a>* <a class="code" href="classNuguClientKit_1_1INuguCoreContainer.html#ad9ee8298c16dc85112c769881b217292">createSpeechRecognizer</a>(<span class="keyword">const</span> std::string&amp; model_path = <span class="stringliteral">&quot;&quot;</span>, <span class="keyword">const</span> <a class="code" href="structNuguClientKit_1_1EpdAttribute.html">EpdAttribute</a>&amp; epd_attr = {}) = 0;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
@@ -139,10 +139,10 @@ $(document).ready(function(){initNavTree('nugu__core__container__interface_8hh_s
 <div class="ttc" id="anetwork__manager__interface_8hh_html"><div class="ttname"><a href="network__manager__interface_8hh.html">network_manager_interface.hh</a></div></div>
 <div class="ttc" id="anugu__timer__interface_8hh_html"><div class="ttname"><a href="nugu__timer__interface_8hh.html">nugu_timer_interface.hh</a></div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1INuguCoreContainer_html_ad9ee8298c16dc85112c769881b217292"><div class="ttname"><a href="classNuguClientKit_1_1INuguCoreContainer.html#ad9ee8298c16dc85112c769881b217292">NuguClientKit::INuguCoreContainer::createSpeechRecognizer</a></div><div class="ttdeci">virtual ISpeechRecognizer * createSpeechRecognizer(const std::string &amp;model_path=&quot;&quot;, const EpdAttribute &amp;epd_attr={})=0</div><div class="ttdoc">Create SpeechRecognizer instance.</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1IWakeupHandler_html"><div class="ttname"><a href="classNuguClientKit_1_1IWakeupHandler.html">NuguClientKit::IWakeupHandler</a></div><div class="ttdoc">Wakeup handler interface.</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:64</div></div>
+<div class="ttc" id="astructNuguClientKit_1_1WakeupModelFile_html"><div class="ttname"><a href="structNuguClientKit_1_1WakeupModelFile.html">NuguClientKit::WakeupModelFile</a></div><div class="ttdoc">Model for holding Wakeup model file info.</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:46</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1IWakeupHandler_html"><div class="ttname"><a href="classNuguClientKit_1_1IWakeupHandler.html">NuguClientKit::IWakeupHandler</a></div><div class="ttdoc">Wakeup handler interface.</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:73</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1INuguCoreContainer_html_a3409ffae24076ee474016b45233571ea"><div class="ttname"><a href="classNuguClientKit_1_1INuguCoreContainer.html#a3409ffae24076ee474016b45233571ea">NuguClientKit::INuguCoreContainer::getCapabilityHelper</a></div><div class="ttdeci">virtual ICapabilityHelper * getCapabilityHelper()=0</div><div class="ttdoc">Get CapabilityHelper instance.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1INuguTimer_html"><div class="ttname"><a href="classNuguClientKit_1_1INuguTimer.html">NuguClientKit::INuguTimer</a></div><div class="ttdoc">nugu timer interface</div><div class="ttdef"><b>Definition:</b> nugu_timer_interface.hh:42</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1INuguCoreContainer_html_afcaf2009b84f60ff1f1ade40632042ee"><div class="ttname"><a href="classNuguClientKit_1_1INuguCoreContainer.html#afcaf2009b84f60ff1f1ade40632042ee">NuguClientKit::INuguCoreContainer::createWakeupHandler</a></div><div class="ttdeci">virtual IWakeupHandler * createWakeupHandler(const std::string &amp;model_path=&quot;&quot;)=0</div><div class="ttdoc">Create WakeupHandler instance.</div></div>
 <div class="ttc" id="acapability__helper__interface_8hh_html"><div class="ttname"><a href="capability__helper__interface_8hh.html">capability_helper_interface.hh</a></div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ITTSPlayer_html"><div class="ttname"><a href="classNuguClientKit_1_1ITTSPlayer.html">NuguClientKit::ITTSPlayer</a></div><div class="ttdoc">ttsplayer interface</div><div class="ttdef"><b>Definition:</b> media_player_interface.hh:257</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IMediaPlayer_html"><div class="ttname"><a href="classNuguClientKit_1_1IMediaPlayer.html">NuguClientKit::IMediaPlayer</a></div><div class="ttdoc">mediaplayer interface</div><div class="ttdef"><b>Definition:</b> media_player_interface.hh:113</div></div>
@@ -155,12 +155,13 @@ $(document).ready(function(){initNavTree('nugu__core__container__interface_8hh_s
 <div class="ttc" id="aclassNuguClientKit_1_1INuguCoreContainer_html_a6822799b6ef54efd22577ec1ebd8c249"><div class="ttname"><a href="classNuguClientKit_1_1INuguCoreContainer.html#a6822799b6ef54efd22577ec1ebd8c249">NuguClientKit::INuguCoreContainer::createTTSPlayer</a></div><div class="ttdeci">virtual ITTSPlayer * createTTSPlayer()=0</div><div class="ttdoc">Create TTSPlayer instance.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ISpeechRecognizer_html"><div class="ttname"><a href="classNuguClientKit_1_1ISpeechRecognizer.html">NuguClientKit::ISpeechRecognizer</a></div><div class="ttdoc">SpeechRecognizer interface.</div><div class="ttdef"><b>Definition:</b> speech_recognizer_interface.hh:84</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ICapabilityHelper_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityHelper.html">NuguClientKit::ICapabilityHelper</a></div><div class="ttdoc">CapabilityHelper interface.</div><div class="ttdef"><b>Definition:</b> capability_helper_interface.hh:46</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1INuguCoreContainer_html_afb5319d8108fbab13847f159ff274e33"><div class="ttname"><a href="classNuguClientKit_1_1INuguCoreContainer.html#afb5319d8108fbab13847f159ff274e33">NuguClientKit::INuguCoreContainer::createWakeupHandler</a></div><div class="ttdeci">virtual IWakeupHandler * createWakeupHandler(const WakeupModelFile &amp;model_file)=0</div><div class="ttdoc">Create WakeupHandler instance.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1INuguCoreContainer_html_a6cc4e4815d9b9b23b53d8e3702bbeeda"><div class="ttname"><a href="classNuguClientKit_1_1INuguCoreContainer.html#a6cc4e4815d9b9b23b53d8e3702bbeeda">NuguClientKit::INuguCoreContainer::createNuguTimer</a></div><div class="ttdeci">virtual INuguTimer * createNuguTimer(bool singleShot=false)=0</div><div class="ttdoc">Create NuguTimer instance.</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_261219a980049fd8e6168264a7da95ca.html">clientkit</a></li><li class="navelem"><a class="el" href="nugu__core__container__interface_8hh.html">nugu_core_container_interface.hh</a></li>
-    <li class="footer">Generated on Tue May 25 2021 05:30:27 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Jun 29 2021 05:05:01 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

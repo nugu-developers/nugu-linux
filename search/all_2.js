@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['call_38',['CALL',['../group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698aca3547acb9162b49fb4a6594ed9b3030',1,'NuguCapability::CALL()'],['../group__PlaySyncManagerInterface.html#gga42c294733588594b84ae16137eb054c5ac3755e61202abd74da5885d2e9c9160e',1,'NuguClientKit::Call()']]],
+  ['call_38',['Call',['../group__PlaySyncManagerInterface.html#gga42c294733588594b84ae16137eb054c5ac3755e61202abd74da5885d2e9c9160e',1,'NuguClientKit::Call()'],['../group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698aca3547acb9162b49fb4a6594ed9b3030',1,'NuguCapability::CALL()']]],
   ['can_5fcontrol_39',['can_control',['../classNuguCapability_1_1SpeakerInfo.html#abb9c5ec9b7f9d6aeaf285fe91a16505e',1,'NuguCapability::SpeakerInfo']]],
   ['cancel_40',['cancel',['../classNuguClientKit_1_1IDirectiveSequencer.html#a6e7fb841d186057c4b2e256292672c06',1,'NuguClientKit::IDirectiveSequencer::cancel(const std::string &amp;dialog_id)=0'],['../classNuguClientKit_1_1IDirectiveSequencer.html#a95a0ba5128c7367497a6089dc07fc744',1,'NuguClientKit::IDirectiveSequencer::cancel(const std::string &amp;dialog_id, std::set&lt; std::string &gt; groups)=0']]],
   ['cancel_5fall_41',['cancel_all',['../structNuguClientKit_1_1DirectiveCancelPolicy.html#ae4759a57cdd2edc560e103335b48b8d2',1,'NuguClientKit::DirectiveCancelPolicy']]],
@@ -17,7 +17,7 @@ var searchData=
   ['capabilityfactory_52',['CapabilityFactory',['../classNuguCapability_1_1CapabilityFactory.html',1,'NuguCapability::CapabilityFactory'],['../group__CapabilityFactory.html',1,'(Global Namespace)']]],
   ['capabilityhelperinterface_53',['CapabilityHelperInterface',['../group__CapabilityHelperInterface.html',1,'']]],
   ['capabilityinterface_54',['CapabilityInterface',['../group__CapabilityInterface.html',1,'']]],
-  ['changemodel_55',['changeModel',['../classNuguClientKit_1_1IWakeupHandler.html#aa3d32f85853d19202ec17507afc33c05',1,'NuguClientKit::IWakeupHandler']]],
+  ['changemodel_55',['changeModel',['../classNuguClientKit_1_1IWakeupHandler.html#ab44237672cd041751f94985676bca0a4',1,'NuguClientKit::IWakeupHandler']]],
   ['chips_5finterface_2ehh_56',['chips_interface.hh',['../chips__interface_8hh.html',1,'']]],
   ['chipsinfo_57',['ChipsInfo',['../structNuguCapability_1_1ChipsInfo.html',1,'NuguCapability']]],
   ['chipsinterface_58',['ChipsInterface',['../group__ChipsInterface.html',1,'']]],
@@ -39,11 +39,12 @@ var searchData=
   ['controldirection_74',['ControlDirection',['../group__DisplayInterface.html#ga99d4ad071b8f547cadd4a1852c9ca3f6',1,'NuguCapability']]],
   ['controldisplay_75',['controlDisplay',['../classNuguCapability_1_1IDisplayListener.html#a8710ebdc5e0fc6695e6be1c169d192f0',1,'NuguCapability::IDisplayListener']]],
   ['controltype_76',['ControlType',['../group__DisplayInterface.html#ga28c3d18871d6c4af0e5f53dcd3ac1762',1,'NuguCapability']]],
-  ['core_5fcontainer_77',['core_container',['../classNuguClientKit_1_1Capability.html#adc924045cd58b8367e18581b391eba9f',1,'NuguClientKit::Capability']]],
-  ['create_78',['create',['../structnugu__decoder__driver__ops.html#a8a3fab1c370e9c776f896c9e8e585006',1,'nugu_decoder_driver_ops::create()'],['../structnugu__pcm__driver__ops.html#a664a64a7926091e058f13c0b7acb3751',1,'nugu_pcm_driver_ops::create()'],['../structnugu__player__driver__ops.html#ab1e9c7a681e56b2a4f32ac691bec305f',1,'nugu_player_driver_ops::create()']]],
-  ['createmediaplayer_79',['createMediaPlayer',['../classNuguClientKit_1_1INuguCoreContainer.html#a3830a2a43b4ceff2e002b35aa0420b81',1,'NuguClientKit::INuguCoreContainer']]],
-  ['createnugutimer_80',['createNuguTimer',['../classNuguClientKit_1_1INuguCoreContainer.html#a6cc4e4815d9b9b23b53d8e3702bbeeda',1,'NuguClientKit::INuguCoreContainer']]],
-  ['createspeechrecognizer_81',['createSpeechRecognizer',['../classNuguClientKit_1_1INuguCoreContainer.html#ad9ee8298c16dc85112c769881b217292',1,'NuguClientKit::INuguCoreContainer']]],
-  ['createttsplayer_82',['createTTSPlayer',['../classNuguClientKit_1_1INuguCoreContainer.html#a6822799b6ef54efd22577ec1ebd8c249',1,'NuguClientKit::INuguCoreContainer']]],
-  ['createwakeuphandler_83',['createWakeupHandler',['../classNuguClientKit_1_1INuguCoreContainer.html#afcaf2009b84f60ff1f1ade40632042ee',1,'NuguClientKit::INuguCoreContainer']]]
+  ['converttofocusstate_77',['convertToFocusState',['../group__FocusManagerInterface.html#ga7fa5acd493280fcf74ae877b781d4488',1,'NuguClientKit::IFocusManager']]],
+  ['core_5fcontainer_78',['core_container',['../classNuguClientKit_1_1Capability.html#adc924045cd58b8367e18581b391eba9f',1,'NuguClientKit::Capability']]],
+  ['create_79',['create',['../structnugu__decoder__driver__ops.html#a8a3fab1c370e9c776f896c9e8e585006',1,'nugu_decoder_driver_ops::create()'],['../structnugu__pcm__driver__ops.html#a664a64a7926091e058f13c0b7acb3751',1,'nugu_pcm_driver_ops::create()'],['../structnugu__player__driver__ops.html#ab1e9c7a681e56b2a4f32ac691bec305f',1,'nugu_player_driver_ops::create()']]],
+  ['createmediaplayer_80',['createMediaPlayer',['../classNuguClientKit_1_1INuguCoreContainer.html#a3830a2a43b4ceff2e002b35aa0420b81',1,'NuguClientKit::INuguCoreContainer']]],
+  ['createnugutimer_81',['createNuguTimer',['../classNuguClientKit_1_1INuguCoreContainer.html#a6cc4e4815d9b9b23b53d8e3702bbeeda',1,'NuguClientKit::INuguCoreContainer']]],
+  ['createspeechrecognizer_82',['createSpeechRecognizer',['../classNuguClientKit_1_1INuguCoreContainer.html#ad9ee8298c16dc85112c769881b217292',1,'NuguClientKit::INuguCoreContainer']]],
+  ['createttsplayer_83',['createTTSPlayer',['../classNuguClientKit_1_1INuguCoreContainer.html#a6822799b6ef54efd22577ec1ebd8c249',1,'NuguClientKit::INuguCoreContainer']]],
+  ['createwakeuphandler_84',['createWakeupHandler',['../classNuguClientKit_1_1INuguCoreContainer.html#afb5319d8108fbab13847f159ff274e33',1,'NuguClientKit::INuguCoreContainer']]]
 ];

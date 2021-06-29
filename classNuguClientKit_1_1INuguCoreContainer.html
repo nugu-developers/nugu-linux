@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.2.0</span>
+   &#160;<span id="projectnumber">1.3.0</span>
    </div>
   </td>
  </tr>
@@ -111,9 +111,9 @@ virtual <a class="el" href="classNuguClientKit_1_1IMediaPlayer.html">IMediaPlaye
 virtual <a class="el" href="classNuguClientKit_1_1ITTSPlayer.html">ITTSPlayer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1INuguCoreContainer.html#a6822799b6ef54efd22577ec1ebd8c249">createTTSPlayer</a> ()=0</td></tr>
 <tr class="memdesc:a6822799b6ef54efd22577ec1ebd8c249"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create TTSPlayer instance. <br /></td></tr>
 <tr class="separator:a6822799b6ef54efd22577ec1ebd8c249"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcaf2009b84f60ff1f1ade40632042ee"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classNuguClientKit_1_1IWakeupHandler.html">IWakeupHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1INuguCoreContainer.html#afcaf2009b84f60ff1f1ade40632042ee">createWakeupHandler</a> (const std::string &amp;model_path=&quot;&quot;)=0</td></tr>
-<tr class="memdesc:afcaf2009b84f60ff1f1ade40632042ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create WakeupHandler instance.  <a href="classNuguClientKit_1_1INuguCoreContainer.html#afcaf2009b84f60ff1f1ade40632042ee">More...</a><br /></td></tr>
-<tr class="separator:afcaf2009b84f60ff1f1ade40632042ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb5319d8108fbab13847f159ff274e33"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classNuguClientKit_1_1IWakeupHandler.html">IWakeupHandler</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1INuguCoreContainer.html#afb5319d8108fbab13847f159ff274e33">createWakeupHandler</a> (const <a class="el" href="structNuguClientKit_1_1WakeupModelFile.html">WakeupModelFile</a> &amp;model_file)=0</td></tr>
+<tr class="memdesc:afb5319d8108fbab13847f159ff274e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create WakeupHandler instance.  <a href="classNuguClientKit_1_1INuguCoreContainer.html#afb5319d8108fbab13847f159ff274e33">More...</a><br /></td></tr>
+<tr class="separator:afb5319d8108fbab13847f159ff274e33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3409ffae24076ee474016b45233571ea"><td class="memItemLeft" align="right" valign="top"><a id="a3409ffae24076ee474016b45233571ea"></a>
 virtual <a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">ICapabilityHelper</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1INuguCoreContainer.html#a3409ffae24076ee474016b45233571ea">getCapabilityHelper</a> ()=0</td></tr>
 <tr class="memdesc:a3409ffae24076ee474016b45233571ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get CapabilityHelper instance. <br /></td></tr>
@@ -122,8 +122,8 @@ virtual <a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">ICapab
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>NuguCoreContainer interface. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="afcaf2009b84f60ff1f1ade40632042ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcaf2009b84f60ff1f1ade40632042ee">&#9670;&nbsp;</a></span>createWakeupHandler()</h2>
+<a id="afb5319d8108fbab13847f159ff274e33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb5319d8108fbab13847f159ff274e33">&#9670;&nbsp;</a></span>createWakeupHandler()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -134,8 +134,8 @@ virtual <a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">ICapab
         <tr>
           <td class="memname">virtual <a class="el" href="classNuguClientKit_1_1IWakeupHandler.html">IWakeupHandler</a>* NuguClientKit::INuguCoreContainer::createWakeupHandler </td>
           <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>model_path</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="structNuguClientKit_1_1WakeupModelFile.html">WakeupModelFile</a> &amp;&#160;</td>
+          <td class="paramname"><em>model_file</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -149,7 +149,7 @@ virtual <a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">ICapab
 <p>Create WakeupHandler instance. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramdir">[in]</td><td class="paramname">model_path</td><td>required model file path </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">model_file</td><td><a class="el" href="structNuguClientKit_1_1WakeupModelFile.html" title="Model for holding Wakeup model file info.">WakeupModelFile</a> object </td></tr>
   </table>
   </dd>
 </dl>
@@ -244,7 +244,7 @@ virtual <a class="el" href="classNuguClientKit_1_1ICapabilityHelper.html">ICapab
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1INuguCoreContainer.html">INuguCoreContainer</a></li>
-    <li class="footer">Generated on Tue May 25 2021 05:30:27 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Jun 29 2021 05:05:01 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

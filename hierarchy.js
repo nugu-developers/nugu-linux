@@ -88,5 +88,6 @@ var hierarchy =
     [ "NuguClientKit::Session", "structNuguClientKit_1_1Session.html", null ],
     [ "NuguCapability::SpeakerInfo", "classNuguCapability_1_1SpeakerInfo.html", null ],
     [ "NuguCapability::TextAttribute", "structNuguCapability_1_1TextAttribute.html", null ],
-    [ "NuguCapability::TTSAttribute", "structNuguCapability_1_1TTSAttribute.html", null ]
+    [ "NuguCapability::TTSAttribute", "structNuguCapability_1_1TTSAttribute.html", null ],
+    [ "NuguClientKit::WakeupModelFile", "structNuguClientKit_1_1WakeupModelFile.html", null ]
 ];

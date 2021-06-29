@@ -8,6 +8,7 @@ var classNuguClientKit_1_1IFocusManager =
     [ "stopAllFocus", "group__FocusManagerInterface.html#gadd927685ef65023e45a7291e8ef4cd54", null ],
     [ "stopForegroundFocus", "group__FocusManagerInterface.html#ga503b896522f9271ee8f08a55ba361add", null ],
     [ "getStateString", "group__FocusManagerInterface.html#gaaea80a31df369f5a45126c9b17843d1e", null ],
+    [ "convertToFocusState", "group__FocusManagerInterface.html#ga7fa5acd493280fcf74ae877b781d4488", null ],
     [ "addObserver", "group__FocusManagerInterface.html#gaa4a33e5d89941e07ab5c3d11b092ce3d", null ],
     [ "removeObserver", "group__FocusManagerInterface.html#ga0b2b321ce06f60cbc1074530d5c94d61", null ]
 ];
