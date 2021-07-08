@@ -23,7 +23,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "Display";
-static const char* CAPABILITY_VERSION = "1.7";
+static const char* CAPABILITY_VERSION = "1.8";
 
 DisplayAgent::DisplayAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -65,7 +65,8 @@ DisplayAgent::DisplayAgent()
         "Call3",
         "Timer",
         "Dummy",
-        "CustomTemplate"
+        "CustomTemplate",
+        "TabExtension"
     };
 }
 
@@ -85,6 +86,13 @@ void DisplayAgent::initialize()
 
     for (const auto& template_name : template_names)
         addBlockingPolicy(template_name, { BlockingMedium::AUDIO, true });
+
+    addReferrerEvents("CloseSucceeded", "Close");
+    addReferrerEvents("CloseFailed", "Close");
+    addReferrerEvents("ControlFocusSucceeded", "ControlFocus");
+    addReferrerEvents("ControlFocusFailed", "ControlFocus");
+    addReferrerEvents("ControlScrollSucceeded", "ControlScroll");
+    addReferrerEvents("ControlScrollFailed", "ControlScroll");
 
     initialized = true;
 }
@@ -191,7 +199,7 @@ void DisplayAgent::displayCleared(const std::string& id)
     disp_cur_token = disp_cur_ps_id = "";
 }
 
-void DisplayAgent::elementSelected(const std::string& id, const std::string& item_token)
+void DisplayAgent::elementSelected(const std::string& id, const std::string& item_token, const std::string& postback)
 {
     auto render_info = render_helper->getRenderInfo(id);
 
@@ -203,7 +211,7 @@ void DisplayAgent::elementSelected(const std::string& id, const std::string& ite
     disp_cur_token = render_info->token;
     disp_cur_ps_id = render_info->ps_id;
 
-    sendEventElementSelected(item_token);
+    sendEventElementSelected(item_token, postback);
 }
 
 void DisplayAgent::informControlResult(const std::string& id, ControlType type, ControlDirection direction)
@@ -253,16 +261,21 @@ void DisplayAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void
     render_helper->updateDisplay(extra_datas, playsync_manager->hasNextPlayStack());
 }
 
-void DisplayAgent::sendEventElementSelected(const std::string& item_token)
+void DisplayAgent::sendEventElementSelected(const std::string& item_token, const std::string& postback)
 {
     std::string ename = "ElementSelected";
     std::string payload = "";
     Json::FastWriter writer;
+    Json::Reader reader;
     Json::Value root;
+    Json::Value temp;
 
     root["playServiceId"] = disp_cur_ps_id;
     root["token"] = item_token;
-    // TBD: postback
+
+    if (reader.parse(postback, temp))
+        root["postback"] = temp;
+
     payload = writer.write(root);
 
     sendEvent(ename, capa_helper->makeAllContextInfo(), payload);
