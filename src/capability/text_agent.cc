@@ -220,6 +220,8 @@ void TextAgent::sendEventTextInput(const TextInputParam& text_input_param, bool 
     if (!text_input_param.ps_id.empty())
         root["playServiceId"] = text_input_param.ps_id;
     else if (include_dialog_attribute) {
+        Json::Reader reader;
+        Json::Value temp;
         std::string ps_id = "";
         std::string asr_context = "";
         std::list<std::string> domainTypes;
@@ -230,8 +232,10 @@ void TextAgent::sendEventTextInput(const TextInputParam& text_input_param, bool 
 
         if (ps_id.size())
             root["playServiceId"] = ps_id;
-        if (asr_context.size())
-            root["asrContext"] = asr_context;
+
+        if (reader.parse(asr_context, temp))
+            root["asrContext"] = temp;
+
         if (domainTypes.size()) {
             while (!domainTypes.empty()) {
                 root["domainTypes"].append(domainTypes.front());
