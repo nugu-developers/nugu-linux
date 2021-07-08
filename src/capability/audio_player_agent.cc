@@ -553,7 +553,7 @@ void AudioPlayerAgent::displayCleared(const std::string& id)
     // TODO: integrate with playsync and session manager
 }
 
-void AudioPlayerAgent::elementSelected(const std::string& id, const std::string& item_token)
+void AudioPlayerAgent::elementSelected(const std::string& id, const std::string& item_token, const std::string& postback)
 {
     // ignore
 }

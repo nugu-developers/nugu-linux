@@ -148,8 +148,9 @@ public:
      * @brief The user informs the selected item of the list and reports the token information of the item.
      * @param[in] id display template id
      * @param[in] item_token parsed token from metadata
+     * @param[in] postback postback data if the item is selectable
      */
-    virtual void elementSelected(const std::string& id, const std::string& item_token) = 0;
+    virtual void elementSelected(const std::string& id, const std::string& item_token, const std::string& postback = "") = 0;
 
     /**
      * @brief The user informs the control result

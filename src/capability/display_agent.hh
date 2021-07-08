@@ -42,7 +42,7 @@ public:
 
     void displayRendered(const std::string& id) override;
     void displayCleared(const std::string& id) override;
-    void elementSelected(const std::string& id, const std::string& item_token) override;
+    void elementSelected(const std::string& id, const std::string& item_token, const std::string& postback) override;
     void informControlResult(const std::string& id, ControlType type, ControlDirection direction) override;
     void setListener(IDisplayListener* listener) override;
     void removeListener(IDisplayListener* listener) override;
@@ -53,7 +53,7 @@ public:
     void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override;
 
 private:
-    void sendEventElementSelected(const std::string& item_token);
+    void sendEventElementSelected(const std::string& item_token, const std::string& postback);
     void sendEventCloseSucceeded(const std::string& ps_id);
     void sendEventCloseFailed(const std::string& ps_id);
     void sendEventControlFocusSucceeded(const std::string& ps_id, ControlDirection direction);
