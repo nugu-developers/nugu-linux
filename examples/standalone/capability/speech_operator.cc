@@ -158,11 +158,21 @@ void SpeechOperator::stopWakeup()
 void SpeechOperator::stopListening()
 {
     if (!asr_handler) {
-        msg::error("It's fail to start speech recognition.");
+        msg::error("It's fail to stop speech recognition.");
         return;
     }
 
     asr_handler->stopRecognition();
+}
+
+void SpeechOperator::cancelListening()
+{
+    if (!asr_handler) {
+        msg::error("It's fail to cancel speech recognition.");
+        return;
+    }
+
+    asr_handler->stopRecognition(true);
 }
 
 void SpeechOperator::onWakeupState(WakeupDetectState state, float power_noise, float power_speech)

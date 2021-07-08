@@ -597,15 +597,27 @@ bool DirectiveSequencer::add(NuguDirective* ndir)
     }
 
     const char* name_space = nugu_directive_peek_namespace(ndir);
+    const char* name = nugu_directive_peek_name(ndir);
+
     if (listeners_map.find(name_space) == listeners_map.end()) {
         nugu_error("can't find '%s' capability agent", name_space);
         return false;
     }
 
+    if (last_cancel_dialog_id == nugu_directive_peek_dialog_id(ndir)) {
+        if (g_strcmp0(name_space, "System") == 0
+            && g_strcmp0(name, "NoDirective") == 0) {
+            nugu_info("allow System.NoDirective for canceled dialog");
+        } else {
+            nugu_info("ignore directive %s.%s (canceled dialog_id %s)",
+                name_space, name, last_cancel_dialog_id.c_str());
+            return false;
+        }
+    }
+
     assignPolicy(ndir);
 
-    nugu_info("receive '%s.%s' directive (%s/%s)", name_space,
-        nugu_directive_peek_name(ndir),
+    nugu_info("receive '%s.%s' directive (%s/%s)", name_space, name,
         nugu_directive_get_blocking_medium_string(ndir),
         (nugu_directive_is_blocking(ndir) == 1) ? "Block" : "Non-block");
 
@@ -664,9 +676,10 @@ bool DirectiveSequencer::add(NuguDirective* ndir)
     return true;
 }
 
-bool DirectiveSequencer::cancel(const std::string& dialog_id)
+bool DirectiveSequencer::cancel(const std::string& dialog_id, bool cancel_active_directive)
 {
     nugu_info("cancel all directives for dialog_id(%s)", dialog_id.c_str());
+    last_cancel_dialog_id = dialog_id;
 
     /* remove directive from scheduled list */
     auto new_end = std::remove_if(scheduled_list.begin(), scheduled_list.end(),
@@ -683,13 +696,15 @@ bool DirectiveSequencer::cancel(const std::string& dialog_id)
     });
     pending->dump();
 
-    /* Remove from active list with cancel notify */
-    active->remove(dialog_id, [=](NuguDirective* ndir) {
-        msgid_lookup->remove(nugu_directive_peek_msg_id(ndir));
-        cancelDirective(ndir);
-        nugu_directive_unref(ndir);
-    });
-    active->dump();
+    if (cancel_active_directive) {
+        /* Remove from active list with cancel notify */
+        active->remove(dialog_id, [=](NuguDirective* ndir) {
+            msgid_lookup->remove(nugu_directive_peek_msg_id(ndir));
+            cancelDirective(ndir);
+            nugu_directive_unref(ndir);
+        });
+        active->dump();
+    }
 
     msgid_lookup->dump();
 

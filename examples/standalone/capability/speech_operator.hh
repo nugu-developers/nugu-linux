@@ -34,6 +34,7 @@ public:
     void startListeningWithWakeup();
     void startListening(float noise = 0, float speech = 0, ASRInitiator initiator = ASRInitiator::TAP);
     void stopListeningAndWakeup();
+    void cancelListening();
     bool changeWakeupWord(const WakeupModelFile& model_file, const std::string& wakeup_word);
 
     void onWakeupState(WakeupDetectState state, float power_noise, float power_speech) override;

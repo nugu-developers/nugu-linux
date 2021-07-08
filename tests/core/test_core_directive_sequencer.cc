@@ -1286,8 +1286,9 @@ static void test_sequencer_cancel3(void)
     g_idle_add(
         [](gpointer userdata) -> int {
             struct cancel3_data* data = (struct cancel3_data*)userdata;
+            std::set<std::string> groups = { "Extension.Action" };
 
-            data->seq->cancel("dlg1", { "Extension.Action" });
+            data->seq->cancel("dlg1", groups);
             data->seq->complete(data->speak_dir);
 
             return FALSE;
@@ -1301,9 +1302,10 @@ static void test_sequencer_cancel3(void)
     g_idle_add(
         [](gpointer userdata) -> int {
             struct cancel3_data* data = (struct cancel3_data*)userdata;
+            std::set<std::string> groups = { "Utility.Block" };
 
             /* Cancel the 'msg2' and 'msg4' directives */
-            data->seq->cancel("dlg1", { "Utility.Block" });
+            data->seq->cancel("dlg1", groups);
 
             return FALSE;
         },
