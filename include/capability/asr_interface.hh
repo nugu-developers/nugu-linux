@@ -172,8 +172,9 @@ public:
 
     /**
      * @brief Turn off the microphone and stop speech recognition
+     * @param[in] cancel If true, cancel the directives to be received for current dialog
      */
-    virtual void stopRecognition() = 0;
+    virtual void stopRecognition(bool cancel = false) = 0;
 
     /**
      * @brief Add the Listener object

@@ -131,11 +131,12 @@ public:
      * @brief Cancel all pending directives related to the dialog_id.
      * The canceled directives are freed.
      * @param[in] dialog_id dialog-request-id
+     * @param[in] cancel_active_directive cancel including currently active directives
      * @return result
      * @retval true success
      * @retval false failure
      */
-    virtual bool cancel(const std::string& dialog_id) = 0;
+    virtual bool cancel(const std::string& dialog_id, bool cancel_active_directive = true) = 0;
 
     /**
      * @brief Cancels specific pending directives related to the dialog_id.

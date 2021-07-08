@@ -186,12 +186,17 @@ void ASRAgent::startRecognition(ASRInitiator initiator, AsrRecognizeCallback cal
     asr_cancel = false;
 }
 
-void ASRAgent::stopRecognition()
+void ASRAgent::stopRecognition(bool cancel)
 {
-    nugu_dbg("stopRecognition()");
     focus_manager->releaseFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME);
     focus_manager->releaseFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME);
     asr_cancel = false;
+
+    if (cancel && dialog_id != "") {
+        nugu_info("cancel the dialog %s", dialog_id.c_str());
+        directive_sequencer->cancel(dialog_id, false);
+        dialog_id = "";
+    }
 }
 
 void ASRAgent::preprocessDirective(NuguDirective* ndir)

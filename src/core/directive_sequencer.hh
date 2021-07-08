@@ -45,7 +45,7 @@ public:
     bool addPolicy(const std::string& name_space, const std::string& name, BlockingPolicy policy) override;
     BlockingPolicy getPolicy(const std::string& name_space, const std::string& name) override;
 
-    bool cancel(const std::string& dialog_id) override;
+    bool cancel(const std::string& dialog_id, bool cancel_active_directive = true) override;
     bool cancel(const std::string& dialog_id, std::set<std::string> groups) override;
     bool complete(NuguDirective* ndir) override;
     bool add(NuguDirective* ndir) override;
@@ -82,6 +82,8 @@ private:
      */
     std::vector<NuguDirective*> scheduled_list;
     guint idler_src;
+
+    std::string last_cancel_dialog_id;
 
     void assignPolicy(NuguDirective* ndir);
 

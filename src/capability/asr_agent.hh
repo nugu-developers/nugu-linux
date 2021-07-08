@@ -47,7 +47,7 @@ public:
 
     void startRecognition(float power_noise, float power_speech, ASRInitiator initiator = ASRInitiator::TAP, AsrRecognizeCallback callback = nullptr) override;
     void startRecognition(ASRInitiator initiator = ASRInitiator::TAP, AsrRecognizeCallback callback = nullptr) override;
-    void stopRecognition() override;
+    void stopRecognition(bool cancel = false) override;
 
     void preprocessDirective(NuguDirective* ndir) override;
     void parsingDirective(const char* dname, const char* message) override;

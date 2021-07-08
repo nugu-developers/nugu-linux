@@ -191,6 +191,9 @@ void NuguSDKManager::composeSDKCommands()
         ->add("s", { "stop listening/wakeup", [&](int& flag) {
                         speech_operator->stopListeningAndWakeup();
                     } })
+        ->add("c", { "cancel listening", [&](int& flag) {
+                        speech_operator->cancelListening();
+                    } })
         ->add("t", { "text input", [&](int& flag) {
                         flag = TEXT_INPUT_TYPE_1;
                     } })
