@@ -887,4 +887,9 @@ void DirectiveSequencer::assignPolicy(NuguDirective* ndir)
     nugu_directive_set_blocking_policy(ndir, medium, is_block);
 }
 
+const std::string& DirectiveSequencer::getCanceledDialogId()
+{
+    return last_cancel_dialog_id;
+}
+
 }

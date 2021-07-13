@@ -50,6 +50,8 @@ public:
     bool complete(NuguDirective* ndir) override;
     bool add(NuguDirective* ndir) override;
 
+    const std::string& getCanceledDialogId() override;
+
     using BlockingPolicyMap = std::map<std::string, std::map<std::string, BlockingPolicy>>;
 
 private:

@@ -613,6 +613,11 @@ void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
                 sendEventPlaybackStarted();
         }
         is_paused_by_unfocus = false;
+        if (play_directive_dialog_id == directive_sequencer->getCanceledDialogId()) {
+            nugu_error("stop the play request for canceled dialog_id");
+            cur_player->stop();
+            return;
+        }
         break;
     case MediaPlayerState::PAUSED:
         cur_aplayer_state = AudioPlayerState::PAUSED;
@@ -1051,6 +1056,12 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         return;
     }
 
+    std::string dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
+    if (dialog_id == directive_sequencer->getCanceledDialogId()) {
+        nugu_error("ignore the play request for canceled dialog_id");
+        return;
+    }
+
     audio_item = root["audioItem"];
     if (audio_item.empty()) {
         nugu_error("directive message syntax error");
@@ -1129,7 +1140,6 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     nugu_dbg("= report_delay_time: %d", report_delay_time);
     nugu_dbg("= report_interval_time: %d", report_interval_time);
 
-    std::string dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
     std::string dname = nugu_directive_peek_name(getNuguDirective());
 
     if (new_content) {
