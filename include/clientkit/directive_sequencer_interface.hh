@@ -167,6 +167,12 @@ public:
      * @retval false failure
      */
     virtual bool add(NuguDirective* ndir) = 0;
+
+    /**
+     * @brief Get the last canceled dialog_id
+     * @return dialog_id
+     */
+    virtual const std::string& getCanceledDialogId() = 0;
 };
 
 /**
