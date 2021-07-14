@@ -438,7 +438,9 @@ void TTSAgent::parsingSpeak(const char* message)
     nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE, dialog_id.c_str(),
         nugu_directive_peek_msg_id(speak_dir), NULL);
 
-    if (focus_state == FocusState::FOREGROUND)
+    if (is_stopped_by_explicit)
+        playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
+    else if (focus_state == FocusState::FOREGROUND)
         executeOnForegroundAction();
     else
         focus_manager->requestFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME, this);
