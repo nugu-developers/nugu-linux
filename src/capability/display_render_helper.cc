@@ -15,6 +15,7 @@
  */
 
 #include <sys/time.h>
+#include <stdexcept>
 
 #include "base/nugu_log.h"
 #include "display_render_helper.hh"

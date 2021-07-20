@@ -43,7 +43,8 @@ enum class PlaySyncState {
     None, /**< No State */
     Prepared, /**< agents are prepared for sync */
     Synced, /**< agents are synced */
-    Released /**< agents are released */
+    Released, /**< agents are released */
+    Appending /**< agents are appending to already sync */
 };
 
 /**
