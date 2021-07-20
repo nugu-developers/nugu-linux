@@ -40,21 +40,13 @@
 
 enum request_type {
 	REQUEST_ADD, /**< http2_network_add_request */
-	REQUEST_REMOVE, /**< http2_network_remove_request_sync */
+	REQUEST_REMOVE, /**< http2_network_remove_request */
 	REQUEST_RESUME /**< http2_network_resume_request */
 };
 
 struct request_item {
 	enum request_type type;
 	HTTP2Request *req;
-
-	/*
-	 * When calling curl_easy_cleanup() through http2_request_free(),
-	 * the multi handle is referred to internally, which may cause a
-	 * conflict with curl_multi_remove_handle().
-	 * Therefore, add a lock to wait for curl_multi_remove_handle().
-	 */
-	ThreadSync *sync;
 };
 
 struct _http2_network {
@@ -143,7 +135,7 @@ static void _curl_code_to_result(HTTP2Request *req, CURLcode code)
 }
 
 static struct request_item *
-_request_item_new(enum request_type type, HTTP2Request *req, gboolean is_sync)
+_request_item_new(enum request_type type, HTTP2Request *req)
 {
 	struct request_item *item;
 
@@ -156,20 +148,12 @@ _request_item_new(enum request_type type, HTTP2Request *req, gboolean is_sync)
 	item->type = type;
 	item->req = req;
 
-	if (is_sync)
-		item->sync = thread_sync_new();
-	else
-		item->sync = NULL;
-
 	return item;
 }
 
 static void _request_item_free(struct request_item *item)
 {
 	g_return_if_fail(item != NULL);
-
-	if (item->sync)
-		thread_sync_free(item->sync);
 
 	free(item);
 }
@@ -265,10 +249,7 @@ static void _process_async_queue(HTTP2Network *net)
 			_request_item_free(item);
 		} else if (item->type == REQUEST_REMOVE) {
 			_process_remove(net, item);
-			if (item->sync)
-				thread_sync_signal(item->sync);
-			else
-				_request_item_free(item);
+			_request_item_free(item);
 		} else if (item->type == REQUEST_RESUME) {
 			_process_resume(net, item);
 			_request_item_free(item);
@@ -554,7 +535,7 @@ int http2_network_add_request(HTTP2Network *net, HTTP2Request *req)
 
 	http2_request_set_useragent(req, net->useragent);
 
-	item = _request_item_new(REQUEST_ADD, req, TRUE);
+	item = _request_item_new(REQUEST_ADD, req);
 	if (!item)
 		return -1;
 
@@ -562,36 +543,6 @@ int http2_network_add_request(HTTP2Network *net, HTTP2Request *req)
 
 	g_async_queue_push(net->requests, item);
 	http2_network_wakeup(net);
-
-	return 0;
-}
-
-int http2_network_remove_request_sync(HTTP2Network *net, HTTP2Request *req)
-{
-	struct request_item *item;
-
-	g_return_val_if_fail(net != NULL, -1);
-	g_return_val_if_fail(req != NULL, -1);
-
-	if (thread_sync_check(net->sync_init) == 0) {
-		nugu_error("network is not started");
-		return -1;
-	}
-
-	item = _request_item_new(REQUEST_REMOVE, req, TRUE);
-	if (!item)
-		return -1;
-
-	g_async_queue_push(net->requests, item);
-	http2_network_wakeup(net);
-
-	/* wait for curl_multi_remove_handle() (maximum 5 secs) */
-	if (thread_sync_wait_secs(item->sync, 5) != THREAD_SYNC_RESULT_OK) {
-		nugu_error("http2_network_remove_request_sync() timeout");
-		return -1;
-	}
-
-	_request_item_free(item);
 
 	return 0;
 }
@@ -608,7 +559,7 @@ int http2_network_remove_request(HTTP2Network *net, HTTP2Request *req)
 		return -1;
 	}
 
-	item = _request_item_new(REQUEST_REMOVE, req, FALSE);
+	item = _request_item_new(REQUEST_REMOVE, req);
 	if (!item)
 		return -1;
 
@@ -630,7 +581,7 @@ int http2_network_resume_request(HTTP2Network *net, HTTP2Request *req)
 		return -1;
 	}
 
-	item = _request_item_new(REQUEST_RESUME, req, FALSE);
+	item = _request_item_new(REQUEST_RESUME, req);
 	if (!item)
 		return -1;
 
