@@ -33,7 +33,6 @@ int http2_network_add_request(HTTP2Network *net, HTTP2Request *req);
 int http2_network_resume_request(HTTP2Network *net, HTTP2Request *req);
 
 int http2_network_remove_request(HTTP2Network *net, HTTP2Request *req);
-int http2_network_remove_request_sync(HTTP2Network *net, HTTP2Request *req);
 
 int http2_network_start(HTTP2Network *net);
 int http2_network_wakeup(HTTP2Network *net);
