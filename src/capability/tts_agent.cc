@@ -455,7 +455,6 @@ void TTSAgent::parsingStop(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
-    std::string token;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
