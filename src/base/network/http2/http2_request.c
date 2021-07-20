@@ -36,6 +36,7 @@
 struct _http2_request {
 	CURL *easy;
 	enum http2_result result;
+	int id;
 
 	struct curl_slist *headers;
 	enum http2_request_content_type type;
@@ -322,6 +323,7 @@ HTTP2Request *http2_request_new()
 	}
 
 	req->ref_count = 1;
+	req->id = -1;
 	req->code = -1;
 	req->response_header = nugu_buffer_new(0);
 	req->response_body = nugu_buffer_new(0);
@@ -421,6 +423,22 @@ int http2_request_unref(HTTP2Request *req)
 	http2_request_free(req);
 
 	return 0;
+}
+
+int http2_request_set_id(HTTP2Request *req, int id)
+{
+	g_return_val_if_fail(req != NULL, -1);
+
+	req->id = id;
+
+	return 0;
+}
+
+int http2_request_get_id(HTTP2Request *req)
+{
+	g_return_val_if_fail(req != NULL, -1);
+
+	return req->id;
 }
 
 int http2_request_set_result(HTTP2Request *req, enum http2_result result)

@@ -73,6 +73,9 @@ HTTP2Request *http2_request_new();
 int http2_request_ref(HTTP2Request *req);
 int http2_request_unref(HTTP2Request *req);
 
+int http2_request_set_id(HTTP2Request *req, int id);
+int http2_request_get_id(HTTP2Request *req);
+
 int http2_request_set_result(HTTP2Request *req, enum http2_result result);
 enum http2_result http2_request_get_result(HTTP2Request *req);
 

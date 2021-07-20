@@ -54,6 +54,7 @@ struct _v2_events {
 	gboolean first_data;
 	HTTP2Network *net;
 	enum nugu_event_type type;
+	int req_id;
 };
 
 static void _emit_send_result(int code, HTTP2Request *req)
@@ -244,7 +245,6 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net,
 {
 	char *tmp;
 	struct _v2_events *event;
-	int ret;
 	unsigned char buf[8];
 	char boundary[34] = "nugusdk.boundary.";
 	DirParser *parser;
@@ -315,9 +315,10 @@ V2Events *v2_events_new(const char *host, HTTP2Network *net,
 	http2_request_set_finish_callback(event->req, _on_finish, NULL);
 	http2_request_set_destroy_callback(event->req, _on_destroy, parser);
 
-	ret = http2_network_add_request(event->net, event->req);
-	if (ret < 0) {
-		nugu_error("http2_network_add_request() failed: %d", ret);
+	event->req_id = http2_network_add_request(event->net, event->req);
+	if (event->req_id < 0) {
+		nugu_error("http2_network_add_request() failed: %d",
+			   event->req_id);
 		http2_request_unref(event->req);
 		event->req = NULL;
 		v2_events_free(event);
@@ -389,7 +390,7 @@ int v2_events_send_json(V2Events *event, const char *data, size_t length)
 		http2_request_close_send_data(event->req);
 
 	http2_request_unlock_send_data(event->req);
-	http2_network_resume_request(event->net, event->req);
+	http2_network_resume_request(event->net, event->req_id);
 
 	return 0;
 }
@@ -439,7 +440,7 @@ int v2_events_send_binary(V2Events *event, const char *msgid, int seq,
 	}
 
 	http2_request_unlock_send_data(event->req);
-	http2_network_resume_request(event->net, event->req);
+	http2_network_resume_request(event->net, event->req_id);
 
 	return 0;
 }
@@ -467,7 +468,7 @@ int v2_events_send_done(V2Events *event)
 
 	http2_request_close_send_data(event->req);
 	http2_request_unlock_send_data(event->req);
-	http2_network_resume_request(event->net, event->req);
+	http2_network_resume_request(event->net, event->req_id);
 
 	return 0;
 }
