@@ -19,6 +19,7 @@
 
 #include <functional>
 #include <memory>
+#include <set>
 #include <vector>
 
 #include <base/nugu_directive.h>
@@ -72,16 +73,17 @@ public:
     void onStackRemoved(const std::string& ps_id) override;
 
 private:
+    void appendSync(const std::string& ps_id, const NuguDirective* ndir);
     void updateExtraData(const std::string& ps_id, const std::string& requester, void* extra_data) noexcept;
-    void notifyStateChanged(const std::string& ps_id, PlaySyncState state);
+    void notifyStateChanged(const std::string& ps_id, PlaySyncState state, const std::string& requester = "");
     void notifyStackChanged(std::pair<std::string, std::string>&& ps_ids);
     bool isConditionToSyncAction(const std::string& ps_id, const std::string& requester, PlaySyncState state);
     void rawReleaseSync(const std::string& ps_id, const std::string& requester, PlayStackRemoveMode stack_remove_mode);
     void clearContainer();
     void clearPostPonedRelease();
 
-    const std::vector<std::string> DEFAULT_SYNC_CAPABILITY_LIST { "TTS", "AudioPlayer", "Display" };
-    std::vector<std::string> sync_capability_list;
+    const std::set<std::string> DEFAULT_SYNC_CAPABILITY_LIST { "TTS", "AudioPlayer", "Display" };
+    std::set<std::string> sync_capability_list;
 
     std::unique_ptr<PlayStackManager> playstack_manager = nullptr;
     InteractionControlManager* interaction_control_manager = nullptr;

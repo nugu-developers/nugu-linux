@@ -211,6 +211,8 @@ typedef struct {
     NuguDirective* ndir_media;
     NuguDirective* ndir_expect_speech;
     NuguDirective* ndir_alerts;
+    NuguDirective* ndir_disp_expect_speech;
+
 } TestFixture;
 
 static void setup(TestFixture* fixture, gconstpointer user_data)
@@ -242,6 +244,8 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
         "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\"] }");
     fixture->ndir_alerts = createDirective("Alerts", "SetAlert",
         "{ \"directives\": [\"Alerts.SetAlert\"] }");
+    fixture->ndir_disp_expect_speech = createDirective("Display", "test",
+        "{ \"directives\": [\"Display.FullText1\", \"TTS.Speak\", \"ASR.ExpectSpeech\"] }");
 }
 
 static void teardown(TestFixture* fixture, gconstpointer user_data)
@@ -250,6 +254,7 @@ static void teardown(TestFixture* fixture, gconstpointer user_data)
     nugu_directive_unref(fixture->ndir_media);
     nugu_directive_unref(fixture->ndir_expect_speech);
     nugu_directive_unref(fixture->ndir_alerts);
+    nugu_directive_unref(fixture->ndir_disp_expect_speech);
 
     fixture->playsync_manager_listener.reset();
     fixture->playsync_manager_listener_snd.reset();
@@ -371,6 +376,53 @@ static void test_playsync_manager_start_sync(TestFixture* fixture, gconstpointer
     fixture->playsync_manager->startSync("ps_id_1", "Display");
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
     g_assert(fixture->playsync_manager_listener->getSameStateCallCount() == 0);
+}
+
+static void test_playsync_manager_append_sync(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& playstacks = fixture->playsync_manager->getPlayStacks();
+    fixture->playsync_manager->addListener("Display", fixture->playsync_manager_listener_snd.get());
+
+    /***************************************************************************
+     * 1) W / "call me"
+     * 2) receive [TTS.Speak, ASR.ExpectSpeech, Session.Set] directives
+     **************************************************************************/
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_expect_speech);
+    const auto& playsync_container = playstacks.at("ps_id_1");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Prepared);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Prepared);
+
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+
+    /***************************************************************************
+     * 3) DM / "contact 1"
+     * 4) receive [PhoneCall.SendCandidates] directive
+     * 5) send [PhoneCall.CandidatesListed] event
+     * 6) receive [Display.FullText1, TTS.Speak, ASR.ExpectSpeech] directives
+     **************************************************************************/
+    auto handle_display([&](PlaySyncState state, DummyExtraInfo&& extra_info) {
+        fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_disp_expect_speech);
+        g_assert(playsync_container.at("Display").first == state);
+
+        fixture->playsync_manager->startSync("ps_id_1", "Display", &extra_info);
+        g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
+        g_assert(fixture->playsync_manager_listener_snd->getSyncState("ps_id_1") == PlaySyncState::Synced);
+        g_assert(fixture->playsync_manager_listener->getSameStateCallCount() == 0);
+
+        auto listener_extra_info(fixture->playsync_manager_listener_snd->getExtraData());
+        g_assert(reinterpret_cast<DummyExtraInfo*>(listener_extra_info)->id == extra_info.id);
+    });
+
+    handle_display(PlaySyncState::Appending, { "100" });
+    handle_display(PlaySyncState::Synced, { "200" }); // display already synced
+
+    // release sync
+    fixture->playsync_manager->releaseSyncImmediately("ps_id_1", "TTS");
+    g_assert(playstacks.find("ps_id_1") == playstacks.cend());
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+    g_assert(fixture->playsync_manager_listener_snd->getSyncState("ps_id_1") == PlaySyncState::Released);
 }
 
 static void sub_test_playsync_manager_preset_sync(TestFixture* fixture, std::string&& ps_id)
@@ -813,6 +865,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlaySyncManager/listener", test_playsync_manager_listener);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/prepareSync", test_playsync_manager_prepare_sync);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/startSync", test_playsync_manager_start_sync);
+    G_TEST_ADD_FUNC("/core/PlaySyncManager/appendSync", test_playsync_manager_append_sync);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/cancelSync", test_playsync_manager_cancel_sync);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/releaseSyncImmediately", test_playsync_manager_release_sync_immediately);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/releaseSync", test_playsync_manager_release_sync);

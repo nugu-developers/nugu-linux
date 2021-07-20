@@ -63,7 +63,7 @@ void PlaySyncManager::setInteractionControlManager(InteractionControlManager* in
 void PlaySyncManager::registerCapabilityForSync(const std::string& capability_name)
 {
     if (!capability_name.empty())
-        sync_capability_list.emplace_back(capability_name);
+        sync_capability_list.emplace(capability_name);
 }
 
 void PlaySyncManager::addListener(const std::string& requester, IPlaySyncManagerListener* listener)
@@ -98,6 +98,8 @@ void PlaySyncManager::prepareSync(const std::string& ps_id, NuguDirective* ndir)
 
     if (!playstack_manager->add(ps_id, ndir)) {
         nugu_warn("The condition is not satisfied to prepare sync.");
+
+        appendSync(ps_id, ndir);
         return;
     }
 
@@ -129,14 +131,20 @@ void PlaySyncManager::startSync(const std::string& ps_id, const std::string& req
         return;
 
     auto& playsync_container = playstack_map.at(ps_id);
-    playsync_container[requester] = std::make_pair(PlaySyncState::Synced, extra_data);
+    bool is_appending = playsync_container[requester].first == PlaySyncState::Appending;
 
-    // It notify synced state only if all elements are synced.
-    for (const auto& element : playsync_container)
-        if (element.second.first != PlaySyncState::Synced)
-            return;
+    playsync_container[requester] = { PlaySyncState::Synced, extra_data };
 
-    notifyStateChanged(ps_id, PlaySyncState::Synced);
+    if (is_appending) {
+        notifyStateChanged(ps_id, PlaySyncState::Synced, requester);
+    } else {
+        // It notify synced state only if all elements are synced.
+        for (const auto& element : playsync_container)
+            if (element.second.first != PlaySyncState::Synced)
+                return;
+
+        notifyStateChanged(ps_id, PlaySyncState::Synced);
+    }
 }
 
 void PlaySyncManager::cancelSync(const std::string& ps_id, const std::string& requester)
@@ -259,6 +267,22 @@ void PlaySyncManager::onStackRemoved(const std::string& ps_id)
     playstack_map.erase(ps_id);
 }
 
+void PlaySyncManager::appendSync(const std::string& ps_id, const NuguDirective* ndir)
+{
+    if (!ndir)
+        return;
+
+    try {
+        auto& playsync_container(playstack_map.at(ps_id));
+        std::string requester = nugu_directive_peek_namespace(ndir);
+
+        if (sync_capability_list.find(requester) != sync_capability_list.cend())
+            playsync_container.emplace(requester, std::make_pair(PlaySyncState::Appending, nullptr));
+    } catch (std::out_of_range& exception) {
+        // skip silently
+    }
+}
+
 void PlaySyncManager::updateExtraData(const std::string& ps_id, const std::string& requester, void* extra_data) noexcept
 {
     try {
@@ -273,21 +297,24 @@ void PlaySyncManager::updateExtraData(const std::string& ps_id, const std::strin
     }
 }
 
-void PlaySyncManager::notifyStateChanged(const std::string& ps_id, PlaySyncState state)
+void PlaySyncManager::notifyStateChanged(const std::string& ps_id, PlaySyncState state, const std::string& requester)
 {
-    if (playstack_map.find(ps_id) == playstack_map.cend()) {
-        nugu_warn("The PlaySyncContainer is not exist.");
-        return;
-    }
+    try {
+        const auto& playsync_container = playstack_map.at(ps_id);
 
-    const auto& playsync_container = playstack_map.at(ps_id);
-
-    for (const auto& element : playsync_container) {
-        try {
-            listener_map.at(element.first)->onSyncState(ps_id, state, element.second.second);
-        } catch (std::out_of_range& exception) {
-            nugu_warn("The requester is not exist.");
+        if (!requester.empty()) {
+            listener_map.at(requester)->onSyncState(ps_id, state, playsync_container.at(requester).second);
+        } else {
+            for (const auto& element : playsync_container) {
+                try {
+                    listener_map.at(element.first)->onSyncState(ps_id, state, element.second.second);
+                } catch (std::out_of_range& exception) {
+                    // skip silently
+                }
+            }
         }
+    } catch (std::out_of_range& exception) {
+        nugu_warn("The PlaySyncContainer or requester's element not exist.");
     }
 }
 
