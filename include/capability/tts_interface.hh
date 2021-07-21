@@ -41,6 +41,7 @@ using namespace NuguClientKit;
  */
 enum class TTSState {
     TTS_SPEECH_START, /**< Status starting speech in TTS */
+    TTS_SPEECH_STOP, /**< Status stopping speech in TTS */
     TTS_SPEECH_FINISH /**< Status finishing speech in TTS */
 };
 
