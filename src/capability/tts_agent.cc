@@ -353,6 +353,9 @@ void TTSAgent::sendEventSpeechStopped(const std::string& token, EventResultCallb
     nugu_prof_mark_data(NUGU_PROF_TYPE_TTS_STOPPED,
         event.getDialogRequestId().c_str(),
         event.getMessageId().c_str(), NULL);
+
+    for (const auto& tts_listener : tts_listeners)
+        tts_listener->onTTSState(TTSState::TTS_SPEECH_STOP, dialog_id);
 }
 
 std::string TTSAgent::sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id, EventResultCallback cb)
