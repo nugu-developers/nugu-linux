@@ -54,11 +54,14 @@ public:
     void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data) override;
 
 private:
+    using SpeechStateEventParam = struct _SpeechStateEventParam;
+
     // send event
     void sendEventCommon(CapabilityEvent* event, const std::string& token, EventResultCallback cb = nullptr);
-    void sendEventSpeechStarted(const std::string& token, EventResultCallback cb = nullptr);
-    void sendEventSpeechFinished(const std::string& token, EventResultCallback cb = nullptr);
-    void sendEventSpeechStopped(const std::string& token, EventResultCallback cb = nullptr);
+    void sendEventSpeechStarted(EventResultCallback cb = nullptr);
+    void sendEventSpeechStopped(EventResultCallback cb = nullptr);
+    void sendEventSpeechFinished(EventResultCallback cb = nullptr);
+    void sendEventSpeechState(SpeechStateEventParam&& event_param, EventResultCallback&& cb = nullptr);
     std::string sendEventSpeechPlay(const std::string& token, const std::string& text, const std::string& play_service_id = "", EventResultCallback cb = nullptr);
 
     // parsing directive
