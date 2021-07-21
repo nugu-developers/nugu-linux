@@ -42,6 +42,7 @@ enum class NetworkStatus {
 };
 
 enum class NetworkError {
+    FAILED, /**< Failed to connect to all servers */
     TOKEN_ERROR, /**< Occurs when the issued token expires */
     UNKNOWN /**< Unknown */
 };

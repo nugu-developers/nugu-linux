@@ -58,6 +58,12 @@ static void _status(NuguNetworkStatus status, void* userdata)
         for (const auto& listener : listeners) {
             listener->onStatusChanged(NetworkStatus::CONNECTED);
         }
+    } else if (status == NUGU_NETWORK_FAILED) {
+        nugu_error("Network failed");
+
+        for (const auto& listener : listeners) {
+            listener->onError(NetworkError::FAILED);
+        }
     } else if (status == NUGU_NETWORK_TOKEN_ERROR) {
         nugu_error("Network token error");
 

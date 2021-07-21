@@ -238,6 +238,10 @@ public:
     void onError(NetworkError error)
     {
         switch (error) {
+        case NetworkError::FAILED:
+            nugu_error("Network failed");
+            g_main_loop_quit(loop);
+            break;
         case NetworkError::TOKEN_ERROR:
             nugu_error("Token error");
             g_main_loop_quit(loop);
