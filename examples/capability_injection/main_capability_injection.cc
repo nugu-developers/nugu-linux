@@ -50,6 +50,9 @@ public:
     void onError(NetworkError error)
     {
         switch (error) {
+        case NetworkError::FAILED:
+            std::cout << "Network failed !" << std::endl;
+            break;
         case NetworkError::TOKEN_ERROR:
             std::cout << "Token error !" << std::endl;
             break;

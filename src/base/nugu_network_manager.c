@@ -68,6 +68,7 @@ static const char * const _debug_status_strmap[] = {
 	[NUGU_NETWORK_CONNECTING] = "NUGU_NETWORK_CONNECTING",
 	[NUGU_NETWORK_READY] = "NUGU_NETWORK_READY",
 	[NUGU_NETWORK_CONNECTED] = "NUGU_NETWORK_CONNECTED",
+	[NUGU_NETWORK_FAILED] = "NUGU_NETWORK_FAILED",
 	[NUGU_NETWORK_TOKEN_ERROR] = "NUGU_NETWORK_TOKEN_ERROR",
 };
 
@@ -249,13 +250,6 @@ static void on_event_response(enum nugu_equeue_type type, void *data,
 		nugu_error("event response failed: event msg_id=%s",
 			   item->event_msg_id);
 
-	if (nm->event_response_callback == NULL)
-		return;
-
-	nm->event_response_callback(item->success, item->event_msg_id,
-				    item->event_dialog_id, item->json,
-				    nm->event_response_callback_userdata);
-
 	if (nm->connection_type == NUGU_NETWORK_CONNECTION_ONDEMAND) {
 		if (nm->src_ondemand_timeout > 0)
 			g_source_remove(nm->src_ondemand_timeout);
@@ -264,6 +258,13 @@ static void on_event_response(enum nugu_equeue_type type, void *data,
 			g_timeout_add_seconds(ONDEMAND_CONNECTION_TIMEOUT_SECS,
 					      _on_ondemand_timeout, nm);
 	}
+
+	if (nm->event_response_callback == NULL)
+		return;
+
+	nm->event_response_callback(item->success, item->event_msg_id,
+				    item->event_dialog_id, item->json,
+				    nm->event_response_callback_userdata);
 }
 
 static void _update_status(NetworkManager *nm, NuguNetworkStatus new_status)
@@ -505,6 +506,7 @@ static void _try_connect_to_servers(NetworkManager *nm)
 
 	nugu_error("fail to connect all servers");
 	nm->serverinfo = NULL;
+	_update_status(nm, NUGU_NETWORK_FAILED);
 	_update_status(nm, NUGU_NETWORK_DISCONNECTED);
 }
 

@@ -483,6 +483,9 @@ void NuguSDKManager::onStatusChanged(NetworkStatus status)
 void NuguSDKManager::onError(NetworkError error)
 {
     switch (error) {
+    case NetworkError::FAILED:
+        msg_error("Network error [FAILED].");
+        break;
     case NetworkError::TOKEN_ERROR:
         msg_error("Network error [TOKEN_ERROR].");
         break;

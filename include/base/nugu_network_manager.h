@@ -63,6 +63,7 @@ typedef enum nugu_network_status {
 	NUGU_NETWORK_CONNECTING, /**< Connection in progress */
 	NUGU_NETWORK_READY, /**< Network ready for ondemand connection type */
 	NUGU_NETWORK_CONNECTED, /**< Network connected */
+	NUGU_NETWORK_FAILED, /**< Failed to connect to all servers */
 	NUGU_NETWORK_TOKEN_ERROR /**< Token error */
 } NuguNetworkStatus;
 
