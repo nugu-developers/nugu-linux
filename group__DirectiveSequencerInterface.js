@@ -10,10 +10,11 @@ var group__DirectiveSequencerInterface =
       [ "removeListener", "classNuguClientKit_1_1IDirectiveSequencer.html#a9ff3b3c00fe65bb5e0ca211c5eaa8388", null ],
       [ "addPolicy", "classNuguClientKit_1_1IDirectiveSequencer.html#a58e146063347cf40e2dac38e728674af", null ],
       [ "getPolicy", "classNuguClientKit_1_1IDirectiveSequencer.html#a8dd736f2a022b3c51766beda1cc1d209", null ],
-      [ "cancel", "classNuguClientKit_1_1IDirectiveSequencer.html#a6e7fb841d186057c4b2e256292672c06", null ],
+      [ "cancel", "classNuguClientKit_1_1IDirectiveSequencer.html#aebee90a42d7ab6dd9759633f5a43b769", null ],
       [ "cancel", "classNuguClientKit_1_1IDirectiveSequencer.html#a95a0ba5128c7367497a6089dc07fc744", null ],
       [ "complete", "classNuguClientKit_1_1IDirectiveSequencer.html#a90ea647f44a1c899d3afd170eed5dbef", null ],
-      [ "add", "classNuguClientKit_1_1IDirectiveSequencer.html#aeb41bc841fce2f6e7d0c581408ae3afc", null ]
+      [ "add", "classNuguClientKit_1_1IDirectiveSequencer.html#aeb41bc841fce2f6e7d0c581408ae3afc", null ],
+      [ "getCanceledDialogId", "classNuguClientKit_1_1IDirectiveSequencer.html#a7a91d062c2d97f16d3d06ec2440370d4", null ]
     ] ],
     [ "IDirectiveSequencerListener", "classNuguClientKit_1_1IDirectiveSequencerListener.html", [
       [ "~IDirectiveSequencerListener", "classNuguClientKit_1_1IDirectiveSequencerListener.html#a868233c6a4f87c6d0eb96886d96b955b", null ],

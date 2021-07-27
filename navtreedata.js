@@ -58,14 +58,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classNuguClientKit_1_1Capability.html#a55e1b7727b78c2e7cf57c2cebc6f195a",
-"classNuguClientKit_1_1ISessionManager.html#a626713cfb36793f7d7b4499c64e55946",
-"group__FocusManagerInterface.html#ga7fa5acd493280fcf74ae877b781d4488",
-"group__NuguDecoder.html#ga1031f0edcad9eb89bfe037997b9fd67b",
-"group__NuguPcm.html#gafcb165da3bd693c540f4585548dcb857",
-"group__Profiling.html#ga67b444ebdce684b4b878b02aaffc5268",
-"group__nugu__network.html#gac8a5a41821ad77b0e964dd79a218ac41",
-"structNuguCapability_1_1ChipsInfo.html#a281231d7a29dcb053726509b52b8d289"
+"classNuguClientKit_1_1Capability.html#a517562d581457af86a33bb304ccdc0e4",
+"classNuguClientKit_1_1ISessionManager.html#a18a12639f138f2490ce3a730ce8a1ff6",
+"group__FocusManagerInterface.html#ga75aa24467b127e0c8a2a305332e317c2",
+"group__NuguClient.html",
+"group__NuguPcm.html#gaf6f874df1d927d3871de1d52cad7c7b6",
+"group__Profiling.html#ga4de161c334fe307b410c00295446733f",
+"group__nugu__network.html#gac814994ac3d63c81b6c7d2ec6eac6e19",
+"speech__recognizer__interface_8hh.html#ggaae383c251ee0fa6e96e4c53b9f5d9a3aac0ff938e396e72c225bd66562b80a77e"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

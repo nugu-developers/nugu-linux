@@ -26,6 +26,7 @@ var group__nugu__network =
       [ "NUGU_NETWORK_CONNECTING", "group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a8a1871ebd99b8eb45a62e720c3d0e260", null ],
       [ "NUGU_NETWORK_READY", "group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a419e61fe56c227ab24f87edd217cbe49", null ],
       [ "NUGU_NETWORK_CONNECTED", "group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a9b9a320a23cfa4c1882c18f3ad153e1f", null ],
+      [ "NUGU_NETWORK_FAILED", "group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a54a7d682872fe44b1e124e5e3d434de5", null ],
       [ "NUGU_NETWORK_TOKEN_ERROR", "group__nugu__network.html#ggab3b96f22ffa5e42cc058222a04a129c4a6daa9efc152da3f99d19f913c7dda2ce", null ]
     ] ],
     [ "nugu_network_connection_type", "group__nugu__network.html#gaa38b1ee160b9d56753141579a5b1b990", [

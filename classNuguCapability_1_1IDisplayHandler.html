@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.3.0</span>
+   &#160;<span id="projectnumber">1.4.0</span>
    </div>
   </td>
  </tr>
@@ -126,9 +126,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a86da394cf59bf45ea29e4c04bfe3ec20"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayHandler.html#a86da394cf59bf45ea29e4c04bfe3ec20">displayRendered</a> (const std::string &amp;id)=0</td></tr>
 <tr class="memdesc:a86da394cf59bf45ea29e4c04bfe3ec20"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user reports that the display was rendered.  <a href="classNuguCapability_1_1IDisplayHandler.html#a86da394cf59bf45ea29e4c04bfe3ec20">More...</a><br /></td></tr>
 <tr class="separator:a86da394cf59bf45ea29e4c04bfe3ec20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a21d3eebb7d8296ecd315b7f5622e21"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayHandler.html#a7a21d3eebb7d8296ecd315b7f5622e21">elementSelected</a> (const std::string &amp;id, const std::string &amp;item_token)=0</td></tr>
-<tr class="memdesc:a7a21d3eebb7d8296ecd315b7f5622e21"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user informs the selected item of the list and reports the token information of the item.  <a href="classNuguCapability_1_1IDisplayHandler.html#a7a21d3eebb7d8296ecd315b7f5622e21">More...</a><br /></td></tr>
-<tr class="separator:a7a21d3eebb7d8296ecd315b7f5622e21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81d397602366b5f872a8aa9f5a61b1c5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayHandler.html#a81d397602366b5f872a8aa9f5a61b1c5">elementSelected</a> (const std::string &amp;id, const std::string &amp;item_token, const std::string &amp;postback=&quot;&quot;)=0</td></tr>
+<tr class="memdesc:a81d397602366b5f872a8aa9f5a61b1c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user informs the selected item of the list and reports the token information of the item.  <a href="classNuguCapability_1_1IDisplayHandler.html#a81d397602366b5f872a8aa9f5a61b1c5">More...</a><br /></td></tr>
+<tr class="separator:a81d397602366b5f872a8aa9f5a61b1c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00e91ae7940c1ac06ff15bc5509320b2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayHandler.html#a00e91ae7940c1ac06ff15bc5509320b2">informControlResult</a> (const std::string &amp;id, <a class="el" href="group__DisplayInterface.html#ga28c3d18871d6c4af0e5f53dcd3ac1762">ControlType</a> type, <a class="el" href="group__DisplayInterface.html#ga99d4ad071b8f547cadd4a1852c9ca3f6">ControlDirection</a> direction)=0</td></tr>
 <tr class="memdesc:a00e91ae7940c1ac06ff15bc5509320b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user informs the control result.  <a href="classNuguCapability_1_1IDisplayHandler.html#a00e91ae7940c1ac06ff15bc5509320b2">More...</a><br /></td></tr>
 <tr class="separator:a00e91ae7940c1ac06ff15bc5509320b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -301,8 +301,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a7a21d3eebb7d8296ecd315b7f5622e21"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a21d3eebb7d8296ecd315b7f5622e21">&#9670;&nbsp;</a></span>elementSelected()</h2>
+<a id="a81d397602366b5f872a8aa9f5a61b1c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81d397602366b5f872a8aa9f5a61b1c5">&#9670;&nbsp;</a></span>elementSelected()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -320,7 +320,13 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>item_token</em>&#160;</td>
+          <td class="paramname"><em>item_token</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>postback</em> = <code>&quot;&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -340,6 +346,7 @@ Additional Inherited Members</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>display template id </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">item_token</td><td>parsed token from metadata </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">postback</td><td>postback data if the item is selectable </td></tr>
   </table>
   </dd>
 </dl>
@@ -475,7 +482,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguCapability</b></li><li class="navelem"><a class="el" href="classNuguCapability_1_1IDisplayHandler.html">IDisplayHandler</a></li>
-    <li class="footer">Generated on Tue Jun 29 2021 05:05:01 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Jul 27 2021 05:39:28 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.3.0</span>
+   &#160;<span id="projectnumber">1.4.0</span>
    </div>
   </td>
  </tr>
@@ -119,11 +119,13 @@ $(document).ready(function(){initNavTree('routine__interface_8hh_source.html',''
 <div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IRoutineHandler.html">   50</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1IRoutineHandler.html">IRoutineHandler</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a> {</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IRoutineHandler.html">IRoutineHandler</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;} <span class="comment">// NuguCapability</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_ROUTINE_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> startRoutine(<span class="keyword">const</span> std::string&amp; dialog_id, <span class="keyword">const</span> std::string&amp; data) = 0;</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;} <span class="comment">// NuguCapability</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_ROUTINE_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassNuguCapability_1_1IRoutineHandler_html"><div class="ttname"><a href="classNuguCapability_1_1IRoutineHandler.html">NuguCapability::IRoutineHandler</a></div><div class="ttdoc">routine handler interface</div><div class="ttdef"><b>Definition:</b> routine_interface.hh:50</div></div>
@@ -135,7 +137,7 @@ $(document).ready(function(){initNavTree('routine__interface_8hh_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fe91053431442a18fd8b50c6b5c5d672.html">capability</a></li><li class="navelem"><a class="el" href="routine__interface_8hh.html">routine_interface.hh</a></li>
-    <li class="footer">Generated on Tue Jun 29 2021 05:05:01 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Jul 27 2021 05:39:28 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

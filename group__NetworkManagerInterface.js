@@ -26,6 +26,7 @@ var group__NetworkManagerInterface =
       [ "CONNECTED", "group__NetworkManagerInterface.html#gga385a69cab88c2d456247e254424bf809aa5afd6edd5336d91316964e493936858", null ]
     ] ],
     [ "NetworkError", "group__NetworkManagerInterface.html#ga6aff79e2435c590ea44de8c43754e015", [
+      [ "FAILED", "group__NetworkManagerInterface.html#gga6aff79e2435c590ea44de8c43754e015ab9e14d9b2886bcff408b85aefa780419", null ],
       [ "TOKEN_ERROR", "group__NetworkManagerInterface.html#gga6aff79e2435c590ea44de8c43754e015ade5fb169ea8d8790ec07c79a01246313", null ],
       [ "UNKNOWN", "group__NetworkManagerInterface.html#gga6aff79e2435c590ea44de8c43754e015a696b031073e74bf2cb98e5ef201d4aa3", null ]
     ] ]

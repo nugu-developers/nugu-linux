@@ -35,7 +35,8 @@ var group__PlaySyncManagerInterface =
       [ "None", "group__PlaySyncManagerInterface.html#gga5d9f5e0329e5706191b9a4682615d4d0a6adf97f83acf6453d4a6a4b1070f3754", null ],
       [ "Prepared", "group__PlaySyncManagerInterface.html#gga5d9f5e0329e5706191b9a4682615d4d0a4f8ebbe84c83c694e33dfc679cf40ddb", null ],
       [ "Synced", "group__PlaySyncManagerInterface.html#gga5d9f5e0329e5706191b9a4682615d4d0a5befab0dde764b6dd8b24a34dc30afa7", null ],
-      [ "Released", "group__PlaySyncManagerInterface.html#gga5d9f5e0329e5706191b9a4682615d4d0aea1e34304a5d8ffa7c9b0ed8ede4ef1a", null ]
+      [ "Released", "group__PlaySyncManagerInterface.html#gga5d9f5e0329e5706191b9a4682615d4d0aea1e34304a5d8ffa7c9b0ed8ede4ef1a", null ],
+      [ "Appending", "group__PlaySyncManagerInterface.html#gga5d9f5e0329e5706191b9a4682615d4d0a40833ea8a03550d44b5c703f72fd24a7", null ]
     ] ],
     [ "PlayStackActivity", "group__PlaySyncManagerInterface.html#ga42c294733588594b84ae16137eb054c5", [
       [ "None", "group__PlaySyncManagerInterface.html#gga42c294733588594b84ae16137eb054c5a6adf97f83acf6453d4a6a4b1070f3754", null ],
