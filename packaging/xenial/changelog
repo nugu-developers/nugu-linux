@@ -1,3 +1,16 @@
+nugu (1.4.0ubuntu1~xenial) xenial; urgency=medium
+
+  * Fixed TextAgent
+  * Added ASR stopRecognition cancel option
+  * Applied Display interface v1.8
+  * Updated RoutineAgent
+  * Updated TTSAgent
+  * Updated PlaySyncManager
+  * Updated http2 network/request
+  * Updated nugu_network_manager
+
+ -- nugulinux <nugulinux@gmail.com>  Tue, 27 Jul 2021 14:30:00 +0900
+
 nugu (1.3.0ubuntu1~xenial) xenial; urgency=medium
 
   * Fixed AudioPlayer suspend/restore
