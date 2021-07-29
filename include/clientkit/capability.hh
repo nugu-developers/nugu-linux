@@ -332,9 +332,10 @@ public:
 
     /**
      * @brief Set directive cancel policy
+     * @param[in] cancel_previous_dialog whether canceling previous dialog or not
      * @param[in] cancel_policy policy object
      */
-    void setCancelPolicy(DirectiveCancelPolicy&& cancel_policy) override;
+    void setCancelPolicy(bool cancel_previous_dialog, DirectiveCancelPolicy&& cancel_policy = { true }) override;
 
     /**
      * @brief Process command from other objects.

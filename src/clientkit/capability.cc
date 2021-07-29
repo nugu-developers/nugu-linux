@@ -30,6 +30,7 @@ struct Capability::Impl {
     NuguDirective* cur_ndir = nullptr;
     NuguDirective* prev_ndir = nullptr;
     DirectiveCancelPolicy cancel_policy = { true };
+    bool cancel_previous_dialog = true;
     std::map<std::string, std::string> referrer_events;
     std::map<std::string, std::string> referrer_dirs;
 
@@ -322,7 +323,7 @@ void Capability::processDirective(NuguDirective* ndir)
     dname = nugu_directive_peek_name(ndir);
 
     // handle previous dialog if exist
-    if (pimpl->cur_ndir) {
+    if (pimpl->cur_ndir && pimpl->cancel_previous_dialog) {
         nugu_directive_remove_data_callback(pimpl->cur_ndir);
 
         if (playsync_manager->isConditionToHandlePrevDialog(pimpl->cur_ndir, ndir)) {
@@ -358,27 +359,33 @@ void Capability::destroyDirective(NuguDirective* ndir, bool is_cancel)
         pimpl->prev_ndir = nullptr;
     }
 
-    if (pimpl->cur_ndir && ndir == pimpl->cur_ndir) {
-        nugu_directive_remove_data_callback(pimpl->cur_ndir);
+    auto finishDirective([&](NuguDirective* target_ndir) {
+        nugu_directive_remove_data_callback(target_ndir);
 
+        if (!is_cancel) {
+            directive_sequencer->complete(target_ndir);
+            return;
+        }
+
+        std::string dialog_id = nugu_directive_peek_dialog_id(target_ndir);
+
+        if (pimpl->cancel_policy.cancel_all) {
+            directive_sequencer->cancel(dialog_id);
+        } else {
+            directive_sequencer->complete(target_ndir);
+            directive_sequencer->cancel(dialog_id, pimpl->cancel_policy.dir_groups);
+        }
+    });
+
+    if (pimpl->cur_ndir && ndir == pimpl->cur_ndir) { // finish current managed directive
         if (routine_manager->isActionProgress(nugu_directive_peek_dialog_id(pimpl->cur_ndir)))
             routine_manager->finish();
 
-        if (is_cancel) {
-            std::string dialog_id = nugu_directive_peek_dialog_id(pimpl->cur_ndir);
-
-            if (pimpl->cancel_policy.cancel_all) {
-                directive_sequencer->cancel(dialog_id);
-            } else {
-                directive_sequencer->complete(pimpl->cur_ndir);
-                directive_sequencer->cancel(dialog_id, pimpl->cancel_policy.dir_groups);
-            }
-
-        } else {
-            directive_sequencer->complete(pimpl->cur_ndir);
-        }
+        finishDirective(pimpl->cur_ndir);
 
         pimpl->cur_ndir = nullptr;
+    } else if (destroy_directive_by_agent && ndir) { // finish not managed directive
+        finishDirective(ndir);
     }
 }
 
@@ -468,8 +475,9 @@ void Capability::setCapabilityListener(ICapabilityListener* clistener)
 {
 }
 
-void Capability::setCancelPolicy(DirectiveCancelPolicy&& cancel_policy)
+void Capability::setCancelPolicy(bool cancel_previous_dialog, DirectiveCancelPolicy&& cancel_policy)
 {
+    pimpl->cancel_previous_dialog = cancel_previous_dialog;
     pimpl->cancel_policy = cancel_policy;
 }
 
