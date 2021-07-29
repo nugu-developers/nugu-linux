@@ -231,9 +231,10 @@ public:
 
     /**
      * @brief Set directive cancel policy
+     * @param[in] cancel_previous_dialog whether canceling previous dialog or not
      * @param[in] cancel_policy policy object
      */
-    virtual void setCancelPolicy(DirectiveCancelPolicy&& cancel_policy) = 0;
+    virtual void setCancelPolicy(bool cancel_previous_dialog, DirectiveCancelPolicy&& cancel_policy = { true }) = 0;
 };
 
 /**
