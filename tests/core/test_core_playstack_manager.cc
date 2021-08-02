@@ -25,6 +25,9 @@
 
 using namespace NuguCore;
 
+static const unsigned int DEFAULT_NORMAL_HOLD_TIME_SEC = 7;
+static const unsigned int DEFAULT_LONG_HOLD_TIME_SEC = 600;
+
 class PlayStackManagerListener : public IPlayStackManagerListener {
 public:
     void onStackAdded(const std::string& ps_id)
@@ -297,15 +300,32 @@ static void test_playstack_manager_check_adding_playstack(TestFixture* fixture, 
 static void test_playstack_manager_adjust_playstack_hold_time(TestFixture* fixture, gconstpointer ignored)
 {
     // check default hold times
-    auto hold_times = fixture->playstack_manager->getPlayStackHoldTime();
-    g_assert(hold_times.normal_time == 7);
-    g_assert(hold_times.long_time == 600);
+    const auto& hold_times(fixture->playstack_manager->getPlayStackHoldTime());
+    g_assert(hold_times.normal_time == DEFAULT_NORMAL_HOLD_TIME_SEC);
+    g_assert(hold_times.long_time == DEFAULT_LONG_HOLD_TIME_SEC);
 
     // check custom hold times
     fixture->playstack_manager->setPlayStackHoldTime({ 5, 10 });
-    hold_times = fixture->playstack_manager->getPlayStackHoldTime();
     g_assert(hold_times.normal_time == 5);
     g_assert(hold_times.long_time == 10);
+
+    // check whether setting long time by default value if not pass 2nd argument
+    fixture->playstack_manager->setPlayStackHoldTime({ 15 });
+    g_assert(hold_times.normal_time == 15);
+    g_assert(hold_times.long_time == DEFAULT_LONG_HOLD_TIME_SEC);
+}
+
+static void test_playstack_manager_reset_playstack_hold_time(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& hold_times(fixture->playstack_manager->getPlayStackHoldTime());
+    fixture->playstack_manager->setPlayStackHoldTime({ 5, 10 });
+    g_assert(hold_times.normal_time == 5);
+    g_assert(hold_times.long_time == 10);
+
+    // reset hold time
+    fixture->playstack_manager->resetPlayStackHoldTime();
+    g_assert(hold_times.normal_time == DEFAULT_NORMAL_HOLD_TIME_SEC);
+    g_assert(hold_times.long_time == DEFAULT_LONG_HOLD_TIME_SEC);
 }
 
 static void test_playstack_manager_reset(TestFixture* fixture, gconstpointer ignored)
@@ -348,6 +368,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkExpectSpeech", test_playstack_manager_check_expect_speech);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkAddingPlayStack", test_playstack_manager_check_adding_playstack);
     G_TEST_ADD_FUNC("/core/PlayStackManager/adjustPlayStackHoldTime", test_playstack_manager_adjust_playstack_hold_time);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/resetPlayStackHoldTime", test_playstack_manager_reset_playstack_hold_time);
     G_TEST_ADD_FUNC("/core/PlayStackManager/reset", test_playstack_manager_reset);
 
     return g_test_run();
