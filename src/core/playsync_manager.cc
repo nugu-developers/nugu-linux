@@ -238,6 +238,19 @@ std::vector<std::string> PlaySyncManager::getAllPlayStackItems()
     return playstack_manager->getAllPlayStackItems();
 }
 
+void PlaySyncManager::adjustPlayStackHoldTime(unsigned int time)
+{
+    if (static_cast<int>(time) <= 0)
+        return;
+
+    playstack_manager->setPlayStackHoldTime({ time });
+}
+
+unsigned int PlaySyncManager::getPlayStackHoldTime()
+{
+    return playstack_manager->getPlayStackHoldTime().normal_time;
+}
+
 const PlaySyncManager::PlayStacks& PlaySyncManager::getPlayStacks()
 {
     return playstack_map;
@@ -265,6 +278,7 @@ void PlaySyncManager::onStackRemoved(const std::string& ps_id)
     notifyStateChanged(ps_id, PlaySyncState::Released);
 
     playstack_map.erase(ps_id);
+    playstack_manager->resetPlayStackHoldTime();
 }
 
 void PlaySyncManager::appendSync(const std::string& ps_id, const NuguDirective* ndir)

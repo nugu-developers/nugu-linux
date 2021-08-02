@@ -66,6 +66,8 @@ public:
     bool hasActivity(const std::string& ps_id, PlayStackActivity activity) override;
     bool hasNextPlayStack() override;
     std::vector<std::string> getAllPlayStackItems() override;
+    void adjustPlayStackHoldTime(unsigned int time) override;
+    unsigned int getPlayStackHoldTime();
     const PlayStacks& getPlayStacks();
 
     // overriding IPlayStackManagerListener

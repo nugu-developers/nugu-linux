@@ -246,9 +246,18 @@ bool PlayStackManager::hasAddingPlayStack()
 void PlayStackManager::setPlayStackHoldTime(PlayStakcHoldTimes&& hold_times_sec)
 {
     this->hold_times_sec = hold_times_sec;
+
+    if (this->hold_times_sec.long_time <= 0)
+        this->hold_times_sec.long_time = DEFAULT_LONG_HOLD_TIME_SEC;
 }
 
-PlayStackManager::PlayStakcHoldTimes PlayStackManager::getPlayStackHoldTime()
+void PlayStackManager::resetPlayStackHoldTime()
+{
+    this->hold_times_sec.normal_time = DEFAULT_NORMAL_HOLD_TIME_SEC;
+    this->hold_times_sec.long_time = DEFAULT_LONG_HOLD_TIME_SEC;
+}
+
+const PlayStackManager::PlayStakcHoldTimes& PlayStackManager::getPlayStackHoldTime()
 {
     return hold_times_sec;
 }

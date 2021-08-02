@@ -75,7 +75,8 @@ public:
     bool isActiveHolding();
     bool hasAddingPlayStack();
     void setPlayStackHoldTime(PlayStakcHoldTimes&& hold_times_sec);
-    PlayStakcHoldTimes getPlayStackHoldTime();
+    void resetPlayStackHoldTime();
+    const PlayStakcHoldTimes& getPlayStackHoldTime();
 
     PlayStackActivity getPlayStackActivity(const std::string& ps_id) noexcept;
     std::vector<std::string> getAllPlayStackItems();

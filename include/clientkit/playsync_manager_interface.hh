@@ -224,6 +224,12 @@ public:
      * @return Playstack items (play service id list)
      */
     virtual std::vector<std::string> getAllPlayStackItems() = 0;
+
+    /**
+     * @brief Adjust playstack hold time.
+     * @param[in] time playstack hold time (unit: second)
+     */
+    virtual void adjustPlayStackHoldTime(unsigned int time) = 0;
 };
 
 /**
