@@ -58,6 +58,7 @@ ENDIF(ENABLE_PORTAUDIO_PLUGIN)
 IF(ENABLE_GSTREAMER_PLUGIN)
 	SET(GSTREAMER_PLUGINS
 		gstreamer
+		gstreamer_recorder
 		gstreamer_pcm)
 
 	FOREACH(plugin ${GSTREAMER_PLUGINS})
