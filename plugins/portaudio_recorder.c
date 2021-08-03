@@ -402,6 +402,8 @@ static int init(NuguPlugin *p)
 		return -1;
 	}
 
+	nugu_recorder_driver_set_default(rec_driver);
+
 	nugu_dbg("'%s' plugin initialized done",
 		 nugu_plugin_get_description(p)->name);
 
