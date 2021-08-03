@@ -88,6 +88,7 @@ void DisplayAgent::initialize()
 
     disp_cur_ps_id = "";
     disp_cur_token = "";
+    playstackctl_ps_id.clear();
 
     playsync_manager->addListener(getName(), this);
 
@@ -125,8 +126,10 @@ void DisplayAgent::preprocessDirective(NuguDirective* ndir)
         return;
     }
 
-    if (strcmp(dname, "Action") && strcmp(dname, "ControlFocus") && strcmp(dname, "ControlScroll") && strcmp(dname, "Update"))
-        playsync_manager->prepareSync(getPlayServiceIdInStackControl(message), ndir);
+    if (strcmp(dname, "Action") && strcmp(dname, "ControlFocus") && strcmp(dname, "ControlScroll") && strcmp(dname, "Update")) {
+        playstackctl_ps_id = getPlayServiceIdInStackControl(message);
+        playsync_manager->prepareSync(playstackctl_ps_id, ndir);
+    }
 }
 
 void DisplayAgent::parsingDirective(const char* dname, const char* message)
@@ -193,6 +196,11 @@ void DisplayAgent::displayCleared(const std::string& id)
     if (!render_info) {
         nugu_warn("There is no render info : %s", id.c_str());
         return;
+    }
+
+    if (!render_info->close && hasPlayStack()) {
+        render_helper->setRenderClose(id);
+        playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
     }
 
     if (render_info->close)
@@ -368,7 +376,7 @@ void DisplayAgent::parsingClose(const char* message)
         return;
     }
 
-    playsync_manager->releaseSyncImmediately(getPlayServiceIdInStackControl(root["playStackControl"]), getName());
+    playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
 }
 
 void DisplayAgent::parsingControlFocus(const char* message)
@@ -523,13 +531,19 @@ void DisplayAgent::deactiveSession()
 void DisplayAgent::startPlaySync(const NuguDirective* ndir, const Json::Value& root)
 {
     auto render_info(composeRenderInfo(ndir, root["playServiceId"].asString(), root["token"].asString()));
-    playsync_manager->startSync(getPlayServiceIdInStackControl(root["playStackControl"]), getName(), render_info);
+    playsync_manager->startSync(playstackctl_ps_id, getName(), render_info);
 
     try {
         playsync_manager->adjustPlayStackHoldTime(playstack_duration.at(root["duration"].asString()));
     } catch (const std::out_of_range& oor) {
         // skip silently
     }
+}
+
+bool DisplayAgent::hasPlayStack()
+{
+    auto playstacks = playsync_manager->getAllPlayStackItems();
+    return std::find(playstacks.cbegin(), playstacks.cend(), playstackctl_ps_id) != playstacks.cend();
 }
 
 DisplayRenderInfo* DisplayAgent::composeRenderInfo(const NuguDirective* ndir, const std::string& ps_id, const std::string& token)
