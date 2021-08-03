@@ -71,13 +71,15 @@ private:
 
     void activateSession(NuguDirective* ndir);
     void deactiveSession();
+    void startPlaySync(const NuguDirective* ndir, const Json::Value& root);
 
-    DisplayRenderInfo* composeRenderInfo(NuguDirective* ndir, const std::string& ps_id, const std::string& token);
+    DisplayRenderInfo* composeRenderInfo(const NuguDirective* ndir, const std::string& ps_id, const std::string& token);
     std::string getTemplateId(const std::string& ps_id);
     std::string getDirectionString(ControlDirection direction);
 
     std::set<std::string> template_names;
     std::set<std::string> session_dialog_ids;
+    std::map<std::string, unsigned int> playstack_duration;
     std::unique_ptr<DisplayRenderHelper> render_helper;
     IDisplayListener* display_listener;
     std::string disp_cur_ps_id;

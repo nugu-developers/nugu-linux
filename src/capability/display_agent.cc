@@ -68,6 +68,13 @@ DisplayAgent::DisplayAgent()
         "CustomTemplate",
         "TabExtension"
     };
+
+    playstack_duration = {
+        { "SHORT", 7 },
+        { "MID", 15 },
+        { "LONG", 30 },
+        { "LONGEST", 600 }
+    };
 }
 
 void DisplayAgent::initialize()
@@ -495,9 +502,7 @@ void DisplayAgent::parsingTemplates(const char* message)
     }
 
     activateSession(ndir);
-
-    auto render_info = composeRenderInfo(ndir, root["playServiceId"].asString(), root["token"].asString());
-    playsync_manager->startSync(getPlayServiceIdInStackControl(root["playStackControl"]), getName(), render_info);
+    startPlaySync(ndir, root);
 }
 
 void DisplayAgent::activateSession(NuguDirective* ndir)
@@ -515,7 +520,19 @@ void DisplayAgent::deactiveSession()
     session_dialog_ids.clear();
 }
 
-DisplayRenderInfo* DisplayAgent::composeRenderInfo(NuguDirective* ndir, const std::string& ps_id, const std::string& token)
+void DisplayAgent::startPlaySync(const NuguDirective* ndir, const Json::Value& root)
+{
+    auto render_info(composeRenderInfo(ndir, root["playServiceId"].asString(), root["token"].asString()));
+    playsync_manager->startSync(getPlayServiceIdInStackControl(root["playStackControl"]), getName(), render_info);
+
+    try {
+        playsync_manager->adjustPlayStackHoldTime(playstack_duration.at(root["duration"].asString()));
+    } catch (const std::out_of_range& oor) {
+        // skip silently
+    }
+}
+
+DisplayRenderInfo* DisplayAgent::composeRenderInfo(const NuguDirective* ndir, const std::string& ps_id, const std::string& token)
 {
     return render_helper->getRenderInfoBuilder()
         ->setType(std::string(nugu_directive_peek_namespace(ndir)) + "." + std::string(nugu_directive_peek_name(ndir)))
