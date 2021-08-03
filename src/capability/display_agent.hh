@@ -72,6 +72,7 @@ private:
     void activateSession(NuguDirective* ndir);
     void deactiveSession();
     void startPlaySync(const NuguDirective* ndir, const Json::Value& root);
+    bool hasPlayStack();
 
     DisplayRenderInfo* composeRenderInfo(const NuguDirective* ndir, const std::string& ps_id, const std::string& token);
     std::string getTemplateId(const std::string& ps_id);
@@ -84,6 +85,7 @@ private:
     IDisplayListener* display_listener;
     std::string disp_cur_ps_id;
     std::string disp_cur_token;
+    std::string playstackctl_ps_id;
 };
 
 } // NuguCapability

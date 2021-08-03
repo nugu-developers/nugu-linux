@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <sys/time.h>
 #include <stdexcept>
+#include <sys/time.h>
 
 #include "base/nugu_log.h"
 #include "display_render_helper.hh"
@@ -182,6 +182,12 @@ void DisplayRenderHelper::clearDisplay(void* data, bool has_next_render)
     }
 
     auto render_info = reinterpret_cast<DisplayRenderInfo*>(data);
+
+    if (render_info->close) {
+        nugu_info("Display(id:%s) is already closed", render_info->id.c_str());
+        return;
+    }
+
     std::string id = render_info->id;
 
     display_listener->clearDisplay(id, true, has_next_render);
