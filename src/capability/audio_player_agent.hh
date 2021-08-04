@@ -163,6 +163,7 @@ private:
     bool is_paused;
     bool is_paused_by_unfocus;
     std::string ps_id;
+    std::string playstackctl_ps_id;
     long report_delay_time;
     long report_interval_time;
     std::string cur_token;
