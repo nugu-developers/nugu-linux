@@ -55,6 +55,7 @@ void AudioPlayerAgent::initialize()
     is_paused = false;
     is_paused_by_unfocus = false;
     ps_id = "";
+    playstackctl_ps_id.clear();
     report_delay_time = -1;
     report_interval_time = -1;
     cur_token = "";
@@ -197,7 +198,7 @@ void AudioPlayerAgent::preprocessDirective(NuguDirective* ndir)
         if (routine_manager->isConditionToStop(ndir))
             routine_manager->stop();
 
-        std::string playstackctl_ps_id = getPlayServiceIdInStackControl(message);
+        playstackctl_ps_id = getPlayServiceIdInStackControl(message);
 
         playsync_manager->hasActivity(playstackctl_ps_id, PlayStackActivity::Media)
             ? playsync_manager->startSync(playstackctl_ps_id, getName(), composeRenderInfo(ndir, message))
@@ -550,7 +551,19 @@ void AudioPlayerAgent::displayRendered(const std::string& id)
 
 void AudioPlayerAgent::displayCleared(const std::string& id)
 {
-    // TODO: integrate with playsync and session manager
+    auto render_info = render_helper->getRenderInfo(id);
+
+    if (!render_info) {
+        nugu_warn("There is no render info : %s", id.c_str());
+        return;
+    }
+
+    if (!render_info->close && playsync_manager->hasActivity(playstackctl_ps_id, PlayStackActivity::Media)) {
+        render_helper->setRenderClose(id);
+        playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
+    }
+
+    render_helper->removedRenderInfo(id);
 }
 
 void AudioPlayerAgent::elementSelected(const std::string& id, const std::string& item_token, const std::string& postback)
