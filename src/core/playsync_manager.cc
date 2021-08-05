@@ -208,6 +208,12 @@ void PlaySyncManager::clearHolding()
     playstack_manager->clearHolding();
 }
 
+void PlaySyncManager::restartHolding()
+{
+    stopHolding();
+    resetHolding();
+}
+
 void PlaySyncManager::clear()
 {
     reset();
