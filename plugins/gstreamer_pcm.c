@@ -363,9 +363,9 @@ static int _create_gst_elements(struct pa_audio_param *pcm_param)
 		goto error_out;
 	}
 	pcm_param->audio_sink =
-		gst_element_factory_make("pulsesink", audio_sink);
+		gst_element_factory_make("autoaudiosink", audio_sink);
 	if (!pcm_param->audio_sink) {
-		nugu_error("create gst_element for 'pulsesink' failed");
+		nugu_error("create gst_element for 'autoaudiosink' failed");
 		goto error_out;
 	}
 	pcm_param->volume = gst_element_factory_make("volume", volume);
