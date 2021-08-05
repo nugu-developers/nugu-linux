@@ -59,6 +59,7 @@ public:
     void stopHolding() override;
     void resetHolding() override;
     void clearHolding() override;
+    void restartHolding() override;
     void clear() override;
     bool hasPostPoneRelease();
 

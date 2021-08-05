@@ -193,6 +193,11 @@ public:
     virtual void clearHolding() = 0;
 
     /**
+     * @brief Restart timer for releasing sync.
+     */
+    virtual void restartHolding() = 0;
+
+    /**
      * @brief Clear all playstack info.
      */
     virtual void clear() = 0;
