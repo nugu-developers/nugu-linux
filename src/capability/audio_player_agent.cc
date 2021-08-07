@@ -601,6 +601,11 @@ void AudioPlayerAgent::stopRenderingTimer(const std::string& id)
     // TODO: integrate with playsync and session manager
 }
 
+void AudioPlayerAgent::refreshRenderingTimer(const std::string& id)
+{
+    // ignore
+}
+
 void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
 {
     switch (state) {
