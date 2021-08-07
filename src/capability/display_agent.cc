@@ -263,6 +263,19 @@ void DisplayAgent::stopRenderingTimer(const std::string& id)
     // TBD
 }
 
+void DisplayAgent::refreshRenderingTimer(const std::string& id)
+{
+    auto render_info = render_helper->getRenderInfo(id);
+
+    if (!render_info) {
+        nugu_warn("There is no render info : %s", id.c_str());
+        return;
+    }
+
+    if (!render_info->close)
+        playsync_manager->restartHolding();
+}
+
 void DisplayAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
 {
     if (state == PlaySyncState::Synced)

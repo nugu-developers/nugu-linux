@@ -47,6 +47,7 @@ public:
     void setListener(IDisplayListener* listener) override;
     void removeListener(IDisplayListener* listener) override;
     void stopRenderingTimer(const std::string& id) override;
+    void refreshRenderingTimer(const std::string& id) override;
 
     // implements IPlaySyncManagerListener
     void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data) override;

@@ -82,6 +82,7 @@ public:
     void setListener(IDisplayListener* listener) override;
     void removeListener(IDisplayListener* listener) override;
     void stopRenderingTimer(const std::string& id) override;
+    void refreshRenderingTimer(const std::string& id) override;
 
     void mediaStateChanged(MediaPlayerState state) override;
     void mediaEventReport(MediaPlayerEvent event) override;

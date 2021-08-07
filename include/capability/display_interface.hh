@@ -176,6 +176,12 @@ public:
      * @param[in] id display template id
      */
     virtual void stopRenderingTimer(const std::string& id) = 0;
+
+    /**
+     * @brief Refresh display rendering hold timer.
+     * @param[in] id display template id
+     */
+    virtual void refreshRenderingTimer(const std::string& id) = 0;
 };
 
 /**
