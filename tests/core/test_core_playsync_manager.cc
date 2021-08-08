@@ -753,9 +753,9 @@ static void test_playsync_manager_restart_playstack_holding(TestFixture* fixture
     sub_test_playsync_manager_preset_sync(fixture, "ps_id_1");
 
     const auto& playstacks = fixture->playsync_manager->getPlayStacks();
-    const auto& playsync_container = playstacks.at("ps_id_1");
 
     auto checkSynced([&] {
+        const auto& playsync_container = playstacks.at("ps_id_1");
         g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
         g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
         g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
@@ -776,6 +776,72 @@ static void test_playsync_manager_restart_playstack_holding(TestFixture* fixture
     onTimeElapsed(fixture);
     g_assert(playstacks.find("ps_id_1") == playstacks.cend());
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+}
+
+static void test_playsync_manager_stop_playstack_holding_after_timer(TestFixture* fixture, gconstpointer ignored)
+{
+    sub_test_playsync_manager_preset_sync(fixture, "ps_id_1");
+
+    const auto& playstacks = fixture->playsync_manager->getPlayStacks();
+
+    auto checkSynced([&] {
+        auto playsync_container = playstacks.at("ps_id_1");
+        g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
+        g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+    });
+
+    // try to release
+    fixture->playsync_manager->releaseSync("ps_id_1", "Display");
+    checkSynced();
+
+    // stop playstack holding
+    fixture->playsync_manager->clearHolding();
+
+    onTimeElapsed(fixture);
+    checkSynced();
+
+    // release by another dialog
+    sub_test_playsync_manager_preset_sync(fixture, "ps_id_2");
+    g_assert(playstacks.find("ps_id_1") == playstacks.cend());
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+}
+
+static void test_playsync_manager_stop_playstack_holding_before_timer(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& playstacks = fixture->playsync_manager->getPlayStacks();
+
+    auto setupStopHolding([&](bool is_media_stacked) {
+        is_media_stacked ? sub_test_playsync_manager_preset_media_stacked(fixture)
+                         : sub_test_playsync_manager_preset_sync(fixture, "ps_id_2");
+
+        // stop playstack holding
+        fixture->playsync_manager->postPoneRelease();
+        fixture->playsync_manager->releaseSync("ps_id_2", "Display");
+
+        onTimeElapsed(fixture);
+
+        // check whether maintain synced state
+        auto playsync_container = playstacks.at("ps_id_2");
+        g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
+        g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Synced);
+    });
+
+    for (const auto& type : { false, true }) { // false: info only, true: media stack
+        // release by user
+        setupStopHolding(type);
+        fixture->playsync_manager->continueRelease();
+        fixture->playsync_manager->releaseSyncImmediately("ps_id_2", "Display");
+        g_assert(playstacks.find("ps_id_2") == playstacks.cend());
+        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Released);
+
+        // release by another dialog
+        setupStopHolding(type);
+        sub_test_playsync_manager_preset_sync(fixture, "ps_id_3");
+        g_assert(playstacks.find("ps_id_2") == playstacks.cend());
+        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Released);
+    }
 }
 
 static void test_playsync_manager_check_playstack_layer(TestFixture* fixture, gconstpointer ignored)
@@ -975,6 +1041,8 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlaySyncManager/playstackHolding", test_playsync_manager_playstack_holding);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/adjustPlaystackHoldTime", test_playsync_manager_adjust_playstack_hold_time);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/restartPlaystackHolding", test_playsync_manager_restart_playstack_holding);
+    G_TEST_ADD_FUNC("/core/PlaySyncManager/stopPlaystackHoldingAfterTimer", test_playsync_manager_stop_playstack_holding_after_timer);
+    G_TEST_ADD_FUNC("/core/PlaySyncManager/stopPlaystackHoldingBeforeTimer", test_playsync_manager_stop_playstack_holding_before_timer);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/checkPlayStackActivity", test_playsync_manager_check_playstack_layer);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/recvCallbackOnlyParticipants", test_playsync_manager_recv_callback_only_participants);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/mediaStackedCase", test_playsync_manager_media_stacked_case);
