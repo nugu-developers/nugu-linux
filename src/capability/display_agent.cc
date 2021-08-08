@@ -200,6 +200,7 @@ void DisplayAgent::displayCleared(const std::string& id)
 
     if (!render_info->close && hasPlayStack()) {
         render_helper->setRenderClose(id);
+        playsync_manager->continueRelease();
         playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
     }
 
@@ -260,7 +261,17 @@ void DisplayAgent::removeListener(IDisplayListener* listener)
 
 void DisplayAgent::stopRenderingTimer(const std::string& id)
 {
-    // TBD
+    auto render_info = render_helper->getRenderInfo(id);
+
+    if (!render_info) {
+        nugu_warn("There is no render info : %s", id.c_str());
+        return;
+    }
+
+    if (!render_info->close && hasPlayStack()) {
+        playsync_manager->postPoneRelease();
+        playsync_manager->clearHolding();
+    }
 }
 
 void DisplayAgent::refreshRenderingTimer(const std::string& id)
@@ -272,7 +283,7 @@ void DisplayAgent::refreshRenderingTimer(const std::string& id)
         return;
     }
 
-    if (!render_info->close)
+    if (!render_info->close && hasPlayStack())
         playsync_manager->restartHolding();
 }
 
