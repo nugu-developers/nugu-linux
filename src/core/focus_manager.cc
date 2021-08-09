@@ -159,18 +159,19 @@ bool FocusManager::requestFocus(const std::string& type, const std::string& name
         higher_hold = true;
     }
 
-    FocusState request_focus_state = higher_hold ? FocusState::BACKGROUND : FocusState::FOREGROUND;
-
-    if (activate_focus.get() == nullptr || activate_focus == request_focus) {
-        nugu_info("[%s - %s] - %s (priority - req:%d, rel:%d)", request_focus->type.c_str(), request_focus->name.c_str(), getStateString(request_focus_state).c_str(), request_focus->request_priority, request_focus->release_priority);
-        request_focus->setState(request_focus_state);
+    if (higher_hold) {
+        nugu_info("[%s - %s] - FocusState::FOREGROUND (priority - req:%d, rel:%d)", request_focus->type.c_str(), request_focus->name.c_str(), request_focus->request_priority, request_focus->release_priority);
+        request_focus->setState(FocusState::BACKGROUND);
+    } else if (activate_focus.get() == nullptr || activate_focus == request_focus) {
+        nugu_info("[%s - %s] - FocusState::FOREGROUND (priority - req:%d, rel:%d)", request_focus->type.c_str(), request_focus->name.c_str(), request_focus->request_priority, request_focus->release_priority);
+        request_focus->setState(FocusState::FOREGROUND);
     } else if (request_priority <= activate_priority) {
         nugu_info("[%s - %s] - BACKGROUND (priority - req:%d, rel:%d)", activate_focus->type.c_str(), activate_focus->name.c_str(), activate_focus->request_priority, activate_focus->release_priority);
         processing = true;
         activate_focus->setState(FocusState::BACKGROUND);
         processing = false;
-        nugu_info("[%s - %s] - %s (priority - req:%d, rel:%d)", request_focus->type.c_str(), request_focus->name.c_str(), getStateString(request_focus_state).c_str(), request_focus->request_priority, request_focus->release_priority);
-        request_focus->setState(request_focus_state);
+        nugu_info("[%s - %s] - FocusState::FOREGROUND (priority - req:%d, rel:%d)", request_focus->type.c_str(), request_focus->name.c_str(), request_focus->request_priority, request_focus->release_priority);
+        request_focus->setState(FocusState::FOREGROUND);
     } else {
         nugu_info("[%s - %s] - BACKGROUND (priority - req:%d, rel:%d)", request_focus->type.c_str(), request_focus->name.c_str(), request_focus->request_priority, request_focus->release_priority);
         request_focus->setState(FocusState::BACKGROUND);
