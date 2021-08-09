@@ -156,9 +156,9 @@ typedef struct {
     TestFocusResorce* alert_resource;
     TestFocusResorce* media_resource;
     TestFocusResorce* another_asr_resource;
-} ntimerFixture;
+} nFocusFixture;
 
-static void setup(ntimerFixture* fixture, gconstpointer user_data)
+static void setup(nFocusFixture* fixture, gconstpointer user_data)
 {
     fixture->focus_manager = new FocusManager();
     fixture->focus_observer = new FocusManagerObserver(fixture->focus_manager);
@@ -179,7 +179,7 @@ static void setup(ntimerFixture* fixture, gconstpointer user_data)
     fixture->focus_manager->setConfigurations(focus_configuration, focus_configuration);
 }
 
-static void teardown(ntimerFixture* fixture, gconstpointer user_data)
+static void teardown(nFocusFixture* fixture, gconstpointer user_data)
 {
     delete fixture->focus_manager;
     delete fixture->focus_observer;
@@ -190,10 +190,39 @@ static void teardown(ntimerFixture* fixture, gconstpointer user_data)
     delete fixture->another_asr_resource;
 }
 
-#define G_TEST_ADD_FUNC(name, func) \
-    g_test_add(name, ntimerFixture, NULL, setup, func, teardown);
+static void _setup_nugu_focus_policy(nFocusFixture* fixture)
+{
+    std::vector<FocusConfiguration> request_configuration {
+        { CALL_FOCUS_TYPE, CALL_FOCUS_REQUEST_PRIORITY },
+        { ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_REQUEST_PRIORITY },
+        { INFO_FOCUS_TYPE, INFO_FOCUS_REQUEST_PRIORITY },
+        { ASR_DM_FOCUS_TYPE, ASR_DM_FOCUS_REQUEST_PRIORITY },
+        { ALERTS_FOCUS_TYPE, ALERTS_FOCUS_REQUEST_PRIORITY },
+        { ASR_BEEP_FOCUS_TYPE, ASR_BEEP_FOCUS_REQUEST_PRIORITY },
+        { MEDIA_FOCUS_TYPE, MEDIA_FOCUS_REQUEST_PRIORITY },
+        { SOUND_FOCUS_TYPE, SOUND_FOCUS_REQUEST_PRIORITY },
+        { DUMMY_FOCUS_TYPE, DUMMY_FOCUS_REQUEST_PRIORITY }
+    };
 
-static void test_focusmanager_configurations(ntimerFixture* fixture, gconstpointer ignored)
+    std::vector<FocusConfiguration> release_configuration {
+        { CALL_FOCUS_TYPE, CALL_FOCUS_RELEASE_PRIORITY },
+        { ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_RELEASE_PRIORITY },
+        { ASR_DM_FOCUS_TYPE, ASR_DM_FOCUS_RELEASE_PRIORITY },
+        { INFO_FOCUS_TYPE, INFO_FOCUS_RELEASE_PRIORITY },
+        { ALERTS_FOCUS_TYPE, ALERTS_FOCUS_RELEASE_PRIORITY },
+        { ASR_BEEP_FOCUS_TYPE, ASR_BEEP_FOCUS_RELEASE_PRIORITY },
+        { MEDIA_FOCUS_TYPE, MEDIA_FOCUS_RELEASE_PRIORITY },
+        { SOUND_FOCUS_TYPE, SOUND_FOCUS_RELEASE_PRIORITY },
+        { DUMMY_FOCUS_TYPE, DUMMY_FOCUS_RELEASE_PRIORITY }
+    };
+
+    fixture->focus_manager->setConfigurations(request_configuration, release_configuration);
+}
+
+#define G_TEST_ADD_FUNC(name, func) \
+    g_test_add(name, nFocusFixture, NULL, setup, func, teardown);
+
+static void test_focusmanager_configurations(nFocusFixture* fixture, gconstpointer ignored)
 {
     FocusManager* focus_manager = fixture->focus_manager;
     std::vector<FocusConfiguration> focus_configuration;
@@ -215,19 +244,19 @@ static void test_focusmanager_configurations(ntimerFixture* fixture, gconstpoint
     g_assert(focus_manager->getFocusResourcePriority(INFO_FOCUS_TYPE) == INFO_FOCUS_PRIORITY);
 }
 
-static void test_focusmanager_request_resource_with_invalid_name(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_request_resource_with_invalid_name(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(!REQUEST_FOCUS(fixture->asr_resource, INVALID_FOCUS_NAME, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::NONE);
 }
 
-static void test_focusmanager_request_resource_with_no_activate_resource(ntimerFixture* fixture, gconstpointer igresource)
+static void test_focusmanager_request_resource_with_no_activate_resource(nFocusFixture* fixture, gconstpointer igresource)
 {
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
 }
 
-static void test_focusmanager_request_resource_with_higher_priority_resource(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_request_resource_with_higher_priority_resource(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
@@ -236,7 +265,7 @@ static void test_focusmanager_request_resource_with_higher_priority_resource(nti
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
 }
 
-static void test_focusmanager_request_resource_with_lower_priority_resource(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_request_resource_with_lower_priority_resource(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->media_resource, MEDIA_FOCUS_TYPE, MEDIA_NAME));
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::FOREGROUND);
@@ -246,7 +275,7 @@ static void test_focusmanager_request_resource_with_lower_priority_resource(ntim
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
 }
 
-static void test_focusmanager_request_two_resources_with_highest_priority_resource(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_request_two_resources_with_highest_priority_resource(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
@@ -258,7 +287,7 @@ static void test_focusmanager_request_two_resources_with_highest_priority_resour
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
 }
 
-static void test_focusmanager_request_two_resources_with_medium_priority_resource(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_request_two_resources_with_medium_priority_resource(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE, ALERTS_NAME));
     ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::FOREGROUND);
@@ -273,7 +302,7 @@ static void test_focusmanager_request_two_resources_with_medium_priority_resourc
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
 }
 
-static void test_focusmanager_request_two_resources_with_lowest_priority_resource(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_request_two_resources_with_lowest_priority_resource(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->media_resource, MEDIA_FOCUS_TYPE, MEDIA_NAME));
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::FOREGROUND);
@@ -288,7 +317,7 @@ static void test_focusmanager_request_two_resources_with_lowest_priority_resourc
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
 }
 
-static void test_focusmanager_request_same_resource_on_foreground(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_request_same_resource_on_foreground(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->media_resource, MEDIA_FOCUS_TYPE, MEDIA_NAME));
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::FOREGROUND);
@@ -297,7 +326,7 @@ static void test_focusmanager_request_same_resource_on_foreground(ntimerFixture*
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::FOREGROUND);
 }
 
-static void test_focusmanager_request_same_resource_on_background(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_request_same_resource_on_background(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
@@ -309,7 +338,7 @@ static void test_focusmanager_request_same_resource_on_background(ntimerFixture*
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
 }
 
-static void test_focusmanager_request_same_resource_with_other_name(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_request_same_resource_with_other_name(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
@@ -319,13 +348,13 @@ static void test_focusmanager_request_same_resource_with_other_name(ntimerFixtur
     ASSERT_EXPECTED_STATE(fixture->another_asr_resource, FocusState::FOREGROUND);
 }
 
-static void test_focusmanager_release_no_activity_resource(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_release_no_activity_resource(nFocusFixture* fixture, gconstpointer ignored)
 {
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::NONE);
     g_assert(RELEASE_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE));
 }
 
-static void test_focusmanager_release_resource_with_other_name(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_release_resource_with_other_name(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
@@ -338,7 +367,7 @@ static void test_focusmanager_release_resource_with_other_name(ntimerFixture* fi
     ASSERT_EXPECTED_STATE(fixture->another_asr_resource, FocusState::FOREGROUND);
 }
 
-static void test_focusmanager_release_foreground_resource(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_release_foreground_resource(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
@@ -347,7 +376,7 @@ static void test_focusmanager_release_foreground_resource(ntimerFixture* fixture
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::NONE);
 }
 
-static void test_focusmanager_release_foreground_resource_with_background_resource(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_release_foreground_resource_with_background_resource(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
@@ -360,7 +389,7 @@ static void test_focusmanager_release_foreground_resource_with_background_resour
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::FOREGROUND);
 }
 
-static void test_focusmanager_release_background_resource(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_release_background_resource(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
@@ -373,7 +402,7 @@ static void test_focusmanager_release_background_resource(ntimerFixture* fixture
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::NONE);
 }
 
-static void test_focusmanager_stop_foreground_focus_with_one_activity(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_stop_foreground_focus_with_one_activity(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
@@ -382,7 +411,7 @@ static void test_focusmanager_stop_foreground_focus_with_one_activity(ntimerFixt
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::NONE);
 }
 
-static void test_focusmanager_stop_foreground_focus_with_one_activity_one_pending(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_stop_foreground_focus_with_one_activity_one_pending(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
@@ -395,13 +424,13 @@ static void test_focusmanager_stop_foreground_focus_with_one_activity_one_pendin
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::FOREGROUND);
 }
 
-static void test_focusmanager_stop_all_focus_with_no_resource(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_stop_all_focus_with_no_resource(nFocusFixture* fixture, gconstpointer ignored)
 {
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::NONE);
     fixture->asr_resource->stopAllFocus();
 }
 
-static void test_focusmanager_stop_all_focus_with_one_resource(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_stop_all_focus_with_one_resource(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
@@ -410,7 +439,7 @@ static void test_focusmanager_stop_all_focus_with_one_resource(ntimerFixture* fi
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::NONE);
 }
 
-static void test_focusmanager_stop_all_focus_with_two_resources(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_stop_all_focus_with_two_resources(nFocusFixture* fixture, gconstpointer ignored)
 {
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
@@ -423,14 +452,18 @@ static void test_focusmanager_stop_all_focus_with_two_resources(ntimerFixture* f
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::NONE);
 }
 
-static void test_focusmanager_request_resource_hold_and_unhold(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_hold_and_unhold_basic_function(nFocusFixture* fixture, gconstpointer ignored)
 {
+    _setup_nugu_focus_policy(fixture);
+
+    // request priority: ASR USER > Media
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
 
     g_assert(REQUEST_FOCUS(fixture->media_resource, MEDIA_FOCUS_TYPE, MEDIA_NAME));
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
 
+    // hold focus: ASR USER
     g_assert(HOLD_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE));
 
     g_assert(RELEASE_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE));
@@ -441,80 +474,81 @@ static void test_focusmanager_request_resource_hold_and_unhold(ntimerFixture* fi
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::FOREGROUND);
 }
 
-static void test_focusmanager_request_resource_with_hold_higher_resource(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_request_higher_priority_resource_than_hold_resource(nFocusFixture* fixture, gconstpointer ignored)
 {
-    g_assert(HOLD_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE));
+    _setup_nugu_focus_policy(fixture);
 
-    g_assert(REQUEST_FOCUS(fixture->media_resource, MEDIA_FOCUS_TYPE, MEDIA_NAME));
-    ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
+    g_assert(REQUEST_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE, ALERTS_NAME));
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::FOREGROUND);
 
-    g_assert(UNHOLD_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE));
-    ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::FOREGROUND);
-}
-
-static void test_focusmanager_release_resource_with_hold_higher_resource(ntimerFixture* fixture, gconstpointer ignored)
-{
-    g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
-    ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
-
-    // hold info priority: asr user > info > media
-    g_assert(HOLD_FOCUS(fixture->info_resource, INFO_FOCUS_TYPE));
-
-    g_assert(REQUEST_FOCUS(fixture->media_resource, MEDIA_FOCUS_TYPE, MEDIA_NAME));
-    ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
-
-    // media focus is still background because info is holded with higher priority.
-    g_assert(RELEASE_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE));
-    ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::NONE);
-    ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
-}
-
-static void test_focusmanager_request_same_holded_resource_and_auto_unhold(ntimerFixture* fixture, gconstpointer ignored)
-{
-    std::vector<FocusConfiguration> request_configuration;
-    request_configuration.push_back({ ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_REQUEST_PRIORITY });
-    request_configuration.push_back({ MEDIA_FOCUS_TYPE, MEDIA_FOCUS_REQUEST_PRIORITY });
-
-    std::vector<FocusConfiguration> release_configuration;
-    release_configuration.push_back({ ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_RELEASE_PRIORITY });
-    release_configuration.push_back({ MEDIA_FOCUS_TYPE, MEDIA_FOCUS_RELEASE_PRIORITY });
-
-    fixture->focus_manager->setConfigurations(request_configuration, release_configuration);
-
-    g_assert(HOLD_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE));
-
-    // unhold focus because of request with same priority
-    g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
-    ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
-
-    g_assert(REQUEST_FOCUS(fixture->media_resource, MEDIA_FOCUS_TYPE, MEDIA_NAME));
-    ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
-
-    g_assert(RELEASE_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE));
-    ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::NONE);
-    ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::FOREGROUND);
-}
-
-static void test_focusmanager_request_higher_resource_with_hold(ntimerFixture* fixture, gconstpointer ignored)
-{
     g_assert(HOLD_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE));
 
-    // maintain hold focus because of request with higher priority than hold priority
     g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::BACKGROUND);
+}
+
+static void test_focusmanager_request_lower_priority_resource_than_hold_resource(nFocusFixture* fixture, gconstpointer ignored)
+{
+    _setup_nugu_focus_policy(fixture);
+
+    g_assert(REQUEST_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE, ALERTS_NAME));
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::FOREGROUND);
+
+    g_assert(HOLD_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE));
 
     g_assert(REQUEST_FOCUS(fixture->media_resource, MEDIA_FOCUS_TYPE, MEDIA_NAME));
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::FOREGROUND);
+}
 
-    g_assert(RELEASE_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE));
-    ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::NONE);
+static void test_focusmanager_request_same_priority_resource_and_auto_unhold(nFocusFixture* fixture, gconstpointer ignored)
+{
+    _setup_nugu_focus_policy(fixture);
+
+    g_assert(HOLD_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE));
+
+    g_assert(REQUEST_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE, ALERTS_NAME));
+    g_assert(RELEASE_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE));
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::NONE);
+
+    g_assert(REQUEST_FOCUS(fixture->media_resource, MEDIA_FOCUS_TYPE, MEDIA_NAME));
+    ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::FOREGROUND);
+}
+
+static void test_focusmanager_release_active_resource_and_hold_lower_priority_resource(nFocusFixture* fixture, gconstpointer ignored)
+{
+    _setup_nugu_focus_policy(fixture);
+
+    g_assert(REQUEST_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE, ALERTS_NAME));
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::FOREGROUND);
+
+    g_assert(HOLD_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE));
+
+    g_assert(REQUEST_FOCUS(fixture->media_resource, MEDIA_FOCUS_TYPE, MEDIA_NAME));
+    ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::FOREGROUND);
+
+    // media focus is still background because info is holded with higher priority.
+    g_assert(RELEASE_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE));
+    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::NONE);
+    ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
+}
+
+static void test_focusmanager_unhold_resource_and_activate_lower_priority_resource(nFocusFixture* fixture, gconstpointer ignored)
+{
+    _setup_nugu_focus_policy(fixture);
+
+    g_assert(HOLD_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE));
+
+    g_assert(REQUEST_FOCUS(fixture->media_resource, MEDIA_FOCUS_TYPE, MEDIA_NAME));
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
 
     g_assert(UNHOLD_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE));
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::FOREGROUND);
 }
 
-static void test_focusmanager_request_and_release_configurations(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_request_and_release_configurations(nFocusFixture* fixture, gconstpointer ignored)
 {
     FocusManager* focus_manager = fixture->focus_manager;
     std::vector<FocusConfiguration> focus_request_configuration;
@@ -530,7 +564,7 @@ static void test_focusmanager_request_and_release_configurations(ntimerFixture* 
     g_assert(focus_manager->getFocusResourcePriority(INFO_FOCUS_TYPE) == -1);
 }
 
-static void test_focusmanager_release_resource_with_different_request_and_same_release_priority_resources(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_release_resource_with_different_request_and_same_release_priority_resources(nFocusFixture* fixture, gconstpointer ignored)
 {
     FocusManager* focus_manager = fixture->focus_manager;
     std::vector<FocusConfiguration> focus_request_configuration;
@@ -569,7 +603,7 @@ static void test_focusmanager_release_resource_with_different_request_and_same_r
     ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::FOREGROUND);
 }
 
-static void test_focusmanager_steal_resource_with_higher_resource_by_request_priority(ntimerFixture* fixture, gconstpointer igresource)
+static void test_focusmanager_steal_resource_with_higher_resource_by_request_priority(nFocusFixture* fixture, gconstpointer igresource)
 {
     FocusManager* focus_manager = fixture->focus_manager;
     std::vector<FocusConfiguration> focus_request_configuration;
@@ -592,7 +626,7 @@ static void test_focusmanager_steal_resource_with_higher_resource_by_request_pri
     ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::BACKGROUND);
 }
 
-static void test_focusmanager_no_steal_resource_with_higher_resource_request_priority(ntimerFixture* fixture, gconstpointer igresource)
+static void test_focusmanager_no_steal_resource_with_higher_resource_request_priority(nFocusFixture* fixture, gconstpointer igresource)
 {
     FocusManager* focus_manager = fixture->focus_manager;
     std::vector<FocusConfiguration> focus_request_configuration;
@@ -614,7 +648,7 @@ static void test_focusmanager_no_steal_resource_with_higher_resource_request_pri
     ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
 }
 
-static void test_focusmanager_release_resources_by_release_priority(ntimerFixture* fixture, gconstpointer igresource)
+static void test_focusmanager_release_resources_by_release_priority(nFocusFixture* fixture, gconstpointer igresource)
 {
     FocusManager* focus_manager = fixture->focus_manager;
     std::vector<FocusConfiguration> focus_request_configuration;
@@ -646,46 +680,7 @@ static void test_focusmanager_release_resources_by_release_priority(ntimerFixtur
     ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::FOREGROUND);
 }
 
-static void test_focusmanager_request_resource_hold_and_unhold_with_different_request_release_priority(ntimerFixture* fixture, gconstpointer ignored)
-{
-    FocusManager* focus_manager = fixture->focus_manager;
-    std::vector<FocusConfiguration> focus_request_configuration;
-    std::vector<FocusConfiguration> focus_release_configuration;
-    // Request Priority: asr user = media > info > alerts
-    focus_request_configuration.push_back({ ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_PRIORITY });
-    focus_request_configuration.push_back({ INFO_FOCUS_TYPE, INFO_FOCUS_PRIORITY });
-    focus_request_configuration.push_back({ ALERTS_FOCUS_TYPE, ALERTS_FOCUS_PRIORITY });
-    focus_request_configuration.push_back({ MEDIA_FOCUS_TYPE, ASR_USER_FOCUS_PRIORITY });
-    // Release Priority: asr user > info > alerts > media
-    focus_release_configuration.push_back({ ASR_USER_FOCUS_TYPE, ASR_USER_FOCUS_PRIORITY });
-    focus_release_configuration.push_back({ INFO_FOCUS_TYPE, INFO_FOCUS_PRIORITY });
-    focus_release_configuration.push_back({ ALERTS_FOCUS_TYPE, ALERTS_FOCUS_PRIORITY });
-    focus_release_configuration.push_back({ MEDIA_FOCUS_TYPE, MEDIA_FOCUS_PRIORITY });
-    focus_manager->setConfigurations(focus_request_configuration, focus_release_configuration);
-
-    g_assert(HOLD_FOCUS(fixture->info_resource, INFO_FOCUS_TYPE));
-    // request priority: info > alerts
-    g_assert(REQUEST_FOCUS(fixture->alert_resource, ALERTS_FOCUS_TYPE, ALERTS_NAME));
-    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::BACKGROUND);
-    // request priority: info < media
-    g_assert(REQUEST_FOCUS(fixture->media_resource, MEDIA_FOCUS_TYPE, MEDIA_NAME));
-    ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::FOREGROUND);
-    // request priority: asr user = media
-    g_assert(REQUEST_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE, ASR_USER_NAME));
-    ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::FOREGROUND);
-    ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
-
-    // release priority: info > alert > media
-    g_assert(RELEASE_FOCUS(fixture->asr_resource, ASR_USER_FOCUS_TYPE));
-    ASSERT_EXPECTED_STATE(fixture->asr_resource, FocusState::NONE);
-    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::BACKGROUND);
-    ASSERT_EXPECTED_STATE(fixture->media_resource, FocusState::BACKGROUND);
-    // release priority: alert > media
-    g_assert(UNHOLD_FOCUS(fixture->info_resource, INFO_FOCUS_TYPE));
-    ASSERT_EXPECTED_STATE(fixture->alert_resource, FocusState::FOREGROUND);
-}
-
-static void test_focusmanager_convert_state_text_to_focusstate_enum(ntimerFixture* fixture, gconstpointer ignored)
+static void test_focusmanager_convert_state_text_to_focusstate_enum(nFocusFixture* fixture, gconstpointer ignored)
 {
     FocusManager* focus_manager = fixture->focus_manager;
     const std::string FOREGROUND_STATE = focus_manager->getStateString(FocusState::FOREGROUND);
@@ -736,18 +731,17 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/FocusManager/StopAllFocusWithNoResource", test_focusmanager_stop_all_focus_with_no_resource);
     G_TEST_ADD_FUNC("/core/FocusManager/StopAllFocusWithOneResource", test_focusmanager_stop_all_focus_with_one_resource);
     G_TEST_ADD_FUNC("/core/FocusManager/StopAllFocusWithTwoResources", test_focusmanager_stop_all_focus_with_two_resources);
-    G_TEST_ADD_FUNC("/core/FocusManager/RequestResourceHoldAndUnHold", test_focusmanager_request_resource_hold_and_unhold);
-    G_TEST_ADD_FUNC("/core/FocusManager/RequestResourceWithHoldHigherResource", test_focusmanager_request_resource_with_hold_higher_resource);
-    G_TEST_ADD_FUNC("/core/FocusManager/ReleaseResourceWithHoldHigherResource", test_focusmanager_release_resource_with_hold_higher_resource);
-    G_TEST_ADD_FUNC("/core/FocusManager/RequestSameHoldedResourceAndAutoUnhold", test_focusmanager_request_same_holded_resource_and_auto_unhold);
-    G_TEST_ADD_FUNC("/core/FocusManager/RequestHigherResourceWithHold", test_focusmanager_request_higher_resource_with_hold);
-
+    G_TEST_ADD_FUNC("/core/FocusManager/HoldAndUnHoldBasicFunction", test_focusmanager_hold_and_unhold_basic_function);
+    G_TEST_ADD_FUNC("/core/FocusManager/RequestHigherPriorityResourcethanHoldResource", test_focusmanager_request_higher_priority_resource_than_hold_resource);
+    G_TEST_ADD_FUNC("/core/FocusManager/RequestLowerPriorityResourcethanHoldResource", test_focusmanager_request_lower_priority_resource_than_hold_resource);
+    G_TEST_ADD_FUNC("/core/FocusManager/RequestSamePriorityResourceAndAutoUnHold", test_focusmanager_request_same_priority_resource_and_auto_unhold);
+    G_TEST_ADD_FUNC("/core/FocusManager/ReleaseActiveResourceAndHoldLowerPriorityResource", test_focusmanager_release_active_resource_and_hold_lower_priority_resource);
+    G_TEST_ADD_FUNC("/core/FocusManager/UnHoldResourceAndActivateLowerPriorityResource", test_focusmanager_unhold_resource_and_activate_lower_priority_resource);
     G_TEST_ADD_FUNC("/core/FocusManager/FocusRequestAndReleaseConfigurations", test_focusmanager_request_and_release_configurations);
     G_TEST_ADD_FUNC("/core/FocusManager/FocusReleaseResourceWithDifferentRequestAndSameReleasePriorityResources", test_focusmanager_release_resource_with_different_request_and_same_release_priority_resources);
     G_TEST_ADD_FUNC("/core/FocusManager/StealResourceWithHigherResourceByRequestPriority", test_focusmanager_steal_resource_with_higher_resource_by_request_priority);
     G_TEST_ADD_FUNC("/core/FocusManager/NoStealResourceWithHigherResourceByRequestPriority", test_focusmanager_no_steal_resource_with_higher_resource_request_priority);
     G_TEST_ADD_FUNC("/core/FocusManager/ReleaseResourcesByReleasePriority", test_focusmanager_release_resources_by_release_priority);
-    G_TEST_ADD_FUNC("/core/FocusManager/RequestResourceHoldAndUnHoldWithDifferentRequestReleasePriority", test_focusmanager_request_resource_hold_and_unhold_with_different_request_release_priority);
     G_TEST_ADD_FUNC("/core/FocusManager/ConvertStateTextToFocusStateEnum", test_focusmanager_convert_state_text_to_focusstate_enum);
 
     return g_test_run();
