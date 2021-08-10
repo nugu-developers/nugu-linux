@@ -328,6 +328,44 @@ static void test_playstack_manager_reset_playstack_hold_time(TestFixture* fixtur
     g_assert(hold_times.long_time == DEFAULT_LONG_HOLD_TIME_SEC);
 }
 
+static void test_playstack_manager_set_default_playstack_hold_time(TestFixture* fixture, gconstpointer ignored)
+{
+    using HoldTimes = PlayStackManager::PlayStakcHoldTimes;
+    const HoldTimes NEW_DEFAULT_HOLD_TIME { 3, 300 };
+    const auto& hold_times(fixture->playstack_manager->getPlayStackHoldTime());
+
+    g_assert(hold_times.normal_time == DEFAULT_NORMAL_HOLD_TIME_SEC);
+    g_assert(hold_times.long_time == DEFAULT_LONG_HOLD_TIME_SEC);
+
+    // check validation
+    fixture->playstack_manager->setDefaultPlayStackHoldTime({});
+    g_assert(hold_times.normal_time == DEFAULT_NORMAL_HOLD_TIME_SEC);
+    g_assert(hold_times.long_time == DEFAULT_LONG_HOLD_TIME_SEC);
+
+    fixture->playstack_manager->setDefaultPlayStackHoldTime({ 0, 100 });
+    g_assert(hold_times.normal_time == DEFAULT_NORMAL_HOLD_TIME_SEC);
+    g_assert(hold_times.long_time == 100);
+
+    fixture->playstack_manager->setDefaultPlayStackHoldTime({ 4, 0 });
+    g_assert(hold_times.normal_time == 4);
+    g_assert(hold_times.long_time == 100);
+
+    // change default hold time
+    fixture->playstack_manager->setDefaultPlayStackHoldTime(HoldTimes { NEW_DEFAULT_HOLD_TIME });
+    g_assert(hold_times.normal_time == NEW_DEFAULT_HOLD_TIME.normal_time);
+    g_assert(hold_times.long_time == NEW_DEFAULT_HOLD_TIME.long_time);
+
+    // adjust hold time
+    fixture->playstack_manager->setPlayStackHoldTime({ 5, 100 });
+    g_assert(hold_times.normal_time == 5);
+    g_assert(hold_times.long_time == 100);
+
+    // reset hold time
+    fixture->playstack_manager->resetPlayStackHoldTime();
+    g_assert(hold_times.normal_time == NEW_DEFAULT_HOLD_TIME.normal_time);
+    g_assert(hold_times.long_time == NEW_DEFAULT_HOLD_TIME.long_time);
+}
+
 static void test_playstack_manager_reset(TestFixture* fixture, gconstpointer ignored)
 {
     const auto& playstack_container = fixture->playstack_manager->getPlayStackContainer();
@@ -369,6 +407,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkAddingPlayStack", test_playstack_manager_check_adding_playstack);
     G_TEST_ADD_FUNC("/core/PlayStackManager/adjustPlayStackHoldTime", test_playstack_manager_adjust_playstack_hold_time);
     G_TEST_ADD_FUNC("/core/PlayStackManager/resetPlayStackHoldTime", test_playstack_manager_reset_playstack_hold_time);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/setDefaultPlayStackHoldTime", test_playstack_manager_set_default_playstack_hold_time);
     G_TEST_ADD_FUNC("/core/PlayStackManager/reset", test_playstack_manager_reset);
 
     return g_test_run();

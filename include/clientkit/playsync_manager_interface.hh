@@ -235,6 +235,12 @@ public:
      * @param[in] time playstack hold time (unit: second)
      */
     virtual void adjustPlayStackHoldTime(unsigned int time) = 0;
+
+    /**
+     * @brief Set default playstack hold time.
+     * @param[in] time playstack hold time (unit: second)
+     */
+    virtual void setDefaultPlayStackHoldTime(unsigned int time) = 0;
 };
 
 /**
