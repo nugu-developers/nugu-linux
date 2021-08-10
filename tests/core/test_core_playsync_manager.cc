@@ -748,6 +748,46 @@ static void test_playsync_manager_adjust_playstack_hold_time(TestFixture* fixtur
     execSyncProcess("ps_id_2", DEFAULT_HOLD_TIME_SEC);
 }
 
+static void test_playsync_manager_set_default_playstack_hold_time(TestFixture* fixture, gconstpointer ignored)
+{
+    const unsigned int DEFAULT_HOLD_TIME_SEC = 7;
+    const unsigned int NEW_DEFAULT_HOLD_TIME_SEC = 3;
+    const unsigned int ADJUST_HOLD_TIME_SEC = 15;
+
+    // check validation
+    g_assert(fixture->playsync_manager->getPlayStackHoldTime() == DEFAULT_HOLD_TIME_SEC);
+    fixture->playsync_manager->setDefaultPlayStackHoldTime(-1);
+    g_assert(fixture->playsync_manager->getPlayStackHoldTime() == DEFAULT_HOLD_TIME_SEC);
+    fixture->playsync_manager->setDefaultPlayStackHoldTime(0);
+    g_assert(fixture->playsync_manager->getPlayStackHoldTime() == DEFAULT_HOLD_TIME_SEC);
+
+    // set new default playstack hold time
+    fixture->playsync_manager->setDefaultPlayStackHoldTime(NEW_DEFAULT_HOLD_TIME_SEC);
+    g_assert(fixture->playsync_manager->getPlayStackHoldTime() == NEW_DEFAULT_HOLD_TIME_SEC);
+
+    // prepare
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_info_disp);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Prepared);
+
+    // adjust hold time
+    fixture->playsync_manager->adjustPlayStackHoldTime(ADJUST_HOLD_TIME_SEC);
+    g_assert(fixture->playsync_manager->getPlayStackHoldTime() == ADJUST_HOLD_TIME_SEC);
+
+    // start
+    fixture->playsync_manager->startSync("ps_id_1", "Display");
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+
+    // release
+    fixture->playsync_manager->releaseSync("ps_id_1", "Display");
+    g_assert(fixture->fake_timer->getPlayStackHoldTime() == ADJUST_HOLD_TIME_SEC);
+    onTimeElapsed(fixture);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+
+    // reset to default hold time
+    g_assert(fixture->playsync_manager->getPlayStackHoldTime() == NEW_DEFAULT_HOLD_TIME_SEC);
+}
+
 static void test_playsync_manager_restart_playstack_holding(TestFixture* fixture, gconstpointer ignored)
 {
     sub_test_playsync_manager_preset_sync(fixture, "ps_id_1");
@@ -1040,6 +1080,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlaySyncManager/handleInfoLayer", test_playsync_manager_handle_info_layer);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/playstackHolding", test_playsync_manager_playstack_holding);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/adjustPlaystackHoldTime", test_playsync_manager_adjust_playstack_hold_time);
+    G_TEST_ADD_FUNC("/core/PlaySyncManager/setDefaultPlaystackHoldTime", test_playsync_manager_set_default_playstack_hold_time);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/restartPlaystackHolding", test_playsync_manager_restart_playstack_holding);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/stopPlaystackHoldingAfterTimer", test_playsync_manager_stop_playstack_holding_after_timer);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/stopPlaystackHoldingBeforeTimer", test_playsync_manager_stop_playstack_holding_before_timer);

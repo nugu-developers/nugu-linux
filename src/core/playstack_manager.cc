@@ -243,6 +243,17 @@ bool PlayStackManager::hasAddingPlayStack()
     return has_adding_playstack;
 }
 
+void PlayStackManager::setDefaultPlayStackHoldTime(PlayStakcHoldTimes&& hold_times_sec)
+{
+    if (hold_times_sec.normal_time > 0)
+        default_hold_times_sec.normal_time = hold_times_sec.normal_time;
+
+    if (hold_times_sec.long_time > 0)
+        default_hold_times_sec.long_time = hold_times_sec.long_time;
+
+    setPlayStackHoldTime(PlayStakcHoldTimes { default_hold_times_sec });
+}
+
 void PlayStackManager::setPlayStackHoldTime(PlayStakcHoldTimes&& hold_times_sec)
 {
     this->hold_times_sec = hold_times_sec;
@@ -253,8 +264,7 @@ void PlayStackManager::setPlayStackHoldTime(PlayStakcHoldTimes&& hold_times_sec)
 
 void PlayStackManager::resetPlayStackHoldTime()
 {
-    this->hold_times_sec.normal_time = DEFAULT_NORMAL_HOLD_TIME_SEC;
-    this->hold_times_sec.long_time = DEFAULT_LONG_HOLD_TIME_SEC;
+    hold_times_sec = default_hold_times_sec;
 }
 
 const PlayStackManager::PlayStakcHoldTimes& PlayStackManager::getPlayStackHoldTime()

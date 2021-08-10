@@ -252,6 +252,14 @@ void PlaySyncManager::adjustPlayStackHoldTime(unsigned int time)
     playstack_manager->setPlayStackHoldTime({ time });
 }
 
+void PlaySyncManager::setDefaultPlayStackHoldTime(unsigned int time)
+{
+    if (static_cast<int>(time) <= 0)
+        return;
+
+    playstack_manager->setDefaultPlayStackHoldTime({ time });
+}
+
 unsigned int PlaySyncManager::getPlayStackHoldTime()
 {
     return playstack_manager->getPlayStackHoldTime().normal_time;
