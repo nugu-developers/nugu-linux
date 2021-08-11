@@ -182,7 +182,7 @@ void PlayStackManager::remove(const std::string& ps_id, PlayStackRemoveMode mode
     if (mode == PlayStackRemoveMode::Immediately) {
         removeFromContainer(ps_id);
 
-        if (has_long_timer) {
+        if (has_long_timer && getPlayStackActivity(ps_id) == PlayStackActivity::Media) {
             timer->stop();
             has_long_timer = false;
         }

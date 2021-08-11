@@ -90,6 +90,9 @@ public:
     void reset()
     {
         started_count = 0;
+
+        if (worker.joinable())
+            worker.join();
     }
 
 private:
@@ -576,14 +579,28 @@ static void test_playsync_manager_release_sync(TestFixture* fixture, gconstpoint
 
 static void test_playsync_manager_release_sync_later(TestFixture* fixture, gconstpointer ignored)
 {
-    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_media);
-    fixture->playsync_manager->startSync("ps_id_1", "TTS");
-    fixture->playsync_manager->startSync("ps_id_1", "AudioPlayer");
-    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+    auto execMediaSync = [&](std::function<void()>&& case_checker) {
+        fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_media);
+        fixture->playsync_manager->startSync("ps_id_1", "TTS");
+        fixture->playsync_manager->startSync("ps_id_1", "AudioPlayer");
+        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+        fixture->playsync_manager->releaseSyncLater("ps_id_1", "AudioPlayer");
 
-    fixture->playsync_manager->releaseSyncLater("ps_id_1", "AudioPlayer");
-    onTimeElapsed(fixture);
-    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+        if (case_checker)
+            case_checker();
+
+        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+    };
+
+    // release by sdk
+    execMediaSync([&] {
+        onTimeElapsed(fixture);
+    });
+
+    // release by app
+    execMediaSync([&] {
+        fixture->playsync_manager->releaseSyncImmediately("ps_id_1", "AudioPlayer");
+    });
 }
 
 static void test_playsync_manager_implicit_release_sync_later(TestFixture* fixture, gconstpointer ignored)
@@ -604,6 +621,49 @@ static void test_playsync_manager_implicit_release_sync_later(TestFixture* fixtu
     fixture->playsync_manager->releaseSyncLater("ps_id_1", "AudioPlayer");
     onTimeElapsed(fixture);
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+}
+
+static void test_playsync_manager_release_sync_later_in_stack_condition(TestFixture* fixture, gconstpointer ignored)
+{
+    auto execMediaStackedSync = [&](std::function<void()> case_checker) {
+        fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_media);
+        fixture->playsync_manager->startSync("ps_id_1", "TTS");
+        fixture->playsync_manager->startSync("ps_id_1", "AudioPlayer");
+        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+        fixture->playsync_manager->releaseSyncLater("ps_id_1", "AudioPlayer");
+
+        fixture->playsync_manager->prepareSync("ps_id_2", fixture->ndir_info_disp);
+        fixture->playsync_manager->startSync("ps_id_2", "TTS");
+        fixture->playsync_manager->startSync("ps_id_2", "Display");
+        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Synced);
+
+        if (case_checker)
+            case_checker();
+
+        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+        onTimeElapsed(fixture);
+        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+    };
+
+    // close by sdk
+    execMediaStackedSync([&] {
+        fixture->playsync_manager->releaseSync("ps_id_2", "TTS");
+        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Released);
+    });
+
+    // close by app
+    execMediaStackedSync([&] {
+        fixture->playsync_manager->releaseSyncImmediately("ps_id_2", "TTS");
+        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Released);
+    });
+
+    // stop rendering timer before release
+    execMediaStackedSync([&] {
+        fixture->playsync_manager->postPoneRelease();
+        fixture->playsync_manager->stopHolding();
+        fixture->playsync_manager->releaseSync("ps_id_2", "TTS");
+        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Synced);
+    });
 }
 
 static void test_playsync_manager_release_sync_unconditionally(TestFixture* fixture, gconstpointer ignored)
@@ -1073,6 +1133,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlaySyncManager/releaseSync", test_playsync_manager_release_sync);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/releaseSyncLater", test_playsync_manager_release_sync_later);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/implicitReleaseSyncLater", test_playsync_manager_implicit_release_sync_later);
+    G_TEST_ADD_FUNC("/core/PlaySyncManager/releaseSyncLaterInStackCondition", test_playsync_manager_release_sync_later_in_stack_condition);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/releaseSyncUnconditionally", test_playsync_manager_release_sync_unconditionally);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/normalCase", test_playsync_manager_normal_case);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/stopCase", test_playsync_manager_stop_case);

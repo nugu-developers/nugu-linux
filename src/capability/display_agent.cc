@@ -270,7 +270,7 @@ void DisplayAgent::stopRenderingTimer(const std::string& id)
 
     if (!render_info->close && hasPlayStack()) {
         playsync_manager->postPoneRelease();
-        playsync_manager->clearHolding();
+        playsync_manager->stopHolding();
     }
 }
 
