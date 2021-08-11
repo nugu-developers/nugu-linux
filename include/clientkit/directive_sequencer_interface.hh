@@ -173,6 +173,14 @@ public:
      * @return dialog_id
      */
     virtual const std::string& getCanceledDialogId() = 0;
+
+    /**
+     * @brief Find directive from pending list
+     * @param[in] name_space directive namespace
+     * @param[in] name directive name
+     * @return NuguDirective object or NULL
+     */
+    virtual const NuguDirective* findPending(const std::string& name_space, const std::string& name) = 0;
 };
 
 /**

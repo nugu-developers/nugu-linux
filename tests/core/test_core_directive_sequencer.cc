@@ -1324,6 +1324,70 @@ static void test_sequencer_cancel3(void)
     delete agent;
 }
 
+static void test_sequencer_find(void)
+{
+    DirectiveSequencer seq;
+    CountAgent* dummy = new CountAgent;
+    NuguDirective* ndir_tts;
+    NuguDirective* ndir_audio;
+    const NuguDirective* ndir;
+    GMainLoop* loop = g_main_loop_new(NULL, FALSE);
+    struct idle_data {
+        GMainLoop* loop;
+        DirectiveSequencer* seq;
+    } idle_data;
+
+    seq.addListener("TTS", dummy);
+    seq.addListener("AudioPlayer", dummy);
+
+    g_assert(seq.addPolicy("TTS", "Speak", { BlockingMedium::AUDIO, true }) == true);
+    g_assert(seq.addPolicy("AudioPlayer", "Play", { BlockingMedium::AUDIO, false }) == true);
+
+    ndir_tts = directive_new("TTS", "Speak", "dlg1", "msg1");
+    g_assert(seq.add(ndir_tts) == true);
+
+    ndir_audio = directive_new("AudioPlayer", "Play", "dlg1", "msg2");
+    g_assert(seq.add(ndir_audio) == true);
+
+    /* TTS.Speak is active status */
+    g_assert(seq.findPending("TTS", "Speak") == NULL);
+
+    /* AudioPlayer.Play is pending status due to TTS.Speak blocking */
+    ndir = seq.findPending("AudioPlayer", "Play");
+    g_assert(ndir != NULL);
+    g_assert_cmpstr(nugu_directive_peek_namespace(ndir), ==, "AudioPlayer");
+    g_assert_cmpstr(nugu_directive_peek_name(ndir), ==, "Play");
+
+    seq.complete(ndir_tts);
+
+    /* AudioPlayer.Play is still pending status (scheduled_list) */
+    g_assert(seq.findPending("AudioPlayer", "Play") != NULL);
+
+    idle_data.loop = loop;
+    idle_data.seq = &seq;
+
+    /* idle callback will be invoked after onHandleDirective(AudioPlayer.Play) */
+    g_idle_add(
+        [](gpointer userdata) -> int {
+            struct idle_data* idle_data = (struct idle_data*)userdata;
+
+            /* AudioPlayer.Play is active status */
+            g_assert(idle_data->seq->findPending("AudioPlayer", "Play") == NULL);
+
+            g_main_loop_quit(idle_data->loop);
+            return FALSE;
+        },
+        &idle_data);
+
+    /* Start mainloop */
+    g_main_loop_run(loop);
+    g_main_loop_unref(loop);
+
+    seq.complete(ndir_audio);
+
+    delete dummy;
+}
+
 int main(int argc, char* argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -1351,6 +1415,7 @@ int main(int argc, char* argv[])
     g_test_add_func("/core/DirectiveSequencer/cancel1", test_sequencer_cancel1);
     g_test_add_func("/core/DirectiveSequencer/cancel2", test_sequencer_cancel2);
     g_test_add_func("/core/DirectiveSequencer/cancel3", test_sequencer_cancel3);
+    g_test_add_func("/core/DirectiveSequencer/find", test_sequencer_find);
 
     return g_test_run();
 }

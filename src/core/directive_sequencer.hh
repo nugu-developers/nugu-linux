@@ -52,6 +52,8 @@ public:
 
     const std::string& getCanceledDialogId() override;
 
+    const NuguDirective* findPending(const std::string& name_space, const std::string& name) override;
+
     using BlockingPolicyMap = std::map<std::string, std::map<std::string, BlockingPolicy>>;
 
 private:

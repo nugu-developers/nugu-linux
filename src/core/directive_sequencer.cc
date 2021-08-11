@@ -168,6 +168,8 @@ public:
     NuguDirective* findByMedium(const char* dialog_id, enum nugu_directive_medium medium);
     bool isBlockByPolicy(NuguDirective* target_dir);
 
+    NuguDirective* find(const char* name_space, const char* name);
+
     using DialogListMap = std::map<std::string, std::vector<NuguDirective*>>;
 
 private:
@@ -333,6 +335,26 @@ void DialogDirectiveList::erase(const char* dialog_id)
 void DialogDirectiveList::clear()
 {
     listmap.clear();
+}
+
+NuguDirective* DialogDirectiveList::find(const char* name_space, const char* name)
+{
+    if (!name_space || !name)
+        return NULL;
+
+    dump();
+
+    for (auto& list : listmap) {
+        for (auto& ndir : list.second) {
+            if (g_strcmp0(name_space, nugu_directive_peek_namespace(ndir)) != 0)
+                continue;
+
+            if (g_strcmp0(name, nugu_directive_peek_name(ndir)) == 0)
+                return ndir;
+        }
+    }
+
+    return NULL;
 }
 
 void DialogDirectiveList::dump()
@@ -890,6 +912,21 @@ void DirectiveSequencer::assignPolicy(NuguDirective* ndir)
 const std::string& DirectiveSequencer::getCanceledDialogId()
 {
     return last_cancel_dialog_id;
+}
+
+const NuguDirective* DirectiveSequencer::findPending(const std::string& name_space, const std::string& name)
+{
+    nugu_dbg("find '%s.%s' from scheduled_list", name_space.c_str(), name.c_str());
+    for (auto& ndir : scheduled_list) {
+        if (g_strcmp0(name_space.c_str(), nugu_directive_peek_namespace(ndir)) != 0)
+            continue;
+
+        if (g_strcmp0(name.c_str(), nugu_directive_peek_name(ndir)) == 0)
+            return ndir;
+    }
+
+    nugu_dbg("find '%s.%s' from pending", name_space.c_str(), name.c_str());
+    return pending->find(name_space.c_str(), name.c_str());
 }
 
 }
