@@ -292,7 +292,7 @@ void TTSAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* 
         return;
     }
 
-    if (state == PlaySyncState::Released && !is_finished && !is_prehandling) {
+    if (state == PlaySyncState::Released && cur_state == MediaPlayerState::PLAYING && !is_prehandling) {
         postProcessDirective(true);
         suspend();
     }
@@ -467,6 +467,7 @@ void TTSAgent::parsingStop(const char* message)
         ps_id = root["playServiceId"].asString();
 
     if (cur_state == MediaPlayerState::PLAYING) {
+        destroy_directive_by_agent = true;
         focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
     } else {
         std::string asr_focus_state;
