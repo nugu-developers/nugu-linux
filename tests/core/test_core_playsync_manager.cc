@@ -30,7 +30,7 @@
 
 using namespace NuguCore;
 
-const unsigned int TIMER_DOWNSCALE_FACTOR = 10;
+const unsigned int TIMER_DOWNSCALE_FACTOR = 50;
 std::mutex mutex;
 std::condition_variable cv;
 
@@ -778,9 +778,6 @@ static void test_playsync_manager_adjust_playstack_hold_time(TestFixture* fixtur
 
         // prepare
         fixture->playsync_manager->prepareSync(ps_id, fixture->ndir_info_disp);
-        auto& playsync_container = playstacks.at(ps_id);
-        g_assert(playsync_container.at("TTS").first == PlaySyncState::Prepared);
-        g_assert(playsync_container.at("Display").first == PlaySyncState::Prepared);
         g_assert(fixture->playsync_manager_listener->getSyncState(ps_id) == PlaySyncState::Prepared);
 
         // adjust hold time
@@ -792,8 +789,6 @@ static void test_playsync_manager_adjust_playstack_hold_time(TestFixture* fixtur
         // start
         fixture->playsync_manager->startSync(ps_id, "Display");
         fixture->playsync_manager->startSync(ps_id, "TTS");
-        g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
-        g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
         g_assert(fixture->playsync_manager_listener->getSyncState(ps_id) == PlaySyncState::Synced);
 
         // release
@@ -884,22 +879,15 @@ static void test_playsync_manager_stop_playstack_holding_after_timer(TestFixture
 
     const auto& playstacks = fixture->playsync_manager->getPlayStacks();
 
-    auto checkSynced([&] {
-        auto playsync_container = playstacks.at("ps_id_1");
-        g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
-        g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
-        g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
-    });
-
     // try to release
     fixture->playsync_manager->releaseSync("ps_id_1", "Display");
-    checkSynced();
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
 
     // stop playstack holding
     fixture->playsync_manager->clearHolding();
 
     onTimeElapsed(fixture);
-    checkSynced();
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
 
     // release by another dialog
     sub_test_playsync_manager_preset_sync(fixture, "ps_id_2");
@@ -920,11 +908,6 @@ static void test_playsync_manager_stop_playstack_holding_before_timer(TestFixtur
         fixture->playsync_manager->releaseSync("ps_id_2", "Display");
 
         onTimeElapsed(fixture);
-
-        // check whether maintain synced state
-        auto playsync_container = playstacks.at("ps_id_2");
-        g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
-        g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
         g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Synced);
     });
 
