@@ -173,7 +173,7 @@ void DisplayAgent::updateInfoForContext(Json::Value& ctx)
 void DisplayAgent::setCapabilityListener(ICapabilityListener* listener)
 {
     if (listener)
-        setListener(dynamic_cast<IDisplayListener*>(listener));
+        setDisplayListener(dynamic_cast<IDisplayListener*>(listener));
 }
 
 void DisplayAgent::displayRendered(const std::string& id)
@@ -244,7 +244,7 @@ void DisplayAgent::informControlResult(const std::string& id, ControlType type, 
         : sendEventControlFocusSucceeded(render_info->ps_id, direction);
 }
 
-void DisplayAgent::setListener(IDisplayListener* listener)
+void DisplayAgent::setDisplayListener(IDisplayListener* listener)
 {
     if (!listener)
         return;
@@ -253,7 +253,7 @@ void DisplayAgent::setListener(IDisplayListener* listener)
     render_helper->setDisplayListener(display_listener);
 }
 
-void DisplayAgent::removeListener(IDisplayListener* listener)
+void DisplayAgent::removeDisplayListener(IDisplayListener* listener)
 {
     if (!display_listener && (display_listener == listener))
         display_listener = nullptr;

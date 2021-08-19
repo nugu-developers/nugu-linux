@@ -44,8 +44,8 @@ public:
     void displayCleared(const std::string& id) override;
     void elementSelected(const std::string& id, const std::string& item_token, const std::string& postback) override;
     void informControlResult(const std::string& id, ControlType type, ControlDirection direction) override;
-    void setListener(IDisplayListener* listener) override;
-    void removeListener(IDisplayListener* listener) override;
+    void setDisplayListener(IDisplayListener* listener) override;
+    void removeDisplayListener(IDisplayListener* listener) override;
     void stopRenderingTimer(const std::string& id) override;
     void refreshRenderingTimer(const std::string& id) override;
 

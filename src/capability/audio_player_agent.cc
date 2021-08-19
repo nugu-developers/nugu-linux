@@ -305,10 +305,8 @@ void AudioPlayerAgent::receiveCommandAll(const std::string& command, const std::
 
 void AudioPlayerAgent::setCapabilityListener(ICapabilityListener* listener)
 {
-    if (listener) {
+    if (listener)
         addListener(dynamic_cast<IAudioPlayerListener*>(listener));
-        setListener(dynamic_cast<IAudioPlayerDisplayListener*>(listener));
-    }
 }
 
 void AudioPlayerAgent::addListener(IAudioPlayerListener* listener)
@@ -544,11 +542,6 @@ bool AudioPlayerAgent::setMute(bool mute)
     return true;
 }
 
-void AudioPlayerAgent::displayRendered(const std::string& id)
-{
-    // TODO: integrate with playsync and session manager
-}
-
 void AudioPlayerAgent::displayCleared(const std::string& id)
 {
     auto render_info = render_helper->getRenderInfo(id);
@@ -566,17 +559,12 @@ void AudioPlayerAgent::displayCleared(const std::string& id)
     render_helper->removedRenderInfo(id);
 }
 
-void AudioPlayerAgent::elementSelected(const std::string& id, const std::string& item_token, const std::string& postback)
-{
-    // ignore
-}
-
 void AudioPlayerAgent::informControlResult(const std::string& id, ControlType type, ControlDirection direction)
 {
     sendEventControlLyricsPageSucceeded(direction == ControlDirection::NEXT ? "NEXT" : "PREVIOUS");
 }
 
-void AudioPlayerAgent::setListener(IDisplayListener* listener)
+void AudioPlayerAgent::setDisplayListener(IDisplayListener* listener)
 {
     if (listener == nullptr)
         return;
@@ -585,7 +573,7 @@ void AudioPlayerAgent::setListener(IDisplayListener* listener)
     render_helper->setDisplayListener(display_listener);
 }
 
-void AudioPlayerAgent::removeListener(IDisplayListener* listener)
+void AudioPlayerAgent::removeDisplayListener(IDisplayListener* listener)
 {
     if (listener == nullptr)
         return;
@@ -594,16 +582,6 @@ void AudioPlayerAgent::removeListener(IDisplayListener* listener)
 
     if (audio_display_listener == display_listener)
         display_listener = nullptr;
-}
-
-void AudioPlayerAgent::stopRenderingTimer(const std::string& id)
-{
-    // TODO: integrate with playsync and session manager
-}
-
-void AudioPlayerAgent::refreshRenderingTimer(const std::string& id)
-{
-    // ignore
 }
 
 void AudioPlayerAgent::mediaStateChanged(MediaPlayerState state)
@@ -1353,10 +1331,8 @@ void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
             aplayer_listener->shuffleChanged(shuffle, dialog_id);
     }
 
-    if (!template_id.empty()) {
-        for (const auto& aplayer_listener : aplayer_listeners)
-            aplayer_listener->updateMetaData(template_id, writer.write(root["metadata"]));
-    }
+    if (!template_id.empty() && display_listener)
+        display_listener->updateMetaData(template_id, writer.write(root["metadata"]));
 }
 
 void AudioPlayerAgent::parsingShowLyrics(const char* message)
