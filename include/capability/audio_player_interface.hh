@@ -56,7 +56,7 @@ enum class AudioPlayerEvent {
     LOAD_DONE, /**< This event is occurred when the content is loaded successfully */
     INVALID_URL, /**< This event is occurred when the content is not valid url */
     PAUSE_BY_DIRECTIVE, /**< This event is occurred when the agent receives a pause directive, it blocks content playback until another directive is received. */
-    PAUSE_BY_FOCUS,  /**< This event is occurred when the agent loses focus by another higher focus */
+    PAUSE_BY_FOCUS, /**< This event is occurred when the agent loses focus by another higher focus */
     PAUSE_BY_APPLICATION /**< This event is occurred when the application pause the mediaplayer directly access */
 };
 
@@ -73,7 +73,7 @@ enum class RepeatType {
  * @brief audioplayer listener interface
  * @see IAudioPlayerHandler
  */
-class IAudioPlayerListener : public IAudioPlayerDisplayListener {
+class IAudioPlayerListener : virtual public ICapabilityListener {
 public:
     virtual ~IAudioPlayerListener() = default;
 
@@ -136,6 +136,44 @@ public:
      * @return return true if cached content, otherwise false
      */
     virtual bool requestToGetCachedContent(const std::string& key, std::string& filepath) = 0;
+};
+
+/**
+ * @brief audioplayer's display listener interface
+ * @see IAudioPlayerHandler
+ */
+class IAudioPlayerDisplayListener : virtual public IDisplayListener {
+public:
+    virtual ~IAudioPlayerDisplayListener() = default;
+
+    /**
+     * @brief SDK request information about device's lyrics page available
+     * @param[in] id display template id
+     * @param[out] visible show lyrics page visible
+     * @return return device's lyrics page available
+     */
+    virtual bool requestLyricsPageAvailable(const std::string& id, bool& visible) = 0;
+
+    /**
+     * @brief Request to the user to show the lyrics page.
+     * @param[in] id display template id
+     * @return return true if show lyrics success, otherwise false.
+     */
+    virtual bool showLyrics(const std::string& id) = 0;
+
+    /**
+     * @brief Request to the user to hide the lyrics page.
+     * @param[in] id display template id
+     * @return return true if hide lyrics success, otherwise false.
+     */
+    virtual bool hideLyrics(const std::string& id) = 0;
+
+    /**
+     * @brief Request to update metadata the current display
+     * @param[in] id display template id
+     * @param[in] json_payload template in json format for display
+     */
+    virtual void updateMetaData(const std::string& id, const std::string& json_payload) = 0;
 };
 
 /**

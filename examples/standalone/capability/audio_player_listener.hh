@@ -23,6 +23,7 @@
 using namespace NuguCapability;
 
 class AudioPlayerListener : public IAudioPlayerListener,
+                            public IAudioPlayerDisplayListener,
                             public DisplayListener {
 public:
     AudioPlayerListener();

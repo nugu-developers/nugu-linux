@@ -49,7 +49,7 @@ enum class ControlType {
  * @brief display listener interface
  * @see IDisplayHandler
  */
-class IDisplayListener : public ICapabilityListener {
+class IDisplayListener : virtual public ICapabilityListener {
 public:
     virtual ~IDisplayListener() = default;
     /**
@@ -87,44 +87,6 @@ public:
 };
 
 /**
- * @brief audioplayer's display listener interface
- * @see IDisplayListener
- */
-class IAudioPlayerDisplayListener : virtual public IDisplayListener {
-public:
-    virtual ~IAudioPlayerDisplayListener() = default;
-
-    /**
-     * @brief SDK request information about device's lyrics page available
-     * @param[in] id display template id
-     * @param[out] visible show lyrics page visible
-     * @return return device's lyrics page available
-     */
-    virtual bool requestLyricsPageAvailable(const std::string& id, bool& visible) = 0;
-
-    /**
-     * @brief Request to the user to show the lyrics page.
-     * @param[in] id display template id
-     * @return return true if show lyrics success, otherwise false.
-     */
-    virtual bool showLyrics(const std::string& id) = 0;
-
-    /**
-     * @brief Request to the user to hide the lyrics page.
-     * @param[in] id display template id
-     * @return return true if hide lyrics success, otherwise false.
-     */
-    virtual bool hideLyrics(const std::string& id) = 0;
-
-    /**
-     * @brief Request to update metadata the current display
-     * @param[in] id display template id
-     * @param[in] json_payload template in json format for display
-     */
-    virtual void updateMetaData(const std::string& id, const std::string& json_payload) = 0;
-};
-
-/**
  * @brief display handler interface
  * @see IDisplayListener
  */
@@ -136,13 +98,13 @@ public:
      * @brief The user reports that the display was rendered.
      * @param[in] id display template id
      */
-    virtual void displayRendered(const std::string& id) = 0;
+    virtual void displayRendered(const std::string& id);
 
     /**
      * @brief The user reports that the display is cleared.
      * @param[in] id display template id
      */
-    virtual void displayCleared(const std::string& id) = 0;
+    virtual void displayCleared(const std::string& id);
 
     /**
      * @brief The user informs the selected item of the list and reports the token information of the item.
@@ -150,7 +112,7 @@ public:
      * @param[in] item_token parsed token from metadata
      * @param[in] postback postback data if the item is selectable
      */
-    virtual void elementSelected(const std::string& id, const std::string& item_token, const std::string& postback = "") = 0;
+    virtual void elementSelected(const std::string& id, const std::string& item_token, const std::string& postback = "");
 
     /**
      * @brief The user informs the control result
@@ -158,30 +120,30 @@ public:
      * @param[in] type control type
      * @param[in] direction control direction
      */
-    virtual void informControlResult(const std::string& id, ControlType type, ControlDirection direction) = 0;
+    virtual void informControlResult(const std::string& id, ControlType type, ControlDirection direction);
 
     /**
-     * @brief Set the Listener object
+     * @brief Set the IDisplayListener object
      * @param[in] listener listener object
      */
-    virtual void setListener(IDisplayListener* listener) = 0;
+    virtual void setDisplayListener(IDisplayListener* listener);
 
     /**
-     * @brief Remove the Listener object
+     * @brief Remove the IDisplayListener object
      */
-    virtual void removeListener(IDisplayListener* listener) = 0;
+    virtual void removeDisplayListener(IDisplayListener* listener);
 
     /**
      * @brief Stop display rendering hold timer.
      * @param[in] id display template id
      */
-    virtual void stopRenderingTimer(const std::string& id) = 0;
+    virtual void stopRenderingTimer(const std::string& id);
 
     /**
      * @brief Refresh display rendering hold timer.
      * @param[in] id display template id
      */
-    virtual void refreshRenderingTimer(const std::string& id) = 0;
+    virtual void refreshRenderingTimer(const std::string& id);
 };
 
 /**

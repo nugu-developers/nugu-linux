@@ -75,18 +75,14 @@ public:
     bool setVolume(int volume) override;
     bool setMute(bool mute) override;
 
-    void displayRendered(const std::string& id) override;
     void displayCleared(const std::string& id) override;
-    void elementSelected(const std::string& id, const std::string& item_token, const std::string& postback) override;
     void informControlResult(const std::string& id, ControlType type, ControlDirection direction) override;
-    void setListener(IDisplayListener* listener) override;
-    void removeListener(IDisplayListener* listener) override;
-    void stopRenderingTimer(const std::string& id) override;
-    void refreshRenderingTimer(const std::string& id) override;
+    void setDisplayListener(IDisplayListener* listener) override;
+    void removeDisplayListener(IDisplayListener* listener) override;
 
+    // implements IMediaPlayerListener
     void mediaStateChanged(MediaPlayerState state) override;
     void mediaEventReport(MediaPlayerEvent event) override;
-
     void mediaChanged(const std::string& url) override;
     void durationChanged(int duration) override;
     void positionChanged(int position) override;

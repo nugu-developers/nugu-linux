@@ -73,6 +73,7 @@ void CapabilityCollection::composeCapabilityFactory()
         if (!audio_player_handler) {
             aplayer_listener = make_unique<AudioPlayerListener>();
             audio_player_handler = makeCapability<AudioPlayerAgent, IAudioPlayerHandler>(aplayer_listener.get());
+            audio_player_handler->setDisplayListener(aplayer_listener.get());
         }
 
         return audio_player_handler.get();
