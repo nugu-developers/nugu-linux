@@ -45,6 +45,9 @@ public:
     bool showLyrics(const std::string& id) override;
     bool hideLyrics(const std::string& id) override;
     void updateMetaData(const std::string& id, const std::string& json_payload) override;
+
+private:
+    bool is_showing_lyrics = false;
 };
 
 #endif /* __AUDIO_PLAYER_LISTENER_H__ */

@@ -115,19 +115,22 @@ bool AudioPlayerListener::requestToGetCachedContent(const std::string& key, std:
 bool AudioPlayerListener::requestLyricsPageAvailable(const std::string& id, bool& visible)
 {
     std::cout << "[AudioPlayer] requestLyricsPageAvailable" << std::endl;
-    return false;
+    visible = is_showing_lyrics;
+    return true;
 }
 
 bool AudioPlayerListener::showLyrics(const std::string& id)
 {
     std::cout << "[AudioPlayer] showLyrics" << std::endl;
-    return false;
+    is_showing_lyrics = true;
+    return true;
 }
 
 bool AudioPlayerListener::hideLyrics(const std::string& id)
 {
     std::cout << "[AudioPlayer] hideLyrics" << std::endl;
-    return false;
+    is_showing_lyrics = false;
+    return true;
 }
 
 void AudioPlayerListener::updateMetaData(const std::string& id, const std::string& json_payload)
