@@ -1341,28 +1341,28 @@ void AudioPlayerAgent::parsingShowLyrics(const char* message)
     Json::Reader reader;
     std::string playserviceid;
 
-    if (!reader.parse(message, root)) {
-        nugu_error("parsing error");
-        return;
-    }
+    try {
+        if (!reader.parse(message, root))
+            throw "parsing error";
 
-    if (cur_token.empty()) {
-        nugu_warn("there is no media content in the playlist.");
-        return;
-    }
+        if (cur_token.empty())
+            throw "there is no media content in the playlist.";
 
-    playserviceid = root["playServiceId"].asString();
-    if (playserviceid.size() == 0) {
-        nugu_error("There is no mandatory data in directive message");
-        return;
-    }
-    if (playserviceid != ps_id) {
-        nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
-        return;
-    }
+        playserviceid = root["playServiceId"].asString();
+        if (playserviceid.size() == 0)
+            throw "There is no mandatory data in directive message";
 
-    if (display_listener)
-        display_listener->showLyrics(template_id);
+        if (playserviceid != ps_id)
+            throw "The playServiceId is different.";
+
+        if (!display_listener || !display_listener->showLyrics(template_id))
+            throw "fail to show lyrics";
+
+        sendEventShowLyricsSucceeded();
+    } catch (const char* message) {
+        sendEventShowLyricsFailed();
+        nugu_error(message);
+    }
 }
 
 void AudioPlayerAgent::parsingHideLyrics(const char* message)
@@ -1371,28 +1371,28 @@ void AudioPlayerAgent::parsingHideLyrics(const char* message)
     Json::Reader reader;
     std::string playserviceid;
 
-    if (!reader.parse(message, root)) {
-        nugu_error("parsing error");
-        return;
-    }
+    try {
+        if (!reader.parse(message, root))
+            throw "parsing error";
 
-    if (cur_token.empty()) {
-        nugu_warn("there is no media content in the playlist.");
-        return;
-    }
+        if (cur_token.empty())
+            throw "there is no media content in the playlist.";
 
-    playserviceid = root["playServiceId"].asString();
-    if (playserviceid.size() == 0) {
-        nugu_error("There is no mandatory data in directive message");
-        return;
-    }
-    if (playserviceid != ps_id) {
-        nugu_error("different play service id: %s (current play service id: %s)", playserviceid.c_str(), ps_id.c_str());
-        return;
-    }
+        playserviceid = root["playServiceId"].asString();
+        if (playserviceid.size() == 0)
+            throw "There is no mandatory data in directive message";
 
-    if (display_listener)
-        display_listener->hideLyrics(template_id);
+        if (playserviceid != ps_id)
+            throw "The playServiceId is different.";
+
+        if (!display_listener || !display_listener->hideLyrics(template_id))
+            throw "fail to hide lyrics";
+
+        sendEventHideLyricsSucceeded();
+    } catch (const char* message) {
+        sendEventHideLyricsFailed();
+        nugu_error(message);
+    }
 }
 
 void AudioPlayerAgent::parsingControlLyricsPage(const char* message)
