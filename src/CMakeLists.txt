@@ -15,7 +15,7 @@ ADD_LIBRARY(libnugu SHARED
 
 TARGET_LINK_LIBRARIES(libnugu PUBLIC
 	${CMAKE_BINARY_DIR}/curl/lib/libcurl.a
-	${CMAKE_BINARY_DIR}/nghttp2/lib/libnghttp2_static.a
+	${CMAKE_BINARY_DIR}/nghttp2/lib/libnghttp2.a
 	${pkgs_LDFLAGS} ${LDFLAG_SOCKET} ${LDFLAG_DL})
 
 SET_TARGET_PROPERTIES(libnugu
