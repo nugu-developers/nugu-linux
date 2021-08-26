@@ -210,7 +210,8 @@ void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
 {
     nugu_dbg("message: %s", message);
 
-    is_paused = strcmp(dname, "Pause") == 0;
+    if (strcmp(dname, "UpdateMetadata"))
+        is_paused = strcmp(dname, "Pause") == 0;
 
     // directive name check
     if (!strcmp(dname, "Play"))
