@@ -33,6 +33,7 @@ public:
     void onStackAdded(const std::string& ps_id)
     {
         ps_ids.emplace_back(ps_id);
+        stack_added_call_count++;
     }
 
     void onStackRemoved(const std::string& ps_id)
@@ -58,9 +59,15 @@ public:
         inter_hook_func = hook_func;
     }
 
+    int getStackAddedCallCount()
+    {
+        return stack_added_call_count;
+    }
+
 private:
     std::vector<std::string> ps_ids;
     std::function<void()> inter_hook_func = nullptr;
+    int stack_added_call_count = 0;
 };
 
 static NuguDirective* createDirective(const std::string& name_space, const std::string& name, const std::string& groups)
@@ -78,6 +85,7 @@ typedef struct {
     NuguDirective* ndir_media;
     NuguDirective* ndir_disp;
     NuguDirective* ndir_expect_speech;
+    NuguDirective* ndir_alert;
 } TestFixture;
 
 static void setup(TestFixture* fixture, gconstpointer user_data)
@@ -90,6 +98,7 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
     fixture->ndir_media = createDirective("AudioPlayer", "test", "{ \"directives\": [\"AudioPlayer.Play\"] }");
     fixture->ndir_disp = createDirective("Display", "test", "{ \"directives\": [\"Display.FullText1\", \"TTS.Speak\"] }");
     fixture->ndir_expect_speech = createDirective("ASR", "test", "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\"] }");
+    fixture->ndir_alert = createDirective("Alerts", "test", "{ \"directives\": [\"Alerts.SetAlert\"] }");
 }
 
 static void teardown(TestFixture* fixture, gconstpointer user_data)
@@ -98,6 +107,7 @@ static void teardown(TestFixture* fixture, gconstpointer user_data)
     nugu_directive_unref(fixture->ndir_media);
     nugu_directive_unref(fixture->ndir_disp);
     nugu_directive_unref(fixture->ndir_expect_speech);
+    nugu_directive_unref(fixture->ndir_alert);
 
     fixture->playstack_manager_listener.reset();
     fixture->playstack_manager_listener_snd.reset();
@@ -227,6 +237,26 @@ static void test_playstack_manager_layer_policy(TestFixture* fixture, gconstpoin
     g_assert(playstack_container.first.size() == 1
         && playstack_container.first.cbegin()->first == "ps_id_5"
         && playstack_container.first.cbegin()->second == PlayStackActivity::Media);
+}
+
+static void test_playstack_manager_update_activity(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& playstack_container = fixture->playstack_manager->getPlayStackContainer();
+    fixture->playstack_manager->addListener(fixture->playstack_manager_listener.get());
+
+    fixture->playstack_manager->add("ps_id_1", fixture->ndir_info);
+    g_assert(playstack_container.first.cbegin()->second == PlayStackActivity::TTS);
+    g_assert(fixture->playstack_manager_listener->getStackAddedCallCount() == 1);
+
+    // Not Media : update activity as holding playstack (not call listener)
+    fixture->playstack_manager->add("ps_id_1", fixture->ndir_alert);
+    g_assert(playstack_container.first.cbegin()->second == PlayStackActivity::Alert);
+    g_assert(fixture->playstack_manager_listener->getStackAddedCallCount() == 1);
+
+    // Media : update activity as removing and adding playstack (call listener)
+    fixture->playstack_manager->add("ps_id_1", fixture->ndir_media);
+    g_assert(playstack_container.first.cbegin()->second == PlayStackActivity::Media);
+    g_assert(fixture->playstack_manager_listener->getStackAddedCallCount() == 2);
 }
 
 static void test_playstack_manager_control_holding(TestFixture* fixture, gconstpointer ignored)
@@ -401,6 +431,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/listener", test_playstack_manager_listener);
     G_TEST_ADD_FUNC("/core/PlayStackManager/holdStack", test_playstack_manager_hold_stack);
     G_TEST_ADD_FUNC("/core/PlayStackManager/layerPolicy", test_playstack_manager_layer_policy);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/updateActivity", test_playstack_manager_update_activity);
     G_TEST_ADD_FUNC("/core/PlayStackManager/controlHolding", test_playstack_manager_control_holding);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkStack", test_playstack_manager_check_stack);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkExpectSpeech", test_playstack_manager_check_expect_speech);
