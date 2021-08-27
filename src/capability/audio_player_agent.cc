@@ -210,7 +210,7 @@ void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
 {
     nugu_dbg("message: %s", message);
 
-    if (strcmp(dname, "UpdateMetadata"))
+    if (hasToSetPauseState(dname))
         is_paused = strcmp(dname, "Pause") == 0;
 
     // directive name check
@@ -1682,6 +1682,16 @@ std::string AudioPlayerAgent::playerActivity(AudioPlayerState state)
     }
 
     return activity;
+}
+
+bool AudioPlayerAgent::hasToSetPauseState(const std::string& dname)
+{
+    std::vector<std::string> skip_dirs { "UpdateMetadata", "ShowLyrics", "HideLyrics", "ControlLyricsPage" };
+
+    return !std::any_of(skip_dirs.cbegin(), skip_dirs.cend(),
+        [&](const std::string& element) {
+            return dname == element;
+        });
 }
 
 void AudioPlayerAgent::directiveDataCallback(NuguDirective* ndir, int seq, void* userdata)

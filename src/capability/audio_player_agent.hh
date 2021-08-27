@@ -136,6 +136,7 @@ private:
 
     std::string playbackError(PlaybackError error);
     std::string playerActivity(AudioPlayerState state);
+    bool hasToSetPauseState(const std::string& dname);
 
     static void directiveDataCallback(NuguDirective* ndir, int seq, void* userdata);
     static void getAttachmentData(NuguDirective* ndir, void* userdata);
