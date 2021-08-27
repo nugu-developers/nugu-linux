@@ -159,9 +159,15 @@ bool PlayStackManager::add(const std::string& ps_id, NuguDirective* ndir)
     is_expect_speech = hasExpectSpeech(ndir);
     is_stacked = isStackedCondition(activity);
 
-    if ((playstack_container.first.find(ps_id) != playstack_container.first.end()) && getPlayStackActivity(ps_id) == activity) {
-        nugu_warn("%s is already added.", ps_id.c_str());
-        return false;
+    if (playstack_container.first.find(ps_id) != playstack_container.first.end()) {
+        if (getPlayStackActivity(ps_id) == activity) {
+            nugu_warn("%s is already added.", ps_id.c_str());
+            return false;
+        } else if (activity != PlayStackActivity::Media) {
+            playstack_container.first.at(ps_id) = activity;
+            Debug::showPlayStack(playstack_container);
+            return false;
+        }
     }
 
     has_adding_playstack = hasDisplayRenderingInfo(ndir);
