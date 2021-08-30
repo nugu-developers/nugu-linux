@@ -58,14 +58,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classNuguClientKit_1_1Capability.html#a517562d581457af86a33bb304ccdc0e4",
-"classNuguClientKit_1_1ISessionManager.html#a18a12639f138f2490ce3a730ce8a1ff6",
-"group__FocusManagerInterface.html#ga75aa24467b127e0c8a2a305332e317c2",
-"group__NuguClient.html",
-"group__NuguPcm.html#gaf6f874df1d927d3871de1d52cad7c7b6",
-"group__Profiling.html#ga4de161c334fe307b410c00295446733f",
-"group__nugu__network.html#gac814994ac3d63c81b6c7d2ec6eac6e19",
-"speech__recognizer__interface_8hh.html#ggaae383c251ee0fa6e96e4c53b9f5d9a3aac0ff938e396e72c225bd66562b80a77e"
+"classNuguClientKit_1_1Capability.html#a0ec8b1adcf68e5f86a8fca679b02aa3b",
+"classNuguClientKit_1_1IRoutineManager.html#a2074339702aa578b30eee8921f0ab90e",
+"group__FocusManagerInterface.html#ga15ceaaf04c8ccd82f6c51f28fa8e9809",
+"group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317eab205205bc58adbefd02d8ba357b9c57f",
+"group__NuguPcm.html#ga92393f021fd14b66a040b659855acfb5",
+"group__PhoneCallInterface.html#ggab1dedd3c529196ead76e161090bbe9dda1741b869c82993c62163223d8fefbba4",
+"group__nugu__network.html#ga4e685244e26f4ad8e0bba02b12f063f7",
+"routine__manager__interface_8hh.html#gga85ba501685094b1c1d34f42229ed227ba50366a49630a416ab3ccaa004196027e"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

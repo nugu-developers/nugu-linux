@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.4.0</span>
+   &#160;<span id="projectnumber">1.5.0</span>
    </div>
   </td>
  </tr>
@@ -182,12 +182,12 @@ $(document).ready(function(){initNavTree('capability__interface_8hh_source.html'
 <div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160; </div>
 <div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1ICapabilityInterface.html#a924d11bcb69848094ba34699fec5ebf5">setCapabilityListener</a>(<a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a>* clistener) = 0;</div>
 <div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160; </div>
-<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1ICapabilityInterface.html#aaf19f7635391d5e6b323a5d17716596e">setCancelPolicy</a>(<a class="code" href="structNuguClientKit_1_1DirectiveCancelPolicy.html">DirectiveCancelPolicy</a>&amp;&amp; cancel_policy) = 0;</div>
-<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;};</div>
-<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
-<div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;} <span class="comment">// NuguClientKit</span></div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_CAPABILITY_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1ICapabilityInterface.html#a358f1009a2a641c85fd9a4bd35cf6cf5">setCancelPolicy</a>(<span class="keywordtype">bool</span> cancel_previous_dialog, <a class="code" href="structNuguClientKit_1_1DirectiveCancelPolicy.html">DirectiveCancelPolicy</a>&amp;&amp; cancel_policy = { <span class="keyword">true</span> }) = 0;</div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;};</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;} <span class="comment">// NuguClientKit</span></div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_CAPABILITY_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html_a74de074a2cac62173930545fecf1f370"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html#a74de074a2cac62173930545fecf1f370">NuguClientKit::ICapabilityInterface::removeEventResultCallback</a></div><div class="ttdeci">virtual void removeEventResultCallback(const std::string &amp;ename)=0</div><div class="ttdoc">Remove event result callback.</div></div>
@@ -198,7 +198,6 @@ $(document).ready(function(){initNavTree('capability__interface_8hh_source.html'
 <div class="ttc" id="agroup__NuguDirective_html_ga0e689d212db128a33b2869181169e216"><div class="ttname"><a href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a></div><div class="ttdeci">struct _nugu_directive NuguDirective</div><div class="ttdoc">Directive object.</div><div class="ttdef"><b>Definition:</b> nugu_directive.h:45</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html_a21ea22765c766b1f3e54793f4492b861"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html#a21ea22765c766b1f3e54793f4492b861">NuguClientKit::ICapabilityInterface::preprocessDirective</a></div><div class="ttdeci">virtual void preprocessDirective(NuguDirective *ndir)=0</div><div class="ttdoc">Receive a directive preprocessing request from Directive sequencer.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html_a866845e97daba28beee2080119663cf3"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html#a866845e97daba28beee2080119663cf3">NuguClientKit::ICapabilityInterface::setSuspendPolicy</a></div><div class="ttdeci">virtual void setSuspendPolicy(SuspendPolicy policy=SuspendPolicy::STOP)=0</div><div class="ttdoc">Set capability suspend policy.</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html_aaf19f7635391d5e6b323a5d17716596e"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html#aaf19f7635391d5e6b323a5d17716596e">NuguClientKit::ICapabilityInterface::setCancelPolicy</a></div><div class="ttdeci">virtual void setCancelPolicy(DirectiveCancelPolicy &amp;&amp;cancel_policy)=0</div><div class="ttdoc">Set directive cancel policy.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html_aac862ae36cdff4ff1d5256c219540459"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html#aac862ae36cdff4ff1d5256c219540459">NuguClientKit::ICapabilityInterface::setNuguCoreContainer</a></div><div class="ttdeci">virtual void setNuguCoreContainer(INuguCoreContainer *core_container)=0</div><div class="ttdoc">Set INuguCoreContainer for using functions in NuguCore.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html_a15d8782f9a3ea99381f64fe5d159a2f2a615a46af313786fc4e349f34118be111"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html#a15d8782f9a3ea99381f64fe5d159a2f2a615a46af313786fc4e349f34118be111">NuguClientKit::ICapabilityInterface::SuspendPolicy::STOP</a></div><div class="ttdeci">@ STOP</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:64</div></div>
@@ -221,6 +220,7 @@ $(document).ready(function(){initNavTree('capability__interface_8hh_source.html'
 <div class="ttc" id="astructNuguClientKit_1_1DirectiveCancelPolicy_html_a95f6706c542e7efc815aa40d327397db"><div class="ttname"><a href="structNuguClientKit_1_1DirectiveCancelPolicy.html#a95f6706c542e7efc815aa40d327397db">NuguClientKit::DirectiveCancelPolicy::dir_groups</a></div><div class="ttdeci">std::set&lt; std::string &gt; dir_groups</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:47</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1INuguCoreContainer_html"><div class="ttname"><a href="classNuguClientKit_1_1INuguCoreContainer.html">NuguClientKit::INuguCoreContainer</a></div><div class="ttdoc">NuguCoreContainer interface.</div><div class="ttdef"><b>Definition:</b> nugu_core_container_interface.hh:43</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html_a57df5e42c8f35435207116393e529a0c"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html#a57df5e42c8f35435207116393e529a0c">NuguClientKit::ICapabilityInterface::notifyEventResponse</a></div><div class="ttdeci">virtual void notifyEventResponse(const std::string &amp;msg_id, const std::string &amp;data, bool success)=0</div><div class="ttdoc">Notify event response info.</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html_a358f1009a2a641c85fd9a4bd35cf6cf5"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html#a358f1009a2a641c85fd9a4bd35cf6cf5">NuguClientKit::ICapabilityInterface::setCancelPolicy</a></div><div class="ttdeci">virtual void setCancelPolicy(bool cancel_previous_dialog, DirectiveCancelPolicy &amp;&amp;cancel_policy={ true })=0</div><div class="ttdoc">Set directive cancel policy.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html_a15d8782f9a3ea99381f64fe5d159a2f2"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html#a15d8782f9a3ea99381f64fe5d159a2f2">NuguClientKit::ICapabilityInterface::SuspendPolicy</a></div><div class="ttdeci">SuspendPolicy</div><div class="ttdoc">Capability suspend policy.</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:69</div></div>
 <div class="ttc" id="anugu__core__container__interface_8hh_html"><div class="ttname"><a href="nugu__core__container__interface_8hh.html">nugu_core_container_interface.hh</a></div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html_a880b93080d0722f676cea3dfdc0f7f39"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html#a880b93080d0722f676cea3dfdc0f7f39">NuguClientKit::ICapabilityInterface::receiveCommandAll</a></div><div class="ttdeci">virtual void receiveCommandAll(const std::string &amp;command, const std::string &amp;param)=0</div><div class="ttdoc">Process command received from capability manager.</div></div>
@@ -230,7 +230,7 @@ $(document).ready(function(){initNavTree('capability__interface_8hh_source.html'
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_261219a980049fd8e6168264a7da95ca.html">clientkit</a></li><li class="navelem"><a class="el" href="capability__interface_8hh.html">capability_interface.hh</a></li>
-    <li class="footer">Generated on Tue Jul 27 2021 05:39:28 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Aug 30 2021 08:02:12 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

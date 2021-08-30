@@ -34,7 +34,7 @@ var classNuguClientKit_1_1Capability =
     [ "getProperty", "classNuguClientKit_1_1Capability.html#ac6183da2d32a23d4e8f14184adaece3c", null ],
     [ "getProperties", "classNuguClientKit_1_1Capability.html#a517562d581457af86a33bb304ccdc0e4", null ],
     [ "setCapabilityListener", "classNuguClientKit_1_1Capability.html#acae3e0c4ac110181e9052d5a7cc2cc7d", null ],
-    [ "setCancelPolicy", "classNuguClientKit_1_1Capability.html#a65eaa7ed164b76806e0c50d6246c5a1a", null ],
+    [ "setCancelPolicy", "classNuguClientKit_1_1Capability.html#ab7b374ebd48c03bce1e96a73c6fa600e", null ],
     [ "receiveCommand", "classNuguClientKit_1_1Capability.html#a980b5998d6aef6322d79ffb98ba11012", null ],
     [ "receiveCommandAll", "classNuguClientKit_1_1Capability.html#adf77c76b8685f88041910d0db4a27b16", null ],
     [ "parsingDirective", "classNuguClientKit_1_1Capability.html#a3289c47ce9c38309540d111e3fad4998", null ],

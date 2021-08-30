@@ -33,7 +33,7 @@ var group__CapabilityInterface =
       [ "getProperty", "classNuguClientKit_1_1ICapabilityInterface.html#a54ca2094bb03d7c304502728b2049f95", null ],
       [ "getProperties", "classNuguClientKit_1_1ICapabilityInterface.html#a5fd925f55b21c594d45d7cc6f6416cd4", null ],
       [ "setCapabilityListener", "classNuguClientKit_1_1ICapabilityInterface.html#a924d11bcb69848094ba34699fec5ebf5", null ],
-      [ "setCancelPolicy", "classNuguClientKit_1_1ICapabilityInterface.html#aaf19f7635391d5e6b323a5d17716596e", null ]
+      [ "setCancelPolicy", "classNuguClientKit_1_1ICapabilityInterface.html#a358f1009a2a641c85fd9a4bd35cf6cf5", null ]
     ] ],
     [ "ICapabilityListener", "classNuguClientKit_1_1ICapabilityListener.html", [
       [ "~ICapabilityListener", "classNuguClientKit_1_1ICapabilityListener.html#a3ecb6d5ff80bcee3c7c88cf267e9d100", null ]

@@ -8,6 +8,7 @@ var group__SDKNuguCapability =
     [ "ExtensionInterface", "group__ExtensionInterface.html", "group__ExtensionInterface" ],
     [ "MicInterface", "group__MicInterface.html", "group__MicInterface" ],
     [ "NudgeInterface", "group__NudgeInterface.html", "group__NudgeInterface" ],
+    [ "PhoneCallInterface", "group__PhoneCallInterface.html", "group__PhoneCallInterface" ],
     [ "RoutineInterface", "group__RoutineInterface.html", "group__RoutineInterface" ],
     [ "SessionInterface", "group__SessionInterface.html", "group__SessionInterface" ],
     [ "SoundInterface", "group__SoundInterface.html", "group__SoundInterface" ],

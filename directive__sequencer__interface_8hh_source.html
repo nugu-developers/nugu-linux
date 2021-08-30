@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.4.0</span>
+   &#160;<span id="projectnumber">1.5.0</span>
    </div>
   </td>
  </tr>
@@ -155,11 +155,13 @@ $(document).ready(function(){initNavTree('directive__sequencer__interface_8hh_so
 <div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1IDirectiveSequencer.html#aeb41bc841fce2f6e7d0c581408ae3afc">add</a>(<a class="code" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a>* ndir) = 0;</div>
 <div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
 <div class="line"><a name="l00175"></a><span class="lineno">  175</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">const</span> std::string&amp; <a class="code" href="classNuguClientKit_1_1IDirectiveSequencer.html#a7a91d062c2d97f16d3d06ec2440370d4">getCanceledDialogId</a>() = 0;</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;};</div>
-<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160; </div>
-<div class="line"><a name="l00182"></a><span class="lineno">  182</span>&#160;} <span class="comment">// NuguClientKit</span></div>
-<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160; </div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_DIRECTIVE_SEQUENCER_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno">  183</span>&#160;    <span class="keyword">virtual</span> <span class="keyword">const</span> <a class="code" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a>* <a class="code" href="classNuguClientKit_1_1IDirectiveSequencer.html#af63122e1ac0fa964df6f45a9e4b1b76b">findPending</a>(<span class="keyword">const</span> std::string&amp; name_space, <span class="keyword">const</span> std::string&amp; name) = 0;</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;};</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160; </div>
+<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160;} <span class="comment">// NuguClientKit</span></div>
+<div class="line"><a name="l00191"></a><span class="lineno">  191</span>&#160; </div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_DIRECTIVE_SEQUENCER_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="astructNuguClientKit_1_1BlockingPolicy_html"><div class="ttname"><a href="structNuguClientKit_1_1BlockingPolicy.html">NuguClientKit::BlockingPolicy</a></div><div class="ttdoc">BlockingPolicy.</div><div class="ttdef"><b>Definition:</b> directive_sequencer_interface.hh:51</div></div>
@@ -183,6 +185,7 @@ $(document).ready(function(){initNavTree('directive__sequencer__interface_8hh_so
 <div class="ttc" id="aclassNuguClientKit_1_1IDirectiveSequencer_html_a9ff3b3c00fe65bb5e0ca211c5eaa8388"><div class="ttname"><a href="classNuguClientKit_1_1IDirectiveSequencer.html#a9ff3b3c00fe65bb5e0ca211c5eaa8388">NuguClientKit::IDirectiveSequencer::removeListener</a></div><div class="ttdeci">virtual void removeListener(const std::string &amp;name_space, IDirectiveSequencerListener *listener)=0</div><div class="ttdoc">Remove the Listener object.</div></div>
 <div class="ttc" id="agroup__NuguDirective_html_ggae3bc153e4b821722bfcc20aee94727fda2eaf7c456a90163040568638bb6b39a8"><div class="ttname"><a href="group__NuguDirective.html#ggae3bc153e4b821722bfcc20aee94727fda2eaf7c456a90163040568638bb6b39a8">NUGU_DIRECTIVE_MEDIUM_NONE</a></div><div class="ttdeci">@ NUGU_DIRECTIVE_MEDIUM_NONE</div><div class="ttdef"><b>Definition:</b> nugu_directive.h:53</div></div>
 <div class="ttc" id="agroup__DirectiveSequencerInterface_html_gga27f22301768541185c29c12af55aa862ab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="group__DirectiveSequencerInterface.html#gga27f22301768541185c29c12af55aa862ab50339a10e1de285ac99d4c3990b8693">NuguClientKit::BlockingMedium::NONE</a></div><div class="ttdeci">@ NONE</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1IDirectiveSequencer_html_af63122e1ac0fa964df6f45a9e4b1b76b"><div class="ttname"><a href="classNuguClientKit_1_1IDirectiveSequencer.html#af63122e1ac0fa964df6f45a9e4b1b76b">NuguClientKit::IDirectiveSequencer::findPending</a></div><div class="ttdeci">virtual const NuguDirective * findPending(const std::string &amp;name_space, const std::string &amp;name)=0</div><div class="ttdoc">Find directive from pending list.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IDirectiveSequencer_html_aebee90a42d7ab6dd9759633f5a43b769"><div class="ttname"><a href="classNuguClientKit_1_1IDirectiveSequencer.html#aebee90a42d7ab6dd9759633f5a43b769">NuguClientKit::IDirectiveSequencer::cancel</a></div><div class="ttdeci">virtual bool cancel(const std::string &amp;dialog_id, bool cancel_active_directive=true)=0</div><div class="ttdoc">Cancel all pending directives related to the dialog_id. The canceled directives are freed.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IDirectiveSequencer_html_a7a91d062c2d97f16d3d06ec2440370d4"><div class="ttname"><a href="classNuguClientKit_1_1IDirectiveSequencer.html#a7a91d062c2d97f16d3d06ec2440370d4">NuguClientKit::IDirectiveSequencer::getCanceledDialogId</a></div><div class="ttdeci">virtual const std::string &amp; getCanceledDialogId()=0</div><div class="ttdoc">Get the last canceled dialog_id.</div></div>
 <div class="ttc" id="agroup__DirectiveSequencerInterface_html_gga27f22301768541185c29c12af55aa862ae423b8bde9bfbfd7e9409b23b23aed91"><div class="ttname"><a href="group__DirectiveSequencerInterface.html#gga27f22301768541185c29c12af55aa862ae423b8bde9bfbfd7e9409b23b23aed91">NuguClientKit::BlockingMedium::AUDIO</a></div><div class="ttdeci">@ AUDIO</div></div>
@@ -193,7 +196,7 @@ $(document).ready(function(){initNavTree('directive__sequencer__interface_8hh_so
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_261219a980049fd8e6168264a7da95ca.html">clientkit</a></li><li class="navelem"><a class="el" href="directive__sequencer__interface_8hh.html">directive_sequencer_interface.hh</a></li>
-    <li class="footer">Generated on Tue Jul 27 2021 05:39:28 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Aug 30 2021 08:02:12 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

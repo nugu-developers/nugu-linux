@@ -19,6 +19,8 @@ var annotated_dup =
       [ "IMicListener", "classNuguCapability_1_1IMicListener.html", "classNuguCapability_1_1IMicListener" ],
       [ "INudgeHandler", "classNuguCapability_1_1INudgeHandler.html", "classNuguCapability_1_1INudgeHandler" ],
       [ "INudgeListener", "classNuguCapability_1_1INudgeListener.html", "classNuguCapability_1_1INudgeListener" ],
+      [ "IPhoneCallHandler", "classNuguCapability_1_1IPhoneCallHandler.html", "classNuguCapability_1_1IPhoneCallHandler" ],
+      [ "IPhoneCallListener", "classNuguCapability_1_1IPhoneCallListener.html", "classNuguCapability_1_1IPhoneCallListener" ],
       [ "IRoutineHandler", "classNuguCapability_1_1IRoutineHandler.html", "classNuguCapability_1_1IRoutineHandler" ],
       [ "IRoutineListener", "classNuguCapability_1_1IRoutineListener.html", "classNuguCapability_1_1IRoutineListener" ],
       [ "ISessionHandler", "classNuguCapability_1_1ISessionHandler.html", "classNuguCapability_1_1ISessionHandler" ],

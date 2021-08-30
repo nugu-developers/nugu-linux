@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['volume_1750',['volume',['../classNuguClientKit_1_1IMediaPlayer.html#a674ba3231d646502f00008ecfcf2d1af',1,'NuguClientKit::IMediaPlayer']]],
-  ['volumechanged_1751',['volumeChanged',['../classNuguClientKit_1_1IMediaPlayerListener.html#a3cea4f5ed081bfdc2c18189f1ac2dce0',1,'NuguClientKit::IMediaPlayerListener']]]
+  ['volume_1799',['volume',['../classNuguClientKit_1_1IMediaPlayer.html#a674ba3231d646502f00008ecfcf2d1af',1,'NuguClientKit::IMediaPlayer']]],
+  ['volumechanged_1800',['volumeChanged',['../classNuguClientKit_1_1IMediaPlayerListener.html#a3cea4f5ed081bfdc2c18189f1ac2dce0',1,'NuguClientKit::IMediaPlayerListener']]]
 ];

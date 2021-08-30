@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.4.0</span>
+   &#160;<span id="projectnumber">1.5.0</span>
    </div>
   </td>
  </tr>
@@ -126,7 +126,7 @@ $(document).ready(function(){initNavTree('audio__player__interface_8hh_source.ht
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <a class="code" href="group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910a36e295bd2bd5227fed19835511cd9c17">LOAD_DONE</a>, </div>
 <div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <a class="code" href="group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910a9ba423abc90614e7ec03992f6484517a">INVALID_URL</a>, </div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <a class="code" href="group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910a94ad5892ffef8d9e87dfc842b22fc7cd">PAUSE_BY_DIRECTIVE</a>, </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910ae0331bef8392778b3984b9a6cea4dd84">PAUSE_BY_FOCUS</a>,  </div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;    <a class="code" href="group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910ae0331bef8392778b3984b9a6cea4dd84">PAUSE_BY_FOCUS</a>, </div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;    <a class="code" href="group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910aeae18e18491252c439d9ded73e20966c">PAUSE_BY_APPLICATION</a> </div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;};</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
@@ -136,7 +136,7 @@ $(document).ready(function(){initNavTree('audio__player__interface_8hh_source.ht
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <a class="code" href="group__AudioPlayerInterface.html#gga0cb2048ef5fb507017eb53ee3e52716da5fb1f955b45e38e31789286a1790398d">ALL</a> </div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;};</div>
 <div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IAudioPlayerListener.html">   76</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1IAudioPlayerListener.html">IAudioPlayerListener</a> : <span class="keyword">public</span> <a class="code" href="classNuguCapability_1_1IAudioPlayerDisplayListener.html">IAudioPlayerDisplayListener</a> {</div>
+<div class="line"><a name="l00076"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IAudioPlayerListener.html">   76</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1IAudioPlayerListener.html">IAudioPlayerListener</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> {</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IAudioPlayerListener.html">IAudioPlayerListener</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
@@ -159,67 +159,82 @@ $(document).ready(function(){initNavTree('audio__player__interface_8hh_source.ht
 <div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> requestToGetCachedContent(<span class="keyword">const</span> std::string&amp; key, std::string&amp; filepath) = 0;</div>
 <div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160;};</div>
 <div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160; </div>
-<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IAudioPlayerHandler.html">  145</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1IAudioPlayerHandler.html">IAudioPlayerHandler</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a>,</div>
-<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;                            <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguCapability_1_1IDisplayHandler.html">IDisplayHandler</a> {</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IAudioPlayerHandler.html">IAudioPlayerHandler</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160; </div>
-<div class="line"><a name="l00154"></a><span class="lineno">  154</span>&#160;    <span class="keyword">virtual</span> std::string play() = 0;</div>
-<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160; </div>
-<div class="line"><a name="l00161"></a><span class="lineno">  161</span>&#160;    <span class="keyword">virtual</span> std::string stop(<span class="keywordtype">bool</span> direct_access = <span class="keyword">false</span>) = 0;</div>
-<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160; </div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160;    <span class="keyword">virtual</span> std::string next() = 0;</div>
-<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160; </div>
-<div class="line"><a name="l00173"></a><span class="lineno">  173</span>&#160;    <span class="keyword">virtual</span> std::string prev() = 0;</div>
-<div class="line"><a name="l00174"></a><span class="lineno">  174</span>&#160; </div>
-<div class="line"><a name="l00180"></a><span class="lineno">  180</span>&#160;    <span class="keyword">virtual</span> std::string pause(<span class="keywordtype">bool</span> direct_access = <span class="keyword">false</span>) = 0;</div>
-<div class="line"><a name="l00181"></a><span class="lineno">  181</span>&#160; </div>
-<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160;    <span class="keyword">virtual</span> std::string resume(<span class="keywordtype">bool</span> direct_access = <span class="keyword">false</span>) = 0;</div>
-<div class="line"><a name="l00188"></a><span class="lineno">  188</span>&#160; </div>
-<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> seek(<span class="keywordtype">int</span> msec) = 0;</div>
-<div class="line"><a name="l00194"></a><span class="lineno">  194</span>&#160; </div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keyword">virtual</span> std::string requestFavoriteCommand(<span class="keywordtype">bool</span> current_favorite) = 0;</div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160; </div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    <span class="keyword">virtual</span> std::string requestRepeatCommand(<a class="code" href="group__AudioPlayerInterface.html#ga0cb2048ef5fb507017eb53ee3e52716d">RepeatType</a> current_repeat) = 0;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160; </div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;    <span class="keyword">virtual</span> std::string requestShuffleCommand(<span class="keywordtype">bool</span> current_shuffle) = 0;</div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> setVolume(<span class="keywordtype">int</span> volume) = 0;</div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160; </div>
-<div class="line"><a name="l00228"></a><span class="lineno">  228</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> setMute(<span class="keywordtype">bool</span> mute) = 0;</div>
-<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160; </div>
-<div class="line"><a name="l00234"></a><span class="lineno">  234</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> addListener(<a class="code" href="classNuguCapability_1_1IAudioPlayerListener.html">IAudioPlayerListener</a>* listener) = 0;</div>
-<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160; </div>
-<div class="line"><a name="l00240"></a><span class="lineno">  240</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> removeListener(<a class="code" href="classNuguCapability_1_1IAudioPlayerListener.html">IAudioPlayerListener</a>* listener) = 0;</div>
-<div class="line"><a name="l00241"></a><span class="lineno">  241</span>&#160;};</div>
-<div class="line"><a name="l00242"></a><span class="lineno">  242</span>&#160; </div>
-<div class="line"><a name="l00247"></a><span class="lineno">  247</span>&#160;} <span class="comment">// NuguCapability</span></div>
-<div class="line"><a name="l00248"></a><span class="lineno">  248</span>&#160; </div>
-<div class="line"><a name="l00249"></a><span class="lineno">  249</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_AUDIO_PLAYER_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00145"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IAudioPlayerDisplayListener.html">  145</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1IAudioPlayerDisplayListener.html">IAudioPlayerDisplayListener</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguCapability_1_1IDisplayListener.html">IDisplayListener</a> {</div>
+<div class="line"><a name="l00146"></a><span class="lineno">  146</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IAudioPlayerDisplayListener.html">IAudioPlayerDisplayListener</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
+<div class="line"><a name="l00155"></a><span class="lineno">  155</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> requestLyricsPageAvailable(<span class="keyword">const</span> std::string&amp; <span class="keywordtype">id</span>, <span class="keywordtype">bool</span>&amp; visible) = 0;</div>
+<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
+<div class="line"><a name="l00162"></a><span class="lineno">  162</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> showLyrics(<span class="keyword">const</span> std::string&amp; <span class="keywordtype">id</span>) = 0;</div>
+<div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160; </div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> hideLyrics(<span class="keyword">const</span> std::string&amp; <span class="keywordtype">id</span>) = 0;</div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160; </div>
+<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> updateMetaData(<span class="keyword">const</span> std::string&amp; <span class="keywordtype">id</span>, <span class="keyword">const</span> std::string&amp; json_payload) = 0;</div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;};</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
+<div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IAudioPlayerHandler.html">  183</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1IAudioPlayerHandler.html">IAudioPlayerHandler</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a>,</div>
+<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160;                            <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguCapability_1_1IDisplayHandler.html">IDisplayHandler</a> {</div>
+<div class="line"><a name="l00185"></a><span class="lineno">  185</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IAudioPlayerHandler.html">IAudioPlayerHandler</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00187"></a><span class="lineno">  187</span>&#160; </div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160;    <span class="keyword">virtual</span> std::string play() = 0;</div>
+<div class="line"><a name="l00193"></a><span class="lineno">  193</span>&#160; </div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keyword">virtual</span> std::string stop(<span class="keywordtype">bool</span> direct_access = <span class="keyword">false</span>) = 0;</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keyword">virtual</span> std::string next() = 0;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160; </div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160;    <span class="keyword">virtual</span> std::string prev() = 0;</div>
+<div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160; </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;    <span class="keyword">virtual</span> std::string pause(<span class="keywordtype">bool</span> direct_access = <span class="keyword">false</span>) = 0;</div>
+<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160; </div>
+<div class="line"><a name="l00225"></a><span class="lineno">  225</span>&#160;    <span class="keyword">virtual</span> std::string resume(<span class="keywordtype">bool</span> direct_access = <span class="keyword">false</span>) = 0;</div>
+<div class="line"><a name="l00226"></a><span class="lineno">  226</span>&#160; </div>
+<div class="line"><a name="l00231"></a><span class="lineno">  231</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> seek(<span class="keywordtype">int</span> msec) = 0;</div>
+<div class="line"><a name="l00232"></a><span class="lineno">  232</span>&#160; </div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160;    <span class="keyword">virtual</span> std::string requestFavoriteCommand(<span class="keywordtype">bool</span> current_favorite) = 0;</div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160; </div>
+<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160;    <span class="keyword">virtual</span> std::string requestRepeatCommand(<a class="code" href="group__AudioPlayerInterface.html#ga0cb2048ef5fb507017eb53ee3e52716d">RepeatType</a> current_repeat) = 0;</div>
+<div class="line"><a name="l00246"></a><span class="lineno">  246</span>&#160; </div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;    <span class="keyword">virtual</span> std::string requestShuffleCommand(<span class="keywordtype">bool</span> current_shuffle) = 0;</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> setVolume(<span class="keywordtype">int</span> volume) = 0;</div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160; </div>
+<div class="line"><a name="l00266"></a><span class="lineno">  266</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> setMute(<span class="keywordtype">bool</span> mute) = 0;</div>
+<div class="line"><a name="l00267"></a><span class="lineno">  267</span>&#160; </div>
+<div class="line"><a name="l00272"></a><span class="lineno">  272</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> addListener(<a class="code" href="classNuguCapability_1_1IAudioPlayerListener.html">IAudioPlayerListener</a>* listener) = 0;</div>
+<div class="line"><a name="l00273"></a><span class="lineno">  273</span>&#160; </div>
+<div class="line"><a name="l00278"></a><span class="lineno">  278</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> removeListener(<a class="code" href="classNuguCapability_1_1IAudioPlayerListener.html">IAudioPlayerListener</a>* listener) = 0;</div>
+<div class="line"><a name="l00279"></a><span class="lineno">  279</span>&#160;};</div>
+<div class="line"><a name="l00280"></a><span class="lineno">  280</span>&#160; </div>
+<div class="line"><a name="l00285"></a><span class="lineno">  285</span>&#160;} <span class="comment">// NuguCapability</span></div>
+<div class="line"><a name="l00286"></a><span class="lineno">  286</span>&#160; </div>
+<div class="line"><a name="l00287"></a><span class="lineno">  287</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_AUDIO_PLAYER_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="agroup__AudioPlayerInterface_html_ga7e30478d0a2b8276e02040b468c32910"><div class="ttname"><a href="group__AudioPlayerInterface.html#ga7e30478d0a2b8276e02040b468c32910">NuguCapability::AudioPlayerEvent</a></div><div class="ttdeci">AudioPlayerEvent</div><div class="ttdoc">AudioPlayerEvent.</div><div class="ttdef"><b>Definition:</b> audio_player_interface.hh:53</div></div>
 <div class="ttc" id="adisplay__interface_8hh_html"><div class="ttname"><a href="display__interface_8hh.html">display_interface.hh</a></div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_gga7e30478d0a2b8276e02040b468c32910a9ba423abc90614e7ec03992f6484517a"><div class="ttname"><a href="group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910a9ba423abc90614e7ec03992f6484517a">NuguCapability::AudioPlayerEvent::INVALID_URL</a></div><div class="ttdeci">@ INVALID_URL</div></div>
+<div class="ttc" id="aclassNuguCapability_1_1IDisplayListener_html"><div class="ttname"><a href="classNuguCapability_1_1IDisplayListener.html">NuguCapability::IDisplayListener</a></div><div class="ttdoc">display listener interface</div><div class="ttdef"><b>Definition:</b> display_interface.hh:52</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_gga7e30478d0a2b8276e02040b468c32910aeae18e18491252c439d9ded73e20966c"><div class="ttname"><a href="group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910aeae18e18491252c439d9ded73e20966c">NuguCapability::AudioPlayerEvent::PAUSE_BY_APPLICATION</a></div><div class="ttdeci">@ PAUSE_BY_APPLICATION</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_ga0cb2048ef5fb507017eb53ee3e52716d"><div class="ttname"><a href="group__AudioPlayerInterface.html#ga0cb2048ef5fb507017eb53ee3e52716d">NuguCapability::RepeatType</a></div><div class="ttdeci">RepeatType</div><div class="ttdoc">RepeatType.</div><div class="ttdef"><b>Definition:</b> audio_player_interface.hh:66</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1IAudioPlayerListener_html"><div class="ttname"><a href="classNuguCapability_1_1IAudioPlayerListener.html">NuguCapability::IAudioPlayerListener</a></div><div class="ttdoc">audioplayer listener interface</div><div class="ttdef"><b>Definition:</b> audio_player_interface.hh:76</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_gga0cb2048ef5fb507017eb53ee3e52716dabc21e6484530fc9d0313cb816b733396"><div class="ttname"><a href="group__AudioPlayerInterface.html#gga0cb2048ef5fb507017eb53ee3e52716dabc21e6484530fc9d0313cb816b733396">NuguCapability::RepeatType::ONE</a></div><div class="ttdeci">@ ONE</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:64</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_gga7e30478d0a2b8276e02040b468c32910a5fac8c63be4469a35faa1ccde324a3a7"><div class="ttname"><a href="group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910a5fac8c63be4469a35faa1ccde324a3a7">NuguCapability::AudioPlayerEvent::UNDERRUN</a></div><div class="ttdeci">@ UNDERRUN</div></div>
-<div class="ttc" id="aclassNuguCapability_1_1IDisplayHandler_html"><div class="ttname"><a href="classNuguCapability_1_1IDisplayHandler.html">NuguCapability::IDisplayHandler</a></div><div class="ttdoc">display handler interface</div><div class="ttdef"><b>Definition:</b> display_interface.hh:131</div></div>
+<div class="ttc" id="aclassNuguCapability_1_1IDisplayHandler_html"><div class="ttname"><a href="classNuguCapability_1_1IDisplayHandler.html">NuguCapability::IDisplayHandler</a></div><div class="ttdoc">display handler interface</div><div class="ttdef"><b>Definition:</b> display_interface.hh:93</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityListener_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></div><div class="ttdoc">capability listener interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:54</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_gga0cb2048ef5fb507017eb53ee3e52716dab50339a10e1de285ac99d4c3990b8693"><div class="ttname"><a href="group__AudioPlayerInterface.html#gga0cb2048ef5fb507017eb53ee3e52716dab50339a10e1de285ac99d4c3990b8693">NuguCapability::RepeatType::NONE</a></div><div class="ttdeci">@ NONE</div></div>
 <div class="ttc" id="agroup__ASRInterface_html_ggafe4f48f063bafec608e5060090a9543baa5daf7f2ebbba4975d61dab1c40188c7"><div class="ttname"><a href="group__ASRInterface.html#ggafe4f48f063bafec608e5060090a9543baa5daf7f2ebbba4975d61dab1c40188c7">NuguCapability::ASRState::IDLE</a></div><div class="ttdeci">@ IDLE</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_gga0cb2048ef5fb507017eb53ee3e52716da5fb1f955b45e38e31789286a1790398d"><div class="ttname"><a href="group__AudioPlayerInterface.html#gga0cb2048ef5fb507017eb53ee3e52716da5fb1f955b45e38e31789286a1790398d">NuguCapability::RepeatType::ALL</a></div><div class="ttdeci">@ ALL</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_gga7e30478d0a2b8276e02040b468c32910ae0331bef8392778b3984b9a6cea4dd84"><div class="ttname"><a href="group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910ae0331bef8392778b3984b9a6cea4dd84">NuguCapability::AudioPlayerEvent::PAUSE_BY_FOCUS</a></div><div class="ttdeci">@ PAUSE_BY_FOCUS</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_gga7e30478d0a2b8276e02040b468c32910a94ad5892ffef8d9e87dfc842b22fc7cd"><div class="ttname"><a href="group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910a94ad5892ffef8d9e87dfc842b22fc7cd">NuguCapability::AudioPlayerEvent::PAUSE_BY_DIRECTIVE</a></div><div class="ttdeci">@ PAUSE_BY_DIRECTIVE</div></div>
-<div class="ttc" id="aclassNuguCapability_1_1IAudioPlayerDisplayListener_html"><div class="ttname"><a href="classNuguCapability_1_1IAudioPlayerDisplayListener.html">NuguCapability::IAudioPlayerDisplayListener</a></div><div class="ttdoc">audioplayer's display listener interface</div><div class="ttdef"><b>Definition:</b> display_interface.hh:93</div></div>
+<div class="ttc" id="aclassNuguCapability_1_1IAudioPlayerDisplayListener_html"><div class="ttname"><a href="classNuguCapability_1_1IAudioPlayerDisplayListener.html">NuguCapability::IAudioPlayerDisplayListener</a></div><div class="ttdoc">audioplayer's display listener interface</div><div class="ttdef"><b>Definition:</b> audio_player_interface.hh:145</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_ggadb28ffbfa534751260baf341f9819f94a09d4d696b4e935115b9313e3c412509a"><div class="ttname"><a href="group__AudioPlayerInterface.html#ggadb28ffbfa534751260baf341f9819f94a09d4d696b4e935115b9313e3c412509a">NuguCapability::AudioPlayerState::STOPPED</a></div><div class="ttdeci">@ STOPPED</div></div>
 <div class="ttc" id="acapability__interface_8hh_html"><div class="ttname"><a href="capability__interface_8hh.html">capability_interface.hh</a></div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_gga7e30478d0a2b8276e02040b468c32910a7b0d329a6efd1e7a527acf8970807616"><div class="ttname"><a href="group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910a7b0d329a6efd1e7a527acf8970807616">NuguCapability::AudioPlayerEvent::LOAD_FAILED</a></div><div class="ttdeci">@ LOAD_FAILED</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_ggadb28ffbfa534751260baf341f9819f94a99b2439e63f73ad515f7ab2447a80673"><div class="ttname"><a href="group__AudioPlayerInterface.html#ggadb28ffbfa534751260baf341f9819f94a99b2439e63f73ad515f7ab2447a80673">NuguCapability::AudioPlayerState::PAUSED</a></div><div class="ttdeci">@ PAUSED</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_ggadb28ffbfa534751260baf341f9819f94a2c616b2713e2e0aed04b4c4752c88133"><div class="ttname"><a href="group__AudioPlayerInterface.html#ggadb28ffbfa534751260baf341f9819f94a2c616b2713e2e0aed04b4c4752c88133">NuguCapability::AudioPlayerState::FINISHED</a></div><div class="ttdeci">@ FINISHED</div></div>
-<div class="ttc" id="aclassNuguCapability_1_1IAudioPlayerHandler_html"><div class="ttname"><a href="classNuguCapability_1_1IAudioPlayerHandler.html">NuguCapability::IAudioPlayerHandler</a></div><div class="ttdoc">audioplayer handler interface</div><div class="ttdef"><b>Definition:</b> audio_player_interface.hh:145</div></div>
+<div class="ttc" id="aclassNuguCapability_1_1IAudioPlayerHandler_html"><div class="ttname"><a href="classNuguCapability_1_1IAudioPlayerHandler.html">NuguCapability::IAudioPlayerHandler</a></div><div class="ttdoc">audioplayer handler interface</div><div class="ttdef"><b>Definition:</b> audio_player_interface.hh:183</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_gadb28ffbfa534751260baf341f9819f94"><div class="ttname"><a href="group__AudioPlayerInterface.html#gadb28ffbfa534751260baf341f9819f94">NuguCapability::AudioPlayerState</a></div><div class="ttdeci">AudioPlayerState</div><div class="ttdoc">AudioPlayerState.</div><div class="ttdef"><b>Definition:</b> audio_player_interface.hh:42</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_ggadb28ffbfa534751260baf341f9819f94a50366a49630a416ab3ccaa004196027e"><div class="ttname"><a href="group__AudioPlayerInterface.html#ggadb28ffbfa534751260baf341f9819f94a50366a49630a416ab3ccaa004196027e">NuguCapability::AudioPlayerState::PLAYING</a></div><div class="ttdeci">@ PLAYING</div></div>
 <div class="ttc" id="agroup__AudioPlayerInterface_html_gga7e30478d0a2b8276e02040b468c32910a36e295bd2bd5227fed19835511cd9c17"><div class="ttname"><a href="group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910a36e295bd2bd5227fed19835511cd9c17">NuguCapability::AudioPlayerEvent::LOAD_DONE</a></div><div class="ttdeci">@ LOAD_DONE</div></div>
@@ -227,7 +242,7 @@ $(document).ready(function(){initNavTree('audio__player__interface_8hh_source.ht
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fe91053431442a18fd8b50c6b5c5d672.html">capability</a></li><li class="navelem"><a class="el" href="audio__player__interface_8hh.html">audio_player_interface.hh</a></li>
-    <li class="footer">Generated on Tue Jul 27 2021 05:39:28 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Aug 30 2021 08:02:12 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

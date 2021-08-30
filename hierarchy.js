@@ -21,6 +21,7 @@ var hierarchy =
       [ "NuguCapability::IExtensionHandler", "classNuguCapability_1_1IExtensionHandler.html", null ],
       [ "NuguCapability::IMicHandler", "classNuguCapability_1_1IMicHandler.html", null ],
       [ "NuguCapability::INudgeHandler", "classNuguCapability_1_1INudgeHandler.html", null ],
+      [ "NuguCapability::IPhoneCallHandler", "classNuguCapability_1_1IPhoneCallHandler.html", null ],
       [ "NuguCapability::IRoutineHandler", "classNuguCapability_1_1IRoutineHandler.html", null ],
       [ "NuguCapability::ISessionHandler", "classNuguCapability_1_1ISessionHandler.html", null ],
       [ "NuguCapability::ISoundHandler", "classNuguCapability_1_1ISoundHandler.html", null ],
@@ -33,15 +34,15 @@ var hierarchy =
     ] ],
     [ "NuguClientKit::ICapabilityListener", "classNuguClientKit_1_1ICapabilityListener.html", [
       [ "NuguCapability::IASRListener", "classNuguCapability_1_1IASRListener.html", null ],
+      [ "NuguCapability::IAudioPlayerListener", "classNuguCapability_1_1IAudioPlayerListener.html", null ],
       [ "NuguCapability::IChipsListener", "classNuguCapability_1_1IChipsListener.html", null ],
       [ "NuguCapability::IDisplayListener", "classNuguCapability_1_1IDisplayListener.html", [
-        [ "NuguCapability::IAudioPlayerDisplayListener", "classNuguCapability_1_1IAudioPlayerDisplayListener.html", [
-          [ "NuguCapability::IAudioPlayerListener", "classNuguCapability_1_1IAudioPlayerListener.html", null ]
-        ] ]
+        [ "NuguCapability::IAudioPlayerDisplayListener", "classNuguCapability_1_1IAudioPlayerDisplayListener.html", null ]
       ] ],
       [ "NuguCapability::IExtensionListener", "classNuguCapability_1_1IExtensionListener.html", null ],
       [ "NuguCapability::IMicListener", "classNuguCapability_1_1IMicListener.html", null ],
       [ "NuguCapability::INudgeListener", "classNuguCapability_1_1INudgeListener.html", null ],
+      [ "NuguCapability::IPhoneCallListener", "classNuguCapability_1_1IPhoneCallListener.html", null ],
       [ "NuguCapability::IRoutineListener", "classNuguCapability_1_1IRoutineListener.html", null ],
       [ "NuguCapability::ISessionListener", "classNuguCapability_1_1ISessionListener.html", null ],
       [ "NuguCapability::ISoundListener", "classNuguCapability_1_1ISoundListener.html", null ],

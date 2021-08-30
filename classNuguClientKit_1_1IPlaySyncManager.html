@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.4.0</span>
+   &#160;<span id="projectnumber">1.5.0</span>
    </div>
   </td>
  </tr>
@@ -110,6 +110,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af7e598ba1e9afd95ba6151c4d7f27bc0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#af7e598ba1e9afd95ba6151c4d7f27bc0">addListener</a> (const std::string &amp;requester, <a class="el" href="classNuguClientKit_1_1IPlaySyncManagerListener.html">IPlaySyncManagerListener</a> *listener)=0</td></tr>
 <tr class="memdesc:af7e598ba1e9afd95ba6151c4d7f27bc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add <a class="el" href="classNuguClientKit_1_1IPlaySyncManagerListener.html" title="IPlaySyncManagerListener interface.">IPlaySyncManagerListener</a>.  <a href="classNuguClientKit_1_1IPlaySyncManager.html#af7e598ba1e9afd95ba6151c4d7f27bc0">More...</a><br /></td></tr>
 <tr class="separator:af7e598ba1e9afd95ba6151c4d7f27bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8719bfa1b4279dd1d36ce8b74e3e4082"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a8719bfa1b4279dd1d36ce8b74e3e4082">adjustPlayStackHoldTime</a> (unsigned int time)=0</td></tr>
+<tr class="memdesc:a8719bfa1b4279dd1d36ce8b74e3e4082"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adjust playstack hold time.  <a href="classNuguClientKit_1_1IPlaySyncManager.html#a8719bfa1b4279dd1d36ce8b74e3e4082">More...</a><br /></td></tr>
+<tr class="separator:a8719bfa1b4279dd1d36ce8b74e3e4082"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06bb48da272814296a48e7f34a8c27cd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a06bb48da272814296a48e7f34a8c27cd">cancelSync</a> (const std::string &amp;ps_id, const std::string &amp;requester)=0</td></tr>
 <tr class="memdesc:a06bb48da272814296a48e7f34a8c27cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancel sync specific capability agent which was synced.  <a href="classNuguClientKit_1_1IPlaySyncManager.html#a06bb48da272814296a48e7f34a8c27cd">More...</a><br /></td></tr>
 <tr class="separator:a06bb48da272814296a48e7f34a8c27cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,6 +170,13 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#aac5186353e255533370547434447791f">resetHolding</a> ()=0</td></tr>
 <tr class="memdesc:aac5186353e255533370547434447791f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset timer for releasing sync. <br /></td></tr>
 <tr class="separator:aac5186353e255533370547434447791f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38d6a7c6a9d3c381d583e8ba89db5781"><td class="memItemLeft" align="right" valign="top"><a id="a38d6a7c6a9d3c381d583e8ba89db5781"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a38d6a7c6a9d3c381d583e8ba89db5781">restartHolding</a> ()=0</td></tr>
+<tr class="memdesc:a38d6a7c6a9d3c381d583e8ba89db5781"><td class="mdescLeft">&#160;</td><td class="mdescRight">Restart timer for releasing sync. <br /></td></tr>
+<tr class="separator:a38d6a7c6a9d3c381d583e8ba89db5781"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57084344446796bbbb5235c0f1bfbc7b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a57084344446796bbbb5235c0f1bfbc7b">setDefaultPlayStackHoldTime</a> (unsigned int time)=0</td></tr>
+<tr class="memdesc:a57084344446796bbbb5235c0f1bfbc7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set default playstack hold time.  <a href="classNuguClientKit_1_1IPlaySyncManager.html#a57084344446796bbbb5235c0f1bfbc7b">More...</a><br /></td></tr>
+<tr class="separator:a57084344446796bbbb5235c0f1bfbc7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7e5ed501eb0e3076097a291ef2265ca"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#aa7e5ed501eb0e3076097a291ef2265ca">startSync</a> (const std::string &amp;ps_id, const std::string &amp;requester, void *extra_data=nullptr)=0</td></tr>
 <tr class="memdesc:aa7e5ed501eb0e3076097a291ef2265ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start sync specific capability agent which was prepared.  <a href="classNuguClientKit_1_1IPlaySyncManager.html#aa7e5ed501eb0e3076097a291ef2265ca">More...</a><br /></td></tr>
 <tr class="separator:aa7e5ed501eb0e3076097a291ef2265ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -717,6 +727,74 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
+<a id="a8719bfa1b4279dd1d36ce8b74e3e4082"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8719bfa1b4279dd1d36ce8b74e3e4082">&#9670;&nbsp;</a></span>adjustPlayStackHoldTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguClientKit::IPlaySyncManager::adjustPlayStackHoldTime </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>time</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adjust playstack hold time. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">time</td><td>playstack hold time (unit: second) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a57084344446796bbbb5235c0f1bfbc7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57084344446796bbbb5235c0f1bfbc7b">&#9670;&nbsp;</a></span>setDefaultPlayStackHoldTime()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguClientKit::IPlaySyncManager::setDefaultPlayStackHoldTime </td>
+          <td>(</td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>time</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set default playstack hold time. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">time</td><td>playstack hold time (unit: second) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="playsync__manager__interface_8hh_source.html">playsync_manager_interface.hh</a></li>
 </ul>
@@ -726,7 +804,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">IPlaySyncManager</a></li>
-    <li class="footer">Generated on Tue Jul 27 2021 05:39:28 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Aug 30 2021 08:02:12 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

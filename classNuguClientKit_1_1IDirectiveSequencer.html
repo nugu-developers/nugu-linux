@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.4.0</span>
+   &#160;<span id="projectnumber">1.5.0</span>
    </div>
   </td>
  </tr>
@@ -115,6 +115,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a90ea647f44a1c899d3afd170eed5dbef"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a90ea647f44a1c899d3afd170eed5dbef">complete</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)=0</td></tr>
 <tr class="memdesc:a90ea647f44a1c899d3afd170eed5dbef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Complete the blocking directive. The NuguDirective object will be destroyed. If there are pending directives, those directives will be processed at the next idle time.  <a href="classNuguClientKit_1_1IDirectiveSequencer.html#a90ea647f44a1c899d3afd170eed5dbef">More...</a><br /></td></tr>
 <tr class="separator:a90ea647f44a1c899d3afd170eed5dbef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af63122e1ac0fa964df6f45a9e4b1b76b"><td class="memItemLeft" align="right" valign="top">virtual const <a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#af63122e1ac0fa964df6f45a9e4b1b76b">findPending</a> (const std::string &amp;name_space, const std::string &amp;name)=0</td></tr>
+<tr class="memdesc:af63122e1ac0fa964df6f45a9e4b1b76b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find directive from pending list.  <a href="classNuguClientKit_1_1IDirectiveSequencer.html#af63122e1ac0fa964df6f45a9e4b1b76b">More...</a><br /></td></tr>
+<tr class="separator:af63122e1ac0fa964df6f45a9e4b1b76b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7a91d062c2d97f16d3d06ec2440370d4"><td class="memItemLeft" align="right" valign="top">virtual const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a7a91d062c2d97f16d3d06ec2440370d4">getCanceledDialogId</a> ()=0</td></tr>
 <tr class="memdesc:a7a91d062c2d97f16d3d06ec2440370d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the last canceled dialog_id.  <a href="classNuguClientKit_1_1IDirectiveSequencer.html#a7a91d062c2d97f16d3d06ec2440370d4">More...</a><br /></td></tr>
 <tr class="separator:a7a91d062c2d97f16d3d06ec2440370d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -543,6 +546,52 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="af63122e1ac0fa964df6f45a9e4b1b76b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af63122e1ac0fa964df6f45a9e4b1b76b">&#9670;&nbsp;</a></span>findPending()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual const <a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a>* NuguClientKit::IDirectiveSequencer::findPending </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name_space</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Find directive from pending list. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">name_space</td><td>directive namespace </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">name</td><td>directive name </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>NuguDirective object or NULL </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="directive__sequencer__interface_8hh_source.html">directive_sequencer_interface.hh</a></li>
 </ul>
@@ -552,7 +601,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">IDirectiveSequencer</a></li>
-    <li class="footer">Generated on Tue Jul 27 2021 05:39:28 for NUGU SDK Linux by
+    <li class="footer">Generated on Mon Aug 30 2021 08:02:12 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
