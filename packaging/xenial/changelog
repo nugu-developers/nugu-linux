@@ -1,3 +1,18 @@
+nugu (1.5.0ubuntu1~xenial) xenial; urgency=medium
+
+  * Added PlaySyncManager restartHolding and 2 more API
+  * Added Display interface refreshRenderingTimer API
+  * Added DirectiveSequencer findPending API
+  * Added PhoneCall interface v1.2
+  * Added gstreamer recorder plugin
+  * Updated DisplayAgent
+  * Updated AudioPlayerAgent
+  * Updated TTSAgent
+  * Updated FocusManager focus hold
+  * Upgraded nghttp2 to v1.44.0
+
+ -- nugulinux <nugulinux@gmail.com>  Mon, 30 Aug 2021 17:30:00 +0900
+
 nugu (1.4.0ubuntu1~xenial) xenial; urgency=medium
 
   * Fixed TextAgent
