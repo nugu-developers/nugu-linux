@@ -106,6 +106,9 @@ void SpeechRecognizer::loop()
     else
         epd_param.sample_rate = 16000;
 
+    epd_param.input_type = EPD_DATA_TYPE_LINEAR_PCM16;
+    epd_param.output_type = EPD_DATA_TYPE_SPEEX_STREAM;
+
     nugu_dbg("Listening Thread: started");
 
     if (model_path.size()) {
