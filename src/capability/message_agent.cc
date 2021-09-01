@@ -40,6 +40,8 @@ void MessageAgent::initialize()
         return;
     }
 
+    Capability::initialize();
+
     speak_dir = nullptr;
 
     tts_player = core_container->createTTSPlayer();
