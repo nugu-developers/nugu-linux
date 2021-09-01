@@ -192,6 +192,8 @@ typedef struct {
     std::shared_ptr<RoutineManagerListener> routine_manager_listener_snd;
     FakeTimer* fake_timer;
     NuguDirective* ndir_info;
+    NuguDirective* ndir_info_disp;
+    NuguDirective* ndir_info_tts;
     NuguDirective* ndir_routine;
     NuguDirective* ndir_media;
     NuguDirective* ndir_dm;
@@ -223,6 +225,10 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
 
     fixture->ndir_info = createDirective({ "TTS", "Speak", "dialog_1",
         "{ \"directives\": [\"TTS.Speak\"] }" });
+    fixture->ndir_info_disp = createDirective({ "Display", "FullText2", "dialog_2",
+        "{ \"directives\": [\"Display.FullText2\", \"TTS.Speak\"] }" });
+    fixture->ndir_info_tts = createDirective({ "TTS", "Speak", "dialog_2",
+        "{ \"directives\": [\"Display.FullText2\", \"TTS.Speak\"] }" });
     fixture->ndir_routine = createDirective({ "Routine", "Continue", "dialog_1",
         "{ \"directives\": [\"TTS.Speak\", \"Routine.Continue\"] }" });
     fixture->ndir_media = createDirective({ "AudioPlayer", "Play", "dialog_1",
@@ -234,6 +240,8 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
 static void teardown(TestFixture* fixture, gconstpointer user_data)
 {
     nugu_directive_unref(fixture->ndir_info);
+    nugu_directive_unref(fixture->ndir_info_disp);
+    nugu_directive_unref(fixture->ndir_info_tts);
     nugu_directive_unref(fixture->ndir_routine);
     nugu_directive_unref(fixture->ndir_media);
     nugu_directive_unref(fixture->ndir_dm);
@@ -544,6 +552,37 @@ static void test_routine_manager_check_condition_to_stop(TestFixture* fixture, g
     g_assert(!fixture->routine_manager->isConditionToStop(fixture->ndir_info));
 }
 
+static void test_routine_manager_check_condition_to_finish_action(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->routine_manager->addListener(fixture->routine_manager_listener.get());
+    g_assert(fixture->routine_manager_listener->getActivity() == RoutineActivity::IDLE);
+
+    // check validation
+    g_assert(!fixture->routine_manager->isConditionToFinishAction(nullptr));
+
+    // progress first action (dialog_1)
+    g_assert(fixture->routine_manager->start(fixture->routine_helper->getToken(), fixture->routine_helper->getActions()));
+    g_assert(fixture->routine_manager_listener->getActivity() == RoutineActivity::PLAYING);
+    g_assert(fixture->routine_manager->getCurrentActionIndex() == 1);
+
+    // assume to handle [TTS.Speak] directive (dialog_1)
+    g_assert(fixture->routine_manager->isConditionToFinishAction(fixture->ndir_info));
+    fixture->routine_manager->finish();
+
+    // progress second action (dialog_2)
+    g_assert(fixture->routine_manager_listener->getActivity() == RoutineActivity::PLAYING);
+    g_assert(fixture->routine_manager->getCurrentActionIndex() == 2);
+
+    // assume to handle [Display.FullText2, TTS.Speak] directives (dialog_2)
+    g_assert(!fixture->routine_manager->isConditionToFinishAction(fixture->ndir_info)); // previous dialog
+    g_assert(!fixture->routine_manager->isConditionToFinishAction(fixture->ndir_info_disp)); // Display
+    g_assert(fixture->routine_manager->isConditionToFinishAction(fixture->ndir_info_tts)); // TTS
+
+    fixture->routine_manager->stop();
+    g_assert(fixture->routine_manager_listener->getActivity() == RoutineActivity::STOPPED);
+    g_assert(!fixture->routine_manager->isConditionToFinishAction(fixture->ndir_info_tts));
+}
+
 static void test_routine_manager_reset(TestFixture* fixture, gconstpointer ignored)
 {
     const auto& action_container = fixture->routine_manager->getActionContainer();
@@ -602,6 +641,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/RoutineManager/checkHasRoutineDirective", test_routine_manager_check_has_routine_directive);
     G_TEST_ADD_FUNC("/core/RoutineManager/checkRoutineAlive", test_routine_manager_check_routine_alive);
     G_TEST_ADD_FUNC("/core/RoutineManager/checkConditionToStop", test_routine_manager_check_condition_to_stop);
+    G_TEST_ADD_FUNC("/core/RoutineManager/checkConditionToFinishAction", test_routine_manager_check_condition_to_finish_action);
     G_TEST_ADD_FUNC("/core/RoutineManager/reset", test_routine_manager_reset);
 
     return g_test_run();

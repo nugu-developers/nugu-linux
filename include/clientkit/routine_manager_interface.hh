@@ -161,6 +161,13 @@ public:
      * @return true if satisfied, otherwise false
      */
     virtual bool isConditionToStop(const NuguDirective* ndir) = 0;
+
+    /**
+     * @brief Check whether current condition is possible to finish progressing action
+     * @param[in] ndir NuguDirective object
+     * @return true if satisfied, otherwise false
+     */
+    virtual bool isConditionToFinishAction(const NuguDirective* ndir) = 0;
 };
 
 /**
