@@ -20,6 +20,7 @@
 #include <json/json.h>
 #include <memory>
 #include <queue>
+#include <set>
 #include <vector>
 
 #include "clientkit/routine_manager_interface.hh"
@@ -68,6 +69,7 @@ public:
     bool isActionProgress(const std::string& dialog_id) override;
     bool hasRoutineDirective(const NuguDirective* ndir) override;
     bool isConditionToStop(const NuguDirective* ndir) override;
+    bool isConditionToFinishAction(const NuguDirective* ndir) override;
 
     const RoutineActions& getActionContainer();
     const RoutineActionDialogs& getActionDialogs();
@@ -91,6 +93,7 @@ private:
 
     std::vector<IRoutineManagerListener*> listeners;
     std::vector<std::string> stop_directive_filter;
+    std::set<std::string> skip_finish_filter;
     RoutineActivity activity = RoutineActivity::IDLE;
     std::unique_ptr<INuguTimer> timer = nullptr;
     TextRequester text_requester = nullptr;

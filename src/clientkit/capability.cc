@@ -378,7 +378,7 @@ void Capability::destroyDirective(NuguDirective* ndir, bool is_cancel)
     });
 
     if (pimpl->cur_ndir && ndir == pimpl->cur_ndir) { // finish current managed directive
-        if (routine_manager->isActionProgress(nugu_directive_peek_dialog_id(pimpl->cur_ndir)))
+        if (routine_manager->isConditionToFinishAction(pimpl->cur_ndir))
             routine_manager->finish();
 
         finishDirective(pimpl->cur_ndir);

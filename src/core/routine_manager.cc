@@ -25,6 +25,7 @@ RoutineManager::RoutineManager()
     : timer(std::unique_ptr<NUGUTimer>(new NUGUTimer(true)))
 {
     stop_directive_filter = { "ASR.ExpectSpeech", "AudioPlayer.Play" };
+    skip_finish_filter = { "Display" };
 }
 
 RoutineManager::~RoutineManager()
@@ -224,6 +225,15 @@ bool RoutineManager::isConditionToStop(const NuguDirective* ndir)
     }
 
     return true;
+}
+
+bool RoutineManager::isConditionToFinishAction(const NuguDirective* ndir)
+{
+    if (!ndir)
+        return false;
+
+    return isActionProgress(nugu_directive_peek_dialog_id(ndir))
+        && skip_finish_filter.find(nugu_directive_peek_namespace(ndir)) == skip_finish_filter.end();
 }
 
 const RoutineManager::RoutineActions& RoutineManager::getActionContainer()
