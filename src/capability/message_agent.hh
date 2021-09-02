@@ -81,6 +81,7 @@ private:
     std::string tts_ps_id;
     bool is_finished;
     std::string context_template;
+    std::string dialog_id;
 };
 
 } // NuguCapability

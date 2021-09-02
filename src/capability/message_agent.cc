@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <string.h>
+
 #include "message_agent.hh"
 #include "base/nugu_log.h"
 
@@ -296,6 +298,7 @@ void MessageAgent::parsingReadMessage(const char* message)
 
     is_finished = false;
     speak_dir = getNuguDirective();
+    dialog_id = nugu_directive_peek_dialog_id(speak_dir);
 
     if (focus_state == FocusState::FOREGROUND)
         executeOnForegroundAction();
@@ -331,7 +334,28 @@ void MessageAgent::stopTTS()
 
 void MessageAgent::mediaStateChanged(MediaPlayerState state)
 {
+    MessageState msg_state = MessageState::MESSAGE_SPEECH_STOP;
+
     cur_state = state;
+
+    switch (state) {
+    case MediaPlayerState::PLAYING:
+        msg_state = MessageState::MESSAGE_SPEECH_START;
+        break;
+    case MediaPlayerState::STOPPED:
+        if (is_finished) {
+            msg_state = MessageState::MESSAGE_SPEECH_FINISH;
+            sendEventReadMessageFinished();
+        }
+        break;
+    default:
+        return;
+    }
+
+    nugu_dbg("message state changed => %d", msg_state);
+
+    if (message_listener)
+        message_listener->messageStateChanged(msg_state, dialog_id);
 }
 
 void MessageAgent::mediaEventReport(MediaPlayerEvent event)
@@ -347,7 +371,6 @@ void MessageAgent::mediaEventReport(MediaPlayerEvent event)
         nugu_dbg("PLAYING_MEDIA_FINISHED");
         is_finished = true;
         mediaStateChanged(MediaPlayerState::STOPPED);
-        sendEventReadMessageFinished();
         focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
         break;
     default:

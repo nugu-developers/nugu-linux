@@ -18,7 +18,6 @@
 #define __NUGU_MESSAGE_INTERFACE_H__
 
 #include <clientkit/capability.hh>
-#include <string.h>
 
 namespace NuguCapability {
 
@@ -34,6 +33,15 @@ using namespace NuguClientKit;
  *
  * @{
  */
+
+/**
+ * @brief MessageState
+ */
+enum class MessageState {
+    MESSAGE_SPEECH_START, /**< Status starting speech in MESSAGE */
+    MESSAGE_SPEECH_STOP, /**< Status stopping speech in MESSAGE */
+    MESSAGE_SPEECH_FINISH /**< Status finishing speech in MESSAGE */
+};
 
 /**
  * @brief message listener interface
@@ -60,6 +68,14 @@ public:
      * @param[in] payload directive's payload
      */
     virtual void processGetMessage(const std::string& payload) = 0;
+
+    /**
+     * @brief Report changes in the speech state to the user.
+     * @param[in] state message state
+     * @param[in] dialog_id dialog request id
+     */
+    virtual void messageStateChanged(MessageState state, const std::string& dialog_id) = 0;
+
 };
 
 /**
