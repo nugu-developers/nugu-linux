@@ -180,11 +180,6 @@ void PhoneCallAgent::callEstablished(const std::string& payload)
         return;
     }
 
-    if (cur_state == PhoneCallState::IDLE) {
-        nugu_warn("The current state is PhoneCallState::IDLE");
-        return;
-    }
-
     setState(PhoneCallState::ESTABLISHED);
     sendEvent("CallEstablished", getContextInfo(), payload);
 }
