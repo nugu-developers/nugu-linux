@@ -82,6 +82,7 @@ private:
     bool is_finished;
     std::string context_template;
     std::string dialog_id;
+    std::string received_time;
 };
 
 } // NuguCapability
