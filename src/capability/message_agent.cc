@@ -16,8 +16,8 @@
 
 #include <string.h>
 
-#include "message_agent.hh"
 #include "base/nugu_log.h"
+#include "message_agent.hh"
 
 namespace NuguCapability {
 
@@ -272,7 +272,6 @@ void MessageAgent::parsingReadMessage(const char* message)
     Json::Reader reader;
 
     std::string play_service_id;
-    std::string received_time;
     std::string token;
 
     if (!reader.parse(message, root)) {
@@ -287,14 +286,13 @@ void MessageAgent::parsingReadMessage(const char* message)
         return;
     }
 
-    received_time = root["receivedTime"].asString();
-
     destroy_directive_by_agent = true;
 
     stopTTS();
 
     tts_token = token;
     tts_ps_id = play_service_id;
+    received_time = root["receivedTime"].asString();
 
     is_finished = false;
     speak_dir = getNuguDirective();
@@ -355,7 +353,7 @@ void MessageAgent::mediaStateChanged(MediaPlayerState state)
     nugu_dbg("message state changed => %d", msg_state);
 
     if (message_listener)
-        message_listener->messageStateChanged(msg_state, dialog_id);
+        message_listener->messageStateChanged(msg_state, received_time, tts_token, dialog_id);
 }
 
 void MessageAgent::mediaEventReport(MediaPlayerEvent event)

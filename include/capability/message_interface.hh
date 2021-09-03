@@ -72,9 +72,11 @@ public:
     /**
      * @brief Report changes in the speech state to the user.
      * @param[in] state message state
+     * @param[in] received_time message received time
+     * @param[in] token message received token
      * @param[in] dialog_id dialog request id
      */
-    virtual void messageStateChanged(MessageState state, const std::string& dialog_id) = 0;
+    virtual void messageStateChanged(MessageState state, const std::string& received_time, const std::string& token, const std::string& dialog_id) = 0;
 
 };
 
