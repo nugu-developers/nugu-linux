@@ -481,6 +481,7 @@ void TTSAgent::parsingStop(const char* message)
         }
 
         playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
+        speak_dir = nullptr;
     }
 }
 
@@ -532,14 +533,7 @@ void TTSAgent::checkAndUpdateVolume()
 
 bool TTSAgent::isSpeakTextEmpty(const std::string& raw_text)
 {
-    const std::regex pattern("\\<.*?\\>");
-    std::string text = regex_replace(raw_text, pattern, "");
-    nugu_dbg("plain_text = [%s]", text.c_str());
-
-    if (text.size() == 0)
-        return true;
-
-    return false;
+    return (raw_text.find_first_of('>') + 1) == raw_text.rfind("</skml>");
 }
 
 void TTSAgent::mediaStateChanged(MediaPlayerState state)
