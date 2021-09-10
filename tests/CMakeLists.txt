@@ -16,6 +16,7 @@ SET(UNIT_TESTS
 	test_nugu_plugin
 	test_nugu_recorder
 	test_nugu_decoder
+	test_nugu_encoder
 	test_nugu_pcm
 	test_nugu_player
 	test_nugu_timer
