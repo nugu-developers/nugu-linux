@@ -157,7 +157,10 @@ EXPORT_API NuguDecoder *nugu_decoder_new(NuguDecoderDriver *driver,
 	if (driver->ops->create(driver, dec) == 0)
 		return dec;
 
+	nugu_error("create() failed from driver");
+
 	driver->ref_count--;
+	nugu_buffer_free(dec->buf, 1);
 	memset(dec, 0, sizeof(struct _nugu_decoder));
 	free(dec);
 
