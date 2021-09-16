@@ -622,11 +622,10 @@ static void on_receive_registry_health(enum nugu_equeue_type type, void *data,
 				       void *userdata)
 {
 	NetworkManager *nm = userdata;
-	struct dg_health_check_policy *policy = data;
 
-	g_return_if_fail(policy != NULL);
+	g_return_if_fail(data != NULL);
 
-	memcpy(&(nm->policy), policy, sizeof(struct dg_health_check_policy));
+	memcpy(&(nm->policy), data, sizeof(struct dg_health_check_policy));
 }
 
 static void on_receive_registry_servers(enum nugu_equeue_type type, void *data,

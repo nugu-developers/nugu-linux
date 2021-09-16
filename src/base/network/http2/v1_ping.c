@@ -136,9 +136,8 @@ static gboolean _on_timeout(gpointer userdata)
 
 	http2_request_unref(req);
 
-	if (ret >= 0)
-		ping->timer_src = g_timeout_add_seconds(_get_next_timeout(ping),
-							_on_timeout, ping);
+	ping->timer_src = g_timeout_add_seconds(_get_next_timeout(ping),
+						_on_timeout, ping);
 
 	return FALSE;
 }
