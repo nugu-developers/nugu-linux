@@ -413,14 +413,16 @@ error_out:
 
 static void _destroy_gst_elements(struct pa_audio_param *pcm_param)
 {
+	if (pcm_param) {
 #ifdef DEBUG_PCM
-	nugu_info("_destroy_gst_elements: %d", pcm_param->uniq_id);
+		nugu_info("_destroy_gst_elements: %d", pcm_param->uniq_id);
 #endif
 
-	if (pcm_param && pcm_param->pipeline) {
-		gst_object_unref(pcm_param->pipeline);
-		pcm_param->pipeline = NULL;
-		pcm_param->cur_volume = 0;
+		if (pcm_param->pipeline) {
+			gst_object_unref(pcm_param->pipeline);
+			pcm_param->pipeline = NULL;
+			pcm_param->cur_volume = 0;
+		}
 	}
 }
 

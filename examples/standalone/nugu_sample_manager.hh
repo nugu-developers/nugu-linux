@@ -92,7 +92,7 @@ private:
     static const char* C_WHITE;
     static const char* C_RESET;
 
-    GMainLoop* loop;
+    GMainLoop* loop = nullptr;
     GMainContext* context = nullptr;
     std::string model_path;
     bool is_prepared = false;

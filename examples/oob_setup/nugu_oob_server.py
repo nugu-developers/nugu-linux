@@ -6,7 +6,6 @@ from requests_oauthlib import OAuth2Session
 import os
 import sys
 import logging
-import sys
 
 log = logging.getLogger('requests_oauthlib')
 log.addHandler(logging.StreamHandler(sys.stdout))
