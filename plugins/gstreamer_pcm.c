@@ -85,6 +85,7 @@ struct pa_audio_param {
 
 static NuguPcmDriver *pcm_driver;
 static int _uniq_id;
+static const int INITIAL_VOLUME = -1;
 static const gdouble VOLUME_ZERO = 0.0000001;
 
 static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm);
@@ -421,7 +422,7 @@ static void _destroy_gst_elements(struct pa_audio_param *pcm_param)
 		if (pcm_param->pipeline) {
 			gst_object_unref(pcm_param->pipeline);
 			pcm_param->pipeline = NULL;
-			pcm_param->cur_volume = 0;
+			pcm_param->cur_volume = INITIAL_VOLUME;
 		}
 	}
 }
@@ -430,11 +431,15 @@ static void _change_volume(struct pa_audio_param *pcm_param)
 {
 	gdouble volume;
 
-	if (!pcm_param)
+	if (!pcm_param) {
+		nugu_error("pcm_param is null");
 		return;
+	}
 
-	if (pcm_param->cur_volume == pcm_param->new_volume)
+	if (pcm_param->cur_volume == pcm_param->new_volume) {
+		nugu_dbg("new_volume is same cur_volume");
 		return;
+	}
 
 	pcm_param->cur_volume = pcm_param->new_volume;
 
@@ -461,7 +466,7 @@ static int _pcm_create(NuguPcmDriver *driver, NuguPcm *pcm,
 		return -1;
 	}
 	pcm_param->uniq_id = _uniq_id++;
-	pcm_param->cur_volume = 0;
+	pcm_param->cur_volume = INITIAL_VOLUME;
 	pcm_param->new_volume = NUGU_SET_VOLUME_DEFAULT;
 
 #ifdef DEBUG_PCM
