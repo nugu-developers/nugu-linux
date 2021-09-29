@@ -1,0 +1,25 @@
+#!/usr/bin/make -f
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+
+export DH_VERBOSE = 1
+
+DEB_HOST_MULTIARCH ?= $(shell dpkg-architecture -qDEB_HOST_MULTIARCH)
+DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+
+CFLAGS := $(shell dpkg-buildflags --get CFLAGS)
+CFLAGS := $(filter-out -O2,$(CFLAGS))
+
+%:
+	dh $@ --buildsystem=cmake
+
+override_dh_auto_configure:
+	dh_auto_configure -- \
+		-DCMAKE_LIBRARY_ARCHITECTURE=${DEB_HOST_MULTIARCH} \
+		-DCMAKE_C_COMPILER=$(DEB_HOST_GNU_TYPE)-gcc \
+		-DCMAKE_CXX_COMPILER=$(DEB_HOST_GNU_TYPE)-g++ \
+		-DCMAKE_BUILD_TYPE:STRING=RelWithDebInfo \
+		-DPACKAGING=1
+
+override_dh_strip:
+	dh_strip --dbg-package=libnugu-dbg
