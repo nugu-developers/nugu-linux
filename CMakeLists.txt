@@ -211,8 +211,12 @@ IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 ENDIF()
 
 # Add __FILENAME__ macro to use path from source directory instead of full path
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${CMAKE_SOURCE_DIR})/,,$(abspath $<))\"'")
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${CMAKE_SOURCE_DIR})/,,$(abspath $<))\"'")
+IF(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 8.0)
+	ADD_COMPILE_OPTIONS(-fmacro-prefix-map=${CMAKE_SOURCE_DIR}/=)
+ELSE()
+	SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${CMAKE_SOURCE_DIR})/,,$(abspath $<))\"'")
+	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${CMAKE_SOURCE_DIR})/,,$(abspath $<))\"'")
+ENDIF()
 
 IF(ENABLE_LOG_ANSICOLOR)
 	# Turn on the colorful log message
