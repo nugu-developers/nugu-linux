@@ -123,6 +123,13 @@ public:
     virtual bool setVolume(int volume) = 0;
 
     /**
+     * @brief set pcm player's mute
+     * @param[in] mute volume mute
+     * @return result of set mute
+     */
+    virtual bool setMute(bool mute) = 0;
+
+    /**
      * @brief Set attribute about speech synthesizer
      * @param[in] attribute attribute object
      */
