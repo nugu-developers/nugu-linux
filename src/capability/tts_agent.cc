@@ -241,6 +241,17 @@ bool TTSAgent::setVolume(int volume)
     return true;
 }
 
+bool TTSAgent::setMute(bool mute)
+{
+    nugu_dbg("set pcm player's mute: %d", mute);
+
+    if (!player || !player->setMute(mute))
+        return false;
+
+    nugu_dbg("pcm player's mute(%d) changed..", mute);
+    return true;
+}
+
 void TTSAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)

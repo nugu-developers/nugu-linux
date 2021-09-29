@@ -44,6 +44,7 @@ public:
     void stopTTS() override;
     std::string requestTTS(const std::string& text, const std::string& play_service_id, const std::string& referrer_id = "") override;
     bool setVolume(int volume) override;
+    bool setMute(bool mute) override;
 
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void addListener(ITTSListener* listener) override;
