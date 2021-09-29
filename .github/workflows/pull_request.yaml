@@ -36,6 +36,9 @@ jobs:
             bionic_x64,
             bionic_arm64,
             bionic_armhf,
+            focal_x64,
+            focal_arm64,
+            focal_armhf,
           ]
     steps:
       - name: Check out the repo
