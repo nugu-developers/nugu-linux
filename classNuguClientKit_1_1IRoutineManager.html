@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.5.0</span>
+   &#160;<span id="projectnumber">1.6.0</span>
    </div>
   </td>
  </tr>
@@ -127,6 +127,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a1a7b0b30ecf6f11a233bd78bb16e0121"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IRoutineManager.html#a1a7b0b30ecf6f11a233bd78bb16e0121">isActionProgress</a> (const std::string &amp;dialog_id)=0</td></tr>
 <tr class="memdesc:a1a7b0b30ecf6f11a233bd78bb16e0121"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether action is in progress currently.  <a href="classNuguClientKit_1_1IRoutineManager.html#a1a7b0b30ecf6f11a233bd78bb16e0121">More...</a><br /></td></tr>
 <tr class="separator:a1a7b0b30ecf6f11a233bd78bb16e0121"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af84dbe9a7219ac1b2c958a931db63da2"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IRoutineManager.html#af84dbe9a7219ac1b2c958a931db63da2">isConditionToFinishAction</a> (const <a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)=0</td></tr>
+<tr class="memdesc:af84dbe9a7219ac1b2c958a931db63da2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether current condition is possible to finish progressing action.  <a href="classNuguClientKit_1_1IRoutineManager.html#af84dbe9a7219ac1b2c958a931db63da2">More...</a><br /></td></tr>
+<tr class="separator:af84dbe9a7219ac1b2c958a931db63da2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adae0e052169017ee40925cb78f2b6a4e"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IRoutineManager.html#adae0e052169017ee40925cb78f2b6a4e">isConditionToStop</a> (const <a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)=0</td></tr>
 <tr class="memdesc:adae0e052169017ee40925cb78f2b6a4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether current condition is to stop routine.  <a href="classNuguClientKit_1_1IRoutineManager.html#adae0e052169017ee40925cb78f2b6a4e">More...</a><br /></td></tr>
 <tr class="separator:adae0e052169017ee40925cb78f2b6a4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -531,6 +534,41 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
+<a id="af84dbe9a7219ac1b2c958a931db63da2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af84dbe9a7219ac1b2c958a931db63da2">&#9670;&nbsp;</a></span>isConditionToFinishAction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool NuguClientKit::IRoutineManager::isConditionToFinishAction </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *&#160;</td>
+          <td class="paramname"><em>ndir</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether current condition is possible to finish progressing action. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ndir</td><td>NuguDirective object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if satisfied, otherwise false </dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="routine__manager__interface_8hh_source.html">routine_manager_interface.hh</a></li>
 </ul>
@@ -540,7 +578,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1IRoutineManager.html">IRoutineManager</a></li>
-    <li class="footer">Generated on Mon Aug 30 2021 08:02:12 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Oct 5 2021 07:50:13 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

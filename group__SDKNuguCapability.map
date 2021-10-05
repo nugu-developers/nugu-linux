@@ -3,18 +3,19 @@
 <area shape="rect" id="node2" href="$group__AudioPlayerInterface.html" title="AudioPlayer capability interface." alt="" coords="176,55,335,80"/>
 <area shape="rect" id="node3" href="$group__ChipsInterface.html" title="Chips capability interface." alt="" coords="197,104,313,129"/>
 <area shape="rect" id="node4" href="$group__SystemInterface.html" title="System capability interface." alt="" coords="191,153,320,179"/>
-<area shape="rect" id="node5" href="$group__SpeakerInterface.html" title="Speaker capability interface." alt="" coords="189,203,321,228"/>
-<area shape="rect" id="node6" href="$group__CapabilityFactory.html" title="CapabilityFactory." alt="" coords="188,252,323,277"/>
-<area shape="rect" id="node7" href="$group__SessionInterface.html" title="Session capability interface." alt="" coords="190,301,321,327"/>
-<area shape="rect" id="node8" href="$group__SoundInterface.html" title="Sound capability interface." alt="" coords="195,351,315,376"/>
-<area shape="rect" id="node9" href="$group__PhoneCallInterface.html" title="PhoneCall capability interface." alt="" coords="183,400,328,425"/>
-<area shape="rect" id="node10" title=" " alt="" coords="5,400,128,425"/>
-<area shape="rect" id="node11" href="$group__MicInterface.html" title="MIC capability interface." alt="" coords="204,449,307,475"/>
-<area shape="rect" id="node12" href="$group__ExtensionInterface.html" title="Extension capability interface." alt="" coords="183,499,327,524"/>
-<area shape="rect" id="node13" href="$group__TTSInterface.html" title="TTS capability interface." alt="" coords="203,548,307,573"/>
-<area shape="rect" id="node14" href="$group__ASRInterface.html" title="ASR capability interface." alt="" coords="202,597,309,623"/>
-<area shape="rect" id="node15" href="$group__RoutineInterface.html" title="Routine capability interface." alt="" coords="190,647,321,672"/>
-<area shape="rect" id="node16" href="$group__DisplayInterface.html" title="Display capability interface." alt="" coords="191,696,320,721"/>
-<area shape="rect" id="node17" href="$group__TextInterface.html" title="Text capability interface." alt="" coords="202,745,309,771"/>
-<area shape="rect" id="node18" href="$group__UtilityInterface.html" title="Utility capability interface." alt="" coords="195,795,315,820"/>
+<area shape="rect" id="node5" href="$group__MessageInterface.html" title="Message capability interface." alt="" coords="186,203,325,228"/>
+<area shape="rect" id="node6" href="$group__SpeakerInterface.html" title="Speaker capability interface." alt="" coords="189,252,321,277"/>
+<area shape="rect" id="node7" href="$group__CapabilityFactory.html" title="CapabilityFactory." alt="" coords="188,301,323,327"/>
+<area shape="rect" id="node8" href="$group__SessionInterface.html" title="Session capability interface." alt="" coords="190,351,321,376"/>
+<area shape="rect" id="node9" href="$group__SoundInterface.html" title="Sound capability interface." alt="" coords="195,400,315,425"/>
+<area shape="rect" id="node10" href="$group__PhoneCallInterface.html" title="PhoneCall capability interface." alt="" coords="183,449,328,475"/>
+<area shape="rect" id="node11" title=" " alt="" coords="5,425,128,451"/>
+<area shape="rect" id="node12" href="$group__MicInterface.html" title="MIC capability interface." alt="" coords="204,499,307,524"/>
+<area shape="rect" id="node13" href="$group__ExtensionInterface.html" title="Extension capability interface." alt="" coords="183,548,327,573"/>
+<area shape="rect" id="node14" href="$group__TTSInterface.html" title="TTS capability interface." alt="" coords="203,597,307,623"/>
+<area shape="rect" id="node15" href="$group__ASRInterface.html" title="ASR capability interface." alt="" coords="202,647,309,672"/>
+<area shape="rect" id="node16" href="$group__RoutineInterface.html" title="Routine capability interface." alt="" coords="190,696,321,721"/>
+<area shape="rect" id="node17" href="$group__DisplayInterface.html" title="Display capability interface." alt="" coords="191,745,320,771"/>
+<area shape="rect" id="node18" href="$group__TextInterface.html" title="Text capability interface." alt="" coords="202,795,309,820"/>
+<area shape="rect" id="node19" href="$group__UtilityInterface.html" title="Utility capability interface." alt="" coords="195,844,315,869"/>
 </map>

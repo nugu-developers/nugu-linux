@@ -6,6 +6,7 @@ var group__SDKNuguCapability =
     [ "ChipsInterface", "group__ChipsInterface.html", "group__ChipsInterface" ],
     [ "DisplayInterface", "group__DisplayInterface.html", "group__DisplayInterface" ],
     [ "ExtensionInterface", "group__ExtensionInterface.html", "group__ExtensionInterface" ],
+    [ "MessageInterface", "group__MessageInterface.html", "group__MessageInterface" ],
     [ "MicInterface", "group__MicInterface.html", "group__MicInterface" ],
     [ "NudgeInterface", "group__NudgeInterface.html", "group__NudgeInterface" ],
     [ "PhoneCallInterface", "group__PhoneCallInterface.html", "group__PhoneCallInterface" ],

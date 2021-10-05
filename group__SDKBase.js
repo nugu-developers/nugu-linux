@@ -3,6 +3,7 @@ var group__SDKBase =
     [ "Buffer", "group__Buffer.html", "group__Buffer" ],
     [ "Decoder", "group__NuguDecoder.html", "group__NuguDecoder" ],
     [ "NUGU Directive", "group__NuguDirective.html", "group__NuguDirective" ],
+    [ "Encoder", "group__NuguEncoder.html", "group__NuguEncoder" ],
     [ "Event Queue", "group__NuguEventQueue.html", "group__NuguEventQueue" ],
     [ "NUGU Event", "group__NuguEvent.html", "group__NuguEvent" ],
     [ "Log", "group__Log.html", "group__Log" ],

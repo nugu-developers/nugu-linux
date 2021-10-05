@@ -2,7 +2,7 @@
 <area shape="rect" id="node1" title=" " alt="" coords="1573,5,1791,32"/>
 <area shape="rect" id="node2" href="$nugu__core__container__interface_8hh.html" title=" " alt="" coords="1603,80,1761,121"/>
 <area shape="rect" id="node3" href="$capability__interface_8hh.html" title=" " alt="" coords="1535,169,1706,196"/>
-<area shape="rect" id="node22" href="$nugu__client_8hh.html" title=" " alt="" coords="2950,244,3067,271"/>
+<area shape="rect" id="node23" href="$nugu__client_8hh.html" title=" " alt="" coords="2950,244,3067,271"/>
 <area shape="rect" id="node4" href="$asr__interface_8hh.html" title=" " alt="" coords="5,244,132,271"/>
 <area shape="rect" id="node5" href="$audio__player__interface_8hh.html" title=" " alt="" coords="305,319,496,345"/>
 <area shape="rect" id="node6" href="$capability__factory_8hh.html" title=" " alt="" coords="207,244,365,271"/>
@@ -21,4 +21,5 @@
 <area shape="rect" id="node19" href="$tts__interface_8hh.html" title=" " alt="" coords="2504,244,2628,271"/>
 <area shape="rect" id="node20" href="$utility__interface_8hh.html" title=" " alt="" coords="2652,244,2797,271"/>
 <area shape="rect" id="node21" href="$capability_8hh.html" title=" " alt="" coords="2822,244,2926,271"/>
+<area shape="rect" id="node22" href="$message__interface_8hh.html" title=" " alt="" coords="2791,319,2957,345"/>
 </map>

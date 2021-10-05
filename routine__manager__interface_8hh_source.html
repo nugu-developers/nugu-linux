@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.5.0</span>
+   &#160;<span id="projectnumber">1.6.0</span>
    </div>
   </td>
  </tr>
@@ -163,11 +163,13 @@ $(document).ready(function(){initNavTree('routine__manager__interface_8hh_source
 <div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1IRoutineManager.html#a49b8da040ea7e86f563decfbe5d7a818">hasRoutineDirective</a>(<span class="keyword">const</span> <a class="code" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a>* ndir) = 0;</div>
 <div class="line"><a name="l00157"></a><span class="lineno">  157</span>&#160; </div>
 <div class="line"><a name="l00163"></a><span class="lineno">  163</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1IRoutineManager.html#adae0e052169017ee40925cb78f2b6a4e">isConditionToStop</a>(<span class="keyword">const</span> <a class="code" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a>* ndir) = 0;</div>
-<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160;};</div>
-<div class="line"><a name="l00165"></a><span class="lineno">  165</span>&#160; </div>
-<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;} <span class="comment">// NuguClientKit</span></div>
-<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160; </div>
-<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_ROUTINE_MANAGER_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00164"></a><span class="lineno">  164</span>&#160; </div>
+<div class="line"><a name="l00170"></a><span class="lineno">  170</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1IRoutineManager.html#af84dbe9a7219ac1b2c958a931db63da2">isConditionToFinishAction</a>(<span class="keyword">const</span> <a class="code" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a>* ndir) = 0;</div>
+<div class="line"><a name="l00171"></a><span class="lineno">  171</span>&#160;};</div>
+<div class="line"><a name="l00172"></a><span class="lineno">  172</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno">  177</span>&#160;} <span class="comment">// NuguClientKit</span></div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
+<div class="line"><a name="l00179"></a><span class="lineno">  179</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_ROUTINE_MANAGER_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="agroup__RoutineManagerInterface_html_gga85ba501685094b1c1d34f42229ed227baa5daf7f2ebbba4975d61dab1c40188c7"><div class="ttname"><a href="group__RoutineManagerInterface.html#gga85ba501685094b1c1d34f42229ed227baa5daf7f2ebbba4975d61dab1c40188c7">NuguClientKit::RoutineActivity::IDLE</a></div><div class="ttdeci">@ IDLE</div></div>
@@ -185,6 +187,7 @@ $(document).ready(function(){initNavTree('routine__manager__interface_8hh_source
 <div class="ttc" id="aclassNuguClientKit_1_1IRoutineManager_html_ac6b7f5ef7913297b8a7111afca29cb20"><div class="ttname"><a href="classNuguClientKit_1_1IRoutineManager.html#ac6b7f5ef7913297b8a7111afca29cb20">NuguClientKit::IRoutineManager::finish</a></div><div class="ttdeci">virtual void finish()=0</div><div class="ttdoc">Finish action.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IRoutineManager_html_a53e27e28fb0c378aa6a709d1562bb1d9"><div class="ttname"><a href="classNuguClientKit_1_1IRoutineManager.html#a53e27e28fb0c378aa6a709d1562bb1d9">NuguClientKit::IRoutineManager::isRoutineProgress</a></div><div class="ttdeci">virtual bool isRoutineProgress()=0</div><div class="ttdoc">Check whether routine is in progress currently.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IRoutineManager_html_a2cbeee626f3e73eeccf3e65cc7262221"><div class="ttname"><a href="classNuguClientKit_1_1IRoutineManager.html#a2cbeee626f3e73eeccf3e65cc7262221">NuguClientKit::IRoutineManager::setDataRequester</a></div><div class="ttdeci">virtual void setDataRequester(DataRequester requester)=0</div><div class="ttdoc">Set DataRequester delegate for handling data type action.</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1IRoutineManager_html_af84dbe9a7219ac1b2c958a931db63da2"><div class="ttname"><a href="classNuguClientKit_1_1IRoutineManager.html#af84dbe9a7219ac1b2c958a931db63da2">NuguClientKit::IRoutineManager::isConditionToFinishAction</a></div><div class="ttdeci">virtual bool isConditionToFinishAction(const NuguDirective *ndir)=0</div><div class="ttdoc">Check whether current condition is possible to finish progressing action.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IRoutineManager_html_ad5d4ef321390a7bef9b8b34810e5d9cc"><div class="ttname"><a href="classNuguClientKit_1_1IRoutineManager.html#ad5d4ef321390a7bef9b8b34810e5d9cc">NuguClientKit::IRoutineManager::isRoutineAlive</a></div><div class="ttdeci">virtual bool isRoutineAlive()=0</div><div class="ttdoc">Check whether routine has remained action to execute.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IRoutineManager_html_a6ef7941d23fcdaf25819e7fff310d9a3"><div class="ttname"><a href="classNuguClientKit_1_1IRoutineManager.html#a6ef7941d23fcdaf25819e7fff310d9a3">NuguClientKit::IRoutineManager::stop</a></div><div class="ttdeci">virtual void stop()=0</div><div class="ttdoc">Stop routine.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IRoutineManager_html_adae0e052169017ee40925cb78f2b6a4e"><div class="ttname"><a href="classNuguClientKit_1_1IRoutineManager.html#adae0e052169017ee40925cb78f2b6a4e">NuguClientKit::IRoutineManager::isConditionToStop</a></div><div class="ttdeci">virtual bool isConditionToStop(const NuguDirective *ndir)=0</div><div class="ttdoc">Check whether current condition is to stop routine.</div></div>
@@ -200,7 +203,7 @@ $(document).ready(function(){initNavTree('routine__manager__interface_8hh_source
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_261219a980049fd8e6168264a7da95ca.html">clientkit</a></li><li class="navelem"><a class="el" href="routine__manager__interface_8hh.html">routine_manager_interface.hh</a></li>
-    <li class="footer">Generated on Mon Aug 30 2021 08:02:12 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Oct 5 2021 07:50:13 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -19,6 +19,7 @@ var hierarchy =
         [ "NuguCapability::IAudioPlayerHandler", "classNuguCapability_1_1IAudioPlayerHandler.html", null ]
       ] ],
       [ "NuguCapability::IExtensionHandler", "classNuguCapability_1_1IExtensionHandler.html", null ],
+      [ "NuguCapability::IMessageHandler", "classNuguCapability_1_1IMessageHandler.html", null ],
       [ "NuguCapability::IMicHandler", "classNuguCapability_1_1IMicHandler.html", null ],
       [ "NuguCapability::INudgeHandler", "classNuguCapability_1_1INudgeHandler.html", null ],
       [ "NuguCapability::IPhoneCallHandler", "classNuguCapability_1_1IPhoneCallHandler.html", null ],
@@ -40,6 +41,7 @@ var hierarchy =
         [ "NuguCapability::IAudioPlayerDisplayListener", "classNuguCapability_1_1IAudioPlayerDisplayListener.html", null ]
       ] ],
       [ "NuguCapability::IExtensionListener", "classNuguCapability_1_1IExtensionListener.html", null ],
+      [ "NuguCapability::IMessageListener", "classNuguCapability_1_1IMessageListener.html", null ],
       [ "NuguCapability::IMicListener", "classNuguCapability_1_1IMicListener.html", null ],
       [ "NuguCapability::INudgeListener", "classNuguCapability_1_1INudgeListener.html", null ],
       [ "NuguCapability::IPhoneCallListener", "classNuguCapability_1_1IPhoneCallListener.html", null ],
@@ -79,6 +81,7 @@ var hierarchy =
     [ "NuguClientKit::IWakeupListener", "classNuguClientKit_1_1IWakeupListener.html", null ],
     [ "nugu_audio_property", "structnugu__audio__property.html", null ],
     [ "nugu_decoder_driver_ops", "structnugu__decoder__driver__ops.html", null ],
+    [ "nugu_encoder_driver_ops", "structnugu__encoder__driver__ops.html", null ],
     [ "nugu_network_server_policy", "structnugu__network__server__policy.html", null ],
     [ "nugu_pcm_driver_ops", "structnugu__pcm__driver__ops.html", null ],
     [ "nugu_player_driver_ops", "structnugu__player__driver__ops.html", null ],

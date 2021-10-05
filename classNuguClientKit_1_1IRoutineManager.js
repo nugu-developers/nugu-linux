@@ -17,5 +17,6 @@ var classNuguClientKit_1_1IRoutineManager =
     [ "isRoutineAlive", "classNuguClientKit_1_1IRoutineManager.html#ad5d4ef321390a7bef9b8b34810e5d9cc", null ],
     [ "isActionProgress", "classNuguClientKit_1_1IRoutineManager.html#a1a7b0b30ecf6f11a233bd78bb16e0121", null ],
     [ "hasRoutineDirective", "classNuguClientKit_1_1IRoutineManager.html#a49b8da040ea7e86f563decfbe5d7a818", null ],
-    [ "isConditionToStop", "classNuguClientKit_1_1IRoutineManager.html#adae0e052169017ee40925cb78f2b6a4e", null ]
+    [ "isConditionToStop", "classNuguClientKit_1_1IRoutineManager.html#adae0e052169017ee40925cb78f2b6a4e", null ],
+    [ "isConditionToFinishAction", "classNuguClientKit_1_1IRoutineManager.html#af84dbe9a7219ac1b2c958a931db63da2", null ]
 ];
