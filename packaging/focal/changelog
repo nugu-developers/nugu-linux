@@ -1,3 +1,19 @@
+nugu (1.6.0ubuntu1~focal) focal; urgency=medium
+
+  * Fixed gstreamer pcm plugin
+  * Added Message interface v1.5
+  * Added nugu encoder driver
+  * Added TTS interface setMute API
+  * Updated PhoneCallAgent
+  * Updated TTSAgnt
+  * Updated SpeechRecognizer
+  * Updated RoutineManager
+  * Updated build options
+  * Upgraded curl to v7.79.1
+  * Upgraded to support ubuntu 20.04
+
+ -- nugulinux <nugulinux@gmail.com>  Tue, 5 Oct 2021 16:30:00 +0900
+
 nugu (1.5.0ubuntu1~focal) focal; urgency=medium
 
   * Added PlaySyncManager restartHolding and 2 more API
