@@ -601,9 +601,9 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
             close_stream = true;
             checkResponseTimeout();
         } else if (prev_listening_state == ListeningState::TIMEOUT) {
+            sendEventListenTimeout();
             releaseASRFocus(false, ASRError::LISTEN_TIMEOUT, (request_listening_id == id));
             close_stream = true;
-            sendEventListenTimeout();
         } else if (prev_listening_state == ListeningState::FAILED) {
             releaseASRFocus(false, ASRError::LISTEN_FAILED, (request_listening_id == id));
             close_stream = true;
