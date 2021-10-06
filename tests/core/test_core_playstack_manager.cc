@@ -396,6 +396,39 @@ static void test_playstack_manager_set_default_playstack_hold_time(TestFixture* 
     g_assert(hold_times.long_time == NEW_DEFAULT_HOLD_TIME.long_time);
 }
 
+static void test_playstack_manager_handle_relistening(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& playstack_container = fixture->playstack_manager->getPlayStackContainer();
+
+    auto checkMediaActivity = [&] {
+        g_assert(playstack_container.first.size() == 1);
+        g_assert(playstack_container.first.cbegin()->first == "ps_id_1");
+        g_assert(playstack_container.first.cbegin()->second == PlayStackActivity::Media);
+    };
+
+    // [1] play media
+    fixture->playstack_manager->add("ps_id_1", fixture->ndir_media);
+    checkMediaActivity();
+
+    // [2] handle ASR re-listening (Th playServiceId is same.)
+    fixture->playstack_manager->add("ps_id_1", fixture->ndir_expect_speech);
+    checkMediaActivity();
+
+    // [3] pause media and start TTS
+    fixture->playstack_manager->remove("ps_id_1", PlayStackRemoveMode::Later);
+    g_assert(playstack_container.first.size() == 1);
+
+    // [4] TTS finished (If the playstack has a media activity, it skip to release sync.)
+    g_assert(fixture->playstack_manager->getPlayStackActivity("ps_id_1") == PlayStackActivity::Media);
+
+    // [5] mic on by ASR DM
+    fixture->playstack_manager->stopHolding();
+
+    // [6] mic off after ASR DM
+    fixture->playstack_manager->resetHolding();
+    checkMediaActivity();
+}
+
 static void test_playstack_manager_reset(TestFixture* fixture, gconstpointer ignored)
 {
     const auto& playstack_container = fixture->playstack_manager->getPlayStackContainer();
@@ -439,6 +472,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/adjustPlayStackHoldTime", test_playstack_manager_adjust_playstack_hold_time);
     G_TEST_ADD_FUNC("/core/PlayStackManager/resetPlayStackHoldTime", test_playstack_manager_reset_playstack_hold_time);
     G_TEST_ADD_FUNC("/core/PlayStackManager/setDefaultPlayStackHoldTime", test_playstack_manager_set_default_playstack_hold_time);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/handleRelistening", test_playstack_manager_handle_relistening);
     G_TEST_ADD_FUNC("/core/PlayStackManager/reset", test_playstack_manager_reset);
 
     return g_test_run();
