@@ -160,7 +160,9 @@ bool PlayStackManager::add(const std::string& ps_id, NuguDirective* ndir)
     is_stacked = isStackedCondition(activity);
 
     if (playstack_container.first.find(ps_id) != playstack_container.first.end()) {
-        if (getPlayStackActivity(ps_id) == activity) {
+        PlayStackActivity exist_activity = getPlayStackActivity(ps_id);
+
+        if (exist_activity == activity || exist_activity == PlayStackActivity::Media) {
             nugu_warn("%s is already added.", ps_id.c_str());
             return false;
         } else if (activity != PlayStackActivity::Media) {
@@ -171,8 +173,8 @@ bool PlayStackManager::add(const std::string& ps_id, NuguDirective* ndir)
     }
 
     has_adding_playstack = hasDisplayRenderingInfo(ndir);
-
     handlePreviousStack(is_stacked);
+
     return addToContainer(ps_id, activity);
 }
 
