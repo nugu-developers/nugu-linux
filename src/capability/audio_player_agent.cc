@@ -1686,9 +1686,9 @@ std::string AudioPlayerAgent::playerActivity(AudioPlayerState state)
 
 bool AudioPlayerAgent::hasToSetPauseState(const std::string& dname)
 {
-    std::vector<std::string> skip_dirs { "UpdateMetadata", "ShowLyrics", "HideLyrics", "ControlLyricsPage" };
+    std::vector<std::string> skip_dirs { "Play", "Pause", "Stop" };
 
-    return !std::any_of(skip_dirs.cbegin(), skip_dirs.cend(),
+    return std::any_of(skip_dirs.cbegin(), skip_dirs.cend(),
         [&](const std::string& element) {
             return dname == element;
         });
