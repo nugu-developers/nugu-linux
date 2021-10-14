@@ -23,7 +23,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "Display";
-static const char* CAPABILITY_VERSION = "1.8";
+static const char* CAPABILITY_VERSION = "1.9";
 
 DisplayAgent::DisplayAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -38,6 +38,7 @@ DisplayAgent::DisplayAgent()
         "ImageText2",
         "ImageText3",
         "ImageText4",
+        "ImageText5",
         "TextList1",
         "TextList2",
         "TextList3",
@@ -86,6 +87,7 @@ void DisplayAgent::initialize()
 
     Capability::initialize();
 
+    current_history_control = {};
     disp_cur_ps_id = "";
     disp_cur_token = "";
     playstackctl_ps_id.clear();
@@ -110,6 +112,9 @@ void DisplayAgent::deInitialize()
     playsync_manager->removeListener(getName());
     render_helper->clear();
     session_dialog_ids.clear();
+
+    while (!history_control_stack.empty())
+        history_control_stack.pop();
 
     initialized = false;
 }
@@ -230,6 +235,35 @@ void DisplayAgent::elementSelected(const std::string& id, const std::string& ite
     sendEventElementSelected(item_token, postback);
 }
 
+void DisplayAgent::triggerChild(const std::string& ps_id, const std::string& parent_token, const std::string& data)
+{
+    Json::Reader reader;
+    Json::Value data_obj;
+
+    if (ps_id.empty() || parent_token.empty()
+        || data.empty() || !reader.parse(data, data_obj)) {
+        nugu_warn("The mandatory parameters are not prepared.");
+        return;
+    }
+
+    sendEventTriggerChild(ps_id, parent_token, data_obj);
+}
+
+void DisplayAgent::controlTemplate(const std::string& id, const std::string& ps_id, TemplateControlType control_type)
+{
+    if (control_type == TemplateControlType::TEMPLATE_PREVIOUS) {
+        if (!history_control_stack.empty()) {
+            auto history_control = history_control_stack.top();
+            auto render_infos = std::make_pair(render_helper->getRenderInfo(id), render_helper->getRenderInfo(history_control.id));
+
+            render_helper->updateDisplay(render_infos, playsync_manager->hasNextPlayStack());
+            playsync_manager->replacePlayStack(ps_id, history_control.ps_id);
+        }
+    } else if (control_type == TemplateControlType::TEMPLATE_CLOSEALL) {
+        playsync_manager->releaseSyncImmediately(ps_id, getName());
+    }
+}
+
 void DisplayAgent::informControlResult(const std::string& id, ControlType type, ControlDirection direction)
 {
     auto render_info = render_helper->getRenderInfo(id);
@@ -289,10 +323,28 @@ void DisplayAgent::refreshRenderingTimer(const std::string& id)
 
 void DisplayAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data)
 {
-    if (state == PlaySyncState::Synced)
+    if (state == PlaySyncState::Synced) {
         render_helper->renderDisplay(extra_data);
-    else if (state == PlaySyncState::Released)
-        render_helper->clearDisplay(extra_data, playsync_manager->hasNextPlayStack());
+
+        if (current_history_control.parent) {
+            current_history_control.id = render_helper->getTemplateId(ps_id);
+            history_control_stack.push(current_history_control);
+        } else {
+            current_history_control = {};
+        }
+
+    } else if (state == PlaySyncState::Released) {
+        bool hold_render_info = !history_control_stack.empty() && history_control_stack.top().parent && current_history_control.child;
+
+        if (!hold_render_info && !history_control_stack.empty()) {
+            if (history_control_stack.top().ps_id != ps_id)
+                render_helper->removedRenderInfo(history_control_stack.top().id);
+
+            history_control_stack.pop();
+        }
+
+        render_helper->clearDisplay(extra_data, playsync_manager->hasNextPlayStack(), hold_render_info);
+    }
 }
 
 void DisplayAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas)
@@ -318,6 +370,19 @@ void DisplayAgent::sendEventElementSelected(const std::string& item_token, const
     payload = writer.write(root);
 
     sendEvent(ename, capa_helper->makeAllContextInfo(), payload);
+}
+
+void DisplayAgent::sendEventTriggerChild(const std::string& ps_id, const std::string& parent_token, const Json::Value& data)
+{
+    Json::FastWriter writer;
+    Json::Reader reader;
+    Json::Value root;
+
+    root["playServiceId"] = ps_id;
+    root["parentToken"] = parent_token;
+    root["data"] = data;
+
+    sendEvent("TriggerChild", getContextInfo(), writer.write(root));
 }
 
 void DisplayAgent::sendEventCloseSucceeded(const std::string& ps_id)
@@ -533,8 +598,43 @@ void DisplayAgent::parsingTemplates(const char* message)
         }
     }
 
+    parsingHistoryControl(root);
+
     activateSession(ndir);
     startPlaySync(ndir, root);
+}
+
+void DisplayAgent::parsingRedirectTriggerChild(const char* message)
+{
+    Json::Value root;
+    Json::Reader reader;
+
+    if (!reader.parse(message, root)) {
+        nugu_error("parsing error");
+        return;
+    }
+
+    if (root["playServiceId"].empty() || root["targetPlayServiceId"].empty()
+        || root["parentToken"].empty() || root["data"].empty()) {
+        nugu_error("The required parameters are not set");
+        return;
+    }
+
+    sendEventTriggerChild(root["targetPlayServiceId"].asString(), root["parentToken"].asString(), root["data"]);
+}
+
+void DisplayAgent::parsingHistoryControl(const Json::Value& root)
+{
+    if (!root.isMember("historyControl")) {
+        current_history_control = {};
+        return;
+    }
+
+    Json::Value history_control = root["historyControl"];
+    current_history_control.parent = history_control["parent"].asBool();
+    current_history_control.child = history_control["child"].asBool();
+    current_history_control.parent_token = history_control["parentToken"].asString();
+    current_history_control.ps_id = playstackctl_ps_id;
 }
 
 void DisplayAgent::activateSession(NuguDirective* ndir)

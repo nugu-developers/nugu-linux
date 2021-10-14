@@ -18,6 +18,7 @@
 #define __NUGU_DISPLAY_AGENT_H__
 
 #include <set>
+#include <stack>
 
 #include "capability/display_interface.hh"
 #include "clientkit/capability.hh"
@@ -43,6 +44,8 @@ public:
     void displayRendered(const std::string& id) override;
     void displayCleared(const std::string& id) override;
     void elementSelected(const std::string& id, const std::string& item_token, const std::string& postback) override;
+    void triggerChild(const std::string& ps_id, const std::string& parent_token, const std::string& data) override;
+    void controlTemplate(const std::string& id, const std::string& ps_id, TemplateControlType control_type) override;
     void informControlResult(const std::string& id, ControlType type, ControlDirection direction) override;
     void setDisplayListener(IDisplayListener* listener) override;
     void removeDisplayListener(IDisplayListener* listener) override;
@@ -54,7 +57,16 @@ public:
     void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override;
 
 private:
+    using HistoryControl = struct {
+        bool parent = false;
+        bool child = false;
+        std::string parent_token;
+        std::string ps_id;
+        std::string id;
+    };
+
     void sendEventElementSelected(const std::string& item_token, const std::string& postback);
+    void sendEventTriggerChild(const std::string& ps_id, const std::string& parent_token, const Json::Value& data);
     void sendEventCloseSucceeded(const std::string& ps_id);
     void sendEventCloseFailed(const std::string& ps_id);
     void sendEventControlFocusSucceeded(const std::string& ps_id, ControlDirection direction);
@@ -69,6 +81,8 @@ private:
     void parsingControlScroll(const char* message);
     void parsingUpdate(const char* message);
     void parsingTemplates(const char* message);
+    void parsingRedirectTriggerChild(const char* message);
+    void parsingHistoryControl(const Json::Value& root);
 
     void activateSession(NuguDirective* ndir);
     void deactiveSession();
@@ -87,6 +101,9 @@ private:
     std::string disp_cur_ps_id;
     std::string disp_cur_token;
     std::string playstackctl_ps_id;
+
+    HistoryControl current_history_control;
+    std::stack<HistoryControl> history_control_stack;
 };
 
 } // NuguCapability
