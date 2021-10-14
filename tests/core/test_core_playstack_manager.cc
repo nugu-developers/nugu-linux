@@ -429,6 +429,34 @@ static void test_playstack_manager_handle_relistening(TestFixture* fixture, gcon
     checkMediaActivity();
 }
 
+static void test_playstack_manager_replace_playstack(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& playstack_container = fixture->playstack_manager->getPlayStackContainer();
+
+    auto checkPlayStack = [&](std::string&& ps_id) {
+        g_assert(playstack_container.first.size() == 1);
+        g_assert(playstack_container.second.size() == 1);
+        g_assert(playstack_container.first.cbegin()->first == ps_id);
+        g_assert(playstack_container.first.cbegin()->second == PlayStackActivity::TTS);
+        g_assert(std::find(playstack_container.second.cbegin(), playstack_container.second.cend(), ps_id) != playstack_container.second.cend());
+    };
+
+    fixture->playstack_manager->add("ps_id_1", fixture->ndir_disp);
+    checkPlayStack("ps_id_1");
+
+    // replace playstack
+    g_assert(fixture->playstack_manager->replace("ps_id_1", "ps_id_2"));
+    checkPlayStack("ps_id_2");
+
+    // check validation
+    g_assert(!fixture->playstack_manager->replace("", "")); // empty
+    checkPlayStack("ps_id_2");
+    g_assert(!fixture->playstack_manager->replace("ps_id_2", "ps_id_2")); // same playstack
+    checkPlayStack("ps_id_2");
+    g_assert(!fixture->playstack_manager->replace("ps_id_3", "ps_id_4")); // from not exist
+    checkPlayStack("ps_id_2");
+}
+
 static void test_playstack_manager_reset(TestFixture* fixture, gconstpointer ignored)
 {
     const auto& playstack_container = fixture->playstack_manager->getPlayStackContainer();
@@ -473,6 +501,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/resetPlayStackHoldTime", test_playstack_manager_reset_playstack_hold_time);
     G_TEST_ADD_FUNC("/core/PlayStackManager/setDefaultPlayStackHoldTime", test_playstack_manager_set_default_playstack_hold_time);
     G_TEST_ADD_FUNC("/core/PlayStackManager/handleRelistening", test_playstack_manager_handle_relistening);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/replacePlayStack", test_playstack_manager_replace_playstack);
     G_TEST_ADD_FUNC("/core/PlayStackManager/reset", test_playstack_manager_reset);
 
     return g_test_run();

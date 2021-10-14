@@ -241,6 +241,13 @@ public:
      * @param[in] time playstack hold time (unit: second)
      */
     virtual void setDefaultPlayStackHoldTime(unsigned int time) = 0;
+
+    /**
+     * @brief Replace current playstack to new one. (It only replace playstack not notifying related callbacks.)
+     * @param[in] prev_ps_id current exist play service id
+     * @param[in] new_ps_id play service id for replacing
+     */
+    virtual void replacePlayStack(const std::string& prev_ps_id, const std::string& new_ps_id) = 0;
 };
 
 /**
