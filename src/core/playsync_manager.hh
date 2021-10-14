@@ -48,6 +48,7 @@ public:
 
     void prepareSync(const std::string& ps_id, NuguDirective* ndir) override;
     void startSync(const std::string& ps_id, const std::string& requester, void* extra_data = nullptr) override;
+    void replacePlayStack(const std::string& prev_ps_id, const std::string& new_ps_id) override;
     void cancelSync(const std::string& ps_id, const std::string& requester) override;
     void releaseSync(const std::string& ps_id, const std::string& requester) override;
     void releaseSyncLater(const std::string& ps_id, const std::string& requester) override;

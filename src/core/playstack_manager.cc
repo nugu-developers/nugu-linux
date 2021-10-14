@@ -178,6 +178,29 @@ bool PlayStackManager::add(const std::string& ps_id, NuguDirective* ndir)
     return addToContainer(ps_id, activity);
 }
 
+bool PlayStackManager::replace(const std::string& prev_ps_id, const std::string& new_ps_id)
+{
+    if (prev_ps_id.empty() || new_ps_id.empty() || prev_ps_id == new_ps_id) {
+        nugu_warn("The PlayServiceId is empty or same.");
+        return false;
+    }
+
+    try {
+        PlayStackActivity activity = playstack_container.first.at(prev_ps_id);
+
+        playstack_container.first.erase(prev_ps_id);
+        removeItemInList(playstack_container.second, prev_ps_id);
+
+        playstack_container.first.emplace(new_ps_id, activity);
+        playstack_container.second.emplace_back(new_ps_id);
+    } catch (std::out_of_range& exception) {
+        nugu_warn("The playstack is not exist.");
+        return false;
+    }
+
+    return true;
+}
+
 void PlayStackManager::remove(const std::string& ps_id, PlayStackRemoveMode mode)
 {
     has_holding = false;

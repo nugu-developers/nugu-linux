@@ -67,6 +67,7 @@ public:
 
     bool add(const std::string& ps_id, NuguDirective* ndir);
     void remove(const std::string& ps_id, PlayStackRemoveMode mode = PlayStackRemoveMode::Normal);
+    bool replace(const std::string& prev_ps_id, const std::string& new_ps_id);
     bool isStackedCondition(NuguDirective* ndir);
     bool hasExpectSpeech(NuguDirective* ndir);
     void stopHolding();

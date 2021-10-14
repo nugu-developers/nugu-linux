@@ -936,6 +936,44 @@ static void test_playsync_manager_check_playstack_layer(TestFixture* fixture, gc
     g_assert(!fixture->playsync_manager->hasActivity("ps_id_1", PlayStackActivity::TTS));
 }
 
+static void test_playsync_manager_replace_playstack(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& playstacks = fixture->playsync_manager->getPlayStacks();
+
+    auto checkPlayStack = [&](std::string&& ps_id) {
+        auto playsync_container = playstacks.at(ps_id);
+        g_assert(playstacks.size() == 1);
+        g_assert(playsync_container.size() == 2);
+        g_assert(playsync_container.at("TTS").first == PlaySyncState::Synced);
+        g_assert(playsync_container.at("Display").first == PlaySyncState::Synced);
+
+        auto playstack_items = fixture->playsync_manager->getAllPlayStackItems();
+        g_assert(playstack_items.size() == 1);
+        g_assert(std::find(playstack_items.cbegin(), playstack_items.cend(), ps_id) != playstack_items.cend());
+    };
+
+    sub_test_playsync_manager_preset_sync(fixture, "ps_id_1");
+    checkPlayStack("ps_id_1");
+
+    // replace playstack
+    fixture->playsync_manager->replacePlayStack("ps_id_1", "ps_id_2");
+    checkPlayStack("ps_id_2");
+
+    // check validation
+    fixture->playsync_manager->replacePlayStack("ps_id_1", "ps_id_3"); // from not exist
+    checkPlayStack("ps_id_2");
+    fixture->playsync_manager->replacePlayStack("ps_id_2", ""); // to empty
+    checkPlayStack("ps_id_2");
+    fixture->playsync_manager->replacePlayStack("", "ps_id_3"); // from empty
+    checkPlayStack("ps_id_2");
+    fixture->playsync_manager->replacePlayStack("ps_id_2", "ps_id_2"); // same playstack
+    checkPlayStack("ps_id_2");
+
+    // release sync
+    fixture->playsync_manager->releaseSyncImmediately("ps_id_2", "Display");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Released);
+}
+
 static void test_playsync_manager_recv_callback_only_participants(TestFixture* fixture, gconstpointer ignored)
 {
     fixture->playsync_manager->addListener("AudioPlayer", fixture->playsync_manager_listener_snd.get());
@@ -1129,6 +1167,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlaySyncManager/stopPlaystackHoldingAfterTimer", test_playsync_manager_stop_playstack_holding_after_timer);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/stopPlaystackHoldingBeforeTimer", test_playsync_manager_stop_playstack_holding_before_timer);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/checkPlayStackActivity", test_playsync_manager_check_playstack_layer);
+    G_TEST_ADD_FUNC("/core/PlaySyncManager/replacePlayStack", test_playsync_manager_replace_playstack);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/recvCallbackOnlyParticipants", test_playsync_manager_recv_callback_only_participants);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/mediaStackedCase", test_playsync_manager_media_stacked_case);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/postPoneRelease", test_playsync_manager_postpone_release);
