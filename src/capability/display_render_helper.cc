@@ -163,6 +163,7 @@ std::string DisplayRenderHelper::renderDisplay(void* data)
     }
 
     auto render_info = reinterpret_cast<DisplayRenderInfo*>(data);
+    render_info->close = false;
     display_listener->renderDisplay(render_info->id, render_info->type, render_info->view, render_info->dialog_id);
 
     return render_info->id;
@@ -174,7 +175,7 @@ std::string DisplayRenderHelper::updateDisplay(std::pair<void*, void*> datas, bo
     return renderDisplay(datas.second);
 }
 
-void DisplayRenderHelper::clearDisplay(void* data, bool has_next_render, bool hold_render_info)
+void DisplayRenderHelper::clearDisplay(void* data, bool has_next_render)
 {
     if (!display_listener || !data) {
         nugu_warn("The DisplayListener or render data is not exist.");
@@ -192,8 +193,7 @@ void DisplayRenderHelper::clearDisplay(void* data, bool has_next_render, bool ho
 
     display_listener->clearDisplay(id, true, has_next_render);
 
-    if (!hold_render_info)
-        render_info->postpone_remove ? setRenderClose(id) : removedRenderInfo(id);
+    render_info->postpone_remove ? setRenderClose(id) : removedRenderInfo(id);
 }
 
 void DisplayRenderHelper::setRenderClose(const std::string& id) noexcept

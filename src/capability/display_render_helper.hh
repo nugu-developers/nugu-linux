@@ -68,7 +68,7 @@ public:
     std::string getTemplateId(const std::string& ps_id);
     std::string renderDisplay(void* data);
     std::string updateDisplay(std::pair<void*, void*> datas, bool has_next_render);
-    void clearDisplay(void* data, bool has_next_render, bool hold_render_info = false);
+    void clearDisplay(void* data, bool has_next_render);
 
     void setRenderClose(const std::string& id) noexcept;
     void removedRenderInfo(const std::string& id) noexcept;

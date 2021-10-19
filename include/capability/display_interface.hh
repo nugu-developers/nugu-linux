@@ -122,18 +122,16 @@ public:
     /**
      * @brief Send TriggerChild event for receiving child template
      * @param[in] ps_id target play service id
-     * @param[in] parent_token token of parent template
      * @param[in] data any JSON data
      */
-    virtual void triggerChild(const std::string& ps_id, const std::string& parent_token, const std::string& data);
+    virtual void triggerChild(const std::string& ps_id, const std::string& data);
 
     /**
      * @brief Control templates which are composed by history control
      * @param[in] id display template id
-     * @param[in] ps_id play service id
      * @param[in] control_type TemplateControlType
      */
-    virtual void controlTemplate(const std::string& id, const std::string& ps_id, TemplateControlType control_type);
+    virtual void controlTemplate(const std::string& id, TemplateControlType control_type);
 
     /**
      * @brief The user informs the control result
