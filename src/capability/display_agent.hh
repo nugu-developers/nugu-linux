@@ -44,8 +44,8 @@ public:
     void displayRendered(const std::string& id) override;
     void displayCleared(const std::string& id) override;
     void elementSelected(const std::string& id, const std::string& item_token, const std::string& postback) override;
-    void triggerChild(const std::string& ps_id, const std::string& parent_token, const std::string& data) override;
-    void controlTemplate(const std::string& id, const std::string& ps_id, TemplateControlType control_type) override;
+    void triggerChild(const std::string& ps_id, const std::string& data) override;
+    void controlTemplate(const std::string& id, TemplateControlType control_type) override;
     void informControlResult(const std::string& id, ControlType type, ControlDirection direction) override;
     void setDisplayListener(IDisplayListener* listener) override;
     void removeDisplayListener(IDisplayListener* listener) override;
@@ -61,8 +61,8 @@ private:
         bool parent = false;
         bool child = false;
         std::string parent_token;
-        std::string ps_id;
         std::string id;
+        std::string token;
     };
 
     void sendEventElementSelected(const std::string& item_token, const std::string& postback);
@@ -84,6 +84,8 @@ private:
     void parsingRedirectTriggerChild(const char* message);
     void parsingHistoryControl(const Json::Value& root);
 
+    void prehandleTemplates(NuguDirective* ndir);
+    void handleHistoryControl(const Json::Value& root, const DisplayRenderInfo* render_info);
     void activateSession(NuguDirective* ndir);
     void deactiveSession();
     void startPlaySync(const NuguDirective* ndir, const Json::Value& root);
@@ -101,8 +103,9 @@ private:
     std::string disp_cur_ps_id;
     std::string disp_cur_token;
     std::string playstackctl_ps_id;
+    std::string prepared_render_info_id;
+    bool keep_history;
 
-    HistoryControl current_history_control;
     std::stack<HistoryControl> history_control_stack;
 };
 
