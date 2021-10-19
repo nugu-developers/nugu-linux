@@ -698,8 +698,8 @@ void ASRAgent::executeOnForegroundAction(bool asr_user)
             focus_manager->releaseFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME);
             return;
         }
-        setASRState(ASRState::EXPECTING_SPEECH);
         asr_initiator = ASRInitiator::EXPECT_SPEECH;
+        setASRState(ASRState::EXPECTING_SPEECH);
 
         playsync_manager->postPoneRelease();
 
@@ -786,8 +786,10 @@ void ASRAgent::setASRState(ASRState state)
 
     cur_state = state;
 
-    for (const auto& asr_listener : asr_listeners)
+    for (const auto& asr_listener : asr_listeners) {
         asr_listener->onState(state, getRecognizeDialogId());
+        asr_listener->onState(state, getRecognizeDialogId(), asr_initiator);
+    }
 }
 
 ASRState ASRAgent::getASRState()

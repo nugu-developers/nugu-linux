@@ -102,27 +102,37 @@ public:
      * @see IASRHandler::startRecognition()
      * @see IASRHandler::stopRecognition()
      */
-    virtual void onState(ASRState state, const std::string& dialog_id) = 0;
+    virtual void onState(ASRState state, const std::string& dialog_id);
+
+    /**
+     * @brief Report to the user asr state changed with asr initiator
+     * @param[in] state asr state
+     * @param[in] dialog_id dialog request id
+     * @param[in] initiator asr initiator
+     * @see IASRHandler::startRecognition()
+     * @see IASRHandler::stopRecognition()
+     */
+    virtual void onState(ASRState state, const std::string& dialog_id, ASRInitiator initiator);
 
     /**
      * @brief No speech recognition results.
      * @param[in] dialog_id dialog request id
      */
-    virtual void onNone(const std::string& dialog_id) = 0;
+    virtual void onNone(const std::string& dialog_id);
 
     /**
      * @brief The result of recognizing the user's speech in real time.
      * @param[in] text Speech recognition result
      * @param[in] dialog_id dialog request id
      */
-    virtual void onPartial(const std::string& text, const std::string& dialog_id) = 0;
+    virtual void onPartial(const std::string& text, const std::string& dialog_id);
 
     /**
      * @brief Speech recognition results which are reported naturally in situations based on the entire speech.
      * @param[in] text Speech recognition result
      * @param[in] dialog_id dialog request id
      */
-    virtual void onComplete(const std::string& text, const std::string& dialog_id) = 0;
+    virtual void onComplete(const std::string& text, const std::string& dialog_id);
 
     /**
      * @brief Report an error occurred during speech recognition to the user.
@@ -130,13 +140,13 @@ public:
      * @param[in] dialog_id dialog request id
      * @param[in] listen_timeout_fail_beep whether to play fail beep or not when listen-timeout occurred
      */
-    virtual void onError(ASRError error, const std::string& dialog_id, bool listen_timeout_fail_beep = true) = 0;
+    virtual void onError(ASRError error, const std::string& dialog_id, bool listen_timeout_fail_beep = true);
 
     /**
      * @brief Speech recognition is canceled.
      * @param[in] dialog_id dialog request id
      */
-    virtual void onCancel(const std::string& dialog_id) = 0;
+    virtual void onCancel(const std::string& dialog_id);
 };
 
 /**
