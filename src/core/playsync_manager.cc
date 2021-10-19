@@ -147,14 +147,21 @@ void PlaySyncManager::startSync(const std::string& ps_id, const std::string& req
     }
 }
 
-void PlaySyncManager::replacePlayStack(const std::string& prev_ps_id, const std::string& new_ps_id)
+void PlaySyncManager::replacePlayStack(const std::string& prev_ps_id, const std::string& new_ps_id, std::pair<std::string, void*> extra_data)
 {
-    if (!playstack_manager->replace(prev_ps_id, new_ps_id))
+    if (prev_ps_id.empty() || new_ps_id.empty())
         return;
 
     try {
-        playstack_map.emplace(new_ps_id, playstack_map.at(prev_ps_id));
-        playstack_map.erase(prev_ps_id);
+        if (prev_ps_id != new_ps_id) {
+            playstack_map.emplace(new_ps_id, playstack_map.at(prev_ps_id));
+            playstack_map.erase(prev_ps_id);
+            playstack_manager->replace(prev_ps_id, new_ps_id);
+            notifyStackChanged({ new_ps_id, prev_ps_id });
+        }
+
+        updateExtraData(new_ps_id, extra_data.first, extra_data.second);
+
     } catch (std::out_of_range& exception) {
         nugu_warn("The playstack is not exist.");
     }
