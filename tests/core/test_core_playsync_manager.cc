@@ -938,6 +938,8 @@ static void test_playsync_manager_check_playstack_layer(TestFixture* fixture, gc
 
 static void test_playsync_manager_replace_playstack(TestFixture* fixture, gconstpointer ignored)
 {
+    fixture->playsync_manager->addListener("Display", fixture->playsync_manager_listener_snd.get());
+    const auto& notified_playstacks(fixture->playsync_manager_listener_snd->getPlaystacks());
     const auto& playstacks = fixture->playsync_manager->getPlayStacks();
 
     auto checkPlayStack = [&](std::string&& ps_id) {
@@ -953,10 +955,14 @@ static void test_playsync_manager_replace_playstack(TestFixture* fixture, gconst
     };
 
     sub_test_playsync_manager_preset_sync(fixture, "ps_id_1");
+    g_assert(notified_playstacks.find("ps_id_1") != notified_playstacks.end());
     checkPlayStack("ps_id_1");
 
     // replace playstack
-    fixture->playsync_manager->replacePlayStack("ps_id_1", "ps_id_2");
+    fixture->dummy_extra_data->id = "100";
+    fixture->playsync_manager->replacePlayStack("ps_id_1", "ps_id_2", std::make_pair("Display", fixture->dummy_extra_data));
+    g_assert(reinterpret_cast<DummyExtraInfo*>(fixture->playsync_manager_listener_snd->getExtraData())->id == "100");
+    g_assert(notified_playstacks.find("ps_id_2") != notified_playstacks.end());
     checkPlayStack("ps_id_2");
 
     // check validation
@@ -968,6 +974,11 @@ static void test_playsync_manager_replace_playstack(TestFixture* fixture, gconst
     checkPlayStack("ps_id_2");
     fixture->playsync_manager->replacePlayStack("ps_id_2", "ps_id_2"); // same playstack
     checkPlayStack("ps_id_2");
+
+    // update extra data
+    fixture->dummy_extra_data_snd->id = "200";
+    fixture->playsync_manager->replacePlayStack("ps_id_2", "ps_id_2", std::make_pair("Display", fixture->dummy_extra_data_snd));
+    g_assert(reinterpret_cast<DummyExtraInfo*>(fixture->playsync_manager_listener_snd->getExtraData())->id == "200");
 
     // release sync
     fixture->playsync_manager->releaseSyncImmediately("ps_id_2", "Display");

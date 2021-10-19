@@ -246,8 +246,9 @@ public:
      * @brief Replace current playstack to new one. (It only replace playstack not notifying related callbacks.)
      * @param[in] prev_ps_id current exist play service id
      * @param[in] new_ps_id play service id for replacing
+     * @param[in] extra_data additional data composed by requester and data
      */
-    virtual void replacePlayStack(const std::string& prev_ps_id, const std::string& new_ps_id) = 0;
+    virtual void replacePlayStack(const std::string& prev_ps_id, const std::string& new_ps_id, std::pair<std::string, void*> extra_data = {}) = 0;
 };
 
 /**
