@@ -52,7 +52,7 @@ class MyASR : public IASRListener {
 public:
     virtual ~MyASR() = default;
 
-    void onState(ASRState state, const std::string& dialog_id)
+    void onState(ASRState state, const std::string& dialog_id, ASRInitiator initiator)
     {
         switch (state) {
         case ASRState::IDLE:

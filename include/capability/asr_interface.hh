@@ -99,10 +99,11 @@ public:
      * @brief Report to the user asr state changed.
      * @param[in] state asr state
      * @param[in] dialog_id dialog request id
+     * @param[in] initiator asr initiator
      * @see IASRHandler::startRecognition()
      * @see IASRHandler::stopRecognition()
      */
-    virtual void onState(ASRState state, const std::string& dialog_id) = 0;
+    virtual void onState(ASRState state, const std::string& dialog_id, ASRInitiator initiator) = 0;
 
     /**
      * @brief No speech recognition results.
