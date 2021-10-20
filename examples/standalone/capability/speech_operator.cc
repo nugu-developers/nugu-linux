@@ -75,6 +75,17 @@ void error(const std::string& message)
 }
 }
 
+SpeechOperator::SpeechOperator()
+{
+    asr_initiator_texts = {
+        { ASRInitiator::WAKE_UP_WORD, "WAKE_UP_WORD" },
+        { ASRInitiator::PRESS_AND_HOLD, "PRESS_AND_HOLD" },
+        { ASRInitiator::TAP, "TAP" },
+        { ASRInitiator::EXPECT_SPEECH, "EXPECT_SPEECH" },
+        { ASRInitiator::EARSET, "EARSET" }
+    };
+}
+
 IASRListener* SpeechOperator::getASRListener()
 {
     return this;
@@ -194,7 +205,7 @@ void SpeechOperator::onWakeupState(WakeupDetectState state, float power_noise, f
     }
 }
 
-void SpeechOperator::onState(ASRState state, const std::string& dialog_id)
+void SpeechOperator::onState(ASRState state, const std::string& dialog_id, ASRInitiator initiator)
 {
     switch (state) {
     case ASRState::IDLE: {
@@ -210,7 +221,7 @@ void SpeechOperator::onState(ASRState state, const std::string& dialog_id)
         break;
     }
     case ASRState::LISTENING: {
-        msg::asr::state(dialog_id, "LISTENING");
+        msg::asr::state(dialog_id, "LISTENING (" + asr_initiator_texts.at(initiator) + ")");
         // need to stop wakeup when asr state is changed from idle to listening
         // without wakeup detected
         stopWakeup();
