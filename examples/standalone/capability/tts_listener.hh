@@ -24,6 +24,7 @@ using namespace NuguCapability;
 class TTSListener : public ITTSListener {
 public:
     virtual ~TTSListener() = default;
+    void setTTSHandler(ITTSHandler* tts_handler);
     void onTTSState(TTSState state, const std::string& dialog_id) override;
     void onTTSText(const std::string& text, const std::string& dialog_id) override;
     void onTTSCancel(const std::string& dialog_id) override;
@@ -33,6 +34,8 @@ private:
 
     const std::string WAKEUP_WORD_TAG = "{W}";
     const std::string WAKEUP_WORD = "아리아"; // It skip to get wakeup word from NuguCoreContainer
+
+    ITTSHandler* tts_handler = nullptr;
 };
 
 #endif /* __TTS_LISTENER_H__ */

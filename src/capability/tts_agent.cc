@@ -252,6 +252,11 @@ bool TTSAgent::setMute(bool mute)
     return true;
 }
 
+std::string TTSAgent::getPlayServiceId()
+{
+    return ps_id;
+}
+
 void TTSAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)
@@ -484,6 +489,7 @@ void TTSAgent::parsingStop(const char* message)
         focus_manager->stopForegroundFocus();
         playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
         speak_dir = nullptr;
+        ps_id.clear();
     }
 }
 
@@ -551,6 +557,8 @@ void TTSAgent::mediaStateChanged(MediaPlayerState state)
             sendEventSpeechFinished();
         else
             sendEventSpeechStopped();
+
+        ps_id.clear();
         break;
     default:
         break;
