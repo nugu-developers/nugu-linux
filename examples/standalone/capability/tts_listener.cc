@@ -20,13 +20,20 @@
 
 #include "tts_listener.hh"
 
+void TTSListener::setTTSHandler(ITTSHandler* tts_handler)
+{
+    this->tts_handler = tts_handler;
+}
+
 void TTSListener::onTTSState(TTSState state, const std::string& dialog_id)
 {
     std::cout << "[TTS][id:" << dialog_id << "] ";
 
     switch (state) {
     case TTSState::TTS_SPEECH_START:
-        std::cout << "PLAYING...\n";
+        tts_handler ? std::cout << "PLAYING (" << tts_handler->getPlayServiceId() << ")...\n"
+                    : std::cout << "PLAYING...";
+
         break;
     case TTSState::TTS_SPEECH_STOP:
         std::cout << "PLAYING STOPPED\n";

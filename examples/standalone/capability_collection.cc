@@ -65,6 +65,7 @@ void CapabilityCollection::composeCapabilityFactory()
         if (!tts_handler) {
             tts_listener = make_unique<TTSListener>();
             tts_handler = makeCapability<TTSAgent, ITTSHandler>(tts_listener.get());
+            tts_listener->setTTSHandler(tts_handler.get());
         }
 
         return tts_handler.get();

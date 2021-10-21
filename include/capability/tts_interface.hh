@@ -134,6 +134,12 @@ public:
      * @param[in] attribute attribute object
      */
     virtual void setAttribute(TTSAttribute&& attribute) = 0;
+
+    /**
+     * @brief Get current play service id
+     * @return play service id
+     */
+    virtual std::string getPlayServiceId() = 0;
 };
 
 /**
