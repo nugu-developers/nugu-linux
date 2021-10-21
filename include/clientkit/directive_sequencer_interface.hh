@@ -150,6 +150,16 @@ public:
     virtual bool cancel(const std::string& dialog_id, std::set<std::string> groups) = 0;
 
     /**
+     * @brief Cancels all pending directives.
+     * The canceled directives are freed.
+     * @param[in] cancel_active_directive cancel including currently active directives
+     * @return result
+     * @retval true success
+     * @retval false failure
+     */
+    virtual bool cancelAll(bool cancel_active_directive = true) = 0;
+
+    /**
      * @brief Complete the blocking directive. The NuguDirective object will be destroyed.
      * If there are pending directives, those directives will be processed at the next idle time.
      * @param[in] ndir NuguDirective object
