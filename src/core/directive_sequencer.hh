@@ -47,6 +47,7 @@ public:
 
     bool cancel(const std::string& dialog_id, bool cancel_active_directive = true) override;
     bool cancel(const std::string& dialog_id, std::set<std::string> groups) override;
+    bool cancelAll(bool cancel_active_directive = true) override;
     bool complete(NuguDirective* ndir) override;
     bool add(NuguDirective* ndir) override;
 

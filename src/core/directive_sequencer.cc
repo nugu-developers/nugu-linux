@@ -162,7 +162,8 @@ public:
     bool removeByName(const std::string& dialog_id, const std::string& namespace_name, NOTIFY notify);
 
     void erase(const char* dialog_id);
-    void clear();
+    template <typename NOTIFY>
+    void clear(NOTIFY notify);
     void dump();
     std::vector<NuguDirective*>* getList(const char* dialog_id);
     NuguDirective* findByMedium(const char* dialog_id, enum nugu_directive_medium medium);
@@ -332,8 +333,15 @@ void DialogDirectiveList::erase(const char* dialog_id)
     listmap.erase(dialog_id);
 }
 
-void DialogDirectiveList::clear()
+template <typename NOTIFY>
+void DialogDirectiveList::clear(NOTIFY notify)
 {
+    for (auto& list : listmap) {
+        nugu_dbg("\tDialog-id: '%s'", list.first.c_str());
+        for (auto& ndir : list.second)
+            notify(ndir);
+    }
+
     listmap.clear();
 }
 
@@ -389,6 +397,8 @@ DirectiveSequencer::DirectiveSequencer()
     pending = new DialogDirectiveList("PendingList");
     active = new DialogDirectiveList("ActiveList");
 
+    last_cancel_dialog_id = "";
+
     nugu_network_manager_set_directive_callback(onDirective, this);
     nugu_network_manager_set_attachment_callback(onAttachment, this);
 }
@@ -401,6 +411,7 @@ DirectiveSequencer::~DirectiveSequencer()
     delete pending;
     delete active;
 
+    msgid_lookup->clearWithUnref();
     delete msgid_lookup;
 }
 
@@ -419,8 +430,10 @@ void DirectiveSequencer::reset()
     policy_map.clear();
     scheduled_list.clear();
     msgid_lookup->clearWithUnref();
-    pending->clear();
-    active->clear();
+    pending->clear([](NuguDirective* ndir){});
+    active->clear([](NuguDirective* ndir){});
+
+    last_cancel_dialog_id = "";
 }
 
 /* Callback by network-manager */
@@ -809,6 +822,38 @@ bool DirectiveSequencer::cancel(const std::string& dialog_id, std::set<std::stri
 
     if (needNext)
         nextDirective(dialog_id);
+
+    return true;
+}
+
+bool DirectiveSequencer::cancelAll(bool cancel_active_directive)
+{
+    nugu_info("cancel all directives");
+    last_cancel_dialog_id = "";
+
+    /* remove directive from scheduled list */
+    scheduled_list.clear();
+
+    /* Remove from pending list with cancel notify */
+    pending->clear([=](NuguDirective* ndir) {
+        msgid_lookup->remove(nugu_directive_peek_msg_id(ndir));
+        cancelDirective(ndir);
+        nugu_directive_unref(ndir);
+    });
+
+    pending->dump();
+
+    if (cancel_active_directive) {
+        /* Remove from active list with cancel notify */
+        active->clear([=](NuguDirective* ndir) {
+            msgid_lookup->remove(nugu_directive_peek_msg_id(ndir));
+            cancelDirective(ndir);
+            nugu_directive_unref(ndir);
+        });
+        active->dump();
+    }
+
+    msgid_lookup->dump();
 
     return true;
 }

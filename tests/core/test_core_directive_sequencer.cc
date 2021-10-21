@@ -1324,6 +1324,128 @@ static void test_sequencer_cancel3(void)
     delete agent;
 }
 
+static void test_sequencer_cancel_all_pending(void)
+{
+    DirectiveSequencer seq;
+    NuguDirective *ndir, *speak_dir;
+    GMainLoop* loop = g_main_loop_new(NULL, FALSE);
+    std::string buffer;
+    std::string expected = "[S:msg1][S:msg3][C:msg2][C:msg4]";
+
+    IgnoreAgent* agent = new IgnoreAgent(loop, buffer);
+
+    g_assert(seq.addPolicy("TTS", "Speak", { BlockingMedium::AUDIO, true }) == true);
+    g_assert(seq.addPolicy("Utility", "Block", { BlockingMedium::ANY, true }) == true);
+    g_assert(seq.addPolicy("ASR", "ExpectSpeech", { BlockingMedium::AUDIO, true }) == true);
+
+    seq.addListener("TTS", agent);
+    seq.addListener("Utility", agent);
+    seq.addListener("ASR", agent);
+
+    speak_dir = directive_new("TTS", "Speak", "dlg1", "msg1");
+    g_assert(seq.add(speak_dir) == true);
+
+    ndir = directive_new("ASR", "ExpectSpeech", "dlg1", "msg2");
+    g_assert(seq.add(ndir) == true);
+
+    ndir = directive_new("TTS", "Speak", "dlg2", "msg3");
+    g_assert(seq.add(ndir) == true);
+
+    ndir = directive_new("Utility", "Block", "dlg2", "msg4");
+    g_assert(seq.add(ndir) == true);
+
+    /**
+     * Cancel all pending directives
+     */
+    g_idle_add(
+        [](gpointer userdata) -> int {
+            DirectiveSequencer* seq = (DirectiveSequencer*)userdata;
+            seq->cancelAll(false);
+
+            return FALSE;
+        },
+        &seq);
+
+    g_idle_add(
+        [](gpointer userdata) -> int {
+            GMainLoop* loop = (GMainLoop*)userdata;
+            g_main_loop_quit(loop);
+
+            return FALSE;
+        },
+        loop);
+
+    /* Start mainloop */
+    g_main_loop_run(loop);
+    g_main_loop_unref(loop);
+
+    /* check directive handle sequence */
+    g_assert(buffer == expected);
+
+    delete agent;
+}
+
+static void test_sequencer_cancel_all(void)
+{
+    DirectiveSequencer seq;
+    NuguDirective *ndir, *speak_dir;
+    GMainLoop* loop = g_main_loop_new(NULL, FALSE);
+    std::string buffer;
+    std::string expected = "[S:msg1][S:msg3][C:msg2][C:msg4][C:msg1][C:msg3]";
+
+    IgnoreAgent* agent = new IgnoreAgent(loop, buffer);
+
+    g_assert(seq.addPolicy("TTS", "Speak", { BlockingMedium::AUDIO, true }) == true);
+    g_assert(seq.addPolicy("Utility", "Block", { BlockingMedium::ANY, true }) == true);
+    g_assert(seq.addPolicy("ASR", "ExpectSpeech", { BlockingMedium::AUDIO, true }) == true);
+
+    seq.addListener("TTS", agent);
+    seq.addListener("Utility", agent);
+    seq.addListener("ASR", agent);
+
+    speak_dir = directive_new("TTS", "Speak", "dlg1", "msg1");
+    g_assert(seq.add(speak_dir) == true);
+
+    ndir = directive_new("ASR", "ExpectSpeech", "dlg1", "msg2");
+    g_assert(seq.add(ndir) == true);
+
+    ndir = directive_new("TTS", "Speak", "dlg2", "msg3");
+    g_assert(seq.add(ndir) == true);
+
+    ndir = directive_new("Utility", "Block", "dlg2", "msg4");
+    g_assert(seq.add(ndir) == true);
+
+    /**
+     * Cancel all(active + pending) directives
+     */
+    g_idle_add(
+        [](gpointer userdata) -> int {
+            DirectiveSequencer* seq = (DirectiveSequencer*)userdata;
+            seq->cancelAll();
+
+            return FALSE;
+        },
+        &seq);
+
+    g_idle_add(
+        [](gpointer userdata) -> int {
+            GMainLoop* loop = (GMainLoop*)userdata;
+            g_main_loop_quit(loop);
+
+            return FALSE;
+        },
+        loop);
+
+    /* Start mainloop */
+    g_main_loop_run(loop);
+    g_main_loop_unref(loop);
+
+    /* check directive handle sequence */
+    g_assert(buffer == expected);
+
+    delete agent;
+}
+
 static void test_sequencer_find(void)
 {
     DirectiveSequencer seq;
@@ -1415,6 +1537,8 @@ int main(int argc, char* argv[])
     g_test_add_func("/core/DirectiveSequencer/cancel1", test_sequencer_cancel1);
     g_test_add_func("/core/DirectiveSequencer/cancel2", test_sequencer_cancel2);
     g_test_add_func("/core/DirectiveSequencer/cancel3", test_sequencer_cancel3);
+    g_test_add_func("/core/DirectiveSequencer/cancel_all_pending", test_sequencer_cancel_all_pending);
+    g_test_add_func("/core/DirectiveSequencer/cancel_all", test_sequencer_cancel_all);
     g_test_add_func("/core/DirectiveSequencer/find", test_sequencer_find);
 
     return g_test_run();
