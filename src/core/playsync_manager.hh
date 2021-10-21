@@ -82,6 +82,7 @@ private:
     void updateExtraData(const std::string& ps_id, const std::string& requester, void* extra_data) noexcept;
     void notifyStateChanged(const std::string& ps_id, PlaySyncState state, const std::string& requester = "");
     void notifyStackChanged(std::pair<std::string, std::string>&& ps_ids);
+    void notifyHasMultiTurn(NuguDirective* ndir);
     bool isConditionToSyncAction(const std::string& ps_id, const std::string& requester, PlaySyncState state);
     void rawReleaseSync(const std::string& ps_id, const std::string& requester, PlayStackRemoveMode stack_remove_mode);
     void clearContainer();
@@ -96,6 +97,7 @@ private:
     std::function<void()> postponed_release_func = nullptr;
     PlayStacks playstack_map;
     bool release_postponed = false;
+    std::string has_multi_turn_dialog_id;
 };
 
 } // NuguCore
