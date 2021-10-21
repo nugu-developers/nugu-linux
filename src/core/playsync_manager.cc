@@ -39,6 +39,7 @@ void PlaySyncManager::reset()
 {
     clearPostPonedRelease();
     clearContainer();
+    has_multi_turn_dialog_id.clear();
 
     playstack_manager->reset();
 }
@@ -100,6 +101,11 @@ void PlaySyncManager::prepareSync(const std::string& ps_id, NuguDirective* ndir)
         nugu_warn("The condition is not satisfied to prepare sync.");
 
         appendSync(ps_id, ndir);
+
+        // notify hasMutliTurn callback again when same PlayServiceId exist
+        if (playstack_map.find(ps_id) != playstack_map.cend())
+            notifyHasMultiTurn(ndir);
+
         return;
     }
 
@@ -116,10 +122,7 @@ void PlaySyncManager::prepareSync(const std::string& ps_id, NuguDirective* ndir)
     playstack_map.emplace(ps_id, playsync_container);
 
     notifyStateChanged(ps_id, PlaySyncState::Prepared);
-
-    // notify whether the current directive has ASR.ExpectSpeech
-    if (interaction_control_manager && playstack_manager->hasExpectSpeech(ndir))
-        interaction_control_manager->notifyHasMultiTurn();
+    notifyHasMultiTurn(ndir);
 }
 
 void PlaySyncManager::startSync(const std::string& ps_id, const std::string& requester, void* extra_data)
@@ -370,6 +373,18 @@ void PlaySyncManager::notifyStackChanged(std::pair<std::string, std::string>&& p
 {
     for (const auto& listener : listener_map)
         listener.second->onStackChanged(ps_ids);
+}
+
+void PlaySyncManager::notifyHasMultiTurn(NuguDirective* ndir)
+{
+    if (interaction_control_manager && playstack_manager->hasExpectSpeech(ndir)) {
+        std::string dialog_id = nugu_directive_peek_dialog_id(ndir);
+
+        if (has_multi_turn_dialog_id != dialog_id) {
+            interaction_control_manager->notifyHasMultiTurn();
+            has_multi_turn_dialog_id = dialog_id;
+        }
+    }
 }
 
 bool PlaySyncManager::isConditionToSyncAction(const std::string& ps_id, const std::string& requester, PlaySyncState state)

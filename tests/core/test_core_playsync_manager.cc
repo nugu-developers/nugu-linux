@@ -195,27 +195,28 @@ class InteractionControlManagerListener : public IInteractionControlManagerListe
 public:
     void onHasMultiTurn() override
     {
-        has_multi_turn = true;
+        has_multi_turn_notified_count++;
     }
 
     void onModeChanged(bool is_multi_turn) override
     {
         if (!is_multi_turn)
-            has_multi_turn = false;
+            has_multi_turn_notified_count = 0;
     }
 
-    bool hasMultiTurn()
+    int getHasMultiTurnNotifiedCount()
     {
-        return has_multi_turn;
+        return has_multi_turn_notified_count;
     }
 
 private:
-    bool has_multi_turn = false;
+    int has_multi_turn_notified_count = 0;
 };
 
-static NuguDirective* createDirective(const std::string& name_space, const std::string& name, const std::string& groups)
+static NuguDirective* createDirective(const std::string& name_space, const std::string& name,
+    const std::string& groups, const std::string& dialog_id)
 {
-    return nugu_directive_new(name_space.c_str(), name.c_str(), "1.0", "msg_1", "dlg_1",
+    return nugu_directive_new(name_space.c_str(), name.c_str(), "1.0", "msg_1", dialog_id.c_str(),
         "ref_1", "{}", groups.c_str());
 }
 
@@ -232,6 +233,8 @@ typedef struct {
     NuguDirective* ndir_info_disp;
     NuguDirective* ndir_media;
     NuguDirective* ndir_expect_speech;
+    NuguDirective* ndir_expect_speech_second;
+    NuguDirective* ndir_expect_speech_third;
     NuguDirective* ndir_alerts;
     NuguDirective* ndir_disp_expect_speech;
 
@@ -259,15 +262,19 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
     fixture->dummy_extra_data_snd = new DummyExtraInfo();
 
     fixture->ndir_info_disp = createDirective("TTS", "Speak",
-        "{ \"directives\": [\"TTS.Speak\", \"Display.FullText1\"] }");
+        "{ \"directives\": [\"TTS.Speak\", \"Display.FullText1\"] }", "dlg_1");
     fixture->ndir_media = createDirective("AudioPlayer", "Play",
-        "{ \"directives\": [\"TTS.Speak\", \"AudioPlayer.Play\"] }");
+        "{ \"directives\": [\"TTS.Speak\", \"AudioPlayer.Play\"] }", "dlg_1");
     fixture->ndir_expect_speech = createDirective("ASR", "test",
-        "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\"] }");
+        "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\"] }", "dlg_1");
+    fixture->ndir_expect_speech_second = createDirective("ASR", "test",
+        "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\"] }", "dlg_2");
+    fixture->ndir_expect_speech_third = createDirective("ASR", "test",
+        "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\"] }", "dlg_3");
     fixture->ndir_alerts = createDirective("Alerts", "SetAlert",
-        "{ \"directives\": [\"Alerts.SetAlert\"] }");
+        "{ \"directives\": [\"Alerts.SetAlert\"] }", "dlg_1");
     fixture->ndir_disp_expect_speech = createDirective("Display", "test",
-        "{ \"directives\": [\"Display.FullText1\", \"TTS.Speak\", \"ASR.ExpectSpeech\"] }");
+        "{ \"directives\": [\"Display.FullText1\", \"TTS.Speak\", \"ASR.ExpectSpeech\"] }", "dlg_1");
 }
 
 static void teardown(TestFixture* fixture, gconstpointer user_data)
@@ -275,6 +282,8 @@ static void teardown(TestFixture* fixture, gconstpointer user_data)
     nugu_directive_unref(fixture->ndir_info_disp);
     nugu_directive_unref(fixture->ndir_media);
     nugu_directive_unref(fixture->ndir_expect_speech);
+    nugu_directive_unref(fixture->ndir_expect_speech_second);
+    nugu_directive_unref(fixture->ndir_expect_speech_third);
     nugu_directive_unref(fixture->ndir_alerts);
     nugu_directive_unref(fixture->ndir_disp_expect_speech);
 
@@ -1056,13 +1065,50 @@ static void test_playsync_manager_refresh_extra_data(TestFixture* fixture, gcons
 
 static void test_playsync_manager_check_expect_speech(TestFixture* fixture, gconstpointer ignored)
 {
+    auto checkHasMultiTurnNotifiedRepeatly = [&](NuguDirective* dir) {
+        fixture->playsync_manager->prepareSync("ps_id_2", dir);
+        g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 1);
+    };
+
     fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_info_disp);
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Prepared);
-    g_assert(!fixture->ic_manager_listener->hasMultiTurn());
+    g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 0);
 
+    g_assert(nugu_directive_peek_dialog_id(fixture->ndir_expect_speech) != nugu_directive_peek_dialog_id(fixture->ndir_expect_speech_second));
+
+    // [1] prepare sync playstack which has expect speech
     fixture->playsync_manager->prepareSync("ps_id_2", fixture->ndir_expect_speech);
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Prepared);
-    g_assert(fixture->ic_manager_listener->hasMultiTurn());
+    g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 1);
+
+    checkHasMultiTurnNotifiedRepeatly(fixture->ndir_expect_speech);
+
+    // [2] start sync
+    fixture->playsync_manager->startSync("ps_id_2", "TTS");
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Synced);
+
+    // [3] process multi-turn by InteractionControlManager
+    fixture->ic_manager->start(InteractionMode::MULTI_TURN, "ASR");
+    // assume do something...
+    fixture->ic_manager->finish(InteractionMode::MULTI_TURN, "ASR");
+    g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 0);
+
+    // [4] emulate start recogintion in TTS playing
+    fixture->playsync_manager->postPoneRelease();
+    fixture->playsync_manager->releaseSync("ps_id_2", "TTS");
+    fixture->playsync_manager->stopHolding();
+
+    // [6] try to prepare sync again about same playstack in releasing sync (notify onHasMultiTurn again)
+    fixture->playsync_manager->prepareSync("ps_id_2", fixture->ndir_expect_speech_second);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Synced);
+    g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 1);
+
+    checkHasMultiTurnNotifiedRepeatly(fixture->ndir_expect_speech_second);
+
+    // [extra] prepare sync another playstack
+    fixture->playsync_manager->prepareSync("ps_id_3", fixture->ndir_expect_speech_third);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_3") == PlaySyncState::Prepared);
+    g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 2);
 }
 
 static void test_playsync_manager_reset(TestFixture* fixture, gconstpointer ignored)
