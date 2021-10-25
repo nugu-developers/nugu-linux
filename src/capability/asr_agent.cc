@@ -90,8 +90,11 @@ void ASRAgent::initialize()
     request_listening_id = "";
     asr_cancel = false;
     listen_timeout_fail_beep = true;
+    listen_timeout_event_msg_id.clear();
+    pending_release_focus = nullptr;
     wakeup_power_noise = 0;
     wakeup_power_speech = 0;
+
     asr_user_listener = new ASRAgent::FocusListener(this, focus_manager, true);
     asr_dm_listener = new ASRAgent::FocusListener(this, focus_manager, false);
 
@@ -352,6 +355,13 @@ std::vector<IASRListener*> ASRAgent::getListener()
 
 void ASRAgent::notifyEventResponse(const std::string& msg_id, const std::string& data, bool success)
 {
+    // release pending focus which is occurred by listen timeout event
+    if (msg_id == listen_timeout_event_msg_id && pending_release_focus) {
+        pending_release_focus(data.find("TTS") == std::string::npos);
+        pending_release_focus = nullptr;
+        listen_timeout_event_msg_id.clear();
+    }
+
     // release focus when there are no focus stealer like TTS
     if (data.find("ASR") != std::string::npos && data.find("NotifyResult") != std::string::npos
         && data.find("TTS") == std::string::npos) {
@@ -601,8 +611,17 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
             close_stream = true;
             checkResponseTimeout();
         } else if (prev_listening_state == ListeningState::TIMEOUT) {
-            sendEventListenTimeout();
-            releaseASRFocus(false, ASRError::LISTEN_TIMEOUT, (request_listening_id == id));
+            sendEventListenTimeout([&](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {
+                if (success) {
+                    listen_timeout_event_msg_id = msg_id;
+                    pending_release_focus = [this, id](bool release_focus) {
+                        releaseASRFocus(release_focus || request_listening_id == id);
+                    };
+                } else {
+                    releaseASRFocus(request_listening_id == id);
+                }
+            });
+            notifyASRErrorCancel(ASRError::LISTEN_TIMEOUT);
             close_stream = true;
         } else if (prev_listening_state == ListeningState::FAILED) {
             releaseASRFocus(false, ASRError::LISTEN_FAILED, (request_listening_id == id));
@@ -674,13 +693,12 @@ void ASRAgent::cancelRecognition()
 
 void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error, bool release_focus)
 {
-    for (const auto& asr_listener : asr_listeners) {
-        if (is_cancel)
-            asr_listener->onCancel(getRecognizeDialogId());
-        else
-            asr_listener->onError(error, getRecognizeDialogId(), listen_timeout_fail_beep);
-    }
+    notifyASRErrorCancel(error, is_cancel);
+    releaseASRFocus(release_focus);
+}
 
+void ASRAgent::releaseASRFocus(bool release_focus)
+{
     if (release_focus) {
         nugu_dbg("request to release focus");
         focus_manager->releaseFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME);
@@ -688,6 +706,13 @@ void ASRAgent::releaseASRFocus(bool is_cancel, ASRError error, bool release_focu
     }
 
     routine_manager->stop();
+}
+
+void ASRAgent::notifyASRErrorCancel(ASRError error, bool is_cancel)
+{
+    for (const auto& asr_listener : asr_listeners)
+        is_cancel ? asr_listener->onCancel(dialog_id)
+                  : asr_listener->onError(error, dialog_id, listen_timeout_fail_beep);
 }
 
 void ASRAgent::executeOnForegroundAction(bool asr_user)
