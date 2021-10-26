@@ -134,7 +134,6 @@ static int _decoder_decode(NuguDecoderDriver *driver, NuguDecoder *dec,
 	struct opus_data *od;
 	const unsigned char *packet = data;
 	int nsamples;
-	int len;
 	uint32_t enc_final_range;
 	uint32_t dec_final_range;
 	opus_int16 sample[PCM_SAMPLES * CHANNELS];
@@ -155,7 +154,7 @@ static int _decoder_decode(NuguDecoderDriver *driver, NuguDecoder *dec,
 	 *   := 480 samples (16bit) == 960 bytes
 	 */
 	while (packet < (unsigned char *)data + data_len) {
-		len = READINT(packet);
+		int len = READINT(packet);
 		packet += 4;
 
 		if (len > 160 || len == 0) {

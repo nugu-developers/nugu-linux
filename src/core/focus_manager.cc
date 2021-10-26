@@ -205,8 +205,6 @@ bool FocusManager::releaseFocus(const std::string& type, const std::string& name
         return true;
     }
 
-    const std::string release_focus_type = release_focus->type;
-
     focus_resource_ordered_list.remove(release_focus);
 
     nugu_info("[%s - %s] - NONE (priority - req:%d, rel:%d)", release_focus->type.c_str(), release_focus->name.c_str(), release_focus->request_priority, release_focus->release_priority);

@@ -29,6 +29,7 @@ DisplayAgent::DisplayAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , render_helper(std::unique_ptr<DisplayRenderHelper>(new DisplayRenderHelper()))
     , display_listener(nullptr)
+    , keep_history(false)
 {
     template_names = {
         "FullText1",
@@ -123,11 +124,10 @@ void DisplayAgent::deInitialize()
 void DisplayAgent::preprocessDirective(NuguDirective* ndir)
 {
     const char* dname;
-    const char* message;
 
     if (!ndir
         || !(dname = nugu_directive_peek_name(ndir))
-        || !(message = nugu_directive_peek_json(ndir))) {
+        || !nugu_directive_peek_json(ndir)) {
         nugu_error("The directive info is not exist.");
         return;
     }
