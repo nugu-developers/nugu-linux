@@ -1044,7 +1044,6 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     long offset;
     bool new_content;
     std::string token;
-    std::string prev_token;
     std::string temp;
     std::string play_service_id;
 
@@ -1077,7 +1076,6 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     url = stream["url"].asString();
     offset = stream["offsetInMilliseconds"].asLargestInt();
     token = stream["token"].asString();
-    prev_token = stream["expectedPreviousToken"].asString();
 
     if (token.size() == 0 || play_service_id.size() == 0) {
         nugu_error("There is no mandatory data in directive message");

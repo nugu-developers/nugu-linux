@@ -38,6 +38,8 @@ struct _SpeechStateEventParam {
 
 TTSAgent::TTSAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
+    , player(nullptr)
+    , speak_dir(nullptr)
     , tts_engine(NUGU_TTS_ENGINE)
 {
 }

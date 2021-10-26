@@ -27,6 +27,8 @@ static const char* CAPABILITY_VERSION = "1.5";
 TextAgent::TextAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , text_listener(nullptr)
+    , timer(nullptr)
+    , timer_msec(nullptr)
     , response_timeout(NUGU_SERVER_RESPONSE_TIMEOUT_SEC)
 {
 }
