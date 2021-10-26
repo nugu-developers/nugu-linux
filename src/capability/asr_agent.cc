@@ -611,7 +611,7 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
             close_stream = true;
             checkResponseTimeout();
         } else if (prev_listening_state == ListeningState::TIMEOUT) {
-            sendEventListenTimeout([&](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {
+            sendEventListenTimeout([&, id](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {
                 if (success) {
                     listen_timeout_event_msg_id = msg_id;
                     pending_release_focus = [this, id](bool release_focus) {
