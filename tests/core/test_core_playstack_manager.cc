@@ -85,6 +85,7 @@ typedef struct {
     NuguDirective* ndir_media;
     NuguDirective* ndir_disp;
     NuguDirective* ndir_expect_speech;
+    NuguDirective* ndir_nudge;
     NuguDirective* ndir_alert;
 } TestFixture;
 
@@ -98,6 +99,7 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
     fixture->ndir_media = createDirective("AudioPlayer", "test", "{ \"directives\": [\"AudioPlayer.Play\"] }");
     fixture->ndir_disp = createDirective("Display", "test", "{ \"directives\": [\"Display.FullText1\", \"TTS.Speak\"] }");
     fixture->ndir_expect_speech = createDirective("ASR", "test", "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\"] }");
+    fixture->ndir_nudge = createDirective("ASR", "test", "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\", \"Nudge.Append\"] }");
     fixture->ndir_alert = createDirective("Alerts", "test", "{ \"directives\": [\"Alerts.SetAlert\"] }");
 }
 
@@ -107,6 +109,7 @@ static void teardown(TestFixture* fixture, gconstpointer user_data)
     nugu_directive_unref(fixture->ndir_media);
     nugu_directive_unref(fixture->ndir_disp);
     nugu_directive_unref(fixture->ndir_expect_speech);
+    nugu_directive_unref(fixture->ndir_nudge);
     nugu_directive_unref(fixture->ndir_alert);
 
     fixture->playstack_manager_listener.reset();
@@ -295,6 +298,14 @@ static void test_playstack_manager_check_expect_speech(TestFixture* fixture, gco
     g_assert(!fixture->playstack_manager->hasExpectSpeech(nullptr));
     g_assert(!fixture->playstack_manager->hasExpectSpeech(fixture->ndir_info));
     g_assert(fixture->playstack_manager->hasExpectSpeech(fixture->ndir_expect_speech));
+}
+
+static void test_playstack_manager_check_nudge(TestFixture* fixture, gconstpointer ignored)
+{
+    g_assert(!fixture->playstack_manager->hasNudge(nullptr));
+    g_assert(!fixture->playstack_manager->hasNudge(fixture->ndir_info));
+    g_assert(!fixture->playstack_manager->hasNudge(fixture->ndir_expect_speech));
+    g_assert(fixture->playstack_manager->hasNudge(fixture->ndir_nudge));
 }
 
 static void test_playstack_manager_check_adding_playstack(TestFixture* fixture, gconstpointer ignored)
@@ -496,6 +507,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlayStackManager/controlHolding", test_playstack_manager_control_holding);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkStack", test_playstack_manager_check_stack);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkExpectSpeech", test_playstack_manager_check_expect_speech);
+    G_TEST_ADD_FUNC("/core/PlayStackManager/checkNudge", test_playstack_manager_check_nudge);
     G_TEST_ADD_FUNC("/core/PlayStackManager/checkAddingPlayStack", test_playstack_manager_check_adding_playstack);
     G_TEST_ADD_FUNC("/core/PlayStackManager/adjustPlayStackHoldTime", test_playstack_manager_adjust_playstack_hold_time);
     G_TEST_ADD_FUNC("/core/PlayStackManager/resetPlayStackHoldTime", test_playstack_manager_reset_playstack_hold_time);

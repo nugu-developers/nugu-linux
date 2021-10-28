@@ -241,6 +241,11 @@ bool PlayStackManager::hasExpectSpeech(NuguDirective* ndir)
     return hasKeyword(ndir, { "ASR.ExpectSpeech" });
 }
 
+bool PlayStackManager::hasNudge(NuguDirective* ndir)
+{
+    return hasKeyword(ndir, { "Nudge.Append" });
+}
+
 void PlayStackManager::stopHolding()
 {
     if (timer->isStarted() && !has_long_timer) {

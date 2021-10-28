@@ -70,6 +70,7 @@ public:
     bool replace(const std::string& prev_ps_id, const std::string& new_ps_id);
     bool isStackedCondition(NuguDirective* ndir);
     bool hasExpectSpeech(NuguDirective* ndir);
+    bool hasNudge(NuguDirective* ndir);
     void stopHolding();
     void resetHolding();
     void clearHolding();
