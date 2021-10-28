@@ -377,7 +377,8 @@ void PlaySyncManager::notifyStackChanged(std::pair<std::string, std::string>&& p
 
 void PlaySyncManager::notifyHasMultiTurn(NuguDirective* ndir)
 {
-    if (interaction_control_manager && playstack_manager->hasExpectSpeech(ndir)) {
+    if (interaction_control_manager && playstack_manager->hasExpectSpeech(ndir)
+        && !playstack_manager->hasNudge(ndir)) {
         std::string dialog_id = nugu_directive_peek_dialog_id(ndir);
 
         if (has_multi_turn_dialog_id != dialog_id) {

@@ -235,6 +235,7 @@ typedef struct {
     NuguDirective* ndir_expect_speech;
     NuguDirective* ndir_expect_speech_second;
     NuguDirective* ndir_expect_speech_third;
+    NuguDirective* ndir_nudge;
     NuguDirective* ndir_alerts;
     NuguDirective* ndir_disp_expect_speech;
 
@@ -271,6 +272,8 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
         "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\"] }", "dlg_2");
     fixture->ndir_expect_speech_third = createDirective("ASR", "test",
         "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\"] }", "dlg_3");
+    fixture->ndir_nudge = createDirective("ASR", "test",
+        "{ \"directives\": [\"TTS.Speak\", \"ASR.ExpectSpeech\", \"Session.Set\", \"Nudge.Append\"] }", "dlg_1");
     fixture->ndir_alerts = createDirective("Alerts", "SetAlert",
         "{ \"directives\": [\"Alerts.SetAlert\"] }", "dlg_1");
     fixture->ndir_disp_expect_speech = createDirective("Display", "test",
@@ -284,6 +287,7 @@ static void teardown(TestFixture* fixture, gconstpointer user_data)
     nugu_directive_unref(fixture->ndir_expect_speech);
     nugu_directive_unref(fixture->ndir_expect_speech_second);
     nugu_directive_unref(fixture->ndir_expect_speech_third);
+    nugu_directive_unref(fixture->ndir_nudge);
     nugu_directive_unref(fixture->ndir_alerts);
     nugu_directive_unref(fixture->ndir_disp_expect_speech);
 
@@ -1111,6 +1115,24 @@ static void test_playsync_manager_check_expect_speech(TestFixture* fixture, gcon
     g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 2);
 }
 
+static void test_playsync_manager_check_expect_speech_with_nudge(TestFixture* fixture, gconstpointer ignored)
+{
+    // [1] handle expect speech : notify hasMultiTurn
+    fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_expect_speech_second);
+    g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 1);
+
+    // [2] process multi-turn by InteractionControlManager
+    fixture->playsync_manager->startSync("ps_id_1", "TTS");
+    fixture->ic_manager->start(InteractionMode::MULTI_TURN, "ASR");
+    // assume do something...
+    fixture->ic_manager->finish(InteractionMode::MULTI_TURN, "ASR");
+    g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 0);
+
+    // [3] handle nudge : not notify hasMultiTurn
+    fixture->playsync_manager->prepareSync("ps_id_2", fixture->ndir_nudge);
+    g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 0);
+}
+
 static void test_playsync_manager_reset(TestFixture* fixture, gconstpointer ignored)
 {
     sub_test_playsync_manager_preset_sync(fixture, "ps_id_1");
@@ -1231,6 +1253,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/core/PlaySyncManager/checkToProcessPreviousDialog", test_playsync_manager_check_to_process_previous_dialog);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/refreshExtraData", test_playsync_manager_refresh_extra_data);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/checkExpectSpeech", test_playsync_manager_check_expect_speech);
+    G_TEST_ADD_FUNC("/core/PlaySyncManager/checkExpectSpeechWithNudge", test_playsync_manager_check_expect_speech_with_nudge);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/reset", test_playsync_manager_reset);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/registerCapabilityForSync", test_playsync_manager_register_capability_for_sync);
     G_TEST_ADD_FUNC("/core/PlaySyncManager/checkNextPlayStack", test_playsync_manager_check_next_playstack);
