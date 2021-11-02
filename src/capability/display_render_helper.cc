@@ -146,6 +146,28 @@ DisplayRenderInfo* DisplayRenderHelper::getRenderInfo(const std::string& id) noe
     }
 }
 
+std::string DisplayRenderHelper::getId(void* raw_render_info)
+{
+    std::string id;
+    auto render_info = reinterpret_cast<DisplayRenderInfo*>(raw_render_info);
+
+    if (render_info)
+        id = render_info->id;
+
+    return id;
+}
+
+std::string DisplayRenderHelper::getToken(void* raw_render_info)
+{
+    std::string token;
+    auto render_info = reinterpret_cast<DisplayRenderInfo*>(raw_render_info);
+
+    if (render_info)
+        token = render_info->token;
+
+    return token;
+}
+
 std::string DisplayRenderHelper::getTemplateId(const std::string& ps_id)
 {
     for (const auto& info : render_infos)

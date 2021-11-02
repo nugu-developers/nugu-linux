@@ -327,13 +327,16 @@ void DisplayAgent::onSyncState(const std::string& ps_id, PlaySyncState state, vo
     if (state == PlaySyncState::Synced) {
         render_helper->renderDisplay(extra_data);
 
+        if (!history_control_stack.empty() && history_control_stack.top().id == render_helper->getId(extra_data))
+            history_control_stack.top().is_render = true;
+
         if (keep_history) {
             playsync_manager->releaseSync(ps_id, getName());
             keep_history = false;
         }
     } else if (state == PlaySyncState::Released) {
-        if (!keep_history && !history_control_stack.empty()) {
-            if (disp_cur_token != history_control_stack.top().token)
+        if (!keep_history && !history_control_stack.empty() && history_control_stack.top().is_render) {
+            if (render_helper->getToken(extra_data) != history_control_stack.top().token)
                 render_helper->removedRenderInfo(history_control_stack.top().id);
 
             history_control_stack.pop();
