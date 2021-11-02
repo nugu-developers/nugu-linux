@@ -63,6 +63,7 @@ private:
         std::string parent_token;
         std::string id;
         std::string token;
+        bool is_render = false;
     };
 
     void sendEventElementSelected(const std::string& item_token, const std::string& postback);
