@@ -1,3 +1,16 @@
+nugu (1.7.0ubuntu1~bionic) bionic; urgency=medium
+
+  * Added TTS interface getPlayServiceId API
+  * Added DirectiveSequencer cancelAll API
+  * Added PlaySyncManager replacePlayStack API
+  * Applied Display interface v1.9
+  * Updated AudioPlayerAgent
+  * Updated ASRAgent
+  * Updated TTSAgent
+  * Updated PlaySyncManager
+
+ -- nugulinux <nugulinux@gmail.com>  Thu, 4 Nov 2021 14:30:00 +0900
+
 nugu (1.6.0ubuntu1~bionic) bionic; urgency=medium
 
   * Fixed gstreamer pcm plugin
