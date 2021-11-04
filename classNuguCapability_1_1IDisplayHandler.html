@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.6.0</span>
+   &#160;<span id="projectnumber">1.7.0</span>
    </div>
   </td>
  </tr>
@@ -120,6 +120,9 @@ $(document).ready(function(){initNavTree('classNuguCapability_1_1IDisplayHandler
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:a5cdb5563294676f22e685547e905166c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayHandler.html#a5cdb5563294676f22e685547e905166c">controlTemplate</a> (const std::string &amp;id, <a class="el" href="group__DisplayInterface.html#ga2f108832db51d2185e5b0168fef9d85a">TemplateControlType</a> control_type)</td></tr>
+<tr class="memdesc:a5cdb5563294676f22e685547e905166c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Control templates which are composed by history control.  <a href="classNuguCapability_1_1IDisplayHandler.html#a5cdb5563294676f22e685547e905166c">More...</a><br /></td></tr>
+<tr class="separator:a5cdb5563294676f22e685547e905166c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1739f7f715f5eed4a2b7f7c6842853b8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayHandler.html#a1739f7f715f5eed4a2b7f7c6842853b8">displayCleared</a> (const std::string &amp;id)</td></tr>
 <tr class="memdesc:a1739f7f715f5eed4a2b7f7c6842853b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">The user reports that the display is cleared.  <a href="classNuguCapability_1_1IDisplayHandler.html#a1739f7f715f5eed4a2b7f7c6842853b8">More...</a><br /></td></tr>
 <tr class="separator:a1739f7f715f5eed4a2b7f7c6842853b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,6 +148,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a876ece2f77d1b914f64048c8661d7337"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayHandler.html#a876ece2f77d1b914f64048c8661d7337">stopRenderingTimer</a> (const std::string &amp;id)</td></tr>
 <tr class="memdesc:a876ece2f77d1b914f64048c8661d7337"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop display rendering hold timer.  <a href="classNuguCapability_1_1IDisplayHandler.html#a876ece2f77d1b914f64048c8661d7337">More...</a><br /></td></tr>
 <tr class="separator:a876ece2f77d1b914f64048c8661d7337"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a620ba1d029e5e44c1f9668f68a07a6a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IDisplayHandler.html#a620ba1d029e5e44c1f9668f68a07a6a5">triggerChild</a> (const std::string &amp;ps_id, const std::string &amp;data)</td></tr>
+<tr class="memdesc:a620ba1d029e5e44c1f9668f68a07a6a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Send TriggerChild event for receiving child template.  <a href="classNuguCapability_1_1IDisplayHandler.html#a620ba1d029e5e44c1f9668f68a07a6a5">More...</a><br /></td></tr>
+<tr class="separator:a620ba1d029e5e44c1f9668f68a07a6a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classNuguClientKit_1_1ICapabilityInterface"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classNuguClientKit_1_1ICapabilityInterface')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></td></tr>
 <tr class="memitem:a9db9736a6bcf43bebb286a210572af9d inherit pub_methods_classNuguClientKit_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html#a9db9736a6bcf43bebb286a210572af9d">addEventResultCallback</a> (const std::string &amp;ename, <a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html#a5b8577c3b5d15d48ff4e267b0bdcd125">EventResultCallback</a> callback)=0</td></tr>
 <tr class="memdesc:a9db9736a6bcf43bebb286a210572af9d inherit pub_methods_classNuguClientKit_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add event result callback for error handling.  <a href="classNuguClientKit_1_1ICapabilityInterface.html#a9db9736a6bcf43bebb286a210572af9d">More...</a><br /></td></tr>
@@ -356,6 +362,96 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a620ba1d029e5e44c1f9668f68a07a6a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a620ba1d029e5e44c1f9668f68a07a6a5">&#9670;&nbsp;</a></span>triggerChild()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguCapability::IDisplayHandler::triggerChild </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>ps_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Send TriggerChild event for receiving child template. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ps_id</td><td>target play service id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>any JSON data </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5cdb5563294676f22e685547e905166c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cdb5563294676f22e685547e905166c">&#9670;&nbsp;</a></span>controlTemplate()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguCapability::IDisplayHandler::controlTemplate </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__DisplayInterface.html#ga2f108832db51d2185e5b0168fef9d85a">TemplateControlType</a>&#160;</td>
+          <td class="paramname"><em>control_type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Control templates which are composed by history control. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">id</td><td>display template id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">control_type</td><td>TemplateControlType </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="abe4dbf45c45f5380cb2447c07ae25f8b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abe4dbf45c45f5380cb2447c07ae25f8b">&#9670;&nbsp;</a></span>informControlResult()</h2>
 
@@ -519,7 +615,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguCapability</b></li><li class="navelem"><a class="el" href="classNuguCapability_1_1IDisplayHandler.html">IDisplayHandler</a></li>
-    <li class="footer">Generated on Tue Oct 5 2021 07:50:13 for NUGU SDK Linux by
+    <li class="footer">Generated on Thu Nov 4 2021 05:52:48 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

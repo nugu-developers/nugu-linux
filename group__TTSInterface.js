@@ -8,7 +8,8 @@ var group__TTSInterface =
       [ "requestTTS", "classNuguCapability_1_1ITTSHandler.html#ae249a2ec54c8e52dc26624a18f0a8ba1", null ],
       [ "setVolume", "classNuguCapability_1_1ITTSHandler.html#a7dabffea5b4e697e1c8d084e51645ca4", null ],
       [ "setMute", "classNuguCapability_1_1ITTSHandler.html#a61c0d81d2fde32b46d3548a81febf380", null ],
-      [ "setAttribute", "classNuguCapability_1_1ITTSHandler.html#a4ea89acbbbc0b36c8e1058200a99fe6a", null ]
+      [ "setAttribute", "classNuguCapability_1_1ITTSHandler.html#a4ea89acbbbc0b36c8e1058200a99fe6a", null ],
+      [ "getPlayServiceId", "classNuguCapability_1_1ITTSHandler.html#ac2ca73248b3fa6b89ef6204e79a1b752", null ]
     ] ],
     [ "ITTSListener", "classNuguCapability_1_1ITTSListener.html", [
       [ "~ITTSListener", "classNuguCapability_1_1ITTSListener.html#adc70bb5a36dd2cd2572d9b82b0591b54", null ],

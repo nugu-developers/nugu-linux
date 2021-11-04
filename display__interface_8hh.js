@@ -7,5 +7,9 @@ var display__interface_8hh =
     [ "ControlType", "display__interface_8hh.html#ga28c3d18871d6c4af0e5f53dcd3ac1762", [
       [ "Focus", "display__interface_8hh.html#gga28c3d18871d6c4af0e5f53dcd3ac1762ae24ee2487879116dcab772c0ac4fe341", null ],
       [ "Scroll", "display__interface_8hh.html#gga28c3d18871d6c4af0e5f53dcd3ac1762a105078d294d30c978ca2badf7f376934", null ]
+    ] ],
+    [ "TemplateControlType", "display__interface_8hh.html#ga2f108832db51d2185e5b0168fef9d85a", [
+      [ "TEMPLATE_PREVIOUS", "display__interface_8hh.html#gga2f108832db51d2185e5b0168fef9d85aa22cc489229f84b5f46023de7e9e000cb", null ],
+      [ "TEMPLATE_CLOSEALL", "display__interface_8hh.html#gga2f108832db51d2185e5b0168fef9d85aad58d8fb76089c4203393b2ce5f950054", null ]
     ] ]
 ];

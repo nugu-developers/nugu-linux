@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.6.0</span>
+   &#160;<span id="projectnumber">1.7.0</span>
    </div>
   </td>
  </tr>
@@ -112,6 +112,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a95a0ba5128c7367497a6089dc07fc744"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a95a0ba5128c7367497a6089dc07fc744">cancel</a> (const std::string &amp;dialog_id, std::set&lt; std::string &gt; groups)=0</td></tr>
 <tr class="memdesc:a95a0ba5128c7367497a6089dc07fc744"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancels specific pending directives related to the dialog_id. The canceled directives are freed.  <a href="classNuguClientKit_1_1IDirectiveSequencer.html#a95a0ba5128c7367497a6089dc07fc744">More...</a><br /></td></tr>
 <tr class="separator:a95a0ba5128c7367497a6089dc07fc744"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d0e8720ace675cf7273220f4633fd8d"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a8d0e8720ace675cf7273220f4633fd8d">cancelAll</a> (bool cancel_active_directive=true)=0</td></tr>
+<tr class="memdesc:a8d0e8720ace675cf7273220f4633fd8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cancels all pending directives. The canceled directives are freed.  <a href="classNuguClientKit_1_1IDirectiveSequencer.html#a8d0e8720ace675cf7273220f4633fd8d">More...</a><br /></td></tr>
+<tr class="separator:a8d0e8720ace675cf7273220f4633fd8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90ea647f44a1c899d3afd170eed5dbef"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#a90ea647f44a1c899d3afd170eed5dbef">complete</a> (<a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)=0</td></tr>
 <tr class="memdesc:a90ea647f44a1c899d3afd170eed5dbef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Complete the blocking directive. The NuguDirective object will be destroyed. If there are pending directives, those directives will be processed at the next idle time.  <a href="classNuguClientKit_1_1IDirectiveSequencer.html#a90ea647f44a1c899d3afd170eed5dbef">More...</a><br /></td></tr>
 <tr class="separator:a90ea647f44a1c899d3afd170eed5dbef"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -434,6 +437,48 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a8d0e8720ace675cf7273220f4633fd8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8d0e8720ace675cf7273220f4633fd8d">&#9670;&nbsp;</a></span>cancelAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool NuguClientKit::IDirectiveSequencer::cancelAll </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>cancel_active_directive</em> = <code>true</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Cancels all pending directives. The canceled directives are freed. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">cancel_active_directive</td><td>cancel including currently active directives </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>result </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>success </td></tr>
+    <tr><td class="paramname">false</td><td>failure </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a90ea647f44a1c899d3afd170eed5dbef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a90ea647f44a1c899d3afd170eed5dbef">&#9670;&nbsp;</a></span>complete()</h2>
 
@@ -601,7 +646,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html">IDirectiveSequencer</a></li>
-    <li class="footer">Generated on Tue Oct 5 2021 07:50:13 for NUGU SDK Linux by
+    <li class="footer">Generated on Thu Nov 4 2021 05:52:48 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

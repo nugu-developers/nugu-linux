@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.6.0</span>
+   &#160;<span id="projectnumber">1.7.0</span>
    </div>
   </td>
  </tr>
@@ -134,16 +134,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2395171f2c033b205f880f14b9a6646f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IASRListener.html#a2395171f2c033b205f880f14b9a6646f">onPartial</a> (const std::string &amp;text, const std::string &amp;dialog_id)=0</td></tr>
 <tr class="memdesc:a2395171f2c033b205f880f14b9a6646f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The result of recognizing the user's speech in real time.  <a href="classNuguCapability_1_1IASRListener.html#a2395171f2c033b205f880f14b9a6646f">More...</a><br /></td></tr>
 <tr class="separator:a2395171f2c033b205f880f14b9a6646f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf5f438140b02a9251d3488192ec14b8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IASRListener.html#adf5f438140b02a9251d3488192ec14b8">onState</a> (<a class="el" href="group__ASRInterface.html#gafe4f48f063bafec608e5060090a9543b">ASRState</a> state, const std::string &amp;dialog_id)=0</td></tr>
-<tr class="memdesc:adf5f438140b02a9251d3488192ec14b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report to the user asr state changed.  <a href="classNuguCapability_1_1IASRListener.html#adf5f438140b02a9251d3488192ec14b8">More...</a><br /></td></tr>
-<tr class="separator:adf5f438140b02a9251d3488192ec14b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae517b3332c499a970be81f33d5f5e442"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IASRListener.html#ae517b3332c499a970be81f33d5f5e442">onState</a> (<a class="el" href="group__ASRInterface.html#gafe4f48f063bafec608e5060090a9543b">ASRState</a> state, const std::string &amp;dialog_id, <a class="el" href="group__ASRInterface.html#ga0dd27d783b014cca3e5aca7510b36f8a">ASRInitiator</a> initiator)=0</td></tr>
+<tr class="memdesc:ae517b3332c499a970be81f33d5f5e442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report to the user asr state changed.  <a href="classNuguCapability_1_1IASRListener.html#ae517b3332c499a970be81f33d5f5e442">More...</a><br /></td></tr>
+<tr class="separator:ae517b3332c499a970be81f33d5f5e442"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>ASR listener interface. </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguCapability_1_1IASRHandler.html" title="ASR handler interface.">IASRHandler</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="adf5f438140b02a9251d3488192ec14b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf5f438140b02a9251d3488192ec14b8">&#9670;&nbsp;</a></span>onState()</h2>
+<a id="ae517b3332c499a970be81f33d5f5e442"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae517b3332c499a970be81f33d5f5e442">&#9670;&nbsp;</a></span>onState()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -161,7 +161,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>dialog_id</em>&#160;</td>
+          <td class="paramname"><em>dialog_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__ASRInterface.html#ga0dd27d783b014cca3e5aca7510b36f8a">ASRInitiator</a>&#160;</td>
+          <td class="paramname"><em>initiator</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -181,6 +187,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">state</td><td>asr state </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">dialog_id</td><td>dialog request id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">initiator</td><td>asr initiator </td></tr>
   </table>
   </dd>
 </dl>
@@ -409,7 +416,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguCapability</b></li><li class="navelem"><a class="el" href="classNuguCapability_1_1IASRListener.html">IASRListener</a></li>
-    <li class="footer">Generated on Tue Oct 5 2021 07:50:13 for NUGU SDK Linux by
+    <li class="footer">Generated on Thu Nov 4 2021 05:52:48 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

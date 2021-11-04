@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.6.0</span>
+   &#160;<span id="projectnumber">1.7.0</span>
    </div>
   </td>
  </tr>
@@ -166,6 +166,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a974da00d08b54dbf5b8a6a1d2029ed2c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a974da00d08b54dbf5b8a6a1d2029ed2c">removeListener</a> (const std::string &amp;requester)=0</td></tr>
 <tr class="memdesc:a974da00d08b54dbf5b8a6a1d2029ed2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove IPlayStackManagerListener.  <a href="classNuguClientKit_1_1IPlaySyncManager.html#a974da00d08b54dbf5b8a6a1d2029ed2c">More...</a><br /></td></tr>
 <tr class="separator:a974da00d08b54dbf5b8a6a1d2029ed2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a6d7d91c2506ce80972e426eb563faa"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a8a6d7d91c2506ce80972e426eb563faa">replacePlayStack</a> (const std::string &amp;prev_ps_id, const std::string &amp;new_ps_id, std::pair&lt; std::string, void * &gt; extra_data={})=0</td></tr>
+<tr class="memdesc:a8a6d7d91c2506ce80972e426eb563faa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Replace current playstack to new one. (It only replace playstack not notifying related callbacks.)  <a href="classNuguClientKit_1_1IPlaySyncManager.html#a8a6d7d91c2506ce80972e426eb563faa">More...</a><br /></td></tr>
+<tr class="separator:a8a6d7d91c2506ce80972e426eb563faa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac5186353e255533370547434447791f"><td class="memItemLeft" align="right" valign="top"><a id="aac5186353e255533370547434447791f"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#aac5186353e255533370547434447791f">resetHolding</a> ()=0</td></tr>
 <tr class="memdesc:aac5186353e255533370547434447791f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reset timer for releasing sync. <br /></td></tr>
@@ -795,6 +798,58 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
+<a id="a8a6d7d91c2506ce80972e426eb563faa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a6d7d91c2506ce80972e426eb563faa">&#9670;&nbsp;</a></span>replacePlayStack()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguClientKit::IPlaySyncManager::replacePlayStack </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>prev_ps_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>new_ps_id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::pair&lt; std::string, void * &gt;&#160;</td>
+          <td class="paramname"><em>extra_data</em> = <code>{}</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Replace current playstack to new one. (It only replace playstack not notifying related callbacks.) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">prev_ps_id</td><td>current exist play service id </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">new_ps_id</td><td>play service id for replacing </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">extra_data</td><td>additional data composed by requester and data </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="playsync__manager__interface_8hh_source.html">playsync_manager_interface.hh</a></li>
 </ul>
@@ -804,7 +859,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">IPlaySyncManager</a></li>
-    <li class="footer">Generated on Tue Oct 5 2021 07:50:13 for NUGU SDK Linux by
+    <li class="footer">Generated on Thu Nov 4 2021 05:52:48 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

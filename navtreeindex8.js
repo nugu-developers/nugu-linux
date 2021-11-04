@@ -1,5 +1,17 @@
 var NAVTREEINDEX8 =
 {
+"nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4eea978d771471d58f818027bef48167339b":[3,0,17,3,1],
+"nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4eead91b3c7c06653b8676c1bbd4b8db7008":[3,0,17,3,0],
+"nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4eeaee26588a0e78234ff3ec3da33a8c91e4":[3,0,17,3,2],
+"nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4eeaf7e7090cb8573bf1a154b03b3553e03f":[3,0,17,3,11],
+"nugu__audio_8h_source.html":[3,0,17],
+"nugu__buffer_8h.html":[3,0,18],
+"nugu__buffer_8h_source.html":[3,0,18],
+"nugu__client_8hh.html":[3,0,19],
+"nugu__client_8hh_source.html":[3,0,19],
+"nugu__core__container__interface_8hh.html":[3,0,20],
+"nugu__core__container__interface_8hh_source.html":[3,0,20],
+"nugu__decoder_8h.html":[3,0,21],
 "nugu__decoder_8h_source.html":[3,0,21],
 "nugu__directive_8h.html":[3,0,22],
 "nugu__directive_8h_source.html":[3,0,22],

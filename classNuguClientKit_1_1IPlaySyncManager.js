@@ -25,5 +25,6 @@ var classNuguClientKit_1_1IPlaySyncManager =
     [ "hasNextPlayStack", "classNuguClientKit_1_1IPlaySyncManager.html#a7a690e691ce704a5fa593ed1df23f9b6", null ],
     [ "getAllPlayStackItems", "classNuguClientKit_1_1IPlaySyncManager.html#a2741b98b7ba7b565b65fd894ac7026a5", null ],
     [ "adjustPlayStackHoldTime", "classNuguClientKit_1_1IPlaySyncManager.html#a8719bfa1b4279dd1d36ce8b74e3e4082", null ],
-    [ "setDefaultPlayStackHoldTime", "classNuguClientKit_1_1IPlaySyncManager.html#a57084344446796bbbb5235c0f1bfbc7b", null ]
+    [ "setDefaultPlayStackHoldTime", "classNuguClientKit_1_1IPlaySyncManager.html#a57084344446796bbbb5235c0f1bfbc7b", null ],
+    [ "replacePlayStack", "classNuguClientKit_1_1IPlaySyncManager.html#a8a6d7d91c2506ce80972e426eb563faa", null ]
 ];

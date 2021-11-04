@@ -58,14 +58,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classNuguCapability_1_1SpeakerInfo.html",
-"classNuguClientKit_1_1IPlaySyncManager.html#aa9566efe181d6f6e00f5d33053d783dc",
-"group__DirectiveSequencerInterface.html#gga27f22301768541185c29c12af55aa862ab50339a10e1de285ac99d4c3990b8693",
-"group__Media.html#ggacaf0df5b33fcaf300816d0b7549576c1a639239be88e7611c1c32ca39fefe881a",
-"group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba050d3eccb50bcd084bf50ed8527ba59b",
-"group__NuguRecorderDriver.html#ga97541a14facaab6f07aa1b2660dde12f",
-"group__SystemInterface.html#gga210ca95bced11e44b9558947bb31a2eba61edd86da66e7b719182d760a0427ffd",
-"nugu__decoder_8h_source.html"
+"classNuguCapability_1_1IUtilityHandler.html#ab1817c7d4e1d828fca0347bf914cbc8b",
+"classNuguClientKit_1_1IPlaySyncManager.html#a9b89a8ddc144c7b04814b82e6a34102f",
+"group__ChipsInterface.html#gga9952988ef128e1f94b9692a062801226ab61773b9b3968a9988d765d728985862",
+"group__Media.html#gga19236934de86d6a021f96f8b671f52b4a699928a2ce8a3b8f38c6e3bb7a27abb2",
+"group__NuguEventQueue.html#ga4b6c1e599fbc010ded827b39f3e15a75",
+"group__NuguRecorder.html#gaf59f87c30cf2520953738334f37034a6",
+"group__SpeechRecognizerInterface.html",
+"nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4eea978d771471d58f818027bef48167339b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

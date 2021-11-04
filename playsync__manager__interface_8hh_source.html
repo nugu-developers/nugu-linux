@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.6.0</span>
+   &#160;<span id="projectnumber">1.7.0</span>
    </div>
   </td>
  </tr>
@@ -193,11 +193,13 @@ $(document).ready(function(){initNavTree('playsync__manager__interface_8hh_sourc
 <div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1IPlaySyncManager.html#a8719bfa1b4279dd1d36ce8b74e3e4082">adjustPlayStackHoldTime</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> time) = 0;</div>
 <div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
 <div class="line"><a name="l00243"></a><span class="lineno">  243</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1IPlaySyncManager.html#a57084344446796bbbb5235c0f1bfbc7b">setDefaultPlayStackHoldTime</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> time) = 0;</div>
-<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160;};</div>
-<div class="line"><a name="l00245"></a><span class="lineno">  245</span>&#160; </div>
-<div class="line"><a name="l00250"></a><span class="lineno">  250</span>&#160;} <span class="comment">// NuguClientKit</span></div>
-<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160; </div>
-<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_PLAYSYNC_MANAGER_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00244"></a><span class="lineno">  244</span>&#160; </div>
+<div class="line"><a name="l00251"></a><span class="lineno">  251</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1IPlaySyncManager.html#a8a6d7d91c2506ce80972e426eb563faa">replacePlayStack</a>(<span class="keyword">const</span> std::string&amp; prev_ps_id, <span class="keyword">const</span> std::string&amp; new_ps_id, std::pair&lt;std::string, void*&gt; extra_data = {}) = 0;</div>
+<div class="line"><a name="l00252"></a><span class="lineno">  252</span>&#160;};</div>
+<div class="line"><a name="l00253"></a><span class="lineno">  253</span>&#160; </div>
+<div class="line"><a name="l00258"></a><span class="lineno">  258</span>&#160;} <span class="comment">// NuguClientKit</span></div>
+<div class="line"><a name="l00259"></a><span class="lineno">  259</span>&#160; </div>
+<div class="line"><a name="l00260"></a><span class="lineno">  260</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_PLAYSYNC_MANAGER_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassNuguClientKit_1_1IPlaySyncManager_html_a5eebf9023193a331f52709e246329465"><div class="ttname"><a href="classNuguClientKit_1_1IPlaySyncManager.html#a5eebf9023193a331f52709e246329465">NuguClientKit::IPlaySyncManager::continueRelease</a></div><div class="ttdeci">virtual void continueRelease()=0</div><div class="ttdoc">Continue pending release if exist.</div></div>
@@ -234,6 +236,7 @@ $(document).ready(function(){initNavTree('playsync__manager__interface_8hh_sourc
 <div class="ttc" id="aclassNuguClientKit_1_1IPlaySyncManager_html_a573fdad089aacfa994bbd4b90166fe48"><div class="ttname"><a href="classNuguClientKit_1_1IPlaySyncManager.html#a573fdad089aacfa994bbd4b90166fe48">NuguClientKit::IPlaySyncManager::releaseSync</a></div><div class="ttdeci">virtual void releaseSync(const std::string &amp;ps_id, const std::string &amp;requester)=0</div><div class="ttdoc">Release sync all capability agents. (Actually, it release sync after context holding time....</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IPlaySyncManager_html"><div class="ttname"><a href="classNuguClientKit_1_1IPlaySyncManager.html">NuguClientKit::IPlaySyncManager</a></div><div class="ttdoc">IPlaySyncManager interface.</div><div class="ttdef"><b>Definition:</b> playsync_manager_interface.hh:95</div></div>
 <div class="ttc" id="agroup__PlaySyncManagerInterface_html_gga42c294733588594b84ae16137eb054c5a4616606d5a8590d8c1d305d50dce2f73"><div class="ttname"><a href="group__PlaySyncManagerInterface.html#gga42c294733588594b84ae16137eb054c5a4616606d5a8590d8c1d305d50dce2f73">NuguClientKit::PlayStackActivity::TTS</a></div><div class="ttdeci">@ TTS</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1IPlaySyncManager_html_a8a6d7d91c2506ce80972e426eb563faa"><div class="ttname"><a href="classNuguClientKit_1_1IPlaySyncManager.html#a8a6d7d91c2506ce80972e426eb563faa">NuguClientKit::IPlaySyncManager::replacePlayStack</a></div><div class="ttdeci">virtual void replacePlayStack(const std::string &amp;prev_ps_id, const std::string &amp;new_ps_id, std::pair&lt; std::string, void * &gt; extra_data={})=0</div><div class="ttdoc">Replace current playstack to new one. (It only replace playstack not notifying related callbacks....</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IPlaySyncManager_html_af4ccf0a65663e311732a424441e91681"><div class="ttname"><a href="classNuguClientKit_1_1IPlaySyncManager.html#af4ccf0a65663e311732a424441e91681">NuguClientKit::IPlaySyncManager::postPoneRelease</a></div><div class="ttdeci">virtual void postPoneRelease()=0</div><div class="ttdoc">Postpone already started release if exist.</div></div>
 <div class="ttc" id="agroup__PlaySyncManagerInterface_html_ga5d9f5e0329e5706191b9a4682615d4d0"><div class="ttname"><a href="group__PlaySyncManagerInterface.html#ga5d9f5e0329e5706191b9a4682615d4d0">NuguClientKit::PlaySyncState</a></div><div class="ttdeci">PlaySyncState</div><div class="ttdoc">PlaySync State.</div><div class="ttdef"><b>Definition:</b> playsync_manager_interface.hh:42</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IPlaySyncManager_html_aaccede352752e59a78067863d06d216e"><div class="ttname"><a href="classNuguClientKit_1_1IPlaySyncManager.html#aaccede352752e59a78067863d06d216e">NuguClientKit::IPlaySyncManager::releaseSyncImmediately</a></div><div class="ttdeci">virtual void releaseSyncImmediately(const std::string &amp;ps_id, const std::string &amp;requester)=0</div><div class="ttdoc">Release sync all capability agents immediately.</div></div>
@@ -246,7 +249,7 @@ $(document).ready(function(){initNavTree('playsync__manager__interface_8hh_sourc
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_261219a980049fd8e6168264a7da95ca.html">clientkit</a></li><li class="navelem"><a class="el" href="playsync__manager__interface_8hh.html">playsync_manager_interface.hh</a></li>
-    <li class="footer">Generated on Tue Oct 5 2021 07:50:13 for NUGU SDK Linux by
+    <li class="footer">Generated on Thu Nov 4 2021 05:52:47 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

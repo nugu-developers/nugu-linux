@@ -20,7 +20,7 @@ var group__ASRInterface =
     ] ],
     [ "IASRListener", "classNuguCapability_1_1IASRListener.html", [
       [ "~IASRListener", "classNuguCapability_1_1IASRListener.html#a0ed3468bba18f9c4a597061fe2ca3976", null ],
-      [ "onState", "classNuguCapability_1_1IASRListener.html#adf5f438140b02a9251d3488192ec14b8", null ],
+      [ "onState", "classNuguCapability_1_1IASRListener.html#ae517b3332c499a970be81f33d5f5e442", null ],
       [ "onNone", "classNuguCapability_1_1IASRListener.html#aba55f5cb3892f44a2c9c32ba70bd3723", null ],
       [ "onPartial", "classNuguCapability_1_1IASRListener.html#a2395171f2c033b205f880f14b9a6646f", null ],
       [ "onComplete", "classNuguCapability_1_1IASRListener.html#acd823bdf21a98bc80ed20207cfc88999", null ],
