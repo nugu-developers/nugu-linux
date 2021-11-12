@@ -50,7 +50,7 @@ class Capability;
  */
 class CapabilityEvent {
 public:
-    CapabilityEvent(const std::string& name, Capability* cap);
+    explicit CapabilityEvent(const std::string& name, Capability* cap);
     virtual ~CapabilityEvent();
 
     /**
@@ -372,7 +372,7 @@ public:
      * @brief Update the compact context information of the capability agent.
      * @param[in] ctx capability agent's context
      */
-    virtual void updateCompactContext(Json::Value& ctx);
+    virtual void updateCompactContext(Json::Value& ctx) override;
 
     /**
      * @brief Get ICapabilityHelper instance for using NuguCore functions.
