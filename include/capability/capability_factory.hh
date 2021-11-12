@@ -121,6 +121,11 @@ class PhoneCallAgent;
 class MessageAgent;
 
 /**
+ * @brief BluetoothAgent
+ */
+class BluetoothAgent;
+
+/**
  * @brief CapabilityFactory
  */
 class CapabilityFactory {
