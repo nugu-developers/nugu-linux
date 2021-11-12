@@ -131,6 +131,7 @@ NuguSDKManager::NuguSDKManager(NuguSampleManager* nugu_sample_manager)
     this->nugu_sample_manager = nugu_sample_manager;
     speaker_status = SpeakerStatus::getInstance();
     speaker_controller = make_unique<SpeakerController>();
+    bluetooth_status = BluetoothStatus::getInstance();
 
     std::string model_path = nugu_sample_manager->getModelPath();
 
@@ -212,6 +213,18 @@ void NuguSDKManager::composeSDKCommands()
         ->add("-", { "set speaker volume down", [&](int& flag) {
                         speaker_controller->setVolumeDown();
                     } })
+        ->add("bp", { "pair virtual 2nd bt device", [&](int& flag) {
+                         bluetooth_status->pair2ndDevice();
+                     } })
+        ->add("bu", { "unpair virtual 2nd bt device", [&](int& flag) {
+                         bluetooth_status->unpair2ndDevice();
+                     } })
+        ->add("bc", { "connect virtual 2nd bt device success", [&](int& flag) {
+                         bluetooth_status->connect2ndDevice(true);
+                     } })
+        ->add("bd", { "disconnect virtual 2nd bt device success", [&](int& flag) {
+                         bluetooth_status->disconnect2ndDevice();
+                     } })
         ->add("sa", { "suspend all", [&](int& flag) {
                          nugu_core_container->getCapabilityHelper()->suspendAll();
                      } })
@@ -259,6 +272,7 @@ void NuguSDKManager::registerCapabilities()
     auto speaker_handler(capa_collection->getCapability<ISpeakerHandler>("Speaker"));
     text_handler = capa_collection->getCapability<ITextHandler>("Text");
     mic_handler = capa_collection->getCapability<IMicHandler>("Mic");
+    bluetooth_handler = capa_collection->getCapability<IBluetoothHandler>("Bluetooth");
 
     speaker_controller->setCapabilityHandler({ tts_handler, audio_player_handler, speaker_handler });
     asr_handler->setAttribute(ASRAttribute { nugu_sample_manager->getModelPath() });
@@ -281,6 +295,7 @@ void NuguSDKManager::registerCapabilities()
         ->add(asr_handler)
         ->add(text_handler)
         ->add(mic_handler)
+        ->add(bluetooth_handler)
         ->construct();
 }
 
@@ -340,6 +355,18 @@ void NuguSDKManager::setAdditionalExecutor()
     nugu_sample_manager->setVolumeStatusRetriever([&]() {
         return speaker_status->isSpeakerMute() ? "MUTE" : std::to_string(speaker_status->getNUGUVolume());
     });
+
+    bluetooth_status->setDeviceStatusCallback([&](DeviceConnectStatus status) {
+        msg_info("bluetooth device status changed => " + bluetooth_status->getDeviceConnectStatusString(status));
+
+        bluetooth_handler->setDeviceInformation(bluetooth_status->getDeviceInformation());
+        if (status == DeviceConnectStatus::DeviceDisconnected)
+            bluetooth_handler->disconnectSucceeded();
+        else if (status == DeviceConnectStatus::DeviceConnectFailed)
+            bluetooth_handler->connectFailed();
+        else if (status == DeviceConnectStatus::DeviceConnected)
+            bluetooth_handler->connectSucceeded();
+    });
 }
 
 void NuguSDKManager::deleteInstance()
@@ -350,6 +377,7 @@ void NuguSDKManager::deleteInstance()
     on_init_func = nullptr;
 
     speaker_status->destroyInstance();
+    bluetooth_status->destroyInstance();
 }
 
 void NuguSDKManager::initSDK()

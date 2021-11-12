@@ -23,6 +23,7 @@
 
 #include <clientkit/nugu_client.hh>
 
+#include "bluetooth_status.hh"
 #include "capability_collection.hh"
 #include "nugu_sample_manager.hh"
 #include "speaker_status.hh"
@@ -108,6 +109,8 @@ private:
     SpeechOperator* speech_operator = nullptr;
     ITextHandler* text_handler = nullptr;
     IMicHandler* mic_handler = nullptr;
+    IBluetoothHandler* bluetooth_handler = nullptr;
+    BluetoothStatus* bluetooth_status = nullptr;
     SpeakerStatus* speaker_status = nullptr;
 
     std::function<void()> on_init_func = nullptr;

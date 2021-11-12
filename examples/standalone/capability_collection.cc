@@ -166,6 +166,14 @@ void CapabilityCollection::composeCapabilityFactory()
 
         return routine_handler.get();
     });
+    factories.emplace("Bluetooth", [&]() {
+        if (!bluetooth_handler)
+            bluetooth_listener = make_unique<BluetoothListener>();
+        bluetooth_handler = makeCapability<BluetoothAgent, IBluetoothHandler>(bluetooth_listener.get());
+        bluetooth_listener->setBTHandler(bluetooth_handler.get());
+
+        return bluetooth_handler.get();
+    });
 }
 
 void CapabilityCollection::composeSpeakerInterface()

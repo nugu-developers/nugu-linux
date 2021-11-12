@@ -16,6 +16,7 @@
 
 #include "asr_agent.hh"
 #include "audio_player_agent.hh"
+#include "bluetooth_agent.hh"
 #include "chips_agent.hh"
 #include "display_agent.hh"
 #include "extension_agent.hh"
@@ -64,4 +65,5 @@ template INudgeHandler* CapabilityFactory::makeCapability<NudgeAgent, INudgeHand
 template IRoutineHandler* CapabilityFactory::makeCapability<RoutineAgent, IRoutineHandler>(ICapabilityListener* listener);
 template IPhoneCallHandler* CapabilityFactory::makeCapability<PhoneCallAgent, IPhoneCallHandler>(ICapabilityListener* listener);
 template IMessageHandler* CapabilityFactory::makeCapability<MessageAgent, IMessageHandler>(ICapabilityListener* listener);
+template IBluetoothHandler* CapabilityFactory::makeCapability<BluetoothAgent, IBluetoothHandler>(ICapabilityListener* listener);
 } // NuguCapability
