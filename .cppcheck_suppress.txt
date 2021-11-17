@@ -1,0 +1,23 @@
+// External source - JSON library
+noExplicitConstructor:externals/jsoncpp/include/json/value.h
+noExplicitConstructor:externals/jsoncpp/include/json/reader.h
+missingOverride:externals/jsoncpp/include/json/writer.h
+missingOverride:externals/jsoncpp/include/json/reader.h
+
+// GLib error - g_assert_cmpstr, g_assert_cmpmem
+syntaxError:tests/test_nugu_encoder.c
+syntaxError:tests/test_nugu_event.c
+syntaxError:tests/test_nugu_buffer.c
+syntaxError:tests/test_nugu_decoder.c
+syntaxError:tests/test_nugu_pcm.c
+syntaxError:tests/test_nugu_uuid.c
+syntaxError:tests/test_nugu_directive.c
+syntaxError:tests/test_nugu_plugin.c
+syntaxError:tests/core/test_core_directive_sequencer.cc
+knownConditionTrueFalse:tests/test_nugu_buffer.c
+knownConditionTrueFalse:tests/test_nugu_recorder.c
+knownConditionTrueFalse:tests/test_nugu_uuid.c
+knownConditionTrueFalse:tests/test_nugu_ringbuffer.c
+
+// Disabled
+useStlAlgorithm

@@ -22,6 +22,27 @@ jobs:
         with:
           exclude: 'externals'
 
+  cppcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+      - name: Generate compile_commands.json
+        run: |
+          mkdir build
+          docker run -t --rm -v $PWD:$PWD -w $PWD/build \
+            nugulinux/devenv:bionic cmake ..
+      - name: Run cppcheck
+        run: |
+          docker run -t --rm -v $PWD:$PWD -w $PWD \
+            ghcr.io/facthunder/cppcheck:2.6 \
+            cppcheck --project=build/compile_commands.json \
+              --suppressions-list=.cppcheck_suppress.txt \
+              --enable=all -j 6 -iexternals
+
   build:
     runs-on: ubuntu-latest
     needs: [checkpatch_review, clang_tidy_review]
