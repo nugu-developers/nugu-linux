@@ -193,14 +193,16 @@ void PlaySyncManager::releaseSyncImmediately(const std::string& ps_id, const std
     rawReleaseSync(ps_id, requester, PlayStackRemoveMode::Immediately);
 }
 
-void PlaySyncManager::releaseSyncUnconditionally()
+void PlaySyncManager::releaseSyncUnconditionally(const std::string& ps_id)
 {
     auto playstacks = playstack_manager->getAllPlayStackItems();
 
     playstack_manager->stopHolding();
 
-    for (const auto& playstack : playstacks)
-        playstack_manager->remove(playstack, PlayStackRemoveMode::Immediately);
+    for (const auto& playstack : playstacks) {
+        if (ps_id.empty() || playstack == ps_id)
+            playstack_manager->remove(playstack, PlayStackRemoveMode::Immediately);
+    }
 }
 
 void PlaySyncManager::postPoneRelease()

@@ -685,6 +685,7 @@ static void test_playsync_manager_release_sync_unconditionally(TestFixture* fixt
 
     const auto& playstacks = fixture->playsync_manager->getPlayStacks();
 
+    // release all playstacks
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Synced);
     g_assert(!playstacks.empty());
@@ -693,6 +694,17 @@ static void test_playsync_manager_release_sync_unconditionally(TestFixture* fixt
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Released);
     g_assert(playstacks.empty());
+
+    // release the specific playstack (ps_id_1: Media, ps_id_2: TTS)
+    sub_test_playsync_manager_preset_media_stacked(fixture);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Synced);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Synced);
+    g_assert(playstacks.size() == 2);
+
+    fixture->playsync_manager->releaseSyncUnconditionally("ps_id_1"); // release under stacked playstack first
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_1") == PlaySyncState::Released);
+    g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Synced);
+    g_assert(playstacks.size() == 1);
 }
 
 static void test_playsync_manager_normal_case(TestFixture* fixture, gconstpointer ignored)

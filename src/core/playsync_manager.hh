@@ -53,7 +53,7 @@ public:
     void releaseSync(const std::string& ps_id, const std::string& requester) override;
     void releaseSyncLater(const std::string& ps_id, const std::string& requester) override;
     void releaseSyncImmediately(const std::string& ps_id, const std::string& requester) override;
-    void releaseSyncUnconditionally() override;
+    void releaseSyncUnconditionally(const std::string& ps_id = "") override;
 
     void postPoneRelease() override;
     void continueRelease() override;
