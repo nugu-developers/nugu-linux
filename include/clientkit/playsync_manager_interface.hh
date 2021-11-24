@@ -164,8 +164,10 @@ public:
 
     /**
      * @brief Release sync all capability agents unconditionally.
+     * If it's not specify the play service id, it would remove all playstacks.
+     * @param[in] ps_id play service id
      */
-    virtual void releaseSyncUnconditionally() = 0;
+    virtual void releaseSyncUnconditionally(const std::string& ps_id = "") = 0;
 
     /**
      * @brief Postpone already started release if exist.
