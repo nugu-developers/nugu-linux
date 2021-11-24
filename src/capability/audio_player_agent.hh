@@ -53,6 +53,7 @@ public:
     void restore() override;
 
     void preprocessDirective(NuguDirective* ndir) override;
+    void cancelDirective(NuguDirective* ndir) override;
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
     bool receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
@@ -147,6 +148,7 @@ private:
     IMediaPlayer* media_player;
     ITTSPlayer* tts_player;
     NuguDirective* speak_dir;
+    const NuguDirective* preprocess_dir;
     FocusState focus_state;
     bool is_tts_activate;
     bool stop_reason_by_play_another;
