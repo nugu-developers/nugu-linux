@@ -43,6 +43,7 @@ void AudioPlayerAgent::initialize()
 
     suspended_stop_policy = false;
     speak_dir = nullptr;
+    preprocess_dir = nullptr;
     focus_state = FocusState::NONE;
     is_tts_activate = false;
     stop_reason_by_play_another = false;
@@ -140,6 +141,7 @@ void AudioPlayerAgent::deInitialize()
     }
 
     cur_player = nullptr;
+    preprocess_dir = nullptr;
 
     playsync_manager->removeListener(getName());
     render_helper->clear();
@@ -195,6 +197,8 @@ void AudioPlayerAgent::preprocessDirective(NuguDirective* ndir)
     }
 
     if (!strcmp(dname, "Play")) {
+        preprocess_dir = ndir;
+
         if (routine_manager->isConditionToStop(ndir))
             routine_manager->stop();
 
@@ -204,6 +208,20 @@ void AudioPlayerAgent::preprocessDirective(NuguDirective* ndir)
             ? playsync_manager->startSync(playstackctl_ps_id, getName(), composeRenderInfo(ndir, message))
             : playsync_manager->prepareSync(playstackctl_ps_id, ndir);
     }
+}
+
+void AudioPlayerAgent::cancelDirective(NuguDirective* ndir)
+{
+    if (preprocess_dir != ndir)
+        return;
+
+    nugu_info("preprocessed directive '%s.%s' canceled",
+        nugu_directive_peek_namespace(ndir), nugu_directive_peek_name(ndir));
+
+    nugu_info("remove '%s' from playstack", playstackctl_ps_id.c_str());
+    playsync_manager->releaseSyncUnconditionally(playstackctl_ps_id);
+
+    preprocess_dir = nullptr;
 }
 
 void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
