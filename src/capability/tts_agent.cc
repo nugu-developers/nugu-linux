@@ -157,6 +157,11 @@ void TTSAgent::parsingDirective(const char* dname, const char* message)
 void TTSAgent::cancelDirective(NuguDirective* ndir)
 {
     sendClearNudgeCommand(ndir);
+
+    if (ndir == speak_dir) {
+        speak_dir = nullptr;
+        stopTTS();
+    }
 }
 
 void TTSAgent::updateInfoForContext(Json::Value& ctx)
