@@ -781,28 +781,39 @@ bool DirectiveSequencer::cancel(const std::string& dialog_id, std::set<std::stri
         });
     scheduled_list.erase(new_end, scheduled_list.end());
 
+    std::vector<NuguDirective*> remove_list;
+
     for (const auto& name : groups) {
         nugu_dbg("- find '%s' from active and pending list", name.c_str());
 
         /* Remove from active list with cancel notify */
-        active->removeByName(dialog_id, name, [=](NuguDirective* ndir) {
+        active->removeByName(dialog_id, name, [this, &remove_list](NuguDirective* ndir) {
             nugu_dbg("  - found '%s.%s' from active list",
                 nugu_directive_peek_namespace(ndir), nugu_directive_peek_name(ndir));
 
             msgid_lookup->remove(nugu_directive_peek_msg_id(ndir));
-            cancelDirective(ndir);
-            nugu_directive_unref(ndir);
+            remove_list.push_back(ndir);
         });
 
         /* Remove from pending list with cancel notify */
-        pending->removeByName(dialog_id, name, [=](NuguDirective* ndir) {
+        pending->removeByName(dialog_id, name, [this, &remove_list](NuguDirective* ndir) {
             nugu_dbg("  - found '%s.%s' from pending list",
                 nugu_directive_peek_namespace(ndir), nugu_directive_peek_name(ndir));
 
             msgid_lookup->remove(nugu_directive_peek_msg_id(ndir));
-            cancelDirective(ndir);
-            nugu_directive_unref(ndir);
+            remove_list.push_back(ndir);
         });
+    }
+
+    for (auto& ndir : remove_list) {
+        nugu_dbg("- cancel '%s.%s' directive", nugu_directive_peek_namespace(ndir),
+            nugu_directive_peek_name(ndir));
+
+        cancelDirective(ndir);
+
+        nugu_dbg("- remove '%s.%s' directive", nugu_directive_peek_namespace(ndir),
+            nugu_directive_peek_name(ndir));
+        nugu_directive_unref(ndir);
     }
 
     pending->dump();
