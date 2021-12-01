@@ -1605,10 +1605,20 @@ void AudioPlayerAgent::executeOnForegroundAction()
     } else if (cur_player->state() == MediaPlayerState::STOPPED && is_finished) {
         nugu_dbg("The media has already been played.");
     } else if (cur_player->state() == MediaPlayerState::PAUSED) {
-        if (!cur_player->resume()) {
-            nugu_error("resume media(%s) failed", type.c_str());
-            sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
-                "player can't resume media");
+        bool is_resume = true;
+        for (const auto& aplayer_listener : aplayer_listeners) {
+            if (aplayer_listener->onResume(cur_dialog_id) == false) {
+                nugu_info("resume rejected");
+                is_resume = false;
+            }
+        }
+
+        if (is_resume) {
+            if (!cur_player->resume()) {
+                nugu_error("resume media(%s) failed", type.c_str());
+                sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR,
+                    "player can't resume media");
+            }
         }
     } else {
         nugu_prof_mark(NUGU_PROF_TYPE_AUDIO_STARTED);

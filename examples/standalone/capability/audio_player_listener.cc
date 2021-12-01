@@ -112,6 +112,11 @@ bool AudioPlayerListener::requestToGetCachedContent(const std::string& key, std:
     return false;
 }
 
+bool AudioPlayerListener::onResume(const std::string& dialog_id)
+{
+    return true;
+}
+
 bool AudioPlayerListener::requestLyricsPageAvailable(const std::string& id, bool& visible)
 {
     std::cout << "[AudioPlayer] requestLyricsPageAvailable" << std::endl;

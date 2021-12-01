@@ -39,6 +39,7 @@ public:
     void repeatChanged(RepeatType repeat, const std::string& dialog_id) override;
     void requestContentCache(const std::string& key, const std::string& playurl) override;
     bool requestToGetCachedContent(const std::string& key, std::string& filepath) override;
+    bool onResume(const std::string& dialog_id) override;
 
     // implements IAudioPlayerDisplayListener
     bool requestLyricsPageAvailable(const std::string& id, bool& visible) override;

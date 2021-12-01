@@ -136,6 +136,8 @@ public:
      * @return return true if cached content, otherwise false
      */
     virtual bool requestToGetCachedContent(const std::string& key, std::string& filepath) = 0;
+
+    virtual bool onResume(const std::string& dialog_id) = 0;
 };
 
 /**
