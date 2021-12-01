@@ -395,6 +395,8 @@ std::string AudioPlayerAgent::pause(bool direct_access)
             return "";
         }
 
+        is_paused = true;
+
         if (cur_aplayer_state != AudioPlayerState::PLAYING) {
             nugu_warn("there is no playing media content in the playlist.");
             return "";
