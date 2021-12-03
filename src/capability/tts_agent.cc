@@ -494,7 +494,8 @@ void TTSAgent::parsingStop(const char* message)
         focus_manager->releaseFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME);
     } else {
         focus_manager->stopForegroundFocus();
-        playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
+        nugu_info("release ps_id = %s", ps_id.c_str());
+        playsync_manager->releaseSyncImmediately(ps_id, getName());
         speak_dir = nullptr;
         ps_id.clear();
     }
