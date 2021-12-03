@@ -24,7 +24,8 @@ namespace NuguCapability {
 
 class TextAgent final : public Capability,
                         public ITextHandler,
-                        public IFocusResourceListener {
+                        public IFocusResourceListener,
+                        public IPlaySyncManagerListener {
 public:
     TextAgent();
     virtual ~TextAgent() = default;
@@ -43,11 +44,21 @@ public:
     // implements IFocusResourceListener
     void onFocusChanged(FocusState state) override;
 
+    // implements IPlaySyncManagerListener
+    void onStackChanged(const std::pair<std::string, std::string>& ps_ids) override;
+
 private:
     using TextInputParam = struct {
         std::string text;
         std::string token;
         std::string ps_id;
+    };
+
+    using ExpectTypingInfo = struct {
+        bool is_handle = false;
+        std::string playstack;
+        std::string ps_id;
+        std::list<std::string> domain_types;
     };
 
     std::string requestTextInput(TextInputParam&& text_input_param, bool routine_play, bool include_dialog_attribute = true);
@@ -57,6 +68,7 @@ private:
     void sendEventFailed(std::string&& event_name, const TextInputParam& text_input_param, EventResultCallback cb = nullptr);
     void parsingTextSource(const char* message);
     void parsingTextRedirect(const char* message);
+    void parsingExpectTyping(const char* message);
     bool handleTextCommonProcess(const TextInputParam& text_input_param);
     void notifyEventResponse(const std::string& msg_id, const std::string& data, bool success) override;
     void notifyResponseTimeout();
@@ -73,6 +85,8 @@ private:
     TextState cur_state;
     std::string cur_dialog_id;
     std::string dir_groups;
+    std::string cur_playstack;
+    ExpectTypingInfo expect_typing;
     InteractionMode interaction_mode;
     bool handle_interaction_control;
     FocusState focus_state;
