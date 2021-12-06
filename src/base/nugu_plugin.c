@@ -287,7 +287,9 @@ EXPORT_API NuguPlugin *nugu_plugin_find(const char *name)
 
 	cur = _plugin_list;
 	while (cur) {
-		if (g_strcmp0(((NuguPlugin *)cur->data)->desc->name, name) == 0)
+		NuguPlugin *p = cur->data;
+
+		if (p && g_strcmp0(p->desc->name, name) == 0)
 			return cur->data;
 
 		cur = cur->next;
