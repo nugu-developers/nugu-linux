@@ -15,7 +15,7 @@
 #include <capability/tts_interface.hh>
 #include <clientkit/nugu_client.hh>
 
-#define DEFAULT_MODEL_PATH "/var/lib/nugu/model"
+#define DEFAULT_MODEL_PATH NUGU_ASSET_PATH "/model"
 
 using namespace NuguClientKit;
 using namespace NuguCapability;

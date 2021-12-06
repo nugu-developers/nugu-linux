@@ -11,7 +11,7 @@ Options:
      -i <input-file>	Pre-recorded voice file (Raw PCM: 16000Hz, mono, s16le)
      -o <output-file>	File to save reporting results (CSV format)
      -n count		Number of test iterations. (default = 1)
-     -m model_path		Set the ASR Model path. (default = /var/lib/nugu/model)
+     -m model_path		Set the ASR Model path. (default = /usr/share/nugu/model)
      -d delay		Delay between each test iteration. (seconds, default = 1)
      -t timeout		Timeout for each tests. (seconds, default = 60)
 
