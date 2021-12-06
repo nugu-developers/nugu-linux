@@ -202,7 +202,7 @@ int main(int argc, char* argv[])
     auto my_asr_listener(std::make_shared<MyASR>());
     asr_handler = std::shared_ptr<IASRHandler>(
         CapabilityFactory::makeCapability<ASRAgent, IASRHandler>(my_asr_listener.get()));
-    asr_handler->setAttribute(ASRAttribute { "/var/lib/nugu/model", "CLIENT", "PARTIAL" });
+    asr_handler->setAttribute(ASRAttribute { NUGU_ASSET_PATH "/model", "CLIENT", "PARTIAL" });
 
     /* Create a TTS capability */
     auto tts_listener(std::make_shared<MyTTSListener>());
