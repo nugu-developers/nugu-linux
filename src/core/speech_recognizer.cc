@@ -206,17 +206,21 @@ void SpeechRecognizer::loop()
                 break;
             }
 
-            if (length > 0) {
+            if (epd_ret == EPD_END_DETECTED
+                || epd_ret == EPD_TIMEOUT
+                || epd_ret == EPD_MAXSPEECH)
+                is_epd_end = true;
+
+            if (is_epd_end || length > 0) {
                 /* Invoke the onRecordData callback in thread context */
                 if (listener)
-                    listener->onRecordData((unsigned char*)epd_buf, length);
+                    listener->onRecordData((unsigned char*)epd_buf, length, is_epd_end);
             }
 
             switch (epd_ret) {
             case EPD_END_DETECTED:
                 nugu_prof_mark(NUGU_PROF_TYPE_ASR_END_POINT_DETECTED);
                 sendListeningEvent(ListeningState::SPEECH_END, id);
-                is_epd_end = true;
                 break;
             case EPD_END_DETECTING:
             case EPD_START_DETECTED:
@@ -228,12 +232,9 @@ void SpeechRecognizer::loop()
             case EPD_TIMEOUT:
                 nugu_prof_mark(NUGU_PROF_TYPE_ASR_TIMEOUT);
                 sendListeningEvent(ListeningState::TIMEOUT, id);
-                is_epd_end = true;
                 break;
-
             case EPD_MAXSPEECH:
                 sendListeningEvent(ListeningState::SPEECH_END, id);
-                is_epd_end = true;
                 break;
             }
 

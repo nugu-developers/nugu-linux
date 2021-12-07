@@ -608,7 +608,6 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
             || prev_listening_state == ListeningState::SPEECH_START) {
             releaseASRFocus(true, ASRError::UNKNOWN, (request_listening_id == id));
         } else if (prev_listening_state == ListeningState::SPEECH_END) {
-            close_stream = true;
             checkResponseTimeout();
         } else if (prev_listening_state == ListeningState::TIMEOUT) {
             sendEventListenTimeout([&, id](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {
@@ -622,7 +621,6 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
                 }
             });
             notifyASRErrorCancel(ASRError::LISTEN_TIMEOUT);
-            close_stream = true;
         } else if (prev_listening_state == ListeningState::FAILED) {
             releaseASRFocus(false, ASRError::LISTEN_FAILED, (request_listening_id == id));
             close_stream = true;
@@ -651,9 +649,10 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
 /*
  * The callback is invoked in the thread context.
  */
-void ASRAgent::onRecordData(unsigned char* buf, int length)
+void ASRAgent::onRecordData(unsigned char* buf, int length, bool is_end)
 {
-    sendEventRecognize((unsigned char*)buf, length, false);
+    nugu_dbg("recording data %d bytes, is_end=%d", length, is_end);
+    sendEventRecognize((unsigned char*)buf, length, is_end);
 }
 
 void ASRAgent::saveAllContextInfo()
