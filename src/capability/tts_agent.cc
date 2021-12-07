@@ -39,6 +39,13 @@ struct _SpeechStateEventParam {
 TTSAgent::TTSAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , player(nullptr)
+    , cur_state(MediaPlayerState::IDLE)
+    , focus_state(FocusState::NONE)
+    , is_prehandling(false)
+    , is_finished(false)
+    , is_stopped_by_explicit(false)
+    , volume_update(false)
+    , volume(-1)
     , speak_dir(nullptr)
     , tts_engine(NUGU_TTS_ENGINE)
 {
@@ -301,6 +308,8 @@ void TTSAgent::onFocusChanged(FocusState state)
         if (!playsync_manager->hasActivity(playstackctl_ps_id, PlayStackActivity::Media)) {
             is_stopped_by_explicit ? playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName())
                                    : playsync_manager->releaseSync(playstackctl_ps_id, getName());
+        } else {
+            playstackctl_ps_id.clear();
         }
 
         break;
@@ -315,9 +324,13 @@ void TTSAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* 
         return;
     }
 
-    if (state == PlaySyncState::Released && cur_state == MediaPlayerState::PLAYING && !is_prehandling) {
-        postProcessDirective(true);
-        suspend();
+    if (state == PlaySyncState::Released) {
+        if (cur_state == MediaPlayerState::PLAYING && !is_prehandling) {
+            postProcessDirective(true);
+            suspend();
+        }
+
+        playstackctl_ps_id.clear();
     }
 }
 
@@ -488,6 +501,9 @@ void TTSAgent::parsingStop(const char* message)
 
     if (!root["playServiceId"].empty())
         ps_id = root["playServiceId"].asString();
+
+    if (playstackctl_ps_id.empty())
+        playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
     if (cur_state == MediaPlayerState::PLAYING) {
         destroy_directive_by_agent = true;
