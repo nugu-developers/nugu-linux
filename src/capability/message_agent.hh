@@ -54,6 +54,7 @@ private:
     void parsingGetMessage(const char* message);
     void parsingReadMessage(const char* message);
 
+    void sendEventGetMessage(std::string&& event_name, const std::string& payload);
     void sendEventReadMessageFinished(EventResultCallback cb = nullptr);
     void stopTTS();
 
@@ -71,6 +72,8 @@ private:
 
     void executeOnForegroundAction();
     std::string getCurrentTTSState();
+    void startInteractionControl(const Json::Value& payload);
+    void finishInteractionControl();
 
     IMessageListener* message_listener;
     NuguDirective* speak_dir;
@@ -83,6 +86,7 @@ private:
     std::string context_template;
     std::string dialog_id;
     std::string received_time;
+    InteractionMode interaction_mode;
 };
 
 } // NuguCapability

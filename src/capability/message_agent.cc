@@ -32,6 +32,7 @@ MessageAgent::MessageAgent()
     , cur_state(MediaPlayerState::IDLE)
     , focus_state(FocusState::NONE)
     , is_finished(false)
+    , interaction_mode(InteractionMode::NONE)
 {
 }
 
@@ -140,11 +141,14 @@ void MessageAgent::candidatesListed(const std::string& context_template, const s
 
     if (!reader.parse(context_template, root) || !reader.parse(payload, root)) {
         nugu_error("context template or payload is not json format!!");
+        finishInteractionControl();
         return;
     }
 
     this->context_template = context_template;
-    sendEvent("CandidatesListed", capa_helper->makeAllContextInfo(), payload);
+    sendEvent("CandidatesListed", capa_helper->makeAllContextInfo(), payload, [&](...) {
+        finishInteractionControl();
+    });
 }
 
 void MessageAgent::sendMessageSucceeded(const std::string& payload)
@@ -177,35 +181,18 @@ void MessageAgent::sendMessageFailed(const std::string& payload)
 
 void MessageAgent::getMessageSucceeded(const std::string& payload)
 {
-    Json::Value root;
-    Json::Reader reader;
-
-    if (!reader.parse(payload, root)) {
-        nugu_error("payload(%s) is not json format!!", payload.c_str());
-        return;
-    }
-
-    sendEvent("GetMessageSucceeded", getContextInfo(), payload);
+    sendEventGetMessage("GetMessageSucceeded", payload);
 }
 
 void MessageAgent::getMessageFailed(const std::string& payload)
 {
-    Json::Value root;
-    Json::Reader reader;
-
-    if (!reader.parse(payload, root)) {
-        nugu_error("payload(%s) is not json format!!", payload.c_str());
-        return;
-    }
-
-    sendEvent("GetMessageFailed", getContextInfo(), payload);
+    sendEventGetMessage("GetMessageFailed", payload);
 }
 
 void MessageAgent::parsingSendCandidates(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
-    InteractionMode interaction_mode;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -217,8 +204,7 @@ void MessageAgent::parsingSendCandidates(const char* message)
         return;
     }
 
-    interaction_mode = getInteractionMode(root["interactionControl"]);
-    interaction_control_manager->start(interaction_mode, getName());
+    startInteractionControl(root);
 
     if (message_listener)
         message_listener->processSendCandidates(message);
@@ -247,7 +233,6 @@ void MessageAgent::parsingGetMessage(const char* message)
 {
     Json::Value root;
     Json::Reader reader;
-    InteractionMode interaction_mode;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -259,8 +244,7 @@ void MessageAgent::parsingGetMessage(const char* message)
         return;
     }
 
-    interaction_mode = getInteractionMode(root["interactionControl"]);
-    interaction_control_manager->start(interaction_mode, getName());
+    startInteractionControl(root);
 
     if (message_listener)
         message_listener->processGetMessage(message);
@@ -302,6 +286,22 @@ void MessageAgent::parsingReadMessage(const char* message)
         executeOnForegroundAction();
     else
         focus_manager->requestFocus(INFO_FOCUS_TYPE, CAPABILITY_NAME, this);
+}
+
+void MessageAgent::sendEventGetMessage(std::string&& event_name, const std::string& payload)
+{
+    Json::Value root;
+    Json::Reader reader;
+
+    if (!reader.parse(payload, root)) {
+        nugu_error("payload(%s) is not json format!!", payload.c_str());
+        finishInteractionControl();
+        return;
+    }
+
+    sendEvent(event_name, getContextInfo(), payload, [&](...) {
+        finishInteractionControl();
+    });
 }
 
 void MessageAgent::sendEventReadMessageFinished(EventResultCallback cb)
@@ -453,6 +453,17 @@ std::string MessageAgent::getCurrentTTSState()
         tts_state = "FINISHED";
 
     return tts_state;
+}
+
+void MessageAgent::startInteractionControl(const Json::Value& payload)
+{
+    interaction_mode = getInteractionMode(payload["interactionControl"]);
+    interaction_control_manager->start(interaction_mode, getName());
+}
+
+void MessageAgent::finishInteractionControl()
+{
+    interaction_control_manager->finish(interaction_mode, getName());
 }
 
 } // NuguCapability
