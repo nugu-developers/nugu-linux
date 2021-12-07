@@ -73,8 +73,9 @@ public:
      * @brief Get current audio input stream
      * @param[in] buf audio input data
      * @param[in] length audio input length
+     * @param[in] is_end whether final data
      */
-    virtual void onRecordData(unsigned char* buf, int length) = 0;
+    virtual void onRecordData(unsigned char* buf, int length, bool is_end) = 0;
 };
 
 /**

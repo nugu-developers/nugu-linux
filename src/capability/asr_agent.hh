@@ -84,7 +84,7 @@ private:
 
     // implements ISpeechRecognizerListener
     void onListeningState(ListeningState state, const std::string& id) override;
-    void onRecordData(unsigned char* buf, int length) override;
+    void onRecordData(unsigned char* buf, int length, bool is_end) override;
 
     void saveAllContextInfo();
     std::string getRecognizeDialogId();
