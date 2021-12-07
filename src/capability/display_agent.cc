@@ -30,6 +30,7 @@ DisplayAgent::DisplayAgent()
     , render_helper(std::unique_ptr<DisplayRenderHelper>(new DisplayRenderHelper()))
     , display_listener(nullptr)
     , keep_history(false)
+    , interaction_mode(InteractionMode::NONE)
 {
     template_names = {
         "FullText1",
@@ -93,6 +94,7 @@ void DisplayAgent::initialize()
     playstackctl_ps_id.clear();
     prepared_render_info_id.clear();
     keep_history = false;
+    interaction_mode = InteractionMode::NONE;
 
     playsync_manager->addListener(getName(), this);
 
@@ -411,7 +413,10 @@ void DisplayAgent::sendEventControlFocusFailed(const std::string& ps_id, Control
 
 void DisplayAgent::sendEventControlScrollSucceeded(const std::string& ps_id, ControlDirection direction)
 {
-    sendEventControl("ControlScrollSucceeded", ps_id, direction);
+    sendEventControl("ControlScrollSucceeded", ps_id, direction,
+        [&](...) {
+            interaction_control_manager->finish(interaction_mode, getName());
+        });
 }
 
 void DisplayAgent::sendEventControlScrollFailed(const std::string& ps_id, ControlDirection direction)
@@ -431,7 +436,7 @@ void DisplayAgent::sendEventClose(const std::string& ename, const std::string& p
     sendEvent(ename, getContextInfo(), payload);
 }
 
-void DisplayAgent::sendEventControl(const std::string& ename, const std::string& ps_id, ControlDirection direction)
+void DisplayAgent::sendEventControl(const std::string& ename, const std::string& ps_id, ControlDirection direction, EventResultCallback cb)
 {
     std::string payload = "";
     Json::FastWriter writer;
@@ -441,7 +446,7 @@ void DisplayAgent::sendEventControl(const std::string& ename, const std::string&
     root["direction"] = getDirectionString(direction);
     payload = writer.write(root);
 
-    sendEvent(ename, getContextInfo(), payload);
+    sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
 void DisplayAgent::parsingClose(const char* message)
@@ -537,6 +542,9 @@ void DisplayAgent::parsingControlScroll(const char* message)
         sendEventControlScrollFailed(ps_id, direction);
         return;
     }
+
+    interaction_mode = getInteractionMode(root["interactionControl"]);
+    interaction_control_manager->start(interaction_mode, getName());
 
     if (display_listener)
         display_listener->controlDisplay(template_id, ControlType::Scroll, direction);

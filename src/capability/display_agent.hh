@@ -75,7 +75,7 @@ private:
     void sendEventControlScrollSucceeded(const std::string& ps_id, ControlDirection direction);
     void sendEventControlScrollFailed(const std::string& ps_id, ControlDirection direction);
     void sendEventClose(const std::string& ename, const std::string& ps_id);
-    void sendEventControl(const std::string& ename, const std::string& ps_id, ControlDirection direction);
+    void sendEventControl(const std::string& ename, const std::string& ps_id, ControlDirection direction, EventResultCallback cb = nullptr);
 
     void parsingClose(const char* message);
     void parsingControlFocus(const char* message);
@@ -106,6 +106,7 @@ private:
     std::string playstackctl_ps_id;
     std::string prepared_render_info_id;
     bool keep_history;
+    InteractionMode interaction_mode;
 
     std::stack<HistoryControl> history_control_stack;
 };
