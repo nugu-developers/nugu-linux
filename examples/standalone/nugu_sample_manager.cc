@@ -80,9 +80,9 @@ void NuguSampleManager::CommandBuilder::compose(std::string&& divider)
 }
 
 NuguSampleManager::NuguSampleManager()
-    : command_builder(new CommandBuilder(this))
+    : model_path(std::string { NUGU_ASSET_PATH } + "/model/")
+    , command_builder(new CommandBuilder(this))
 {
-    model_path = std::string { NUGU_ASSET_PATH } + "/model/";
 }
 
 NuguSampleManager::~NuguSampleManager()

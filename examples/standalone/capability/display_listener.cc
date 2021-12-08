@@ -19,8 +19,8 @@
 #include "display_listener.hh"
 
 DisplayListener::DisplayListener()
+    : capability_name("Display")
 {
-    capability_name = "Display";
 }
 
 void DisplayListener::setDisplayHandler(IDisplayHandler* display_handler)

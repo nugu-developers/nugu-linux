@@ -38,8 +38,8 @@ bool NuguClient::CapabilityBuilder::construct()
 }
 
 NuguClient::NuguClient()
+    : impl(std::unique_ptr<NuguClientImpl>(new NuguClientImpl()))
 {
-    impl = std::unique_ptr<NuguClientImpl>(new NuguClientImpl());
     cap_builder = new CapabilityBuilder(impl.get());
 }
 

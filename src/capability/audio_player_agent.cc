@@ -27,6 +27,27 @@ static const char* CAPABILITY_VERSION = "1.6";
 
 AudioPlayerAgent::AudioPlayerAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
+    , cur_player(nullptr)
+    , media_player(nullptr)
+    , tts_player(nullptr)
+    , speak_dir(nullptr)
+    , preprocess_dir(nullptr)
+    , focus_state(FocusState::NONE)
+    , is_tts_activate(false)
+    , stop_reason_by_play_another(false)
+    , has_play_directive(false)
+    , receive_new_play_directive(false)
+    , suspended_stop_policy(false)
+    , skip_intermediate_foreground_focus(false)
+    , cur_aplayer_state(AudioPlayerState::IDLE)
+    , prev_aplayer_state(AudioPlayerState::IDLE)
+    , is_paused(false)
+    , is_paused_by_unfocus(false)
+    , report_delay_time(-1)
+    , report_interval_time(-1)
+    , is_finished(false)
+    , volume_update(false)
+    , volume(-1)
     , render_helper(std::unique_ptr<DisplayRenderHelper>(new DisplayRenderHelper()))
     , display_listener(nullptr)
 {
@@ -1064,7 +1085,6 @@ void AudioPlayerAgent::parsingPlay(const char* message)
     long offset;
     bool new_content;
     std::string token;
-    std::string temp;
     std::string play_service_id;
 
     if (!reader.parse(message, root)) {
@@ -1220,7 +1240,6 @@ void AudioPlayerAgent::parsingPause(const char* message)
     Json::Value audio_item;
     Json::Reader reader;
     std::string playserviceid;
-    std::string active_playserviceid;
 
     if (cur_token.empty()) {
         nugu_warn("there is no media content in the playlist.");
@@ -1378,9 +1397,9 @@ void AudioPlayerAgent::parsingShowLyrics(const char* message)
             throw "fail to show lyrics";
 
         sendEventShowLyricsSucceeded();
-    } catch (const char* message) {
+    } catch (const char* exception_message) {
         sendEventShowLyricsFailed();
-        nugu_error(message);
+        nugu_error(exception_message);
     }
 }
 
@@ -1408,9 +1427,9 @@ void AudioPlayerAgent::parsingHideLyrics(const char* message)
             throw "fail to hide lyrics";
 
         sendEventHideLyricsSucceeded();
-    } catch (const char* message) {
+    } catch (const char* exception_message) {
         sendEventHideLyricsFailed();
-        nugu_error(message);
+        nugu_error(exception_message);
     }
 }
 

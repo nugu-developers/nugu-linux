@@ -21,3 +21,5 @@ knownConditionTrueFalse:tests/test_nugu_ringbuffer.c
 
 // Disabled
 useStlAlgorithm
+noCopyConstructor
+noOperatorEq

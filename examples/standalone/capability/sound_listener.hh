@@ -26,7 +26,7 @@ public:
     virtual ~SoundListener() = default;
 
     void setSoundHandler(ISoundHandler* sound_handler);
-    void handleBeep(BeepType beep_type, const std::string& dialog_id);
+    void handleBeep(BeepType beep_type, const std::string& dialog_id) override;
 
 private:
     ISoundHandler* sound_handler = nullptr;

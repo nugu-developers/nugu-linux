@@ -44,7 +44,6 @@ public:
 private:
     std::string battery_level = "10";
     bool battery_charging = false;
-    SuspendPolicy suspend_policy = SuspendPolicy::STOP;
 
     IBatteryListener* battery_listener = nullptr;
 };

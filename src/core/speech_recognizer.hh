@@ -41,7 +41,7 @@ public:
 
 public:
     SpeechRecognizer();
-    SpeechRecognizer(Attribute&& attribute);
+    explicit SpeechRecognizer(Attribute&& attribute);
     virtual ~SpeechRecognizer();
 
     // implements ISpeechRecognizer

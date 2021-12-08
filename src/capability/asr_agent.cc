@@ -28,8 +28,19 @@ static const char* CAPABILITY_VERSION = "1.6";
 
 ASRAgent::ASRAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
+    , es_attr({})
+    , rec_event(nullptr)
+    , timer(nullptr)
+    , uniq(0)
+    , prev_listening_state(ListeningState::DONE)
+    , asr_initiator(NONE_INITIATOR)
+    , cur_state(ASRState::IDLE)
+    , asr_cancel(false)
+    , listen_timeout_fail_beep(true)
     , asr_user_listener(nullptr)
     , asr_dm_listener(nullptr)
+    , wakeup_power_noise(0)
+    , wakeup_power_speech(0)
     , model_path("")
     , epd_type(NUGU_ASR_EPD_TYPE)
     , asr_encoding(NUGU_ASR_ENCODING)
@@ -583,11 +594,11 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
         wakeup_power_noise = 0;
         wakeup_power_speech = 0;
 
-        std::string id = getRecognizeDialogId();
-        nugu_dbg("user request dialog id: %s", id.c_str());
+        std::string recognize_dialog_id = getRecognizeDialogId();
+        nugu_dbg("user request dialog id: %s", recognize_dialog_id.c_str());
 
-        if (rec_callback && !id.empty())
-            rec_callback(id);
+        if (rec_callback && !recognize_dialog_id.empty())
+            rec_callback(recognize_dialog_id);
 
         setASRState(ASRState::LISTENING);
         break;

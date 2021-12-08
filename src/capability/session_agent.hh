@@ -39,8 +39,8 @@ private:
     void parsingSet(const char* message);
 
     // implements ISessionManagerListener
-    void activated(const std::string& dialog_id, Session session);
-    void deactivated(const std::string& dialog_id);
+    void activated(const std::string& dialog_id, Session session) override;
+    void deactivated(const std::string& dialog_id) override;
 
     ISessionListener* session_listener = nullptr;
     std::string play_service_id;
