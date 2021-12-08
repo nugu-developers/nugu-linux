@@ -255,9 +255,9 @@ void RoutineAgent::parsingContinue(const char* message)
 
         play_service_id = root["playServiceId"].asString();
         routine_manager->resume();
-    } catch (const char* message) {
+    } catch (const char* exception_message) {
         sendEventFailed();
-        nugu_error(message);
+        nugu_error(exception_message);
     }
 }
 

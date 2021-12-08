@@ -30,13 +30,13 @@ static const unsigned int DEFAULT_LONG_HOLD_TIME_SEC = 600;
 
 class PlayStackManagerListener : public IPlayStackManagerListener {
 public:
-    void onStackAdded(const std::string& ps_id)
+    void onStackAdded(const std::string& ps_id) override
     {
         ps_ids.emplace_back(ps_id);
         stack_added_call_count++;
     }
 
-    void onStackRemoved(const std::string& ps_id)
+    void onStackRemoved(const std::string& ps_id) override
     {
         if (inter_hook_func)
             inter_hook_func();

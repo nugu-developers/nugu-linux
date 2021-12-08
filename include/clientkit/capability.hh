@@ -113,7 +113,7 @@ private:
  */
 class Capability : virtual public ICapabilityInterface {
 public:
-    Capability(const std::string& name, const std::string& ver = "1.0");
+    explicit Capability(const std::string& name, const std::string& ver = "1.0");
     virtual ~Capability();
 
     /**

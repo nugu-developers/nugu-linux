@@ -89,7 +89,7 @@ public:
 private:
     class StackTimer final : public IStackTimer {
     public:
-        bool isStarted();
+        bool isStarted() override;
         void start(unsigned int sec = 0) override;
         void stop() override;
         void notifyCallback() override;

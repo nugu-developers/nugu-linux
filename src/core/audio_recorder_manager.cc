@@ -314,7 +314,7 @@ NuguAudioProperty AudioRecorderManager::convertNuguAudioProperty(std::string& sa
     return property;
 }
 
-std::string AudioRecorderManager::extractRecorderKey(std::string& sample, std::string& format, std::string& channel)
+std::string AudioRecorderManager::extractRecorderKey(const std::string& sample, const std::string& format, const std::string& channel)
 {
     return sample + "," + format + "," + channel;
 }

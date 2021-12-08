@@ -83,7 +83,7 @@ public:
 
 private:
     ICapabilityInterface* findCapability(const std::string& cname);
-    Json::Value getBaseContextInfo(Json::Value& supported_interfaces, Json::Value&& playstack);
+    Json::Value getBaseContextInfo(const Json::Value& supported_interfaces, Json::Value&& playstack);
     bool isConditionToSendCommand(const NuguDirective* ndir);
 
     const unsigned int PROGRESS_DIALOGS_MAX = 5;
