@@ -30,14 +30,14 @@ static const char* CONTEXT_OS = "Linux";
 CapabilityManager* CapabilityManager::instance = nullptr;
 
 CapabilityManager::CapabilityManager()
-    : playsync_manager(std::unique_ptr<PlaySyncManager>(new PlaySyncManager()))
+    : wword(WAKEUP_WORD)
+    , playsync_manager(std::unique_ptr<PlaySyncManager>(new PlaySyncManager()))
     , focus_manager(std::unique_ptr<FocusManager>(new FocusManager()))
     , session_manager(std::unique_ptr<SessionManager>(new SessionManager()))
     , directive_sequencer(std::unique_ptr<DirectiveSequencer>(new DirectiveSequencer()))
     , interaction_control_manager(std::unique_ptr<InteractionControlManager>(new InteractionControlManager()))
     , routine_manager(std::unique_ptr<RoutineManager>(new RoutineManager()))
 {
-    wword = WAKEUP_WORD;
     no_command_directive_filter = { "System.Noop" };
 
     playsync_manager->setInteractionControlManager(interaction_control_manager.get());
@@ -279,7 +279,7 @@ std::string CapabilityManager::makeAllContextInfo()
     return writer.write(getBaseContextInfo(cap_ctx, std::move(playstack_ctx)));
 }
 
-Json::Value CapabilityManager::getBaseContextInfo(Json::Value& supported_interfaces, Json::Value&& playstack)
+Json::Value CapabilityManager::getBaseContextInfo(const Json::Value& supported_interfaces, Json::Value&& playstack)
 {
     Json::Value root;
     Json::Value client;

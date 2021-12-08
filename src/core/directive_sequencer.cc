@@ -220,7 +220,7 @@ bool DialogDirectiveList::remove(NuguDirective* ndir)
     /* remove the directive from directive list */
     dlist.erase(
         std::remove_if(dlist.begin(), dlist.end(),
-            [ndir](NuguDirective* target_ndir) {
+            [ndir](const NuguDirective* target_ndir) {
                 return (ndir == target_ndir);
             }),
         dlist.end());
@@ -430,8 +430,8 @@ void DirectiveSequencer::reset()
     policy_map.clear();
     scheduled_list.clear();
     msgid_lookup->clearWithUnref();
-    pending->clear([](NuguDirective* ndir){});
-    active->clear([](NuguDirective* ndir){});
+    pending->clear([](NuguDirective* ndir) {});
+    active->clear([](NuguDirective* ndir) {});
 
     last_cancel_dialog_id = "";
 }

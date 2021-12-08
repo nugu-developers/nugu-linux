@@ -74,7 +74,7 @@ public:
 
 private:
     NuguAudioProperty convertNuguAudioProperty(std::string& sample, std::string& format, std::string& channel);
-    std::string extractRecorderKey(std::string& sample, std::string& format, std::string& channel);
+    std::string extractRecorderKey(const std::string& sample, const std::string& format, const std::string& channel);
     NuguRecorder* extractNuguRecorder(IAudioRecorder* recorder);
 
 private:
