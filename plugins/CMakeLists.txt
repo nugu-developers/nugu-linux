@@ -34,6 +34,18 @@ IF(ENABLE_OPUS_PLUGIN)
 	ADD_DEPENDENCIES(opus libnugu)
 ENDIF(ENABLE_OPUS_PLUGIN)
 
+# OPUS encoder plugin
+IF(ENABLE_OPUSENC_PLUGIN)
+	ADD_LIBRARY(opusenc SHARED opus_encoder.c)
+	pkg_check_modules(opusenc REQUIRED opus ogg)
+	TARGET_COMPILE_OPTIONS(opusenc PRIVATE ${opusenc_CFLAGS})
+	TARGET_LINK_LIBRARIES(opusenc ${pkgs_LDFLAGS} ${opusenc_LDFLAGS}
+		-L${CMAKE_BINARY_DIR}/src -lnugu)
+	SET_TARGET_PROPERTIES(opusenc PROPERTIES PREFIX "" OUTPUT_NAME opusenc)
+	INSTALL(TARGETS opusenc LIBRARY DESTINATION ${plugindir})
+	ADD_DEPENDENCIES(opusenc libnugu)
+ENDIF(ENABLE_OPUSENC_PLUGIN)
+
 # PortAudio plugin
 IF(ENABLE_PORTAUDIO_PLUGIN)
 	pkg_check_modules(portaudio REQUIRED portaudio-2.0 alsa)

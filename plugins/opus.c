@@ -234,6 +234,7 @@ static int init(NuguPlugin *p)
 
 	if (nugu_decoder_driver_register(driver) < 0) {
 		nugu_decoder_driver_free(driver);
+		driver = NULL;
 		return -1;
 	}
 
