@@ -48,6 +48,7 @@ public:
     void setEpdAttribute(const EpdAttribute& attribute) override;
     EpdAttribute getEpdAttribute() override;
     bool isMute() override;
+    std::string getCodec() override;
     std::string getMimeType() override;
 
 private:
@@ -57,6 +58,7 @@ private:
 
     int epd_ret;
     ISpeechRecognizerListener* listener;
+    std::string codec;
     std::string mime_type;
 
     // attribute

@@ -123,6 +123,12 @@ public:
     virtual bool isMute() = 0;
 
     /**
+     * @brief Get codec information of recorder
+     * @return codec
+     */
+    virtual std::string getCodec() = 0;
+
+    /**
      * @brief Get mime type information of recorder
      * @return mime type
      */

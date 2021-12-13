@@ -92,13 +92,28 @@ void *nugu_encoder_get_driver_data(NuguEncoder *enc);
 /**
  * @brief Encode the encoded data
  * @param[in] enc encoder object
+ * @param[in] is_last last data hint (1 = last, 0 = not last)
  * @param[in] data pcm data
  * @param[in] data_len pcm data length
  * @param[out] output_len output buffer length
  * @return memory allocated encoded data. Developer must free the data manually.
  */
-void *nugu_encoder_encode(NuguEncoder *enc, const void *data, size_t data_len,
-			  size_t *output_len);
+void *nugu_encoder_encode(NuguEncoder *enc, int is_last, const void *data,
+		size_t data_len, size_t *output_len);
+
+/**
+ * @brief Get encoder codec. e.g. "OGG_OPUS" or "SPEEX"
+ * @param[in] enc encoder object
+ * @return encoder type string
+ */
+const char *nugu_encoder_get_codec(NuguEncoder *enc);
+
+/**
+ * @brief Get encoder mime type
+ * @param[in] enc encoder object
+ * @return encoder mime type string
+ */
+const char *nugu_encoder_get_mime_type(NuguEncoder *enc);
 
 /**
  * @}
@@ -141,7 +156,8 @@ struct nugu_encoder_driver_ops {
 	 * @see nugu_encoder_encode()
 	 */
 	int (*encode)(NuguEncoderDriver *driver, NuguEncoder *enc,
-		      const void *data, size_t data_len, NuguBuffer *out_buf);
+		      int is_last, const void *data, size_t data_len,
+		      NuguBuffer *out_buf);
 	/**
 	 * @brief Called when the encoder is destroyed.
 	 * @see nugu_encoder_free()

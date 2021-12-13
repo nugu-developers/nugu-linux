@@ -41,6 +41,7 @@ static const int ASR_EPD_PAUSE_LENGTH_MSEC = 700;
 SpeechRecognizer::SpeechRecognizer(Attribute&& attribute)
     : epd_ret(-1)
     , listener(nullptr)
+    , codec("SPEEX")
     , mime_type("application/octet-stream")
 {
     initialize(std::move(attribute));
@@ -330,6 +331,11 @@ bool SpeechRecognizer::isMute()
         return false;
 
     return recorder->isMute();
+}
+
+std::string SpeechRecognizer::getCodec()
+{
+    return codec;
 }
 
 std::string SpeechRecognizer::getMimeType()
