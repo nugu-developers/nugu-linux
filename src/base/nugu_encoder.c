@@ -184,15 +184,15 @@ EXPORT_API int nugu_encoder_free(NuguEncoder *enc)
 	return 0;
 }
 
-EXPORT_API void *nugu_encoder_encode(NuguEncoder *enc, const void *data,
-				     size_t data_len, size_t *output_len)
+EXPORT_API void *nugu_encoder_encode(NuguEncoder *enc, int is_last,
+				     const void *data, size_t data_len,
+				     size_t *output_len)
 {
 	int ret;
 	void *out;
 
 	g_return_val_if_fail(enc != NULL, NULL);
 	g_return_val_if_fail(data != NULL, NULL);
-	g_return_val_if_fail(data_len > 0, NULL);
 	g_return_val_if_fail(enc->driver != NULL, NULL);
 	g_return_val_if_fail(output_len != NULL, NULL);
 
@@ -201,8 +201,8 @@ EXPORT_API void *nugu_encoder_encode(NuguEncoder *enc, const void *data,
 		return NULL;
 	}
 
-	ret = enc->driver->ops->encode(enc->driver, enc, data, data_len,
-				       enc->buf);
+	ret = enc->driver->ops->encode(enc->driver, enc, is_last, data,
+				       data_len, enc->buf);
 	if (ret != 0)
 		return NULL;
 
@@ -229,4 +229,28 @@ EXPORT_API void *nugu_encoder_get_driver_data(NuguEncoder *enc)
 	g_return_val_if_fail(enc != NULL, NULL);
 
 	return enc->driver_data;
+}
+
+EXPORT_API const char *nugu_encoder_get_codec(NuguEncoder *enc)
+{
+	g_return_val_if_fail(enc != NULL, NULL);
+	g_return_val_if_fail(enc->driver != NULL, NULL);
+
+	if (enc->driver->type == NUGU_ENCODER_TYPE_OPUS)
+		return "OGG_OPUS";
+	else if (enc->driver->type == NUGU_ENCODER_TYPE_SPEEX)
+		return "SPEEX";
+
+	return "CUSTOM";
+}
+
+EXPORT_API const char *nugu_encoder_get_mime_type(NuguEncoder *enc)
+{
+	g_return_val_if_fail(enc != NULL, NULL);
+	g_return_val_if_fail(enc->driver != NULL, NULL);
+
+	if (enc->driver->type == NUGU_ENCODER_TYPE_OPUS)
+		return "audio/ogg; codecs=opus";
+
+	return "application/octet-stream";
 }

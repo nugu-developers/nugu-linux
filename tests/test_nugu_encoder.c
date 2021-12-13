@@ -40,7 +40,8 @@ static int dummy_destroy(NuguEncoderDriver *driver, NuguEncoder *enc)
  * add '<>' to data
  */
 static int dummy_encode(NuguEncoderDriver *driver, NuguEncoder *enc,
-			const void *data, size_t data_len, NuguBuffer *out_buf)
+			int is_last, const void *data, size_t data_len,
+			NuguBuffer *out_buf)
 {
 	g_assert_cmpstr(data, ==, "hello");
 	_check_put_data = 1;
@@ -88,7 +89,7 @@ static void test_encoder_encode(void)
 	g_assert(nugu_encoder_driver_free(driver) == -1);
 
 	_check_put_data = 0;
-	output = nugu_encoder_encode(enc, "hello", 5, &result_length);
+	output = nugu_encoder_encode(enc, 0, "hello", 5, &result_length);
 	g_assert(output != NULL);
 	g_assert(result_length != 0);
 	g_assert(_check_put_data == 1);
@@ -153,8 +154,8 @@ static void test_encoder_default(void)
 	g_assert(nugu_encoder_driver_remove(driver2) == 0);
 
 	g_assert(nugu_encoder_new(NULL, prop) == NULL);
-	g_assert(nugu_encoder_encode(NULL, NULL, 0, NULL) == NULL);
-	g_assert(nugu_encoder_encode(NULL, "", 0, NULL) == NULL);
+	g_assert(nugu_encoder_encode(NULL, 0, NULL, 0, NULL) == NULL);
+	g_assert(nugu_encoder_encode(NULL, 0, "", 0, NULL) == NULL);
 	g_assert(nugu_encoder_set_driver_data(NULL, NULL) < 0);
 	g_assert(nugu_encoder_get_driver_data(NULL) == NULL);
 
@@ -162,13 +163,14 @@ static void test_encoder_default(void)
 	enc = nugu_encoder_new(driver, prop);
 	g_assert(enc != NULL);
 	g_assert(nugu_encoder_driver_free(driver) == -1);
+	g_assert_cmpstr(nugu_encoder_get_codec(enc), ==, "CUSTOM");
 
 	g_assert(nugu_encoder_set_driver_data(enc, mydata) == 0);
 	g_assert(nugu_encoder_get_driver_data(enc) == mydata);
 
-	g_assert(nugu_encoder_encode(enc, NULL, 0, &result_length) == NULL);
+	g_assert(nugu_encoder_encode(enc, 0, NULL, 0, &result_length) == NULL);
 	g_assert(result_length == 999);
-	g_assert(nugu_encoder_encode(enc, "test", 4, &result_length) == NULL);
+	g_assert(nugu_encoder_encode(enc, 0, "hh", 2, &result_length) == NULL);
 	g_assert(result_length == 999);
 
 	nugu_encoder_free(enc);

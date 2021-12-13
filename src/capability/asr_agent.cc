@@ -392,7 +392,7 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
         return;
     }
 
-    root["codec"] = "SPEEX";
+    root["codec"] = speech_recognizer->getCodec();
     root["language"] = "KOR";
     root["endpointing"] = epd_type;
     root["encoding"] = asr_encoding;
