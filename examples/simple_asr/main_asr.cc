@@ -38,7 +38,7 @@ class MyASR : public IASRListener {
 public:
     virtual ~MyASR() = default;
 
-    void onState(ASRState state, const std::string& dialog_id, ASRInitiator initiator)
+    void onState(ASRState state, const std::string& dialog_id, ASRInitiator initiator) override
     {
         switch (state) {
         case ASRState::IDLE:
@@ -59,22 +59,22 @@ public:
         }
     }
 
-    void onNone(const std::string& dialog_id)
+    void onNone(const std::string& dialog_id) override
     {
         std::cout << "ASR no recognition result, request dialog id: " << dialog_id << std::endl;
     }
 
-    void onPartial(const std::string& text, const std::string& dialog_id)
+    void onPartial(const std::string& text, const std::string& dialog_id) override
     {
         std::cout << "ASR partial result: " << text << ", request dialog id: " << dialog_id << std::endl;
     }
 
-    void onComplete(const std::string& text, const std::string& dialog_id)
+    void onComplete(const std::string& text, const std::string& dialog_id) override
     {
         std::cout << "ASR complete result: " << text << ", request dialog id: " << dialog_id << std::endl;
     }
 
-    void onError(ASRError error, const std::string& dialog_id, bool listen_timeout_fail_beep)
+    void onError(ASRError error, const std::string& dialog_id, bool listen_timeout_fail_beep) override
     {
         switch (error) {
         case ASRError::RESPONSE_TIMEOUT:
@@ -95,7 +95,7 @@ public:
         }
     }
 
-    void onCancel(const std::string& dialog_id)
+    void onCancel(const std::string& dialog_id) override
     {
         std::cout << "ASR canceled, request dialog id: " << dialog_id << std::endl;
     }
@@ -108,7 +108,7 @@ public:
 
 class MyNetwork : public INetworkManagerListener {
 public:
-    void onStatusChanged(NetworkStatus status)
+    void onStatusChanged(NetworkStatus status) override
     {
         switch (status) {
         case NetworkStatus::DISCONNECTED:
@@ -129,7 +129,7 @@ public:
         }
     }
 
-    void onError(NetworkError error)
+    void onError(NetworkError error) override
     {
         switch (error) {
         case NetworkError::FAILED:

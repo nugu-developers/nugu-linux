@@ -37,7 +37,7 @@ public:
 
 class MyNetwork : public INetworkManagerListener {
 public:
-    void onStatusChanged(NetworkStatus status)
+    void onStatusChanged(NetworkStatus status) override
     {
         switch (status) {
         case NetworkStatus::DISCONNECTED:
@@ -57,7 +57,7 @@ public:
         }
     }
 
-    void onError(NetworkError error)
+    void onError(NetworkError error) override
     {
         switch (error) {
         case NetworkError::FAILED:
