@@ -40,10 +40,10 @@
  * }
  */
 #define TPL_EVENT                                                              \
-	"{ \"context\": %s, \"event\": { \"header\": {"                        \
-	" \"dialogRequestId\": \"%s\", \"messageId\": \"%s\","                 \
-	" \"name\": \"%s\", \"namespace\": \"%s\", \"version\": \"%s\" },"    \
-	" \"payload\": %s } }"
+	"{\"context\":%s,\"event\":{\"header\":{"                              \
+	"\"dialogRequestId\":\"%s\",\"messageId\":\"%s\","                     \
+	"\"name\":\"%s\",\"namespace\":\"%s\",\"version\":\"%s\"},"            \
+	"\"payload\":%s}}"
 
 /**
  * {
@@ -62,10 +62,10 @@
  * }
  */
 #define TPL_EVENT_REFERRER                                                     \
-	"{ \"context\": %s, \"event\": { \"header\": {"                        \
-	" \"referrerDialogRequestId\": \"%s\", \"dialogRequestId\": \"%s\","   \
-	" \"messageId\": \"%s\", \"name\": \"%s\", \"namespace\": \"%s\","     \
-	" \"version\": \"%s\" }, \"payload\": %s } }"
+	"{\"context\":%s,\"event\":{\"header\":{"                              \
+	"\"referrerDialogRequestId\":\"%s\",\"dialogRequestId\":\"%s\","       \
+	"\"messageId\":\"%s\",\"name\":\"%s\",\"namespace\":\"%s\","           \
+	"\"version\":\"%s\"},\"payload\":%s}}"
 
 struct _nugu_event {
 	char *name_space;
@@ -80,6 +80,7 @@ struct _nugu_event {
 	char *context;
 
 	enum nugu_event_type type;
+	char *mime_type;
 };
 
 EXPORT_API NuguEvent *nugu_event_new(const char *name_space, const char *name,
@@ -105,6 +106,7 @@ EXPORT_API NuguEvent *nugu_event_new(const char *name_space, const char *name,
 	nev->seq = 0;
 	nev->version = g_strdup(version);
 	nev->type = NUGU_EVENT_TYPE_DEFAULT;
+	nev->mime_type = NULL;
 
 	return nev;
 }
@@ -127,6 +129,9 @@ EXPORT_API void nugu_event_free(NuguEvent *nev)
 
 	if (nev->context)
 		free(nev->context);
+
+	if (nev->mime_type)
+		free(nev->mime_type);
 
 	memset(nev, 0, sizeof(NuguEvent));
 	free(nev);
@@ -314,4 +319,26 @@ EXPORT_API enum nugu_event_type nugu_event_get_type(NuguEvent *nev)
 	g_return_val_if_fail(nev != NULL, NUGU_EVENT_TYPE_DEFAULT);
 
 	return nev->type;
+}
+
+EXPORT_API int nugu_event_set_mime_type(NuguEvent *nev, const char *type)
+{
+	g_return_val_if_fail(nev != NULL, -1);
+
+	if (nev->mime_type)
+		free(nev->mime_type);
+
+	if (type)
+		nev->mime_type = g_strdup(type);
+	else
+		nev->mime_type = NULL;
+
+	return 0;
+}
+
+EXPORT_API const char *nugu_event_peek_mime_type(NuguEvent *nev)
+{
+	g_return_val_if_fail(nev != NULL, NULL);
+
+	return nev->mime_type;
 }

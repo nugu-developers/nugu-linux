@@ -168,7 +168,7 @@ static int _send_v2_events_attachment(DGServer *server, NuguEvent *nev,
 				    NULL);
 
 	v2_events_send_binary(e, msg_id, nugu_event_get_seq(nev), is_end,
-			      length, data);
+			      nugu_event_peek_mime_type(nev), length, data);
 	free(msg_id);
 
 	if (is_end == 0)

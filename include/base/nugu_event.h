@@ -212,6 +212,23 @@ int nugu_event_increase_seq(NuguEvent *nev);
 char *nugu_event_generate_payload(NuguEvent *nev);
 
 /**
+ * @brief Set the attachment mime type of NuguEvent
+ * @param[in] nev event object
+ * @param[in] type attachment type. e.g. "application/octet-stream"
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_event_set_mime_type(NuguEvent *nev, const char *type);
+
+/**
+ * @brief Get the attachment mime type of NuguEvent
+ * @param[in] nev event object
+ * @return attachment type. Please don't free the data manually.
+ */
+const char *nugu_event_peek_mime_type(NuguEvent *nev);
+
+/**
  * @}
  */
 

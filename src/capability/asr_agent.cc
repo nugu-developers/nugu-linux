@@ -570,6 +570,7 @@ void ASRAgent::onListeningState(ListeningState state, const std::string& id)
 
         rec_event = new CapabilityEvent("Recognize", this);
         rec_event->setType(NUGU_EVENT_TYPE_WITH_ATTACHMENT);
+        rec_event->setMimeType(speech_recognizer->getMimeType());
 
         sendEventRecognize(NULL, 0, false,
             [&](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, bool success, int code) {

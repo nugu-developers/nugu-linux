@@ -43,8 +43,7 @@
 
 #define PART_HEADER_BINARY_FMT                                                 \
 	"Content-Disposition: form-data; name=\"attachment\";"                 \
-	" filename=\"%d;%s\"" CRLF                                             \
-	"Content-Type: application/octet-stream" CRLF                          \
+	" filename=\"%d;%s\"" CRLF "Content-Type: %s" CRLF                     \
 	"Content-Length: %zd" CRLF "Message-Id: %s" CRLF CRLF
 
 struct _v2_events {
@@ -396,7 +395,8 @@ int v2_events_send_json(V2Events *event, const char *data, size_t length)
 }
 
 int v2_events_send_binary(V2Events *event, const char *msgid, int seq,
-			  int is_end, size_t length, unsigned char *data)
+			  int is_end, const char *mime_type, size_t length,
+			  unsigned char *data)
 {
 	char *part_header;
 
@@ -404,7 +404,7 @@ int v2_events_send_binary(V2Events *event, const char *msgid, int seq,
 
 	part_header = g_strdup_printf(PART_HEADER_BINARY_FMT, seq,
 				      (is_end == 1) ? "end" : "continued",
-				      length, msgid);
+				      mime_type, length, msgid);
 
 	http2_request_lock_send_data(event->req);
 

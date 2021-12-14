@@ -20,8 +20,6 @@
 #include "audio_input_processor.hh"
 #include "clientkit/speech_recognizer_interface.hh"
 
-#define EPD_MODEL_FILE "skt_epd_model.raw"
-
 namespace NuguCore {
 
 using namespace NuguClientKit;
@@ -40,7 +38,6 @@ public:
     };
 
 public:
-    SpeechRecognizer();
     explicit SpeechRecognizer(Attribute&& attribute);
     virtual ~SpeechRecognizer();
 
@@ -51,15 +48,16 @@ public:
     void setEpdAttribute(const EpdAttribute& attribute) override;
     EpdAttribute getEpdAttribute() override;
     bool isMute() override;
+    std::string getMimeType() override;
 
 private:
     void initialize(Attribute&& attribute);
     void loop() override;
     void sendListeningEvent(ListeningState state, const std::string& id);
 
-    const unsigned int OUT_DATA_SIZE = 1024 * 9;
-    int epd_ret = -1;
-    ISpeechRecognizerListener* listener = nullptr;
+    int epd_ret;
+    ISpeechRecognizerListener* listener;
+    std::string mime_type;
 
     // attribute
     std::string model_path = "";

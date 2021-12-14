@@ -84,6 +84,12 @@ public:
     void setType(enum nugu_event_type type);
 
     /**
+     * @brief Set mime type
+     * @param[in] type mime type
+     */
+    void setMimeType(const std::string& type);
+
+    /**
      * @brief Close event forcibly.
      */
     void forceClose();
