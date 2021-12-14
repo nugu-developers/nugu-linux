@@ -28,20 +28,7 @@ SpeakerAgent::SpeakerAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , speaker_listener(nullptr)
 {
-    // compose maps for SpeakerType and name string
-    speaker_names_for_types = {
-        { SpeakerType::NUGU, "NUGU" },
-        { SpeakerType::MUSIC, "MUSIC" },
-        { SpeakerType::RINGTON, "RINGTON" },
-        { SpeakerType::CALL, "CALL" },
-        { SpeakerType::NOTIFICATION, "NOTIFICATION" },
-        { SpeakerType::ALARM, "ALARM" },
-        { SpeakerType::VOICE_COMMAND, "VOICE_COMMAND" },
-        { SpeakerType::NAVIGATION, "NAVIGATION" },
-        { SpeakerType::SYSTEM_SOUND, "SYSTEM_SOUND" },
-    };
-
-    std::for_each(speaker_names_for_types.cbegin(), speaker_names_for_types.cend(),
+    std::for_each(SPEAKER_NAMES_FOR_TYPES.cbegin(), SPEAKER_NAMES_FOR_TYPES.cend(),
         [&](const std::pair<SpeakerType, std::string>& element) {
             speaker_types_for_names.emplace(element.second, element.first);
         });
@@ -227,7 +214,7 @@ bool SpeakerAgent::getSpeakerType(const std::string& name, SpeakerType& type) no
 std::string SpeakerAgent::getSpeakerName(const SpeakerType& type) noexcept
 {
     try {
-        return speaker_names_for_types.at(type);
+        return SPEAKER_NAMES_FOR_TYPES.at(type);
     } catch (const std::out_of_range& oor) {
         return "NUGU";
     }

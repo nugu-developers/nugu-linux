@@ -59,8 +59,19 @@ private:
     bool getSpeakerType(const std::string& name, SpeakerType& type) noexcept;
     std::string getSpeakerName(const SpeakerType& type) noexcept;
 
+    const std::map<SpeakerType, std::string> SPEAKER_NAMES_FOR_TYPES {
+        { SpeakerType::NUGU, "NUGU" },
+        { SpeakerType::MUSIC, "MUSIC" },
+        { SpeakerType::RINGTON, "RINGTON" },
+        { SpeakerType::CALL, "CALL" },
+        { SpeakerType::NOTIFICATION, "NOTIFICATION" },
+        { SpeakerType::ALARM, "ALARM" },
+        { SpeakerType::VOICE_COMMAND, "VOICE_COMMAND" },
+        { SpeakerType::NAVIGATION, "NAVIGATION" },
+        { SpeakerType::SYSTEM_SOUND, "SYSTEM_SOUND" },
+    };
+
     std::map<SpeakerType, std::unique_ptr<SpeakerInfo>> speakers;
-    std::map<SpeakerType, std::string> speaker_names_for_types;
     std::map<std::string, SpeakerType> speaker_types_for_names;
     ISpeakerListener* speaker_listener;
 };

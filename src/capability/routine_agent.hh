@@ -59,8 +59,14 @@ private:
 
     const unsigned int INTERRUPT_TIME_MSEC = 60 * 1000;
     const std::string FAIL_EVENT_ERROR_CODE = "NOT_SUPPORTED_STATE";
+    const std::map<RoutineActivity, std::string> ROUTINE_ACTIVITY_TEXTS {
+        { RoutineActivity::IDLE, "IDLE" },
+        { RoutineActivity::PLAYING, "PLAYING" },
+        { RoutineActivity::INTERRUPTED, "INTERRUPTED" },
+        { RoutineActivity::FINISHED, "FINISHED" },
+        { RoutineActivity::STOPPED, "STOPPED" }
+    };
 
-    std::map<RoutineActivity, std::string> routine_activity_texts;
     IRoutineListener* routine_listener = nullptr;
     RoutineActivity activity = RoutineActivity::IDLE;
     std::unique_ptr<INuguTimer> timer = nullptr;

@@ -37,9 +37,20 @@ public:
 private:
     void parsingRender(const char* message);
 
+    const std::map<std::string, ChipsTarget> TARGETS {
+        { "DM", ChipsTarget::DM },
+        { "LISTEN", ChipsTarget::LISTEN },
+        { "SPEAKING", ChipsTarget::SPEAKING }
+
+    };
+    const std::map<std::string, ChipsType> CHIPS_TYPES {
+        { "NUDGE", ChipsType::NUDGE },
+        { "ACTION", ChipsType::ACTION },
+        { "GENERAL", ChipsType::GENERAL }
+
+    };
+
     IChipsListener* chips_listener = nullptr;
-    std::map<std::string, ChipsTarget> targets;
-    std::map<std::string, ChipsType> chips_types;
 };
 
 } // NuguCapability

@@ -27,13 +27,6 @@ static const char* CAPABILITY_VERSION = "1.2";
 RoutineAgent::RoutineAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
 {
-    routine_activity_texts = {
-        { RoutineActivity::IDLE, "IDLE" },
-        { RoutineActivity::PLAYING, "PLAYING" },
-        { RoutineActivity::INTERRUPTED, "INTERRUPTED" },
-        { RoutineActivity::FINISHED, "FINISHED" },
-        { RoutineActivity::STOPPED, "STOPPED" }
-    };
 }
 
 void RoutineAgent::initialize()
@@ -86,7 +79,7 @@ void RoutineAgent::updateInfoForContext(Json::Value& ctx)
     Json::Value routine;
 
     routine["version"] = getVersion();
-    routine["routineActivity"] = routine_activity_texts.at(activity);
+    routine["routineActivity"] = ROUTINE_ACTIVITY_TEXTS.at(activity);
 
     if (!token.empty())
         routine["token"] = token;
@@ -105,7 +98,7 @@ void RoutineAgent::updateInfoForContext(Json::Value& ctx)
 bool RoutineAgent::getProperty(const std::string& property, std::string& value)
 {
     if (property == "routineActivity") {
-        value = routine_activity_texts.at(activity);
+        value = ROUTINE_ACTIVITY_TEXTS.at(activity);
     } else {
         nugu_error("invalid property: %s", property.c_str());
         return false;

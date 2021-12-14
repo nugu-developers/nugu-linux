@@ -27,11 +27,6 @@ static const char* CAPABILITY_VERSION = "1.0";
 NudgeAgent::NudgeAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
 {
-    directive_filters = {
-        { "TTS", "Speak" },
-        { "ASR", "ExpectSpeech" },
-        { "Display", "" }
-    };
 }
 
 void NudgeAgent::initialize()
@@ -96,7 +91,7 @@ void NudgeAgent::prepareNudgeStateCheck(NuguDirective* ndir)
     std::string dir_groups = nugu_directive_peek_groups(ndir);
     state_checkers.clear();
 
-    for (const auto& filter : directive_filters)
+    for (const auto& filter : DIRECTIVE_FILTERS)
         if (dir_groups.find(filter.first + "." + filter.second) != std::string::npos)
             state_checkers.emplace(filter.first);
 }

@@ -38,8 +38,6 @@ CapabilityManager::CapabilityManager()
     , interaction_control_manager(std::unique_ptr<InteractionControlManager>(new InteractionControlManager()))
     , routine_manager(std::unique_ptr<RoutineManager>(new RoutineManager()))
 {
-    no_command_directive_filter = { "System.Noop" };
-
     playsync_manager->setInteractionControlManager(interaction_control_manager.get());
 }
 
@@ -399,7 +397,7 @@ bool CapabilityManager::isConditionToSendCommand(const NuguDirective* ndir)
     std::string dialog_id = nugu_directive_peek_dialog_id(ndir);
     std::string directive { dnamespace + "." + dname };
 
-    if (no_command_directive_filter.find(directive) != no_command_directive_filter.cend())
+    if (NO_COMMAND_DIRECTIVE_FILTER.find(directive) != NO_COMMAND_DIRECTIVE_FILTER.cend())
         return false;
 
     if (std::find(progress_dialogs.cbegin(), progress_dialogs.cend(), dialog_id) != progress_dialogs.cend())

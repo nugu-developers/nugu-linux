@@ -124,6 +124,20 @@ private:
     };
 
     const ASRInitiator NONE_INITIATOR = static_cast<ASRInitiator>(-1);
+    const std::map<ASRState, std::string> ASR_STATE_TEXTS {
+        { ASRState::IDLE, "IDLE" },
+        { ASRState::EXPECTING_SPEECH, "EXPECTING_SPEECH" },
+        { ASRState::LISTENING, "LISTENING" },
+        { ASRState::RECOGNIZING, "RECOGNIZING" },
+        { ASRState::BUSY, "BUSY" }
+    };
+    const std::map<ASRInitiator, std::string> ASR_INITIATOR_TEXTS {
+        { ASRInitiator::WAKE_UP_WORD, "WAKE_UP_WORD" },
+        { ASRInitiator::PRESS_AND_HOLD, "PRESS_AND_HOLD" },
+        { ASRInitiator::TAP, "TAP" },
+        { ASRInitiator::EXPECT_SPEECH, "EXPECT_SPEECH" },
+        { ASRInitiator::EARSET, "EARSET" }
+    };
 
     ExpectSpeechAttr es_attr;
     CapabilityEvent* rec_event;
@@ -137,8 +151,7 @@ private:
     AsrRecognizeCallback rec_callback;
     ASRInitiator asr_initiator;
     ASRState cur_state;
-    std::map<ASRInitiator, std::string> asr_initiator_texts;
-    std::map<ASRState, std::string> asr_state_texts;
+
     std::string request_listening_id;
     bool asr_cancel;
     bool listen_timeout_fail_beep;
