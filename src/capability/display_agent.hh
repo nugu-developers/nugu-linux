@@ -92,13 +92,58 @@ private:
     void startPlaySync(const NuguDirective* ndir, const Json::Value& root);
     bool hasPlayStack();
 
+    const std::set<std::string> TEMPLATE_NAMES {
+        "FullText1",
+        "FullText2",
+        "FullText3",
+        "ImageText1",
+        "ImageText2",
+        "ImageText3",
+        "ImageText4",
+        "ImageText5",
+        "TextList1",
+        "TextList2",
+        "TextList3",
+        "TextList4",
+        "ImageList1",
+        "ImageList2",
+        "ImageList3",
+        "Weather1",
+        "Weather2",
+        "Weather3",
+        "Weather4",
+        "Weather5",
+        "FullImage",
+        "Score1",
+        "Score2",
+        "SearchList1",
+        "SearchList2",
+        "UnifiedSearch1",
+        "CommerceList",
+        "CommerceOption",
+        "CommercePrice",
+        "CommerceInfo",
+        "Call1",
+        "Call2",
+        "Call3",
+        "Timer",
+        "Dummy",
+        "CustomTemplate",
+        "TabExtension"
+    };
+    const std::map<std::string, unsigned int> PLAYSTACK_DURATION {
+        { "SHORT", 7 },
+        { "MID", 15 },
+        { "LONG", 30 },
+        { "LONGEST", 600 }
+    };
+
     DisplayRenderInfo* composeRenderInfo(const NuguDirective* ndir, const std::string& ps_id, const std::string& token);
     std::string getTemplateId(const std::string& ps_id);
     std::string getDirectionString(ControlDirection direction);
 
-    std::set<std::string> template_names;
     std::set<std::string> session_dialog_ids;
-    std::map<std::string, unsigned int> playstack_duration;
+
     std::unique_ptr<DisplayRenderHelper> render_helper;
     IDisplayListener* display_listener;
     std::string disp_cur_ps_id;

@@ -48,21 +48,6 @@ ASRAgent::ASRAgent()
     , epd_attribute({})
     , default_epd_attribute({})
 {
-    asr_state_texts = {
-        { ASRState::IDLE, "IDLE" },
-        { ASRState::EXPECTING_SPEECH, "EXPECTING_SPEECH" },
-        { ASRState::LISTENING, "LISTENING" },
-        { ASRState::RECOGNIZING, "RECOGNIZING" },
-        { ASRState::BUSY, "BUSY" }
-    };
-
-    asr_initiator_texts = {
-        { ASRInitiator::WAKE_UP_WORD, "WAKE_UP_WORD" },
-        { ASRInitiator::PRESS_AND_HOLD, "PRESS_AND_HOLD" },
-        { ASRInitiator::TAP, "TAP" },
-        { ASRInitiator::EXPECT_SPEECH, "EXPECT_SPEECH" },
-        { ASRInitiator::EARSET, "EARSET" }
-    };
 }
 
 void ASRAgent::setAttribute(ASRAttribute&& attribute)
@@ -252,10 +237,10 @@ void ASRAgent::updateInfoForContext(Json::Value& ctx)
 
     asr["version"] = getVersion();
     asr["engine"] = "skt";
-    asr["state"] = asr_state_texts.at(cur_state);
+    asr["state"] = ASR_STATE_TEXTS.at(cur_state);
 
     try {
-        asr["initiator"] = asr_initiator_texts.at(asr_initiator);
+        asr["initiator"] = ASR_INITIATOR_TEXTS.at(asr_initiator);
     } catch (const std::out_of_range& oor) {
         asr["initiator"] = Json::nullValue;
     }

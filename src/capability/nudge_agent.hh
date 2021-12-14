@@ -39,9 +39,13 @@ private:
     void prepareNudgeStateCheck(NuguDirective* ndir);
     void updateNudgeState(const std::string& filter, const std::string& dialog_id);
 
-    std::vector<std::pair<std::string, std::string>> directive_filters;
-    INudgeListener* nudge_listener = nullptr;
+    const std::vector<std::pair<std::string, std::string>> DIRECTIVE_FILTERS {
+        { "TTS", "Speak" },
+        { "ASR", "ExpectSpeech" },
+        { "Display", "" }
+    };
 
+    INudgeListener* nudge_listener = nullptr;
     std::set<std::string> state_checkers;
     std::string dialog_id;
     Json::Value nudge_info;

@@ -90,10 +90,15 @@ private:
 
     const std::string ACTION_TYPE_TEXT = "TEXT";
     const std::string ACTION_TYPE_DATA = "DATA";
+    const std::vector<std::string> STOP_DIRECTIVE_FILTER {
+        "ASR.ExpectSpeech",
+        "AudioPlayer.Play"
+    };
+    const std::set<std::string> SKIP_FINISH_FILTER {
+        "Display"
+    };
 
     std::vector<IRoutineManagerListener*> listeners;
-    std::vector<std::string> stop_directive_filter;
-    std::set<std::string> skip_finish_filter;
     RoutineActivity activity = RoutineActivity::IDLE;
     std::unique_ptr<INuguTimer> timer = nullptr;
     TextRequester text_requester = nullptr;

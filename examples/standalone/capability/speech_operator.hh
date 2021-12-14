@@ -51,7 +51,14 @@ private:
     void stopWakeup();
     void stopListening();
 
-    std::map<ASRInitiator, std::string> asr_initiator_texts;
+    const std::map<ASRInitiator, std::string> ASR_INITIATOR_TEXTS {
+        { ASRInitiator::WAKE_UP_WORD, "WAKE_UP_WORD" },
+        { ASRInitiator::PRESS_AND_HOLD, "PRESS_AND_HOLD" },
+        { ASRInitiator::TAP, "TAP" },
+        { ASRInitiator::EXPECT_SPEECH, "EXPECT_SPEECH" },
+        { ASRInitiator::EARSET, "EARSET" }
+    };
+
     IWakeupHandler* wakeup_handler = nullptr;
     IASRHandler* asr_handler = nullptr;
     std::string wakeup_word;

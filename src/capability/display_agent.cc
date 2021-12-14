@@ -32,52 +32,6 @@ DisplayAgent::DisplayAgent()
     , keep_history(false)
     , interaction_mode(InteractionMode::NONE)
 {
-    template_names = {
-        "FullText1",
-        "FullText2",
-        "FullText3",
-        "ImageText1",
-        "ImageText2",
-        "ImageText3",
-        "ImageText4",
-        "ImageText5",
-        "TextList1",
-        "TextList2",
-        "TextList3",
-        "TextList4",
-        "ImageList1",
-        "ImageList2",
-        "ImageList3",
-        "Weather1",
-        "Weather2",
-        "Weather3",
-        "Weather4",
-        "Weather5",
-        "FullImage",
-        "Score1",
-        "Score2",
-        "SearchList1",
-        "SearchList2",
-        "UnifiedSearch1",
-        "CommerceList",
-        "CommerceOption",
-        "CommercePrice",
-        "CommerceInfo",
-        "Call1",
-        "Call2",
-        "Call3",
-        "Timer",
-        "Dummy",
-        "CustomTemplate",
-        "TabExtension"
-    };
-
-    playstack_duration = {
-        { "SHORT", 7 },
-        { "MID", 15 },
-        { "LONG", 30 },
-        { "LONGEST", 600 }
-    };
 }
 
 void DisplayAgent::initialize()
@@ -98,7 +52,7 @@ void DisplayAgent::initialize()
 
     playsync_manager->addListener(getName(), this);
 
-    for (const auto& template_name : template_names)
+    for (const auto& template_name : TEMPLATE_NAMES)
         addBlockingPolicy(template_name, { BlockingMedium::AUDIO, true });
 
     addReferrerEvents("CloseSucceeded", "Close");
@@ -690,7 +644,7 @@ void DisplayAgent::startPlaySync(const NuguDirective* ndir, const Json::Value& r
 {
     try {
         playsync_manager->startSync(playstackctl_ps_id, getName(), render_helper->getRenderInfo(prepared_render_info_id));
-        playsync_manager->adjustPlayStackHoldTime(playstack_duration.at(root["duration"].asString()));
+        playsync_manager->adjustPlayStackHoldTime(PLAYSTACK_DURATION.at(root["duration"].asString()));
     } catch (const std::out_of_range& oor) {
         // skip silently
     }

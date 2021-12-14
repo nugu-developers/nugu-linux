@@ -27,17 +27,6 @@ static const char* CAPABILITY_VERSION = "1.2";
 ChipsAgent::ChipsAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
 {
-    targets = {
-        { "DM", ChipsTarget::DM },
-        { "LISTEN", ChipsTarget::LISTEN },
-        { "SPEAKING", ChipsTarget::SPEAKING }
-    };
-
-    chips_types = {
-        { "NUDGE", ChipsType::NUDGE },
-        { "ACTION", ChipsType::ACTION },
-        { "GENERAL", ChipsType::GENERAL }
-    };
 }
 
 void ChipsAgent::initialize()
@@ -92,14 +81,14 @@ void ChipsAgent::parsingRender(const char* message)
 
         ChipsInfo chips_info;
         chips_info.play_service_id = root["playServiceId"].asString();
-        chips_info.target = targets.at(root["target"].asString());
+        chips_info.target = TARGETS.at(root["target"].asString());
 
         for (const auto& chip : root["chips"]) {
             if (chip["type"].empty() || chip["text"].empty())
                 continue;
 
             chips_info.contents.emplace_back(ChipsInfo::Content {
-                chips_types.at(chip["type"].asString()),
+                CHIPS_TYPES.at(chip["type"].asString()),
                 chip["text"].asString(),
                 chip["token"].asString() });
         }

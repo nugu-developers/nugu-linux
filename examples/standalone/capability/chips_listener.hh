@@ -29,7 +29,11 @@ public:
     void onReceiveRender(ChipsInfo&& chips_info) override;
 
 private:
-    std::map<ChipsTarget, std::string> target_texts;
+    const std::map<ChipsTarget, std::string> TARGET_TEXTS {
+        { ChipsTarget::DM, "DM" },
+        { ChipsTarget::LISTEN, "LISTEN" },
+        { ChipsTarget::SPEAKING, "SPEAKING" }
+    };
 };
 
 #endif /* __CHIPS_LISTENER_H__ */

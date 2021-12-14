@@ -20,17 +20,12 @@
 
 ChipsListener::ChipsListener()
 {
-    target_texts = {
-        { ChipsTarget::DM, "DM" },
-        { ChipsTarget::LISTEN, "LISTEN" },
-        { ChipsTarget::SPEAKING, "SPEAKING" }
-    };
 }
 
 void ChipsListener::onReceiveRender(ChipsInfo&& chips_info)
 {
     if (!chips_info.contents.empty())
-        std::cout << "[Chips] target:" << target_texts[chips_info.target] << std::endl;
+        std::cout << "[Chips] target:" << TARGET_TEXTS.at(chips_info.target) << std::endl;
 
     for (const auto& content : chips_info.contents)
         std::cout << " - text:" << content.text << std::endl;

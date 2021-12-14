@@ -87,6 +87,9 @@ private:
     bool isConditionToSendCommand(const NuguDirective* ndir);
 
     const unsigned int PROGRESS_DIALOGS_MAX = 5;
+    const std::set<std::string> NO_COMMAND_DIRECTIVE_FILTER {
+        "System.Noop"
+    };
 
     static CapabilityManager* instance;
     std::map<std::string, ICapabilityInterface*> caps;
@@ -99,7 +102,6 @@ private:
     std::unique_ptr<DirectiveSequencer> directive_sequencer;
     std::unique_ptr<InteractionControlManager> interaction_control_manager;
     std::unique_ptr<RoutineManager> routine_manager;
-    std::set<std::string> no_command_directive_filter;
     std::deque<std::string> progress_dialogs;
 };
 
