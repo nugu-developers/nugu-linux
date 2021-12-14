@@ -85,6 +85,11 @@ void CapabilityEvent::setType(enum nugu_event_type type)
     nugu_event_set_type(pimpl->event, type);
 }
 
+void CapabilityEvent::setMimeType(const std::string& type)
+{
+    nugu_event_set_mime_type(pimpl->event, type.c_str());
+}
+
 void CapabilityEvent::forceClose()
 {
     if (nugu_event_get_type(pimpl->event) == NUGU_EVENT_TYPE_DEFAULT)

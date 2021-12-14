@@ -24,6 +24,9 @@
 #include "nugu_timer.hh"
 #include "speech_recognizer.hh"
 
+#define EPD_MODEL_FILE "skt_epd_model.raw"
+#define OUT_DATA_SIZE (1024 * 9)
+
 namespace NuguCore {
 
 // define default property values
@@ -35,19 +38,17 @@ static const int ASR_EPD_TIMEOUT_SEC = 7;
 static const int ASR_EPD_MAX_DURATION_SEC = 10;
 static const int ASR_EPD_PAUSE_LENGTH_MSEC = 700;
 
-SpeechRecognizer::SpeechRecognizer()
+SpeechRecognizer::SpeechRecognizer(Attribute&& attribute)
+    : epd_ret(-1)
+    , listener(nullptr)
+    , mime_type("application/octet-stream")
 {
-    initialize(Attribute {});
+    initialize(std::move(attribute));
 }
 
 SpeechRecognizer::~SpeechRecognizer()
 {
     listener = nullptr;
-}
-
-SpeechRecognizer::SpeechRecognizer(Attribute&& attribute)
-{
-    initialize(std::move(attribute));
 }
 
 void SpeechRecognizer::sendListeningEvent(ListeningState state, const std::string& id)
@@ -330,4 +331,10 @@ bool SpeechRecognizer::isMute()
 
     return recorder->isMute();
 }
+
+std::string SpeechRecognizer::getMimeType()
+{
+    return mime_type;
+}
+
 } // NuguCore

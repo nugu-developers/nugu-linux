@@ -121,6 +121,12 @@ public:
      * @return mute
      */
     virtual bool isMute() = 0;
+
+    /**
+     * @brief Get mime type information of recorder
+     * @return mime type
+     */
+    virtual std::string getMimeType() = 0;
 };
 
 /**
