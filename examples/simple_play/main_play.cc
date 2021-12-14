@@ -12,7 +12,7 @@ class MediaPlayerListener : public IMediaPlayerListener {
 public:
     virtual ~MediaPlayerListener() = default;
 
-    void mediaStateChanged(MediaPlayerState state)
+    void mediaStateChanged(MediaPlayerState state) override
     {
         switch (state) {
         case MediaPlayerState::IDLE:
@@ -36,7 +36,7 @@ public:
         }
     }
 
-    void mediaEventReport(MediaPlayerEvent event)
+    void mediaEventReport(MediaPlayerEvent event) override
     {
         switch (event) {
         case MediaPlayerEvent::INVALID_MEDIA_URL:
@@ -58,27 +58,27 @@ public:
         }
     }
 
-    void mediaChanged(const std::string& url)
+    void mediaChanged(const std::string& url) override
     {
         std::cout << ">> mediaChanged: " << url << std::endl;
     }
 
-    void durationChanged(int duration)
+    void durationChanged(int duration) override
     {
         std::cout << ">> durationChanged: " << duration << std::endl;
     }
 
-    void positionChanged(int position)
+    void positionChanged(int position) override
     {
         std::cout << ">> positionChanged: " << position << std::endl;
     }
 
-    void volumeChanged(int volume)
+    void volumeChanged(int volume) override
     {
         std::cout << ">> volumeChanged: " << volume << std::endl;
     }
 
-    void muteChanged(int mute)
+    void muteChanged(int mute) override
     {
         std::cout << ">> muteChanged: " << mute << std::endl;
     }

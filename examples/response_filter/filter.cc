@@ -66,7 +66,7 @@ static const char* getReplacedString(const char* text)
 
 class DirListener : public IDirectiveSequencerListener {
 public:
-    bool onPreHandleDirective(NuguDirective* ndir)
+    bool onPreHandleDirective(NuguDirective* ndir) override
     {
         /* Drop all directives corresponding to the dialog id specified by the filter. */
         if (isFilteredDialogId(nugu_directive_peek_dialog_id(ndir))) {
@@ -113,17 +113,19 @@ public:
         return false;
     }
 
-    bool onHandleDirective(NuguDirective* ndir)
+    bool onHandleDirective(NuguDirective* ndir) override
     {
         return true;
     }
 
-    void onCancelDirective(NuguDirective* ndir) { }
+    void onCancelDirective(NuguDirective* ndir) override
+    {
+    }
 };
 
 class NetworkListener : public INetworkManagerListener {
 public:
-    void onEventSend(NuguEvent* nev)
+    void onEventSend(NuguEvent* nev) override
     {
         /* Check if the text command matches the filter. */
         if (g_strcmp0(nugu_event_peek_namespace(nev), "Text") != 0)
