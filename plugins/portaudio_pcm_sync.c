@@ -631,7 +631,7 @@ static void unload(NuguPlugin *p)
 NUGU_PLUGIN_DEFINE(
 	/* NUGU SDK Plug-in description */
 	PLUGIN_DRIVER_NAME, /* Plugin name */
-	NUGU_PLUGIN_PRIORITY_DEFAULT + 1, /* Plugin priority */
+	NUGU_PLUGIN_PRIORITY_DEFAULT + 3, /* Plugin priority */
 	"0.0.2", /* Plugin version */
 	load, /* dlopen */
 	unload, /* dlclose */
