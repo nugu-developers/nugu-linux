@@ -25,6 +25,7 @@
 #include <alsa/error.h>
 #include <glib.h>
 #include <gst/gst.h>
+#include <gst/audio/audio-format.h>
 #include <gst/app/gstappsrc.h>
 #include <gst/pbutils/pbutils.h>
 
@@ -48,19 +49,24 @@
 		}                                                              \
 	}
 
+/*
+ * Pipeline:
+ *   appsrc ! rawaudioparse format=pcm pcm-format=s16le sample-rate=22050
+ *              num-channels=1 ! audioconvert ! volume ! autoaudiosink
+ */
 struct pa_audio_param {
 	NuguPcm *pcm;
 
 	GstElement *pipeline;
-	GstElement *audio_sink;
-	GstElement *caps_filter;
+	GstElement *raw_parser;
+	GstElement *convert;
 	GstElement *volume;
+	GstElement *audio_sink;
 	GstAppSrc *app_src;
 
 	int samplerate;
-	int samplebyte;
 	int channel;
-	char format[6];
+	GstAudioFormat format;
 
 	size_t written;
 
@@ -204,60 +210,46 @@ static int _set_property_to_param(struct pa_audio_param *pcm_param,
 
 	switch (prop.format) {
 	case NUGU_AUDIO_FORMAT_S8:
-		snprintf(pcm_param->format, 6, "S8");
-		pcm_param->samplebyte = 1;
+		pcm_param->format = GST_AUDIO_FORMAT_S8;
 		break;
 	case NUGU_AUDIO_FORMAT_U8:
-		snprintf(pcm_param->format, 6, "U8");
-		pcm_param->samplebyte = 1;
+		pcm_param->format = GST_AUDIO_FORMAT_U8;
 		break;
 	case NUGU_AUDIO_FORMAT_S16_LE:
-		snprintf(pcm_param->format, 6, "S16LE");
-		pcm_param->samplebyte = 2;
+		pcm_param->format = GST_AUDIO_FORMAT_S16LE;
 		break;
 	case NUGU_AUDIO_FORMAT_S16_BE:
-		snprintf(pcm_param->format, 6, "S16BE");
-		pcm_param->samplebyte = 2;
+		pcm_param->format = GST_AUDIO_FORMAT_S16BE;
 		break;
 	case NUGU_AUDIO_FORMAT_U16_LE:
-		snprintf(pcm_param->format, 6, "U16LE");
-		pcm_param->samplebyte = 2;
+		pcm_param->format = GST_AUDIO_FORMAT_U16LE;
 		break;
 	case NUGU_AUDIO_FORMAT_U16_BE:
-		snprintf(pcm_param->format, 6, "U16BE");
-		pcm_param->samplebyte = 2;
+		pcm_param->format = GST_AUDIO_FORMAT_S16BE;
 		break;
 	case NUGU_AUDIO_FORMAT_S24_LE:
-		snprintf(pcm_param->format, 6, "S24LE");
-		pcm_param->samplebyte = 3;
+		pcm_param->format = GST_AUDIO_FORMAT_S24LE;
 		break;
 	case NUGU_AUDIO_FORMAT_S24_BE:
-		snprintf(pcm_param->format, 6, "S24BE");
-		pcm_param->samplebyte = 3;
+		pcm_param->format = GST_AUDIO_FORMAT_S24BE;
 		break;
 	case NUGU_AUDIO_FORMAT_U24_LE:
-		snprintf(pcm_param->format, 6, "U24LE");
-		pcm_param->samplebyte = 3;
+		pcm_param->format = GST_AUDIO_FORMAT_U24LE;
 		break;
 	case NUGU_AUDIO_FORMAT_U24_BE:
-		snprintf(pcm_param->format, 6, "U24BE");
-		pcm_param->samplebyte = 3;
+		pcm_param->format = GST_AUDIO_FORMAT_U24BE;
 		break;
 	case NUGU_AUDIO_FORMAT_S32_LE:
-		snprintf(pcm_param->format, 6, "S32LE");
-		pcm_param->samplebyte = 4;
+		pcm_param->format = GST_AUDIO_FORMAT_S32LE;
 		break;
 	case NUGU_AUDIO_FORMAT_S32_BE:
-		snprintf(pcm_param->format, 6, "S32BE");
-		pcm_param->samplebyte = 4;
+		pcm_param->format = GST_AUDIO_FORMAT_S32BE;
 		break;
 	case NUGU_AUDIO_FORMAT_U32_LE:
-		snprintf(pcm_param->format, 6, "U32LE");
-		pcm_param->samplebyte = 4;
+		pcm_param->format = GST_AUDIO_FORMAT_U32LE;
 		break;
 	case NUGU_AUDIO_FORMAT_U32_BE:
-		snprintf(pcm_param->format, 6, "U32BE");
-		pcm_param->samplebyte = 4;
+		pcm_param->format = GST_AUDIO_FORMAT_U32BE;
 		break;
 	default:
 		nugu_error("not support the audio format(%d)", prop.format);
@@ -282,8 +274,9 @@ static int _set_property_to_param(struct pa_audio_param *pcm_param,
 		return -1;
 	}
 
-	nugu_dbg("format: %s, rate: %d, channels: %d", pcm_param->format,
+	nugu_dbg("format: %d, rate: %d, channels: %d", pcm_param->format,
 		 pcm_param->samplerate, pcm_param->channel);
+
 	return 0;
 }
 
@@ -301,30 +294,14 @@ static void _pcm_drain_handler(GstElement *appsrc, guint unused_size,
 		nugu_dbg("Player status isn't playing");
 }
 
-static void _set_filter_caps(struct pa_audio_param *pcm_param)
-{
-	GstCaps *filtercaps;
-
-	if (!pcm_param)
-		return;
-
-	filtercaps = gst_caps_new_simple("audio/x-raw", "format", G_TYPE_STRING,
-					 pcm_param->format, "rate", G_TYPE_INT,
-					 pcm_param->samplerate, "channels",
-					 G_TYPE_INT, pcm_param->channel, NULL);
-
-	g_object_set(G_OBJECT(pcm_param->caps_filter), "caps", filtercaps,
-		     NULL);
-	gst_caps_unref(filtercaps);
-}
-
 static int _create_gst_elements(struct pa_audio_param *pcm_param)
 {
 	char app_source[128];
-	char caps_filter[128];
 	char audio_sink[128];
 	char volume[128];
 	char pipeline[128];
+	char raw_parser[128];
+	char convert[128];
 
 	if (!pcm_param) {
 		nugu_error("pcm_param is null");
@@ -341,9 +318,10 @@ static int _create_gst_elements(struct pa_audio_param *pcm_param)
 #endif
 
 	g_snprintf(app_source, 128, "pcm_app_source#%d", pcm_param->uniq_id);
-	g_snprintf(caps_filter, 128, "pcm_caps_filter#%d", pcm_param->uniq_id);
-	g_snprintf(audio_sink, 128, "pcm_audio_sink#%d", pcm_param->uniq_id);
+	g_snprintf(raw_parser, 128, "pcm_rawaudioparse%d", pcm_param->uniq_id);
+	g_snprintf(convert, 128, "pcm_convert%d", pcm_param->uniq_id);
 	g_snprintf(volume, 128, "pcm_volume#%d", pcm_param->uniq_id);
+	g_snprintf(audio_sink, 128, "pcm_audio_sink#%d", pcm_param->uniq_id);
 	g_snprintf(pipeline, 128, "pcm_pipeline#%d", pcm_param->uniq_id);
 
 	pcm_param->pipeline = gst_pipeline_new(pipeline);
@@ -351,42 +329,60 @@ static int _create_gst_elements(struct pa_audio_param *pcm_param)
 		nugu_error("create pipeline(%s) failed", pipeline);
 		goto error_out;
 	}
+
 	pcm_param->app_src =
 		(GstAppSrc *)gst_element_factory_make("appsrc", app_source);
 	if (!pcm_param->app_src) {
 		nugu_error("create gst_element for 'appsrc' failed");
 		goto error_out;
 	}
-	pcm_param->caps_filter =
-		gst_element_factory_make("capsfilter", caps_filter);
-	if (!pcm_param->caps_filter) {
-		nugu_error("create gst_element for 'capsfilter' failed");
+
+	pcm_param->raw_parser =
+		gst_element_factory_make("rawaudioparse", raw_parser);
+	if (!pcm_param->raw_parser) {
+		nugu_error("create gst_element for 'rawaudioparse' failed");
 		goto error_out;
 	}
-	pcm_param->audio_sink =
-		gst_element_factory_make("autoaudiosink", audio_sink);
-	if (!pcm_param->audio_sink) {
-		nugu_error("create gst_element for 'autoaudiosink' failed");
+
+	pcm_param->convert = gst_element_factory_make("audioconvert", convert);
+	if (!pcm_param->convert) {
+		nugu_error("create gst_element for 'audioconvert' failed");
 		goto error_out;
 	}
+
 	pcm_param->volume = gst_element_factory_make("volume", volume);
 	if (!pcm_param->volume) {
 		nugu_error("create gst_element for 'volume' failed");
 		goto error_out;
 	}
 
+	pcm_param->audio_sink =
+		gst_element_factory_make("autoaudiosink", audio_sink);
+	if (!pcm_param->audio_sink) {
+		nugu_error("create gst_element for 'autoaudiosink' failed");
+		goto error_out;
+	}
+
 	gst_bin_add_many(GST_BIN(pcm_param->pipeline),
 			 (GstElement *)pcm_param->app_src,
-			 pcm_param->caps_filter, pcm_param->volume,
-			 pcm_param->audio_sink, NULL);
+			 pcm_param->raw_parser, pcm_param->convert,
+			 pcm_param->volume, pcm_param->audio_sink, NULL);
 	gst_element_link_many((GstElement *)pcm_param->app_src,
-			      pcm_param->caps_filter, pcm_param->volume,
-			      pcm_param->audio_sink, NULL);
+			      pcm_param->raw_parser, pcm_param->convert,
+			      pcm_param->volume, pcm_param->audio_sink, NULL);
 
 	g_signal_connect(pcm_param->app_src, "need-data",
 			 G_CALLBACK(_pcm_drain_handler), pcm_param);
 
-	_set_filter_caps(pcm_param);
+	g_object_set(G_OBJECT(pcm_param->raw_parser), "format", 0 /* PCM */,
+		     NULL);
+	g_object_set(G_OBJECT(pcm_param->raw_parser), "num-channels",
+		     pcm_param->channel, NULL);
+	g_object_set(G_OBJECT(pcm_param->raw_parser), "pcm-format",
+		     pcm_param->format, NULL);
+	g_object_set(G_OBJECT(pcm_param->raw_parser), "sample-rate",
+		     pcm_param->samplerate, NULL);
+
 	_connect_message_to_pipeline(pcm_param);
 
 	return 0;
@@ -397,12 +393,14 @@ error_out:
 
 	if (pcm_param->app_src)
 		g_object_unref(pcm_param->app_src);
-	if (pcm_param->caps_filter)
-		g_object_unref(pcm_param->caps_filter);
-	if (pcm_param->audio_sink)
-		g_object_unref(pcm_param->audio_sink);
+	if (pcm_param->raw_parser)
+		g_object_unref(pcm_param->raw_parser);
+	if (pcm_param->convert)
+		g_object_unref(pcm_param->convert);
 	if (pcm_param->volume)
 		g_object_unref(pcm_param->volume);
+	if (pcm_param->audio_sink)
+		g_object_unref(pcm_param->audio_sink);
 	if (pcm_param->pipeline)
 		g_object_unref(pcm_param->pipeline);
 
