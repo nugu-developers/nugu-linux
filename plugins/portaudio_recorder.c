@@ -402,8 +402,6 @@ static int init(NuguPlugin *p)
 		return -1;
 	}
 
-	nugu_recorder_driver_set_default(rec_driver);
-
 	nugu_dbg("'%s' plugin initialized done",
 		 nugu_plugin_get_description(p)->name);
 
@@ -434,7 +432,7 @@ static void unload(NuguPlugin *p)
 NUGU_PLUGIN_DEFINE(
 	/* NUGU SDK Plug-in description */
 	PLUGIN_DRIVER_NAME, /* Plugin name */
-	NUGU_PLUGIN_PRIORITY_DEFAULT, /* Plugin priority */
+	NUGU_PLUGIN_PRIORITY_DEFAULT + 2, /* Plugin priority */
 	"0.0.2", /* Plugin version */
 	load, /* dlopen */
 	unload, /* dlclose */

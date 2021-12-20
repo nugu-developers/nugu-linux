@@ -566,11 +566,6 @@ static int init(NuguPlugin *p)
 		return -1;
 	}
 
-	if (nugu_pcm_driver_get_default() != pcm_driver) {
-		nugu_dbg("set default driver to portaudio");
-		nugu_pcm_driver_set_default(pcm_driver);
-	}
-
 	nugu_dbg("'%s' plugin initialized done",
 		 nugu_plugin_get_description(p)->name);
 
@@ -601,7 +596,7 @@ static void unload(NuguPlugin *p)
 NUGU_PLUGIN_DEFINE(
 	/* NUGU SDK Plug-in description */
 	PLUGIN_DRIVER_NAME, /* Plugin name */
-	NUGU_PLUGIN_PRIORITY_DEFAULT - 1, /* Plugin priority */
+	NUGU_PLUGIN_PRIORITY_DEFAULT + 2, /* Plugin priority */
 	"0.0.2", /* Plugin version */
 	load, /* dlopen */
 	unload, /* dlclose */

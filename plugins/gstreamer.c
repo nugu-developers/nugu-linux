@@ -789,7 +789,11 @@ static int init(NuguPlugin *p)
 		gst_init(NULL, NULL);
 
 	driver = nugu_player_driver_new(PLUGIN_DRIVER_NAME, &player_ops);
-	g_return_val_if_fail(driver != NULL, -1);
+	if (!driver) {
+		nugu_error("nugu_player_driver_new() failed");
+		return -1;
+	}
+
 	if (nugu_player_driver_register(driver) != 0) {
 		nugu_player_driver_free(driver);
 		driver = NULL;
