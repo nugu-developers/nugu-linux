@@ -14,9 +14,15 @@
  * limitations under the License.
  */
 
-#include <string.h>
-#include <pthread.h>
 #include <stdio.h>
+#include <stdarg.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <time.h>
+#include <fcntl.h>
+#include <errno.h>
+#include <pthread.h>
 
 #include <glib.h>
 #include <gst/gst.h>
@@ -43,10 +49,53 @@ struct gst_handle {
 	int samplebyte;
 	int channel;
 	void *rec;
+
+#ifdef NUGU_ENV_DUMP_PATH_RECORDER
+	int dump_fd;
+#endif
+
+#ifdef NUGU_ENV_RECORDING_FROM_FILE
+	int src_fd;
+#endif
 };
 
 static NuguRecorderDriver *rec_driver;
 static int _uniq_id;
+
+#ifdef NUGU_ENV_DUMP_PATH_RECORDER
+static int _dumpfile_open(const char *path, const char *prefix)
+{
+	char ymd[32];
+	char hms[32];
+	time_t now;
+	struct tm now_tm;
+	char *buf = NULL;
+	int fd;
+
+	if (!path)
+		return -1;
+
+	now = time(NULL);
+	localtime_r(&now, &now_tm);
+
+	snprintf(ymd, sizeof(ymd), "%04d%02d%02d", now_tm.tm_year + 1900,
+		 now_tm.tm_mon + 1, now_tm.tm_mday);
+	snprintf(hms, sizeof(hms), "%02d%02d%02d", now_tm.tm_hour,
+		 now_tm.tm_min, now_tm.tm_sec);
+
+	buf = g_strdup_printf("%s/%s_%s_%s.dat", path, prefix, ymd, hms);
+
+	fd = open(buf, O_CREAT | O_WRONLY, 0644);
+	if (fd < 0)
+		nugu_error("open(%s) failed: %s", buf, strerror(errno));
+
+	nugu_dbg("%s filedump to '%s' (fd=%d)", prefix, buf, fd);
+
+	free(buf);
+
+	return fd;
+}
+#endif
 
 static int _set_property_to_param(GstreamerHandle *gh, NuguAudioProperty prop)
 {
@@ -135,6 +184,54 @@ static int _set_property_to_param(GstreamerHandle *gh, NuguAudioProperty prop)
 	return 0;
 }
 
+static void _recorder_push(GstreamerHandle *gh, const char *buf,
+			   int buf_size)
+{
+	nugu_recorder_push_frame(gh->rec, buf, buf_size);
+
+#ifdef NUGU_ENV_DUMP_PATH_RECORDER
+	if (gh->dump_fd != -1) {
+		if (write(gh->dump_fd, buf, buf_size) < 0)
+			nugu_error("write to fd-%d failed", gh->dump_fd);
+	}
+#endif
+}
+
+#ifdef NUGU_ENV_RECORDING_FROM_FILE
+static int _recording_from_file(GstreamerHandle *gh, int buf_size)
+{
+	char *buf;
+	ssize_t nread;
+
+	buf = malloc(buf_size);
+	if (!buf) {
+		nugu_error_nomem();
+		return -1;
+	}
+
+	nread = read(gh->src_fd, buf, buf_size);
+	if (nread < 0) {
+		nugu_error("read() failed: %s", strerror(errno));
+
+		free(buf);
+		close(gh->src_fd);
+		gh->src_fd = -1;
+		return -1;
+	} else if (nread == 0) {
+		nugu_dbg("read all pcm data from file. fill the SILENCE data");
+
+		memset(buf, SAMPLE_SILENCE, buf_size);
+		nread = buf_size;
+	}
+
+	_recorder_push(gh, buf, nread);
+
+	free(buf);
+
+	return 0;
+}
+#endif
+
 static GstFlowReturn _new_sample_from_sink(GstElement *sink,
 					   GstreamerHandle *gh)
 {
@@ -154,7 +251,16 @@ static GstFlowReturn _new_sample_from_sink(GstElement *sink,
 		goto exit;
 	}
 
-	nugu_recorder_push_frame(gh->rec, (const char *)g_map.data, g_map.size);
+#ifdef NUGU_ENV_RECORDING_FROM_FILE
+	/* Use file source instead of real microphone data */
+	if (gh->src_fd != -1) {
+		_recording_from_file(gh, g_map.size);
+		gst_buffer_unmap(buffer, &g_map);
+		goto exit;
+	}
+#endif
+
+	_recorder_push(gh, (const char *)g_map.data, g_map.size);
 	gst_buffer_unmap(buffer, &g_map);
 
 exit:
@@ -229,6 +335,7 @@ static GstreamerHandle *_create(NuguRecorder *rec)
 		nugu_error_nomem();
 		return NULL;
 	}
+
 	gh->pipeline = gst_pipeline_new(pipeline);
 	gh->audio_source =
 		gst_element_factory_make("autoaudiosrc", audio_source);
@@ -302,6 +409,22 @@ static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 	nugu_dbg("rec - %d, %d", rec_100ms, rec_5sec);
 	nugu_recorder_set_frame_size(rec, rec_100ms, rec_5sec);
 
+#ifdef NUGU_ENV_DUMP_PATH_RECORDER
+	gh->dump_fd =
+		_dumpfile_open(getenv(NUGU_ENV_DUMP_PATH_RECORDER), "gstrec");
+#endif
+
+#ifdef NUGU_ENV_RECORDING_FROM_FILE
+	if (getenv(NUGU_ENV_RECORDING_FROM_FILE)) {
+		gh->src_fd =
+			open(getenv(NUGU_ENV_RECORDING_FROM_FILE), O_RDONLY);
+		nugu_dbg("recording from file: '%s'",
+			 getenv(NUGU_ENV_RECORDING_FROM_FILE));
+	} else {
+		gh->src_fd = -1;
+	}
+#endif
+
 	gst_element_set_state(gh->pipeline, GST_STATE_PLAYING);
 
 	nugu_recorder_set_driver_data(rec, gh);
@@ -320,6 +443,20 @@ static int _rec_stop(NuguRecorderDriver *driver, NuguRecorder *rec)
 		nugu_dbg("already stop");
 		return -1;
 	}
+
+#ifdef NUGU_ENV_DUMP_PATH_RECORDER
+	if (gh->dump_fd >= 0) {
+		close(gh->dump_fd);
+		gh->dump_fd = -1;
+	}
+#endif
+
+#ifdef NUGU_ENV_RECORDING_FROM_FILE
+	if (gh->src_fd >= 0) {
+		close(gh->src_fd);
+		gh->src_fd = -1;
+	}
+#endif
 
 	gst_element_set_state(gh->pipeline, GST_STATE_NULL);
 
