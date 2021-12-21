@@ -56,6 +56,16 @@ public:
         }
     }
 
+    template <typename T = ICapabilityListener>
+    T* getCapabilityListener(const std::string& capability_name)
+    {
+        try {
+            return dynamic_cast<T*>(capability_listeners.at(capability_name));
+        } catch (std::out_of_range& exception) {
+            return nullptr;
+        }
+    }
+
     SpeechOperator* getSpeechOperator();
 
 private:
@@ -97,6 +107,7 @@ private:
     std::unique_ptr<BluetoothListener> bluetooth_listener = nullptr;
 
     std::map<std::string, std::function<ICapabilityInterface*()>> factories;
+    std::map<std::string, ICapabilityListener*> capability_listeners;
 };
 
 #endif /* __NUGU_CAPABILITY_COLLECTION_H__ */

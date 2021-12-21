@@ -49,6 +49,7 @@ void CapabilityCollection::composeCapabilityFactory()
         if (!system_handler) {
             system_listener = make_unique<SystemListener>();
             system_handler = makeCapability<SystemAgent, ISystemHandler>(system_listener.get());
+            capability_listeners.emplace("System", system_listener.get());
         }
 
         return system_handler.get();
@@ -57,6 +58,7 @@ void CapabilityCollection::composeCapabilityFactory()
         if (!asr_handler) {
             asr_handler = makeCapability<ASRAgent, IASRHandler>(speech_operator->getASRListener());
             speech_operator->setASRHandler(asr_handler.get());
+            capability_listeners.emplace("ASR", speech_operator.get());
         }
 
         return asr_handler.get();
@@ -66,6 +68,7 @@ void CapabilityCollection::composeCapabilityFactory()
             tts_listener = make_unique<TTSListener>();
             tts_handler = makeCapability<TTSAgent, ITTSHandler>(tts_listener.get());
             tts_listener->setTTSHandler(tts_handler.get());
+            capability_listeners.emplace("TTS", tts_listener.get());
         }
 
         return tts_handler.get();
@@ -75,6 +78,7 @@ void CapabilityCollection::composeCapabilityFactory()
             aplayer_listener = make_unique<AudioPlayerListener>();
             audio_player_handler = makeCapability<AudioPlayerAgent, IAudioPlayerHandler>(aplayer_listener.get());
             audio_player_handler->setDisplayListener(aplayer_listener.get());
+            capability_listeners.emplace("AudioPlayer", aplayer_listener.get());
         }
 
         return audio_player_handler.get();
@@ -83,6 +87,7 @@ void CapabilityCollection::composeCapabilityFactory()
         if (!text_handler) {
             text_listener = make_unique<TextListener>();
             text_handler = makeCapability<TextAgent, ITextHandler>(text_listener.get());
+            capability_listeners.emplace("Text", text_listener.get());
         }
 
         return text_handler.get();
@@ -92,6 +97,7 @@ void CapabilityCollection::composeCapabilityFactory()
             speaker_listener = make_unique<SpeakerListener>();
             speaker_handler = makeCapability<SpeakerAgent, ISpeakerHandler>(speaker_listener.get());
             composeSpeakerInterface();
+            capability_listeners.emplace("Speaker", speaker_listener.get());
         }
 
         return speaker_handler.get();
@@ -101,6 +107,7 @@ void CapabilityCollection::composeCapabilityFactory()
             mic_listener = make_unique<MicListener>();
             mic_handler = makeCapability<MicAgent, IMicHandler>(mic_listener.get());
             mic_handler->enable();
+            capability_listeners.emplace("Mic", mic_listener.get());
         }
 
         return mic_handler.get();
@@ -110,6 +117,7 @@ void CapabilityCollection::composeCapabilityFactory()
             sound_listener = make_unique<SoundListener>();
             sound_handler = makeCapability<SoundAgent, ISoundHandler>(sound_listener.get());
             sound_listener->setSoundHandler(sound_handler.get());
+            capability_listeners.emplace("Sound", sound_listener.get());
         }
 
         return sound_handler.get();
@@ -118,6 +126,7 @@ void CapabilityCollection::composeCapabilityFactory()
         if (!session_handler) {
             session_listener = make_unique<SessionListener>();
             session_handler = makeCapability<SessionAgent, ISessionHandler>(session_listener.get());
+            capability_listeners.emplace("Session", session_listener.get());
         }
 
         return session_handler.get();
@@ -127,6 +136,7 @@ void CapabilityCollection::composeCapabilityFactory()
             display_listener = make_unique<DisplayListener>();
             display_handler = makeCapability<DisplayAgent, IDisplayHandler>(display_listener.get());
             display_listener->setDisplayHandler(display_handler.get());
+            capability_listeners.emplace("Display", display_listener.get());
         }
 
         return display_handler.get();
@@ -142,6 +152,7 @@ void CapabilityCollection::composeCapabilityFactory()
             extension_listener = make_unique<ExtensionListener>();
             extension_handler = makeCapability<ExtensionAgent, IExtensionHandler>(extension_listener.get());
             extension_listener->setExtensionHandler(extension_handler.get());
+            capability_listeners.emplace("Extension", extension_listener.get());
         }
 
         return extension_handler.get();
@@ -150,6 +161,7 @@ void CapabilityCollection::composeCapabilityFactory()
         if (!chips_handler) {
             chips_listener = make_unique<ChipsListener>();
             chips_handler = makeCapability<ChipsAgent, IChipsHandler>(chips_listener.get());
+            capability_listeners.emplace("Chips", chips_listener.get());
         }
 
         return chips_handler.get();
@@ -167,10 +179,12 @@ void CapabilityCollection::composeCapabilityFactory()
         return routine_handler.get();
     });
     factories.emplace("Bluetooth", [&]() {
-        if (!bluetooth_handler)
+        if (!bluetooth_handler) {
             bluetooth_listener = make_unique<BluetoothListener>();
-        bluetooth_handler = makeCapability<BluetoothAgent, IBluetoothHandler>(bluetooth_listener.get());
-        bluetooth_listener->setBTHandler(bluetooth_handler.get());
+            bluetooth_handler = makeCapability<BluetoothAgent, IBluetoothHandler>(bluetooth_listener.get());
+            bluetooth_listener->setBTHandler(bluetooth_handler.get());
+            capability_listeners.emplace("Bluetooth", bluetooth_listener.get());
+        }
 
         return bluetooth_handler.get();
     });
