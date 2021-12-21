@@ -385,7 +385,8 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
 {
     Json::FastWriter writer;
     Json::Value root;
-    std::string payload = "";
+    std::string payload;
+    std::string et_attr;
 
     if (!rec_event) {
         nugu_error("recognize event is not created");
@@ -409,6 +410,8 @@ void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_en
             root["domainTypes"] = es_attr.domain_types;
         if (!es_attr.asr_context.empty())
             root["asrContext"] = es_attr.asr_context;
+    } else if (capa_helper->getCapabilityProperty("Text", "et.attributes", et_attr) && !et_attr.empty()) {
+        setExpectTypingAttributes(root, std::move(et_attr));
     } else {
         // reset referrer dialog request id
         setReferrerDialogRequestId("ExpectSpeech", "");
@@ -834,6 +837,19 @@ void ASRAgent::resetExpectSpeechState()
 bool ASRAgent::isExpectSpeechState()
 {
     return es_attr.is_handle;
+}
+
+void ASRAgent::setExpectTypingAttributes(Json::Value& root, std::string&& et_attr)
+{
+    Json::Value et_attr_json;
+    Json::Reader reader;
+
+    if (!reader.parse(et_attr, et_attr_json))
+        return;
+
+    for (const auto& key : { "playServiceId", "domainTypes", "asrContext" })
+        if (et_attr_json.isMember(key))
+            root[key] = et_attr_json[key];
 }
 
 ASRAgent::FocusListener::FocusListener(ASRAgent* asr_agent, IFocusManager* focus_manager, bool asr_user)

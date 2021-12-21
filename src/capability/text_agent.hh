@@ -37,6 +37,7 @@ public:
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void receiveCommandAll(const std::string& command, const std::string& param) override;
+    bool getProperty(const std::string& property, std::string& value) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     std::string requestTextInput(const std::string& text, const std::string& token = "", bool include_dialog_attribute = true) override;
@@ -57,8 +58,7 @@ private:
     using ExpectTypingInfo = struct {
         bool is_handle = false;
         std::string playstack;
-        std::string ps_id;
-        std::list<std::string> domain_types;
+        Json::Value payload;
     };
 
     std::string requestTextInput(TextInputParam&& text_input_param, bool routine_play, bool include_dialog_attribute = true);
