@@ -108,6 +108,7 @@ private:
     ASRState getASRState();
     void resetExpectSpeechState();
     bool isExpectSpeechState();
+    void setExpectTypingAttributes(Json::Value& root, std::string&& et_attr);
 
     class FocusListener : public IFocusResourceListener {
     public:

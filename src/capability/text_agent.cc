@@ -163,6 +163,23 @@ void TextAgent::receiveCommandAll(const std::string& command, const std::string&
     }
 }
 
+bool TextAgent::getProperty(const std::string& property, std::string& value)
+{
+    value.clear();
+
+    if (property == "et.attributes") {
+        if (expect_typing.is_handle) {
+            Json::FastWriter writer;
+            value = writer.write(expect_typing.payload);
+        }
+    } else {
+        nugu_error("invalid property: %s", property.c_str());
+        return false;
+    }
+
+    return true;
+}
+
 void TextAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)
@@ -247,24 +264,23 @@ void TextAgent::sendEventTextInput(const TextInputParam& text_input_param, bool 
     if (!text_input_param.ps_id.empty())
         root["playServiceId"] = text_input_param.ps_id;
     else if (include_dialog_attribute) {
-        auto composeDialogAttribute = [&](const std::string& ps_id, const std::list<std::string>& domain_types) {
-            if (!ps_id.empty())
-                root["playServiceId"] = ps_id;
-
-            for (const auto& domain_type : domain_types)
-                if (!domain_type.empty())
-                    root["domainTypes"].append(domain_type);
-        };
-
         if (expect_typing.is_handle) {
-            composeDialogAttribute(expect_typing.ps_id, expect_typing.domain_types);
+            for (const auto& key : { "playServiceId", "domainTypes" })
+                if (expect_typing.payload.isMember(key))
+                    root[key] = expect_typing.payload[key];
         } else {
             std::string ps_id = "";
             std::list<std::string> domain_types;
 
             capa_helper->getCapabilityProperty("ASR", "es.playServiceId", ps_id);
             capa_helper->getCapabilityProperties("ASR", "es.domainTypes", domain_types);
-            composeDialogAttribute(ps_id, domain_types);
+
+            if (!ps_id.empty())
+                root["playServiceId"] = ps_id;
+
+            for (const auto& domain_type : domain_types)
+                if (!domain_type.empty())
+                    root["domainTypes"].append(domain_type);
         }
     }
 
@@ -366,20 +382,8 @@ void TextAgent::parsingExpectTyping(const char* message)
     }
 
     expect_typing.is_handle = true;
-    expect_typing.ps_id = root["playServiceId"].asString();
     expect_typing.playstack = cur_playstack;
-
-    if (root.isMember("domainTypes")) {
-        const Json::Value domain_types = root["domainTypes"];
-        Json::ArrayIndex domain_types_count = domain_types.size();
-
-        for (Json::ArrayIndex i = 0; i < domain_types_count; i++) {
-            std::string domain_type = domain_types[i].asString();
-
-            if (!domain_type.empty())
-                expect_typing.domain_types.emplace_back(domain_type);
-        }
-    }
+    expect_typing.payload.swap(root);
 }
 
 bool TextAgent::handleTextCommonProcess(const TextInputParam& text_input_param)
