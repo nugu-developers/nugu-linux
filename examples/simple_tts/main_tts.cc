@@ -17,6 +17,12 @@ static std::shared_ptr<ITTSHandler> tts_handler = nullptr;
 static std::string text_value;
 static GMainLoop* loop;
 
+void test_start()
+{
+    std::cout << "Send the text command: " << text_value << std::endl;
+    tts_handler->requestTTS(text_value, "");
+}
+
 class MyTTSListener : public ITTSListener {
 public:
     virtual ~MyTTSListener() = default;
@@ -50,14 +56,16 @@ public:
         case NetworkStatus::DISCONNECTED:
             std::cout << "Network disconnected !" << std::endl;
             break;
-        case NetworkStatus::CONNECTED:
-            std::cout << "Network connected !" << std::endl;
-
-            std::cout << "Send the text command: " << text_value << std::endl;
-            tts_handler->requestTTS(text_value, "");
-            break;
         case NetworkStatus::CONNECTING:
             std::cout << "Network connecting..." << std::endl;
+            break;
+        case NetworkStatus::READY:
+            std::cout << "Network connected !" << std::endl;
+            test_start();
+            break;
+        case NetworkStatus::CONNECTED:
+            std::cout << "Network connected !" << std::endl;
+            test_start();
             break;
         default:
             break;

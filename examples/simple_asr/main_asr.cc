@@ -16,6 +16,14 @@ using namespace NuguCapability;
 static std::shared_ptr<NuguClient> nugu_client;
 static std::shared_ptr<IASRHandler> asr_handler = nullptr;
 
+void test_start()
+{
+    std::cout << "Start ASR Recognition !" << std::endl;
+    asr_handler->startRecognition(ASRInitiator::TAP, [&](const std::string& dialog_id) {
+        std::cout << "ASR request dialog id: " << dialog_id << std::endl;
+    });
+}
+
 class MyTTSListener : public ITTSListener {
 public:
     virtual ~MyTTSListener() = default;
@@ -114,15 +122,16 @@ public:
         case NetworkStatus::DISCONNECTED:
             std::cout << "Network disconnected !" << std::endl;
             break;
-        case NetworkStatus::CONNECTED:
-            std::cout << "Network connected !" << std::endl;
-            std::cout << "Start ASR Recognition !" << std::endl;
-            asr_handler->startRecognition(ASRInitiator::TAP, [&](const std::string& dialog_id) {
-                std::cout << "ASR request dialog id: " << dialog_id << std::endl;
-            });
-            break;
         case NetworkStatus::CONNECTING:
             std::cout << "Network connecting..." << std::endl;
+            break;
+        case NetworkStatus::READY:
+            std::cout << "Network ready !" << std::endl;
+            test_start();
+            break;
+        case NetworkStatus::CONNECTED:
+            std::cout << "Network connected !" << std::endl;
+            test_start();
             break;
         default:
             break;
