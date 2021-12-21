@@ -219,6 +219,17 @@ public:
             nugu_error("Network disconnected");
             g_main_loop_quit(loop);
             break;
+        case NetworkStatus::CONNECTING:
+            nugu_dbg("Network connecting");
+            break;
+        case NetworkStatus::READY:
+            nugu_dbg("Network ready");
+            if (network_timer_src) {
+                g_source_remove(network_timer_src);
+                network_timer_src = 0;
+            }
+            test_start();
+            break;
         case NetworkStatus::CONNECTED:
             nugu_dbg("Network connected");
             if (network_timer_src) {
@@ -226,9 +237,6 @@ public:
                 network_timer_src = 0;
             }
             test_start();
-            break;
-        case NetworkStatus::CONNECTING:
-            nugu_dbg("Network connecting");
             break;
         default:
             break;

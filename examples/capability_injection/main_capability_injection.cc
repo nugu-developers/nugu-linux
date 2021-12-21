@@ -36,11 +36,14 @@ public:
         case NetworkStatus::DISCONNECTED:
             std::cout << "Network disconnected !" << std::endl;
             break;
-        case NetworkStatus::CONNECTED:
-            std::cout << "Network connected !" << std::endl;
-            break;
         case NetworkStatus::CONNECTING:
             std::cout << "Network connecting..." << std::endl;
+            break;
+        case NetworkStatus::READY:
+            std::cout << "Network ready !" << std::endl;
+            break;
+        case NetworkStatus::CONNECTED:
+            std::cout << "Network connected !" << std::endl;
             break;
         default:
             break;
