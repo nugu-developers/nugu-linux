@@ -102,13 +102,12 @@ void SpeakerController::toggleMute()
  * define NuguSDKManager
  ******************************************************************************/
 
-NuguSDKManager::NuguSDKManager(NuguSampleManager* nugu_sample_manager)
+NuguSDKManager::NuguSDKManager(NuguSampleManager* manager)
+    : speaker_controller(make_unique<SpeakerController>())
+    , nugu_sample_manager(manager)
+    , bluetooth_status(BluetoothStatus::getInstance())
+    , speaker_status(SpeakerStatus::getInstance())
 {
-    this->nugu_sample_manager = nugu_sample_manager;
-    speaker_status = SpeakerStatus::getInstance();
-    speaker_controller = make_unique<SpeakerController>();
-    bluetooth_status = BluetoothStatus::getInstance();
-
     std::string model_path = nugu_sample_manager->getModelPath();
 
     wakeup_model_files = {

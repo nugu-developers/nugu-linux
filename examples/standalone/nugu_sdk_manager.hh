@@ -56,7 +56,7 @@ class NuguSDKManager : public IFocusManagerObserver,
                        public INetworkManagerListener,
                        public IInteractionControlManagerListener {
 public:
-    explicit NuguSDKManager(NuguSampleManager* nugu_sample_manager);
+    explicit NuguSDKManager(NuguSampleManager* manager);
     virtual ~NuguSDKManager() = default;
 
     void setup();
