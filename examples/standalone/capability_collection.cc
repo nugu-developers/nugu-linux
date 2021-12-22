@@ -45,149 +45,74 @@ SpeechOperator* CapabilityCollection::getSpeechOperator()
 
 void CapabilityCollection::composeCapabilityFactory()
 {
-    factories.emplace("System", [&]() {
-        if (!system_handler) {
-            system_listener = make_unique<SystemListener>();
-            system_handler = makeCapability<SystemAgent, ISystemHandler>(system_listener.get());
-            capability_listeners.emplace("System", system_listener.get());
-        }
-
-        return system_handler.get();
-    });
-    factories.emplace("ASR", [&]() {
-        if (!asr_handler) {
-            asr_handler = makeCapability<ASRAgent, IASRHandler>(speech_operator->getASRListener());
-            speech_operator->setASRHandler(asr_handler.get());
-            capability_listeners.emplace("ASR", speech_operator.get());
-        }
-
-        return asr_handler.get();
-    });
-    factories.emplace("TTS", [&]() {
-        if (!tts_handler) {
-            tts_listener = make_unique<TTSListener>();
-            tts_handler = makeCapability<TTSAgent, ITTSHandler>(tts_listener.get());
-            tts_listener->setTTSHandler(tts_handler.get());
-            capability_listeners.emplace("TTS", tts_listener.get());
-        }
-
-        return tts_handler.get();
-    });
-    factories.emplace("AudioPlayer", [&]() {
-        if (!audio_player_handler) {
-            aplayer_listener = make_unique<AudioPlayerListener>();
-            audio_player_handler = makeCapability<AudioPlayerAgent, IAudioPlayerHandler>(aplayer_listener.get());
-            audio_player_handler->setDisplayListener(aplayer_listener.get());
-            capability_listeners.emplace("AudioPlayer", aplayer_listener.get());
-        }
-
-        return audio_player_handler.get();
-    });
-    factories.emplace("Text", [&]() {
-        if (!text_handler) {
-            text_listener = make_unique<TextListener>();
-            text_handler = makeCapability<TextAgent, ITextHandler>(text_listener.get());
-            capability_listeners.emplace("Text", text_listener.get());
-        }
-
-        return text_handler.get();
-    });
-    factories.emplace("Speaker", [&]() {
-        if (!speaker_handler) {
-            speaker_listener = make_unique<SpeakerListener>();
-            speaker_handler = makeCapability<SpeakerAgent, ISpeakerHandler>(speaker_listener.get());
-            composeSpeakerInterface();
-            capability_listeners.emplace("Speaker", speaker_listener.get());
-        }
-
-        return speaker_handler.get();
-    });
-    factories.emplace("Mic", [&]() {
-        if (!mic_handler) {
-            mic_listener = make_unique<MicListener>();
-            mic_handler = makeCapability<MicAgent, IMicHandler>(mic_listener.get());
-            mic_handler->enable();
-            capability_listeners.emplace("Mic", mic_listener.get());
-        }
-
-        return mic_handler.get();
-    });
-    factories.emplace("Sound", [&]() {
-        if (!sound_handler) {
-            sound_listener = make_unique<SoundListener>();
-            sound_handler = makeCapability<SoundAgent, ISoundHandler>(sound_listener.get());
-            sound_listener->setSoundHandler(sound_handler.get());
-            capability_listeners.emplace("Sound", sound_listener.get());
-        }
-
-        return sound_handler.get();
-    });
-    factories.emplace("Session", [&]() {
-        if (!session_handler) {
-            session_listener = make_unique<SessionListener>();
-            session_handler = makeCapability<SessionAgent, ISessionHandler>(session_listener.get());
-            capability_listeners.emplace("Session", session_listener.get());
-        }
-
-        return session_handler.get();
-    });
-    factories.emplace("Display", [&]() {
-        if (!display_handler) {
-            display_listener = make_unique<DisplayListener>();
-            display_handler = makeCapability<DisplayAgent, IDisplayHandler>(display_listener.get());
-            display_listener->setDisplayHandler(display_handler.get());
-            capability_listeners.emplace("Display", display_listener.get());
-        }
-
-        return display_handler.get();
-    });
-    factories.emplace("Utility", [&]() {
-        if (!utility_handler)
-            utility_handler = makeCapability<UtilityAgent, IUtilityHandler>(nullptr);
-
-        return utility_handler.get();
-    });
-    factories.emplace("Extension", [&]() {
-        if (!extension_handler) {
-            extension_listener = make_unique<ExtensionListener>();
-            extension_handler = makeCapability<ExtensionAgent, IExtensionHandler>(extension_listener.get());
-            extension_listener->setExtensionHandler(extension_handler.get());
-            capability_listeners.emplace("Extension", extension_listener.get());
-        }
-
-        return extension_handler.get();
-    });
-    factories.emplace("Chips", [&]() {
-        if (!chips_handler) {
-            chips_listener = make_unique<ChipsListener>();
-            chips_handler = makeCapability<ChipsAgent, IChipsHandler>(chips_listener.get());
-            capability_listeners.emplace("Chips", chips_listener.get());
-        }
-
-        return chips_handler.get();
-    });
-    factories.emplace("Nudge", [&]() {
-        if (!nudge_handler)
-            nudge_handler = makeCapability<NudgeAgent, INudgeHandler>(nullptr);
-
-        return nudge_handler.get();
-    });
-    factories.emplace("Routine", [&]() {
-        if (!routine_handler)
-            routine_handler = makeCapability<RoutineAgent, IRoutineHandler>(nullptr);
-
-        return routine_handler.get();
-    });
-    factories.emplace("Bluetooth", [&]() {
-        if (!bluetooth_handler) {
-            bluetooth_listener = make_unique<BluetoothListener>();
-            bluetooth_handler = makeCapability<BluetoothAgent, IBluetoothHandler>(bluetooth_listener.get());
-            bluetooth_listener->setBTHandler(bluetooth_handler.get());
-            capability_listeners.emplace("Bluetooth", bluetooth_listener.get());
-        }
-
-        return bluetooth_handler.get();
-    });
+    factories = {
+        { "System", [&]() {
+             return setupCapabilityInstance<SystemAgent>("System", system_listener, system_handler);
+         } },
+        { "ASR", [&]() {
+             return setupCapabilityInstance<ASRAgent>("ASR", speech_operator->getASRListener(), asr_handler, [&] {
+                 speech_operator->setASRHandler(asr_handler.get());
+             });
+         } },
+        { "TTS", [&]() {
+             return setupCapabilityInstance<TTSAgent>("TTS", tts_listener, tts_handler, [&] {
+                 tts_listener->setTTSHandler(tts_handler.get());
+             });
+         } },
+        { "AudioPlayer", [&]() {
+             return setupCapabilityInstance<AudioPlayerAgent>("AudioPlayer", aplayer_listener, audio_player_handler, [&] {
+                 audio_player_handler->setDisplayListener(aplayer_listener.get());
+             });
+         } },
+        { "Text", [&]() {
+             return setupCapabilityInstance<TextAgent>("Text", text_listener, text_handler);
+         } },
+        { "Speaker", [&]() {
+             return setupCapabilityInstance<SpeakerAgent>("Speaker", speaker_listener, speaker_handler, [&] {
+                 composeSpeakerInterface();
+             });
+         } },
+        { "Mic", [&]() {
+             return setupCapabilityInstance<MicAgent>("Mic", mic_listener, mic_handler, [&] {
+                 mic_handler->enable();
+             });
+         } },
+        { "Sound", [&]() {
+             return setupCapabilityInstance<SoundAgent>("Sound", sound_listener, sound_handler, [&] {
+                 sound_listener->setSoundHandler(sound_handler.get());
+             });
+         } },
+        { "Session", [&]() {
+             return setupCapabilityInstance<SessionAgent>("Session", session_listener, session_handler);
+         } },
+        { "Display", [&]() {
+             return setupCapabilityInstance<DisplayAgent>("Display", display_listener, display_handler, [&] {
+                 display_listener->setDisplayHandler(display_handler.get());
+             });
+         } },
+        { "Utility", [&]() {
+             return setupCapabilityInstance<UtilityAgent>("Utility", utility_handler);
+         } },
+        { "Extension", [&]() {
+             return setupCapabilityInstance<ExtensionAgent>("Extension", extension_listener, extension_handler, [&] {
+                 extension_listener->setExtensionHandler(extension_handler.get());
+             });
+         } },
+        { "Chips", [&]() {
+             return setupCapabilityInstance<ChipsAgent>("Chips", chips_handler);
+         } },
+        { "Nudge", [&]() {
+             return setupCapabilityInstance<NudgeAgent>("Nudge", nudge_handler);
+         } },
+        { "Routine", [&]() {
+             return setupCapabilityInstance<RoutineAgent>("Routine", routine_handler);
+         } },
+        { "Bluetooth", [&]() {
+             return setupCapabilityInstance<BluetoothAgent>("Bluetooth", bluetooth_listener, bluetooth_handler, [&] {
+                 bluetooth_listener->setBTHandler(bluetooth_handler.get());
+             });
+         } }
+    };
 }
 
 void CapabilityCollection::composeSpeakerInterface()
@@ -238,4 +163,41 @@ SpeakerInfo CapabilityCollection::makeSpeakerInfo(SpeakerType type, int muted, b
     nugu_speaker.can_control = can_control;
 
     return nugu_speaker;
+}
+
+template <typename A, typename HT>
+ICapabilityInterface* CapabilityCollection::setupCapabilityInstance(std::string&& name, std::unique_ptr<HT>& handler)
+{
+    if (handler)
+        return handler.get();
+
+    return setupCapabilityInstance<A>(std::move(name), static_cast<ICapabilityListener*>(nullptr), handler);
+}
+
+template <typename A, typename LT, typename HT>
+ICapabilityInterface* CapabilityCollection::setupCapabilityInstance(std::string&& name, std::unique_ptr<LT>& listener, std::unique_ptr<HT>& handler, std::function<void()>&& post_action)
+{
+    if (handler)
+        return handler.get();
+
+    if (!listener)
+        listener = make_unique<LT>();
+
+    return setupCapabilityInstance<A>(std::move(name), listener.get(), handler, std::move(post_action));
+}
+
+template <typename A, typename LT, typename HT>
+ICapabilityInterface* CapabilityCollection::setupCapabilityInstance(std::string&& name, LT* listener, std::unique_ptr<HT>& handler, std::function<void()>&& post_action)
+{
+    if (!handler) {
+        handler = makeCapability<A, HT>(listener);
+
+        if (listener)
+            CapabilityCollection::capability_listeners.emplace(name, listener);
+
+        if (post_action)
+            post_action();
+    }
+
+    return handler.get();
 }
