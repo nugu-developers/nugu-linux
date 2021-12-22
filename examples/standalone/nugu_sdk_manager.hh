@@ -30,29 +30,26 @@
 
 class SpeakerController {
 public:
-    using CapabilityHandler = struct {
-        ITTSHandler* tts;
-        IAudioPlayerHandler* audio_player;
-        ISpeakerHandler* speaker;
-    };
+    using VolumeControl = std::function<bool(int)>;
+    using MuteControl = std::function<bool(bool)>;
 
 public:
-    SpeakerController();
     virtual ~SpeakerController() = default;
 
-    void setCapabilityHandler(CapabilityHandler&& handler);
+    void setSpeakerHandler(ISpeakerHandler* handler);
+    void setVolumeControl(const VolumeControl& volume_control);
+    void setMuteControl(const MuteControl& mute_control);
+
     void setVolumeUp();
     void setVolumeDown();
     void toggleMute();
 
 private:
-    void composeVolumeControl();
-    void composeMuteControl();
     void adjustVolume(int volume);
 
-    std::function<bool(int)> nugu_speaker_volume = nullptr;
-    std::function<bool(bool)> nugu_speaker_mute = nullptr;
-    CapabilityHandler capability_handler {};
+    ISpeakerHandler* speaker_handler = nullptr;
+    VolumeControl volume_control = nullptr;
+    MuteControl mute_control = nullptr;
 };
 
 class NuguSDKManager : public IFocusManagerObserver,
