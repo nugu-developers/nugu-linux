@@ -213,16 +213,19 @@ void CapabilityCollection::composeSpeakerInterface()
     speaker_listener->setVolumeNuguSpeakerCallback([&](int volume) {
         if (tts_handler && !tts_handler->setVolume(volume))
             return false;
+
         if (audio_player_handler && !audio_player_handler->setVolume(volume))
             return false;
+
         return true;
     });
     speaker_listener->setMuteNuguSpeakerCallback([&](bool mute) {
-        if (!tts_handler)
+        if (tts_handler && !tts_handler->setMute(mute))
             return false;
-        tts_handler->stopTTS();
+
         if (audio_player_handler && !audio_player_handler->setMute(mute))
             return false;
+
         return true;
     });
 }
