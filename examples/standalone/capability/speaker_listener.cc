@@ -69,3 +69,13 @@ void SpeakerListener::setMuteNuguSpeakerCallback(nugu_mute_func mns)
 {
     nugu_speaker_mute = std::move(mns);
 }
+
+auto SpeakerListener::getNuguSpeakerVolumeControl() -> decltype(nugu_speaker_volume)
+{
+    return nugu_speaker_volume;
+}
+
+auto SpeakerListener::getNuguSpeakerMuteControl() -> decltype(nugu_speaker_mute)
+{
+    return nugu_speaker_mute;
+}

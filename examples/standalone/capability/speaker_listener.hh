@@ -23,8 +23,8 @@
 using namespace NuguCapability;
 
 class SpeakerListener : public ISpeakerListener {
-    typedef std::function<bool(int volume)> nugu_volume_func;
-    typedef std::function<bool(bool mute)> nugu_mute_func;
+    using nugu_volume_func = std::function<bool(int volume)>;
+    using nugu_mute_func = std::function<bool(bool mute)>;
 
 public:
     virtual ~SpeakerListener() = default;
@@ -37,9 +37,13 @@ public:
     void setMuteNuguSpeakerCallback(nugu_mute_func mns);
 
 private:
-    ISpeakerHandler* speaker_handler;
-    nugu_volume_func nugu_speaker_volume;
-    nugu_mute_func nugu_speaker_mute;
+    ISpeakerHandler* speaker_handler = nullptr;
+    nugu_volume_func nugu_speaker_volume = nullptr;
+    nugu_mute_func nugu_speaker_mute = nullptr;
+
+public:
+    auto getNuguSpeakerVolumeControl() -> decltype(nugu_speaker_volume);
+    auto getNuguSpeakerMuteControl() -> decltype(nugu_speaker_mute);
 };
 
 #endif /* __SPEAKER_LISTENER_H__ */

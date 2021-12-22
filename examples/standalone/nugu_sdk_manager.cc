@@ -45,43 +45,19 @@ std::unique_ptr<T> make_unique(Ts&&... params)
  * define SpeakerController
  ******************************************************************************/
 
-SpeakerController::SpeakerController()
+void SpeakerController::setSpeakerHandler(ISpeakerHandler* handler)
 {
-    composeVolumeControl();
-    composeMuteControl();
+    this->speaker_handler = handler;
 }
 
-void SpeakerController::setCapabilityHandler(CapabilityHandler&& handler)
+void SpeakerController::setVolumeControl(const VolumeControl& volume_control)
 {
-    capability_handler = handler;
+    this->volume_control = volume_control;
 }
 
-void SpeakerController::composeVolumeControl()
+void SpeakerController::setMuteControl(const MuteControl& mute_control)
 {
-    nugu_speaker_volume = [&](int volume) {
-        if (capability_handler.tts && !capability_handler.tts->setVolume(volume))
-            return false;
-
-        if (capability_handler.audio_player && !capability_handler.audio_player->setVolume(volume))
-            return false;
-
-        return true;
-    };
-}
-
-void SpeakerController::composeMuteControl()
-{
-    nugu_speaker_mute = [&](bool mute) {
-        if (!capability_handler.tts)
-            return false;
-
-        capability_handler.tts->stopTTS();
-
-        if (capability_handler.audio_player && !capability_handler.audio_player->setMute(mute))
-            return false;
-
-        return true;
-    };
+    this->mute_control = mute_control;
 }
 
 void SpeakerController::setVolumeUp()
@@ -106,9 +82,9 @@ void SpeakerController::setVolumeDown()
 
 void SpeakerController::adjustVolume(int volume)
 {
-    if (nugu_speaker_volume(volume)) {
+    if (volume_control && volume_control(volume)) {
         SpeakerStatus::getInstance()->setNUGUVolume(volume);
-        capability_handler.speaker->informVolumeChanged(SpeakerType::NUGU, volume);
+        speaker_handler->informVolumeChanged(SpeakerType::NUGU, volume);
     }
 }
 
@@ -116,9 +92,9 @@ void SpeakerController::toggleMute()
 {
     int set_mute = !SpeakerStatus::getInstance()->isSpeakerMute();
 
-    if (nugu_speaker_mute(set_mute)) {
+    if (mute_control && mute_control(set_mute)) {
         SpeakerStatus::getInstance()->setSpeakerMute(set_mute);
-        capability_handler.speaker->informMuteChanged(SpeakerType::NUGU, set_mute);
+        speaker_handler->informMuteChanged(SpeakerType::NUGU, set_mute);
     }
 }
 
@@ -267,14 +243,17 @@ void NuguSDKManager::registerCapabilities()
         return;
 
     auto asr_handler(capa_collection->getCapability<IASRHandler>("ASR"));
-    auto tts_handler(capa_collection->getCapability<ITTSHandler>("TTS"));
-    auto audio_player_handler(capa_collection->getCapability<IAudioPlayerHandler>("AudioPlayer"));
     auto speaker_handler(capa_collection->getCapability<ISpeakerHandler>("Speaker"));
     text_handler = capa_collection->getCapability<ITextHandler>("Text");
     mic_handler = capa_collection->getCapability<IMicHandler>("Mic");
     bluetooth_handler = capa_collection->getCapability<IBluetoothHandler>("Bluetooth");
 
-    speaker_controller->setCapabilityHandler({ tts_handler, audio_player_handler, speaker_handler });
+    // setup SpeakerController
+    auto speaker_listener(capa_collection->getCapabilityListener<SpeakerListener>("Speaker"));
+    speaker_controller->setSpeakerHandler(speaker_handler);
+    speaker_controller->setVolumeControl(speaker_listener->getNuguSpeakerVolumeControl());
+    speaker_controller->setMuteControl(speaker_listener->getNuguSpeakerMuteControl());
+
     asr_handler->setAttribute(ASRAttribute { nugu_sample_manager->getModelPath() });
     setAdditionalExecutor();
 
@@ -289,9 +268,9 @@ void NuguSDKManager::registerCapabilities()
         ->add(capa_collection->getCapability<IChipsHandler>("Chips"))
         ->add(capa_collection->getCapability<INudgeHandler>("Nudge"))
         ->add(capa_collection->getCapability<IRoutineHandler>("Routine"))
-        ->add(audio_player_handler)
+        ->add(capa_collection->getCapability<IAudioPlayerHandler>("AudioPlayer"))
+        ->add(capa_collection->getCapability<ITTSHandler>("TTS"))
         ->add(speaker_handler)
-        ->add(tts_handler)
         ->add(asr_handler)
         ->add(text_handler)
         ->add(mic_handler)
