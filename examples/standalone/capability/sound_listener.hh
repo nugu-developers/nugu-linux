@@ -19,13 +19,16 @@
 
 #include <capability/sound_interface.hh>
 
+#include "capability_listener.hh"
+
 using namespace NuguCapability;
 
-class SoundListener : public ISoundListener {
+class SoundListener : public ISoundListener,
+                      public CapabilityListener {
 public:
     virtual ~SoundListener() = default;
 
-    void setSoundHandler(ISoundHandler* sound_handler);
+    void setCapabilityHandler(ICapabilityInterface* handler) override;
     void handleBeep(BeepType beep_type, const std::string& dialog_id) override;
 
 private:

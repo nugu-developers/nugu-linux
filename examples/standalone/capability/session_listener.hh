@@ -21,9 +21,12 @@
 
 #include <capability/session_interface.hh>
 
+#include "capability_listener.hh"
+
 using namespace NuguCapability;
 
-class SessionListener : public ISessionListener {
+class SessionListener : public ISessionListener,
+                        public CapabilityListener {
 public:
     virtual ~SessionListener() = default;
 

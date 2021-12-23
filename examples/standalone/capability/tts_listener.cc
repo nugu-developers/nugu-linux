@@ -20,9 +20,10 @@
 
 #include "tts_listener.hh"
 
-void TTSListener::setTTSHandler(ITTSHandler* tts_handler)
+void TTSListener::setCapabilityHandler(ICapabilityInterface* handler)
 {
-    this->tts_handler = tts_handler;
+    if (handler)
+        this->tts_handler = dynamic_cast<ITTSHandler*>(handler);
 }
 
 void TTSListener::onTTSState(TTSState state, const std::string& dialog_id)

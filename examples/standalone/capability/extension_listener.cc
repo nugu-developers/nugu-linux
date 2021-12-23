@@ -18,10 +18,10 @@
 
 #include "extension_listener.hh"
 
-void ExtensionListener::setExtensionHandler(IExtensionHandler* extension_handler)
+void ExtensionListener::setCapabilityHandler(ICapabilityInterface* handler)
 {
-    if (extension_handler)
-        this->extension_handler = extension_handler;
+    if (handler)
+        this->extension_handler = dynamic_cast<IExtensionHandler*>(handler);
 }
 
 void ExtensionListener::receiveAction(const std::string& data, const std::string& ps_id, const std::string& dialog_id)

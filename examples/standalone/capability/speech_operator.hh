@@ -20,18 +20,26 @@
 #include <capability/asr_interface.hh>
 #include <clientkit/wakeup_interface.hh>
 
+#include "capability_listener.hh"
+
 using namespace NuguClientKit;
 using namespace NuguCapability;
 
+class ASRListener : public IASRListener,
+                    public CapabilityListener {
+public:
+    virtual ~ASRListener() = default;
+};
+
 class SpeechOperator : public IWakeupListener,
-                       public IASRListener {
+                       public ASRListener {
 public:
     SpeechOperator();
     virtual ~SpeechOperator() = default;
 
-    IASRListener* getASRListener();
+    ASRListener* getASRListener();
     void setWakeupHandler(IWakeupHandler* wakeup_handler, const std::string& wakeup_word);
-    void setASRHandler(IASRHandler* asr_handler);
+    void setCapabilityHandler(ICapabilityInterface* handler) override;
     void startListeningWithWakeup();
     void startListening(float noise = 0, float speech = 0, ASRInitiator initiator = ASRInitiator::TAP);
     void stopListeningAndWakeup();

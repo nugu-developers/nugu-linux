@@ -79,7 +79,7 @@ SpeechOperator::SpeechOperator()
 {
 }
 
-IASRListener* SpeechOperator::getASRListener()
+ASRListener* SpeechOperator::getASRListener()
 {
     return this;
 }
@@ -95,9 +95,10 @@ void SpeechOperator::setWakeupHandler(IWakeupHandler* wakeup_handler, const std:
         this->wakeup_word = wakeup_word;
 }
 
-void SpeechOperator::setASRHandler(IASRHandler* asr_handler)
+void SpeechOperator::setCapabilityHandler(ICapabilityInterface* handler)
 {
-    this->asr_handler = asr_handler;
+    if (handler)
+        this->asr_handler = dynamic_cast<IASRHandler*>(handler);
 }
 
 void SpeechOperator::startListeningWithWakeup()

@@ -46,71 +46,59 @@ SpeechOperator* CapabilityCollection::getSpeechOperator()
 void CapabilityCollection::composeCapabilityFactory()
 {
     factories = {
-        { "System", [&]() {
+        { "System", [&] {
              return setupCapabilityInstance<SystemAgent>("System", system_listener, system_handler);
          } },
-        { "ASR", [&]() {
-             return setupCapabilityInstance<ASRAgent>("ASR", speech_operator->getASRListener(), asr_handler, [&] {
-                 speech_operator->setASRHandler(asr_handler.get());
-             });
+        { "ASR", [&] {
+             return setupCapabilityInstance<ASRAgent>("ASR", speech_operator->getASRListener(), asr_handler);
          } },
-        { "TTS", [&]() {
-             return setupCapabilityInstance<TTSAgent>("TTS", tts_listener, tts_handler, [&] {
-                 tts_listener->setTTSHandler(tts_handler.get());
-             });
+        { "TTS", [&] {
+             return setupCapabilityInstance<TTSAgent>("TTS", tts_listener, tts_handler);
          } },
-        { "AudioPlayer", [&]() {
+        { "AudioPlayer", [&] {
              return setupCapabilityInstance<AudioPlayerAgent>("AudioPlayer", aplayer_listener, audio_player_handler, [&] {
                  audio_player_handler->setDisplayListener(aplayer_listener.get());
              });
          } },
-        { "Text", [&]() {
+        { "Text", [&] {
              return setupCapabilityInstance<TextAgent>("Text", text_listener, text_handler);
          } },
-        { "Speaker", [&]() {
+        { "Speaker", [&] {
              return setupCapabilityInstance<SpeakerAgent>("Speaker", speaker_listener, speaker_handler, [&] {
                  composeSpeakerInterface();
              });
          } },
-        { "Mic", [&]() {
+        { "Mic", [&] {
              return setupCapabilityInstance<MicAgent>("Mic", mic_listener, mic_handler, [&] {
                  mic_handler->enable();
              });
          } },
-        { "Sound", [&]() {
-             return setupCapabilityInstance<SoundAgent>("Sound", sound_listener, sound_handler, [&] {
-                 sound_listener->setSoundHandler(sound_handler.get());
-             });
+        { "Sound", [&] {
+             return setupCapabilityInstance<SoundAgent>("Sound", sound_listener, sound_handler);
          } },
-        { "Session", [&]() {
+        { "Session", [&] {
              return setupCapabilityInstance<SessionAgent>("Session", session_listener, session_handler);
          } },
-        { "Display", [&]() {
-             return setupCapabilityInstance<DisplayAgent>("Display", display_listener, display_handler, [&] {
-                 display_listener->setDisplayHandler(display_handler.get());
-             });
+        { "Display", [&] {
+             return setupCapabilityInstance<DisplayAgent>("Display", display_listener, display_handler);
          } },
-        { "Utility", [&]() {
+        { "Utility", [&] {
              return setupCapabilityInstance<UtilityAgent>("Utility", utility_handler);
          } },
-        { "Extension", [&]() {
-             return setupCapabilityInstance<ExtensionAgent>("Extension", extension_listener, extension_handler, [&] {
-                 extension_listener->setExtensionHandler(extension_handler.get());
-             });
+        { "Extension", [&] {
+             return setupCapabilityInstance<ExtensionAgent>("Extension", extension_listener, extension_handler);
          } },
-        { "Chips", [&]() {
-             return setupCapabilityInstance<ChipsAgent>("Chips", chips_handler);
+        { "Chips", [&] {
+             return setupCapabilityInstance<ChipsAgent>("Chips", chips_listener, chips_handler);
          } },
-        { "Nudge", [&]() {
+        { "Nudge", [&] {
              return setupCapabilityInstance<NudgeAgent>("Nudge", nudge_handler);
          } },
-        { "Routine", [&]() {
+        { "Routine", [&] {
              return setupCapabilityInstance<RoutineAgent>("Routine", routine_handler);
          } },
-        { "Bluetooth", [&]() {
-             return setupCapabilityInstance<BluetoothAgent>("Bluetooth", bluetooth_listener, bluetooth_handler, [&] {
-                 bluetooth_listener->setBTHandler(bluetooth_handler.get());
-             });
+        { "Bluetooth", [&] {
+             return setupCapabilityInstance<BluetoothAgent>("Bluetooth", bluetooth_listener, bluetooth_handler);
          } }
     };
 }
@@ -192,8 +180,10 @@ ICapabilityInterface* CapabilityCollection::setupCapabilityInstance(std::string&
     if (!handler) {
         handler = makeCapability<A, HT>(listener);
 
-        if (listener)
-            CapabilityCollection::capability_listeners.emplace(name, listener);
+        if (listener) {
+            dynamic_cast<CapabilityListener*>(listener)->setCapabilityHandler(handler.get());
+            capability_listeners.emplace(name, listener);
+        }
 
         if (post_action)
             post_action();
