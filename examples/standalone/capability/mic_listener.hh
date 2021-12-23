@@ -19,9 +19,12 @@
 
 #include <capability/mic_interface.hh>
 
+#include "capability_listener.hh"
+
 using namespace NuguCapability;
 
-class MicListener : public IMicListener {
+class MicListener : public IMicListener,
+                    public CapabilityListener {
 public:
     virtual ~MicListener() = default;
     void micStatusChanged(MicStatus& status) override;

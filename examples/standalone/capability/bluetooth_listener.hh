@@ -19,14 +19,17 @@
 
 #include <capability/bluetooth_interface.hh>
 
+#include "capability_listener.hh"
+
 using namespace NuguCapability;
 
-class BluetoothListener : public IBluetoothListener {
+class BluetoothListener : public IBluetoothListener,
+                          public CapabilityListener {
 public:
     BluetoothListener();
     virtual ~BluetoothListener() = default;
 
-    void setBTHandler(IBluetoothHandler* bt_handler);
+    void setCapabilityHandler(ICapabilityInterface* handler) override;
     void startDiscoverableMode(long duration_sec) override;
     void finishDiscoverableMode() override;
     void play() override;

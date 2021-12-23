@@ -19,12 +19,15 @@
 
 #include <capability/tts_interface.hh>
 
+#include "capability_listener.hh"
+
 using namespace NuguCapability;
 
-class TTSListener : public ITTSListener {
+class TTSListener : public ITTSListener,
+                    public CapabilityListener {
 public:
     virtual ~TTSListener() = default;
-    void setTTSHandler(ITTSHandler* tts_handler);
+    void setCapabilityHandler(ICapabilityInterface* handler) override;
     void onTTSState(TTSState state, const std::string& dialog_id) override;
     void onTTSText(const std::string& text, const std::string& dialog_id) override;
     void onTTSCancel(const std::string& dialog_id) override;

@@ -19,13 +19,16 @@
 
 #include <capability/extension_interface.hh>
 
+#include "capability_listener.hh"
+
 using namespace NuguCapability;
 
-class ExtensionListener : public IExtensionListener {
+class ExtensionListener : public IExtensionListener,
+                          public CapabilityListener {
 public:
     virtual ~ExtensionListener() = default;
 
-    void setExtensionHandler(IExtensionHandler* extension_handler);
+    void setCapabilityHandler(ICapabilityInterface* handler) override;
     void receiveAction(const std::string& data, const std::string& ps_id, const std::string& dialog_id) override;
 
 private:

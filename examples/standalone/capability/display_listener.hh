@@ -22,14 +22,17 @@
 
 #include <capability/display_interface.hh>
 
+#include "capability_listener.hh"
+
 using namespace NuguCapability;
 
-class DisplayListener : virtual public IDisplayListener {
+class DisplayListener : virtual public IDisplayListener,
+                        public CapabilityListener {
 public:
     DisplayListener();
     virtual ~DisplayListener() = default;
 
-    void setDisplayHandler(IDisplayHandler* display_handler);
+    void setCapabilityHandler(ICapabilityInterface* handler) override;
     void renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id) override;
     bool clearDisplay(const std::string& id, bool unconditionally, bool has_next) override;
     void controlDisplay(const std::string& id, ControlType type, ControlDirection direction) override;

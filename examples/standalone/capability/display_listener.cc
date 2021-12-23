@@ -23,10 +23,10 @@ DisplayListener::DisplayListener()
 {
 }
 
-void DisplayListener::setDisplayHandler(IDisplayHandler* display_handler)
+void DisplayListener::setCapabilityHandler(ICapabilityInterface* handler)
 {
-    if (display_handler)
-        this->display_handler = display_handler;
+    if (handler)
+        this->display_handler = dynamic_cast<IDisplayHandler*>(handler);
 }
 
 void DisplayListener::renderDisplay(const std::string& id, const std::string& type, const std::string& json, const std::string& dialog_id)

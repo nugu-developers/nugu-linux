@@ -14,24 +14,8 @@
  * limitations under the License.
  */
 
-#include "sound_listener.hh"
+#include "capability_listener.hh"
 
-void SoundListener::setCapabilityHandler(ICapabilityInterface* handler)
+void CapabilityListener::setCapabilityHandler(ICapabilityInterface* handler)
 {
-    if (handler)
-        this->sound_handler = dynamic_cast<ISoundHandler*>(handler);
-}
-
-void SoundListener::handleBeep(BeepType beep_type, const std::string& dialog_id)
-{
-    switch (beep_type) {
-    case BeepType::RESPONSE_FAIL:
-        // step-1 : play related beep sound file
-        // play related sound resource file
-
-        // step-2 : send beep play result
-        if (sound_handler)
-            sound_handler->sendBeepResult(true);
-        break;
-    }
 }

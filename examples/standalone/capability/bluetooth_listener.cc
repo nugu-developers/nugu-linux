@@ -21,9 +21,10 @@ BluetoothListener::BluetoothListener()
 {
 }
 
-void BluetoothListener::setBTHandler(IBluetoothHandler* bt_handler)
+void BluetoothListener::setCapabilityHandler(ICapabilityInterface* handler)
 {
-    this->bt_handler = bt_handler;
+    if (handler)
+        this->bt_handler = dynamic_cast<IBluetoothHandler*>(handler);
 }
 
 void BluetoothListener::startDiscoverableMode(long duration_sec)

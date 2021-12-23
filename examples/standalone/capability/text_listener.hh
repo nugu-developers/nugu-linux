@@ -19,9 +19,12 @@
 
 #include <capability/text_interface.hh>
 
+#include "capability_listener.hh"
+
 using namespace NuguCapability;
 
-class TextListener : public ITextListener {
+class TextListener : public ITextListener,
+                     public CapabilityListener {
 public:
     virtual ~TextListener() = default;
     void onState(TextState state, const std::string& dialog_id) override;
