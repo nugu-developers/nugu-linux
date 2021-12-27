@@ -337,7 +337,6 @@ void NuguSDKManager::setAdditionalExecutor()
     bluetooth_status->setDeviceStatusCallback([&](DeviceConnectStatus status) {
         msg_info("bluetooth device status changed => " + bluetooth_status->getDeviceConnectStatusString(status));
 
-        bluetooth_handler->setDeviceInformation(bluetooth_status->getDeviceInformation());
         if (status == DeviceConnectStatus::DeviceDisconnected)
             bluetooth_handler->disconnectSucceeded();
         else if (status == DeviceConnectStatus::DeviceConnectFailed)

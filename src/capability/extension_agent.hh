@@ -32,7 +32,6 @@ public:
     void deInitialize() override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
-    void setContextInformation(const std::string& ctx) override;
     void updateInfoForContext(Json::Value& ctx) override;
     void parsingDirective(const char* dname, const char* message) override;
     void actionSucceeded() override;
@@ -47,7 +46,6 @@ private:
 
     IExtensionListener* extension_listener = nullptr;
     NuguDirective* action_dir = nullptr;
-    std::string context_info;
     std::string ps_id;
 };
 

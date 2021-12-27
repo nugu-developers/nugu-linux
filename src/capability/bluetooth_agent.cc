@@ -38,12 +38,6 @@ void BluetoothAgent::initialize()
 
     Capability::initialize();
 
-    context_info = "{}";
-    bt_device_info.device_name = "";
-    bt_device_info.power_on = false;
-    bt_device_info.is_active_device = false;
-    bt_device_info.is_paired_device = false;
-
     addReferrerEvents("StartDiscoverableModeSucceeded", "StartDiscoverableMode");
     addReferrerEvents("StartDiscoverableModeFailed", "StartDiscoverableMode");
     addReferrerEvents("FinishDiscoverableModeSucceeded", "FinishDiscoverableMode");
@@ -101,15 +95,21 @@ void BluetoothAgent::updateInfoForContext(Json::Value& ctx)
     Json::Value device;
     Json::Value device_profile;
     Json::Value active_device;
+    BTDeviceInfo device_info;
 
     root["version"] = getVersion();
 
-    if (!bt_device_info.device_name.empty()) {
-        device["name"] = bt_device_info.device_name;
-        device["status"] = bt_device_info.power_on ? "ON" : "OFF";
+    if (bt_listener)
+        bt_listener->requestContext(device_info);
 
-        if (bt_device_info.is_paired_device) {
-            for (const auto& profile : bt_device_info.profiles) {
+    printDeviceInformation(device_info);
+
+    if (!device_info.device_name.empty()) {
+        device["name"] = device_info.device_name;
+        device["status"] = device_info.power_on ? "ON" : "OFF";
+
+        if (device_info.is_paired_device) {
+            for (const auto& profile : device_info.profiles) {
                 device_profile["name"] = profile.name;
                 device_profile["enabled"] = profile.enable ? "TRUE" : "FALSE";
 
@@ -119,27 +119,18 @@ void BluetoothAgent::updateInfoForContext(Json::Value& ctx)
         root["device"] = device;
     }
 
-    if (bt_device_info.is_active_device) {
-        if (bt_device_info.active_device_id.size())
-            active_device["id"] = bt_device_info.active_device_id;
-        if (bt_device_info.active_device_name.size())
-            active_device["name"] = bt_device_info.active_device_name;
+    if (device_info.is_active_device) {
+        if (device_info.active_device_id.size())
+            active_device["id"] = device_info.active_device_id;
+        if (device_info.active_device_name.size())
+            active_device["name"] = device_info.active_device_name;
 
-        active_device["streaming"] = bt_device_info.active_device_streaming;
+        active_device["streaming"] = device_info.active_device_streaming;
 
         root["activeDevice"] = active_device;
     }
 
     ctx[getName()] = root;
-}
-
-void BluetoothAgent::setDeviceInformation(BTDeviceInfo device_info)
-{
-    nugu_dbg("update bt device information");
-
-    bt_device_info = device_info;
-
-    printDeviceInformation();
 }
 
 void BluetoothAgent::startDiscoverableModeSucceeded(bool has_paired_devices)
@@ -356,18 +347,22 @@ void BluetoothAgent::parsingPrevious(const char* message)
         bt_listener->previous();
 }
 
-void BluetoothAgent::printDeviceInformation()
+void BluetoothAgent::printDeviceInformation(const BTDeviceInfo& device_info)
 {
     nugu_dbg("bluetooth device information ==============================");
-    nugu_dbg("adaptor name: %s", bt_device_info.device_name.c_str());
-    nugu_dbg("power: %d", bt_device_info.power_on);
-    for (const auto& profile : bt_device_info.profiles)
-        nugu_dbg("profile[%s]: %s", profile.name.c_str(), profile.enable ? "TRUE" : "FALSE");
-    if (bt_device_info.is_active_device) {
-        nugu_dbg("* connected device *");
-        nugu_dbg("  id: %s", bt_device_info.active_device_id.c_str());
-        nugu_dbg("  name: %s", bt_device_info.active_device_name.c_str());
-        nugu_dbg("  streaming: %s", bt_device_info.active_device_streaming.c_str());
+    if (device_info.device_name.empty()) {
+        nugu_dbg("device is not connected");
+    } else {
+        nugu_dbg("adaptor name: %s", device_info.device_name.c_str());
+        nugu_dbg("power: %d", device_info.power_on);
+        for (const auto& profile : device_info.profiles)
+            nugu_dbg("profile[%s]: %s", profile.name.c_str(), profile.enable ? "TRUE" : "FALSE");
+        if (device_info.is_active_device) {
+            nugu_dbg("* connected device *");
+            nugu_dbg("  id: %s", device_info.active_device_id.c_str());
+            nugu_dbg("  name: %s", device_info.active_device_name.c_str());
+            nugu_dbg("  streaming: %s", device_info.active_device_streaming.c_str());
+        }
     }
     nugu_dbg("===========================================================");
 }

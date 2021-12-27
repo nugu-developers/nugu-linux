@@ -101,6 +101,12 @@ public:
      * @brief Send command to play previous media to bluetooth adaptor
      */
     virtual void previous() = 0;
+
+    /**
+     * @brief Request device information for bluetooth context
+     * @param[in] device_info device information
+     */
+    virtual void requestContext(BTDeviceInfo& device_info) = 0;
 };
 
 /**
@@ -110,12 +116,6 @@ public:
 class IBluetoothHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IBluetoothHandler() = default;
-
-    /**
-     * @brief Set the bluetooth device information
-     * @param[in] device_info device information
-     */
-    virtual void setDeviceInformation(BTDeviceInfo device_info) = 0;
 
     /**
      * @brief Notify the success result of start discoverable mode

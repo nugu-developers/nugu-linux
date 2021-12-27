@@ -37,6 +37,7 @@ public:
     void pause() override;
     void next() override;
     void previous() override;
+    void requestContext(BTDeviceInfo& device_info) override;
 
 private:
     IBluetoothHandler* bt_handler = nullptr;

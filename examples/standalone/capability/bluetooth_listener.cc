@@ -29,56 +29,47 @@ void BluetoothListener::setCapabilityHandler(ICapabilityInterface* handler)
 
 void BluetoothListener::startDiscoverableMode(long duration_sec)
 {
-    if (bt_handler) {
-        bt_handler->setDeviceInformation(BluetoothStatus::getInstance()->getDeviceInformation());
+    if (bt_handler)
         bt_handler->startDiscoverableModeSucceeded(BluetoothStatus::getInstance()->hasPairedDevice());
-    }
 }
 
 void BluetoothListener::finishDiscoverableMode()
 {
-    if (bt_handler) {
-        bt_handler->setDeviceInformation(BluetoothStatus::getInstance()->getDeviceInformation());
+    if (bt_handler)
         bt_handler->finishDiscoverableModeSucceeded();
-    }
 }
 
 void BluetoothListener::play()
 {
-    if (bt_handler) {
-        bt_handler->setDeviceInformation(BluetoothStatus::getInstance()->getDeviceInformation());
+    if (bt_handler)
         bt_handler->mediaControlPlaySucceeded();
-    }
 }
 
 void BluetoothListener::stop()
 {
-    if (bt_handler) {
-        bt_handler->setDeviceInformation(BluetoothStatus::getInstance()->getDeviceInformation());
+    if (bt_handler)
         bt_handler->mediaControlStopSucceeded();
-    }
 }
 
 void BluetoothListener::pause()
 {
-    if (bt_handler) {
-        bt_handler->setDeviceInformation(BluetoothStatus::getInstance()->getDeviceInformation());
+    if (bt_handler)
         bt_handler->mediaControlPauseSucceeded();
-    }
 }
 
 void BluetoothListener::next()
 {
-    if (bt_handler) {
-        bt_handler->setDeviceInformation(BluetoothStatus::getInstance()->getDeviceInformation());
+    if (bt_handler)
         bt_handler->mediaControlNextSucceeded();
-    }
 }
 
 void BluetoothListener::previous()
 {
-    if (bt_handler) {
-        bt_handler->setDeviceInformation(BluetoothStatus::getInstance()->getDeviceInformation());
+    if (bt_handler)
         bt_handler->mediaControlPreviousSucceeded();
-    }
+}
+
+void BluetoothListener::requestContext(BTDeviceInfo& device_info)
+{
+    device_info = BluetoothStatus::getInstance()->getDeviceInformation();
 }
