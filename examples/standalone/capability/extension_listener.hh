@@ -27,6 +27,7 @@ public:
 
     void setExtensionHandler(IExtensionHandler* extension_handler);
     void receiveAction(const std::string& data, const std::string& ps_id, const std::string& dialog_id) override;
+    void requestContext(std::string& context_info) override;
 
 private:
     IExtensionHandler* extension_handler = nullptr;

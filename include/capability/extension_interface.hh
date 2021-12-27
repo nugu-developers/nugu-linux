@@ -49,6 +49,12 @@ public:
      * @param[in] dialog_id dialogId of received action
      */
     virtual void receiveAction(const std::string& data, const std::string& ps_id, const std::string& dialog_id) = 0;
+
+    /**
+     * @brief Request context information for extension context
+     * @param[in] context_info context information
+     */
+    virtual void requestContext(std::string& context_info) = 0;
 };
 
 /**
@@ -58,12 +64,6 @@ public:
 class IExtensionHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IExtensionHandler() = default;
-
-    /**
-     * @brief Set the current context information
-     * @param[in] ctx context
-     */
-    virtual void setContextInformation(const std::string& ctx) = 0;
 
     /**
      * @brief Call if handling action succeed

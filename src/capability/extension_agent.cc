@@ -38,7 +38,6 @@ void ExtensionAgent::initialize()
 
     Capability::initialize();
 
-    context_info = "{}";
     ps_id.clear();
 
     addReferrerEvents("ActionSucceeded", "Action");
@@ -58,19 +57,18 @@ void ExtensionAgent::setCapabilityListener(ICapabilityListener* clistener)
         extension_listener = dynamic_cast<IExtensionListener*>(clistener);
 }
 
-void ExtensionAgent::setContextInformation(const std::string& ctx)
-{
-    context_info = ctx;
-}
-
 void ExtensionAgent::updateInfoForContext(Json::Value& ctx)
 {
-    if (!context_info.size())
-        return;
-
     Json::Value root;
     Json::Value data;
     Json::Reader reader;
+    std::string context_info;
+
+    if (extension_listener)
+        extension_listener->requestContext(context_info);
+
+    if (!context_info.size())
+        return;
 
     if (!reader.parse(context_info, data)) {
         nugu_error("parsing error");

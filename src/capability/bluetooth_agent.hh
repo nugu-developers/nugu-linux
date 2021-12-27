@@ -35,7 +35,6 @@ public:
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
 
-    void setDeviceInformation(BTDeviceInfo device_info) override;
     void startDiscoverableModeSucceeded(bool has_paired_devices) override;
     void startDiscoverableModeFailed(bool has_paired_devices) override;
     void finishDiscoverableModeSucceeded() override;
@@ -69,10 +68,9 @@ private:
     void parsingNext(const char* message);
     void parsingPrevious(const char* message);
 
-    void printDeviceInformation();
+    void printDeviceInformation(const BTDeviceInfo& device_info);
 
     IBluetoothListener* bt_listener = nullptr;
-    BTDeviceInfo bt_device_info;
     std::string context_info;
     std::string ps_id;
 };

@@ -34,3 +34,7 @@ void ExtensionListener::receiveAction(const std::string& data, const std::string
     if (extension_handler)
         extension_handler->actionSucceeded();
 }
+
+void ExtensionListener::requestContext(std::string& context_info)
+{
+}
