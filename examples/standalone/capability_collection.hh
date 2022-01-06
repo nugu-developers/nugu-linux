@@ -79,9 +79,6 @@ private:
     template <typename A, typename LT, typename HT>
     ICapabilityInterface* setupCapabilityInstance(std::string&& name, std::unique_ptr<LT>& listener, std::unique_ptr<HT>& handler, std::function<void()>&& post_action = nullptr);
 
-    template <typename A, typename LT, typename HT>
-    ICapabilityInterface* setupCapabilityInstance(std::string&& name, LT* listener, std::unique_ptr<HT>& handler, std::function<void()>&& post_action = nullptr);
-
     // Capability instance
     std::unique_ptr<ISystemHandler> system_handler = nullptr;
     std::unique_ptr<IASRHandler> asr_handler = nullptr;

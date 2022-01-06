@@ -50,7 +50,7 @@ void CapabilityCollection::composeCapabilityFactory()
              return setupCapabilityInstance<SystemAgent>("System", system_listener, system_handler);
          } },
         { "ASR", [&] {
-             return setupCapabilityInstance<ASRAgent>("ASR", speech_operator->getASRListener(), asr_handler);
+             return setupCapabilityInstance<ASRAgent>("ASR", speech_operator, asr_handler);
          } },
         { "TTS", [&] {
              return setupCapabilityInstance<TTSAgent>("TTS", tts_listener, tts_handler);
@@ -156,34 +156,22 @@ SpeakerInfo CapabilityCollection::makeSpeakerInfo(SpeakerType type, int muted, b
 template <typename A, typename HT>
 ICapabilityInterface* CapabilityCollection::setupCapabilityInstance(std::string&& name, std::unique_ptr<HT>& handler)
 {
-    if (handler)
-        return handler.get();
+    if (!handler)
+        handler = makeCapability<A, HT>(nullptr);
 
-    return setupCapabilityInstance<A>(std::move(name), static_cast<ICapabilityListener*>(nullptr), handler);
+    return handler.get();
 }
 
 template <typename A, typename LT, typename HT>
 ICapabilityInterface* CapabilityCollection::setupCapabilityInstance(std::string&& name, std::unique_ptr<LT>& listener, std::unique_ptr<HT>& handler, std::function<void()>&& post_action)
 {
-    if (handler)
-        return handler.get();
-
-    if (!listener)
-        listener = make_unique<LT>();
-
-    return setupCapabilityInstance<A>(std::move(name), listener.get(), handler, std::move(post_action));
-}
-
-template <typename A, typename LT, typename HT>
-ICapabilityInterface* CapabilityCollection::setupCapabilityInstance(std::string&& name, LT* listener, std::unique_ptr<HT>& handler, std::function<void()>&& post_action)
-{
     if (!handler) {
-        handler = makeCapability<A, HT>(listener);
+        if (!listener)
+            listener = make_unique<LT>();
 
-        if (listener) {
-            listener->setCapabilityHandler(handler.get());
-            capability_listeners.emplace(name, listener);
-        }
+        handler = makeCapability<A, HT>(listener.get());
+        listener->setCapabilityHandler(handler.get());
+        capability_listeners.emplace(name, listener.get());
 
         if (post_action)
             post_action();
