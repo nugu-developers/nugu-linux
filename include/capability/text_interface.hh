@@ -62,7 +62,7 @@ typedef struct {
  * @brief text listener interface
  * @see ITextHandler
  */
-class ITextListener : public ICapabilityListener {
+class ITextListener : virtual public ICapabilityListener {
 public:
     virtual ~ITextListener() = default;
 

@@ -49,7 +49,7 @@ enum class PhoneCallState {
  * @brief phone call listener interface
  * @see IPhoneCallHandler
  */
-class IPhoneCallListener : public ICapabilityListener {
+class IPhoneCallListener : virtual public ICapabilityListener {
 public:
     virtual ~IPhoneCallListener() = default;
 

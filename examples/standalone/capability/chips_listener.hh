@@ -19,12 +19,9 @@
 
 #include <capability/chips_interface.hh>
 
-#include "capability_listener.hh"
-
 using namespace NuguCapability;
 
-class ChipsListener : public IChipsListener,
-                      public CapabilityListener {
+class ChipsListener : public IChipsListener {
 public:
     ChipsListener();
     virtual ~ChipsListener() = default;

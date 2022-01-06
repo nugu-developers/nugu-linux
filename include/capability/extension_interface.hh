@@ -38,7 +38,7 @@ using namespace NuguClientKit;
  * @brief extension listener interface
  * @see IExtensionHandler
  */
-class IExtensionListener : public ICapabilityListener {
+class IExtensionListener : virtual public ICapabilityListener {
 public:
     virtual ~IExtensionListener() = default;
 

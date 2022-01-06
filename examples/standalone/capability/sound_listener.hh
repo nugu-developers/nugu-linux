@@ -19,12 +19,9 @@
 
 #include <capability/sound_interface.hh>
 
-#include "capability_listener.hh"
-
 using namespace NuguCapability;
 
-class SoundListener : public ISoundListener,
-                      public CapabilityListener {
+class SoundListener : public ISoundListener {
 public:
     virtual ~SoundListener() = default;
 

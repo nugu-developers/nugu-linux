@@ -46,7 +46,7 @@ enum class MicStatus {
  * @brief mic listener interface
  * @see IMicHandler
  */
-class IMicListener : public ICapabilityListener {
+class IMicListener : virtual public ICapabilityListener {
 public:
     virtual ~IMicListener() = default;
 

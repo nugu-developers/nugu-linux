@@ -46,7 +46,7 @@ enum class BeepType {
  * @brief sound listener interface
  * @see ISoundHandler
  */
-class ISoundListener : public ICapabilityListener {
+class ISoundListener : virtual public ICapabilityListener {
 public:
     virtual ~ISoundListener() = default;
 

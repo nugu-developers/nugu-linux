@@ -91,7 +91,7 @@ typedef struct {
  * @brief ASR listener interface
  * @see IASRHandler
  */
-class IASRListener : public ICapabilityListener {
+class IASRListener : virtual public ICapabilityListener {
 public:
     virtual ~IASRListener() = default;
 

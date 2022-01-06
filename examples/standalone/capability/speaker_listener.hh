@@ -21,12 +21,9 @@
 
 #include <capability/speaker_interface.hh>
 
-#include "capability_listener.hh"
-
 using namespace NuguCapability;
 
-class SpeakerListener : public ISpeakerListener,
-                        public CapabilityListener {
+class SpeakerListener : public ISpeakerListener {
     using nugu_volume_func = std::function<bool(int volume)>;
     using nugu_mute_func = std::function<bool(bool mute)>;
 

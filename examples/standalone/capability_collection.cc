@@ -181,7 +181,7 @@ ICapabilityInterface* CapabilityCollection::setupCapabilityInstance(std::string&
         handler = makeCapability<A, HT>(listener);
 
         if (listener) {
-            dynamic_cast<CapabilityListener*>(listener)->setCapabilityHandler(handler.get());
+            listener->setCapabilityHandler(handler.get());
             capability_listeners.emplace(name, listener);
         }
 

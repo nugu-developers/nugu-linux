@@ -23,7 +23,7 @@
 
 using namespace NuguClientKit;
 
-class IBatteryListener : public ICapabilityListener {
+class IBatteryListener : virtual public ICapabilityListener {
 public:
     virtual ~IBatteryListener() = default;
 };

@@ -48,12 +48,29 @@ typedef struct {
 } DirectiveCancelPolicy;
 
 /**
+ * @brief capability interface
+ */
+class ICapabilityInterface;
+
+/**
  * @brief capability listener interface
  * @see ICapabilityHandler
  */
 class ICapabilityListener {
 public:
     virtual ~ICapabilityListener() = default;
+
+    /**
+     * @brief Set capability interface object
+     * @param[in] handler capability interface object
+     */
+    virtual void setCapabilityHandler(ICapabilityInterface* handler);
+
+    /**
+     * @brief Get capability interface object
+     * @return capability interface object
+     */
+    virtual ICapabilityInterface* getCapabilityHandler();
 };
 
 /**

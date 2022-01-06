@@ -47,7 +47,7 @@ enum class SessionState {
  * @brief session listener interface
  * @see ISessionHandler
  */
-class ISessionListener : public ICapabilityListener {
+class ISessionListener : virtual public ICapabilityListener {
 public:
     virtual ~ISessionListener() = default;
 

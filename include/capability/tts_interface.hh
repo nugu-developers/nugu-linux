@@ -56,7 +56,7 @@ typedef struct {
  * @brief tts listener interface
  * @see ITTSHandler
  */
-class ITTSListener : public ICapabilityListener {
+class ITTSListener : virtual public ICapabilityListener {
 public:
     virtual ~ITTSListener() = default;
 

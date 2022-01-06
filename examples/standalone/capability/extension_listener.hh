@@ -19,12 +19,9 @@
 
 #include <capability/extension_interface.hh>
 
-#include "capability_listener.hh"
-
 using namespace NuguCapability;
 
-class ExtensionListener : public IExtensionListener,
-                          public CapabilityListener {
+class ExtensionListener : public IExtensionListener {
 public:
     virtual ~ExtensionListener() = default;
 

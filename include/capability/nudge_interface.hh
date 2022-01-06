@@ -38,7 +38,7 @@ using namespace NuguClientKit;
  * @brief nudge listener interface
  * @see INudgeHandler
  */
-class INudgeListener : public ICapabilityListener {
+class INudgeListener : virtual public ICapabilityListener {
 public:
     virtual ~INudgeListener() = default;
 };
