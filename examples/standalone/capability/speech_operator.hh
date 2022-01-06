@@ -20,13 +20,10 @@
 #include <capability/asr_interface.hh>
 #include <clientkit/wakeup_interface.hh>
 
-#include "capability_listener.hh"
-
 using namespace NuguClientKit;
 using namespace NuguCapability;
 
-class ASRListener : public IASRListener,
-                    public CapabilityListener {
+class ASRListener : public IASRListener {
 public:
     virtual ~ASRListener() = default;
 };

@@ -19,12 +19,9 @@
 
 #include <capability/tts_interface.hh>
 
-#include "capability_listener.hh"
-
 using namespace NuguCapability;
 
-class TTSListener : public ITTSListener,
-                    public CapabilityListener {
+class TTSListener : public ITTSListener {
 public:
     virtual ~TTSListener() = default;
     void setCapabilityHandler(ICapabilityInterface* handler) override;

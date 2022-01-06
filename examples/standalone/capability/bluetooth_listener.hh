@@ -19,12 +19,9 @@
 
 #include <capability/bluetooth_interface.hh>
 
-#include "capability_listener.hh"
-
 using namespace NuguCapability;
 
-class BluetoothListener : public IBluetoothListener,
-                          public CapabilityListener {
+class BluetoothListener : public IBluetoothListener {
 public:
     BluetoothListener();
     virtual ~BluetoothListener() = default;

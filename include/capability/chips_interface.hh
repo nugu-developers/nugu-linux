@@ -72,7 +72,7 @@ typedef struct {
  * @brief chips listener interface
  * @see IChipsHandler
  */
-class IChipsListener : public ICapabilityListener {
+class IChipsListener : virtual public ICapabilityListener {
 public:
     virtual ~IChipsListener() = default;
 

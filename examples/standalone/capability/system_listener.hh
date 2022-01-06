@@ -19,12 +19,9 @@
 
 #include <capability/system_interface.hh>
 
-#include "capability_listener.hh"
-
 using namespace NuguCapability;
 
-class SystemListener : public ISystemListener,
-                       public CapabilityListener {
+class SystemListener : public ISystemListener {
 public:
     virtual ~SystemListener() = default;
 

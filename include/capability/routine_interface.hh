@@ -38,7 +38,7 @@ using namespace NuguClientKit;
  * @brief routine listener interface
  * @see IRoutineHandler
  */
-class IRoutineListener : public ICapabilityListener {
+class IRoutineListener : virtual public ICapabilityListener {
 public:
     virtual ~IRoutineListener() = default;
 };

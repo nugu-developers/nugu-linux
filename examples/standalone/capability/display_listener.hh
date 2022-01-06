@@ -22,12 +22,9 @@
 
 #include <capability/display_interface.hh>
 
-#include "capability_listener.hh"
-
 using namespace NuguCapability;
 
-class DisplayListener : virtual public IDisplayListener,
-                        public CapabilityListener {
+class DisplayListener : virtual public IDisplayListener {
 public:
     DisplayListener();
     virtual ~DisplayListener() = default;

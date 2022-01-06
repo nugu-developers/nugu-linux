@@ -62,7 +62,7 @@ typedef struct {
  * @brief bluetooth listener interface
  * @see IBluetoothHandler
  */
-class IBluetoothListener : public ICapabilityListener {
+class IBluetoothListener : virtual public ICapabilityListener {
 public:
     virtual ~IBluetoothListener() = default;
 

@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-#include <clientkit/capability_interface.hh>
+#include "clientkit/capability_interface.hh"
 
-#ifndef __CAPABILITY_LISTENER_H__
-#define __CAPABILITY_LISTENER_H__
+namespace NuguClientKit {
 
-using namespace NuguClientKit;
+void ICapabilityListener::setCapabilityHandler(ICapabilityInterface* handler)
+{
+}
 
-class CapabilityListener {
-public:
-    virtual ~CapabilityListener() = default;
+ICapabilityInterface* ICapabilityListener::getCapabilityHandler()
+{
+    return nullptr;
+}
 
-    virtual void setCapabilityHandler(ICapabilityInterface* handler);
-};
-
-#endif /* __CAPABILITY_LISTENER_H__ */
+} //NuguClientKit

@@ -47,7 +47,7 @@ enum class MessageState {
  * @brief message listener interface
  * @see IMessageHandler
  */
-class IMessageListener : public ICapabilityListener {
+class IMessageListener : virtual public ICapabilityListener {
 public:
     virtual ~IMessageListener() = default;
 
@@ -77,7 +77,6 @@ public:
      * @param[in] dialog_id dialog request id
      */
     virtual void messageStateChanged(MessageState state, const std::string& received_time, const std::string& token, const std::string& dialog_id) = 0;
-
 };
 
 /**

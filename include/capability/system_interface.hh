@@ -57,7 +57,7 @@ enum class RevokeReason {
  * @brief system listener interface
  * @see ISystemHandler
  */
-class ISystemListener : public ICapabilityListener {
+class ISystemListener : virtual public ICapabilityListener {
 public:
     virtual ~ISystemListener() = default;
 

@@ -38,7 +38,7 @@ using namespace NuguClientKit;
  * @brief utility listener interface
  * @see IUtilityHandler
  */
-class IUtilityListener : public ICapabilityListener {
+class IUtilityListener : virtual public ICapabilityListener {
 public:
     virtual ~IUtilityListener() = default;
 };
