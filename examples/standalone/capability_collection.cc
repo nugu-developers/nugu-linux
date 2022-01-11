@@ -102,6 +102,9 @@ void CapabilityCollection::composeCapabilityFactory()
          } },
         { "Location", [&] {
              return setupCapabilityInstance<LocationAgent>("Location", location_listener, location_handler);
+         } },
+        { "Battery", [&] {
+             return setupCapabilityInstance<BatteryAgent>("Battery", battery_listener, battery_handler);
          } }
     };
 }

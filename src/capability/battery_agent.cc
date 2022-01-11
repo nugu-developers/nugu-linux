@@ -14,30 +14,15 @@
  * limitations under the License.
  */
 
-#include <algorithm>
-#include <iostream>
-
 #include "battery_agent.hh"
 
+namespace NuguCapability {
+
 static const char* CAPABILITY_NAME = "Battery";
-static const char* CAPABILITY_VERSION = "1.0";
+static const char* CAPABILITY_VERSION = "1.1";
 
 BatteryAgent::BatteryAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
-{
-    // TODO : implements service logic
-}
-
-BatteryAgent::~BatteryAgent()
-{
-    // TODO : implements service logic
-}
-
-void BatteryAgent::initialize()
-{
-}
-
-void BatteryAgent::deInitialize()
 {
 }
 
@@ -50,21 +35,20 @@ void BatteryAgent::setCapabilityListener(ICapabilityListener* clistener)
 void BatteryAgent::updateInfoForContext(Json::Value& ctx)
 {
     Json::Value battery;
+    BatteryInfo battery_info;
 
     battery["version"] = getVersion();
-    battery["level"] = battery_level;
-    battery["charging"] = battery_charging;
+
+    if (battery_listener)
+        battery_listener->requestContext(battery_info);
+
+    if (battery_info.level >= 0 && battery_info.level <= 100)
+        battery["level"] = battery_info.level;
+
+    battery["charging"] = battery_info.charging;
+    battery["approximateLevel"] = battery_info.approximate_level;
+
     ctx[getName()] = battery;
-
-    std::cout << ">> Collecting BatteryAgent Context Info : " << battery << std::endl;
 }
 
-void BatteryAgent::setBatteryLevel(const std::string& level)
-{
-    battery_level = level;
-}
-
-void BatteryAgent::setCharging(bool charging)
-{
-    battery_charging = charging;
-}
+} // NuguCapability

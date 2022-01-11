@@ -23,10 +23,12 @@
 #include <capability/system_interface.hh>
 #include <clientkit/nugu_client.hh>
 
-#include "battery_agent.hh"
+#include "permission_agent.hh"
 
 using namespace NuguClientKit;
 using namespace NuguCapability;
+
+static std::shared_ptr<ISystemHandler> system_handler = nullptr;
 
 class MyNetwork : public INetworkManagerListener {
 public:
@@ -41,9 +43,11 @@ public:
             break;
         case NetworkStatus::READY:
             std::cout << "Network ready !" << std::endl;
+            system_handler->synchronizeState();
             break;
         case NetworkStatus::CONNECTED:
             std::cout << "Network connected !" << std::endl;
+            system_handler->synchronizeState();
             break;
         default:
             break;
@@ -66,33 +70,40 @@ public:
     }
 };
 
+class PermissionListener : public IPermissionListener {
+public:
+    void requestContext(std::vector<PermissionInfo>& permission_infos) override
+    {
+        std::cout << "Permission Info\n";
+
+        permission_infos.emplace_back(PermissionInfo { "LOCATION", "GRANTED" });
+        permission_infos.emplace_back(PermissionInfo { "CALL", "DENIED" });
+
+        for (const auto& permission_info : permission_infos)
+            std::cout << "\t" << permission_info.name
+                      << ": " << permission_info.state << std::endl;
+    }
+};
+
 int main(int argc, char* argv[])
 {
-    if (argc != 2) {
-        std::cout << "Usage: " << argv[0] << " battery level (ex.40)]" << std::endl;
-        return 0;
-    }
-
-    std::string battery_level = argv[1];
-
     /* Turn off the SDK internal log */
     nugu_log_set_system(NUGU_LOG_SYSTEM_NONE);
 
     auto nugu_client(std::make_shared<NuguClient>());
 
     /* built-in capability */
-    auto system_handler(std::shared_ptr<ISystemHandler>(
-        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>()));
+    system_handler = std::shared_ptr<ISystemHandler>(CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>());
 
     /* add-on capability for injection */
-    auto battery_agent(std::make_shared<BatteryAgent>());
-    battery_agent->setBatteryLevel(battery_level);
-    battery_agent->setCharging(true);
+    auto permission_listener(std::make_shared<PermissionListener>());
+    auto permission_agent(std::make_shared<PermissionAgent>());
+    permission_agent->setCapabilityListener(permission_listener.get());
 
     /* Register build-in capabilities */
     nugu_client->getCapabilityBuilder()
         ->add(system_handler.get())
-        ->add(battery_agent.get())
+        ->add(permission_agent.get())
         ->construct();
 
     if (!nugu_client->initialize()) {

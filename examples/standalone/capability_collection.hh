@@ -26,6 +26,7 @@
 #include <capability/utility_interface.hh>
 
 #include "audio_player_listener.hh"
+#include "battery_listener.hh"
 #include "bluetooth_listener.hh"
 #include "chips_listener.hh"
 #include "display_listener.hh"
@@ -98,6 +99,7 @@ private:
     std::unique_ptr<IRoutineHandler> routine_handler = nullptr;
     std::unique_ptr<IBluetoothHandler> bluetooth_handler = nullptr;
     std::unique_ptr<ILocationHandler> location_handler = nullptr;
+    std::unique_ptr<IBatteryHandler> battery_handler = nullptr;
 
     // Capability listener
     std::unique_ptr<SpeechOperator> speech_operator = nullptr;
@@ -114,6 +116,7 @@ private:
     std::unique_ptr<ChipsListener> chips_listener = nullptr;
     std::unique_ptr<BluetoothListener> bluetooth_listener = nullptr;
     std::unique_ptr<LocationListener> location_listener = nullptr;
+    std::unique_ptr<BatteryListener> battery_listener = nullptr;
 
     std::map<std::string, std::function<ICapabilityInterface*()>> factories;
     std::map<std::string, ICapabilityListener*> capability_listeners;

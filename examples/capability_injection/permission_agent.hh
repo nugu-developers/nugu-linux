@@ -14,38 +14,34 @@
  * limitations under the License.
  */
 
-#ifndef __NUGU_BATTERY_AGENT_H__
-#define __NUGU_BATTERY_AGENT_H__
-
-#include <vector>
+#ifndef __NUGU_PERMISSION_AGENT_H__
+#define __NUGU_PERMISSION_AGENT_H__
 
 #include <clientkit/capability.hh>
 
 using namespace NuguClientKit;
 
-class IBatteryListener : virtual public ICapabilityListener {
+typedef struct {
+    std::string name;
+    std::string state;
+} PermissionInfo;
+
+class IPermissionListener : virtual public ICapabilityListener {
 public:
-    virtual ~IBatteryListener() = default;
+    virtual ~IPermissionListener() = default;
+    virtual void requestContext(std::vector<PermissionInfo>& permission_infos) = 0;
 };
 
-class BatteryAgent : public Capability {
+class PermissionAgent : public Capability {
 public:
-    BatteryAgent();
-    virtual ~BatteryAgent();
+    PermissionAgent();
+    virtual ~PermissionAgent() = default;
 
-    void initialize() override;
-    void deInitialize() override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void updateInfoForContext(Json::Value& ctx) override;
 
-    void setBatteryLevel(const std::string& level);
-    void setCharging(bool charging);
-
 private:
-    std::string battery_level = "10";
-    bool battery_charging = false;
-
-    IBatteryListener* battery_listener = nullptr;
+    IPermissionListener* permission_listener = nullptr;
 };
 
-#endif /* __NUGU_BATTERY_AGENT_H__ */
+#endif /* __NUGU_PERMISSION_AGENT_H__ */
