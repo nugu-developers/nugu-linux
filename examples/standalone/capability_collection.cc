@@ -99,6 +99,9 @@ void CapabilityCollection::composeCapabilityFactory()
          } },
         { "Bluetooth", [&] {
              return setupCapabilityInstance<BluetoothAgent>("Bluetooth", bluetooth_listener, bluetooth_handler);
+         } },
+        { "Location", [&] {
+             return setupCapabilityInstance<LocationAgent>("Location", location_listener, location_handler);
          } }
     };
 }

@@ -126,6 +126,11 @@ class MessageAgent;
 class BluetoothAgent;
 
 /**
+ * @brief LocationAgent
+ */
+class LocationAgent;
+
+/**
  * @brief CapabilityFactory
  */
 class CapabilityFactory {

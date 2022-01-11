@@ -20,6 +20,7 @@
 #include "chips_agent.hh"
 #include "display_agent.hh"
 #include "extension_agent.hh"
+#include "location_agent.hh"
 #include "message_agent.hh"
 #include "mic_agent.hh"
 #include "nudge_agent.hh"
@@ -66,4 +67,6 @@ template IRoutineHandler* CapabilityFactory::makeCapability<RoutineAgent, IRouti
 template IPhoneCallHandler* CapabilityFactory::makeCapability<PhoneCallAgent, IPhoneCallHandler>(ICapabilityListener* listener);
 template IMessageHandler* CapabilityFactory::makeCapability<MessageAgent, IMessageHandler>(ICapabilityListener* listener);
 template IBluetoothHandler* CapabilityFactory::makeCapability<BluetoothAgent, IBluetoothHandler>(ICapabilityListener* listener);
+template ILocationHandler* CapabilityFactory::makeCapability<LocationAgent, ILocationHandler>(ICapabilityListener* listener);
+
 } // NuguCapability
