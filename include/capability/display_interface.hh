@@ -51,6 +51,14 @@ enum class TemplateControlType {
 };
 
 /**
+ * @brief Display Context Information
+ */
+typedef struct {
+    std::string focused_item_token; /**< a unique identifier to identify the focused item */
+    std::vector<std::string> visible_token_list; /**< unique identifier list to identify the items being displayed */
+} DisplayContextInfo;
+
+/**
  * @brief display listener interface
  * @see IDisplayHandler
  */
@@ -102,8 +110,9 @@ public:
     /**
      * @brief The user reports that the display was rendered.
      * @param[in] id display template id
+     * @param[in] context_info display context information
      */
-    virtual void displayRendered(const std::string& id);
+    virtual void displayRendered(const std::string& id, const DisplayContextInfo& context_info = DisplayContextInfo {});
 
     /**
      * @brief The user reports that the display is cleared.

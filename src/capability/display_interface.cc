@@ -18,7 +18,7 @@
 
 namespace NuguCapability {
 
-void IDisplayHandler::displayRendered(const std::string& id) {}
+void IDisplayHandler::displayRendered(const std::string& id, const DisplayContextInfo& context_info) {}
 void IDisplayHandler::displayCleared(const std::string& id) {}
 void IDisplayHandler::elementSelected(const std::string& id, const std::string& item_token, const std::string& postback) {}
 void IDisplayHandler::triggerChild(const std::string& ps_id, const std::string& data) {}

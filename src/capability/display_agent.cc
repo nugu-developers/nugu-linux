@@ -43,8 +43,7 @@ void DisplayAgent::initialize()
 
     Capability::initialize();
 
-    disp_cur_ps_id = "";
-    disp_cur_token = "";
+    context_collection = {};
     playstackctl_ps_id.clear();
     prepared_render_info_id.clear();
     keep_history = false;
@@ -122,10 +121,18 @@ void DisplayAgent::updateInfoForContext(Json::Value& ctx)
     Json::Value display;
 
     display["version"] = getVersion();
-    if (disp_cur_token.size()) {
-        display["playServiceId"] = disp_cur_ps_id;
-        display["token"] = disp_cur_token;
-    }
+
+    if (!context_collection.ps_id.empty())
+        display["playServiceId"] = context_collection.ps_id;
+
+    if (!context_collection.token.empty())
+        display["token"] = context_collection.token;
+
+    if (!context_collection.focused_item_token.empty())
+        display["focusedItemToken"] = context_collection.focused_item_token;
+
+    for (const auto& visible_token : context_collection.visible_token_list)
+        display["visibleTokenList"].append(visible_token);
 
     ctx[getName()] = display;
 }
@@ -136,7 +143,7 @@ void DisplayAgent::setCapabilityListener(ICapabilityListener* listener)
         setDisplayListener(dynamic_cast<IDisplayListener*>(listener));
 }
 
-void DisplayAgent::displayRendered(const std::string& id)
+void DisplayAgent::displayRendered(const std::string& id, const DisplayContextInfo& context_info)
 {
     auto render_info = render_helper->getRenderInfo(id);
 
@@ -145,8 +152,10 @@ void DisplayAgent::displayRendered(const std::string& id)
         return;
     }
 
-    disp_cur_token = render_info->token;
-    disp_cur_ps_id = render_info->ps_id;
+    context_collection.token = render_info->token;
+    context_collection.ps_id = render_info->ps_id;
+    context_collection.focused_item_token = context_info.focused_item_token;
+    context_collection.visible_token_list = context_info.visible_token_list;
 }
 
 void DisplayAgent::displayCleared(const std::string& id)
@@ -174,7 +183,7 @@ void DisplayAgent::displayCleared(const std::string& id)
 
     deactiveSession();
 
-    disp_cur_token = disp_cur_ps_id = "";
+    context_collection = {};
 }
 
 void DisplayAgent::elementSelected(const std::string& id, const std::string& item_token, const std::string& postback)
@@ -186,8 +195,8 @@ void DisplayAgent::elementSelected(const std::string& id, const std::string& ite
         return;
     }
 
-    disp_cur_token = render_info->token;
-    disp_cur_ps_id = render_info->ps_id;
+    context_collection.token = render_info->token;
+    context_collection.ps_id = render_info->ps_id;
 
     sendEventElementSelected(item_token, postback);
 }
@@ -197,13 +206,13 @@ void DisplayAgent::triggerChild(const std::string& ps_id, const std::string& dat
     Json::Reader reader;
     Json::Value data_obj;
 
-    if (ps_id.empty() || disp_cur_token.empty()
+    if (ps_id.empty() || context_collection.token.empty()
         || data.empty() || !reader.parse(data, data_obj)) {
         nugu_warn("The mandatory parameters are not prepared.");
         return;
     }
 
-    sendEventTriggerChild(ps_id, disp_cur_token, data_obj);
+    sendEventTriggerChild(ps_id, context_collection.token, data_obj);
 }
 
 void DisplayAgent::controlTemplate(const std::string& id, TemplateControlType control_type)
@@ -321,7 +330,7 @@ void DisplayAgent::sendEventElementSelected(const std::string& item_token, const
     Json::Value root;
     Json::Value temp;
 
-    root["playServiceId"] = disp_cur_ps_id;
+    root["playServiceId"] = context_collection.ps_id;
     root["token"] = item_token;
 
     if (reader.parse(postback, temp))
@@ -521,7 +530,7 @@ void DisplayAgent::parsingUpdate(const char* message)
         return;
     }
 
-    if (disp_cur_token != root["token"].asString()) {
+    if (context_collection.token != root["token"].asString()) {
         nugu_warn("The token is invalid");
         return;
     }

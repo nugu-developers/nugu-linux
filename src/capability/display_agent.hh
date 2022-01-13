@@ -41,7 +41,7 @@ public:
     void updateInfoForContext(Json::Value& ctx) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
-    void displayRendered(const std::string& id) override;
+    void displayRendered(const std::string& id, const DisplayContextInfo& context_info) override;
     void displayCleared(const std::string& id) override;
     void elementSelected(const std::string& id, const std::string& item_token, const std::string& postback) override;
     void triggerChild(const std::string& ps_id, const std::string& data) override;
@@ -64,6 +64,11 @@ private:
         std::string id;
         std::string token;
         bool is_render = false;
+    };
+
+    using DisplayContextCollection = struct : DisplayContextInfo {
+        std::string ps_id;
+        std::string token;
     };
 
     void sendEventElementSelected(const std::string& item_token, const std::string& postback);
@@ -146,8 +151,7 @@ private:
 
     std::unique_ptr<DisplayRenderHelper> render_helper;
     IDisplayListener* display_listener;
-    std::string disp_cur_ps_id;
-    std::string disp_cur_token;
+    DisplayContextCollection context_collection;
     std::string playstackctl_ps_id;
     std::string prepared_render_info_id;
     bool keep_history;
