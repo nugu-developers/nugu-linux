@@ -1,5 +1,6 @@
 SET(UNIT_TESTS
 	test_clientkit_nugu_runner
+	test_clientkit_http_rest
 	test_clientkit_capability)
 
 # Add Compile Sources with Mock for test
