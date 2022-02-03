@@ -1,7 +1,9 @@
 SET(UNIT_TESTS
+	test_clientkit_nugu_runner
 	test_clientkit_capability)
 
 # Add Compile Sources with Mock for test
+SET(test_clientkit_nugu_runner_srcs ../../src/clientkit/nugu_runner.cc)
 SET(test_clientkit_capability_srcs ../../src/clientkit/capability.cc)
 
 FOREACH(test ${UNIT_TESTS})
