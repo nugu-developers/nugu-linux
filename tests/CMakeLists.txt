@@ -23,6 +23,7 @@ SET(UNIT_TESTS
 	test_nugu_event
 	test_nugu_uuid
 	test_nugu_directive
+	test_nugu_http
 	test_nugu_ringbuffer)
 
 FOREACH(test ${UNIT_TESTS})
