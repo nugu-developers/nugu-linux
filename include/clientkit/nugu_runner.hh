@@ -40,7 +40,7 @@ namespace NuguClientKit {
 enum class ExecuteType {
     Auto, /**< The method is executed synchronized if caller is on nugu loop, otherwise it is executed asyncronized */
     Queued, /**< The method is executed on next idle time even if caller is on nugu loop */
-    Blocking  /**< The caller is blocking until the method is executed done */
+    Blocking /**< The caller is blocking until the method is executed done */
 };
 
 /**
@@ -70,6 +70,9 @@ public:
      * @see ExecuteType
      */
     bool invokeMethod(const std::string& tag, request_method method, ExecuteType type = ExecuteType::Auto);
+
+private:
+    void addMethod2Dispatcher(const std::string& tag, NuguRunner::request_method method, ExecuteType type);
 
 private:
     NuguRunnerPrivate* d;
