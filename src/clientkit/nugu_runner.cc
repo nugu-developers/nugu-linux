@@ -57,6 +57,7 @@ public:
     std::condition_variable cv;
     static int unique;
     int done;
+    guint src_id;
 };
 
 int NuguRunnerPrivate::unique = 0;
@@ -72,6 +73,8 @@ gboolean NuguRunnerPrivate::method_dispatch_cb(void* userdata)
         return FALSE;
     }
 
+    d->src_id = 0;
+
     std::string tag = d->tag_vector.front();
     if (d->method_map.find(tag) != d->method_map.end()) {
         nugu_info("[Method: %s] will execute", tag.c_str());
@@ -82,6 +85,8 @@ gboolean NuguRunnerPrivate::method_dispatch_cb(void* userdata)
         d->remove_method(tag);
 
         if (type == ExecuteType::Blocking) {
+            std::unique_lock<std::mutex> guard(d->m);
+
             d->done = 1;
             nugu_info("[Method: %s] release blocking", tag.c_str());
             d->cv.notify_one();
@@ -127,6 +132,7 @@ NuguRunner::NuguRunner()
     : d(new NuguRunnerPrivate())
 {
     d->private_map[this] = d;
+    d->src_id = 0;
 }
 
 NuguRunner::~NuguRunner()
@@ -134,6 +140,9 @@ NuguRunner::~NuguRunner()
     auto private_iter = d->private_map.find(this);
     if (private_iter != d->private_map.end())
         d->private_map.erase(private_iter);
+
+    if (d->src_id > 0)
+        g_source_remove(d->src_id);
 
     delete d;
 }
@@ -153,12 +162,11 @@ bool NuguRunner::invokeMethod(const std::string& tag, request_method method, Exe
 
     d->add_method(unique_tag, std::move(method), type);
 
-    g_idle_add(d->method_dispatch_cb, (void*)this);
     d->done = 0;
+    d->src_id = g_idle_add(d->method_dispatch_cb, (void*)this);
 
     if (type == ExecuteType::Blocking) {
-        std::mutex mtx;
-        std::unique_lock<std::mutex> lk(mtx);
+        std::unique_lock<std::mutex> lk(d->m);
 
         auto now = std::chrono::system_clock::now();
         if (!d->cv.wait_until(lk, now + std::chrono::milliseconds(DEFAULT_METHOD_TIMEOUT),
