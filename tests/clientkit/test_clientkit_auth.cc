@@ -49,6 +49,8 @@ static void test_nugu_auth_default()
     g_assert(auth->refresh(NULL) == false);
     g_assert(auth->isExpired(NULL) == true);
     g_assert(auth->getRemainExpireTime(NULL) == 0);
+    g_assert(auth->getGatewayRegistryUri().size() == 0);
+    g_assert(auth->getTemplateServerUri().size() == 0);
 
     NuguDeviceConfig config;
     NuguAuth* tmp_auth = new NuguAuth(config);
@@ -63,6 +65,8 @@ static void test_nugu_auth_default()
 static void test_nugu_auth_discovery()
 {
     g_assert(auth->discovery() == true);
+    g_assert(auth->getGatewayRegistryUri().size() != 0);
+    g_assert(auth->getTemplateServerUri().size() != 0);
 }
 
 static void test_nugu_auth_url()

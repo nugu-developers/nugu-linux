@@ -158,14 +158,26 @@ public:
      */
     time_t getRemainExpireTime(const NuguToken* token, time_t base_time = 0);
 
+    /**
+     * @brief Get uri for device gateway registry
+     * @return std::string uri
+     */
+    std::string getGatewayRegistryUri();
+
+    /**
+     * @brief Get uri for template server
+     * @return std::string uri
+     */
+    std::string getTemplateServerUri();
+
 private:
     NuguDeviceConfig config;
     NuguHttpRest* rest;
     unsigned int supported_grant_types;
     std::string ep_token;
     std::string ep_authorization;
-    std::string url_gateway_registry;
-    std::string url_template_server;
+    std::string uri_gateway_registry;
+    std::string uri_template_server;
 };
 
 /**
