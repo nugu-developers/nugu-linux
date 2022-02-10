@@ -95,8 +95,8 @@ bool NuguAuth::discovery()
     ep_authorization = root["authorization_endpoint"].asString();
     ep_authorization.erase(0, url_len);
 
-    url_gateway_registry = root["device_gateway_server_h2_uri"].asString();
-    url_template_server = root["template_server_uri"].asString();
+    uri_gateway_registry = root["device_gateway_registry_uri"].asString();
+    uri_template_server = root["template_server_uri"].asString();
 
     supported_grant_types = 0;
     Json::Value grant_types = root["grant_types_supported"];
@@ -583,6 +583,16 @@ time_t NuguAuth::getRemainExpireTime(const NuguToken* token, time_t base_time)
         return expire_time - base_time;
 
     return 0;
+}
+
+std::string NuguAuth::getGatewayRegistryUri()
+{
+    return uri_gateway_registry;
+}
+
+std::string NuguAuth::getTemplateServerUri()
+{
+    return uri_template_server;
 }
 
 } // NuguClientKit
