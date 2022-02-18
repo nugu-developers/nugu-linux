@@ -28,8 +28,6 @@
 #include "base/nugu_log.h"
 #include "clientkit/nugu_runner.hh"
 
-#define DEFAULT_METHOD_TIMEOUT 500
-
 namespace NuguClientKit {
 
 class NuguRunnerPrivate {
@@ -49,6 +47,7 @@ public:
     }
     static gboolean method_dispatch_cb(void* userdata);
     void add_method(const std::string& tag, NuguRunner::request_method method, ExecuteType type);
+    void remove_method(const std::string& tag);
 
 public:
     static std::map<NuguRunner*, NuguRunnerPrivate*> private_map;
@@ -109,6 +108,23 @@ void NuguRunnerPrivate::add_method(const std::string& tag, NuguRunner::request_m
     type_map[tag] = type;
 }
 
+void NuguRunnerPrivate::remove_method(const std::string& tag)
+{
+    nugu_info("[Method: %s] is removed", tag.c_str());
+
+    auto tag_iter = std::find(tag_vector.begin(), tag_vector.end(), tag);
+    if (tag_iter != tag_vector.end())
+        tag_vector.erase(tag_iter);
+
+    auto type_iter = type_map.find(tag);
+    if (type_iter != type_map.end())
+        type_map.erase(type_iter);
+
+    auto method_iter = method_map.find(tag);
+    if (method_iter != method_map.end())
+        method_map.erase(method_iter);
+}
+
 NuguRunner::NuguRunner()
     : d(new NuguRunnerPrivate())
 {
@@ -127,7 +143,7 @@ NuguRunner::~NuguRunner()
     delete d;
 }
 
-bool NuguRunner::invokeMethod(const std::string& tag, request_method method, ExecuteType type)
+bool NuguRunner::invokeMethod(const std::string& tag, request_method method, ExecuteType type, int timeout)
 {
     if (type != ExecuteType::Queued) {
         if (g_main_context_is_owner(g_main_context_default()) == TRUE) {
@@ -145,13 +161,22 @@ bool NuguRunner::invokeMethod(const std::string& tag, request_method method, Exe
         std::mutex mtx;
         std::unique_lock<std::mutex> lk(mtx);
 
+        if (timeout <= 0) {
+            d->cv.wait(lk);
+            return true;
+        }
+
         auto now = std::chrono::system_clock::now();
-        if (!d->cv.wait_until(lk, now + std::chrono::milliseconds(DEFAULT_METHOD_TIMEOUT),
+        if (!d->cv.wait_until(lk, now + std::chrono::milliseconds(timeout * 1000),
                 [&]() { return d->done == 1; })) {
-            nugu_warn("The method(%s) is released blocking by timeout (%d msec)", unique_tag.c_str(), DEFAULT_METHOD_TIMEOUT);
+            std::lock_guard<std::mutex> guard(d->m);
+
+            nugu_warn("The method(%s) is released blocking by timeout (%d sec)", unique_tag.c_str(), timeout);
+            d->remove_method(unique_tag);
             return false;
         }
     }
+
     return true;
 }
 
