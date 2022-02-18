@@ -67,9 +67,10 @@ public:
      * @param[in] tag tag name for debug output
      * @param[in] method request method
      * @param[in] type execute method type
+     * @param[in] timeout The invoked method is released blocking state when timeout. (unit: sec)
      * @see ExecuteType
      */
-    bool invokeMethod(const std::string& tag, request_method method, ExecuteType type = ExecuteType::Auto);
+    bool invokeMethod(const std::string& tag, request_method method, ExecuteType type = ExecuteType::Auto, int timeout = 0);
 
 private:
     void addMethod2Dispatcher(const std::string& tag, NuguRunner::request_method method, ExecuteType type);

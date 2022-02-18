@@ -27,11 +27,17 @@ using namespace NuguClientKit;
 #define TIMER_1S 1
 #define TIMER_500MS 500
 #define TIMER_100MS 100
+#define TIMEOUT_IMMEDIATELY 1
 
 class TestExecutor : public NuguRunner {
 public:
     TestExecutor() = default;
     ~TestExecutor() = default;
+
+    void neverCallFunction()
+    {
+        g_assert(false);
+    }
 
     bool callBoolFunction()
     {
@@ -48,7 +54,7 @@ public:
         return "ok";
     }
 
-    bool runMethod(ExecuteType type)
+    bool runMethod(ExecuteType type, int timeout = 0)
     {
         ret_bool = false;
 
@@ -67,10 +73,14 @@ public:
         }
 
         if (!invokeMethod(
-                tag, [&]() {
+                tag, [&, type, timeout]() {
+                    // if invokeMethod is released by timeout, this method should not be called.
+                    if (type == ExecuteType::Blocking && timeout == TIMEOUT_IMMEDIATELY)
+                        neverCallFunction();
+
                     ret_bool = callBoolFunction();
                 },
-                type))
+                type, timeout))
             return false;
 
         if (type == ExecuteType::Blocking)
@@ -189,6 +199,18 @@ static void* _execute_method_runner_on_another_thread(gpointer userdata)
     return NULL;
 }
 
+static void* _execute_method_runner_blocking_on_another_thread(gpointer userdata)
+{
+    TestExecutor test_executor;
+    GMainLoop* loop = (GMainLoop*)userdata;
+
+    g_assert(test_executor.runMethod(ExecuteType::Blocking, TIMEOUT_IMMEDIATELY) == false);
+    g_assert(test_executor.runMethod(ExecuteType::Blocking) == true);
+
+    g_main_loop_quit(loop);
+    return NULL;
+}
+
 static void* _execute_method_type_runner_on_another_thread(gpointer userdata)
 {
     TestExecutor test_executor;
@@ -236,12 +258,25 @@ static void test_nugu_runner_execute_method_imediately_on_nuguloop(nuguFixture* 
     g_main_loop_run(loop);
 }
 
-static void test_nugu_runner_execute_method_on_anther_thread(nuguFixture* fixture, gconstpointer ignored)
+static void test_nugu_runner_execute_method_on_another_thread(nuguFixture* fixture, gconstpointer ignored)
 {
     GMainLoop* loop = fixture->loop;
     pthread_t tid;
 
     pthread_create(&tid, NULL, _execute_method_runner_on_another_thread, (gpointer)loop);
+
+    g_main_loop_run(loop);
+}
+
+static void test_nugu_runner_execute_method_blocking_on_another_thread(nuguFixture* fixture, gconstpointer ignored)
+{
+    GMainLoop* loop = fixture->loop;
+    pthread_t tid;
+
+    pthread_create(&tid, NULL, _execute_method_runner_blocking_on_another_thread, (gpointer)loop);
+
+    // wait for 2sec
+    usleep(2 * 1000 * 1000);
 
     g_main_loop_run(loop);
 }
@@ -277,9 +312,12 @@ int main(int argc, char* argv[])
 
     G_TEST_ADD_FUNC("/app/NuguRunnerReserveExecuteMethodNextIdleTime", test_nugu_runner_reserve_execute_method_next_idle_time_on_nuguloop);
     G_TEST_ADD_FUNC("/app/NuguRunnerReserveExecuteMethodImediately", test_nugu_runner_execute_method_imediately_on_nuguloop);
-    G_TEST_ADD_FUNC("/app/NuguRunnerExecuteMethodOnAnotherThread", test_nugu_runner_execute_method_on_anther_thread);
+    G_TEST_ADD_FUNC("/app/NuguRunnerExecuteMethodOnAnotherThread", test_nugu_runner_execute_method_on_another_thread);
     G_TEST_ADD_FUNC("/app/NuguRunnerExecuteMethodReturnType", test_nugu_runner_execute_method_return_type);
     G_TEST_ADD_FUNC("/app/NuguRunnerExecuteMultipleMethodOnAnotherThread", test_nugu_runner_execute_multiple_method_on_anther_thread);
+
+    if (getenv("UNIT_TEST_ONLY_LOCAL") != NULL)
+        G_TEST_ADD_FUNC("/app/NuguRunnerExecuteMethodBlockingOnAnotherThread", test_nugu_runner_execute_method_blocking_on_another_thread);
 
     return g_test_run();
 }
