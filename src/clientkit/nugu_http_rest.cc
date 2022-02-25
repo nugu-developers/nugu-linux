@@ -105,6 +105,12 @@ NuguHttpResponse* NuguHttpRest::get(const std::string& path,
     resp = nugu_http_response_dup(nugu_http_request_response_get(req));
     nugu_http_request_free(req);
 
+    if (resp->code == -1) {
+        nugu_error("nugu_http_get_sync() failed");
+        nugu_http_response_free(resp);
+        return NULL;
+    }
+
     return resp;
 }
 
@@ -155,6 +161,12 @@ NuguHttpResponse* NuguHttpRest::post(const std::string& path, const std::string&
 
     resp = nugu_http_response_dup(nugu_http_request_response_get(req));
     nugu_http_request_free(req);
+
+    if (resp->code == -1) {
+        nugu_error("nugu_http_post_sync() failed");
+        nugu_http_response_free(resp);
+        return NULL;
+    }
 
     return resp;
 }
@@ -207,6 +219,12 @@ NuguHttpResponse* NuguHttpRest::put(const std::string& path, const std::string& 
     resp = nugu_http_response_dup(nugu_http_request_response_get(req));
     nugu_http_request_free(req);
 
+    if (resp->code == -1) {
+        nugu_error("nugu_http_put_sync() failed");
+        nugu_http_response_free(resp);
+        return NULL;
+    }
+
     return resp;
 }
 
@@ -257,6 +275,12 @@ NuguHttpResponse* NuguHttpRest::del(const std::string& path,
 
     resp = nugu_http_response_dup(nugu_http_request_response_get(req));
     nugu_http_request_free(req);
+
+    if (resp->code == -1) {
+        nugu_error("nugu_http_delete_sync() failed");
+        nugu_http_response_free(resp);
+        return NULL;
+    }
 
     return resp;
 }
