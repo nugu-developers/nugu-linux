@@ -87,6 +87,7 @@ private:
     std::string dialog_id;
     std::string received_time;
     InteractionMode interaction_mode;
+    std::pair<Json::Value, Json::Value> interaction_control_payloads;
 };
 
 } // NuguCapability

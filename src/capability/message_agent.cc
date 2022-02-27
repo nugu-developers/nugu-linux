@@ -55,6 +55,8 @@ void MessageAgent::initialize()
     tts_token = tts_ps_id = "";
     context_template = "";
     is_finished = false;
+    interaction_control_payloads.first.clear();
+    interaction_control_payloads.second.clear();
 
     initialized = true;
 }
@@ -138,6 +140,7 @@ void MessageAgent::candidatesListed(const std::string& context_template, const s
 {
     Json::Value root;
     Json::Reader reader;
+    Json::FastWriter writer;
 
     if (!reader.parse(context_template, root) || !reader.parse(payload, root)) {
         nugu_error("context template or payload is not json format!!");
@@ -145,8 +148,13 @@ void MessageAgent::candidatesListed(const std::string& context_template, const s
         return;
     }
 
+    if (!interaction_control_payloads.first.empty()) {
+        root["interactionControl"] = interaction_control_payloads.first;
+        interaction_control_payloads.first.clear();
+    }
+
     this->context_template = context_template;
-    sendEvent("CandidatesListed", capa_helper->makeAllContextInfo(), payload, [&](...) {
+    sendEvent("CandidatesListed", capa_helper->makeAllContextInfo(), writer.write(root), [&](...) {
         finishInteractionControl();
     });
 }
@@ -204,6 +212,9 @@ void MessageAgent::parsingSendCandidates(const char* message)
         return;
     }
 
+    if (root.isMember("interactionControl"))
+        interaction_control_payloads.first = root["interactionControl"];
+
     startInteractionControl(root);
 
     if (message_listener)
@@ -243,6 +254,9 @@ void MessageAgent::parsingGetMessage(const char* message)
         nugu_error("There is no mandatory data in directive message");
         return;
     }
+
+    if (root.isMember("interactionControl"))
+        interaction_control_payloads.second = root["interactionControl"];
 
     startInteractionControl(root);
 
@@ -292,6 +306,7 @@ void MessageAgent::sendEventGetMessage(std::string&& event_name, const std::stri
 {
     Json::Value root;
     Json::Reader reader;
+    Json::FastWriter writer;
 
     if (!reader.parse(payload, root)) {
         nugu_error("payload(%s) is not json format!!", payload.c_str());
@@ -299,7 +314,12 @@ void MessageAgent::sendEventGetMessage(std::string&& event_name, const std::stri
         return;
     }
 
-    sendEvent(event_name, getContextInfo(), payload, [&](...) {
+    if (!interaction_control_payloads.second.empty()) {
+        root["interactionControl"] = interaction_control_payloads.second;
+        interaction_control_payloads.second.clear();
+    }
+
+    sendEvent(event_name, getContextInfo(), writer.write(root), [&](...) {
         finishInteractionControl();
     });
 }

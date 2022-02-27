@@ -45,6 +45,8 @@ void PhoneCallAgent::initialize()
     focus_state = FocusState::NONE;
     context_template = "";
     context_recipient = "";
+    playstackctl_ps_id.clear();
+    interaction_control_payload.clear();
 
     playsync_manager->addListener(getName(), this);
 
@@ -109,14 +111,20 @@ void PhoneCallAgent::candidatesListed(const std::string& context_template, const
 {
     Json::Value root;
     Json::Reader reader;
+    Json::FastWriter writer;
 
     if (!reader.parse(context_template, root) || !reader.parse(payload, root)) {
         nugu_error("context template or payload is not json format!!");
         return;
     }
 
+    if (!interaction_control_payload.empty()) {
+        root["interactionControl"] = interaction_control_payload;
+        interaction_control_payload.clear();
+    }
+
     this->context_template = context_template;
-    sendEvent("CandidatesListed", capa_helper->makeAllContextInfo(), payload,
+    sendEvent("CandidatesListed", capa_helper->makeAllContextInfo(), writer.write(root),
         [&](const std::string& ename, const std::string& msg_id, const std::string& dialog_id, int success, int code) {
             nugu_info("CandidatesListed result callback - success: %d", success);
             interaction_control_manager->finish(InteractionMode::MULTI_TURN, getName());
@@ -264,6 +272,9 @@ void PhoneCallAgent::parsingSendCandidates(const char* message)
         nugu_error("There is no mandatory data in directive message");
         return;
     }
+
+    if (root.isMember("interactionControl"))
+        interaction_control_payload = root["interactionControl"];
 
     playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
     interaction_mode = getInteractionMode(root["interactionControl"]);

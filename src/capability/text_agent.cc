@@ -293,17 +293,22 @@ void TextAgent::sendEventTextInput(const TextInputParam& text_input_param, bool 
 
 void TextAgent::sendEventTextSourceFailed(const TextInputParam& text_input_param, EventResultCallback cb)
 {
-    sendEventFailed("TextSourceFailed", text_input_param, std::move(cb));
+    sendEventFailed("TextSourceFailed", text_input_param, Json::nullValue, std::move(cb));
 }
 
-void TextAgent::sendEventTextRedirectFailed(const TextInputParam& text_input_param, EventResultCallback cb)
+void TextAgent::sendEventTextRedirectFailed(const TextInputParam& text_input_param, const Json::Value& payload, EventResultCallback cb)
 {
-    sendEventFailed("TextRedirectFailed", text_input_param, std::move(cb));
+    Json::Value interaction_control_payload;
+
+    if (payload.isMember("interactionControl"))
+        interaction_control_payload["interactionControl"] = payload["interactionControl"];
+
+    sendEventFailed("TextRedirectFailed", text_input_param, std::move(interaction_control_payload), std::move(cb));
 }
 
-void TextAgent::sendEventFailed(std::string&& event_name, const TextInputParam& text_input_param, EventResultCallback cb)
+void TextAgent::sendEventFailed(std::string&& event_name, const TextInputParam& text_input_param, Json::Value&& extra_payload, EventResultCallback cb)
 {
-    Json::Value root;
+    Json::Value root(extra_payload);
     Json::FastWriter writer;
 
     if (!text_input_param.ps_id.empty())
@@ -360,7 +365,7 @@ void TextAgent::parsingTextRedirect(const char* message)
             throw "The processing TextRedirect is incomplete.";
     } catch (const char* exception_message) {
         finishInteractionControl();
-        sendEventTextRedirectFailed(text_input_param);
+        sendEventTextRedirectFailed(text_input_param, root);
         nugu_error(exception_message);
     }
 }
