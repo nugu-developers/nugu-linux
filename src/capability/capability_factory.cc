@@ -37,6 +37,9 @@
 
 #include "capability/capability_factory.hh"
 
+#define TEMPLATE_EXPLICIT_INSTANTIATION(agent, handler) \
+    template handler* CapabilityFactory::makeCapability<agent, handler>(ICapabilityListener* listener)
+
 namespace NuguCapability {
 
 template <typename T, typename V>
@@ -50,25 +53,25 @@ V* CapabilityFactory::makeCapability(ICapabilityListener* listener)
     return dynamic_cast<V*>(instance);
 }
 
-template IASRHandler* CapabilityFactory::makeCapability<ASRAgent, IASRHandler>(ICapabilityListener* listener);
-template ITTSHandler* CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(ICapabilityListener* listener);
-template IAudioPlayerHandler* CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>(ICapabilityListener* listener);
-template ISystemHandler* CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>(ICapabilityListener* listener);
-template ITextHandler* CapabilityFactory::makeCapability<TextAgent, ITextHandler>(ICapabilityListener* listener);
-template ISpeakerHandler* CapabilityFactory::makeCapability<SpeakerAgent, ISpeakerHandler>(ICapabilityListener* listener);
-template IMicHandler* CapabilityFactory::makeCapability<MicAgent, IMicHandler>(ICapabilityListener* listener);
-template ISoundHandler* CapabilityFactory::makeCapability<SoundAgent, ISoundHandler>(ICapabilityListener* listener);
-template ISessionHandler* CapabilityFactory::makeCapability<SessionAgent, ISessionHandler>(ICapabilityListener* listener);
-template IDisplayHandler* CapabilityFactory::makeCapability<DisplayAgent, IDisplayHandler>(ICapabilityListener* listener);
-template IUtilityHandler* CapabilityFactory::makeCapability<UtilityAgent, IUtilityHandler>(ICapabilityListener* listener);
-template IExtensionHandler* CapabilityFactory::makeCapability<ExtensionAgent, IExtensionHandler>(ICapabilityListener* listener);
-template IChipsHandler* CapabilityFactory::makeCapability<ChipsAgent, IChipsHandler>(ICapabilityListener* listener);
-template INudgeHandler* CapabilityFactory::makeCapability<NudgeAgent, INudgeHandler>(ICapabilityListener* listener);
-template IRoutineHandler* CapabilityFactory::makeCapability<RoutineAgent, IRoutineHandler>(ICapabilityListener* listener);
-template IPhoneCallHandler* CapabilityFactory::makeCapability<PhoneCallAgent, IPhoneCallHandler>(ICapabilityListener* listener);
-template IMessageHandler* CapabilityFactory::makeCapability<MessageAgent, IMessageHandler>(ICapabilityListener* listener);
-template IBluetoothHandler* CapabilityFactory::makeCapability<BluetoothAgent, IBluetoothHandler>(ICapabilityListener* listener);
-template ILocationHandler* CapabilityFactory::makeCapability<LocationAgent, ILocationHandler>(ICapabilityListener* listener);
-template IBatteryHandler* CapabilityFactory::makeCapability<BatteryAgent, IBatteryHandler>(ICapabilityListener* listener);
+TEMPLATE_EXPLICIT_INSTANTIATION(ASRAgent, IASRHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(TTSAgent, ITTSHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(AudioPlayerAgent, IAudioPlayerHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(SystemAgent, ISystemHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(TextAgent, ITextHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(SpeakerAgent, ISpeakerHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(MicAgent, IMicHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(SoundAgent, ISoundHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(SessionAgent, ISessionHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(DisplayAgent, IDisplayHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(UtilityAgent, IUtilityHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(ExtensionAgent, IExtensionHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(ChipsAgent, IChipsHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(NudgeAgent, INudgeHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(RoutineAgent, IRoutineHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(PhoneCallAgent, IPhoneCallHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(MessageAgent, IMessageHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(BluetoothAgent, IBluetoothHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(LocationAgent, ILocationHandler);
+TEMPLATE_EXPLICIT_INSTANTIATION(BatteryAgent, IBatteryHandler);
 
 } // NuguCapability
