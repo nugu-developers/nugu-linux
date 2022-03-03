@@ -137,6 +137,20 @@ void DisplayAgent::updateInfoForContext(Json::Value& ctx)
     ctx[getName()] = display;
 }
 
+bool DisplayAgent::getProperty(const std::string& property, std::string& value)
+{
+    value.clear();
+
+    if (property == "currentPlaystack") {
+        value = playstackctl_ps_id;
+    } else {
+        nugu_error("invalid property: %s", property.c_str());
+        return false;
+    }
+
+    return true;
+}
+
 void DisplayAgent::setCapabilityListener(ICapabilityListener* listener)
 {
     if (listener)
@@ -308,6 +322,7 @@ void DisplayAgent::onSyncState(const std::string& ps_id, PlaySyncState state, vo
         }
 
         render_helper->clearDisplay(extra_data, playsync_manager->hasNextPlayStack());
+        playstackctl_ps_id.clear();
     }
 }
 
