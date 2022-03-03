@@ -239,8 +239,13 @@ void AudioPlayerAgent::cancelDirective(NuguDirective* ndir)
     nugu_info("preprocessed directive '%s.%s' canceled",
         nugu_directive_peek_namespace(ndir), nugu_directive_peek_name(ndir));
 
-    nugu_info("remove '%s' from playstack", playstackctl_ps_id.c_str());
-    playsync_manager->releaseSyncUnconditionally(playstackctl_ps_id);
+    std::string cur_disp_playstackctl_ps_id;
+    capa_helper->getCapabilityProperty("Display", "currentPlaystack", cur_disp_playstackctl_ps_id);
+
+    if (cur_disp_playstackctl_ps_id != playstackctl_ps_id) {
+        nugu_info("remove '%s' from playstack", playstackctl_ps_id.c_str());
+        playsync_manager->releaseSyncUnconditionally(playstackctl_ps_id);
+    }
 
     preprocess_dir = nullptr;
 }

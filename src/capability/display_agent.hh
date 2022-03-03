@@ -39,6 +39,7 @@ public:
     void preprocessDirective(NuguDirective* ndir) override;
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
+    bool getProperty(const std::string& property, std::string& value) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     void displayRendered(const std::string& id, const DisplayContextInfo& context_info) override;
