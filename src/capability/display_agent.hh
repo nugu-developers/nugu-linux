@@ -97,6 +97,7 @@ private:
     void deactiveSession();
     void startPlaySync(const NuguDirective* ndir, const Json::Value& root);
     bool hasPlayStack();
+    bool hasMediaPlayStack();
 
     const std::set<std::string> TEMPLATE_NAMES {
         "FullText1",
