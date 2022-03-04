@@ -316,7 +316,9 @@ void DisplayAgent::onDataChanged(const std::string& ps_id, std::pair<void*, void
     render_helper->updateDisplay(extra_datas, playsync_manager->hasNextPlayStack());
 
     if (!history_control_stack.empty()) {
-        playsync_manager->releaseSync(ps_id, getName());
+        if (!hasMediaPlayStack())
+            playsync_manager->releaseSync(ps_id, getName());
+
         keep_history = false;
     }
 }
@@ -663,6 +665,17 @@ bool DisplayAgent::hasPlayStack()
 {
     auto playstacks = playsync_manager->getAllPlayStackItems();
     return std::find(playstacks.cbegin(), playstacks.cend(), playstackctl_ps_id) != playstacks.cend();
+}
+
+bool DisplayAgent::hasMediaPlayStack()
+{
+    auto playstacks = playsync_manager->getAllPlayStackItems();
+
+    for (const auto& playstack : playstacks)
+        if (playsync_manager->hasActivity(playstack, PlayStackActivity::Media))
+            return true;
+
+    return false;
 }
 
 DisplayRenderInfo* DisplayAgent::composeRenderInfo(const NuguDirective* ndir, const std::string& ps_id, const std::string& token)
