@@ -242,7 +242,7 @@ void AudioPlayerAgent::cancelDirective(NuguDirective* ndir)
     std::string cur_disp_playstackctl_ps_id;
     capa_helper->getCapabilityProperty("Display", "currentPlaystack", cur_disp_playstackctl_ps_id);
 
-    if (cur_disp_playstackctl_ps_id != playstackctl_ps_id) {
+    if (!playstackctl_ps_id.empty() && cur_disp_playstackctl_ps_id != playstackctl_ps_id) {
         nugu_info("remove '%s' from playstack", playstackctl_ps_id.c_str());
         playsync_manager->releaseSyncUnconditionally(playstackctl_ps_id);
     }
@@ -810,6 +810,9 @@ void AudioPlayerAgent::onSyncState(const std::string& ps_id, PlaySyncState state
     else if (state == PlaySyncState::Released) {
         focus_manager->releaseFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME);
         render_helper->clearDisplay(extra_data, playsync_manager->hasNextPlayStack());
+
+        if (ps_id == playstackctl_ps_id)
+            playstackctl_ps_id.clear();
     }
 }
 
