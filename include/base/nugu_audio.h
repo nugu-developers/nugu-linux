@@ -59,6 +59,22 @@ enum nugu_audio_format {
 };
 
 /**
+ * @brief audio attribute
+ */
+enum nugu_audio_attribute {
+	NUGU_AUDIO_ATTRIBUTE_MUSIC, /**< audio attribute for music */
+	NUGU_AUDIO_ATTRIBUTE_RINGTONE, /**< audio attribute for ringtone */
+	NUGU_AUDIO_ATTRIBUTE_CALL, /**< audio attribute for call */
+	NUGU_AUDIO_ATTRIBUTE_NOTIFICATION,
+	/**< audio attribute for notification */
+	NUGU_AUDIO_ATTRIBUTE_ALARM, /**< audio attribute for alarm */
+	NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND,
+	/**< audio attribute for voice command like tts */
+	NUGU_AUDIO_ATTRIBUTE_NAVIGATION, /**< audio attribute for navigation */
+	NUGU_AUDIO_ATTRIBUTE_SYSTEM /**< audio attribute for system */
+};
+
+/**
  * @brief audio property
  */
 struct nugu_audio_property {
@@ -68,9 +84,21 @@ struct nugu_audio_property {
 };
 
 /**
+ * @brief NuguAudioAttribute
+ */
+typedef enum nugu_audio_attribute NuguAudioAttribute;
+
+/**
  * @brief NuguAudioProperty
  */
 typedef struct nugu_audio_property NuguAudioProperty;
+
+/**
+ * @brief Get audio attribute string
+ * @param[in] attribute audio attribute
+ * @return audio attribute string
+ */
+const char *nugu_audio_get_attribute_str(const NuguAudioAttribute attribute);
 
 #ifdef __cplusplus
 }

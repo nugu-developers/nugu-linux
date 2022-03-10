@@ -86,6 +86,7 @@ void TTSAgent::initialize()
     player = core_container->createTTSPlayer();
     player->addListener(this);
     player->setVolume(volume);
+    player->setAudioAttribute(NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND);
 
     addReferrerEvents("SpeechStarted", "Speak");
     addReferrerEvents("SpeechFinished", "Speak");

@@ -35,6 +35,7 @@ public:
     void addListener(IMediaPlayerListener* listener) override;
     void removeListener(IMediaPlayerListener* listener) override;
 
+    void setAudioAttribute(NuguAudioAttribute attr) override;
     bool setSource(const std::string& url) override;
     bool play() override;
     bool stop() override;

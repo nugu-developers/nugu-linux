@@ -36,6 +36,7 @@ struct _nugu_pcm {
 	void *driver_data;
 
 	enum nugu_media_status status;
+	enum nugu_audio_attribute attr;
 	NuguAudioProperty property;
 	NuguMediaEventCallback ecb;
 	NuguMediaStatusCallback scb;
@@ -205,6 +206,7 @@ EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver,
 	pcm->eud = NULL;
 	pcm->driver_data = NULL;
 	pcm->status = NUGU_MEDIA_STATUS_STOPPED;
+	pcm->attr = NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND;
 	pcm->volume = NUGU_SET_VOLUME_MAX;
 	pcm->total_size = 0;
 	memcpy(&pcm->property, &property, sizeof(NuguAudioProperty));
@@ -292,6 +294,29 @@ EXPORT_API NuguPcm *nugu_pcm_find(const char *name)
 	}
 
 	return NULL;
+}
+
+EXPORT_API int nugu_pcm_set_audio_attribute(NuguPcm *pcm,
+					    NuguAudioAttribute attr)
+{
+	g_return_val_if_fail(pcm != NULL, -1);
+
+	pcm->attr = attr;
+	return 0;
+}
+
+EXPORT_API int nugu_pcm_get_audio_attribute(NuguPcm *pcm)
+{
+	g_return_val_if_fail(pcm != NULL, -1);
+
+	return pcm->attr;
+}
+
+EXPORT_API const char *nugu_pcm_get_audio_attribute_str(NuguPcm *pcm)
+{
+	g_return_val_if_fail(pcm != NULL, NULL);
+
+	return nugu_audio_get_attribute_str(pcm->attr);
 }
 
 EXPORT_API int nugu_pcm_start(NuguPcm *pcm)

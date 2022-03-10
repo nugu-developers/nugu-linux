@@ -38,6 +38,7 @@ public:
     bool write_audio(const char *data, int size) override;
     void write_done() override;
 
+    void setAudioAttribute(NuguAudioAttribute attr) override;
     bool setSource(const std::string& url) override;
     bool play() override;
     bool stop() override;

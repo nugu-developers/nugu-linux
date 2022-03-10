@@ -450,6 +450,47 @@ static void test_player_volume(void)
 	nugu_player_driver_remove(driver);
 }
 
+static void test_player_audio_attribute(void)
+{
+	NuguPlayerDriver *driver;
+	NuguPlayer *music_player, *alarm_player;
+
+	driver = nugu_player_driver_new("dummy", &dummy_driver_ops);
+	g_assert(driver != NULL);
+	g_assert(nugu_player_driver_register(driver) == 0);
+
+	music_player = nugu_player_new("music_player", driver);
+	alarm_player = nugu_player_new("alarm_player", driver);
+	g_assert(nugu_player_add(music_player) == 0);
+	g_assert(nugu_player_add(alarm_player) == 0);
+
+	// default player audio attribute: music (string: music)
+	g_assert(nugu_player_get_audio_attribute(music_player) ==
+		 NUGU_AUDIO_ATTRIBUTE_MUSIC);
+	g_assert(nugu_player_get_audio_attribute(alarm_player) ==
+		 NUGU_AUDIO_ATTRIBUTE_MUSIC);
+	g_assert_cmpstr(nugu_player_get_audio_attribute_str(music_player), ==,
+			"music");
+
+	// change to alarm
+	nugu_player_set_audio_attribute(alarm_player,
+					NUGU_AUDIO_ATTRIBUTE_ALARM);
+	g_assert(nugu_player_get_audio_attribute(music_player) ==
+		 NUGU_AUDIO_ATTRIBUTE_MUSIC);
+	g_assert(nugu_player_get_audio_attribute(alarm_player) ==
+		 NUGU_AUDIO_ATTRIBUTE_ALARM);
+	g_assert_cmpstr(nugu_player_get_audio_attribute_str(alarm_player), ==,
+			"alarm");
+
+	nugu_player_remove(music_player);
+	nugu_player_remove(alarm_player);
+
+	nugu_player_free(music_player);
+	nugu_player_free(alarm_player);
+
+	nugu_player_driver_remove(driver);
+}
+
 int main(int argc, char *argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -464,6 +505,7 @@ int main(int argc, char *argv[])
 	g_test_add_func("/player/probe", test_player_probe);
 	g_test_add_func("/player/seek", test_nugu_player_seek);
 	g_test_add_func("/player/volume", test_player_volume);
+	g_test_add_func("/pcm/audio_attribute", test_player_audio_attribute);
 
 	return g_test_run();
 }

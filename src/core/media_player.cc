@@ -211,6 +211,11 @@ void MediaPlayer::removeListener(IMediaPlayerListener* listener)
     d->listeners.remove(listener);
 }
 
+void MediaPlayer::setAudioAttribute(NuguAudioAttribute attr)
+{
+    nugu_player_set_audio_attribute(d->player, attr);
+}
+
 bool MediaPlayer::setSource(const std::string& url)
 {
     if (url.size() == 0) {

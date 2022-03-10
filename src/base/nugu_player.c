@@ -35,6 +35,7 @@ struct _nugu_player {
 	void *driver_data;
 
 	enum nugu_media_status status;
+	enum nugu_audio_attribute attr;
 	char *playurl;
 	int volume;
 	NuguMediaEventCallback ecb;
@@ -173,6 +174,7 @@ EXPORT_API NuguPlayer *nugu_player_new(const char *name,
 	player->driver = driver;
 	player->volume = NUGU_SET_VOLUME_DEFAULT;
 	player->status = NUGU_MEDIA_STATUS_STOPPED;
+	player->attr = NUGU_AUDIO_ATTRIBUTE_MUSIC;
 
 	if (driver == NULL || driver->ops == NULL ||
 	    driver->ops->create == NULL) {
@@ -252,6 +254,29 @@ EXPORT_API NuguPlayer *nugu_player_find(const char *name)
 	}
 
 	return NULL;
+}
+
+EXPORT_API int nugu_player_set_audio_attribute(NuguPlayer *player,
+					       NuguAudioAttribute attr)
+{
+	g_return_val_if_fail(player != NULL, -1);
+
+	player->attr = attr;
+	return 0;
+}
+
+EXPORT_API int nugu_player_get_audio_attribute(NuguPlayer *player)
+{
+	g_return_val_if_fail(player != NULL, -1);
+
+	return player->attr;
+}
+
+EXPORT_API const char *nugu_player_get_audio_attribute_str(NuguPlayer *player)
+{
+	g_return_val_if_fail(player != NULL, NULL);
+
+	return nugu_audio_get_attribute_str(player->attr);
 }
 
 EXPORT_API int nugu_player_set_source(NuguPlayer *player, const char *url)
