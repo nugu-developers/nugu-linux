@@ -204,6 +204,11 @@ void TTSPlayer::removeListener(IMediaPlayerListener* listener)
     d->listeners.remove(listener);
 }
 
+void TTSPlayer::setAudioAttribute(NuguAudioAttribute attr)
+{
+    nugu_pcm_set_audio_attribute(d->player, attr);
+}
+
 bool TTSPlayer::write_audio(const char* data, int size)
 {
     unsigned char* dbuf;

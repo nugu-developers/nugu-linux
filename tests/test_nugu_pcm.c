@@ -46,7 +46,7 @@ static enum nugu_media_event _event2;
 	}
 
 static int dummy_create(NuguPcmDriver *driver, NuguPcm *pcm,
-		      NuguAudioProperty prop)
+			NuguAudioProperty prop)
 {
 	return 0;
 }
@@ -208,6 +208,39 @@ static void test_pcm_multiple(void)
 	nugu_pcm_driver_remove(driver);
 }
 
+static void test_pcm_audio_attribute(void)
+{
+	NuguPcmDriver *driver;
+	NuguPcm *pcm;
+	NuguAudioProperty prop;
+
+	driver = nugu_pcm_driver_new("dummy", &dummy_driver_ops);
+	g_assert(driver != NULL);
+	g_assert(nugu_pcm_driver_register(driver) == 0);
+
+	prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_22K;
+	prop.format = NUGU_AUDIO_FORMAT_S16_LE;
+	prop.channel = 1;
+
+	pcm = nugu_pcm_new("pcm", driver, prop);
+	g_assert(nugu_pcm_add(pcm) == 0);
+
+	// default pcm audio attribute: voice command (string: voice)
+	g_assert(nugu_pcm_get_audio_attribute(pcm) ==
+		 NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND);
+	g_assert_cmpstr(nugu_pcm_get_audio_attribute_str(pcm), ==, "voice");
+
+	// change to music
+	nugu_pcm_set_audio_attribute(pcm, NUGU_AUDIO_ATTRIBUTE_MUSIC);
+	g_assert(nugu_pcm_get_audio_attribute(pcm) ==
+		 NUGU_AUDIO_ATTRIBUTE_MUSIC);
+	g_assert_cmpstr(nugu_pcm_get_audio_attribute_str(pcm), ==, "music");
+
+	nugu_pcm_remove(pcm);
+	nugu_pcm_free(pcm);
+	nugu_pcm_driver_remove(driver);
+}
+
 int main(int argc, char *argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -219,6 +252,7 @@ int main(int argc, char *argv[])
 
 	g_test_add_func("/pcm/default", test_pcm_default);
 	g_test_add_func("/pcm/driver", test_pcm_multiple);
+	g_test_add_func("/pcm/audio_attribute", test_pcm_audio_attribute);
 
 	return g_test_run();
 }

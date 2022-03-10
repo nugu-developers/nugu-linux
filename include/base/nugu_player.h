@@ -98,6 +98,33 @@ int nugu_player_remove(NuguPlayer *player);
 NuguPlayer *nugu_player_find(const char *name);
 
 /**
+ * @brief Set audio attribute
+ * @param[in] player player object
+ * @param[in] attr audio attribute
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_player_set_audio_attribute(NuguPlayer *player,
+				    NuguAudioAttribute attr);
+
+/**
+ * @brief Get audio attribute
+ * @param[in] player player object
+ * @return audio attribute
+ * @retval NULL -1
+ */
+int nugu_player_get_audio_attribute(NuguPlayer *player);
+
+/**
+ * @brief Get audio attribute
+ * @param[in] player player object
+ * @return audio attribute string
+ * @retval NULL failure
+ */
+const char *nugu_player_get_audio_attribute_str(NuguPlayer *player);
+
+/**
  * @brief Set source url
  * @param[in] player player object
  * @param[in] url source url
@@ -237,7 +264,6 @@ void nugu_player_set_event_callback(NuguPlayer *player,
  * @param[in] event player event
  */
 void nugu_player_emit_event(NuguPlayer *player, enum nugu_media_event event);
-
 
 /**
  * @brief Set custom data for driver

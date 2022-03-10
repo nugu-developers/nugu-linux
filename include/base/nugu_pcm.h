@@ -102,6 +102,32 @@ int nugu_pcm_remove(NuguPcm *pcm);
 NuguPcm *nugu_pcm_find(const char *name);
 
 /**
+ * @brief Set audio attribute
+ * @param[in] pcm pcm object
+ * @param[in] attr audio attribute
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_pcm_set_audio_attribute(NuguPcm *pcm, NuguAudioAttribute attr);
+
+/**
+ * @brief Get audio attribute
+ * @param[in] pcm pcm object
+ * @return audio attribute
+ * @retval -1 failure
+ */
+int nugu_pcm_get_audio_attribute(NuguPcm *pcm);
+
+/**
+ * @brief Get audio attribute
+ * @param[in] pcm pcm object
+ * @return audio attribute string
+ * @retval NULL failure
+ */
+const char *nugu_pcm_get_audio_attribute_str(NuguPcm *pcm);
+
+/**
  * @brief Start pcm playback
  * @param[in] pcm pcm object
  * @return result
@@ -319,7 +345,7 @@ struct nugu_pcm_driver_ops {
 	 * @see nugu_pcm_new()
 	 */
 	int (*create)(NuguPcmDriver *driver, NuguPcm *pcm,
-		NuguAudioProperty property);
+		      NuguAudioProperty property);
 
 	/**
 	 * @brief Called when pcm is destroyed

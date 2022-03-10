@@ -96,10 +96,12 @@ void AudioPlayerAgent::initialize()
     media_player = core_container->createMediaPlayer();
     media_player->addListener(this);
     media_player->setVolume(volume);
+    media_player->setAudioAttribute(NUGU_AUDIO_ATTRIBUTE_MUSIC);
 
     tts_player = core_container->createTTSPlayer();
     tts_player->addListener(this);
     tts_player->setVolume(volume);
+    tts_player->setAudioAttribute(NUGU_AUDIO_ATTRIBUTE_MUSIC);
 
     cur_player = media_player;
 

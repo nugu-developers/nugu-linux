@@ -17,6 +17,7 @@
 #ifndef __NUGU_MEDIA_PLAYER_INTERFACE_H__
 #define __NUGU_MEDIA_PLAYER_INTERFACE_H__
 
+#include <base/nugu_audio.h>
 #include <string>
 
 namespace NuguClientKit {
@@ -52,7 +53,7 @@ enum class MediaPlayerEvent {
     LOADING_MEDIA_FAILED, /**< Loading of media content failed */
     LOADING_MEDIA_SUCCESS, /**< Loading of media content success */
     PLAYING_MEDIA_FINISHED, /**< Playing media content to the end */
-    PLAYING_MEDIA_UNDERRUN  /**< Playing media content underrun */
+    PLAYING_MEDIA_UNDERRUN /**< Playing media content underrun */
 };
 
 /**
@@ -125,6 +126,12 @@ public:
      * @param[in] listener listener object
      */
     virtual void removeListener(IMediaPlayerListener* listener) = 0;
+
+    /**
+     * @brief Sets the audio attribute in the media player.
+     * @param[in] attr audio attribute
+     */
+    virtual void setAudioAttribute(NuguAudioAttribute attr) = 0;
 
     /**
      * @brief Sets the playurl of the media content to play in the media player.
@@ -264,7 +271,8 @@ public:
      * @param[in] size data size
      * @return success or not
      */
-    virtual bool write_audio(const char *data, int size) = 0;
+    virtual bool write_audio(const char* data, int size) = 0;
+
     /**
      * @brief Notify to write done to the tts player.
      */
