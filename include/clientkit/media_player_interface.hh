@@ -271,12 +271,12 @@ public:
      * @param[in] size data size
      * @return success or not
      */
-    virtual bool write_audio(const char* data, int size) = 0;
+    virtual bool writeAudio(const char *data, int size) = 0;
 
     /**
      * @brief Notify to write done to the tts player.
      */
-    virtual void write_done() = 0;
+    virtual void writeDone() = 0;
 };
 
 /**

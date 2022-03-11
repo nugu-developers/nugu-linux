@@ -644,16 +644,16 @@ void TTSAgent::getAttachmentData(NuguDirective* ndir, int seq, void* userdata)
     if (buf) {
         if (seq == 0 && length > TTS_FIRST_ATTACHMENT_LIMIT) {
             nugu_dbg("first attachment is too big(%d > %d)", length, TTS_FIRST_ATTACHMENT_LIMIT);
-            tts->player->write_audio((const char*)buf, TTS_FIRST_ATTACHMENT_LIMIT);
-            tts->player->write_audio((const char*)buf + TTS_FIRST_ATTACHMENT_LIMIT, length - TTS_FIRST_ATTACHMENT_LIMIT);
+            tts->player->writeAudio((const char*)buf, TTS_FIRST_ATTACHMENT_LIMIT);
+            tts->player->writeAudio((const char*)buf + TTS_FIRST_ATTACHMENT_LIMIT, length - TTS_FIRST_ATTACHMENT_LIMIT);
         } else {
-            tts->player->write_audio((const char*)buf, length);
+            tts->player->writeAudio((const char*)buf, length);
         }
         free(buf);
     }
 
     if (nugu_directive_is_data_end(ndir)) {
-        tts->player->write_done();
+        tts->player->writeDone();
 
         nugu_dbg("tts player state: %d", tts->player->state());
         if (tts->player->state() == MediaPlayerState::IDLE) {
