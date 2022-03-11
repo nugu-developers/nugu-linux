@@ -125,12 +125,12 @@ void MessageAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
 
     buf = nugu_directive_get_data(ndir, &length);
     if (buf) {
-        agent->tts_player->write_audio((const char*)buf, length);
+        agent->tts_player->writeAudio((const char*)buf, length);
         free(buf);
     }
 
     if (nugu_directive_is_data_end(ndir)) {
-        agent->tts_player->write_done();
+        agent->tts_player->writeDone();
         agent->destroyDirective(ndir);
         agent->speak_dir = nullptr;
     }

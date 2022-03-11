@@ -209,7 +209,7 @@ void TTSPlayer::setAudioAttribute(NuguAudioAttribute attr)
     nugu_pcm_set_audio_attribute(d->player, attr);
 }
 
-bool TTSPlayer::write_audio(const char* data, int size)
+bool TTSPlayer::writeAudio(const char* data, int size)
 {
     unsigned char* dbuf;
     size_t dsize;
@@ -244,7 +244,7 @@ bool TTSPlayer::write_audio(const char* data, int size)
     return ret;
 }
 
-void TTSPlayer::write_done()
+void TTSPlayer::writeDone()
 {
     nugu_pcm_push_data_done(d->player);
     setDuration(nugu_pcm_get_duration(d->player));
