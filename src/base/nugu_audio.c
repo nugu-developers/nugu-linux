@@ -17,7 +17,8 @@
 #include "base/nugu_audio.h"
 #include "base/nugu_log.h"
 
-const char *nugu_audio_get_attribute_str(const NuguAudioAttribute attribute)
+EXPORT_API const char *
+nugu_audio_get_attribute_str(const NuguAudioAttribute attribute)
 {
 	switch (attribute) {
 	case NUGU_AUDIO_ATTRIBUTE_MUSIC:
