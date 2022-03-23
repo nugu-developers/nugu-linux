@@ -322,7 +322,9 @@ void DisplayAgent::onSyncState(const std::string& ps_id, PlaySyncState state, vo
         }
 
         render_helper->clearDisplay(extra_data, playsync_manager->hasNextPlayStack());
-        playstackctl_ps_id.clear();
+
+        if (ps_id == playstackctl_ps_id)
+            playstackctl_ps_id.clear();
     }
 }
 
