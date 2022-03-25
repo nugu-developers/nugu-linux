@@ -71,6 +71,26 @@ static NuguPlayerDriver *driver;
 static int _uniq_id;
 static const gdouble VOLUME_ZERO = 0.0000001;
 
+#ifdef ENABLE_PULSEAUDIO
+static void _set_audio_attribute(GstreamerHandle *gh, NuguPlayer *player)
+{
+	int attr = nugu_player_get_audio_attribute(player);
+	const char *media_role;
+	GstStructure *s;
+
+	if (attr == -1)
+		attr = NUGU_AUDIO_ATTRIBUTE_MUSIC;
+
+	media_role = nugu_audio_get_attribute_str(attr);
+
+	s = gst_structure_new("properties", "media.role", G_TYPE_STRING,
+			      media_role, NULL);
+
+	g_object_set(G_OBJECT(gh->audio_sink), "stream-properties", s, NULL);
+	gst_structure_free(s);
+}
+#endif
+
 static int _seek_action(GstreamerHandle *gh, int sec)
 {
 	if (!gst_element_seek_simple(gh->pipeline, GST_FORMAT_TIME,
@@ -86,7 +106,7 @@ static int _seek_action(GstreamerHandle *gh, int sec)
 }
 
 static void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
-		    GError *err, GstreamerHandle *gh)
+			   GError *err, GstreamerHandle *gh)
 {
 	const gchar *discoverer_uri = NULL;
 	GstDiscovererResult discoverer_result;
@@ -285,7 +305,7 @@ static void _connect_message_to_pipeline(GstreamerHandle *gh)
 }
 
 static void _pad_added_handler(GstElement *src, GstPad *new_src_pad,
-			GstreamerHandle *gh)
+			       GstreamerHandle *gh)
 {
 	GstPad *sink_pad =
 		gst_element_get_static_pad(gh->audio_convert, "sink");
@@ -375,11 +395,19 @@ static int _create(NuguPlayerDriver *driver, NuguPlayer *player)
 		goto error_out;
 	}
 
+#ifdef ENABLE_PULSEAUDIO
+	gh->audio_sink = gst_element_factory_make("pulsesink", audio_sink);
+	if (!gh->audio_sink) {
+		nugu_error("create gst_element for 'pulsesink' failed");
+		goto error_out;
+	}
+#else
 	gh->audio_sink = gst_element_factory_make("autoaudiosink", audio_sink);
 	if (!gh->audio_sink) {
 		nugu_error("create gst_element for 'autoaudiosink' failed");
 		goto error_out;
 	}
+#endif
 
 	gh->volume = gst_element_factory_make("volume", volume);
 	if (!gh->volume) {
@@ -459,6 +487,10 @@ static int _start(NuguPlayerDriver *driver, NuguPlayer *player)
 		nugu_error("invalid player (no driver data)");
 		return -1;
 	}
+
+#ifdef ENABLE_PULSEAUDIO
+	_set_audio_attribute(gh, player);
+#endif
 
 	if (!gh->is_file) {
 		/* Start the discoverer process (nothing to do yet) */
