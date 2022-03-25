@@ -186,9 +186,9 @@ void TextAgent::setCapabilityListener(ICapabilityListener* clistener)
         text_listener = dynamic_cast<ITextListener*>(clistener);
 }
 
-std::string TextAgent::requestTextInput(const std::string& text, const std::string& token, bool include_dialog_attribute)
+std::string TextAgent::requestTextInput(const std::string& text, const std::string& token, const std::string& source, bool include_dialog_attribute)
 {
-    return requestTextInput({ text, token, "" }, false, include_dialog_attribute);
+    return requestTextInput({ text, token, "", source }, false, include_dialog_attribute);
 }
 
 void TextAgent::onFocusChanged(FocusState state)
@@ -284,6 +284,9 @@ void TextAgent::sendEventTextInput(const TextInputParam& text_input_param, bool 
         }
     }
 
+    if (!text_input_param.source.empty())
+        root["source"] = text_input_param.source;
+
     cur_dialog_id = event.getDialogRequestId();
     playsync_manager->stopHolding();
 
@@ -333,6 +336,7 @@ void TextAgent::parsingTextSource(const char* message)
         text_input_param.text = root["text"].asString();
         text_input_param.token = root["token"].asString();
         text_input_param.ps_id = root["playServiceId"].asString();
+        text_input_param.source = root["source"].asString();
 
         if (!handle_interaction_control && interaction_control_manager->isMultiTurnActive())
             startInteractionControl(InteractionMode::MULTI_TURN);
