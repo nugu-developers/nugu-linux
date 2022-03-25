@@ -40,7 +40,7 @@ public:
     bool getProperty(const std::string& property, std::string& value) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
-    std::string requestTextInput(const std::string& text, const std::string& token = "", bool include_dialog_attribute = true) override;
+    std::string requestTextInput(const std::string& text, const std::string& token = "", const std::string& source = "", bool include_dialog_attribute = true) override;
 
     // implements IFocusResourceListener
     void onFocusChanged(FocusState state) override;
@@ -53,6 +53,7 @@ private:
         std::string text;
         std::string token;
         std::string ps_id;
+        std::string source;
     };
 
     using ExpectTypingInfo = struct {
