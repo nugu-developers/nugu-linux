@@ -131,6 +131,27 @@ static int _dumpfile_open(const char *path, const char *prefix)
 }
 #endif
 
+#ifdef ENABLE_PULSEAUDIO
+static void _set_audio_attribute(struct pa_audio_param *pcm_param, NuguPcm *pcm)
+{
+	int attr = nugu_pcm_get_audio_attribute(pcm);
+	const char *media_role;
+	GstStructure *s;
+
+	if (attr == -1)
+		attr = NUGU_AUDIO_ATTRIBUTE_MUSIC;
+
+	media_role = nugu_audio_get_attribute_str(attr);
+
+	s = gst_structure_new("properties", "media.role", G_TYPE_STRING,
+			      media_role, NULL);
+
+	g_object_set(G_OBJECT(pcm_param->audio_sink), "stream-properties", s,
+		     NULL);
+	gst_structure_free(s);
+}
+#endif
+
 static void _cb_message(GstBus *bus, GstMessage *msg,
 			struct pa_audio_param *pcm_param)
 {
@@ -356,12 +377,21 @@ static int _create_gst_elements(struct pa_audio_param *pcm_param)
 		goto error_out;
 	}
 
+#ifdef ENABLE_PULSEAUDIO
+	pcm_param->audio_sink =
+		gst_element_factory_make("pulsesink", audio_sink);
+	if (!pcm_param->audio_sink) {
+		nugu_error("create gst_element for 'pulsesink' failed");
+		goto error_out;
+	}
+#else
 	pcm_param->audio_sink =
 		gst_element_factory_make("autoaudiosink", audio_sink);
 	if (!pcm_param->audio_sink) {
 		nugu_error("create gst_element for 'autoaudiosink' failed");
 		goto error_out;
 	}
+#endif
 
 	gst_bin_add_many(GST_BIN(pcm_param->pipeline),
 			 (GstElement *)pcm_param->app_src,
@@ -520,6 +550,10 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm)
 #ifdef NUGU_ENV_DUMP_PATH_PCM
 	pcm_param->dump_fd =
 		_dumpfile_open(getenv(NUGU_ENV_DUMP_PATH_PCM), "papcm");
+#endif
+
+#ifdef ENABLE_PULSEAUDIO
+	_set_audio_attribute(pcm_param, pcm);
 #endif
 
 	pcm_param->is_start = 1;
