@@ -17,6 +17,7 @@
 #ifndef __NUGU_SPEAKER_INTERFACE_H__
 #define __NUGU_SPEAKER_INTERFACE_H__
 
+#include <base/nugu_audio.h>
 #include <clientkit/capability_interface.hh>
 
 namespace NuguCapability {
@@ -44,15 +45,16 @@ using namespace NuguClientKit;
  * @brief SpeakerType
  */
 enum class SpeakerType {
-    NUGU, /**< General NUGU Speaker type: Music + Voice command */
-    MUSIC, /**< Music type */
-    RINGTON, /**< Rington type */
-    CALL, /**< Call type */
-    NOTIFICATION, /**< Notification type */
-    ALARM, /**< Alarm type */
-    VOICE_COMMAND, /**< Voice Command type */
-    NAVIGATION, /**< Navigation type */
-    SYSTEM_SOUND /**< System Sound type */
+    NUGU = 0, /**< General NUGU Speaker type: Music + Voice command */
+    MUSIC = NUGU_AUDIO_ATTRIBUTE_MUSIC, /**< Music type */
+    RINGTONE = NUGU_AUDIO_ATTRIBUTE_RINGTONE, /**< Ringtone type */
+    CALL = NUGU_AUDIO_ATTRIBUTE_CALL, /**< Call type */
+    NOTIFICATION = NUGU_AUDIO_ATTRIBUTE_NOTIFICATION, /**< Notification type */
+    ALARM = NUGU_AUDIO_ATTRIBUTE_ALARM, /**< Alarm type */
+    VOICE_COMMAND = NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND,
+    /**< Voice Command type */
+    NAVIGATION = NUGU_AUDIO_ATTRIBUTE_NAVIGATION, /**< Navigation type */
+    SYSTEM_SOUND = NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND /**< System Sound type */
 };
 
 /**

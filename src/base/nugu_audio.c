@@ -35,7 +35,7 @@ nugu_audio_get_attribute_str(const NuguAudioAttribute attribute)
 		return "voice";
 	case NUGU_AUDIO_ATTRIBUTE_NAVIGATION:
 		return "navigation";
-	case NUGU_AUDIO_ATTRIBUTE_SYSTEM:
+	case NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND:
 		return "system";
 	default:
 		nugu_warn("not implement yet!!");

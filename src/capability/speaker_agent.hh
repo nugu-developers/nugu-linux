@@ -62,7 +62,7 @@ private:
     const std::map<SpeakerType, std::string> SPEAKER_NAMES_FOR_TYPES {
         { SpeakerType::NUGU, "NUGU" },
         { SpeakerType::MUSIC, "MUSIC" },
-        { SpeakerType::RINGTON, "RINGTON" },
+        { SpeakerType::RINGTONE, "RINGTONE" },
         { SpeakerType::CALL, "CALL" },
         { SpeakerType::NOTIFICATION, "NOTIFICATION" },
         { SpeakerType::ALARM, "ALARM" },
