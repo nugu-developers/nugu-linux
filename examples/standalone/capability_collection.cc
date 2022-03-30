@@ -118,7 +118,7 @@ void CapabilityCollection::composeSpeakerInterface()
     std::map<SpeakerType, SpeakerInfo> speakers {
         { SpeakerType::NUGU, makeSpeakerInfo(SpeakerType::NUGU, 0, true) },
         { SpeakerType::MUSIC, makeSpeakerInfo(SpeakerType::MUSIC) },
-        { SpeakerType::RINGTON, makeSpeakerInfo(SpeakerType::RINGTON) },
+        { SpeakerType::RINGTONE, makeSpeakerInfo(SpeakerType::RINGTONE) },
         { SpeakerType::CALL, makeSpeakerInfo(SpeakerType::CALL) },
         { SpeakerType::NOTIFICATION, makeSpeakerInfo(SpeakerType::NOTIFICATION) },
         { SpeakerType::ALARM, makeSpeakerInfo(SpeakerType::ALARM) },

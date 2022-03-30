@@ -62,7 +62,7 @@ enum nugu_audio_format {
  * @brief audio attribute
  */
 enum nugu_audio_attribute {
-	NUGU_AUDIO_ATTRIBUTE_MUSIC, /**< audio attribute for music */
+	NUGU_AUDIO_ATTRIBUTE_MUSIC = 1, /**< audio attribute for music */
 	NUGU_AUDIO_ATTRIBUTE_RINGTONE, /**< audio attribute for ringtone */
 	NUGU_AUDIO_ATTRIBUTE_CALL, /**< audio attribute for call */
 	NUGU_AUDIO_ATTRIBUTE_NOTIFICATION,
@@ -71,7 +71,8 @@ enum nugu_audio_attribute {
 	NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND,
 	/**< audio attribute for voice command like tts */
 	NUGU_AUDIO_ATTRIBUTE_NAVIGATION, /**< audio attribute for navigation */
-	NUGU_AUDIO_ATTRIBUTE_SYSTEM /**< audio attribute for system */
+	NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND
+	/**< audio attribute for system sound */
 };
 
 /**
