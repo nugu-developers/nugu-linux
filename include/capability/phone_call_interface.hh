@@ -88,6 +88,12 @@ public:
      * @param[in] payload directive's payload
      */
     virtual void processBlockIncomingCall(const std::string& payload) = 0;
+
+    /**
+     * @brief Process block number
+     * @param[in] payload directive's payload
+     */
+    virtual void processBlockNumber(const std::string& payload) = 0;
 };
 
 /**
@@ -134,6 +140,12 @@ public:
      * @param[in] payload event's payload
      */
     virtual void makeCallFailed(const std::string& payload) = 0;
+
+    /**
+     * @brief Set whether numbers can be blocked.
+     * @param[in] flag true if can block number, otherwise false.
+     */
+    virtual void setNumberBlockable(bool flag) = 0;
 };
 
 /**
