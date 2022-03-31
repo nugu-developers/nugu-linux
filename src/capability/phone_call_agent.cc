@@ -22,13 +22,14 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "PhoneCall";
-static const char* CAPABILITY_VERSION = "1.2";
+static const char* CAPABILITY_VERSION = "1.3";
 
 PhoneCallAgent::PhoneCallAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , phone_call_listener(nullptr)
     , cur_state(PhoneCallState::IDLE)
     , focus_state(FocusState::NONE)
+    , blockable(false)
 {
 }
 
@@ -45,6 +46,7 @@ void PhoneCallAgent::initialize()
     focus_state = FocusState::NONE;
     context_template = "";
     context_recipient = "";
+    blockable = false;
     playstackctl_ps_id.clear();
     interaction_control_payload.clear();
 
@@ -78,6 +80,8 @@ void PhoneCallAgent::parsingDirective(const char* dname, const char* message)
         parsingAcceptCall(message);
     else if (!strcmp(dname, "BlockIncomingCall"))
         parsingBlockIncomingCall(message);
+    else if (!strcmp(dname, "BlockNumber"))
+        parsingBlockNumber(message);
     else {
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
     }
@@ -97,6 +101,8 @@ void PhoneCallAgent::updateInfoForContext(Json::Value& ctx)
 
     if (context_recipient.size() && reader.parse(context_recipient, temp))
         phone_call["recipient"] = temp;
+
+    (blockable == true) ? phone_call["numberBlockable"] = "TRUE" : "FALSE";
 
     ctx[getName()] = phone_call;
 }
@@ -229,6 +235,11 @@ void PhoneCallAgent::makeCallFailed(const std::string& payload)
     sendEvent("MakeCallFailed", getContextInfo(), payload);
 }
 
+void PhoneCallAgent::setNumberBlockable(bool flag)
+{
+    blockable = flag;
+}
+
 void PhoneCallAgent::onFocusChanged(FocusState state)
 {
     nugu_info("Focus Changed(%s -> %s)", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
@@ -355,13 +366,32 @@ void PhoneCallAgent::parsingBlockIncomingCall(const char* message)
         return;
     }
 
-    if (root["playServiceId"].empty()) {
+    if (root["playServiceId"].empty() || root["number"].empty() || root["blockType"].empty()) {
         nugu_error("There is no mandatory data in directive message");
         return;
     }
 
     if (phone_call_listener)
         phone_call_listener->processBlockIncomingCall(message);
+}
+
+void PhoneCallAgent::parsingBlockNumber(const char* message)
+{
+    Json::Value root;
+    Json::Reader reader;
+
+    if (!reader.parse(message, root)) {
+        nugu_error("parsing error");
+        return;
+    }
+
+    if (root["playServiceId"].empty()) {
+        nugu_error("There is no mandatory data in directive message");
+        return;
+    }
+
+    if (phone_call_listener)
+        phone_call_listener->processBlockNumber(message);
 }
 
 void PhoneCallAgent::setState(PhoneCallState state)
