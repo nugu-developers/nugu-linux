@@ -95,6 +95,16 @@ INuguCoreContainer* NuguClientImpl::getNuguCoreContainer()
     return nugu_core_container.get();
 }
 
+INetworkManager* NuguClientImpl::getNetworkManager()
+{
+    return network_manager.get();
+}
+
+IFocusManager* NuguClientImpl::getFocusManager()
+{
+    return nugu_core_container->getCapabilityHelper()->getFocusManager();
+}
+
 int NuguClientImpl::create(void)
 {
     if (createCapabilities() <= 0) {
@@ -227,11 +237,6 @@ void NuguClientImpl::deInitialize(void)
     nugu_dbg("NuguClientImpl deInitialize success.");
 
     initialized = false;
-}
-
-INetworkManager* NuguClientImpl::getNetworkManager()
-{
-    return network_manager.get();
 }
 
 } // NuguClientKit

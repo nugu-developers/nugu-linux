@@ -96,4 +96,9 @@ ICapabilityInterface* NuguClient::getCapabilityHandler(const std::string& cname)
     return impl->getCapabilityHandler(cname);
 }
 
+IFocusManager* NuguClient::getFocusManager()
+{
+    return impl->getFocusManager();
+}
+
 } // NuguClientKit
