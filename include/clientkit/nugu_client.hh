@@ -127,6 +127,12 @@ public:
      */
     ICapabilityInterface* getCapabilityHandler(const std::string& cname);
 
+    /**
+     * @brief Get instance of FocusManager
+     * @return IFocusManager abstraction object of FocusManager
+     */
+    IFocusManager* getFocusManager();
+
 private:
     std::unique_ptr<NuguClientImpl> impl;
     CapabilityBuilder* cap_builder;
