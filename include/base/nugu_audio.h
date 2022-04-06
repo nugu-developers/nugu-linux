@@ -25,6 +25,15 @@ extern "C" {
  * @file nugu_audio.h
  */
 
+#define NUGU_AUDIO_ATTRIBUTE_MUSIC_DEFAULT_STRING "MUSIC"
+#define NUGU_AUDIO_ATTRIBUTE_RINGTONE_DEFAULT_STRING "RINGTONE"
+#define NUGU_AUDIO_ATTRIBUTE_CALL_DEFAULT_STRING "CALL"
+#define NUGU_AUDIO_ATTRIBUTE_NOTIFICATION_DEFAULT_STRING "NOTIFICATION"
+#define NUGU_AUDIO_ATTRIBUTE_ALARM_DEFAULT_STRING "ALARM"
+#define NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND_DEFAULT_STRING "VOICE_COMMAND"
+#define NUGU_AUDIO_ATTRIBUTE_NAVIGATION_DEFAULT_STRING "NAVIGATION"
+#define NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND_DEFAULT_STRING "SYSTEM_SOUND"
+
 /**
  * @brief audio sample rate
  */
@@ -93,6 +102,14 @@ typedef enum nugu_audio_attribute NuguAudioAttribute;
  * @brief NuguAudioProperty
  */
 typedef struct nugu_audio_property NuguAudioProperty;
+
+/**
+ * @brief Set audio attribute string
+ * @param[in] attribute audio attribute
+ * @param[in] str audio attribute's string
+ */
+void nugu_audio_set_attribute_str(const NuguAudioAttribute attribute,
+				  const char *str);
 
 /**
  * @brief Get audio attribute string
