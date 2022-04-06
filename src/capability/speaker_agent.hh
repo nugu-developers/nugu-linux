@@ -44,6 +44,9 @@ public:
     void sendEventVolumeChanged(const std::string& ps_id, bool result) override;
     void sendEventMuteChanged(const std::string& ps_id, bool result) override;
 
+    bool getSpeakerType(const std::string& name, SpeakerType& type) override;
+    std::string getSpeakerName(const SpeakerType& type) override;
+
 private:
     void sendEventCommon(const std::string& ps_id, const std::string& ename, EventResultCallback cb = nullptr);
     void sendEventSetVolumeSucceeded(const std::string& ps_id, EventResultCallback cb = nullptr);
@@ -56,23 +59,20 @@ private:
 
     void updateSpeakerVolume(SpeakerType type, int volume);
     void updateSpeakerMute(SpeakerType type, bool mute);
-    bool getSpeakerType(const std::string& name, SpeakerType& type) noexcept;
-    std::string getSpeakerName(const SpeakerType& type) noexcept;
 
     const std::map<SpeakerType, std::string> SPEAKER_NAMES_FOR_TYPES {
-        { SpeakerType::NUGU, "NUGU" },
-        { SpeakerType::MUSIC, "MUSIC" },
-        { SpeakerType::RINGTONE, "RINGTONE" },
-        { SpeakerType::CALL, "CALL" },
-        { SpeakerType::NOTIFICATION, "NOTIFICATION" },
-        { SpeakerType::ALARM, "ALARM" },
-        { SpeakerType::VOICE_COMMAND, "VOICE_COMMAND" },
-        { SpeakerType::NAVIGATION, "NAVIGATION" },
-        { SpeakerType::SYSTEM_SOUND, "SYSTEM_SOUND" },
+        { SpeakerType::NUGU, std::string(NUGU_SPEAKER_NUGU_STRING) },
+        { SpeakerType::MUSIC, std::string(NUGU_SPEAKER_MUSIC_STRING) },
+        { SpeakerType::RINGTONE, std::string(NUGU_SPEAKER_RINGTONE_STRING) },
+        { SpeakerType::CALL, std::string(NUGU_SPEAKER_CALL_STRING) },
+        { SpeakerType::NOTIFICATION, std::string(NUGU_SPEAKER_NOTIFICATION_STRING) },
+        { SpeakerType::ALARM, std::string(NUGU_SPEAKER_ALARM_STRING) },
+        { SpeakerType::VOICE_COMMAND, std::string(NUGU_SPEAKER_VOICE_COMMAND_STRING) },
+        { SpeakerType::NAVIGATION, std::string(NUGU_SPEAKER_NAVIGATION_STRING) },
+        { SpeakerType::SYSTEM_SOUND, std::string(NUGU_SPEAKER_SYSTEM_SOUND_STRING) },
     };
 
     std::map<SpeakerType, std::unique_ptr<SpeakerInfo>> speakers;
-    std::map<std::string, SpeakerType> speaker_types_for_names;
     ISpeakerListener* speaker_listener;
 };
 

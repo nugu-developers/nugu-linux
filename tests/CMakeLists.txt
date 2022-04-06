@@ -12,6 +12,7 @@ ADD_DEPENDENCIES(plugin_nugu_custom.so libnugu)
 
 # Unit tests
 SET(UNIT_TESTS
+	test_nugu_audio
 	test_nugu_buffer
 	test_nugu_plugin
 	test_nugu_recorder

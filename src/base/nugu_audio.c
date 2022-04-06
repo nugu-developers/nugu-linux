@@ -14,31 +14,81 @@
  * limitations under the License.
  */
 
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+
 #include "base/nugu_audio.h"
 #include "base/nugu_log.h"
+
+#define AUDIO_ATTR_NUM NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND
+#define GET_AUDIO_ATTR_INDEX(audio_attr) (audio_attr - 1)
+
+static char *audio_attr_str[AUDIO_ATTR_NUM];
+
+static char *nugu_audio_get_default_attribute_str(NuguAudioAttribute attribute)
+{
+	char *attr_str;
+
+	switch (attribute) {
+	case NUGU_AUDIO_ATTRIBUTE_MUSIC:
+		attr_str = NUGU_AUDIO_ATTRIBUTE_MUSIC_DEFAULT_STRING;
+		break;
+	case NUGU_AUDIO_ATTRIBUTE_RINGTONE:
+		attr_str = NUGU_AUDIO_ATTRIBUTE_RINGTONE_DEFAULT_STRING;
+		break;
+	case NUGU_AUDIO_ATTRIBUTE_CALL:
+		attr_str = NUGU_AUDIO_ATTRIBUTE_CALL_DEFAULT_STRING;
+		break;
+	case NUGU_AUDIO_ATTRIBUTE_NOTIFICATION:
+		attr_str = NUGU_AUDIO_ATTRIBUTE_NOTIFICATION_DEFAULT_STRING;
+		break;
+	case NUGU_AUDIO_ATTRIBUTE_ALARM:
+		attr_str = NUGU_AUDIO_ATTRIBUTE_ALARM_DEFAULT_STRING;
+		break;
+	case NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND:
+		attr_str = NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND_DEFAULT_STRING;
+		break;
+	case NUGU_AUDIO_ATTRIBUTE_NAVIGATION:
+		attr_str = NUGU_AUDIO_ATTRIBUTE_NAVIGATION_DEFAULT_STRING;
+		break;
+	case NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND:
+		attr_str = NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND_DEFAULT_STRING;
+		break;
+	default:
+		nugu_warn("not implement yet!!");
+		attr_str = NUGU_AUDIO_ATTRIBUTE_MUSIC_DEFAULT_STRING;
+		break;
+	}
+	return attr_str;
+}
+
+EXPORT_API void nugu_audio_set_attribute_str(const NuguAudioAttribute attribute,
+					     const char *str)
+{
+	int index = GET_AUDIO_ATTR_INDEX(attribute);
+
+	if (!str || !strlen(str))
+		return;
+
+	if (audio_attr_str[index])
+		free(audio_attr_str[index]);
+
+	audio_attr_str[index] = (char *)calloc(1, strlen(str) + 1);
+	if (!audio_attr_str[index]) {
+		nugu_error_nomem();
+		return;
+	}
+	snprintf(audio_attr_str[index], strlen(str) + 1, "%s", str);
+}
 
 EXPORT_API const char *
 nugu_audio_get_attribute_str(const NuguAudioAttribute attribute)
 {
-	switch (attribute) {
-	case NUGU_AUDIO_ATTRIBUTE_MUSIC:
-		return "music";
-	case NUGU_AUDIO_ATTRIBUTE_RINGTONE:
-		return "ringtone";
-	case NUGU_AUDIO_ATTRIBUTE_CALL:
-		return "call";
-	case NUGU_AUDIO_ATTRIBUTE_NOTIFICATION:
-		return "notification";
-	case NUGU_AUDIO_ATTRIBUTE_ALARM:
-		return "alarm";
-	case NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND:
-		return "voice";
-	case NUGU_AUDIO_ATTRIBUTE_NAVIGATION:
-		return "navigation";
-	case NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND:
-		return "system";
-	default:
-		nugu_warn("not implement yet!!");
-		return "music";
-	}
+	int index = GET_AUDIO_ATTR_INDEX(attribute);
+
+	if (index < AUDIO_ATTR_NUM && audio_attr_str[index])
+		return audio_attr_str[index];
+
+	return nugu_audio_get_default_attribute_str(attribute);
 }

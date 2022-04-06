@@ -470,7 +470,7 @@ static void test_player_audio_attribute(void)
 	g_assert(nugu_player_get_audio_attribute(alarm_player) ==
 		 NUGU_AUDIO_ATTRIBUTE_MUSIC);
 	g_assert_cmpstr(nugu_player_get_audio_attribute_str(music_player), ==,
-			"music");
+			NUGU_AUDIO_ATTRIBUTE_MUSIC_DEFAULT_STRING);
 
 	// change to alarm
 	nugu_player_set_audio_attribute(alarm_player,
@@ -480,7 +480,7 @@ static void test_player_audio_attribute(void)
 	g_assert(nugu_player_get_audio_attribute(alarm_player) ==
 		 NUGU_AUDIO_ATTRIBUTE_ALARM);
 	g_assert_cmpstr(nugu_player_get_audio_attribute_str(alarm_player), ==,
-			"alarm");
+			NUGU_AUDIO_ATTRIBUTE_ALARM_DEFAULT_STRING);
 
 	nugu_player_remove(music_player);
 	nugu_player_remove(alarm_player);

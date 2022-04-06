@@ -228,13 +228,15 @@ static void test_pcm_audio_attribute(void)
 	// default pcm audio attribute: voice command (string: voice)
 	g_assert(nugu_pcm_get_audio_attribute(pcm) ==
 		 NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND);
-	g_assert_cmpstr(nugu_pcm_get_audio_attribute_str(pcm), ==, "voice");
+	g_assert_cmpstr(nugu_pcm_get_audio_attribute_str(pcm), ==,
+			NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND_DEFAULT_STRING);
 
 	// change to music
 	nugu_pcm_set_audio_attribute(pcm, NUGU_AUDIO_ATTRIBUTE_MUSIC);
 	g_assert(nugu_pcm_get_audio_attribute(pcm) ==
 		 NUGU_AUDIO_ATTRIBUTE_MUSIC);
-	g_assert_cmpstr(nugu_pcm_get_audio_attribute_str(pcm), ==, "music");
+	g_assert_cmpstr(nugu_pcm_get_audio_attribute_str(pcm), ==,
+			NUGU_AUDIO_ATTRIBUTE_MUSIC_DEFAULT_STRING);
 
 	nugu_pcm_remove(pcm);
 	nugu_pcm_free(pcm);

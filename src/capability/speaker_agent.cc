@@ -28,10 +28,6 @@ SpeakerAgent::SpeakerAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , speaker_listener(nullptr)
 {
-    std::for_each(SPEAKER_NAMES_FOR_TYPES.cbegin(), SPEAKER_NAMES_FOR_TYPES.cend(),
-        [&](const std::pair<SpeakerType, std::string>& element) {
-            speaker_types_for_names.emplace(element.second, element.first);
-        });
 }
 
 void SpeakerAgent::initialize()
@@ -201,23 +197,29 @@ void SpeakerAgent::updateSpeakerMute(SpeakerType type, bool mute)
     }
 }
 
-bool SpeakerAgent::getSpeakerType(const std::string& name, SpeakerType& type) noexcept
+bool SpeakerAgent::getSpeakerType(const std::string& name, SpeakerType& type)
 {
-    try {
-        type = speaker_types_for_names.at(name);
-        return true;
-    } catch (const std::out_of_range& oor) {
-        return false;
+    for (auto iter = SPEAKER_NAMES_FOR_TYPES.begin(); iter != SPEAKER_NAMES_FOR_TYPES.end(); ++iter){
+        if (name == iter->second) {
+            type = iter->first;
+            return true;
+        }
     }
+    return false;
 }
 
-std::string SpeakerAgent::getSpeakerName(const SpeakerType& type) noexcept
+std::string SpeakerAgent::getSpeakerName(const SpeakerType& type)
 {
-    try {
-        return SPEAKER_NAMES_FOR_TYPES.at(type);
-    } catch (const std::out_of_range& oor) {
-        return "NUGU";
+    std::string name = NUGU_SPEAKER_NUGU_STRING;
+
+    for (auto iter = SPEAKER_NAMES_FOR_TYPES.begin(); iter != SPEAKER_NAMES_FOR_TYPES.end(); ++iter){
+        if (type == iter->first) {
+            name = iter->second;
+            break;
+        }
     }
+
+    return name;
 }
 
 void SpeakerAgent::sendEventSetVolumeSucceeded(const std::string& ps_id, EventResultCallback cb)

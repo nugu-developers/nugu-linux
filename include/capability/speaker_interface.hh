@@ -35,6 +35,16 @@ using namespace NuguClientKit;
  * @{
  */
 
+#define NUGU_SPEAKER_NUGU_STRING "NUGU"
+#define NUGU_SPEAKER_MUSIC_STRING NUGU_AUDIO_ATTRIBUTE_MUSIC_DEFAULT_STRING
+#define NUGU_SPEAKER_RINGTONE_STRING NUGU_AUDIO_ATTRIBUTE_RINGTONE_DEFAULT_STRING
+#define NUGU_SPEAKER_CALL_STRING NUGU_AUDIO_ATTRIBUTE_CALL_DEFAULT_STRING
+#define NUGU_SPEAKER_NOTIFICATION_STRING NUGU_AUDIO_ATTRIBUTE_NOTIFICATION_DEFAULT_STRING
+#define NUGU_SPEAKER_ALARM_STRING NUGU_AUDIO_ATTRIBUTE_ALARM_DEFAULT_STRING
+#define NUGU_SPEAKER_VOICE_COMMAND_STRING NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND_DEFAULT_STRING
+#define NUGU_SPEAKER_NAVIGATION_STRING NUGU_AUDIO_ATTRIBUTE_NAVIGATION_DEFAULT_STRING
+#define NUGU_SPEAKER_SYSTEM_SOUND_STRING NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND_DEFAULT_STRING
+
 #define NUGU_SPEAKER_MIN_VOLUME 0 /** @def Set speaker minimum volume to 0 */
 #define NUGU_SPEAKER_MAX_VOLUME 100 /** @def Set speaker maximum volume to 100 */
 #define NUGU_SPEAKER_DEFAULT_VOLUME 50 /** @def Set speaker default volume to 50 */
@@ -142,6 +152,21 @@ public:
      * @param[in] result result of SetMute
      */
     virtual void sendEventMuteChanged(const std::string& ps_id, bool result) = 0;
+
+    /**
+     * @brief Get speaker's name
+     * @param[in] type speaker type
+     * @return result speaker's name
+     */
+    virtual std::string getSpeakerName(const SpeakerType& type) = 0;
+
+    /**
+     * @brief Get speaker's type according speaker's name
+     * @param[in] name speaker name
+     * @param[out] type speaker type
+     * @return return true if the speaker type is found, otherwise false
+     */
+    virtual bool getSpeakerType(const std::string& name, SpeakerType& type) = 0;
 };
 
 /**
