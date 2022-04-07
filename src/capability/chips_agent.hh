@@ -32,6 +32,8 @@ public:
 
     void parsingDirective(const char* dname, const char* message) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
+    void addListener(IChipsListener* listener) override;
+    void removeListener(IChipsListener* listener) override;
     void updateInfoForContext(Json::Value& ctx) override;
 
 private:
@@ -50,7 +52,7 @@ private:
 
     };
 
-    IChipsListener* chips_listener = nullptr;
+    std::vector<IChipsListener*> chips_listeners;
 };
 
 } // NuguCapability

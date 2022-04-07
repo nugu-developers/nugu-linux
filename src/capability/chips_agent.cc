@@ -46,7 +46,21 @@ void ChipsAgent::initialize()
 void ChipsAgent::setCapabilityListener(ICapabilityListener* clistener)
 {
     if (clistener)
-        chips_listener = dynamic_cast<IChipsListener*>(clistener);
+        addListener(dynamic_cast<IChipsListener*>(clistener));
+}
+
+void ChipsAgent::addListener(IChipsListener* listener)
+{
+    if (listener && std::find(chips_listeners.begin(), chips_listeners.end(), listener) == chips_listeners.end())
+        chips_listeners.emplace_back(listener);
+}
+
+void ChipsAgent::removeListener(IChipsListener* listener)
+{
+    auto iterator = std::find(chips_listeners.begin(), chips_listeners.end(), listener);
+
+    if (iterator != chips_listeners.end())
+        chips_listeners.erase(iterator);
 }
 
 void ChipsAgent::updateInfoForContext(Json::Value& ctx)
@@ -93,8 +107,9 @@ void ChipsAgent::parsingRender(const char* message)
                 chip["token"].asString() });
         }
 
-        if (chips_listener)
+        for (const auto& chips_listener : chips_listeners)
             chips_listener->onReceiveRender(chips_info);
+
     } catch (std::out_of_range& e) {
         nugu_error("The target or chip.type is invalid");
     } catch (std::logic_error& e) {
