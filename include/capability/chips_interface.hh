@@ -80,7 +80,7 @@ public:
      * @brief Notified when receiving Render directive from server.
      * @param[in] chips_info received datas for rendering voice command guide
      */
-    virtual void onReceiveRender(ChipsInfo&& chips_info) = 0;
+    virtual void onReceiveRender(const ChipsInfo& chips_info) = 0;
 };
 
 /**

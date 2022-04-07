@@ -26,7 +26,7 @@ public:
     ChipsListener();
     virtual ~ChipsListener() = default;
 
-    void onReceiveRender(ChipsInfo&& chips_info) override;
+    void onReceiveRender(const ChipsInfo& chips_info) override;
 
 private:
     const std::map<ChipsTarget, std::string> TARGET_TEXTS {
