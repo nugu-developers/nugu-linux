@@ -90,6 +90,18 @@ public:
 class IChipsHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IChipsHandler() = default;
+
+    /**
+     * @brief Add the IChipsListener object
+     * @param[in] listener IChipsListener object
+     */
+    virtual void addListener(IChipsListener* listener) = 0;
+
+    /**
+     * @brief Remove the IChipsListener object
+     * @param[in] listener IChipsListener object
+     */
+    virtual void removeListener(IChipsListener* listener) = 0;
 };
 
 /**
