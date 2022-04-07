@@ -94,7 +94,7 @@ void ChipsAgent::parsingRender(const char* message)
         }
 
         if (chips_listener)
-            chips_listener->onReceiveRender(std::move(chips_info));
+            chips_listener->onReceiveRender(chips_info);
     } catch (std::out_of_range& e) {
         nugu_error("The target or chip.type is invalid");
     } catch (std::logic_error& e) {

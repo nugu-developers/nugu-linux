@@ -22,7 +22,7 @@ ChipsListener::ChipsListener()
 {
 }
 
-void ChipsListener::onReceiveRender(ChipsInfo&& chips_info)
+void ChipsListener::onReceiveRender(const ChipsInfo& chips_info)
 {
     if (!chips_info.contents.empty())
         std::cout << "[Chips] target:" << TARGET_TEXTS.at(chips_info.target) << std::endl;
