@@ -552,10 +552,6 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm)
 		_dumpfile_open(getenv(NUGU_ENV_DUMP_PATH_PCM), "papcm");
 #endif
 
-#ifdef ENABLE_PULSEAUDIO
-	_set_audio_attribute(pcm_param, pcm);
-#endif
-
 	pcm_param->is_start = 1;
 	pcm_param->is_first = 1;
 	pcm_param->is_last = 0;
@@ -568,6 +564,10 @@ static int _pcm_start(NuguPcmDriver *driver, NuguPcm *pcm)
 		nugu_error("failed to create gst elements");
 		return -1;
 	}
+
+#ifdef ENABLE_PULSEAUDIO
+	_set_audio_attribute(pcm_param, pcm);
+#endif
 
 	_change_volume(pcm_param);
 
