@@ -59,8 +59,10 @@ struct gst_handle {
 #endif
 };
 
+static pthread_mutex_t lock;
 static NuguRecorderDriver *rec_driver;
 static int _uniq_id;
+static int _handle_destroyed;
 
 #ifdef NUGU_ENV_DUMP_PATH_RECORDER
 static int _dumpfile_open(const char *path, const char *prefix)
@@ -274,6 +276,14 @@ static void _recorder_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 	GError *err;
 	gchar *debug;
 
+	pthread_mutex_lock(&lock);
+
+	if (_handle_destroyed) {
+		nugu_warn("gstreamer handle is already destroyed");
+		pthread_mutex_unlock(&lock);
+		return;
+	}
+
 	switch (GST_MESSAGE_TYPE(msg)) {
 	case GST_MESSAGE_ERROR:
 		gst_message_parse_error(msg, &err, &debug);
@@ -298,6 +308,8 @@ static void _recorder_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 	default:
 		break;
 	}
+
+	pthread_mutex_unlock(&lock);
 }
 
 static void _connect_message_to_pipeline(GstreamerHandle *gh)
@@ -353,6 +365,8 @@ static GstreamerHandle *_create(NuguRecorder *rec)
 
 	_connect_message_to_pipeline(gh);
 
+	_handle_destroyed = 0;
+
 	return gh;
 }
 
@@ -372,6 +386,8 @@ static void _destroy(NuguRecorder *rec)
 	memset(gh, 0, sizeof(GstreamerHandle));
 	g_free(gh);
 	nugu_recorder_set_driver_data(rec, NULL);
+
+	_handle_destroyed = 1;
 }
 
 static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
@@ -388,16 +404,20 @@ static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 		return 0;
 	}
 
+	pthread_mutex_lock(&lock);
+
 	gh = _create(rec);
 	if (gh == NULL) {
 		nugu_error("error: create gst handle failed");
 		_destroy(rec);
+		pthread_mutex_unlock(&lock);
 		return -1;
 	}
 
 	if (_set_property_to_param(gh, prop) != 0) {
 		nugu_error("error: set param failed");
 		_destroy(rec);
+		pthread_mutex_unlock(&lock);
 		return -1;
 	}
 
@@ -429,6 +449,8 @@ static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 
 	nugu_recorder_set_driver_data(rec, gh);
 
+	pthread_mutex_unlock(&lock);
+
 	nugu_dbg("start done");
 	return 0;
 }
@@ -443,6 +465,8 @@ static int _rec_stop(NuguRecorderDriver *driver, NuguRecorder *rec)
 		nugu_dbg("already stop");
 		return -1;
 	}
+
+	pthread_mutex_lock(&lock);
 
 #ifdef NUGU_ENV_DUMP_PATH_RECORDER
 	if (gh->dump_fd >= 0) {
@@ -463,6 +487,8 @@ static int _rec_stop(NuguRecorderDriver *driver, NuguRecorder *rec)
 	_destroy(rec);
 
 	nugu_recorder_set_driver_data(rec, NULL);
+
+	pthread_mutex_unlock(&lock);
 
 	nugu_dbg("stop done");
 
@@ -494,6 +520,9 @@ static int init(NuguPlugin *p)
 		rec_driver = NULL;
 		return -1;
 	}
+
+
+	pthread_mutex_init(&lock, NULL);
 
 	nugu_dbg("'%s' plugin initialized done",
 		 nugu_plugin_get_description(p)->name);
