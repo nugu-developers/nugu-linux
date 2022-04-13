@@ -21,6 +21,7 @@
 #include <string>
 
 #include <clientkit/capability_interface.hh>
+#include <clientkit/dialog_ux_state_aggregator_interface.hh>
 #include <clientkit/nugu_core_container_interface.hh>
 
 namespace NuguClientKit {
@@ -132,6 +133,16 @@ public:
      * @return IFocusManager abstraction object of FocusManager
      */
     IFocusManager* getFocusManager();
+
+    /**
+     * @brief Add DialogUXStateAggregatorListener
+     */
+    void addDialogUXStateListener(IDialogUXStateAggregatorListener* listener);
+
+    /**
+     * @brief Remove DialogUXStateAggregatorListener
+     */
+    void removeDialogUXStateListener(IDialogUXStateAggregatorListener* listener);
 
 private:
     std::unique_ptr<NuguClientImpl> impl;

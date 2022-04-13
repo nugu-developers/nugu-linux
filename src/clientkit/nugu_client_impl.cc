@@ -41,6 +41,11 @@ NuguClientImpl::NuguClientImpl()
 
     network_manager = std::unique_ptr<INetworkManager>(nugu_core_container->createNetworkManager());
     network_manager->addListener(nugu_core_container->getNetworkManagerListener());
+
+    capa_helper = nugu_core_container->getCapabilityHelper();
+
+    auto session_manager(capa_helper->getSessionManager());
+    dialog_ux_state_aggregator = std::unique_ptr<DialogUXStateAggregator>(new DialogUXStateAggregator(session_manager));
 }
 
 NuguClientImpl::~NuguClientImpl()
@@ -77,6 +82,18 @@ void NuguClientImpl::registerCapability(ICapabilityInterface* capability)
     icapability_map.emplace(cname, capability);
 }
 
+void NuguClientImpl::addDialogUXStateListener(IDialogUXStateAggregatorListener* listener)
+{
+    if (listener)
+        dialog_ux_state_aggregator->addListener(listener);
+}
+
+void NuguClientImpl::removeDialogUXStateListener(IDialogUXStateAggregatorListener* listener)
+{
+    if (listener)
+        dialog_ux_state_aggregator->removeListener(listener);
+}
+
 ICapabilityInterface* NuguClientImpl::getCapabilityHandler(const std::string& cname)
 {
     if (icapability_map.empty()) {
@@ -102,7 +119,7 @@ INetworkManager* NuguClientImpl::getNetworkManager()
 
 IFocusManager* NuguClientImpl::getFocusManager()
 {
-    return nugu_core_container->getCapabilityHelper()->getFocusManager();
+    return capa_helper->getFocusManager();
 }
 
 int NuguClientImpl::create(void)
@@ -206,6 +223,8 @@ bool NuguClientImpl::initialize(void)
         nugu_dbg("'%s' capability initialized", cname.c_str());
     }
 
+    registerDialogUXStateAggregator();
+
     nugu_info("initialized %d capabilities", icapability_map.size());
 
     nugu_prof_mark(NUGU_PROF_TYPE_SDK_INIT_DONE);
@@ -232,11 +251,56 @@ void NuguClientImpl::deInitialize(void)
         nugu_dbg("'%s' capability de-initialized", cname.c_str());
     }
 
+    unregisterDialogUXStateAggregator();
     nugu_core_container->resetInstance();
 
     nugu_dbg("NuguClientImpl deInitialize success.");
 
     initialized = false;
+}
+
+void NuguClientImpl::registerDialogUXStateAggregator()
+{
+    addDialogUXStateAggregator<IASRHandler*>("ASR");
+    addDialogUXStateAggregator<ITTSHandler*>("TTS");
+    addDialogUXStateAggregator<IChipsHandler*>("Chips");
+
+    capa_helper->getInteractionControlManager()->addListener(dialog_ux_state_aggregator.get());
+}
+
+void NuguClientImpl::unregisterDialogUXStateAggregator()
+{
+    removeDialogUXStateAggregator<IASRHandler*>("ASR");
+    removeDialogUXStateAggregator<ITTSHandler*>("TTS");
+    removeDialogUXStateAggregator<IChipsHandler*>("Chips");
+
+    capa_helper->getInteractionControlManager()->removeListener(dialog_ux_state_aggregator.get());
+}
+
+template <typename H>
+void NuguClientImpl::addDialogUXStateAggregator(std::string&& cname)
+{
+    try {
+        auto handler(dynamic_cast<H>(icapability_map.at(cname)));
+
+        if (handler)
+            handler->addListener(dialog_ux_state_aggregator.get());
+    } catch (std::out_of_range& exception) {
+        // skip silently
+    }
+}
+
+template <typename H>
+void NuguClientImpl::removeDialogUXStateAggregator(std::string&& cname)
+{
+    try {
+        auto handler(dynamic_cast<H>(icapability_map.at(cname)));
+
+        if (handler)
+            handler->removeListener(dialog_ux_state_aggregator.get());
+    } catch (std::out_of_range& exception) {
+        // skip silently
+    }
 }
 
 } // NuguClientKit

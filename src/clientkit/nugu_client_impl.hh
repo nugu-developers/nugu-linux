@@ -21,6 +21,7 @@
 #include <memory>
 
 #include "clientkit/capability_interface.hh"
+#include "clientkit/dialog_ux_state_aggregator.hh"
 #include "core/nugu_core_container.hh"
 
 namespace NuguClientKit {
@@ -34,6 +35,8 @@ public:
 
     void setWakeupWord(const std::string& wakeup_word);
     void registerCapability(ICapabilityInterface* capability);
+    void addDialogUXStateListener(IDialogUXStateAggregatorListener* listener);
+    void removeDialogUXStateListener(IDialogUXStateAggregatorListener* listener);
     int create(void);
     bool loadPlugins(const std::string& path = "");
     void unloadPlugins(void);
@@ -47,12 +50,22 @@ public:
 
 private:
     int createCapabilities(void);
+    void registerDialogUXStateAggregator();
+    void unregisterDialogUXStateAggregator();
+
+    template <typename H>
+    void addDialogUXStateAggregator(std::string&& cname);
+
+    template <typename H>
+    void removeDialogUXStateAggregator(std::string&& cname);
 
     using CapabilityMap = std::map<std::string, ICapabilityInterface*>;
 
     CapabilityMap icapability_map;
     std::unique_ptr<INetworkManager> network_manager = nullptr;
     std::unique_ptr<NuguCoreContainer> nugu_core_container = nullptr;
+    std::unique_ptr<DialogUXStateAggregator> dialog_ux_state_aggregator = nullptr;
+    ICapabilityHelper* capa_helper = nullptr;
     bool initialized = false;
     bool plugin_loaded = false;
 };
