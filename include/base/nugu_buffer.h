@@ -73,9 +73,28 @@ void *nugu_buffer_free(NuguBuffer *buf, int is_data_free);
  * @param[in] buf buffer object
  * @param[in] data The data to add to the buffer.
  * @param[in] data_len Length of the data
- * @return added length
+ * @return added length (0 = failure)
  */
 size_t nugu_buffer_add(NuguBuffer *buf, const void *data, size_t data_len);
+
+/**
+ * @brief Append the data to buffer object
+ * @param[in] buf buffer object
+ * @param[in] byte The data to add to the buffer.
+ * @return added length (0 = failure)
+ */
+size_t nugu_buffer_add_byte(NuguBuffer *buf, unsigned char byte);
+
+/**
+ * @brief Append the data to buffer object
+ * @param[in] buf buffer object
+ * @param[in] pos position
+ * @param[in] byte The data to add to the buffer.
+ * @return Result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_buffer_set_byte(NuguBuffer *buf, size_t pos, unsigned char byte);
 
 /**
  * @brief Get the internal buffer
