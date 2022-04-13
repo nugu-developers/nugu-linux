@@ -44,11 +44,19 @@ static void test_buffer_default(void)
 
 	free(test);
 
+	g_assert(nugu_buffer_add(NULL, NULL, 0) == 0);
+	g_assert(nugu_buffer_add(NULL, "1234", 0) == 0);
+	g_assert(nugu_buffer_add(NULL, "1234", 4) == 0);
+	g_assert(nugu_buffer_add_byte(NULL, 0) == 0);
+	g_assert(nugu_buffer_set_byte(NULL, 0, 'A') == -1);
+
 	/* 10 bytes buffer */
 	buf = nugu_buffer_new(10);
 	g_assert(buf != NULL);
 	g_assert(nugu_buffer_get_size(buf) == 0);
 	g_assert(nugu_buffer_get_alloc_size(buf) == 10);
+	g_assert(nugu_buffer_add(buf, NULL, 0) == 0);
+	g_assert(nugu_buffer_add(buf, "1234", 0) == 0);
 
 	/* Fill 9 bytes */
 	g_assert(nugu_buffer_add(buf, "123456789", 9) == 9);
@@ -77,6 +85,14 @@ static void test_buffer_default(void)
 	peek_test = nugu_buffer_peek(buf);
 	g_assert(peek_test[44] == 'x');
 
+	g_assert(nugu_buffer_add_byte(buf, 'A') == 1);
+	peek_test = nugu_buffer_peek(buf);
+	g_assert(peek_test[45] == 'A');
+
+	g_assert(nugu_buffer_add_byte(buf, '\n') == 1);
+	peek_test = nugu_buffer_peek(buf);
+	g_assert(peek_test[46] == '\n');
+
 	g_assert(nugu_buffer_free(buf, 1) == NULL);
 }
 
@@ -84,9 +100,16 @@ static void test_buffer_byte(void)
 {
 	NuguBuffer *buf;
 	int pos;
+	const char *peek_test;
 
 	g_assert(nugu_buffer_find_byte(NULL, '0') == NUGU_BUFFER_NOT_FOUND);
 	g_assert(nugu_buffer_peek_byte(NULL, 0) == 0);
+
+	buf = nugu_buffer_new(1);
+	g_assert(buf != NULL);
+	g_assert(nugu_buffer_set_byte(buf, 0, 'a') == 0);
+	g_assert(nugu_buffer_set_byte(buf, 1, 'a') == -1);
+	g_assert(nugu_buffer_free(buf, 1) == NULL);
 
 	buf = nugu_buffer_new(0);
 	g_assert(buf != NULL);
@@ -106,6 +129,22 @@ static void test_buffer_byte(void)
 	g_assert(nugu_buffer_peek_byte(buf, 3) == 'd');
 	g_assert(nugu_buffer_peek_byte(buf, 4) == 'e');
 	g_assert(nugu_buffer_peek_byte(buf, 5) == 0);
+
+	g_assert(nugu_buffer_clear(buf) == 0);
+	g_assert(nugu_buffer_add_byte(buf, 'a') == 1);
+	g_assert(nugu_buffer_add_byte(buf, 'b') == 1);
+	g_assert(nugu_buffer_add_byte(buf, 'c') == 1);
+	g_assert(nugu_buffer_add_byte(buf, 'd') == 1);
+	g_assert(nugu_buffer_add_byte(buf, '\0') == 1);
+	g_assert(nugu_buffer_peek_byte(buf, 0) == 'a');
+	g_assert(nugu_buffer_peek_byte(buf, 1) == 'b');
+	g_assert(nugu_buffer_peek_byte(buf, 2) == 'c');
+	g_assert(nugu_buffer_peek_byte(buf, 3) == 'd');
+	g_assert(nugu_buffer_peek_byte(buf, 4) == '\0');
+	peek_test = nugu_buffer_peek(buf);
+	g_assert_cmpstr(peek_test, ==, "abcd");
+	g_assert(nugu_buffer_set_byte(buf, 1, 'B') == 0);
+	g_assert_cmpstr(peek_test, ==, "aBcd");
 
 	g_assert(nugu_buffer_free(buf, 1) == NULL);
 

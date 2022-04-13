@@ -105,19 +105,47 @@ static int _buffer_resize(NuguBuffer *buf, size_t needed)
 EXPORT_API size_t nugu_buffer_add(NuguBuffer *buf, const void *data,
 				  size_t data_len)
 {
-	g_return_val_if_fail(buf != NULL, -1);
-	g_return_val_if_fail(data != NULL, -1);
-	g_return_val_if_fail(data_len > 0, -1);
+	g_return_val_if_fail(buf != NULL, 0);
+	g_return_val_if_fail(data != NULL, 0);
+	g_return_val_if_fail(data_len > 0, 0);
 
 	if (buf->alloc_size - buf->index < data_len) {
 		if (_buffer_resize(buf, data_len) < 0)
-			return -1;
+			return 0;
 	}
 
 	memcpy(buf->data + buf->index, data, data_len);
 	buf->index += data_len;
 
 	return data_len;
+}
+
+EXPORT_API size_t nugu_buffer_add_byte(NuguBuffer *buf, unsigned char byte)
+{
+	g_return_val_if_fail(buf != NULL, 0);
+
+	if (buf->alloc_size - buf->index < 1) {
+		if (_buffer_resize(buf, 1) < 0)
+			return 0;
+	}
+
+	buf->data[buf->index] = byte;
+	buf->index += 1;
+
+	return 1;
+}
+
+EXPORT_API int nugu_buffer_set_byte(NuguBuffer *buf, size_t pos,
+				    unsigned char byte)
+{
+	g_return_val_if_fail(buf != NULL, -1);
+
+	if (pos > buf->index)
+		return -1;
+
+	buf->data[pos] = byte;
+
+	return 0;
 }
 
 EXPORT_API const void *nugu_buffer_peek(NuguBuffer *buf)
