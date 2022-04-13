@@ -101,4 +101,14 @@ IFocusManager* NuguClient::getFocusManager()
     return impl->getFocusManager();
 }
 
+void NuguClient::addDialogUXStateListener(IDialogUXStateAggregatorListener* listener)
+{
+    impl->addDialogUXStateListener(listener);
+}
+
+void NuguClient::removeDialogUXStateListener(IDialogUXStateAggregatorListener* listener)
+{
+    impl->removeDialogUXStateListener(listener);
+}
+
 } // NuguClientKit
