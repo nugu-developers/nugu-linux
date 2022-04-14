@@ -32,7 +32,7 @@ struct DialogUXStateAggregator::Impl {
     bool is_multi_turn = false;
     std::string cur_dialog_id;
     std::string chips_dialog_id;
-    ChipsInfo chips;
+    ChipsInfo chips {};
 
     explicit Impl(ISessionManager* session_manager);
     void setState(DialogUXState state);
@@ -207,7 +207,7 @@ void DialogUXStateAggregator::Impl::setState(DialogUXState state)
     dialog_ux_state = state;
     bool session_active = isSessionActive();
     bool multi_turn = false;
-    ChipsInfo chips_info;
+    ChipsInfo chips_info {};
 
     if (dialog_ux_state == DialogUXState::Listening && (asr_initiator == ASRInitiator::EXPECT_SPEECH || session_active)) {
         multi_turn = is_multi_turn;

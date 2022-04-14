@@ -150,11 +150,11 @@ private:
         return chips_info;
     }
 
-    ISessionManager* session_manager;
-    IASRListener* asr_listener;
-    ITTSListener* tts_listener;
-    IChipsListener* chips_listener;
-    IInteractionControlManagerListener* ic_manager_listener;
+    ISessionManager* session_manager = nullptr;
+    IASRListener* asr_listener = nullptr;
+    ITTSListener* tts_listener = nullptr;
+    IChipsListener* chips_listener = nullptr;
+    IInteractionControlManagerListener* ic_manager_listener = nullptr;
     DialogType dialog_type = DialogType::General;
     TTSState tts_state = TTSState::TTS_SPEECH_FINISH;
     std::string dialog_id;
