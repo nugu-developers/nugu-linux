@@ -30,6 +30,8 @@ struct DialogUXStateAggregator::Impl {
     ASRState asr_state = ASRState::IDLE;
     TTSState tts_state = TTSState::TTS_SPEECH_FINISH;
     bool is_multi_turn = false;
+    std::string cur_dialog_id;
+    std::string chips_dialog_id;
     ChipsInfo chips;
 
     explicit Impl(ISessionManager* session_manager);
@@ -120,6 +122,8 @@ void DialogUXStateAggregator::onPartial(const std::string& text, const std::stri
 
 void DialogUXStateAggregator::onComplete(const std::string& text, const std::string& dialog_id)
 {
+    pimpl->cur_dialog_id = dialog_id;
+
     for (const auto& listener : pimpl->listeners)
         listener->onASRResult(text);
 }
@@ -162,6 +166,7 @@ void DialogUXStateAggregator::onTTSCancel(const std::string& dialog_id)
 void DialogUXStateAggregator::onReceiveRender(const ChipsInfo& chips_info)
 {
     pimpl->chips = chips_info;
+    pimpl->chips_dialog_id = pimpl->cur_dialog_id;
 }
 
 void DialogUXStateAggregator::onHasMultiTurn()
@@ -206,7 +211,9 @@ void DialogUXStateAggregator::Impl::setState(DialogUXState state)
 
     if (dialog_ux_state == DialogUXState::Listening && (asr_initiator == ASRInitiator::EXPECT_SPEECH || session_active)) {
         multi_turn = is_multi_turn;
-        chips_info = chips;
+
+        if (chips_dialog_id == cur_dialog_id)
+            chips_info = chips;
     } else if (dialog_ux_state == DialogUXState::Speaking && session_active) {
         multi_turn = is_multi_turn;
     }

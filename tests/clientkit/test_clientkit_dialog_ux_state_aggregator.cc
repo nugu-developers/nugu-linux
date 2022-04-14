@@ -22,13 +22,13 @@
 
 using namespace NuguClientKit;
 
-static const char* DIALOG_ID = "dialog_id";
 static const char* PLAY_SERVICE_ID = "play_service_id";
 
 class FakeExecutor {
 public:
     enum class DialogType {
         General,
+        GeneralWithChips,
         DM,
         Nudge
     };
@@ -88,14 +88,16 @@ public:
             ic_manager_listener->onHasMultiTurn();
 
         notifyASRState(ASRState::IDLE);
-        asr_listener->onComplete("Response", DIALOG_ID);
+        asr_listener->onComplete("Response", dialog_id);
 
         if (dialog_type == DialogType::DM) {
             ic_manager_listener->onModeChanged(true);
-            session_manager->set(DIALOG_ID, Session { "session_id", PLAY_SERVICE_ID });
-            session_manager->activate(DIALOG_ID);
+            session_manager->set(dialog_id, Session { "session_id", PLAY_SERVICE_ID });
+            session_manager->activate(dialog_id);
         } else if (dialog_type == DialogType::Nudge) {
             ic_manager_listener->onModeChanged(true);
+            chips_listener->onReceiveRender(composeChipsInfo());
+        } else if (dialog_type == DialogType::GeneralWithChips) {
             chips_listener->onReceiveRender(composeChipsInfo());
         }
     }
@@ -109,7 +111,7 @@ public:
     {
         notifyTTSState(TTSState::TTS_SPEECH_FINISH);
 
-        if (dialog_type != DialogType::General)
+        if (dialog_type != DialogType::General && dialog_type != DialogType::GeneralWithChips)
             notifyASRState(ASRState::LISTENING, ASRInitiator::EXPECT_SPEECH);
     }
 
@@ -117,7 +119,7 @@ public:
     {
         if (dialog_type == DialogType::DM) {
             ic_manager_listener->onModeChanged(false);
-            session_manager->deactivate(DIALOG_ID);
+            session_manager->deactivate(dialog_id);
         } else if (dialog_type == DialogType::Nudge) {
             ic_manager_listener->onModeChanged(false);
         }
@@ -128,12 +130,15 @@ public:
 private:
     void notifyASRState(ASRState state, ASRInitiator initiator = ASRInitiator::WAKE_UP_WORD)
     {
-        asr_listener->onState(state, DIALOG_ID, initiator);
+        if (state == ASRState::LISTENING)
+            dialog_id = "dialog_id_" + std::to_string(++dialog_id_index);
+
+        asr_listener->onState(state, dialog_id, initiator);
     }
     void notifyTTSState(TTSState state)
     {
         tts_state = state;
-        tts_listener->onTTSState(tts_state, DIALOG_ID);
+        tts_listener->onTTSState(tts_state, dialog_id);
     }
     ChipsInfo composeChipsInfo()
     {
@@ -152,6 +157,8 @@ private:
     IInteractionControlManagerListener* ic_manager_listener;
     DialogType dialog_type = DialogType::General;
     TTSState tts_state = TTSState::TTS_SPEECH_FINISH;
+    std::string dialog_id;
+    int dialog_id_index = 0;
 };
 
 class DialogUXStateAggregatorListener : public IDialogUXStateAggregatorListener {
@@ -358,6 +365,38 @@ static void test_dialog_ux_state_aggregator_interrupt_dialog(TestFixture* fixtur
     checkDialogMode(!multi_turn); //  progress not dialog mode if nudge
 }
 
+static void test_dialog_ux_state_aggregator_reset_chips(TestFixture* fixture, gconstpointer ignored)
+{
+    const auto& state(fixture->listener->getState());
+    const auto& chips(fixture->listener->getChips());
+    const auto& multi_turn(fixture->listener->isMultiTurn());
+
+    fixture->executor->setDialogType(FakeExecutor::DialogType::GeneralWithChips);
+    sub_test_dialog_ux_state_aggregator_progress_asr(fixture);
+
+    fixture->executor->onReceiveResponse();
+    fixture->executor->onTTSStarted();
+    g_assert(state == DialogUXState::Speaking && !multi_turn);
+
+    // interrupt TTS playing and try DM
+    fixture->executor->setDialogType(FakeExecutor::DialogType::DM);
+    fixture->executor->wakeup();
+    g_assert(state == DialogUXState::Listening);
+
+    fixture->executor->startSpeech();
+    fixture->executor->endSpeech();
+    fixture->executor->onReceiveResponse();
+    fixture->executor->onTTSStarted();
+    g_assert(state == DialogUXState::Speaking && multi_turn);
+
+    // progress dialog mode
+    fixture->executor->onTTSFinished();
+    g_assert(state == DialogUXState::Listening && multi_turn);
+
+    // Because DM has not chips in this test, it has to be empty.
+    g_assert(chips.contents.empty());
+}
+
 #define G_TEST_ADD_FUNC(name, func) \
     g_test_add(name, TestFixture, nullptr, setup, func, teardown);
 
@@ -375,6 +414,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/clientkit/DialogUXStateAggregator/DM", test_dialog_ux_state_aggregator_dm);
     G_TEST_ADD_FUNC("/clientkit/DialogUXStateAggregator/nudge", test_dialog_ux_state_aggregator_nudge);
     G_TEST_ADD_FUNC("/clientkit/DialogUXStateAggregator/interruptDialog", test_dialog_ux_state_aggregator_interrupt_dialog);
+    G_TEST_ADD_FUNC("/clientkit/DialogUXStateAggregator/resetChips", test_dialog_ux_state_aggregator_reset_chips);
 
     return g_test_run();
 }
