@@ -185,10 +185,8 @@ void DialogUXStateAggregator::onModeChanged(bool multi_turn)
 
     pimpl->is_multi_turn = multi_turn;
 
-    if (!pimpl->is_multi_turn) {
-        pimpl->chips = {};
+    if (!pimpl->is_multi_turn)
         pimpl->setIdleState();
-    }
 }
 
 /*******************************************************************************
