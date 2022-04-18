@@ -100,7 +100,7 @@ private:
 
     void executeOnForegroundAction(bool asr_user);
     void executeOnBackgroundAction(bool asr_user);
-    void executeOnNoneAction(bool asr_user);
+    void executeOnNoneAction();
 
     ListeningState getListeningState();
     std::string getListeningStateStr(ListeningState state);
@@ -156,6 +156,7 @@ private:
     std::string request_listening_id;
     bool asr_cancel;
     bool listen_timeout_fail_beep;
+    bool is_progress_release_focus;
     std::string listen_timeout_event_msg_id;
     std::function<void(bool)> pending_release_focus;
 
