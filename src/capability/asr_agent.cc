@@ -37,6 +37,7 @@ ASRAgent::ASRAgent()
     , cur_state(ASRState::IDLE)
     , asr_cancel(false)
     , listen_timeout_fail_beep(true)
+    , is_progress_release_focus(false)
     , asr_user_listener(nullptr)
     , asr_dm_listener(nullptr)
     , wakeup_power_noise(0)
@@ -87,6 +88,7 @@ void ASRAgent::initialize()
     asr_cancel = false;
     listen_timeout_fail_beep = true;
     listen_timeout_event_msg_id.clear();
+    is_progress_release_focus = false;
     pending_release_focus = nullptr;
     wakeup_power_noise = 0;
     wakeup_power_speech = 0;
@@ -746,8 +748,13 @@ void ASRAgent::executeOnBackgroundAction(bool asr_user)
     focus_manager->releaseFocus(focus_type, CAPABILITY_NAME);
 }
 
-void ASRAgent::executeOnNoneAction(bool asr_user)
+void ASRAgent::executeOnNoneAction()
 {
+    if (is_progress_release_focus)
+        return;
+
+    is_progress_release_focus = true;
+
     playsync_manager->continueRelease();
     playsync_manager->resetHolding();
     speech_recognizer->stopListening();
@@ -763,6 +770,8 @@ void ASRAgent::executeOnNoneAction(bool asr_user)
     resetExpectSpeechState();
 
     epd_attribute = default_epd_attribute;
+
+    is_progress_release_focus = false;
 }
 
 ListeningState ASRAgent::getListeningState()
@@ -832,6 +841,7 @@ void ASRAgent::resetExpectSpeechState()
     listen_timeout_fail_beep = true;
 
     interaction_control_manager->finish(InteractionMode::MULTI_TURN, getName());
+    focus_manager->releaseFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME);
 }
 
 bool ASRAgent::isExpectSpeechState()
@@ -875,7 +885,7 @@ void ASRAgent::FocusListener::onFocusChanged(FocusState state)
             asr_agent->executeOnBackgroundAction(asr_user);
         break;
     case FocusState::NONE:
-        asr_agent->executeOnNoneAction(asr_user);
+        asr_agent->executeOnNoneAction();
         break;
     }
 }
