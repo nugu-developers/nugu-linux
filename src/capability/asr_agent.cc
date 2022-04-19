@@ -26,6 +26,21 @@ namespace NuguCapability {
 static const char* CAPABILITY_NAME = "ASR";
 static const char* CAPABILITY_VERSION = "1.6";
 
+class ASRAgent::FocusListener : public IFocusResourceListener {
+public:
+    explicit FocusListener(ASRAgent* asr_agent, bool asr_user);
+    virtual ~FocusListener() = default;
+
+    void onFocusChanged(FocusState state) override;
+    std::string getStateStr(const FocusState& state);
+    void reset();
+
+    const bool asr_user;
+    const char* focus_type_name;
+    ASRAgent* asr_agent;
+    FocusState focus_state = FocusState::NONE;
+};
+
 ASRAgent::ASRAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
     , es_attr({})
@@ -38,8 +53,8 @@ ASRAgent::ASRAgent()
     , asr_cancel(false)
     , listen_timeout_fail_beep(true)
     , is_progress_release_focus(false)
-    , asr_user_listener(nullptr)
-    , asr_dm_listener(nullptr)
+    , asr_user_listener(std::unique_ptr<FocusListener>(new FocusListener(this, true)))
+    , asr_dm_listener(std::unique_ptr<FocusListener>(new FocusListener(this, false)))
     , wakeup_power_noise(0)
     , wakeup_power_speech(0)
     , model_path("")
@@ -93,9 +108,6 @@ void ASRAgent::initialize()
     wakeup_power_noise = 0;
     wakeup_power_speech = 0;
 
-    asr_user_listener = new ASRAgent::FocusListener(this, focus_manager, true);
-    asr_dm_listener = new ASRAgent::FocusListener(this, focus_manager, false);
-
     speech_recognizer = std::unique_ptr<ISpeechRecognizer>(core_container->createSpeechRecognizer(model_path, epd_attribute));
     speech_recognizer->setListener(this);
     epd_attribute = default_epd_attribute = speech_recognizer->getEpdAttribute();
@@ -136,14 +148,8 @@ void ASRAgent::deInitialize()
         rec_event = nullptr;
     }
 
-    if (asr_user_listener) {
-        delete asr_user_listener;
-        asr_user_listener = nullptr;
-    }
-    if (asr_dm_listener) {
-        delete asr_dm_listener;
-        asr_dm_listener = nullptr;
-    }
+    asr_user_listener->reset();
+    asr_dm_listener->reset();
 
     speech_recognizer.reset();
 
@@ -183,7 +189,7 @@ void ASRAgent::startRecognition(ASRInitiator initiator, AsrRecognizeCallback cal
     if (routine_manager->isRoutineProgress())
         routine_manager->interrupt();
 
-    focus_manager->requestFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME, asr_user_listener);
+    focus_manager->requestFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME, asr_user_listener.get());
     asr_cancel = false;
 }
 
@@ -559,7 +565,7 @@ void ASRAgent::parsingCancelRecognize(const char* message)
 
 void ASRAgent::handleExpectSpeech()
 {
-    focus_manager->requestFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME, asr_dm_listener);
+    focus_manager->requestFocus(ASR_DM_FOCUS_TYPE, CAPABILITY_NAME, asr_dm_listener.get());
 }
 
 void ASRAgent::onListeningState(ListeningState state, const std::string& id)
@@ -716,7 +722,7 @@ void ASRAgent::notifyASRErrorCancel(ASRError error, bool is_cancel)
                   : asr_listener->onError(error, dialog_id, listen_timeout_fail_beep);
 }
 
-void ASRAgent::executeOnForegroundAction(bool asr_user)
+void ASRAgent::executeOnForegroundAction(const bool& asr_user)
 {
     if (!asr_user) {
         if (!isExpectSpeechState()) {
@@ -741,7 +747,7 @@ void ASRAgent::executeOnForegroundAction(bool asr_user)
     asr_cancel = false;
 }
 
-void ASRAgent::executeOnBackgroundAction(bool asr_user)
+void ASRAgent::executeOnBackgroundAction(const bool& asr_user)
 {
     const char* focus_type = asr_user ? ASR_USER_FOCUS_TYPE : ASR_DM_FOCUS_TYPE;
 
@@ -862,32 +868,45 @@ void ASRAgent::setExpectTypingAttributes(Json::Value& root, std::string&& et_att
             root[key] = et_attr_json[key];
 }
 
-ASRAgent::FocusListener::FocusListener(ASRAgent* asr_agent, IFocusManager* focus_manager, bool asr_user)
-    : asr_agent(asr_agent)
-    , focus_manager(focus_manager)
-    , asr_user(asr_user)
+/*******************************************************************************
+ * define FocusListener
+ ******************************************************************************/
+
+ASRAgent::FocusListener::FocusListener(ASRAgent* asr_agent, bool asr_user)
+    : asr_user(asr_user)
+    , focus_type_name(asr_user ? "ASRUser" : "ASRDM")
+    , asr_agent(asr_agent)
 {
 }
 
 void ASRAgent::FocusListener::onFocusChanged(FocusState state)
 {
-    nugu_info("[%s] Focus Changed(%s -> %s)", asr_user ? "ASRUser" : "ASRDM", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
-    FocusState prev_state = focus_state;
-
-    focus_state = state;
+    nugu_info("[%s] Focus Changed(%s -> %s)", focus_type_name, getStateStr(focus_state).c_str(), getStateStr(state).c_str());
 
     switch (state) {
     case FocusState::FOREGROUND:
         asr_agent->executeOnForegroundAction(asr_user);
         break;
     case FocusState::BACKGROUND:
-        if (prev_state == FocusState::FOREGROUND)
+        if (focus_state == FocusState::FOREGROUND)
             asr_agent->executeOnBackgroundAction(asr_user);
         break;
     case FocusState::NONE:
         asr_agent->executeOnNoneAction();
         break;
     }
+
+    focus_state = state;
+}
+
+std::string ASRAgent::FocusListener::getStateStr(const FocusState& state)
+{
+    return asr_agent->focus_manager->getStateString(state);
+}
+
+void ASRAgent::FocusListener::reset()
+{
+    focus_state = FocusState::NONE;
 }
 
 } // NuguCapability

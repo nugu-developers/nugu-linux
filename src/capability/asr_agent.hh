@@ -68,6 +68,8 @@ public:
     void notifyEventResponse(const std::string& msg_id, const std::string& data, bool success) override;
 
 private:
+    class FocusListener;
+
     // send event
     void sendEventCommon(const std::string& ename, EventResultCallback cb = nullptr, bool include_all_context = false);
     void sendEventRecognize(unsigned char* data, size_t length, bool is_end, EventResultCallback cb = nullptr);
@@ -98,8 +100,8 @@ private:
     void releaseASRFocus(bool release_focus = true);
     void notifyASRErrorCancel(ASRError error, bool is_cancel = false);
 
-    void executeOnForegroundAction(bool asr_user);
-    void executeOnBackgroundAction(bool asr_user);
+    void executeOnForegroundAction(const bool& asr_user);
+    void executeOnBackgroundAction(const bool& asr_user);
     void executeOnNoneAction();
 
     ListeningState getListeningState();
@@ -109,20 +111,6 @@ private:
     void resetExpectSpeechState();
     bool isExpectSpeechState();
     void setExpectTypingAttributes(Json::Value& root, std::string&& et_attr);
-
-    class FocusListener : public IFocusResourceListener {
-    public:
-        FocusListener(ASRAgent* asr_agent, IFocusManager* focus_manager, bool asr_user);
-        FocusListener() = default;
-        virtual ~FocusListener() = default;
-
-        void onFocusChanged(FocusState state) override;
-
-        ASRAgent* asr_agent = nullptr;
-        IFocusManager* focus_manager = nullptr;
-        FocusState focus_state = FocusState::NONE;
-        bool asr_user = false;
-    };
 
     const ASRInitiator NONE_INITIATOR = static_cast<ASRInitiator>(-1);
     const std::map<ASRState, std::string> ASR_STATE_TEXTS {
@@ -160,8 +148,8 @@ private:
     std::string listen_timeout_event_msg_id;
     std::function<void(bool)> pending_release_focus;
 
-    FocusListener* asr_user_listener;
-    FocusListener* asr_dm_listener;
+    std::unique_ptr<FocusListener> asr_user_listener;
+    std::unique_ptr<FocusListener> asr_dm_listener;
 
     float wakeup_power_noise;
     float wakeup_power_speech;
