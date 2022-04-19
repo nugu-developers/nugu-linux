@@ -22,7 +22,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "Text";
-static const char* CAPABILITY_VERSION = "1.6";
+static const char* CAPABILITY_VERSION = "1.7";
 
 TextAgent::TextAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
