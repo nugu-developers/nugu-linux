@@ -17,6 +17,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include <glib.h>
 
@@ -24,27 +27,27 @@
 
 static const char *SERVER;
 
-static gboolean on_not_reached(NuguHttpRequest *req,
-			       const NuguHttpResponse *resp, void *user_data)
+static int on_not_reached(NuguHttpRequest *req, const NuguHttpResponse *resp,
+			  void *user_data)
 {
 	g_assert_not_reached();
 
-	return TRUE;
+	return 1;
 }
 
-static gboolean on_invalid(NuguHttpRequest *req, const NuguHttpResponse *resp,
-			   void *user_data)
+static int on_invalid(NuguHttpRequest *req, const NuguHttpResponse *resp,
+		      void *user_data)
 {
 	g_assert(req != NULL);
 	g_assert(resp != NULL);
 	g_assert(resp->code == -1);
 
 	/* auto free the NuguHttpRequest */
-	return TRUE;
+	return 1;
 }
 
-static gboolean on_timeout(NuguHttpRequest *req, const NuguHttpResponse *resp,
-			   void *user_data)
+static int on_timeout(NuguHttpRequest *req, const NuguHttpResponse *resp,
+		      void *user_data)
 {
 	g_assert(req != NULL);
 	g_assert(user_data != NULL);
@@ -53,12 +56,12 @@ static gboolean on_timeout(NuguHttpRequest *req, const NuguHttpResponse *resp,
 
 	g_main_loop_quit(user_data);
 
-	return TRUE;
+	return 1;
 }
 
 /* Response code: 200 (OK) */
-static gboolean on_200(NuguHttpRequest *req, const NuguHttpResponse *resp,
-		       void *user_data)
+static int on_200(NuguHttpRequest *req, const NuguHttpResponse *resp,
+		  void *user_data)
 {
 	NuguHttpResponse *tmp;
 
@@ -82,12 +85,12 @@ static gboolean on_200(NuguHttpRequest *req, const NuguHttpResponse *resp,
 
 	g_main_loop_quit(user_data);
 
-	return FALSE;
+	return 0;
 }
 
 /* Response code: 201 (Created) */
-static gboolean on_201(NuguHttpRequest *req, const NuguHttpResponse *resp,
-		       void *user_data)
+static int on_201(NuguHttpRequest *req, const NuguHttpResponse *resp,
+		  void *user_data)
 {
 	g_assert(req != NULL);
 	g_assert(user_data != NULL);
@@ -98,12 +101,12 @@ static gboolean on_201(NuguHttpRequest *req, const NuguHttpResponse *resp,
 
 	g_main_loop_quit(user_data);
 
-	return FALSE;
+	return 0;
 }
 
 /* Response code: 404 (Not Found) */
-static gboolean on_404(NuguHttpRequest *req, const NuguHttpResponse *resp,
-		       void *user_data)
+static int on_404(NuguHttpRequest *req, const NuguHttpResponse *resp,
+		  void *user_data)
 {
 	g_assert(req != NULL);
 	g_assert(user_data != NULL);
@@ -112,12 +115,12 @@ static gboolean on_404(NuguHttpRequest *req, const NuguHttpResponse *resp,
 
 	g_main_loop_quit(user_data);
 
-	return FALSE;
+	return 0;
 }
 
 /* Response code: 204 (No content) */
-static gboolean on_204(NuguHttpRequest *req, const NuguHttpResponse *resp,
-		       void *user_data)
+static int on_204(NuguHttpRequest *req, const NuguHttpResponse *resp,
+		  void *user_data)
 {
 	g_assert(req != NULL);
 	g_assert(user_data != NULL);
@@ -127,7 +130,7 @@ static gboolean on_204(NuguHttpRequest *req, const NuguHttpResponse *resp,
 
 	g_main_loop_quit(user_data);
 
-	return FALSE;
+	return 0;
 }
 
 static void test_nugu_http_default(void)
@@ -499,8 +502,8 @@ static void test_nugu_http_delete_async(void)
 static int _exit_count;
 static int _request_count;
 
-static gboolean on_resp(NuguHttpRequest *req, const NuguHttpResponse *resp,
-			void *user_data)
+static int on_resp(NuguHttpRequest *req, const NuguHttpResponse *resp,
+		   void *user_data)
 {
 	g_assert(req != NULL);
 	g_assert(resp != NULL);
@@ -514,7 +517,7 @@ static gboolean on_resp(NuguHttpRequest *req, const NuguHttpResponse *resp,
 	if (_exit_count >= _request_count)
 		g_main_loop_quit(user_data);
 
-	return TRUE;
+	return 1;
 }
 
 static void test_nugu_http_multiple_async(void)
@@ -522,6 +525,9 @@ static void test_nugu_http_multiple_async(void)
 	NuguHttpHost *host;
 	NuguHttpRequest *req;
 	GMainLoop *loop;
+
+	_exit_count = 0;
+	_request_count = 0;
 
 	loop = g_main_loop_new(NULL, FALSE);
 
@@ -551,6 +557,116 @@ static void test_nugu_http_multiple_async(void)
 	nugu_http_host_free(host);
 }
 
+#define TEST_DOWNLOAD_HTTP_HOST "https://raw.githubusercontent.com"
+#define TEST_DOWNLOAD_HTTP_PATH "/nugu-developers/nugu-linux/master/README.md"
+#define TEST_DOWNLOAD_LOCAL_PATH_FAIL "/tmp/nugu_http_download_fail.dat"
+#define TEST_DOWNLOAD_LOCAL_PATH_OK "/tmp/nugu_http_download_ok.dat"
+
+static int on_download_fail(NuguHttpRequest *req, const NuguHttpResponse *resp,
+			    void *user_data)
+{
+	struct stat statbuf;
+
+	g_assert(req != NULL);
+	g_assert(resp != NULL);
+	g_assert(user_data != NULL);
+
+	_exit_count++;
+
+	if (_exit_count >= _request_count)
+		g_main_loop_quit(user_data);
+
+	g_assert(resp->code != 200);
+	g_assert(stat(TEST_DOWNLOAD_LOCAL_PATH_FAIL, &statbuf) == 0);
+	g_assert(statbuf.st_size > 0);
+	unlink(TEST_DOWNLOAD_LOCAL_PATH_FAIL);
+
+	return 1;
+}
+
+static int on_download_done(NuguHttpRequest *req, const NuguHttpResponse *resp,
+			    void *user_data)
+{
+	struct stat statbuf;
+
+	g_assert(req != NULL);
+	g_assert(resp != NULL);
+	g_assert(user_data != NULL);
+
+	_exit_count++;
+
+	if (_exit_count >= _request_count)
+		g_main_loop_quit(user_data);
+
+	g_assert(stat(TEST_DOWNLOAD_LOCAL_PATH_OK, &statbuf) == 0);
+	g_assert(statbuf.st_size > 0);
+	unlink(TEST_DOWNLOAD_LOCAL_PATH_OK);
+
+	return 1;
+}
+
+static void on_download_progress(NuguHttpRequest *req,
+				 const NuguHttpResponse *resp,
+				 size_t downloaded, size_t total,
+				 void *user_data)
+{
+	g_assert(req != NULL);
+	g_assert(resp != NULL);
+	g_assert(user_data != NULL);
+
+	g_assert(downloaded <= total);
+}
+
+static void test_nugu_http_download(void)
+{
+	NuguHttpHost *host;
+	NuguHttpRequest *req;
+	GMainLoop *loop;
+
+	_exit_count = 0;
+	_request_count = 0;
+
+	loop = g_main_loop_new(NULL, FALSE);
+
+	host = nugu_http_host_new(TEST_DOWNLOAD_HTTP_HOST);
+	g_assert(host != NULL);
+
+	req = nugu_http_download(NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+	g_assert(req == NULL);
+
+	req = nugu_http_download(host, NULL, NULL, NULL, NULL, NULL, NULL);
+	g_assert(req == NULL);
+
+	req = nugu_http_download(host, TEST_DOWNLOAD_HTTP_PATH, NULL, NULL,
+				 NULL, NULL, NULL);
+	g_assert(req == NULL);
+
+	req = nugu_http_download(host, TEST_DOWNLOAD_HTTP_PATH,
+				 TEST_DOWNLOAD_LOCAL_PATH_OK, NULL, NULL, NULL,
+				 NULL);
+	g_assert(req == NULL);
+
+	req = nugu_http_download(host, TEST_DOWNLOAD_HTTP_PATH, "/a/b/c/d",
+				 NULL, on_download_done, NULL, loop);
+	g_assert(req == NULL);
+
+	req = nugu_http_download(host, "/_____", TEST_DOWNLOAD_LOCAL_PATH_FAIL,
+				 NULL, on_download_fail, NULL, loop);
+	g_assert(req != NULL);
+	_request_count++;
+
+	req = nugu_http_download(host, TEST_DOWNLOAD_HTTP_PATH,
+				 TEST_DOWNLOAD_LOCAL_PATH_OK, NULL,
+				 on_download_done, on_download_progress, loop);
+	g_assert(req != NULL);
+	_request_count++;
+
+	g_main_loop_run(loop);
+	g_main_loop_unref(loop);
+
+	nugu_http_host_free(host);
+}
+
 int main(int argc, char *argv[])
 {
 #if !GLIB_CHECK_VERSION(2, 36, 0)
@@ -559,6 +675,9 @@ int main(int argc, char *argv[])
 
 	g_test_init(&argc, &argv, NULL);
 	g_log_set_always_fatal((GLogLevelFlags)G_LOG_FATAL_MASK);
+
+	nugu_http_init();
+	g_test_add_func("/http/download", test_nugu_http_download);
 
 	/*
 	 * If the "HTTP_TEST_SERVER" environment value is not set,
@@ -569,11 +688,9 @@ int main(int argc, char *argv[])
 	 *     export HTTP_TEST_SERVER=http://localhost:3000
 	 */
 	if (getenv("HTTP_TEST_SERVER") == NULL)
-		return 0;
+		return g_test_run();
 
 	SERVER = getenv("HTTP_TEST_SERVER");
-
-	nugu_http_init();
 
 	g_test_add_func("/http/default", test_nugu_http_default);
 	g_test_add_func("/http/timeout", test_nugu_http_timeout);
