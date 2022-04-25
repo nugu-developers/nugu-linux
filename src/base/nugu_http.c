@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 #include <glib.h>
 
@@ -59,6 +60,11 @@ struct _nugu_http_request {
 
 	gboolean async_completed;
 	gboolean destroy_reserved;
+
+	FILE *fp;
+	NuguHttpProgressCallback progress_callback;
+	curl_off_t prev_dlnow;
+	size_t prev_ratio;
 };
 
 struct _nugu_http_host {
@@ -318,6 +324,51 @@ static size_t _on_recv_write(void *ptr, size_t size, size_t nmemb,
 	return nugu_buffer_add(req->resp_body, ptr, size * nmemb);
 }
 
+static size_t _on_recv_filewrite(void *ptr, size_t size, size_t nmemb,
+				 void *user_data)
+{
+	NuguHttpRequest *req = user_data;
+	size_t written;
+
+	if (!req->fp)
+		return 0;
+
+	written = fwrite(ptr, size, nmemb, req->fp);
+	if (written != size * nmemb)
+		nugu_error("fwrite() failed: %s", strerror(errno));
+
+	return written;
+}
+
+static size_t _on_progress(void *user_data, curl_off_t dltotal,
+			   curl_off_t dlnow, curl_off_t ultotal,
+			   curl_off_t ulnow)
+{
+	NuguHttpRequest *req = user_data;
+	size_t ratio = 0;
+
+	if (req->prev_dlnow == dlnow)
+		return 0;
+
+	if (dltotal > 0) {
+		ratio = (dlnow * 100) / dltotal;
+		if (req->prev_ratio == ratio)
+			return 0;
+	}
+
+	if (req->progress_callback)
+		req->progress_callback(req, req->resp, dlnow, dltotal,
+				       req->callback_userdata);
+	else
+		nugu_dbg("download %zd / %zd bytes (%zd%%)", dlnow, dltotal,
+			 ratio);
+
+	req->prev_dlnow = dlnow;
+	req->prev_ratio = ratio;
+
+	return 0;
+}
+
 static void _curl_perform(NuguHttpRequest *req)
 {
 	CURLcode ret;
@@ -344,6 +395,11 @@ static void _curl_perform(NuguHttpRequest *req)
 	if (req->resp->body_len > 0)
 		req->resp->body = nugu_buffer_peek(req->resp_body);
 	nugu_buffer_add(req->resp_body, "\0", 1);
+
+	if (req->fp) {
+		fclose(req->fp);
+		req->fp = NULL;
+	}
 }
 
 static gboolean _on_thread_request_done(gpointer user_data)
@@ -650,6 +706,53 @@ EXPORT_API NuguHttpRequest *nugu_http_delete_sync(NuguHttpHost *host,
 				      header, NULL, 0);
 }
 
+EXPORT_API NuguHttpRequest *
+nugu_http_download(NuguHttpHost *host, const char *path, const char *dest_path,
+		   NuguHttpHeader *header, NuguHttpCallback callback,
+		   NuguHttpProgressCallback progress_callback, void *user_data)
+{
+	struct _nugu_http_request *req;
+	FILE *fp;
+
+	g_return_val_if_fail(host != NULL, NULL);
+	g_return_val_if_fail(path != NULL, NULL);
+	g_return_val_if_fail(dest_path != NULL, NULL);
+	g_return_val_if_fail(callback != NULL, NULL);
+
+	fp = fopen(dest_path, "wb");
+	if (!fp) {
+		nugu_error("fopen(%s) failed: %s", dest_path, strerror(errno));
+		return NULL;
+	}
+
+	req = _request_new(host, path, header);
+	if (!req) {
+		fclose(fp);
+		return NULL;
+	}
+
+	req->fp = fp;
+	curl_easy_setopt(req->curl, CURLOPT_WRITEFUNCTION, _on_recv_filewrite);
+	curl_easy_setopt(req->curl, CURLOPT_NOPROGRESS, 0L);
+	curl_easy_setopt(req->curl, CURLOPT_XFERINFODATA, req);
+	curl_easy_setopt(req->curl, CURLOPT_XFERINFOFUNCTION, _on_progress);
+
+	/**
+	 * Logs are turned off to reduce log messages when a progress callback
+	 * is provided.
+	 */
+	if (progress_callback)
+		curl_easy_setopt(req->curl, CURLOPT_VERBOSE, 0L);
+
+	req->callback = callback;
+	req->progress_callback = progress_callback;
+	req->callback_userdata = user_data;
+
+	_curl_perform_thread(req);
+
+	return req;
+}
+
 EXPORT_API const NuguHttpResponse *
 nugu_http_request_response_get(NuguHttpRequest *req)
 {
@@ -669,6 +772,9 @@ EXPORT_API void nugu_http_request_free(NuguHttpRequest *req)
 	}
 
 	nugu_dbg("req(%p) destroy", req);
+
+	if (req->fp)
+		fclose(req->fp);
 
 	if (req->tid)
 		g_thread_join(req->tid);

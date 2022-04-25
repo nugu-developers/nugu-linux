@@ -78,9 +78,20 @@ struct _nugu_http_response {
 
 /**
  * @brief Callback prototype for receiving async HTTP response
+ * @return Whether to automatically free memory for NuguHttpRequest
+ * @retval 1 automatically free memory after return the callback
+ * @retval 0 free the memory manually by the nugu_http_request_free().
  */
 typedef int (*NuguHttpCallback)(NuguHttpRequest *req,
 				const NuguHttpResponse *resp, void *user_data);
+
+/**
+ * @brief Callback prototype for HTTP download progress
+ */
+typedef void (*NuguHttpProgressCallback)(NuguHttpRequest *req,
+					 const NuguHttpResponse *resp,
+					 size_t downloaded, size_t total,
+					 void *user_data);
 
 /**
  * @brief Initialize HTTP module (curl_global_init)
@@ -331,6 +342,23 @@ NuguHttpRequest *nugu_http_delete(NuguHttpHost *host, const char *path,
  */
 NuguHttpRequest *nugu_http_delete_sync(NuguHttpHost *host, const char *path,
 				       NuguHttpHeader *header);
+
+/**
+ * @brief A convenient API for HTTP file download async requests
+ * @param[in] host host object
+ * @param[in] path url path
+ * @param[in] dest_path path to save the file
+ * @param[in] header header object
+ * @param[in] callback callback function to receive response
+ * @param[in] progress_callback callback function to receive download progress
+ * @param[in] user_data data to pass to the user callback
+ * @return HTTP request object
+ * @see nugu_http_request_free()
+ */
+NuguHttpRequest *
+nugu_http_download(NuguHttpHost *host, const char *path, const char *dest_path,
+		   NuguHttpHeader *header, NuguHttpCallback callback,
+		   NuguHttpProgressCallback progress_callback, void *user_data);
 
 /**
  * @brief Destroy the HTTP request object
