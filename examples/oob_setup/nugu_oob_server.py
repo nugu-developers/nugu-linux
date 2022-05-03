@@ -224,6 +224,10 @@ def index():
             scope = token['scope']
         else:
             scope = ''
+        if 'jti' in token:
+            jti = token['jti']
+        else:
+            jti = ''
 
         loginForm = """
 <table width=100%>
@@ -251,10 +255,13 @@ def index():
         <th>scope</th>
         <td width=100%><input disabled type=text style="width:100%;" name=scope value="{scope}"/></td>
     </tr>
-
+    <tr>
+        <th>jti</th>
+        <td width=100%><input disabled type=text style="width:100%;" name=jti value="{jti}"/></td>
+    </tr>
 </table>
 <p align="center"><a href="/logout">Logout</a>{refresh_token_action}</p>
-""".format(access_token=token['access_token'], expires_at=expires_at, expires_in=token['expires_in'], refresh_token=refresh_token, token_type=token['token_type'], scope=scope, refresh_token_action=refresh_token_action)
+""".format(access_token=token['access_token'], expires_at=expires_at, expires_in=token['expires_in'], refresh_token=refresh_token, token_type=token['token_type'], scope=scope, jti=jti, refresh_token_action=refresh_token_action)
     else:
         loginForm = """
 <p align="left">
