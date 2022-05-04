@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -116,20 +116,20 @@ $(document).ready(function(){initNavTree('mic__interface_8hh_source.html',''); i
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="group__MicInterface.html#ggaafad2a241855a2d3848567c69b00c076a88559a0cfd8250c9d65970cc145c92d4">OFF</a> </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;};</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IMicListener.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1IMicListener.html">IMicListener</a> : <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> {</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IMicListener.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1IMicListener.html">IMicListener</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> {</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IMicListener.html">IMicListener</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> micStatusChanged(<a class="code" href="group__MicInterface.html#gaafad2a241855a2d3848567c69b00c076">MicStatus</a>&amp; status) = 0;</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1IMicListener.html#ab522986b24690f463e45bd46bb813867">micStatusChanged</a>(<a class="code" href="group__MicInterface.html#gaafad2a241855a2d3848567c69b00c076">MicStatus</a>&amp; status) = 0;</div>
 <div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;};</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
 <div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IMicHandler.html">   64</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1IMicHandler.html">IMicHandler</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a> {</div>
 <div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IMicHandler.html">IMicHandler</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> enable() = 0;</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1IMicHandler.html#a1aab503646acb758cf6f86dac2603a9c">enable</a>() = 0;</div>
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> disable() = 0;</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1IMicHandler.html#a05563bd9964522a4ff906a4d0163d627">disable</a>() = 0;</div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
 <div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;} <span class="comment">// NuguCapability</span></div>
@@ -137,19 +137,22 @@ $(document).ready(function(){initNavTree('mic__interface_8hh_source.html',''); i
 <div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_MIC_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:64</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:81</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1IMicListener_html"><div class="ttname"><a href="classNuguCapability_1_1IMicListener.html">NuguCapability::IMicListener</a></div><div class="ttdoc">mic listener interface</div><div class="ttdef"><b>Definition:</b> mic_interface.hh:49</div></div>
+<div class="ttc" id="aclassNuguCapability_1_1IMicListener_html_ab522986b24690f463e45bd46bb813867"><div class="ttname"><a href="classNuguCapability_1_1IMicListener.html#ab522986b24690f463e45bd46bb813867">NuguCapability::IMicListener::micStatusChanged</a></div><div class="ttdeci">virtual void micStatusChanged(MicStatus &amp;status)=0</div><div class="ttdoc">Report to the user mic status changed.</div></div>
 <div class="ttc" id="agroup__MicInterface_html_gaafad2a241855a2d3848567c69b00c076"><div class="ttname"><a href="group__MicInterface.html#gaafad2a241855a2d3848567c69b00c076">NuguCapability::MicStatus</a></div><div class="ttdeci">MicStatus</div><div class="ttdoc">MicStatus.</div><div class="ttdef"><b>Definition:</b> mic_interface.hh:40</div></div>
 <div class="ttc" id="agroup__MicInterface_html_ggaafad2a241855a2d3848567c69b00c076a90651ebea9a35ec4e018c8157492e17c"><div class="ttname"><a href="group__MicInterface.html#ggaafad2a241855a2d3848567c69b00c076a90651ebea9a35ec4e018c8157492e17c">NuguCapability::MicStatus::ON</a></div><div class="ttdeci">@ ON</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityListener_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></div><div class="ttdoc">capability listener interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:54</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityListener_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></div><div class="ttdoc">capability listener interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:59</div></div>
 <div class="ttc" id="agroup__MicInterface_html_ggaafad2a241855a2d3848567c69b00c076a88559a0cfd8250c9d65970cc145c92d4"><div class="ttname"><a href="group__MicInterface.html#ggaafad2a241855a2d3848567c69b00c076a88559a0cfd8250c9d65970cc145c92d4">NuguCapability::MicStatus::OFF</a></div><div class="ttdeci">@ OFF</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1IMicHandler_html"><div class="ttname"><a href="classNuguCapability_1_1IMicHandler.html">NuguCapability::IMicHandler</a></div><div class="ttdoc">mic handler interface</div><div class="ttdef"><b>Definition:</b> mic_interface.hh:64</div></div>
+<div class="ttc" id="aclassNuguCapability_1_1IMicHandler_html_a1aab503646acb758cf6f86dac2603a9c"><div class="ttname"><a href="classNuguCapability_1_1IMicHandler.html#a1aab503646acb758cf6f86dac2603a9c">NuguCapability::IMicHandler::enable</a></div><div class="ttdeci">virtual void enable()=0</div><div class="ttdoc">application enables mic.</div></div>
 <div class="ttc" id="acapability__interface_8hh_html"><div class="ttname"><a href="capability__interface_8hh.html">capability_interface.hh</a></div></div>
+<div class="ttc" id="aclassNuguCapability_1_1IMicHandler_html_a05563bd9964522a4ff906a4d0163d627"><div class="ttname"><a href="classNuguCapability_1_1IMicHandler.html#a05563bd9964522a4ff906a4d0163d627">NuguCapability::IMicHandler::disable</a></div><div class="ttdeci">virtual void disable()=0</div><div class="ttdoc">if application disables mic, EPD and KWD will not work.</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fe91053431442a18fd8b50c6b5c5d672.html">capability</a></li><li class="navelem"><a class="el" href="mic__interface_8hh.html">mic_interface.hh</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:47 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:26 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

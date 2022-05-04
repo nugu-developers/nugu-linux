@@ -12,7 +12,7 @@ var classNuguClientKit_1_1IPlaySyncManager =
     [ "releaseSync", "classNuguClientKit_1_1IPlaySyncManager.html#a573fdad089aacfa994bbd4b90166fe48", null ],
     [ "releaseSyncLater", "classNuguClientKit_1_1IPlaySyncManager.html#a6336bb1ba512b093727726a9bdfa34f6", null ],
     [ "releaseSyncImmediately", "classNuguClientKit_1_1IPlaySyncManager.html#aaccede352752e59a78067863d06d216e", null ],
-    [ "releaseSyncUnconditionally", "classNuguClientKit_1_1IPlaySyncManager.html#aa84aef7d6f395b3c340f96f5a733ee18", null ],
+    [ "releaseSyncUnconditionally", "classNuguClientKit_1_1IPlaySyncManager.html#a5fc1db8fc8bc6e34d831878c1fa9a8bc", null ],
     [ "postPoneRelease", "classNuguClientKit_1_1IPlaySyncManager.html#af4ccf0a65663e311732a424441e91681", null ],
     [ "continueRelease", "classNuguClientKit_1_1IPlaySyncManager.html#a5eebf9023193a331f52709e246329465", null ],
     [ "stopHolding", "classNuguClientKit_1_1IPlaySyncManager.html#a8a9dfd81efab9b66881e31d57713d392", null ],

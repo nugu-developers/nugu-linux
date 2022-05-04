@@ -23,5 +23,7 @@ var group__NuguEvent =
     [ "nugu_event_get_type", "group__NuguEvent.html#gaf82ec8b7067afa0353eaaae32368d536", null ],
     [ "nugu_event_get_seq", "group__NuguEvent.html#ga1c284181f7d1472f56453c8e9c621cda", null ],
     [ "nugu_event_increase_seq", "group__NuguEvent.html#ga4f031cf810f97b43a1105ad1db706b45", null ],
-    [ "nugu_event_generate_payload", "group__NuguEvent.html#gaf2795300241b02cb2013cc4e997fd83a", null ]
+    [ "nugu_event_generate_payload", "group__NuguEvent.html#gaf2795300241b02cb2013cc4e997fd83a", null ],
+    [ "nugu_event_set_mime_type", "group__NuguEvent.html#ga35a3912d55fbdf2ed62b72a814592913", null ],
+    [ "nugu_event_peek_mime_type", "group__NuguEvent.html#ga3dfec4cd2d72ce491916fb5e9346dc84", null ]
 ];

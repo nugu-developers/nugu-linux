@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -83,6 +83,7 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1ICapabilityListe
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classNuguClientKit_1_1ICapabilityListener-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">NuguClientKit::ICapabilityListener Class Reference<div class="ingroups"><a class="el" href="group__SDKNuguClientKit.html">NuguClientKit</a> &raquo; <a class="el" href="group__CapabilityInterface.html">CapabilityInterface</a></div></div>  </div>
@@ -100,31 +101,107 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1ICapabilityListe
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="classNuguClientKit_1_1ICapabilityListener__inherit__graph.png" border="0" usemap="#NuguClientKit_1_1ICapabilityListener_inherit__map" alt="Inheritance graph"/></div>
 <map name="NuguClientKit_1_1ICapabilityListener_inherit__map" id="NuguClientKit_1_1ICapabilityListener_inherit__map">
-<area shape="rect" title="capability listener interface" alt="" coords="5,473,196,514"/>
+<area shape="rect" title="capability listener interface" alt="" coords="5,585,196,626"/>
 <area shape="rect" href="classNuguCapability_1_1IASRListener.html" title="ASR listener interface." alt="" coords="256,5,467,32"/>
 <area shape="rect" href="classNuguCapability_1_1IAudioPlayerListener.html" title="audioplayer listener interface" alt="" coords="256,57,467,98"/>
-<area shape="rect" href="classNuguCapability_1_1IChipsListener.html" title="chips listener interface" alt="" coords="251,123,472,149"/>
-<area shape="rect" href="classNuguCapability_1_1IDisplayListener.html" title="display listener interface" alt="" coords="270,174,453,215"/>
-<area shape="rect" href="classNuguCapability_1_1IExtensionListener.html" title="extension listener interface" alt="" coords="263,239,460,281"/>
-<area shape="rect" href="classNuguCapability_1_1IMessageListener.html" title="message listener interface" alt="" coords="266,305,457,346"/>
-<area shape="rect" href="classNuguCapability_1_1IMicListener.html" title="mic listener interface" alt="" coords="257,371,465,397"/>
-<area shape="rect" href="classNuguCapability_1_1INudgeListener.html" title="nudge listener interface" alt="" coords="248,421,475,448"/>
-<area shape="rect" href="classNuguCapability_1_1IPhoneCallListener.html" title="phone call listener interface" alt="" coords="262,473,461,514"/>
-<area shape="rect" href="classNuguCapability_1_1IRoutineListener.html" title="routine listener interface" alt="" coords="270,538,453,579"/>
-<area shape="rect" href="classNuguCapability_1_1ISessionListener.html" title="session listener interface" alt="" coords="270,603,453,645"/>
-<area shape="rect" href="classNuguCapability_1_1ISoundListener.html" title="sound listener interface" alt="" coords="249,669,474,696"/>
-<area shape="rect" href="classNuguCapability_1_1ISpeakerListener.html" title="speaker listener interface" alt="" coords="269,721,454,762"/>
-<area shape="rect" href="classNuguCapability_1_1ISystemListener.html" title="system listener interface" alt="" coords="244,787,479,813"/>
-<area shape="rect" href="classNuguCapability_1_1ITextListener.html" title="text listener interface" alt="" coords="255,837,467,864"/>
-<area shape="rect" href="classNuguCapability_1_1ITTSListener.html" title="tts listener interface" alt="" coords="257,888,466,915"/>
-<area shape="rect" href="classNuguCapability_1_1IUtilityListener.html" title="utility listener interface" alt="" coords="275,939,448,981"/>
-<area shape="rect" href="classNuguCapability_1_1IAudioPlayerDisplayListener.html" title="audioplayer&#39;s display listener interface" alt="" coords="527,174,737,215"/>
+<area shape="rect" href="classNuguCapability_1_1IBatteryListener.html" title="battery listener interface" alt="" coords="271,122,452,163"/>
+<area shape="rect" href="classNuguCapability_1_1IBluetoothListener.html" title="bluetooth listener interface" alt="" coords="263,187,459,229"/>
+<area shape="rect" href="classNuguCapability_1_1IChipsListener.html" title="chips listener interface" alt="" coords="251,253,472,280"/>
+<area shape="rect" href="classNuguCapability_1_1IDisplayListener.html" title="display listener interface" alt="" coords="270,305,453,346"/>
+<area shape="rect" href="classNuguCapability_1_1IExtensionListener.html" title="extension listener interface" alt="" coords="263,370,460,411"/>
+<area shape="rect" href="classNuguCapability_1_1ILocationListener.html" title="location listener interface" alt="" coords="267,435,455,477"/>
+<area shape="rect" href="classNuguCapability_1_1IMessageListener.html" title="message listener interface" alt="" coords="266,501,457,542"/>
+<area shape="rect" href="classNuguCapability_1_1IMicListener.html" title="mic listener interface" alt="" coords="257,567,465,593"/>
+<area shape="rect" href="classNuguCapability_1_1INudgeListener.html" title="nudge listener interface" alt="" coords="248,617,475,644"/>
+<area shape="rect" href="classNuguCapability_1_1IPhoneCallListener.html" title="phone call listener interface" alt="" coords="262,669,461,710"/>
+<area shape="rect" href="classNuguCapability_1_1IRoutineListener.html" title="routine listener interface" alt="" coords="270,734,453,775"/>
+<area shape="rect" href="classNuguCapability_1_1ISessionListener.html" title="session listener interface" alt="" coords="270,799,453,841"/>
+<area shape="rect" href="classNuguCapability_1_1ISoundListener.html" title="sound listener interface" alt="" coords="249,865,474,892"/>
+<area shape="rect" href="classNuguCapability_1_1ISpeakerListener.html" title="speaker listener interface" alt="" coords="269,917,454,958"/>
+<area shape="rect" href="classNuguCapability_1_1ISystemListener.html" title="system listener interface" alt="" coords="244,983,479,1009"/>
+<area shape="rect" href="classNuguCapability_1_1ITextListener.html" title="text listener interface" alt="" coords="255,1033,467,1060"/>
+<area shape="rect" href="classNuguCapability_1_1ITTSListener.html" title="tts listener interface" alt="" coords="257,1084,466,1111"/>
+<area shape="rect" href="classNuguCapability_1_1IUtilityListener.html" title="utility listener interface" alt="" coords="275,1135,448,1177"/>
+<area shape="rect" href="classNuguCapability_1_1IAudioPlayerDisplayListener.html" title="audioplayer&#39;s display listener interface" alt="" coords="527,305,737,346"/>
 </map>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:aa2e5938f8c942d662f560c33f13fa254"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityListener.html#aa2e5938f8c942d662f560c33f13fa254">getCapabilityHandler</a> ()</td></tr>
+<tr class="memdesc:aa2e5938f8c942d662f560c33f13fa254"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get capability interface object.  <a href="classNuguClientKit_1_1ICapabilityListener.html#aa2e5938f8c942d662f560c33f13fa254">More...</a><br /></td></tr>
+<tr class="separator:aa2e5938f8c942d662f560c33f13fa254"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6ebe17fe8072da3d5c227dff4eda9db"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityListener.html#ab6ebe17fe8072da3d5c227dff4eda9db">setCapabilityHandler</a> (<a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a> *handler)</td></tr>
+<tr class="memdesc:ab6ebe17fe8072da3d5c227dff4eda9db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set capability interface object.  <a href="classNuguClientKit_1_1ICapabilityListener.html#ab6ebe17fe8072da3d5c227dff4eda9db">More...</a><br /></td></tr>
+<tr class="separator:ab6ebe17fe8072da3d5c227dff4eda9db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>capability listener interface </p>
 <dl class="section see"><dt>See also</dt><dd>ICapabilityHandler </dd></dl>
-</div><hr/>The documentation for this class was generated from the following file:<ul>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ab6ebe17fe8072da3d5c227dff4eda9db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab6ebe17fe8072da3d5c227dff4eda9db">&#9670;&nbsp;</a></span>setCapabilityHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguClientKit::ICapabilityListener::setCapabilityHandler </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a> *&#160;</td>
+          <td class="paramname"><em>handler</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set capability interface object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">handler</td><td>capability interface object </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa2e5938f8c942d662f560c33f13fa254"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2e5938f8c942d662f560c33f13fa254">&#9670;&nbsp;</a></span>getCapabilityHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a>* NuguClientKit::ICapabilityListener::getCapabilityHandler </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Get capability interface object. </p>
+<dl class="section return"><dt>Returns</dt><dd>capability interface object </dd></dl>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="capability__interface_8hh_source.html">capability_interface.hh</a></li>
 </ul>
 </div><!-- contents -->
@@ -133,7 +210,7 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1ICapabilityListe
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:48 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

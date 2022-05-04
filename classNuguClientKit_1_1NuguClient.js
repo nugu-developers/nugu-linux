@@ -11,5 +11,8 @@ var classNuguClientKit_1_1NuguClient =
     [ "deInitialize", "classNuguClientKit_1_1NuguClient.html#a32def4bda93b3a706d6e7757c5e41220", null ],
     [ "getNuguCoreContainer", "classNuguClientKit_1_1NuguClient.html#a0ad308f320bd4431bcb3edae6e806972", null ],
     [ "getNetworkManager", "classNuguClientKit_1_1NuguClient.html#aa600061f3d9fd1f07eb933d10069ed81", null ],
-    [ "getCapabilityHandler", "classNuguClientKit_1_1NuguClient.html#ab789df431ad90492b494e30a8e19a2e2", null ]
+    [ "getCapabilityHandler", "classNuguClientKit_1_1NuguClient.html#ab789df431ad90492b494e30a8e19a2e2", null ],
+    [ "getFocusManager", "classNuguClientKit_1_1NuguClient.html#a954a8d5091c5ca5cb75870f88c82dea2", null ],
+    [ "addDialogUXStateListener", "classNuguClientKit_1_1NuguClient.html#aa30ac062033d32e3f159b12abdf2a773", null ],
+    [ "removeDialogUXStateListener", "classNuguClientKit_1_1NuguClient.html#a811cbed8ee74b40ded248b88f6d4c53e", null ]
 ];

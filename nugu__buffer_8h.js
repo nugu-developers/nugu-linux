@@ -5,6 +5,8 @@ var nugu__buffer_8h =
     [ "nugu_buffer_new", "group__Buffer.html#ga0b9004f84813282e2107c1e85c53dcf9", null ],
     [ "nugu_buffer_free", "group__Buffer.html#ga505b48bbb39128531e1ea281ac7dac44", null ],
     [ "nugu_buffer_add", "group__Buffer.html#gaacefd9e2f61220e4b88a519c6c34be05", null ],
+    [ "nugu_buffer_add_byte", "group__Buffer.html#ga9e4953146b489246dc6dbc89edeb7b93", null ],
+    [ "nugu_buffer_set_byte", "group__Buffer.html#ga99dac5cd15cd1408e07cc3528dc6e14b", null ],
     [ "nugu_buffer_peek", "group__Buffer.html#ga388846c7b43f57daa5915d7a17b3ec8b", null ],
     [ "nugu_buffer_get_size", "group__Buffer.html#ga56b97f3aa4d3badc9f88207f59ffed45", null ],
     [ "nugu_buffer_get_alloc_size", "group__Buffer.html#ga943ac429f9b17b6898f422129b3d97c6", null ],

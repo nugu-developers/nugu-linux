@@ -4,6 +4,7 @@ var group__MediaPlayerInterface =
       [ "~IMediaPlayer", "classNuguClientKit_1_1IMediaPlayer.html#a91b5f39704e7fd789b795def71d0a216", null ],
       [ "addListener", "classNuguClientKit_1_1IMediaPlayer.html#afa7eb30c96c86041ee7ceeb887436864", null ],
       [ "removeListener", "classNuguClientKit_1_1IMediaPlayer.html#a17aa13c2170e53af6f4076a90bae8e91", null ],
+      [ "setAudioAttribute", "classNuguClientKit_1_1IMediaPlayer.html#ab894b138a7e7205422242a41bc6d454b", null ],
       [ "setSource", "classNuguClientKit_1_1IMediaPlayer.html#abf034391ffb88630549f108538fb9d34", null ],
       [ "play", "classNuguClientKit_1_1IMediaPlayer.html#a442cd3eb9b9cc42795a275203d1dd83f", null ],
       [ "stop", "classNuguClientKit_1_1IMediaPlayer.html#a2d73568f405fa85861a48b651646f5de", null ],
@@ -38,8 +39,8 @@ var group__MediaPlayerInterface =
     ] ],
     [ "ITTSPlayer", "classNuguClientKit_1_1ITTSPlayer.html", [
       [ "~ITTSPlayer", "classNuguClientKit_1_1ITTSPlayer.html#ab4c56826e5b650a36ec303fa029af6fb", null ],
-      [ "write_audio", "classNuguClientKit_1_1ITTSPlayer.html#a79eae6c79ec0589a693f05e971a000a4", null ],
-      [ "write_done", "classNuguClientKit_1_1ITTSPlayer.html#ac08f98c47733365a6cf5464aa6bcad8d", null ]
+      [ "writeAudio", "classNuguClientKit_1_1ITTSPlayer.html#a0c7087e6b2456c1e8436127643694aab", null ],
+      [ "writeDone", "classNuguClientKit_1_1ITTSPlayer.html#ab0754d00e6270c29c5a08a36e47e0cfa", null ]
     ] ],
     [ "MediaPlayerState", "group__MediaPlayerInterface.html#ga4394cbf300e5382612ec50d08e05317e", [
       [ "IDLE", "group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317eaa5daf7f2ebbba4975d61dab1c40188c7", null ],

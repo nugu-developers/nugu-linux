@@ -11,11 +11,13 @@ var group__ChipsInterface =
       [ "contents", "structNuguCapability_1_1ChipsInfo.html#a281231d7a29dcb053726509b52b8d289", null ]
     ] ],
     [ "IChipsHandler", "classNuguCapability_1_1IChipsHandler.html", [
-      [ "~IChipsHandler", "classNuguCapability_1_1IChipsHandler.html#a5294a152e92889dd4a321b02212f15d1", null ]
+      [ "~IChipsHandler", "classNuguCapability_1_1IChipsHandler.html#a5294a152e92889dd4a321b02212f15d1", null ],
+      [ "addListener", "classNuguCapability_1_1IChipsHandler.html#a373511d6e361895f12bdc0400680d011", null ],
+      [ "removeListener", "classNuguCapability_1_1IChipsHandler.html#adbc39816a025689a035587f4d225d9c5", null ]
     ] ],
     [ "IChipsListener", "classNuguCapability_1_1IChipsListener.html", [
       [ "~IChipsListener", "classNuguCapability_1_1IChipsListener.html#a2cafc5774a215257c9330a8727dffc23", null ],
-      [ "onReceiveRender", "classNuguCapability_1_1IChipsListener.html#aab0b89ee337385790da682812eaa3645", null ]
+      [ "onReceiveRender", "classNuguCapability_1_1IChipsListener.html#a36693b1f4410664d67b8797654dfb7b3", null ]
     ] ],
     [ "ChipsTarget", "group__ChipsInterface.html#gad4d8fcfcbdf141607ee378b3ae2ba180", [
       [ "DM", "group__ChipsInterface.html#ggad4d8fcfcbdf141607ee378b3ae2ba180a2ecda7a0252b442ac6ecf47462119f51", null ],

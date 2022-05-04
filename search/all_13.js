@@ -1,14 +1,18 @@
 var searchData=
 [
-  ['wake_5fup_5fword_1172',['WAKE_UP_WORD',['../group__ASRInterface.html#gga0dd27d783b014cca3e5aca7510b36f8aa646e5558f4e20f45fbd651b653f8dbc3',1,'NuguCapability']]],
-  ['wakeup_5fdetected_1173',['WAKEUP_DETECTED',['../group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a414bbfd491b2bcc1fe2538cff08c2c28',1,'NuguClientKit']]],
-  ['wakeup_5fdetecting_1174',['WAKEUP_DETECTING',['../group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119aaa5bf1ece51d36575b3f26c570899008',1,'NuguClientKit']]],
-  ['wakeup_5ffail_1175',['WAKEUP_FAIL',['../group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a7b2e84d7ac904c69cc66b63252822dbe',1,'NuguClientKit']]],
-  ['wakeup_5finterface_2ehh_1176',['wakeup_interface.hh',['../wakeup__interface_8hh.html',1,'']]],
-  ['wakeupdetectstate_1177',['WakeupDetectState',['../group__WakeupInterface.html#ga5379a1d6d0c4ea118547f802b851e119',1,'NuguClientKit']]],
-  ['wakeupinterface_1178',['WakeupInterface',['../group__WakeupInterface.html',1,'']]],
-  ['wakeupmodelfile_1179',['WakeupModelFile',['../structNuguClientKit_1_1WakeupModelFile.html',1,'NuguClientKit']]],
-  ['withdrawn_5fuser_1180',['WITHDRAWN_USER',['../group__SystemInterface.html#gga210ca95bced11e44b9558947bb31a2eba61edd86da66e7b719182d760a0427ffd',1,'NuguCapability']]],
-  ['write_5faudio_1181',['write_audio',['../classNuguClientKit_1_1ITTSPlayer.html#a79eae6c79ec0589a693f05e971a000a4',1,'NuguClientKit::ITTSPlayer']]],
-  ['write_5fdone_1182',['write_done',['../classNuguClientKit_1_1ITTSPlayer.html#ac08f98c47733365a6cf5464aa6bcad8d',1,'NuguClientKit::ITTSPlayer']]]
+  ['unauthorized_5frequest_5fexception_1314',['UNAUTHORIZED_REQUEST_EXCEPTION',['../group__SystemInterface.html#ggae95aa9037a85a223126f51c1efcbe671a073b62332ae9f9b319a9d1867ccdcf90',1,'NuguCapability']]],
+  ['underrun_1315',['UNDERRUN',['../group__AudioPlayerInterface.html#gga7e30478d0a2b8276e02040b468c32910a5fac8c63be4469a35faa1ccde324a3a7',1,'NuguCapability']]],
+  ['unholdfocus_1316',['unholdFocus',['../group__FocusManagerInterface.html#ga3e0546b71fb3396af9f7db486e4fa3b6',1,'NuguClientKit::IFocusManager']]],
+  ['unknown_1317',['UNKNOWN',['../group__ASRInterface.html#gga9aa11256d9ce8a3aa14ac9a24e1d8e21a696b031073e74bf2cb98e5ef201d4aa3',1,'NuguCapability::UNKNOWN()'],['../group__NetworkManagerInterface.html#gga6aff79e2435c590ea44de8c43754e015a696b031073e74bf2cb98e5ef201d4aa3',1,'NuguClientKit::UNKNOWN()']]],
+  ['unload_1318',['unload',['../structnugu__plugin__desc.html#aaf3aa968711c64ffbeed877d28860eaa',1,'nugu_plugin_desc']]],
+  ['unloadplugins_1319',['unloadPlugins',['../classNuguClientKit_1_1NuguClient.html#aa0e0601ef277de5262faf1aefb3c23d2',1,'NuguClientKit::NuguClient']]],
+  ['updatecompactcontext_1320',['updateCompactContext',['../classNuguClientKit_1_1Capability.html#a40c1a1d46f219cd4947a2e6f8f142564',1,'NuguClientKit::Capability::updateCompactContext()'],['../classNuguClientKit_1_1ICapabilityInterface.html#a35cb7a70ab375759297182954084e859',1,'NuguClientKit::ICapabilityInterface::updateCompactContext()']]],
+  ['updatedisplay_1321',['updateDisplay',['../classNuguCapability_1_1IDisplayListener.html#a3f05f36603ccdcae311671d00dac42c8',1,'NuguCapability::IDisplayListener']]],
+  ['updateinfoforcontext_1322',['updateInfoForContext',['../classNuguClientKit_1_1ICapabilityInterface.html#a743711b81aacc194fef39f00d5c5c5d7',1,'NuguClientKit::ICapabilityInterface']]],
+  ['updatemetadata_1323',['updateMetaData',['../classNuguCapability_1_1IAudioPlayerDisplayListener.html#a4e5ba3d6f4c43b4410f73afea19169ef',1,'NuguCapability::IAudioPlayerDisplayListener']]],
+  ['updateuseractivity_1324',['updateUserActivity',['../classNuguCapability_1_1ISystemHandler.html#a0abd34eae4a26c09b8f4dcb3388c5860',1,'NuguCapability::ISystemHandler']]],
+  ['url_1325',['url',['../classNuguClientKit_1_1IMediaPlayer.html#a6c6f3e65e27c64dc4fe5bde9d4ccfbe0',1,'NuguClientKit::IMediaPlayer']]],
+  ['utility_5finterface_2ehh_1326',['utility_interface.hh',['../utility__interface_8hh.html',1,'']]],
+  ['utilityinterface_1327',['UtilityInterface',['../group__UtilityInterface.html',1,'']]],
+  ['uuid_1328',['UUID',['../group__uuid.html',1,'']]]
 ];

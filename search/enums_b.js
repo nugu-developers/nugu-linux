@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['templatecontroltype_2034',['TemplateControlType',['../group__DisplayInterface.html#ga2f108832db51d2185e5b0168fef9d85a',1,'NuguCapability']]],
-  ['texterror_2035',['TextError',['../group__TextInterface.html#gab868b04fc95d19706ef1896699930bac',1,'NuguCapability']]],
-  ['textstate_2036',['TextState',['../group__TextInterface.html#ga69b7f95a5985645bb3a5d3be597ad35a',1,'NuguCapability']]],
-  ['ttsstate_2037',['TTSState',['../group__TTSInterface.html#ga7d4f4423b5757b9a2b029a5ce5fbcccf',1,'NuguCapability']]]
+  ['phonecallstate_2337',['PhoneCallState',['../group__PhoneCallInterface.html#gab1dedd3c529196ead76e161090bbe9dd',1,'NuguCapability']]],
+  ['playstackactivity_2338',['PlayStackActivity',['../group__PlaySyncManagerInterface.html#ga42c294733588594b84ae16137eb054c5',1,'NuguClientKit']]],
+  ['playsyncstate_2339',['PlaySyncState',['../group__PlaySyncManagerInterface.html#ga5d9f5e0329e5706191b9a4682615d4d0',1,'NuguClientKit']]]
 ];

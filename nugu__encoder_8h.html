@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -156,15 +156,21 @@ Functions</h2></td></tr>
 <tr class="memitem:ga3368aa56b50dc01b71e1345caf969001"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEncoderDriver.html#ga3368aa56b50dc01b71e1345caf969001">nugu_encoder_driver_remove</a> (<a class="el" href="group__NuguEncoderDriver.html#ga176b91e7b15ecbe72ec06246a34e36c9">NuguEncoderDriver</a> *driver)</td></tr>
 <tr class="memdesc:ga3368aa56b50dc01b71e1345caf969001"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the driver from driver list.  <a href="group__NuguEncoderDriver.html#ga3368aa56b50dc01b71e1345caf969001">More...</a><br /></td></tr>
 <tr class="separator:ga3368aa56b50dc01b71e1345caf969001"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1d4ae9b2bb2f558af3bbb40e523d15bd"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEncoder.html#ga1d4ae9b2bb2f558af3bbb40e523d15bd">nugu_encoder_encode</a> (<a class="el" href="group__NuguEncoder.html#gaa6904b811016818b9b8e3915d29eec07">NuguEncoder</a> *enc, const void *data, size_t data_len, size_t *output_len)</td></tr>
-<tr class="memdesc:ga1d4ae9b2bb2f558af3bbb40e523d15bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encode the encoded data.  <a href="group__NuguEncoder.html#ga1d4ae9b2bb2f558af3bbb40e523d15bd">More...</a><br /></td></tr>
-<tr class="separator:ga1d4ae9b2bb2f558af3bbb40e523d15bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae64e2c89bb9178c0d38c470ecf472a2e"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEncoder.html#gae64e2c89bb9178c0d38c470ecf472a2e">nugu_encoder_encode</a> (<a class="el" href="group__NuguEncoder.html#gaa6904b811016818b9b8e3915d29eec07">NuguEncoder</a> *enc, int is_last, const void *data, size_t data_len, size_t *output_len)</td></tr>
+<tr class="memdesc:gae64e2c89bb9178c0d38c470ecf472a2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Encode the encoded data.  <a href="group__NuguEncoder.html#gae64e2c89bb9178c0d38c470ecf472a2e">More...</a><br /></td></tr>
+<tr class="separator:gae64e2c89bb9178c0d38c470ecf472a2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga2b07c31ce29ea63a5553753a3e895851"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEncoder.html#ga2b07c31ce29ea63a5553753a3e895851">nugu_encoder_free</a> (<a class="el" href="group__NuguEncoder.html#gaa6904b811016818b9b8e3915d29eec07">NuguEncoder</a> *enc)</td></tr>
 <tr class="memdesc:ga2b07c31ce29ea63a5553753a3e895851"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the encoder object.  <a href="group__NuguEncoder.html#ga2b07c31ce29ea63a5553753a3e895851">More...</a><br /></td></tr>
 <tr class="separator:ga2b07c31ce29ea63a5553753a3e895851"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa90477a208455a70758e5f57a21a22bc"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEncoder.html#gaa90477a208455a70758e5f57a21a22bc">nugu_encoder_get_codec</a> (<a class="el" href="group__NuguEncoder.html#gaa6904b811016818b9b8e3915d29eec07">NuguEncoder</a> *enc)</td></tr>
+<tr class="memdesc:gaa90477a208455a70758e5f57a21a22bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get encoder codec. e.g. "OGG_OPUS" or "SPEEX".  <a href="group__NuguEncoder.html#gaa90477a208455a70758e5f57a21a22bc">More...</a><br /></td></tr>
+<tr class="separator:gaa90477a208455a70758e5f57a21a22bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga83181667d3ea99921b30ae3c1270e600"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEncoder.html#ga83181667d3ea99921b30ae3c1270e600">nugu_encoder_get_driver_data</a> (<a class="el" href="group__NuguEncoder.html#gaa6904b811016818b9b8e3915d29eec07">NuguEncoder</a> *enc)</td></tr>
 <tr class="memdesc:ga83181667d3ea99921b30ae3c1270e600"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get custom data for driver.  <a href="group__NuguEncoder.html#ga83181667d3ea99921b30ae3c1270e600">More...</a><br /></td></tr>
 <tr class="separator:ga83181667d3ea99921b30ae3c1270e600"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5338e0374674ab7e0334bb33491e7122"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEncoder.html#ga5338e0374674ab7e0334bb33491e7122">nugu_encoder_get_mime_type</a> (<a class="el" href="group__NuguEncoder.html#gaa6904b811016818b9b8e3915d29eec07">NuguEncoder</a> *enc)</td></tr>
+<tr class="memdesc:ga5338e0374674ab7e0334bb33491e7122"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get encoder mime type.  <a href="group__NuguEncoder.html#ga5338e0374674ab7e0334bb33491e7122">More...</a><br /></td></tr>
+<tr class="separator:ga5338e0374674ab7e0334bb33491e7122"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9c270cec98395eafe22b0ac9bcf6505f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__NuguEncoder.html#gaa6904b811016818b9b8e3915d29eec07">NuguEncoder</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguEncoder.html#ga9c270cec98395eafe22b0ac9bcf6505f">nugu_encoder_new</a> (<a class="el" href="group__NuguEncoderDriver.html#ga176b91e7b15ecbe72ec06246a34e36c9">NuguEncoderDriver</a> *driver, <a class="el" href="nugu__audio_8h.html#a9a3bd436c48f57a8e6b424533e1b3c85">NuguAudioProperty</a> property)</td></tr>
 <tr class="memdesc:ga9c270cec98395eafe22b0ac9bcf6505f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new encoder object.  <a href="group__NuguEncoder.html#ga9c270cec98395eafe22b0ac9bcf6505f">More...</a><br /></td></tr>
 <tr class="separator:ga9c270cec98395eafe22b0ac9bcf6505f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -178,7 +184,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_ab1c81409f0df724f17c9ef30afee877.html">base</a></li><li class="navelem"><a class="el" href="nugu__encoder_8h.html">nugu_encoder.h</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:47 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

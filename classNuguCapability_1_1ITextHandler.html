@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -119,9 +119,9 @@ $(document).ready(function(){initNavTree('classNuguCapability_1_1ITextHandler.ht
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9a44a6380875dce7134179ff5f00c1f5"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1ITextHandler.html#a9a44a6380875dce7134179ff5f00c1f5">requestTextInput</a> (const std::string &amp;text, const std::string &amp;token=&quot;&quot;, bool include_dialog_attribute=true)=0</td></tr>
-<tr class="memdesc:a9a44a6380875dce7134179ff5f00c1f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request NUGU services based on text input.  <a href="classNuguCapability_1_1ITextHandler.html#a9a44a6380875dce7134179ff5f00c1f5">More...</a><br /></td></tr>
-<tr class="separator:a9a44a6380875dce7134179ff5f00c1f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac996f5b2042cc1d6462cfa1c433b0832"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1ITextHandler.html#ac996f5b2042cc1d6462cfa1c433b0832">requestTextInput</a> (const std::string &amp;text, const std::string &amp;token=&quot;&quot;, const std::string &amp;source=&quot;&quot;, bool include_dialog_attribute=true)=0</td></tr>
+<tr class="memdesc:ac996f5b2042cc1d6462cfa1c433b0832"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request NUGU services based on text input.  <a href="classNuguCapability_1_1ITextHandler.html#ac996f5b2042cc1d6462cfa1c433b0832">More...</a><br /></td></tr>
+<tr class="separator:ac996f5b2042cc1d6462cfa1c433b0832"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0c88b42f05df6beb30891a4ccf406c6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1ITextHandler.html#aa0c88b42f05df6beb30891a4ccf406c6">setAttribute</a> (<a class="el" href="structNuguCapability_1_1TextAttribute.html">TextAttribute</a> &amp;&amp;attribute)=0</td></tr>
 <tr class="memdesc:aa0c88b42f05df6beb30891a4ccf406c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set attribute about response.  <a href="classNuguCapability_1_1ITextHandler.html#aa0c88b42f05df6beb30891a4ccf406c6">More...</a><br /></td></tr>
 <tr class="separator:aa0c88b42f05df6beb30891a4ccf406c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -216,8 +216,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><p>text handler interface </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguCapability_1_1ITextListener.html" title="text listener interface">ITextListener</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9a44a6380875dce7134179ff5f00c1f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a44a6380875dce7134179ff5f00c1f5">&#9670;&nbsp;</a></span>requestTextInput()</h2>
+<a id="ac996f5b2042cc1d6462cfa1c433b0832"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac996f5b2042cc1d6462cfa1c433b0832">&#9670;&nbsp;</a></span>requestTextInput()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -236,6 +236,12 @@ Additional Inherited Members</h2></td></tr>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>token</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>source</em> = <code>&quot;&quot;</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -261,6 +267,7 @@ Additional Inherited Members</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">text</td><td>text command </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">token</td><td>received token </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">source</td><td>source that triggered the text input </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">include_dialog_attribute</td><td>whether including dialog attribute </td></tr>
   </table>
   </dd>
@@ -312,7 +319,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguCapability</b></li><li class="navelem"><a class="el" href="classNuguCapability_1_1ITextHandler.html">ITextHandler</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:48 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -39,7 +39,7 @@ var classNuguClientKit_1_1Capability =
     [ "receiveCommandAll", "classNuguClientKit_1_1Capability.html#adf77c76b8685f88041910d0db4a27b16", null ],
     [ "parsingDirective", "classNuguClientKit_1_1Capability.html#a3289c47ce9c38309540d111e3fad4998", null ],
     [ "getContextInfo", "classNuguClientKit_1_1Capability.html#a48ef514fde84116ad1d653626b432f5a", null ],
-    [ "updateCompactContext", "classNuguClientKit_1_1Capability.html#a7fd014b5d3cde7350137ef332f6c680f", null ],
+    [ "updateCompactContext", "classNuguClientKit_1_1Capability.html#a40c1a1d46f219cd4947a2e6f8f142564", null ],
     [ "getCapabilityHelper", "classNuguClientKit_1_1Capability.html#a3b57ca76e07f7ffe56bcf1c738be059b", null ],
     [ "initialized", "classNuguClientKit_1_1Capability.html#ac208e94ea13143d4503824230d04c296", null ],
     [ "destroy_directive_by_agent", "classNuguClientKit_1_1Capability.html#a2b7910d3feda791de178d7dcc82ee30d", null ],

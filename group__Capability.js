@@ -40,7 +40,7 @@ var group__Capability =
       [ "receiveCommandAll", "classNuguClientKit_1_1Capability.html#adf77c76b8685f88041910d0db4a27b16", null ],
       [ "parsingDirective", "classNuguClientKit_1_1Capability.html#a3289c47ce9c38309540d111e3fad4998", null ],
       [ "getContextInfo", "classNuguClientKit_1_1Capability.html#a48ef514fde84116ad1d653626b432f5a", null ],
-      [ "updateCompactContext", "classNuguClientKit_1_1Capability.html#a7fd014b5d3cde7350137ef332f6c680f", null ],
+      [ "updateCompactContext", "classNuguClientKit_1_1Capability.html#a40c1a1d46f219cd4947a2e6f8f142564", null ],
       [ "getCapabilityHelper", "classNuguClientKit_1_1Capability.html#a3b57ca76e07f7ffe56bcf1c738be059b", null ],
       [ "initialized", "classNuguClientKit_1_1Capability.html#ac208e94ea13143d4503824230d04c296", null ],
       [ "destroy_directive_by_agent", "classNuguClientKit_1_1Capability.html#a2b7910d3feda791de178d7dcc82ee30d", null ],
@@ -63,6 +63,7 @@ var group__Capability =
       [ "getMessageId", "classNuguClientKit_1_1CapabilityEvent.html#a589299abc9711ae593c493f15e1da456", null ],
       [ "setDialogRequestId", "classNuguClientKit_1_1CapabilityEvent.html#af27155047a57dd5720218b515849d9e6", null ],
       [ "setType", "classNuguClientKit_1_1CapabilityEvent.html#af8c710dcae336efecc912ad40b1a4dc7", null ],
+      [ "setMimeType", "classNuguClientKit_1_1CapabilityEvent.html#a12615922c25a90b76d80d8dde46c3234", null ],
       [ "forceClose", "classNuguClientKit_1_1CapabilityEvent.html#ac02f80f01da658db759c118dec31cf55", null ],
       [ "sendEvent", "classNuguClientKit_1_1CapabilityEvent.html#a4b3ecb7b84f133dfa4075fec87af39e5", null ],
       [ "sendAttachmentEvent", "classNuguClientKit_1_1CapabilityEvent.html#a855cb351fa7f623a9d5c147d0c42c1d6", null ]

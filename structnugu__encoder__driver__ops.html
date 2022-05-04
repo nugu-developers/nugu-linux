@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -103,9 +103,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a8915209fb94546d328d7ed29c05e49b0"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnugu__encoder__driver__ops.html#a8915209fb94546d328d7ed29c05e49b0">destroy</a> )(<a class="el" href="group__NuguEncoderDriver.html#ga176b91e7b15ecbe72ec06246a34e36c9">NuguEncoderDriver</a> *driver, <a class="el" href="group__NuguEncoder.html#gaa6904b811016818b9b8e3915d29eec07">NuguEncoder</a> *enc)</td></tr>
 <tr class="memdesc:a8915209fb94546d328d7ed29c05e49b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when the encoder is destroyed.  <a href="structnugu__encoder__driver__ops.html#a8915209fb94546d328d7ed29c05e49b0">More...</a><br /></td></tr>
 <tr class="separator:a8915209fb94546d328d7ed29c05e49b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a008a412bc8776ec8144e6c028d213573"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnugu__encoder__driver__ops.html#a008a412bc8776ec8144e6c028d213573">encode</a> )(<a class="el" href="group__NuguEncoderDriver.html#ga176b91e7b15ecbe72ec06246a34e36c9">NuguEncoderDriver</a> *driver, <a class="el" href="group__NuguEncoder.html#gaa6904b811016818b9b8e3915d29eec07">NuguEncoder</a> *enc, const void *data, size_t data_len, <a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *out_buf)</td></tr>
-<tr class="memdesc:a008a412bc8776ec8144e6c028d213573"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a encoding request is received from the encoder.  <a href="structnugu__encoder__driver__ops.html#a008a412bc8776ec8144e6c028d213573">More...</a><br /></td></tr>
-<tr class="separator:a008a412bc8776ec8144e6c028d213573"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87509da7c98f944ff6d366bd65bd2ef5"><td class="memItemLeft" align="right" valign="top">int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structnugu__encoder__driver__ops.html#a87509da7c98f944ff6d366bd65bd2ef5">encode</a> )(<a class="el" href="group__NuguEncoderDriver.html#ga176b91e7b15ecbe72ec06246a34e36c9">NuguEncoderDriver</a> *driver, <a class="el" href="group__NuguEncoder.html#gaa6904b811016818b9b8e3915d29eec07">NuguEncoder</a> *enc, int is_last, const void *data, size_t data_len, <a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *out_buf)</td></tr>
+<tr class="memdesc:a87509da7c98f944ff6d366bd65bd2ef5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called when a encoding request is received from the encoder.  <a href="structnugu__encoder__driver__ops.html#a87509da7c98f944ff6d366bd65bd2ef5">More...</a><br /></td></tr>
+<tr class="separator:a87509da7c98f944ff6d366bd65bd2ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>encoder driver operations </p>
@@ -128,20 +128,20 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a008a412bc8776ec8144e6c028d213573"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a008a412bc8776ec8144e6c028d213573">&#9670;&nbsp;</a></span>encode</h2>
+<a id="a87509da7c98f944ff6d366bd65bd2ef5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87509da7c98f944ff6d366bd65bd2ef5">&#9670;&nbsp;</a></span>encode</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int(* nugu_encoder_driver_ops::encode) (<a class="el" href="group__NuguEncoderDriver.html#ga176b91e7b15ecbe72ec06246a34e36c9">NuguEncoderDriver</a> *driver, <a class="el" href="group__NuguEncoder.html#gaa6904b811016818b9b8e3915d29eec07">NuguEncoder</a> *enc, const void *data, size_t data_len, <a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *out_buf)</td>
+          <td class="memname">int(* nugu_encoder_driver_ops::encode) (<a class="el" href="group__NuguEncoderDriver.html#ga176b91e7b15ecbe72ec06246a34e36c9">NuguEncoderDriver</a> *driver, <a class="el" href="group__NuguEncoder.html#gaa6904b811016818b9b8e3915d29eec07">NuguEncoder</a> *enc, int is_last, const void *data, size_t data_len, <a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *out_buf)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Called when a encoding request is received from the encoder. </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__NuguEncoder.html#ga1d4ae9b2bb2f558af3bbb40e523d15bd" title="Encode the encoded data.">nugu_encoder_encode()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__NuguEncoder.html#gae64e2c89bb9178c0d38c470ecf472a2e" title="Encode the encoded data.">nugu_encoder_encode()</a> </dd></dl>
 
 </div>
 </div>
@@ -171,7 +171,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structnugu__encoder__driver__ops.html">nugu_encoder_driver_ops</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:47 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

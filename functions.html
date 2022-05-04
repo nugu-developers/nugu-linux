@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -97,6 +97,15 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>activated()
 : <a class="el" href="classNuguClientKit_1_1ISessionManagerListener.html#a1dbd0f76c9f8fec2518838defc9db303">NuguClientKit::ISessionManagerListener</a>
 </li>
+<li>active_device_id
+: <a class="el" href="structNuguCapability_1_1BTDeviceInfo.html#a7b0fce5467ff7aaf668bbd2445883513">NuguCapability::BTDeviceInfo</a>
+</li>
+<li>active_device_name
+: <a class="el" href="structNuguCapability_1_1BTDeviceInfo.html#ae0eefaf2bf2399e863f3d58a95f401b7">NuguCapability::BTDeviceInfo</a>
+</li>
+<li>active_device_streaming
+: <a class="el" href="structNuguCapability_1_1BTDeviceInfo.html#a3e98068bc50acf1153cefe5cdaacda1d">NuguCapability::BTDeviceInfo</a>
+</li>
 <li>add()
 : <a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#aeb41bc841fce2f6e7d0c581408ae3afc">NuguClientKit::IDirectiveSequencer</a>
 , <a class="el" href="classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#a234a8b1a0eedb5d374aad7c92d98efa3">NuguClientKit::NuguClient::CapabilityBuilder</a>
@@ -104,13 +113,20 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>addBlockingPolicy()
 : <a class="el" href="classNuguClientKit_1_1Capability.html#af4458c48f00a11f264594318517e9bf0">NuguClientKit::Capability</a>
 </li>
+<li>addDialogUXStateListener()
+: <a class="el" href="classNuguClientKit_1_1NuguClient.html#aa30ac062033d32e3f159b12abdf2a773">NuguClientKit::NuguClient</a>
+</li>
 <li>addEventResultCallback()
 : <a class="el" href="classNuguClientKit_1_1Capability.html#ad26e69e478744f4b2d83b385e62bc5c7">NuguClientKit::Capability</a>
 , <a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html#a9db9736a6bcf43bebb286a210572af9d">NuguClientKit::ICapabilityInterface</a>
 </li>
+<li>addHeader()
+: <a class="el" href="classNuguClientKit_1_1NuguHttpRest.html#a9c3aaa8c8a42d343bb6ec9279a57f747">NuguClientKit::NuguHttpRest</a>
+</li>
 <li>addListener()
 : <a class="el" href="classNuguCapability_1_1IASRHandler.html#a36f354f3d51036495d0686723c55ce8c">NuguCapability::IASRHandler</a>
 , <a class="el" href="classNuguCapability_1_1IAudioPlayerHandler.html#a746a6fdf707260c8db56b5b0b331053a">NuguCapability::IAudioPlayerHandler</a>
+, <a class="el" href="classNuguCapability_1_1IChipsHandler.html#a373511d6e361895f12bdc0400680d011">NuguCapability::IChipsHandler</a>
 , <a class="el" href="classNuguCapability_1_1ITTSHandler.html#ac6fb7834ac4d069d15d6f4cbbb2a1af9">NuguCapability::ITTSHandler</a>
 , <a class="el" href="classNuguClientKit_1_1IDirectiveSequencer.html#aad121a31ef4e21203430d4ff20035053">NuguClientKit::IDirectiveSequencer</a>
 , <a class="el" href="classNuguClientKit_1_1IInteractionControlManager.html#a8529103747b971ed6c1c21d5a0ed4dd7">NuguClientKit::IInteractionControlManager</a>
@@ -132,6 +148,9 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <li>adjustPlayStackHoldTime()
 : <a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a8719bfa1b4279dd1d36ce8b74e3e4082">NuguClientKit::IPlaySyncManager</a>
 </li>
+<li>approximate_level
+: <a class="el" href="structNuguCapability_1_1BatteryInfo.html#a10f2936bb287c970909129a09bc2cb3c">NuguCapability::BatteryInfo</a>
+</li>
 <li>asr_encoding
 : <a class="el" href="structNuguCapability_1_1ASRAttribute.html#aca284c4ed6aeb87e035dfe40c5ca4a14">NuguCapability::ASRAttribute</a>
 </li>
@@ -144,7 +163,7 @@ $(document).ready(function(){initNavTree('functions.html',''); initResizable(); 
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:48 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

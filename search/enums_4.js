@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['interactionmode_1998',['InteractionMode',['../group__InteractionControlManagerInterface.html#ga7ed168a573888495a90b6f74bdfb5e2d',1,'NuguClientKit']]]
+  ['executetype_2306',['ExecuteType',['../group__NuguRunner.html#gaa88d90fee499ac8cb7491616e6630bb8',1,'NuguClientKit']]]
 ];

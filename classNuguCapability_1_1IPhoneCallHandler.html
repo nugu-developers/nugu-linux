@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -137,6 +137,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2b46f17c864b007b4cfc3b568286fbf6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IPhoneCallHandler.html#a2b46f17c864b007b4cfc3b568286fbf6">makeCallSucceeded</a> (const std::string &amp;payload)=0</td></tr>
 <tr class="memdesc:a2b46f17c864b007b4cfc3b568286fbf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The succeeded result of make call process.  <a href="classNuguCapability_1_1IPhoneCallHandler.html#a2b46f17c864b007b4cfc3b568286fbf6">More...</a><br /></td></tr>
 <tr class="separator:a2b46f17c864b007b4cfc3b568286fbf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41e244ad854de35bd68dfb6713abe104"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguCapability_1_1IPhoneCallHandler.html#a41e244ad854de35bd68dfb6713abe104">setNumberBlockable</a> (bool flag)=0</td></tr>
+<tr class="memdesc:a41e244ad854de35bd68dfb6713abe104"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set whether numbers can be blocked.  <a href="classNuguCapability_1_1IPhoneCallHandler.html#a41e244ad854de35bd68dfb6713abe104">More...</a><br /></td></tr>
+<tr class="separator:a41e244ad854de35bd68dfb6713abe104"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classNuguClientKit_1_1ICapabilityInterface"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classNuguClientKit_1_1ICapabilityInterface')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></td></tr>
 <tr class="memitem:a9db9736a6bcf43bebb286a210572af9d inherit pub_methods_classNuguClientKit_1_1ICapabilityInterface"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html#a9db9736a6bcf43bebb286a210572af9d">addEventResultCallback</a> (const std::string &amp;ename, <a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html#a5b8577c3b5d15d48ff4e267b0bdcd125">EventResultCallback</a> callback)=0</td></tr>
 <tr class="memdesc:a9db9736a6bcf43bebb286a210572af9d inherit pub_methods_classNuguClientKit_1_1ICapabilityInterface"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add event result callback for error handling.  <a href="classNuguClientKit_1_1ICapabilityInterface.html#a9db9736a6bcf43bebb286a210572af9d">More...</a><br /></td></tr>
@@ -443,6 +446,40 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a41e244ad854de35bd68dfb6713abe104"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41e244ad854de35bd68dfb6713abe104">&#9670;&nbsp;</a></span>setNumberBlockable()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguCapability::IPhoneCallHandler::setNumberBlockable </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>flag</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set whether numbers can be blocked. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">flag</td><td>true if can block number, otherwise false. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li><a class="el" href="phone__call__interface_8hh_source.html">phone_call_interface.hh</a></li>
 </ul>
@@ -452,7 +489,7 @@ Additional Inherited Members</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguCapability</b></li><li class="navelem"><a class="el" href="classNuguCapability_1_1IPhoneCallHandler.html">IPhoneCallHandler</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:48 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

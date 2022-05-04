@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -100,9 +100,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3294d285c7d8b72b678a20c415abba42"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ISpeechRecognizerListener.html#a3294d285c7d8b72b678a20c415abba42">onListeningState</a> (<a class="el" href="group__SpeechRecognizerInterface.html#gaae383c251ee0fa6e96e4c53b9f5d9a3a">ListeningState</a> state, const std::string &amp;id)=0</td></tr>
 <tr class="memdesc:a3294d285c7d8b72b678a20c415abba42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Report to the user listening state changed.  <a href="classNuguClientKit_1_1ISpeechRecognizerListener.html#a3294d285c7d8b72b678a20c415abba42">More...</a><br /></td></tr>
 <tr class="separator:a3294d285c7d8b72b678a20c415abba42"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac5f1316c6f5043860b1de11a08bc81fc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ISpeechRecognizerListener.html#ac5f1316c6f5043860b1de11a08bc81fc">onRecordData</a> (unsigned char *buf, int length)=0</td></tr>
-<tr class="memdesc:ac5f1316c6f5043860b1de11a08bc81fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current audio input stream.  <a href="classNuguClientKit_1_1ISpeechRecognizerListener.html#ac5f1316c6f5043860b1de11a08bc81fc">More...</a><br /></td></tr>
-<tr class="separator:ac5f1316c6f5043860b1de11a08bc81fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28f8203be6f85eeb9ffc700cbd209236"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ISpeechRecognizerListener.html#a28f8203be6f85eeb9ffc700cbd209236">onRecordData</a> (unsigned char *buf, int length, bool is_end)=0</td></tr>
+<tr class="memdesc:a28f8203be6f85eeb9ffc700cbd209236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get current audio input stream.  <a href="classNuguClientKit_1_1ISpeechRecognizerListener.html#a28f8203be6f85eeb9ffc700cbd209236">More...</a><br /></td></tr>
+<tr class="separator:a28f8203be6f85eeb9ffc700cbd209236"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>SpeechRecognizer listener interface. </p>
@@ -153,8 +153,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ac5f1316c6f5043860b1de11a08bc81fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac5f1316c6f5043860b1de11a08bc81fc">&#9670;&nbsp;</a></span>onRecordData()</h2>
+<a id="a28f8203be6f85eeb9ffc700cbd209236"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28f8203be6f85eeb9ffc700cbd209236">&#9670;&nbsp;</a></span>onRecordData()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -172,7 +172,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
+          <td class="paramname"><em>length</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_end</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -192,6 +198,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">buf</td><td>audio input data </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">length</td><td>audio input length </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">is_end</td><td>whether final data </td></tr>
   </table>
   </dd>
 </dl>
@@ -207,7 +214,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1ISpeechRecognizerListener.html">ISpeechRecognizerListener</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:48 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

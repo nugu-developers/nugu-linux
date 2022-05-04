@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -90,7 +90,8 @@ $(document).ready(function(){initNavTree('speaker__interface_8hh.html',''); init
 <div class="title">speaker_interface.hh File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &lt;<a class="el" href="capability__interface_8hh_source.html">clientkit/capability_interface.hh</a>&gt;</code><br />
+<div class="textblock"><code>#include &lt;<a class="el" href="nugu__audio_8h_source.html">base/nugu_audio.h</a>&gt;</code><br />
+<code>#include &lt;<a class="el" href="capability__interface_8hh_source.html">clientkit/capability_interface.hh</a>&gt;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for speaker_interface.hh:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -98,31 +99,32 @@ $(document).ready(function(){initNavTree('speaker__interface_8hh.html',''); init
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="speaker__interface_8hh__incl.png" border="0" usemap="#speaker__interface_8hh" alt=""/></div>
 <map name="speaker__interface_8hh" id="speaker__interface_8hh">
-<area shape="rect" title=" " alt="" coords="922,5,1081,32"/>
-<area shape="rect" href="capability__interface_8hh.html" title=" " alt="" coords="930,80,1073,121"/>
-<area shape="rect" title=" " alt="" coords="293,437,380,464"/>
-<area shape="rect" title=" " alt="" coords="1070,437,1162,464"/>
-<area shape="rect" title=" " alt="" coords="1896,355,1939,382"/>
-<area shape="rect" title=" " alt="" coords="8,437,51,464"/>
-<area shape="rect" title=" " alt="" coords="1615,437,1674,464"/>
-<area shape="rect" href="nugu__directive_8h.html" title=" " alt="" coords="427,437,592,464"/>
-<area shape="rect" href="nugu__core__container__interface_8hh.html" title=" " alt="" coords="1229,169,1404,211"/>
-<area shape="rect" href="capability__helper__interface_8hh.html" title=" " alt="" coords="1039,259,1194,300"/>
-<area shape="rect" href="media__player__interface_8hh.html" title=" " alt="" coords="1903,259,2071,300"/>
-<area shape="rect" href="network__manager__interface_8hh.html" title=" " alt="" coords="1218,259,1415,300"/>
-<area shape="rect" href="nugu__timer__interface_8hh.html" title=" " alt="" coords="260,348,413,389"/>
-<area shape="rect" href="speech__recognizer__interface_8hh.html" title=" " alt="" coords="1679,259,1879,300"/>
-<area shape="rect" href="wakeup__interface_8hh.html" title=" " alt="" coords="1440,266,1654,293"/>
-<area shape="rect" href="nugu__event_8h.html" title=" " alt="" coords="1621,355,1766,382"/>
-<area shape="rect" href="directive__sequencer__interface_8hh.html" title=" " alt="" coords="54,348,235,389"/>
-<area shape="rect" href="focus__manager__interface_8hh.html" title=" " alt="" coords="652,348,831,389"/>
-<area shape="rect" href="interaction__control__manager__interface_8hh.html" title=" " alt="" coords="1372,348,1596,389"/>
-<area shape="rect" href="playsync__manager__interface_8hh.html" title=" " alt="" coords="856,348,1028,389"/>
-<area shape="rect" href="routine__manager__interface_8hh.html" title=" " alt="" coords="437,348,628,389"/>
-<area shape="rect" href="session__manager__interface_8hh.html" title=" " alt="" coords="1154,348,1348,389"/>
-<area shape="rect" title=" " alt="" coords="702,437,782,464"/>
-<area shape="rect" title=" " alt="" coords="818,437,881,464"/>
-<area shape="rect" title=" " alt="" coords="916,437,967,464"/>
+<area shape="rect" title=" " alt="" coords="429,5,588,32"/>
+<area shape="rect" href="nugu__audio_8h.html" title=" " alt="" coords="138,355,282,382"/>
+<area shape="rect" href="capability__interface_8hh.html" title=" " alt="" coords="1344,80,1486,121"/>
+<area shape="rect" title=" " alt="" coords="973,437,1060,464"/>
+<area shape="rect" title=" " alt="" coords="2060,437,2152,464"/>
+<area shape="rect" title=" " alt="" coords="2143,355,2186,382"/>
+<area shape="rect" title=" " alt="" coords="2239,437,2282,464"/>
+<area shape="rect" title=" " alt="" coords="398,437,456,464"/>
+<area shape="rect" href="nugu__directive_8h.html" title=" " alt="" coords="1776,437,1942,464"/>
+<area shape="rect" href="nugu__core__container__interface_8hh.html" title=" " alt="" coords="620,169,794,211"/>
+<area shape="rect" href="capability__helper__interface_8hh.html" title=" " alt="" coords="1375,259,1530,300"/>
+<area shape="rect" href="media__player__interface_8hh.html" title=" " alt="" coords="502,259,670,300"/>
+<area shape="rect" href="network__manager__interface_8hh.html" title=" " alt="" coords="744,259,942,300"/>
+<area shape="rect" href="nugu__timer__interface_8hh.html" title=" " alt="" coords="408,348,561,389"/>
+<area shape="rect" href="speech__recognizer__interface_8hh.html" title=" " alt="" coords="38,259,238,300"/>
+<area shape="rect" href="wakeup__interface_8hh.html" title=" " alt="" coords="262,266,477,293"/>
+<area shape="rect" href="nugu__event_8h.html" title=" " alt="" coords="585,355,730,382"/>
+<area shape="rect" href="directive__sequencer__interface_8hh.html" title=" " alt="" coords="1887,348,2068,389"/>
+<area shape="rect" href="focus__manager__interface_8hh.html" title=" " alt="" coords="1468,348,1647,389"/>
+<area shape="rect" href="interaction__control__manager__interface_8hh.html" title=" " alt="" coords="755,348,979,389"/>
+<area shape="rect" href="playsync__manager__interface_8hh.html" title=" " alt="" coords="1054,348,1226,389"/>
+<area shape="rect" href="routine__manager__interface_8hh.html" title=" " alt="" coords="1672,348,1862,389"/>
+<area shape="rect" href="session__manager__interface_8hh.html" title=" " alt="" coords="1250,348,1444,389"/>
+<area shape="rect" title=" " alt="" coords="1518,437,1598,464"/>
+<area shape="rect" title=" " alt="" coords="1310,437,1373,464"/>
+<area shape="rect" title=" " alt="" coords="1115,437,1166,464"/>
 </map>
 </div>
 </div>
@@ -142,6 +144,12 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
+<tr class="memitem:gaa6c5b61397bb0b8d12da1a228c537919"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SPEAKER_ALARM_STRING</b>&#160;&#160;&#160;NUGU_AUDIO_ATTRIBUTE_ALARM_DEFAULT_STRING</td></tr>
+<tr class="separator:gaa6c5b61397bb0b8d12da1a228c537919"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3d96619c622b642fc56e95ba8330c06e"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SPEAKER_CALL_STRING</b>&#160;&#160;&#160;NUGU_AUDIO_ATTRIBUTE_CALL_DEFAULT_STRING</td></tr>
+<tr class="separator:ga3d96619c622b642fc56e95ba8330c06e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gada531e82db55df75ef6d73f8c4002718"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SPEAKER_DEFAULT_STEP</b>&#160;&#160;&#160;10 /** @def Set speaker default volume step to 10 */</td></tr>
 <tr class="separator:gada531e82db55df75ef6d73f8c4002718"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -154,24 +162,45 @@ Macros</h2></td></tr>
 <tr class="memitem:ga4bee9d8915eaa0f5dd014e806ad397db"><td class="memItemLeft" align="right" valign="top">
 #define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SPEAKER_MIN_VOLUME</b>&#160;&#160;&#160;0 /** @def Set speaker minimum volume to 0 */</td></tr>
 <tr class="separator:ga4bee9d8915eaa0f5dd014e806ad397db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga27bb840110a1d56b2d5e01819a7e3a54"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SPEAKER_MUSIC_STRING</b>&#160;&#160;&#160;NUGU_AUDIO_ATTRIBUTE_MUSIC_DEFAULT_STRING</td></tr>
+<tr class="separator:ga27bb840110a1d56b2d5e01819a7e3a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4a58680615c79066883361c21eedfe35"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SPEAKER_NAVIGATION_STRING</b>&#160;&#160;&#160;NUGU_AUDIO_ATTRIBUTE_NAVIGATION_DEFAULT_STRING</td></tr>
+<tr class="separator:ga4a58680615c79066883361c21eedfe35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga44a2a6ac2509438fd0c76a4e537f3bce"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SPEAKER_NOTIFICATION_STRING</b>&#160;&#160;&#160;NUGU_AUDIO_ATTRIBUTE_NOTIFICATION_DEFAULT_STRING</td></tr>
+<tr class="separator:ga44a2a6ac2509438fd0c76a4e537f3bce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6337d061264137391c2494f6d0ef3301"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SPEAKER_NUGU_STRING</b>&#160;&#160;&#160;&quot;NUGU&quot;</td></tr>
+<tr class="separator:ga6337d061264137391c2494f6d0ef3301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga71e18addb1fbf2b6e777b149f3c58ab7"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SPEAKER_RINGTONE_STRING</b>&#160;&#160;&#160;NUGU_AUDIO_ATTRIBUTE_RINGTONE_DEFAULT_STRING</td></tr>
+<tr class="separator:ga71e18addb1fbf2b6e777b149f3c58ab7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga96bcb5f46f9b3c456c0565e1dc9a98f0"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SPEAKER_SYSTEM_SOUND_STRING</b>&#160;&#160;&#160;NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND_DEFAULT_STRING</td></tr>
+<tr class="separator:ga96bcb5f46f9b3c456c0565e1dc9a98f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaecc8a1b14b8e06ac03a00addde00d10d"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SPEAKER_UNABLE_CONTROL</b>&#160;&#160;&#160;-1  /** @def This property is set to be out of control. */</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SPEAKER_UNABLE_CONTROL</b>&#160;&#160;&#160;-1 /** @def This property is set to be out of control. */</td></tr>
 <tr class="separator:gaecc8a1b14b8e06ac03a00addde00d10d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga93516b750633d6483280fb47d0218c4b"><td class="memItemLeft" align="right" valign="top">
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_SPEAKER_VOICE_COMMAND_STRING</b>&#160;&#160;&#160;NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND_DEFAULT_STRING</td></tr>
+<tr class="separator:ga93516b750633d6483280fb47d0218c4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
 <tr class="memitem:ga8601f6be80368c9d1a7c7b346c99a698"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__SpeakerInterface.html#ga8601f6be80368c9d1a7c7b346c99a698">NuguCapability::SpeakerType</a> { <br />
-&#160;&#160;<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a5cf2406ff6ad128f4d2ebd67ca595b0f">NuguCapability::SpeakerType::NUGU</a>, 
-<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698ad74c735013cdd2b883e25ccca502a2e9">NuguCapability::SpeakerType::MUSIC</a>, 
-<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a4ffad184d2206f7c174226cfe718a7ae">NuguCapability::SpeakerType::RINGTON</a>, 
-<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698aca3547acb9162b49fb4a6594ed9b3030">NuguCapability::SpeakerType::CALL</a>, 
+&#160;&#160;<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a5cf2406ff6ad128f4d2ebd67ca595b0f">NuguCapability::SpeakerType::NUGU</a> = 0, 
+<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698ad74c735013cdd2b883e25ccca502a2e9">NuguCapability::SpeakerType::MUSIC</a> = NUGU_AUDIO_ATTRIBUTE_MUSIC, 
+<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a2d4867bcf32a74d36b80ed70ab7f9e97">NuguCapability::SpeakerType::RINGTONE</a> = NUGU_AUDIO_ATTRIBUTE_RINGTONE, 
+<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698aca3547acb9162b49fb4a6594ed9b3030">NuguCapability::SpeakerType::CALL</a> = NUGU_AUDIO_ATTRIBUTE_CALL, 
 <br />
-&#160;&#160;<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a9814d942b7e24870084a3dce24867ab3">NuguCapability::SpeakerType::NOTIFICATION</a>, 
-<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a9de6d0a670ae5a0dee31a6318aa00e8d">NuguCapability::SpeakerType::ALARM</a>, 
-<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698ab077c1bf8325593593f2bc2db6b009ba">NuguCapability::SpeakerType::VOICE_COMMAND</a>, 
-<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a5995d98caf31b9445202b0f054fdc54e">NuguCapability::SpeakerType::NAVIGATION</a>, 
+&#160;&#160;<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a9814d942b7e24870084a3dce24867ab3">NuguCapability::SpeakerType::NOTIFICATION</a> = NUGU_AUDIO_ATTRIBUTE_NOTIFICATION, 
+<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a9de6d0a670ae5a0dee31a6318aa00e8d">NuguCapability::SpeakerType::ALARM</a> = NUGU_AUDIO_ATTRIBUTE_ALARM, 
+<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698ab077c1bf8325593593f2bc2db6b009ba">NuguCapability::SpeakerType::VOICE_COMMAND</a> = NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND, 
+<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a5995d98caf31b9445202b0f054fdc54e">NuguCapability::SpeakerType::NAVIGATION</a> = NUGU_AUDIO_ATTRIBUTE_NAVIGATION, 
 <br />
-&#160;&#160;<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698ac53b8b4384c6e37baa71628bafb5d4da">NuguCapability::SpeakerType::SYSTEM_SOUND</a>
+&#160;&#160;<a class="el" href="group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698ac53b8b4384c6e37baa71628bafb5d4da">NuguCapability::SpeakerType::SYSTEM_SOUND</a> = NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND
 <br />
  }</td></tr>
 <tr class="memdesc:ga8601f6be80368c9d1a7c7b346c99a698"><td class="mdescLeft">&#160;</td><td class="mdescRight">SpeakerType.  <a href="group__SpeakerInterface.html#ga8601f6be80368c9d1a7c7b346c99a698">More...</a><br /></td></tr>
@@ -183,7 +212,7 @@ Enumerations</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fe91053431442a18fd8b50c6b5c5d672.html">capability</a></li><li class="navelem"><a class="el" href="speaker__interface_8hh.html">speaker_interface.hh</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:47 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

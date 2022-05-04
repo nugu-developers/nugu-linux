@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -84,8 +84,10 @@ $(document).ready(function(){initNavTree('nugu__audio_8h.html',''); initResizabl
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">nugu_audio.h File Reference</div>  </div>
 </div><!--header-->
@@ -97,12 +99,39 @@ $(document).ready(function(){initNavTree('nugu__audio_8h.html',''); initResizabl
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="nugu__audio_8h__dep__incl.png" border="0" usemap="#nugu__audio_8hdep" alt=""/></div>
 <map name="nugu__audio_8hdep" id="nugu__audio_8hdep">
-<area shape="rect" title=" " alt="" coords="218,5,327,32"/>
+<area shape="rect" title=" " alt="" coords="362,5,471,32"/>
 <area shape="rect" href="nugu__pcm_8h.html" title=" " alt="" coords="90,80,191,107"/>
 <area shape="rect" href="nugu__player_8h.html" title=" " alt="" coords="216,80,329,107"/>
 <area shape="rect" href="nugu__recorder_8h.html" title=" " alt="" coords="353,80,480,107"/>
-<area shape="rect" href="nugu__decoder_8h.html" title=" " alt="" coords="5,155,129,181"/>
-<area shape="rect" href="nugu__encoder_8h.html" title=" " alt="" coords="153,155,277,181"/>
+<area shape="rect" href="speaker__interface_8hh.html" title=" " alt="" coords="48,319,207,345"/>
+<area shape="rect" href="media__player__interface_8hh.html" title=" " alt="" coords="1252,80,1448,107"/>
+<area shape="rect" href="nugu__decoder_8h.html" title=" " alt="" coords="5,162,129,189"/>
+<area shape="rect" href="nugu__encoder_8h.html" title=" " alt="" coords="153,162,277,189"/>
+<area shape="rect" href="nugu__core__container__interface_8hh.html" title=" " alt="" coords="1662,155,1819,196"/>
+<area shape="rect" href="capability__interface_8hh.html" title=" " alt="" coords="1655,244,1826,271"/>
+<area shape="rect" href="nugu__client_8hh.html" title=" " alt="" coords="1286,483,1403,509"/>
+<area shape="rect" href="asr__interface_8hh.html" title=" " alt="" coords="231,319,357,345"/>
+<area shape="rect" href="audio__player__interface_8hh.html" title=" " alt="" coords="595,401,785,427"/>
+<area shape="rect" href="battery__interface_8hh.html" title=" " alt="" coords="433,319,587,345"/>
+<area shape="rect" href="bluetooth__interface_8hh.html" title=" " alt="" coords="612,319,781,345"/>
+<area shape="rect" href="capability__factory_8hh.html" title=" " alt="" coords="806,319,963,345"/>
+<area shape="rect" href="chips__interface_8hh.html" title=" " alt="" coords="1166,319,1307,345"/>
+<area shape="rect" href="display__interface_8hh.html" title=" " alt="" coords="987,319,1142,345"/>
+<area shape="rect" href="extension__interface_8hh.html" title=" " alt="" coords="1382,319,1553,345"/>
+<area shape="rect" href="location__interface_8hh.html" title=" " alt="" coords="1577,319,1736,345"/>
+<area shape="rect" href="mic__interface_8hh.html" title=" " alt="" coords="1761,319,1891,345"/>
+<area shape="rect" href="nudge__interface_8hh.html" title=" " alt="" coords="1915,319,2062,345"/>
+<area shape="rect" href="phone__call__interface_8hh.html" title=" " alt="" coords="2087,319,2264,345"/>
+<area shape="rect" href="routine__interface_8hh.html" title=" " alt="" coords="2288,319,2441,345"/>
+<area shape="rect" href="session__interface_8hh.html" title=" " alt="" coords="2465,319,2621,345"/>
+<area shape="rect" href="sound__interface_8hh.html" title=" " alt="" coords="2646,319,2793,345"/>
+<area shape="rect" href="system__interface_8hh.html" title=" " alt="" coords="2817,319,2971,345"/>
+<area shape="rect" href="text__interface_8hh.html" title=" " alt="" coords="2995,319,3129,345"/>
+<area shape="rect" href="tts__interface_8hh.html" title=" " alt="" coords="3153,319,3277,345"/>
+<area shape="rect" href="utility__interface_8hh.html" title=" " alt="" coords="3301,319,3447,345"/>
+<area shape="rect" href="capability_8hh.html" title=" " alt="" coords="3471,319,3575,345"/>
+<area shape="rect" href="dialog__ux__state__aggregator__interface_8hh.html" title=" " alt="" coords="1105,393,1307,435"/>
+<area shape="rect" href="message__interface_8hh.html" title=" " alt="" coords="3408,401,3575,427"/>
 </map>
 </div>
 </div>
@@ -114,8 +143,39 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">audio property  <a href="structnugu__audio__property.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a856de2a8aebe059a66a013970427f908"><td class="memItemLeft" align="right" valign="top"><a id="a856de2a8aebe059a66a013970427f908"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_AUDIO_ATTRIBUTE_ALARM_DEFAULT_STRING</b>&#160;&#160;&#160;&quot;ALARM&quot;</td></tr>
+<tr class="separator:a856de2a8aebe059a66a013970427f908"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d411e086c46a74820b676e9d268c70f"><td class="memItemLeft" align="right" valign="top"><a id="a3d411e086c46a74820b676e9d268c70f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_AUDIO_ATTRIBUTE_CALL_DEFAULT_STRING</b>&#160;&#160;&#160;&quot;CALL&quot;</td></tr>
+<tr class="separator:a3d411e086c46a74820b676e9d268c70f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae19b3f3b3cc9acd2acaeb6a71d1c2358"><td class="memItemLeft" align="right" valign="top"><a id="ae19b3f3b3cc9acd2acaeb6a71d1c2358"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_AUDIO_ATTRIBUTE_MUSIC_DEFAULT_STRING</b>&#160;&#160;&#160;&quot;MUSIC&quot;</td></tr>
+<tr class="separator:ae19b3f3b3cc9acd2acaeb6a71d1c2358"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a261b10ba9ca92ac2e6b1748d756c2d9c"><td class="memItemLeft" align="right" valign="top"><a id="a261b10ba9ca92ac2e6b1748d756c2d9c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_AUDIO_ATTRIBUTE_NAVIGATION_DEFAULT_STRING</b>&#160;&#160;&#160;&quot;NAVIGATION&quot;</td></tr>
+<tr class="separator:a261b10ba9ca92ac2e6b1748d756c2d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a078f60e36d1994bdbcb8e2cc2e989731"><td class="memItemLeft" align="right" valign="top"><a id="a078f60e36d1994bdbcb8e2cc2e989731"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_AUDIO_ATTRIBUTE_NOTIFICATION_DEFAULT_STRING</b>&#160;&#160;&#160;&quot;NOTIFICATION&quot;</td></tr>
+<tr class="separator:a078f60e36d1994bdbcb8e2cc2e989731"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a231002a6ff09738cd92863fa008dd9ee"><td class="memItemLeft" align="right" valign="top"><a id="a231002a6ff09738cd92863fa008dd9ee"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_AUDIO_ATTRIBUTE_RINGTONE_DEFAULT_STRING</b>&#160;&#160;&#160;&quot;RINGTONE&quot;</td></tr>
+<tr class="separator:a231002a6ff09738cd92863fa008dd9ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a661b2e0fc9124a802efc709a67cad5ec"><td class="memItemLeft" align="right" valign="top"><a id="a661b2e0fc9124a802efc709a67cad5ec"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND_DEFAULT_STRING</b>&#160;&#160;&#160;&quot;SYSTEM_SOUND&quot;</td></tr>
+<tr class="separator:a661b2e0fc9124a802efc709a67cad5ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00d186cd1f791b186d0eec38b997d78a"><td class="memItemLeft" align="right" valign="top"><a id="a00d186cd1f791b186d0eec38b997d78a"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND_DEFAULT_STRING</b>&#160;&#160;&#160;&quot;VOICE_COMMAND&quot;</td></tr>
+<tr class="separator:a00d186cd1f791b186d0eec38b997d78a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
 Typedefs</h2></td></tr>
+<tr class="memitem:a8987418ace0063cc16e14f1b8bfc2cc2"><td class="memItemLeft" align="right" valign="top"><a id="a8987418ace0063cc16e14f1b8bfc2cc2"></a>
+typedef enum <a class="el" href="nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6">nugu_audio_attribute</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a></td></tr>
+<tr class="memdesc:a8987418ace0063cc16e14f1b8bfc2cc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">NuguAudioAttribute. <br /></td></tr>
+<tr class="separator:a8987418ace0063cc16e14f1b8bfc2cc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a3bd436c48f57a8e6b424533e1b3c85"><td class="memItemLeft" align="right" valign="top"><a id="a9a3bd436c48f57a8e6b424533e1b3c85"></a>
 typedef struct <a class="el" href="structnugu__audio__property.html">nugu_audio_property</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nugu__audio_8h.html#a9a3bd436c48f57a8e6b424533e1b3c85">NuguAudioProperty</a></td></tr>
 <tr class="memdesc:a9a3bd436c48f57a8e6b424533e1b3c85"><td class="mdescLeft">&#160;</td><td class="mdescRight">NuguAudioProperty. <br /></td></tr>
@@ -123,6 +183,20 @@ typedef struct <a class="el" href="structnugu__audio__property.html">nugu_audio_
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
+<tr class="memitem:a128c0dd74041da6f1bb0fa16e47c6ce6"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6">nugu_audio_attribute</a> { <br />
+&#160;&#160;<a class="el" href="nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6a24fc6ff835b6bb93af0c93308bc408f6">NUGU_AUDIO_ATTRIBUTE_MUSIC</a> = 1, 
+<a class="el" href="nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6a8f2fa90efe2567b2de5324caeebbf3d1">NUGU_AUDIO_ATTRIBUTE_RINGTONE</a>, 
+<a class="el" href="nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6a49592c718f5c8438f3f880979fd394db">NUGU_AUDIO_ATTRIBUTE_CALL</a>, 
+<a class="el" href="nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6a2b114dd6073db17d6787b96deed5c579">NUGU_AUDIO_ATTRIBUTE_NOTIFICATION</a>, 
+<br />
+&#160;&#160;<a class="el" href="nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6a9212ae78a66c75f5e20fa4bd8579e0e7">NUGU_AUDIO_ATTRIBUTE_ALARM</a>, 
+<a class="el" href="nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6adbd2715cf485cd4b2e869a7518da6cf0">NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND</a>, 
+<a class="el" href="nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6a1601ba3e0fbf1846dcbeaabaf982f85a">NUGU_AUDIO_ATTRIBUTE_NAVIGATION</a>, 
+<a class="el" href="nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6ad5d86b392f095eb49f6b357cee724d57">NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND</a>
+<br />
+ }</td></tr>
+<tr class="memdesc:a128c0dd74041da6f1bb0fa16e47c6ce6"><td class="mdescLeft">&#160;</td><td class="mdescRight">audio attribute  <a href="nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6">More...</a><br /></td></tr>
+<tr class="separator:a128c0dd74041da6f1bb0fa16e47c6ce6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b4092cdbd45bf8d4ef2066730c4c4ee"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4ee">nugu_audio_format</a> { <br />
 &#160;&#160;<a class="el" href="nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4eead91b3c7c06653b8676c1bbd4b8db7008">NUGU_AUDIO_FORMAT_S8</a>, 
 <a class="el" href="nugu__audio_8h.html#a9b4092cdbd45bf8d4ef2066730c4c4eea978d771471d58f818027bef48167339b">NUGU_AUDIO_FORMAT_U8</a>, 
@@ -158,6 +232,15 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:a45142699425266966bf2e0eed6dad69c"><td class="mdescLeft">&#160;</td><td class="mdescRight">audio sample rate  <a href="nugu__audio_8h.html#a45142699425266966bf2e0eed6dad69c">More...</a><br /></td></tr>
 <tr class="separator:a45142699425266966bf2e0eed6dad69c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:af7185f86c4e029f966e37e2f0925b025"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nugu__audio_8h.html#af7185f86c4e029f966e37e2f0925b025">nugu_audio_get_attribute_str</a> (const <a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a> attribute)</td></tr>
+<tr class="memdesc:af7185f86c4e029f966e37e2f0925b025"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get audio attribute string.  <a href="nugu__audio_8h.html#af7185f86c4e029f966e37e2f0925b025">More...</a><br /></td></tr>
+<tr class="separator:af7185f86c4e029f966e37e2f0925b025"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4395b9f8e40d61ffa26e641d0ac954df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nugu__audio_8h.html#a4395b9f8e40d61ffa26e641d0ac954df">nugu_audio_set_attribute_str</a> (const <a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a> attribute, const char *str)</td></tr>
+<tr class="memdesc:a4395b9f8e40d61ffa26e641d0ac954df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set audio attribute string.  <a href="nugu__audio_8h.html#a4395b9f8e40d61ffa26e641d0ac954df">More...</a><br /></td></tr>
+<tr class="separator:a4395b9f8e40d61ffa26e641d0ac954df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a45142699425266966bf2e0eed6dad69c"></a>
@@ -234,13 +317,112 @@ Enumerations</h2></td></tr>
 
 </div>
 </div>
+<a id="a128c0dd74041da6f1bb0fa16e47c6ce6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a128c0dd74041da6f1bb0fa16e47c6ce6">&#9670;&nbsp;</a></span>nugu_audio_attribute</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6">nugu_audio_attribute</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>audio attribute </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a128c0dd74041da6f1bb0fa16e47c6ce6a24fc6ff835b6bb93af0c93308bc408f6"></a>NUGU_AUDIO_ATTRIBUTE_MUSIC&#160;</td><td class="fielddoc"><p>audio attribute for music </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a128c0dd74041da6f1bb0fa16e47c6ce6a8f2fa90efe2567b2de5324caeebbf3d1"></a>NUGU_AUDIO_ATTRIBUTE_RINGTONE&#160;</td><td class="fielddoc"><p>audio attribute for ringtone </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a128c0dd74041da6f1bb0fa16e47c6ce6a49592c718f5c8438f3f880979fd394db"></a>NUGU_AUDIO_ATTRIBUTE_CALL&#160;</td><td class="fielddoc"><p>audio attribute for call </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a128c0dd74041da6f1bb0fa16e47c6ce6a2b114dd6073db17d6787b96deed5c579"></a>NUGU_AUDIO_ATTRIBUTE_NOTIFICATION&#160;</td><td class="fielddoc"><p>audio attribute for notification </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a128c0dd74041da6f1bb0fa16e47c6ce6a9212ae78a66c75f5e20fa4bd8579e0e7"></a>NUGU_AUDIO_ATTRIBUTE_ALARM&#160;</td><td class="fielddoc"><p>audio attribute for alarm </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a128c0dd74041da6f1bb0fa16e47c6ce6adbd2715cf485cd4b2e869a7518da6cf0"></a>NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND&#160;</td><td class="fielddoc"><p>audio attribute for voice command like tts </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a128c0dd74041da6f1bb0fa16e47c6ce6a1601ba3e0fbf1846dcbeaabaf982f85a"></a>NUGU_AUDIO_ATTRIBUTE_NAVIGATION&#160;</td><td class="fielddoc"><p>audio attribute for navigation </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a128c0dd74041da6f1bb0fa16e47c6ce6ad5d86b392f095eb49f6b357cee724d57"></a>NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND&#160;</td><td class="fielddoc"><p>audio attribute for system sound </p>
+</td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="a4395b9f8e40d61ffa26e641d0ac954df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4395b9f8e40d61ffa26e641d0ac954df">&#9670;&nbsp;</a></span>nugu_audio_set_attribute_str()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void nugu_audio_set_attribute_str </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a>&#160;</td>
+          <td class="paramname"><em>attribute</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set audio attribute string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">attribute</td><td>audio attribute </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">str</td><td>audio attribute's string </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af7185f86c4e029f966e37e2f0925b025"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7185f86c4e029f966e37e2f0925b025">&#9670;&nbsp;</a></span>nugu_audio_get_attribute_str()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* nugu_audio_get_attribute_str </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a>&#160;</td>
+          <td class="paramname"><em>attribute</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get audio attribute string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">attribute</td><td>audio attribute </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>audio attribute string </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_ab1c81409f0df724f17c9ef30afee877.html">base</a></li><li class="navelem"><a class="el" href="nugu__audio_8h.html">nugu_audio.h</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:47 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -6,7 +6,9 @@ var group__SpeakerInterface =
       [ "informVolumeChanged", "classNuguCapability_1_1ISpeakerHandler.html#a3289a6daa4464d99675303bb0da4fd82", null ],
       [ "informMuteChanged", "classNuguCapability_1_1ISpeakerHandler.html#ab8aa239ae64615cdd181d9bfe9c8a317", null ],
       [ "sendEventVolumeChanged", "classNuguCapability_1_1ISpeakerHandler.html#a4ba62477fd01bc191de5639e3f49d883", null ],
-      [ "sendEventMuteChanged", "classNuguCapability_1_1ISpeakerHandler.html#a26a953062b0188c0ee304494067d2a7e", null ]
+      [ "sendEventMuteChanged", "classNuguCapability_1_1ISpeakerHandler.html#a26a953062b0188c0ee304494067d2a7e", null ],
+      [ "getSpeakerName", "classNuguCapability_1_1ISpeakerHandler.html#a6d4cbc061343f6d9782c4f502adebc5e", null ],
+      [ "getSpeakerType", "classNuguCapability_1_1ISpeakerHandler.html#a7197e3b657b6528a55f55c0cadb84876", null ]
     ] ],
     [ "ISpeakerListener", "classNuguCapability_1_1ISpeakerListener.html", [
       [ "~ISpeakerListener", "classNuguCapability_1_1ISpeakerListener.html#ac9f7782ba3cea869009776bbd4257453", null ],
@@ -29,7 +31,7 @@ var group__SpeakerInterface =
     [ "SpeakerType", "group__SpeakerInterface.html#ga8601f6be80368c9d1a7c7b346c99a698", [
       [ "NUGU", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a5cf2406ff6ad128f4d2ebd67ca595b0f", null ],
       [ "MUSIC", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698ad74c735013cdd2b883e25ccca502a2e9", null ],
-      [ "RINGTON", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a4ffad184d2206f7c174226cfe718a7ae", null ],
+      [ "RINGTONE", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a2d4867bcf32a74d36b80ed70ab7f9e97", null ],
       [ "CALL", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698aca3547acb9162b49fb4a6594ed9b3030", null ],
       [ "NOTIFICATION", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a9814d942b7e24870084a3dce24867ab3", null ],
       [ "ALARM", "group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698a9de6d0a670ae5a0dee31a6318aa00e8d", null ],

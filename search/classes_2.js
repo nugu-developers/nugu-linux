@@ -1,9 +1,7 @@
 var searchData=
 [
-  ['capability_1185',['Capability',['../classNuguClientKit_1_1Capability.html',1,'NuguClientKit']]],
-  ['capabilitybuilder_1186',['CapabilityBuilder',['../classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html',1,'NuguClientKit::NuguClient']]],
-  ['capabilityevent_1187',['CapabilityEvent',['../classNuguClientKit_1_1CapabilityEvent.html',1,'NuguClientKit']]],
-  ['capabilityfactory_1188',['CapabilityFactory',['../classNuguCapability_1_1CapabilityFactory.html',1,'NuguCapability']]],
-  ['chipsinfo_1189',['ChipsInfo',['../structNuguCapability_1_1ChipsInfo.html',1,'NuguCapability']]],
-  ['content_1190',['Content',['../structNuguCapability_1_1ChipsInfo_1_1Content.html',1,'NuguCapability::ChipsInfo']]]
+  ['batteryinfo_1349',['BatteryInfo',['../structNuguCapability_1_1BatteryInfo.html',1,'NuguCapability']]],
+  ['blockingpolicy_1350',['BlockingPolicy',['../structNuguClientKit_1_1BlockingPolicy.html',1,'NuguClientKit']]],
+  ['btdeviceinfo_1351',['BTDeviceInfo',['../structNuguCapability_1_1BTDeviceInfo.html',1,'NuguCapability']]],
+  ['btprofile_1352',['BTProfile',['../structNuguCapability_1_1BTProfile.html',1,'NuguCapability']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['focusstate_1997',['FocusState',['../group__FocusManagerInterface.html#ga0a43ecaeb330bca6b94215d69e54bfe6',1,'NuguClientKit']]]
+  ['dialoguxstate_2305',['DialogUXState',['../group__DialogUXStateAggregatorInterface.html#ga9e7e7729b12f3d3c1906cc8c3d72a15c',1,'NuguClientKit']]]
 ];

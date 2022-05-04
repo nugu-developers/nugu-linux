@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['wakeupdetectstate_2038',['WakeupDetectState',['../group__WakeupInterface.html#ga5379a1d6d0c4ea118547f802b851e119',1,'NuguClientKit']]]
+  ['repeattype_2340',['RepeatType',['../group__AudioPlayerInterface.html#ga0cb2048ef5fb507017eb53ee3e52716d',1,'NuguCapability']]],
+  ['revokereason_2341',['RevokeReason',['../group__SystemInterface.html#ga210ca95bced11e44b9558947bb31a2eb',1,'NuguCapability']]],
+  ['routineactivity_2342',['RoutineActivity',['../group__RoutineManagerInterface.html#ga85ba501685094b1c1d34f42229ed227b',1,'NuguClientKit']]]
 ];

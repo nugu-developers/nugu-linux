@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['wakeupmodelfile_1270',['WakeupModelFile',['../structNuguClientKit_1_1WakeupModelFile.html',1,'NuguClientKit']]]
+  ['session_1448',['Session',['../structNuguClientKit_1_1Session.html',1,'NuguClientKit']]],
+  ['speakerinfo_1449',['SpeakerInfo',['../classNuguCapability_1_1SpeakerInfo.html',1,'NuguCapability']]]
 ];

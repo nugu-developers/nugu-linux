@@ -6,5 +6,7 @@ var classNuguClientKit_1_1ISpeechRecognizer =
     [ "stopListening", "classNuguClientKit_1_1ISpeechRecognizer.html#a4f986b4e62598b626221bcaec1f7f33e", null ],
     [ "setEpdAttribute", "classNuguClientKit_1_1ISpeechRecognizer.html#a3a321088712cb74f775063b408ea5bb7", null ],
     [ "getEpdAttribute", "classNuguClientKit_1_1ISpeechRecognizer.html#aee16fed6329f677315da6429d9d7e80c", null ],
-    [ "isMute", "classNuguClientKit_1_1ISpeechRecognizer.html#aa40f6a1419ab2c0de8460ee20e8c70eb", null ]
+    [ "isMute", "classNuguClientKit_1_1ISpeechRecognizer.html#aa40f6a1419ab2c0de8460ee20e8c70eb", null ],
+    [ "getCodec", "classNuguClientKit_1_1ISpeechRecognizer.html#a79810b2f298014a35b61405985dd1e4a", null ],
+    [ "getMimeType", "classNuguClientKit_1_1ISpeechRecognizer.html#ad068a8626268b53450f8044ef2258d89", null ]
 ];

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -115,18 +115,18 @@ $(document).ready(function(){initNavTree('sound__interface_8hh_source.html','');
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="group__SoundInterface.html#ggaa422ff53ae62f3ef7309d310162386abaeda97b7f27f3db06d19df8830e8625cd">RESPONSE_FAIL</a> </div>
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;};</div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1ISoundListener.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1ISoundListener.html">ISoundListener</a> : <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> {</div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1ISoundListener.html">   49</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1ISoundListener.html">ISoundListener</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> {</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1ISoundListener.html">ISoundListener</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> handleBeep(<a class="code" href="group__SoundInterface.html#gaa422ff53ae62f3ef7309d310162386ab">BeepType</a> beep_type, <span class="keyword">const</span> std::string&amp; dialog_id) = 0;</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1ISoundListener.html#af78afa2c9b053ec50610a09136ff6e6e">handleBeep</a>(<a class="code" href="group__SoundInterface.html#gaa422ff53ae62f3ef7309d310162386ab">BeepType</a> beep_type, <span class="keyword">const</span> std::string&amp; dialog_id) = 0;</div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;};</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
 <div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1ISoundHandler.html">   65</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1ISoundHandler.html">ISoundHandler</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a> {</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1ISoundHandler.html">ISoundHandler</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> sendBeepResult(<span class="keywordtype">bool</span> is_succeeded) = 0;</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1ISoundHandler.html#a23d9bfc9b71e6da1e7f19ee499f36a70">sendBeepResult</a>(<span class="keywordtype">bool</span> is_succeeded) = 0;</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;};</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;} <span class="comment">// NuguCapability</span></div>
@@ -134,9 +134,11 @@ $(document).ready(function(){initNavTree('sound__interface_8hh_source.html','');
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_SOUND_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
+<div class="ttc" id="aclassNuguCapability_1_1ISoundHandler_html_a23d9bfc9b71e6da1e7f19ee499f36a70"><div class="ttname"><a href="classNuguCapability_1_1ISoundHandler.html#a23d9bfc9b71e6da1e7f19ee499f36a70">NuguCapability::ISoundHandler::sendBeepResult</a></div><div class="ttdeci">virtual void sendBeepResult(bool is_succeeded)=0</div><div class="ttdoc">Send beep play result.</div></div>
 <div class="ttc" id="agroup__SoundInterface_html_gaa422ff53ae62f3ef7309d310162386ab"><div class="ttname"><a href="group__SoundInterface.html#gaa422ff53ae62f3ef7309d310162386ab">NuguCapability::BeepType</a></div><div class="ttdeci">BeepType</div><div class="ttdoc">Beep type list.</div><div class="ttdef"><b>Definition:</b> sound_interface.hh:41</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:64</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityListener_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></div><div class="ttdoc">capability listener interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:54</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:81</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityListener_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></div><div class="ttdoc">capability listener interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:59</div></div>
+<div class="ttc" id="aclassNuguCapability_1_1ISoundListener_html_af78afa2c9b053ec50610a09136ff6e6e"><div class="ttname"><a href="classNuguCapability_1_1ISoundListener.html#af78afa2c9b053ec50610a09136ff6e6e">NuguCapability::ISoundListener::handleBeep</a></div><div class="ttdeci">virtual void handleBeep(BeepType beep_type, const std::string &amp;dialog_id)=0</div><div class="ttdoc">Handle beep sound which is related to received beep name.</div></div>
 <div class="ttc" id="agroup__SoundInterface_html_ggaa422ff53ae62f3ef7309d310162386abaeda97b7f27f3db06d19df8830e8625cd"><div class="ttname"><a href="group__SoundInterface.html#ggaa422ff53ae62f3ef7309d310162386abaeda97b7f27f3db06d19df8830e8625cd">NuguCapability::BeepType::RESPONSE_FAIL</a></div><div class="ttdeci">@ RESPONSE_FAIL</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ISoundHandler_html"><div class="ttname"><a href="classNuguCapability_1_1ISoundHandler.html">NuguCapability::ISoundHandler</a></div><div class="ttdoc">sound handler interface</div><div class="ttdef"><b>Definition:</b> sound_interface.hh:65</div></div>
 <div class="ttc" id="acapability__interface_8hh_html"><div class="ttname"><a href="capability__interface_8hh.html">capability_interface.hh</a></div></div>
@@ -145,7 +147,7 @@ $(document).ready(function(){initNavTree('sound__interface_8hh_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fe91053431442a18fd8b50c6b5c5d672.html">capability</a></li><li class="navelem"><a class="el" href="sound__interface_8hh.html">sound_interface.hh</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:47 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

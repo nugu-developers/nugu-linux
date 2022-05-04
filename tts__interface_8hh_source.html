@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -122,7 +122,7 @@ $(document).ready(function(){initNavTree('tts__interface_8hh_source.html',''); i
 <div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="structNuguCapability_1_1TTSAttribute.html#a3d27107d98ea2fbdff928b47ffa7c432">   52</a></span>&#160;    std::string <a class="code" href="structNuguCapability_1_1TTSAttribute.html#a3d27107d98ea2fbdff928b47ffa7c432">tts_engine</a>; </div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;} <a class="code" href="structNuguCapability_1_1TTSAttribute.html">TTSAttribute</a>;</div>
 <div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1ITTSListener.html">   59</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1ITTSListener.html">ITTSListener</a> : <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> {</div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1ITTSListener.html">   59</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1ITTSListener.html">ITTSListener</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> {</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1ITTSListener.html">ITTSListener</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
@@ -165,13 +165,13 @@ $(document).ready(function(){initNavTree('tts__interface_8hh_source.html',''); i
 <div class="ttc" id="aclassNuguCapability_1_1ITTSHandler_html"><div class="ttname"><a href="classNuguCapability_1_1ITTSHandler.html">NuguCapability::ITTSHandler</a></div><div class="ttdoc">tts handler interface</div><div class="ttdef"><b>Definition:</b> tts_interface.hh:89</div></div>
 <div class="ttc" id="agroup__TTSInterface_html_gga7d4f4423b5757b9a2b029a5ce5fbcccfa334b1664f6e8ae94f40877279035593b"><div class="ttname"><a href="group__TTSInterface.html#gga7d4f4423b5757b9a2b029a5ce5fbcccfa334b1664f6e8ae94f40877279035593b">NuguCapability::TTSState::TTS_SPEECH_FINISH</a></div><div class="ttdeci">@ TTS_SPEECH_FINISH</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITTSHandler_html_ac6fb7834ac4d069d15d6f4cbbb2a1af9"><div class="ttname"><a href="classNuguCapability_1_1ITTSHandler.html#ac6fb7834ac4d069d15d6f4cbbb2a1af9">NuguCapability::ITTSHandler::addListener</a></div><div class="ttdeci">virtual void addListener(ITTSListener *listener)=0</div><div class="ttdoc">Add the ITTSListener object.</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:64</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:81</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITTSHandler_html_a4ea89acbbbc0b36c8e1058200a99fe6a"><div class="ttname"><a href="classNuguCapability_1_1ITTSHandler.html#a4ea89acbbbc0b36c8e1058200a99fe6a">NuguCapability::ITTSHandler::setAttribute</a></div><div class="ttdeci">virtual void setAttribute(TTSAttribute &amp;&amp;attribute)=0</div><div class="ttdoc">Set attribute about speech synthesizer.</div></div>
 <div class="ttc" id="agroup__TTSInterface_html_gga7d4f4423b5757b9a2b029a5ce5fbcccfa6bd04d658b5dee0510833fa07ead4543"><div class="ttname"><a href="group__TTSInterface.html#gga7d4f4423b5757b9a2b029a5ce5fbcccfa6bd04d658b5dee0510833fa07ead4543">NuguCapability::TTSState::TTS_SPEECH_START</a></div><div class="ttdeci">@ TTS_SPEECH_START</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITTSListener_html_a2286ebc32f17412ca1390989829401b7"><div class="ttname"><a href="classNuguCapability_1_1ITTSListener.html#a2286ebc32f17412ca1390989829401b7">NuguCapability::ITTSListener::onTTSCancel</a></div><div class="ttdeci">virtual void onTTSCancel(const std::string &amp;dialog_id)=0</div><div class="ttdoc">Report canceled the text speech to the User.</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITTSListener_html_a0eee1cd379ef2adde22bfcc0e63c1c62"><div class="ttname"><a href="classNuguCapability_1_1ITTSListener.html#a0eee1cd379ef2adde22bfcc0e63c1c62">NuguCapability::ITTSListener::onTTSText</a></div><div class="ttdeci">virtual void onTTSText(const std::string &amp;text, const std::string &amp;dialog_id)=0</div><div class="ttdoc">Report the speech sentence to the User.</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITTSListener_html"><div class="ttname"><a href="classNuguCapability_1_1ITTSListener.html">NuguCapability::ITTSListener</a></div><div class="ttdoc">tts listener interface</div><div class="ttdef"><b>Definition:</b> tts_interface.hh:59</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityListener_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></div><div class="ttdoc">capability listener interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:54</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityListener_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></div><div class="ttdoc">capability listener interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:59</div></div>
 <div class="ttc" id="astructNuguCapability_1_1TTSAttribute_html"><div class="ttname"><a href="structNuguCapability_1_1TTSAttribute.html">NuguCapability::TTSAttribute</a></div><div class="ttdoc">Attributes for setting TTS options.</div><div class="ttdef"><b>Definition:</b> tts_interface.hh:51</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITTSHandler_html_a7dabffea5b4e697e1c8d084e51645ca4"><div class="ttname"><a href="classNuguCapability_1_1ITTSHandler.html#a7dabffea5b4e697e1c8d084e51645ca4">NuguCapability::ITTSHandler::setVolume</a></div><div class="ttdeci">virtual bool setVolume(int volume)=0</div><div class="ttdoc">set pcm player's volume</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITTSHandler_html_ac2ca73248b3fa6b89ef6204e79a1b752"><div class="ttname"><a href="classNuguCapability_1_1ITTSHandler.html#ac2ca73248b3fa6b89ef6204e79a1b752">NuguCapability::ITTSHandler::getPlayServiceId</a></div><div class="ttdeci">virtual std::string getPlayServiceId()=0</div><div class="ttdoc">Get current play service id.</div></div>
@@ -185,7 +185,7 @@ $(document).ready(function(){initNavTree('tts__interface_8hh_source.html',''); i
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fe91053431442a18fd8b50c6b5c5d672.html">capability</a></li><li class="navelem"><a class="el" href="tts__interface_8hh.html">tts_interface.hh</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:47 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -155,11 +155,15 @@ $(document).ready(function(){initNavTree('nugu__event_8h_source.html',''); initR
 <div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160; </div>
 <div class="line"><a name="l00212"></a><span class="lineno">  212</span>&#160;<span class="keywordtype">char</span> *<a class="code" href="group__NuguEvent.html#gaf2795300241b02cb2013cc4e997fd83a">nugu_event_generate_payload</a>(<a class="code" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev);</div>
 <div class="line"><a name="l00213"></a><span class="lineno">  213</span>&#160; </div>
-<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00219"></a><span class="lineno">  219</span>&#160;}</div>
-<div class="line"><a name="l00220"></a><span class="lineno">  220</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00221"></a><span class="lineno">  221</span>&#160; </div>
-<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00222"></a><span class="lineno">  222</span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__NuguEvent.html#ga35a3912d55fbdf2ed62b72a814592913">nugu_event_set_mime_type</a>(<a class="code" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev, <span class="keyword">const</span> <span class="keywordtype">char</span> *type);</div>
+<div class="line"><a name="l00223"></a><span class="lineno">  223</span>&#160; </div>
+<div class="line"><a name="l00229"></a><span class="lineno">  229</span>&#160;<span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code" href="group__NuguEvent.html#ga3dfec4cd2d72ce491916fb5e9346dc84">nugu_event_peek_mime_type</a>(<a class="code" href="group__NuguEvent.html#gaa05d01eb01d0ef1fe34e15b0b7b33ed2">NuguEvent</a> *nev);</div>
+<div class="line"><a name="l00230"></a><span class="lineno">  230</span>&#160; </div>
+<div class="line"><a name="l00235"></a><span class="lineno">  235</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00236"></a><span class="lineno">  236</span>&#160;}</div>
+<div class="line"><a name="l00237"></a><span class="lineno">  237</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00238"></a><span class="lineno">  238</span>&#160; </div>
+<div class="line"><a name="l00239"></a><span class="lineno">  239</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="agroup__NuguEvent_html_gaf82ec8b7067afa0353eaaae32368d536"><div class="ttname"><a href="group__NuguEvent.html#gaf82ec8b7067afa0353eaaae32368d536">nugu_event_get_type</a></div><div class="ttdeci">enum nugu_event_type nugu_event_get_type(NuguEvent *nev)</div><div class="ttdoc">Get the type of NuguEvent.</div></div>
@@ -168,6 +172,7 @@ $(document).ready(function(){initNavTree('nugu__event_8h_source.html',''); initR
 <div class="ttc" id="agroup__NuguEvent_html_gaf2795300241b02cb2013cc4e997fd83a"><div class="ttname"><a href="group__NuguEvent.html#gaf2795300241b02cb2013cc4e997fd83a">nugu_event_generate_payload</a></div><div class="ttdeci">char * nugu_event_generate_payload(NuguEvent *nev)</div><div class="ttdoc">Generate JSON payload using nugu_event attributes.</div></div>
 <div class="ttc" id="agroup__NuguEvent_html_gae133a612a3abc321f4de1d6376759bd7"><div class="ttname"><a href="group__NuguEvent.html#gae133a612a3abc321f4de1d6376759bd7">nugu_event_new</a></div><div class="ttdeci">NuguEvent * nugu_event_new(const char *name_space, const char *name, const char *version)</div><div class="ttdoc">Create new event object.</div></div>
 <div class="ttc" id="agroup__NuguEvent_html_ga81cf63b82c1fece1dc60b99592d41e56"><div class="ttname"><a href="group__NuguEvent.html#ga81cf63b82c1fece1dc60b99592d41e56">nugu_event_set_dialog_id</a></div><div class="ttdeci">int nugu_event_set_dialog_id(NuguEvent *nev, const char *dialog_id)</div><div class="ttdoc">Set the dialog-request-id of event.</div></div>
+<div class="ttc" id="agroup__NuguEvent_html_ga3dfec4cd2d72ce491916fb5e9346dc84"><div class="ttname"><a href="group__NuguEvent.html#ga3dfec4cd2d72ce491916fb5e9346dc84">nugu_event_peek_mime_type</a></div><div class="ttdeci">const char * nugu_event_peek_mime_type(NuguEvent *nev)</div><div class="ttdoc">Get the attachment mime type of NuguEvent.</div></div>
 <div class="ttc" id="agroup__NuguEvent_html_gab0cb6124cb6c5175ae189779f5485306"><div class="ttname"><a href="group__NuguEvent.html#gab0cb6124cb6c5175ae189779f5485306">nugu_event_set_referrer_id</a></div><div class="ttdeci">int nugu_event_set_referrer_id(NuguEvent *nev, const char *referrer_id)</div><div class="ttdoc">Set the referer-dialog-request-id of event.</div></div>
 <div class="ttc" id="agroup__NuguEvent_html_ga6575da326b4337ab0aeb9cb8ed5ef3ae"><div class="ttname"><a href="group__NuguEvent.html#ga6575da326b4337ab0aeb9cb8ed5ef3ae">nugu_event_peek_json</a></div><div class="ttdeci">const char * nugu_event_peek_json(NuguEvent *nev)</div><div class="ttdoc">Get the payload of event.</div></div>
 <div class="ttc" id="agroup__NuguEvent_html_ga605deb8882a895f78c4d3fa5f4c5c071"><div class="ttname"><a href="group__NuguEvent.html#ga605deb8882a895f78c4d3fa5f4c5c071">nugu_event_peek_msg_id</a></div><div class="ttdeci">const char * nugu_event_peek_msg_id(NuguEvent *nev)</div><div class="ttdoc">Get the message-id of event.</div></div>
@@ -181,6 +186,7 @@ $(document).ready(function(){initNavTree('nugu__event_8h_source.html',''); initR
 <div class="ttc" id="agroup__NuguEvent_html_ggad962955274c901710ed7946542f0cff4a6f7827affcc79339efc1fd353831ae26"><div class="ttname"><a href="group__NuguEvent.html#ggad962955274c901710ed7946542f0cff4a6f7827affcc79339efc1fd353831ae26">NUGU_EVENT_TYPE_DEFAULT</a></div><div class="ttdeci">@ NUGU_EVENT_TYPE_DEFAULT</div><div class="ttdef"><b>Definition:</b> nugu_event.h:47</div></div>
 <div class="ttc" id="agroup__NuguEvent_html_gae0186e75ec81e98f179c79e3cd403195"><div class="ttname"><a href="group__NuguEvent.html#gae0186e75ec81e98f179c79e3cd403195">nugu_event_set_type</a></div><div class="ttdeci">int nugu_event_set_type(NuguEvent *nev, enum nugu_event_type type)</div><div class="ttdoc">Set the type of NuguEvent.</div></div>
 <div class="ttc" id="agroup__NuguEvent_html_ga2859eefbd8d35c960ca8d42ad6d65758"><div class="ttname"><a href="group__NuguEvent.html#ga2859eefbd8d35c960ca8d42ad6d65758">nugu_event_peek_name</a></div><div class="ttdeci">const char * nugu_event_peek_name(NuguEvent *nev)</div><div class="ttdoc">Get the name of event.</div></div>
+<div class="ttc" id="agroup__NuguEvent_html_ga35a3912d55fbdf2ed62b72a814592913"><div class="ttname"><a href="group__NuguEvent.html#ga35a3912d55fbdf2ed62b72a814592913">nugu_event_set_mime_type</a></div><div class="ttdeci">int nugu_event_set_mime_type(NuguEvent *nev, const char *type)</div><div class="ttdoc">Set the attachment mime type of NuguEvent.</div></div>
 <div class="ttc" id="agroup__NuguEvent_html_ga71645e87045bedf9fad914951c040b8b"><div class="ttname"><a href="group__NuguEvent.html#ga71645e87045bedf9fad914951c040b8b">nugu_event_peek_context</a></div><div class="ttdeci">const char * nugu_event_peek_context(NuguEvent *nev)</div><div class="ttdoc">Get the context of event.</div></div>
 <div class="ttc" id="agroup__NuguEvent_html_ggad962955274c901710ed7946542f0cff4a0a6cc05157afe5371dbc1c250c46337d"><div class="ttname"><a href="group__NuguEvent.html#ggad962955274c901710ed7946542f0cff4a0a6cc05157afe5371dbc1c250c46337d">NUGU_EVENT_TYPE_WITH_ATTACHMENT</a></div><div class="ttdeci">@ NUGU_EVENT_TYPE_WITH_ATTACHMENT</div><div class="ttdef"><b>Definition:</b> nugu_event.h:50</div></div>
 <div class="ttc" id="agroup__NuguEvent_html_gac018efd714cbd7da7db50de99da99fad"><div class="ttname"><a href="group__NuguEvent.html#gac018efd714cbd7da7db50de99da99fad">nugu_event_peek_referrer_id</a></div><div class="ttdeci">const char * nugu_event_peek_referrer_id(NuguEvent *nev)</div><div class="ttdoc">Get the referer-dialog-request-id of event.</div></div>
@@ -189,7 +195,7 @@ $(document).ready(function(){initNavTree('nugu__event_8h_source.html',''); initR
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_ab1c81409f0df724f17c9ef30afee877.html">base</a></li><li class="navelem"><a class="el" href="nugu__event_8h.html">nugu_event.h</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:47 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:26 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

@@ -6,6 +6,7 @@ var group__SDKBase =
     [ "Encoder", "group__NuguEncoder.html", "group__NuguEncoder" ],
     [ "Event Queue", "group__NuguEventQueue.html", "group__NuguEventQueue" ],
     [ "NUGU Event", "group__NuguEvent.html", "group__NuguEvent" ],
+    [ "NuguHttp", "group__NuguHttp.html", "group__NuguHttp" ],
     [ "Log", "group__Log.html", "group__Log" ],
     [ "Media", "group__Media.html", "group__Media" ],
     [ "NetworkManager", "group__nugu__network.html", "group__nugu__network" ],

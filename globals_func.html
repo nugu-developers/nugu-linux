@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -85,8 +85,17 @@ $(document).ready(function(){initNavTree('globals_func.html',''); initResizable(
 &#160;
 
 <h3><a id="index_n"></a>- n -</h3><ul>
+<li>nugu_audio_get_attribute_str()
+: <a class="el" href="nugu__audio_8h.html#af7185f86c4e029f966e37e2f0925b025">nugu_audio.h</a>
+</li>
+<li>nugu_audio_set_attribute_str()
+: <a class="el" href="nugu__audio_8h.html#a4395b9f8e40d61ffa26e641d0ac954df">nugu_audio.h</a>
+</li>
 <li>nugu_buffer_add()
 : <a class="el" href="group__Buffer.html#gaacefd9e2f61220e4b88a519c6c34be05">nugu_buffer.h</a>
+</li>
+<li>nugu_buffer_add_byte()
+: <a class="el" href="group__Buffer.html#ga9e4953146b489246dc6dbc89edeb7b93">nugu_buffer.h</a>
 </li>
 <li>nugu_buffer_clear()
 : <a class="el" href="group__Buffer.html#ga019669c66b35ae928ffb750914473ae8">nugu_buffer.h</a>
@@ -117,6 +126,9 @@ $(document).ready(function(){initNavTree('globals_func.html',''); initResizable(
 </li>
 <li>nugu_buffer_pop()
 : <a class="el" href="group__Buffer.html#ga3f7e77f6a4ebb2ad714ea0882d52fb57">nugu_buffer.h</a>
+</li>
+<li>nugu_buffer_set_byte()
+: <a class="el" href="group__Buffer.html#ga99dac5cd15cd1408e07cc3528dc6e14b">nugu_buffer.h</a>
 </li>
 <li>nugu_buffer_shift_left()
 : <a class="el" href="group__Buffer.html#ga294cfae33d6510cf9b6a59b9f2056493">nugu_buffer.h</a>
@@ -257,13 +269,19 @@ $(document).ready(function(){initNavTree('globals_func.html',''); initResizable(
 : <a class="el" href="group__NuguEncoderDriver.html#ga3368aa56b50dc01b71e1345caf969001">nugu_encoder.h</a>
 </li>
 <li>nugu_encoder_encode()
-: <a class="el" href="group__NuguEncoder.html#ga1d4ae9b2bb2f558af3bbb40e523d15bd">nugu_encoder.h</a>
+: <a class="el" href="group__NuguEncoder.html#gae64e2c89bb9178c0d38c470ecf472a2e">nugu_encoder.h</a>
 </li>
 <li>nugu_encoder_free()
 : <a class="el" href="group__NuguEncoder.html#ga2b07c31ce29ea63a5553753a3e895851">nugu_encoder.h</a>
 </li>
+<li>nugu_encoder_get_codec()
+: <a class="el" href="group__NuguEncoder.html#gaa90477a208455a70758e5f57a21a22bc">nugu_encoder.h</a>
+</li>
 <li>nugu_encoder_get_driver_data()
 : <a class="el" href="group__NuguEncoder.html#ga83181667d3ea99921b30ae3c1270e600">nugu_encoder.h</a>
+</li>
+<li>nugu_encoder_get_mime_type()
+: <a class="el" href="group__NuguEncoder.html#ga5338e0374674ab7e0334bb33491e7122">nugu_encoder.h</a>
 </li>
 <li>nugu_encoder_new()
 : <a class="el" href="group__NuguEncoder.html#ga9c270cec98395eafe22b0ac9bcf6505f">nugu_encoder.h</a>
@@ -313,6 +331,9 @@ $(document).ready(function(){initNavTree('globals_func.html',''); initResizable(
 <li>nugu_event_peek_json()
 : <a class="el" href="group__NuguEvent.html#ga6575da326b4337ab0aeb9cb8ed5ef3ae">nugu_event.h</a>
 </li>
+<li>nugu_event_peek_mime_type()
+: <a class="el" href="group__NuguEvent.html#ga3dfec4cd2d72ce491916fb5e9346dc84">nugu_event.h</a>
+</li>
 <li>nugu_event_peek_msg_id()
 : <a class="el" href="group__NuguEvent.html#ga605deb8882a895f78c4d3fa5f4c5c071">nugu_event.h</a>
 </li>
@@ -337,6 +358,9 @@ $(document).ready(function(){initNavTree('globals_func.html',''); initResizable(
 <li>nugu_event_set_json()
 : <a class="el" href="group__NuguEvent.html#ga0d95a5a072187a0db65f1c4a0a0ef9c0">nugu_event.h</a>
 </li>
+<li>nugu_event_set_mime_type()
+: <a class="el" href="group__NuguEvent.html#ga35a3912d55fbdf2ed62b72a814592913">nugu_event.h</a>
+</li>
 <li>nugu_event_set_referrer_id()
 : <a class="el" href="group__NuguEvent.html#gab0cb6124cb6c5175ae189779f5485306">nugu_event.h</a>
 </li>
@@ -345,6 +369,87 @@ $(document).ready(function(){initNavTree('globals_func.html',''); initResizable(
 </li>
 <li>nugu_hexdump()
 : <a class="el" href="group__Log.html#ga12a34c7723f6eb5ad53b9e775f4c0cbd">nugu_log.h</a>
+</li>
+<li>nugu_http_delete()
+: <a class="el" href="group__NuguHttp.html#ga53a3b99d3111396bf009ce57c9199eba">nugu_http.h</a>
+</li>
+<li>nugu_http_delete_sync()
+: <a class="el" href="group__NuguHttp.html#gad29f0d7e4ab6713b04faba110cebc645">nugu_http.h</a>
+</li>
+<li>nugu_http_download()
+: <a class="el" href="group__NuguHttp.html#gae029603be268933ae17fe9368958df53">nugu_http.h</a>
+</li>
+<li>nugu_http_get()
+: <a class="el" href="group__NuguHttp.html#gac1d30cd06f4d8fc9b490b767ef888746">nugu_http.h</a>
+</li>
+<li>nugu_http_get_sync()
+: <a class="el" href="group__NuguHttp.html#gae2cb5298f2dcae0cae600ace85103529">nugu_http.h</a>
+</li>
+<li>nugu_http_header_add()
+: <a class="el" href="group__NuguHttp.html#ga70b7689d535466b31c2c38a49863314a">nugu_http.h</a>
+</li>
+<li>nugu_http_header_dup()
+: <a class="el" href="group__NuguHttp.html#ga3089fa9b886efa19b76fcd8004a0f3f9">nugu_http.h</a>
+</li>
+<li>nugu_http_header_find()
+: <a class="el" href="group__NuguHttp.html#ga7594c5a3219b6cfbbf78e5dda2c2465c">nugu_http.h</a>
+</li>
+<li>nugu_http_header_free()
+: <a class="el" href="group__NuguHttp.html#ga0faacff705c3f6949794845901bfa4e5">nugu_http.h</a>
+</li>
+<li>nugu_http_header_import()
+: <a class="el" href="group__NuguHttp.html#ga30e9bd7909f7fbccbd9f9edf46632081">nugu_http.h</a>
+</li>
+<li>nugu_http_header_new()
+: <a class="el" href="group__NuguHttp.html#gad5c1f8071ada3ee9306a077b3ab222cc">nugu_http.h</a>
+</li>
+<li>nugu_http_header_remove()
+: <a class="el" href="group__NuguHttp.html#gaddd840fa1f24a6a0a4277b4a8c914711">nugu_http.h</a>
+</li>
+<li>nugu_http_host_free()
+: <a class="el" href="group__NuguHttp.html#ga904db9339647123223d16778df140189">nugu_http.h</a>
+</li>
+<li>nugu_http_host_new()
+: <a class="el" href="group__NuguHttp.html#ga999fabe32f49e9ce44bf61cb43f4c7df">nugu_http.h</a>
+</li>
+<li>nugu_http_host_set_connection_timeout()
+: <a class="el" href="group__NuguHttp.html#gaa8b192fa6fbbe47af2a28d75e19f6437">nugu_http.h</a>
+</li>
+<li>nugu_http_host_set_timeout()
+: <a class="el" href="group__NuguHttp.html#ga2c18e8fc47e2d997c78ec2469c71faa0">nugu_http.h</a>
+</li>
+<li>nugu_http_init()
+: <a class="el" href="group__NuguHttp.html#ga02eb2293ef84175ca177229f92c1807a">nugu_http.h</a>
+</li>
+<li>nugu_http_post()
+: <a class="el" href="group__NuguHttp.html#gaba84664dceb6f23283592336700eaab3">nugu_http.h</a>
+</li>
+<li>nugu_http_post_sync()
+: <a class="el" href="group__NuguHttp.html#ga947db61b5f6df18db01d76fe3949aac9">nugu_http.h</a>
+</li>
+<li>nugu_http_put()
+: <a class="el" href="group__NuguHttp.html#ga248c76d48b017fbc960a706f1027825e">nugu_http.h</a>
+</li>
+<li>nugu_http_put_sync()
+: <a class="el" href="group__NuguHttp.html#gab7416d15d5a7170603f69b1fd478af92">nugu_http.h</a>
+</li>
+<li>nugu_http_request()
+: <a class="el" href="group__NuguHttp.html#ga1e7eb8f46a86bd02b029c2ed903c63d9">nugu_http.h</a>
+</li>
+<li>nugu_http_request_free()
+: <a class="el" href="group__NuguHttp.html#gac2ff9eaf09c636acb8fec23b827e60e2">nugu_http.h</a>
+</li>
+<li>nugu_http_request_response_get()
+: <a class="el" href="group__NuguHttp.html#ga5288b5ff371da9e002df307f2e061b30">nugu_http.h</a>
+</li>
+<li>nugu_http_request_sync()
+: <a class="el" href="group__NuguHttp.html#gaf525748b9e8f35f6d5318c1be600b650">nugu_http.h</a>
+</li>
+<li>nugu_http_response_dup()
+: <a class="el" href="group__NuguHttp.html#ga63dcaa7f5556f0612eae2f7afc5f5445">nugu_http.h</a>
+</li>
+<li>nugu_http_response_free()
+: <a class="el" href="group__NuguHttp.html#ga07b62ac45b13a9f0fae6fc59c64515d0">nugu_http.h</a>
 </li>
 <li>nugu_log_get_level()
 : <a class="el" href="group__Log.html#ga7576f1eda95eb27cf81eff9d7c1fa7d3">nugu_log.h</a>
@@ -505,6 +610,12 @@ $(document).ready(function(){initNavTree('globals_func.html',''); initResizable(
 <li>nugu_pcm_free()
 : <a class="el" href="group__NuguPcm.html#ga60757653e226e35908e7ec91cef209a7">nugu_pcm.h</a>
 </li>
+<li>nugu_pcm_get_audio_attribute()
+: <a class="el" href="group__NuguPcm.html#gae21b346f3ed629d981640be208006807">nugu_pcm.h</a>
+</li>
+<li>nugu_pcm_get_audio_attribute_str()
+: <a class="el" href="group__NuguPcm.html#ga1331a7d41b701049db3625d1bd71b8dc">nugu_pcm.h</a>
+</li>
 <li>nugu_pcm_get_data()
 : <a class="el" href="group__NuguPcm.html#gafcb165da3bd693c540f4585548dcb857">nugu_pcm.h</a>
 </li>
@@ -546,6 +657,9 @@ $(document).ready(function(){initNavTree('globals_func.html',''); initResizable(
 </li>
 <li>nugu_pcm_resume()
 : <a class="el" href="group__NuguPcm.html#gaf6f874df1d927d3871de1d52cad7c7b6">nugu_pcm.h</a>
+</li>
+<li>nugu_pcm_set_audio_attribute()
+: <a class="el" href="group__NuguPcm.html#gab7914dd9ea6c877745cd8a80ffc83d68">nugu_pcm.h</a>
 </li>
 <li>nugu_pcm_set_driver_data()
 : <a class="el" href="group__NuguPcm.html#gad3c56526b3a92e07aa6cb9db56aa88ad">nugu_pcm.h</a>
@@ -601,6 +715,12 @@ $(document).ready(function(){initNavTree('globals_func.html',''); initResizable(
 <li>nugu_player_free()
 : <a class="el" href="group__NuguPlayer.html#gaaa859b06fc7fb6192a30d6dfe0f17382">nugu_player.h</a>
 </li>
+<li>nugu_player_get_audio_attribute()
+: <a class="el" href="group__NuguPlayer.html#gaf0118dff30dc70c266a3b4b8cdd8069c">nugu_player.h</a>
+</li>
+<li>nugu_player_get_audio_attribute_str()
+: <a class="el" href="group__NuguPlayer.html#gad6580b3e1619d12c8d4214a777e176e7">nugu_player.h</a>
+</li>
 <li>nugu_player_get_driver_data()
 : <a class="el" href="group__NuguPlayer.html#ga5fd165b725024558aefc2edca9fd2822">nugu_player.h</a>
 </li>
@@ -630,6 +750,9 @@ $(document).ready(function(){initNavTree('globals_func.html',''); initResizable(
 </li>
 <li>nugu_player_seek()
 : <a class="el" href="group__NuguPlayer.html#ga3a7e59d98319717bb48849655333bb08">nugu_player.h</a>
+</li>
+<li>nugu_player_set_audio_attribute()
+: <a class="el" href="group__NuguPlayer.html#ga9f9d1f2960ffdd2518768630a8285ee7">nugu_player.h</a>
 </li>
 <li>nugu_player_set_driver_data()
 : <a class="el" href="group__NuguPlayer.html#gac009675aabb157ce844a3f5fef4ed7f7">nugu_player.h</a>
@@ -880,7 +1003,7 @@ $(document).ready(function(){initNavTree('globals_func.html',''); initResizable(
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:48 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

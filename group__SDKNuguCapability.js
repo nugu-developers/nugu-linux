@@ -2,10 +2,13 @@ var group__SDKNuguCapability =
 [
     [ "ASRInterface", "group__ASRInterface.html", "group__ASRInterface" ],
     [ "AudioPlayerInterface", "group__AudioPlayerInterface.html", "group__AudioPlayerInterface" ],
+    [ "BatteryInterface", "group__BatteryInterface.html", "group__BatteryInterface" ],
+    [ "BluetoothInterface", "group__BluetoothInterface.html", "group__BluetoothInterface" ],
     [ "CapabilityFactory", "group__CapabilityFactory.html", "group__CapabilityFactory" ],
     [ "ChipsInterface", "group__ChipsInterface.html", "group__ChipsInterface" ],
     [ "DisplayInterface", "group__DisplayInterface.html", "group__DisplayInterface" ],
     [ "ExtensionInterface", "group__ExtensionInterface.html", "group__ExtensionInterface" ],
+    [ "LocationInterface", "group__LocationInterface.html", "group__LocationInterface" ],
     [ "MessageInterface", "group__MessageInterface.html", "group__MessageInterface" ],
     [ "MicInterface", "group__MicInterface.html", "group__MicInterface" ],
     [ "NudgeInterface", "group__NudgeInterface.html", "group__NudgeInterface" ],

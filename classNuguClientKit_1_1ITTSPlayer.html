@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -119,13 +119,13 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1ITTSPlayer.html'
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a79eae6c79ec0589a693f05e971a000a4"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ITTSPlayer.html#a79eae6c79ec0589a693f05e971a000a4">write_audio</a> (const char *data, int size)=0</td></tr>
-<tr class="memdesc:a79eae6c79ec0589a693f05e971a000a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write audio samples to the tts player. The player decodes it using opus.  <a href="classNuguClientKit_1_1ITTSPlayer.html#a79eae6c79ec0589a693f05e971a000a4">More...</a><br /></td></tr>
-<tr class="separator:a79eae6c79ec0589a693f05e971a000a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac08f98c47733365a6cf5464aa6bcad8d"><td class="memItemLeft" align="right" valign="top"><a id="ac08f98c47733365a6cf5464aa6bcad8d"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ITTSPlayer.html#ac08f98c47733365a6cf5464aa6bcad8d">write_done</a> ()=0</td></tr>
-<tr class="memdesc:ac08f98c47733365a6cf5464aa6bcad8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notify to write done to the tts player. <br /></td></tr>
-<tr class="separator:ac08f98c47733365a6cf5464aa6bcad8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c7087e6b2456c1e8436127643694aab"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ITTSPlayer.html#a0c7087e6b2456c1e8436127643694aab">writeAudio</a> (const char *data, int size)=0</td></tr>
+<tr class="memdesc:a0c7087e6b2456c1e8436127643694aab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Write audio samples to the tts player. The player decodes it using opus.  <a href="classNuguClientKit_1_1ITTSPlayer.html#a0c7087e6b2456c1e8436127643694aab">More...</a><br /></td></tr>
+<tr class="separator:a0c7087e6b2456c1e8436127643694aab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0754d00e6270c29c5a08a36e47e0cfa"><td class="memItemLeft" align="right" valign="top"><a id="ab0754d00e6270c29c5a08a36e47e0cfa"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ITTSPlayer.html#ab0754d00e6270c29c5a08a36e47e0cfa">writeDone</a> ()=0</td></tr>
+<tr class="memdesc:ab0754d00e6270c29c5a08a36e47e0cfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Notify to write done to the tts player. <br /></td></tr>
+<tr class="separator:ab0754d00e6270c29c5a08a36e47e0cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classNuguClientKit_1_1IMediaPlayer"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classNuguClientKit_1_1IMediaPlayer')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classNuguClientKit_1_1IMediaPlayer.html">NuguClientKit::IMediaPlayer</a></td></tr>
 <tr class="memitem:afa7eb30c96c86041ee7ceeb887436864 inherit pub_methods_classNuguClientKit_1_1IMediaPlayer"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IMediaPlayer.html#afa7eb30c96c86041ee7ceeb887436864">addListener</a> (<a class="el" href="classNuguClientKit_1_1IMediaPlayerListener.html">IMediaPlayerListener</a> *listener)=0</td></tr>
 <tr class="memdesc:afa7eb30c96c86041ee7ceeb887436864 inherit pub_methods_classNuguClientKit_1_1IMediaPlayer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the Listener object.  <a href="classNuguClientKit_1_1IMediaPlayer.html#afa7eb30c96c86041ee7ceeb887436864">More...</a><br /></td></tr>
@@ -163,6 +163,9 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:ac61bd3407a6728044f61dac9adbee09c inherit pub_methods_classNuguClientKit_1_1IMediaPlayer"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IMediaPlayer.html#ac61bd3407a6728044f61dac9adbee09c">seek</a> (int sec)=0</td></tr>
 <tr class="memdesc:ac61bd3407a6728044f61dac9adbee09c inherit pub_methods_classNuguClientKit_1_1IMediaPlayer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Request the media player to move the current content section.  <a href="classNuguClientKit_1_1IMediaPlayer.html#ac61bd3407a6728044f61dac9adbee09c">More...</a><br /></td></tr>
 <tr class="separator:ac61bd3407a6728044f61dac9adbee09c inherit pub_methods_classNuguClientKit_1_1IMediaPlayer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab894b138a7e7205422242a41bc6d454b inherit pub_methods_classNuguClientKit_1_1IMediaPlayer"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IMediaPlayer.html#ab894b138a7e7205422242a41bc6d454b">setAudioAttribute</a> (<a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a> attr)=0</td></tr>
+<tr class="memdesc:ab894b138a7e7205422242a41bc6d454b inherit pub_methods_classNuguClientKit_1_1IMediaPlayer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the audio attribute in the media player.  <a href="classNuguClientKit_1_1IMediaPlayer.html#ab894b138a7e7205422242a41bc6d454b">More...</a><br /></td></tr>
+<tr class="separator:ab894b138a7e7205422242a41bc6d454b inherit pub_methods_classNuguClientKit_1_1IMediaPlayer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a3600cc12f2a049cd142ccdd03a794e inherit pub_methods_classNuguClientKit_1_1IMediaPlayer"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IMediaPlayer.html#a0a3600cc12f2a049cd142ccdd03a794e">setDuration</a> (int <a class="el" href="classNuguClientKit_1_1IMediaPlayer.html#a97db3ca40157f51d7672629fbdd1756e">duration</a>)=0</td></tr>
 <tr class="memdesc:a0a3600cc12f2a049cd142ccdd03a794e inherit pub_methods_classNuguClientKit_1_1IMediaPlayer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set duration of the media content to the media player.  <a href="classNuguClientKit_1_1IMediaPlayer.html#a0a3600cc12f2a049cd142ccdd03a794e">More...</a><br /></td></tr>
 <tr class="separator:a0a3600cc12f2a049cd142ccdd03a794e inherit pub_methods_classNuguClientKit_1_1IMediaPlayer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -205,8 +208,8 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div class="textblock"><p>ttsplayer interface </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classNuguClientKit_1_1IMediaPlayer.html" title="mediaplayer interface">IMediaPlayer</a> </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a79eae6c79ec0589a693f05e971a000a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a79eae6c79ec0589a693f05e971a000a4">&#9670;&nbsp;</a></span>write_audio()</h2>
+<a id="a0c7087e6b2456c1e8436127643694aab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c7087e6b2456c1e8436127643694aab">&#9670;&nbsp;</a></span>writeAudio()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -215,7 +218,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual bool NuguClientKit::ITTSPlayer::write_audio </td>
+          <td class="memname">virtual bool NuguClientKit::ITTSPlayer::writeAudio </td>
           <td>(</td>
           <td class="paramtype">const char *&#160;</td>
           <td class="paramname"><em>data</em>, </td>
@@ -260,7 +263,7 @@ virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1ITTSPlayer.html">ITTSPlayer</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:48 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

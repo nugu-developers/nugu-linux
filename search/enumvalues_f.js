@@ -1,13 +1,11 @@
 var searchData=
 [
-  ['tap_2275',['TAP',['../group__ASRInterface.html#gga0dd27d783b014cca3e5aca7510b36f8aafcd6420c60a17418a6de745d6546d966',1,'NuguCapability']]],
-  ['template_5fcloseall_2276',['TEMPLATE_CLOSEALL',['../group__DisplayInterface.html#gga2f108832db51d2185e5b0168fef9d85aad58d8fb76089c4203393b2ce5f950054',1,'NuguCapability']]],
-  ['template_5fprevious_2277',['TEMPLATE_PREVIOUS',['../group__DisplayInterface.html#gga2f108832db51d2185e5b0168fef9d85aa22cc489229f84b5f46023de7e9e000cb',1,'NuguCapability']]],
-  ['timeout_2278',['TIMEOUT',['../group__SpeechRecognizerInterface.html#ggaae383c251ee0fa6e96e4c53b9f5d9a3aa070a0fb40f6c308ab544b227660aadff',1,'NuguClientKit']]],
-  ['token_5ferror_2279',['TOKEN_ERROR',['../group__NetworkManagerInterface.html#gga6aff79e2435c590ea44de8c43754e015ade5fb169ea8d8790ec07c79a01246313',1,'NuguClientKit']]],
-  ['tts_2280',['TTS',['../group__PlaySyncManagerInterface.html#gga42c294733588594b84ae16137eb054c5a4616606d5a8590d8c1d305d50dce2f73',1,'NuguClientKit']]],
-  ['tts_5fspeaking_5fexception_2281',['TTS_SPEAKING_EXCEPTION',['../group__SystemInterface.html#ggae95aa9037a85a223126f51c1efcbe671a4728a21f19c4b81a354edbcd5a1ad9c1',1,'NuguCapability']]],
-  ['tts_5fspeech_5ffinish_2282',['TTS_SPEECH_FINISH',['../group__TTSInterface.html#gga7d4f4423b5757b9a2b029a5ce5fbcccfa334b1664f6e8ae94f40877279035593b',1,'NuguCapability']]],
-  ['tts_5fspeech_5fstart_2283',['TTS_SPEECH_START',['../group__TTSInterface.html#gga7d4f4423b5757b9a2b029a5ce5fbcccfa6bd04d658b5dee0510833fa07ead4543',1,'NuguCapability']]],
-  ['tts_5fspeech_5fstop_2284',['TTS_SPEECH_STOP',['../group__TTSInterface.html#gga7d4f4423b5757b9a2b029a5ce5fbcccfa5403a575dd609954035245918942cacb',1,'NuguCapability']]]
+  ['scroll_2591',['Scroll',['../group__DisplayInterface.html#gga28c3d18871d6c4af0e5f53dcd3ac1762a105078d294d30c978ca2badf7f376934',1,'NuguCapability']]],
+  ['speaking_2592',['SPEAKING',['../group__ChipsInterface.html#ggad4d8fcfcbdf141607ee378b3ae2ba180addee564b336f5de690b746eb04e62114',1,'NuguCapability::SPEAKING()'],['../group__DialogUXStateAggregatorInterface.html#gga9e7e7729b12f3d3c1906cc8c3d72a15ca13bf6a81765fdd409852cf247b959ed0',1,'NuguClientKit::Speaking()']]],
+  ['speech_5fend_2593',['SPEECH_END',['../group__SpeechRecognizerInterface.html#ggaae383c251ee0fa6e96e4c53b9f5d9a3aa821a52cfb6729bb403c4209737b935d7',1,'NuguClientKit']]],
+  ['speech_5fstart_2594',['SPEECH_START',['../group__SpeechRecognizerInterface.html#ggaae383c251ee0fa6e96e4c53b9f5d9a3aaf3d1b0263c2f3446a52327e0ff3ae300',1,'NuguClientKit']]],
+  ['stop_2595',['STOP',['../classNuguClientKit_1_1ICapabilityInterface.html#a15d8782f9a3ea99381f64fe5d159a2f2a615a46af313786fc4e349f34118be111',1,'NuguClientKit::ICapabilityInterface']]],
+  ['stopped_2596',['STOPPED',['../group__AudioPlayerInterface.html#ggadb28ffbfa534751260baf341f9819f94a09d4d696b4e935115b9313e3c412509a',1,'NuguCapability::STOPPED()'],['../group__MediaPlayerInterface.html#gga4394cbf300e5382612ec50d08e05317ea09d4d696b4e935115b9313e3c412509a',1,'NuguClientKit::STOPPED()'],['../group__RoutineManagerInterface.html#gga85ba501685094b1c1d34f42229ed227ba09d4d696b4e935115b9313e3c412509a',1,'NuguClientKit::STOPPED()']]],
+  ['synced_2597',['Synced',['../group__PlaySyncManagerInterface.html#gga5d9f5e0329e5706191b9a4682615d4d0a5befab0dde764b6dd8b24a34dc30afa7',1,'NuguClientKit']]],
+  ['system_5fsound_2598',['SYSTEM_SOUND',['../group__SpeakerInterface.html#gga8601f6be80368c9d1a7c7b346c99a698ac53b8b4384c6e37baa71628bafb5d4da',1,'NuguCapability']]]
 ];

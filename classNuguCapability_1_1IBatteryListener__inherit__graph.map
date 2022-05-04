@@ -1,0 +1,4 @@
+<map id="NuguCapability::IBatteryListener" name="NuguCapability::IBatteryListener">
+<area shape="rect" id="node1" title="battery listener interface" alt="" coords="10,95,191,136"/>
+<area shape="rect" id="node2" href="$classNuguClientKit_1_1ICapabilityListener.html" title="capability listener interface" alt="" coords="5,5,196,47"/>
+</map>

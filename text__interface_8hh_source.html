@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -125,7 +125,7 @@ $(document).ready(function(){initNavTree('text__interface_8hh_source.html',''); 
 <div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="structNuguCapability_1_1TextAttribute.html#ae72d79a9d75aade383869bbc3f0de2c6">   58</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structNuguCapability_1_1TextAttribute.html#ae72d79a9d75aade383869bbc3f0de2c6">response_timeout</a>; </div>
 <div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;} <a class="code" href="structNuguCapability_1_1TextAttribute.html">TextAttribute</a>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1ITextListener.html">   65</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1ITextListener.html">ITextListener</a> : <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> {</div>
+<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1ITextListener.html">   65</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1ITextListener.html">ITextListener</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> {</div>
 <div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1ITextListener.html">ITextListener</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
@@ -142,24 +142,24 @@ $(document).ready(function(){initNavTree('text__interface_8hh_source.html',''); 
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1ITextHandler.html">ITextHandler</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="classNuguCapability_1_1ITextHandler.html#a9a44a6380875dce7134179ff5f00c1f5">requestTextInput</a>(<span class="keyword">const</span> std::string&amp; text, <span class="keyword">const</span> std::string&amp; token = <span class="stringliteral">&quot;&quot;</span>, <span class="keywordtype">bool</span> include_dialog_attribute = <span class="keyword">true</span>) = 0;</div>
-<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1ITextHandler.html#aa0c88b42f05df6beb30891a4ccf406c6">setAttribute</a>(<a class="code" href="structNuguCapability_1_1TextAttribute.html">TextAttribute</a>&amp;&amp; attribute) = 0;</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;};</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;} <span class="comment">// NuguCapability</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_TEXT_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;    <span class="keyword">virtual</span> std::string <a class="code" href="classNuguCapability_1_1ITextHandler.html#ac996f5b2042cc1d6462cfa1c433b0832">requestTextInput</a>(<span class="keyword">const</span> std::string&amp; text, <span class="keyword">const</span> std::string&amp; token = <span class="stringliteral">&quot;&quot;</span>, <span class="keyword">const</span> std::string&amp; source = <span class="stringliteral">&quot;&quot;</span>, <span class="keywordtype">bool</span> include_dialog_attribute = <span class="keyword">true</span>) = 0;</div>
+<div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160; </div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1ITextHandler.html#aa0c88b42f05df6beb30891a4ccf406c6">setAttribute</a>(<a class="code" href="structNuguCapability_1_1TextAttribute.html">TextAttribute</a>&amp;&amp; attribute) = 0;</div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;};</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;} <span class="comment">// NuguCapability</span></div>
+<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160; </div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_TEXT_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassNuguCapability_1_1ITextListener_html_a3c9939d7e4f2a9c699b538eba5871c86"><div class="ttname"><a href="classNuguCapability_1_1ITextListener.html#a3c9939d7e4f2a9c699b538eba5871c86">NuguCapability::ITextListener::onState</a></div><div class="ttdeci">virtual void onState(TextState state, const std::string &amp;dialog_id)=0</div><div class="ttdoc">TextState changed.</div></div>
 <div class="ttc" id="agroup__TextInterface_html_ga69b7f95a5985645bb3a5d3be597ad35a"><div class="ttname"><a href="group__TextInterface.html#ga69b7f95a5985645bb3a5d3be597ad35a">NuguCapability::TextState</a></div><div class="ttdeci">TextState</div><div class="ttdoc">TextState.</div><div class="ttdef"><b>Definition:</b> text_interface.hh:42</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITextHandler_html_aa0c88b42f05df6beb30891a4ccf406c6"><div class="ttname"><a href="classNuguCapability_1_1ITextHandler.html#aa0c88b42f05df6beb30891a4ccf406c6">NuguCapability::ITextHandler::setAttribute</a></div><div class="ttdeci">virtual void setAttribute(TextAttribute &amp;&amp;attribute)=0</div><div class="ttdoc">Set attribute about response.</div></div>
-<div class="ttc" id="aclassNuguCapability_1_1ITextHandler_html_a9a44a6380875dce7134179ff5f00c1f5"><div class="ttname"><a href="classNuguCapability_1_1ITextHandler.html#a9a44a6380875dce7134179ff5f00c1f5">NuguCapability::ITextHandler::requestTextInput</a></div><div class="ttdeci">virtual std::string requestTextInput(const std::string &amp;text, const std::string &amp;token=&quot;&quot;, bool include_dialog_attribute=true)=0</div><div class="ttdoc">Request NUGU services based on text input.</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:64</div></div>
+<div class="ttc" id="aclassNuguCapability_1_1ITextHandler_html_ac996f5b2042cc1d6462cfa1c433b0832"><div class="ttname"><a href="classNuguCapability_1_1ITextHandler.html#ac996f5b2042cc1d6462cfa1c433b0832">NuguCapability::ITextHandler::requestTextInput</a></div><div class="ttdeci">virtual std::string requestTextInput(const std::string &amp;text, const std::string &amp;token=&quot;&quot;, const std::string &amp;source=&quot;&quot;, bool include_dialog_attribute=true)=0</div><div class="ttdoc">Request NUGU services based on text input.</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:81</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITextHandler_html"><div class="ttname"><a href="classNuguCapability_1_1ITextHandler.html">NuguCapability::ITextHandler</a></div><div class="ttdoc">text handler interface</div><div class="ttdef"><b>Definition:</b> text_interface.hh:104</div></div>
 <div class="ttc" id="agroup__TextInterface_html_gab868b04fc95d19706ef1896699930bac"><div class="ttname"><a href="group__TextInterface.html#gab868b04fc95d19706ef1896699930bac">NuguCapability::TextError</a></div><div class="ttdeci">TextError</div><div class="ttdoc">TextError.</div><div class="ttdef"><b>Definition:</b> text_interface.hh:50</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityListener_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></div><div class="ttdoc">capability listener interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:54</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityListener_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></div><div class="ttdoc">capability listener interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:59</div></div>
 <div class="ttc" id="astructNuguCapability_1_1TextAttribute_html"><div class="ttname"><a href="structNuguCapability_1_1TextAttribute.html">NuguCapability::TextAttribute</a></div><div class="ttdoc">Attributes for setting Text options.</div><div class="ttdef"><b>Definition:</b> text_interface.hh:57</div></div>
 <div class="ttc" id="agroup__ASRInterface_html_ggafe4f48f063bafec608e5060090a9543baa5daf7f2ebbba4975d61dab1c40188c7"><div class="ttname"><a href="group__ASRInterface.html#ggafe4f48f063bafec608e5060090a9543baa5daf7f2ebbba4975d61dab1c40188c7">NuguCapability::ASRState::IDLE</a></div><div class="ttdeci">@ IDLE</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1ITextListener_html"><div class="ttname"><a href="classNuguCapability_1_1ITextListener.html">NuguCapability::ITextListener</a></div><div class="ttdoc">text listener interface</div><div class="ttdef"><b>Definition:</b> text_interface.hh:65</div></div>
@@ -174,7 +174,7 @@ $(document).ready(function(){initNavTree('text__interface_8hh_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fe91053431442a18fd8b50c6b5c5d672.html">capability</a></li><li class="navelem"><a class="el" href="text__interface_8hh.html">text_interface.hh</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:47 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

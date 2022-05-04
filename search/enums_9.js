@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['repeattype_2027',['RepeatType',['../group__AudioPlayerInterface.html#ga0cb2048ef5fb507017eb53ee3e52716d',1,'NuguCapability']]],
-  ['revokereason_2028',['RevokeReason',['../group__SystemInterface.html#ga210ca95bced11e44b9558947bb31a2eb',1,'NuguCapability']]],
-  ['routineactivity_2029',['RoutineActivity',['../group__RoutineManagerInterface.html#ga85ba501685094b1c1d34f42229ed227b',1,'NuguClientKit']]]
+  ['mediaplayerevent_2311',['MediaPlayerEvent',['../group__MediaPlayerInterface.html#ga998b178629fb2f7d4eb807ece397c28c',1,'NuguClientKit']]],
+  ['mediaplayerstate_2312',['MediaPlayerState',['../group__MediaPlayerInterface.html#ga4394cbf300e5382612ec50d08e05317e',1,'NuguClientKit']]],
+  ['messagestate_2313',['MessageState',['../group__MessageInterface.html#gaf96a6b24718266cf4bd44237c02d0535',1,'NuguCapability']]],
+  ['micstatus_2314',['MicStatus',['../group__MicInterface.html#gaafad2a241855a2d3848567c69b00c076',1,'NuguCapability']]]
 ];

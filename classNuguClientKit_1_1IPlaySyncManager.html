@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.0</span>
+   &#160;<span id="projectnumber">1.7.1</span>
    </div>
   </td>
  </tr>
@@ -159,10 +159,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a6336bb1ba512b093727726a9bdfa34f6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a6336bb1ba512b093727726a9bdfa34f6">releaseSyncLater</a> (const std::string &amp;ps_id, const std::string &amp;requester)=0</td></tr>
 <tr class="memdesc:a6336bb1ba512b093727726a9bdfa34f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release sync all capability agents after long time elapsed.  <a href="classNuguClientKit_1_1IPlaySyncManager.html#a6336bb1ba512b093727726a9bdfa34f6">More...</a><br /></td></tr>
 <tr class="separator:a6336bb1ba512b093727726a9bdfa34f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa84aef7d6f395b3c340f96f5a733ee18"><td class="memItemLeft" align="right" valign="top"><a id="aa84aef7d6f395b3c340f96f5a733ee18"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#aa84aef7d6f395b3c340f96f5a733ee18">releaseSyncUnconditionally</a> ()=0</td></tr>
-<tr class="memdesc:aa84aef7d6f395b3c340f96f5a733ee18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release sync all capability agents unconditionally. <br /></td></tr>
-<tr class="separator:aa84aef7d6f395b3c340f96f5a733ee18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fc1db8fc8bc6e34d831878c1fa9a8bc"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a5fc1db8fc8bc6e34d831878c1fa9a8bc">releaseSyncUnconditionally</a> (const std::string &amp;ps_id=&quot;&quot;)=0</td></tr>
+<tr class="memdesc:a5fc1db8fc8bc6e34d831878c1fa9a8bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Release sync all capability agents unconditionally. If it's not specify the play service id, it would remove all playstacks.  <a href="classNuguClientKit_1_1IPlaySyncManager.html#a5fc1db8fc8bc6e34d831878c1fa9a8bc">More...</a><br /></td></tr>
+<tr class="separator:a5fc1db8fc8bc6e34d831878c1fa9a8bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a974da00d08b54dbf5b8a6a1d2029ed2c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html#a974da00d08b54dbf5b8a6a1d2029ed2c">removeListener</a> (const std::string &amp;requester)=0</td></tr>
 <tr class="memdesc:a974da00d08b54dbf5b8a6a1d2029ed2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove IPlayStackManagerListener.  <a href="classNuguClientKit_1_1IPlaySyncManager.html#a974da00d08b54dbf5b8a6a1d2029ed2c">More...</a><br /></td></tr>
 <tr class="separator:a974da00d08b54dbf5b8a6a1d2029ed2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -582,6 +581,40 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
+<a id="a5fc1db8fc8bc6e34d831878c1fa9a8bc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5fc1db8fc8bc6e34d831878c1fa9a8bc">&#9670;&nbsp;</a></span>releaseSyncUnconditionally()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void NuguClientKit::IPlaySyncManager::releaseSyncUnconditionally </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>ps_id</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Release sync all capability agents unconditionally. If it's not specify the play service id, it would remove all playstacks. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">ps_id</td><td>play service id </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a9b8b814ba34f90cb7a3c55b05abf8728"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9b8b814ba34f90cb7a3c55b05abf8728">&#9670;&nbsp;</a></span>isConditionToHandlePrevDialog()</h2>
 
@@ -859,7 +892,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1IPlaySyncManager.html">IPlaySyncManager</a></li>
-    <li class="footer">Generated on Thu Nov 4 2021 05:52:48 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed May 4 2022 02:21:27 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

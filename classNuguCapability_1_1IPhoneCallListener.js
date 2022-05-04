@@ -6,5 +6,6 @@ var classNuguCapability_1_1IPhoneCallListener =
     [ "processMakeCall", "classNuguCapability_1_1IPhoneCallListener.html#a0050bbe6106f2ee5e29e82a4911f6c4c", null ],
     [ "processEndCall", "classNuguCapability_1_1IPhoneCallListener.html#a0b98e8ff9c0f47efca61300b6a06520f", null ],
     [ "processAcceptCall", "classNuguCapability_1_1IPhoneCallListener.html#af2217e0decbad422cb58b0c10ba29be4", null ],
-    [ "processBlockIncomingCall", "classNuguCapability_1_1IPhoneCallListener.html#a8ea81f79e4356869ca74757a34d617e0", null ]
+    [ "processBlockIncomingCall", "classNuguCapability_1_1IPhoneCallListener.html#a8ea81f79e4356869ca74757a34d617e0", null ],
+    [ "processBlockNumber", "classNuguCapability_1_1IPhoneCallListener.html#abb9391f05784994a793f637bb5aca9b8", null ]
 ];
