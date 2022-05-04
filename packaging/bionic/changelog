@@ -1,3 +1,35 @@
+nugu (1.7.1ubuntu3~bionic) bionic; urgency=medium
+
+  * Fixed static analysis issues
+  * Fixed encoder module
+  * Added Bluetooth interface v1.1
+  * Added Location interface v1.0
+  * Added Battery interface v1.1
+  * Added speex plugin
+  * Added OPUS encoder plugin
+  * Added audio attribute
+  * Added HTTP request/rest/download API
+  * Added Authentication API
+  * Added NuguRunner
+  * Added DialogUXStateAggregator
+  * Applied Phonecall interface v1.3
+  * Applied Text interface v1.7
+  * Applied cppcheck tool in CI
+  * Updated AudioPlayerAgent
+  * Updated DisplayAgent
+  * Updated MessageAgent
+  * Updated SpeakerAgent
+  * Updated ASRAgent
+  * Updated TTSAgent
+  * Updated ChipsAgent
+  * Updated PlaySyncManager
+  * Updated gstreamer plugin
+  * Updated nugu_buffer
+  * Updated nugu_sample
+  * Optimized composing capability factory
+
+ -- nugulinux <nugulinux@gmail.com>  Wed, 4 May 2022 18:00:00 +0900
+
 nugu (1.7.0ubuntu1~bionic) bionic; urgency=medium
 
   * Added TTS interface getPlayServiceId API
