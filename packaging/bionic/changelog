@@ -1,3 +1,35 @@
+nugu (1.7.1ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed static analysis issues
+  * Fixed encoder module
+  * Added Bluetooth interface v1.1
+  * Added Location interface v1.0
+  * Added Battery interface v1.1
+  * Added speex plugin
+  * Added OPUS encoder plugin
+  * Added audio attribute
+  * Added HTTP request/rest/download API
+  * Added Authentication API
+  * Added NuguRunner
+  * Added DialogUXStateAggregator
+  * Applied Phonecall interface v1.3
+  * Applied Text interface v1.7
+  * Applied cppcheck tool in CI
+  * Updated AudioPlayerAgent
+  * Updated DisplayAgent
+  * Updated MessageAgent
+  * Updated SpeakerAgent
+  * Updated ASRAgent
+  * Updated TTSAgent
+  * Updated ChipsAgent
+  * Updated PlaySyncManager
+  * Updated gstreamer plugin
+  * Updated nugu_buffer
+  * Updated nugu_sample
+  * Optimized composing capability factory
+
+ -- nugulinux <nugulinux@gmail.com>  Wed, 4 May 2022 14:00:00 +0900
+
 nugu (1.7.0ubuntu1~bionic) bionic; urgency=medium
 
   * Added TTS interface getPlayServiceId API
@@ -118,7 +150,7 @@ nugu (1.0.0ubuntu1~bionic) bionic; urgency=medium
 
 nugu (0.24.0ubuntu1~bionic) bionic; urgency=medium
 
-  * Fixed PlaySyncManager clearance  
+  * Fixed PlaySyncManager clearance
   * Fixed TTSAgent
   * Added Extension interface v1.1
   * Added Chips interface v1.1
@@ -126,12 +158,12 @@ nugu (0.24.0ubuntu1~bionic) bionic; urgency=medium
   * Applied directive blocking policy
   * Applied activity and playstack policy
   * Updated TextAgent
-  * Updated context scope of some events 
+  * Updated context scope of some events
   * Updated network multipart rule
   * Updated session management flow
-  * Updated nugu log readability  
+  * Updated nugu log readability
   * Updated nugu_sample UI
-  
+
  -- nugulinux <nugulinux@gmail.com>  Wed, 3 Feb 2020 10:30:00 +0900
 
 nugu (0.23.0ubuntu1~bionic) bionic; urgency=medium
