@@ -20,6 +20,10 @@
 
 namespace NuguClientKit {
 
+/*******************************************************************************
+ * define CapabilityBuilder
+ ******************************************************************************/
+
 NuguClient::CapabilityBuilder::CapabilityBuilder(NuguClientImpl* client_impl)
 {
     this->client_impl = client_impl;
@@ -32,10 +36,21 @@ NuguClient::CapabilityBuilder* NuguClient::CapabilityBuilder::add(ICapabilityInt
     return this;
 }
 
+NuguClient::CapabilityBuilder* NuguClient::CapabilityBuilder::setWakeupModel(const WakeupModelFile& model_file)
+{
+    client_impl->setWakeupModel(model_file);
+
+    return this;
+}
+
 bool NuguClient::CapabilityBuilder::construct()
 {
     return (client_impl->create() == 0);
 }
+
+/*******************************************************************************
+ * define NuguClient
+ ******************************************************************************/
 
 NuguClient::NuguClient()
     : impl(std::unique_ptr<NuguClientImpl>(new NuguClientImpl()))
@@ -99,6 +114,11 @@ ICapabilityInterface* NuguClient::getCapabilityHandler(const std::string& cname)
 IFocusManager* NuguClient::getFocusManager()
 {
     return impl->getFocusManager();
+}
+
+ISpeechRecognizerAggregator* NuguClient::getSpeechRecognizerAggregator()
+{
+    return impl->getSpeechRecognizerAggregator();
 }
 
 void NuguClient::addDialogUXStateListener(IDialogUXStateAggregatorListener* listener)

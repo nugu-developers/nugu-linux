@@ -31,6 +31,7 @@ using namespace NuguCore;
 
 NuguClientImpl::NuguClientImpl()
     : nugu_core_container(std::unique_ptr<NuguCoreContainer>(new NuguCoreContainer()))
+    , speech_recognizer_aggregator(std::unique_ptr<SpeechRecognizerAggregator>(new SpeechRecognizerAggregator()))
 {
     nugu_info("NUGU SDK v%s", NUGU_VERSION);
 
@@ -63,6 +64,11 @@ void NuguClientImpl::setWakeupWord(const std::string& wakeup_word)
 {
     if (!wakeup_word.empty())
         nugu_core_container->setWakeupWord(wakeup_word);
+}
+
+void NuguClientImpl::setWakeupModel(const WakeupModelFile& model_file)
+{
+    wakeup_model_file = model_file;
 }
 
 void NuguClientImpl::registerCapability(ICapabilityInterface* capability)
@@ -120,6 +126,11 @@ INetworkManager* NuguClientImpl::getNetworkManager()
 IFocusManager* NuguClientImpl::getFocusManager()
 {
     return capa_helper->getFocusManager();
+}
+
+ISpeechRecognizerAggregator* NuguClientImpl::getSpeechRecognizerAggregator()
+{
+    return speech_recognizer_aggregator.get();
 }
 
 int NuguClientImpl::create(void)
@@ -224,6 +235,7 @@ bool NuguClientImpl::initialize(void)
     }
 
     registerDialogUXStateAggregator();
+    setupSpeechRecognizerAggregator();
 
     nugu_info("initialized %d capabilities", icapability_map.size());
 
@@ -252,6 +264,7 @@ void NuguClientImpl::deInitialize(void)
     }
 
     unregisterDialogUXStateAggregator();
+    speech_recognizer_aggregator->reset();
     nugu_core_container->resetInstance();
 
     nugu_dbg("NuguClientImpl deInitialize success.");
@@ -275,6 +288,14 @@ void NuguClientImpl::unregisterDialogUXStateAggregator()
     removeDialogUXStateAggregator<IChipsHandler*>("Chips");
 
     capa_helper->getInteractionControlManager()->removeListener(dialog_ux_state_aggregator.get());
+}
+
+void NuguClientImpl::setupSpeechRecognizerAggregator()
+{
+    if (!wakeup_model_file.net.empty() && !wakeup_model_file.search.empty())
+        speech_recognizer_aggregator->setWakeupHandler(std::shared_ptr<IWakeupHandler>(nugu_core_container->createWakeupHandler(wakeup_model_file)));
+
+    speech_recognizer_aggregator->setASRHandler(dynamic_cast<IASRHandler*>(icapability_map.at("ASR")));
 }
 
 template <typename H>
