@@ -3,12 +3,14 @@ SET(UNIT_TESTS
 	test_clientkit_http_rest
 	test_clientkit_auth
 	test_clientkit_capability
-	test_clientkit_dialog_ux_state_aggregator)
+	test_clientkit_dialog_ux_state_aggregator
+	test_clientkit_speech_recognizer_aggregator)
 
 # Add Compile Sources with Mock for test
 SET(test_clientkit_nugu_runner_srcs ../../src/clientkit/nugu_runner.cc)
 SET(test_clientkit_capability_srcs ../../src/clientkit/capability.cc)
 SET(test_clientkit_dialog_ux_state_aggregator_srcs ../../src/clientkit/dialog_ux_state_aggregator.cc)
+SET(test_clientkit_speech_recognizer_aggregator_srcs ../../src/clientkit/speech_recognizer_aggregator.cc)
 
 FOREACH(test ${UNIT_TESTS})
 	SET(SRC ${test}.cc)
