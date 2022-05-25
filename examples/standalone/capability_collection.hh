@@ -21,6 +21,7 @@
 #include <map>
 #include <memory>
 
+#include <capability/asr_interface.hh>
 #include <capability/nudge_interface.hh>
 #include <capability/routine_interface.hh>
 #include <capability/utility_interface.hh>
@@ -36,7 +37,6 @@
 #include "session_listener.hh"
 #include "sound_listener.hh"
 #include "speaker_listener.hh"
-#include "speech_operator.hh"
 #include "system_listener.hh"
 #include "text_listener.hh"
 #include "tts_listener.hh"
@@ -67,8 +67,6 @@ public:
             return nullptr;
         }
     }
-
-    SpeechOperator* getSpeechOperator();
 
 private:
     void composeCapabilityFactory();
@@ -102,7 +100,6 @@ private:
     std::unique_ptr<IBatteryHandler> battery_handler = nullptr;
 
     // Capability listener
-    std::unique_ptr<SpeechOperator> speech_operator = nullptr;
     std::unique_ptr<TTSListener> tts_listener = nullptr;
     std::unique_ptr<AudioPlayerListener> aplayer_listener = nullptr;
     std::unique_ptr<SystemListener> system_listener = nullptr;
