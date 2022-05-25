@@ -104,6 +104,7 @@ void SpeakerController::toggleMute()
 
 NuguSDKManager::NuguSDKManager(NuguSampleManager* manager)
     : speaker_controller(make_unique<SpeakerController>())
+    , speech_recognizer_aggregator_listener(make_unique<SpeechRecognizerAggregatorListener>(DEFAULT_WAKEUP_WORD))
     , nugu_sample_manager(manager)
     , bluetooth_status(BluetoothStatus::getInstance())
     , speaker_status(SpeakerStatus::getInstance())
@@ -159,16 +160,16 @@ void NuguSDKManager::composeSDKCommands()
                          changeWakeupWord();
                      } })
         ->add("w", { "start listening with wakeup", [&](int& flag) {
-                        speech_operator->startListeningWithWakeup();
+                        speech_recognizer_aggregator->startListeningWithTrigger();
                     } })
         ->add("l", { "start listening", [&](int& flag) {
-                        speech_operator->startListening();
+                        speech_recognizer_aggregator->startListening();
                     } })
         ->add("s", { "stop listening/wakeup", [&](int& flag) {
-                        speech_operator->stopListeningAndWakeup();
+                        speech_recognizer_aggregator->stopListening();
                     } })
         ->add("c", { "cancel listening", [&](int& flag) {
-                        speech_operator->cancelListening();
+                        speech_recognizer_aggregator->stopListening(true);
                     } })
         ->add("t", { "text input", [&](int& flag) {
                         flag = TEXT_INPUT_TYPE_1;
@@ -214,8 +215,9 @@ void NuguSDKManager::createInstance()
     nugu_client = make_unique<NuguClient>();
     capa_collection = make_unique<CapabilityCollection>();
     nugu_core_container = nugu_client->getNuguCoreContainer();
-    speech_operator = capa_collection->getSpeechOperator();
     network_manager = nugu_client->getNetworkManager();
+    speech_recognizer_aggregator = nugu_client->getSpeechRecognizerAggregator();
+    speech_recognizer_aggregator->addListener(speech_recognizer_aggregator_listener.get());
 
     registerCapabilities();
 
@@ -229,11 +231,6 @@ void NuguSDKManager::createInstance()
     network_manager->addListener(this);
     network_manager->setToken(getenv("NUGU_TOKEN"));
     network_manager->setUserAgent("0.2.0");
-
-    on_init_func = [&]() {
-        wakeup_handler = std::unique_ptr<IWakeupHandler>(nugu_core_container->createWakeupHandler(wakeup_model_files[wakeup_word]));
-        speech_operator->setWakeupHandler(wakeup_handler.get(), wakeup_word);
-    };
 }
 
 void NuguSDKManager::registerCapabilities()
@@ -276,6 +273,7 @@ void NuguSDKManager::registerCapabilities()
         ->add(text_handler)
         ->add(mic_handler)
         ->add(bluetooth_handler)
+        ->setWakeupModel(wakeup_model_files[wakeup_word])
         ->construct();
 }
 
@@ -350,10 +348,8 @@ void NuguSDKManager::setAdditionalExecutor()
 
 void NuguSDKManager::deleteInstance()
 {
-    wakeup_handler.reset();
     nugu_client.reset();
     capa_collection.reset();
-    on_init_func = nullptr;
 
     speaker_status->destroyInstance();
     bluetooth_status->destroyInstance();
@@ -423,8 +419,9 @@ void NuguSDKManager::changeWakeupWord()
 {
     wakeup_word = (wakeup_word == WAKEUP_WORD_ARIA) ? WAKEUP_WORD_TINKERBELL : WAKEUP_WORD_ARIA;
 
-    if (speech_operator->changeWakeupWord(wakeup_model_files[wakeup_word], wakeup_word))
-        nugu_client->setWakeupWord(wakeup_word);
+    speech_recognizer_aggregator->setWakeupModel(wakeup_model_files[wakeup_word]);
+    speech_recognizer_aggregator_listener->setWakeupWord(wakeup_word);
+    nugu_client->setWakeupWord(wakeup_word);
 }
 
 /*******************************************************************************
@@ -464,19 +461,11 @@ void NuguSDKManager::onStatusChanged(NetworkStatus status)
         msg_info("Network ready.");
         is_network_error = false;
         nugu_sample_manager->handleNetworkResult(true);
-
-        if (on_init_func)
-            on_init_func();
-
         break;
     case NetworkStatus::CONNECTED:
         msg_info("Network connected.");
         is_network_error = false;
         nugu_sample_manager->handleNetworkResult(true);
-
-        if (on_init_func)
-            on_init_func();
-
         break;
     case NetworkStatus::CONNECTING:
         msg_info("Network connection in progress.");

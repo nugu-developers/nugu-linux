@@ -33,14 +33,8 @@ std::unique_ptr<T> make_unique(Ts&&... params)
 }
 
 CapabilityCollection::CapabilityCollection()
-    : speech_operator(make_unique<SpeechOperator>())
 {
     composeCapabilityFactory();
-}
-
-SpeechOperator* CapabilityCollection::getSpeechOperator()
-{
-    return speech_operator.get();
 }
 
 void CapabilityCollection::composeCapabilityFactory()
@@ -50,7 +44,7 @@ void CapabilityCollection::composeCapabilityFactory()
              return setupCapabilityInstance<SystemAgent>("System", system_listener, system_handler);
          } },
         { "ASR", [&] {
-             return setupCapabilityInstance<ASRAgent>("ASR", speech_operator, asr_handler);
+             return setupCapabilityInstance<ASRAgent>("ASR", asr_handler);
          } },
         { "TTS", [&] {
              return setupCapabilityInstance<TTSAgent>("TTS", tts_listener, tts_handler);

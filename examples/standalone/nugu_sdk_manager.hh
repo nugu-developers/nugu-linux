@@ -27,6 +27,7 @@
 #include "capability_collection.hh"
 #include "nugu_sample_manager.hh"
 #include "speaker_status.hh"
+#include "speech_recognizer_aggregator_listener.hh"
 
 class SpeakerController {
 public:
@@ -98,19 +99,18 @@ private:
     std::unique_ptr<SpeakerController> speaker_controller = nullptr;
     std::unique_ptr<NuguClient> nugu_client = nullptr;
     std::unique_ptr<CapabilityCollection> capa_collection = nullptr;
-    std::unique_ptr<IWakeupHandler> wakeup_handler = nullptr;
+    std::unique_ptr<SpeechRecognizerAggregatorListener> speech_recognizer_aggregator_listener = nullptr;
+    ISpeechRecognizerAggregator* speech_recognizer_aggregator = nullptr;
     NuguSampleManager* nugu_sample_manager = nullptr;
     INuguCoreContainer* nugu_core_container = nullptr;
     IPlaySyncManager* playsync_manager = nullptr;
     INetworkManager* network_manager = nullptr;
-    SpeechOperator* speech_operator = nullptr;
     ITextHandler* text_handler = nullptr;
     IMicHandler* mic_handler = nullptr;
     IBluetoothHandler* bluetooth_handler = nullptr;
     BluetoothStatus* bluetooth_status = nullptr;
     SpeakerStatus* speaker_status = nullptr;
 
-    std::function<void()> on_init_func = nullptr;
     std::function<void()> on_fail_func = nullptr;
 
     bool sdk_initialized = false;
