@@ -23,6 +23,7 @@
 #include <clientkit/capability_interface.hh>
 #include <clientkit/dialog_ux_state_aggregator_interface.hh>
 #include <clientkit/nugu_core_container_interface.hh>
+#include <clientkit/speech_recognizer_aggregator_interface.hh>
 
 namespace NuguClientKit {
 
@@ -57,6 +58,13 @@ public:
          * @return CapabilityBuilder object
          */
         CapabilityBuilder* add(ICapabilityInterface* cap_instance);
+
+        /**
+         * @brief Set wakeup model file for composing SpeechRecognizerAggregator
+         * @param[in] model_file wakeup model file
+         * @return CapabilityBuilder object
+         */
+        CapabilityBuilder* setWakeupModel(const WakeupModelFile& model_file);
 
         /**
          * @brief Construct with capabilities added to CapabilityBuilder.
@@ -133,6 +141,12 @@ public:
      * @return IFocusManager abstraction object of FocusManager
      */
     IFocusManager* getFocusManager();
+
+    /**
+     * @brief Get instance of SpeechRecognizerAggregator
+     * @return ISpeechRecognizerAggregator abstraction object of SpeechRecognizerAggregator
+     */
+    ISpeechRecognizerAggregator* getSpeechRecognizerAggregator();
 
     /**
      * @brief Add DialogUXStateAggregatorListener
