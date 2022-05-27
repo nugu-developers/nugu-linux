@@ -113,8 +113,9 @@ public:
     /**
      * @brief Set wakeup model file.
      * @param[in] model_file wakeup model file
+     * @return true if set success, otherwise false
      */
-    virtual void setWakeupModel(const WakeupModelFile& model_file) = 0;
+    virtual bool setWakeupModel(const WakeupModelFile& model_file) = 0;
 
     /**
      * @brief Start detecting wakeup and progress recognizing speech after wakeup detected.

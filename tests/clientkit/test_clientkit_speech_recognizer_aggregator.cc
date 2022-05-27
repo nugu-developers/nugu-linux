@@ -383,16 +383,16 @@ static void test_speech_recognizer_aggregator_set_wakeup_model(TestFixture* fixt
     };
 
     test_model_file = { ARIA_NET, ARIA_SEARCH };
-    fixture->speech_recognizer_aggregator->setWakeupModel(test_model_file);
+    g_assert(fixture->speech_recognizer_aggregator->setWakeupModel(test_model_file));
     checkWakeupInfo();
 
     // validation check (maintain previous value)
-    fixture->speech_recognizer_aggregator->setWakeupModel({});
+    g_assert(!fixture->speech_recognizer_aggregator->setWakeupModel({}));
     checkWakeupInfo();
 
     // change model
     test_model_file = { TINKERBELL_NET, TINKERBELL_SEARCH };
-    fixture->speech_recognizer_aggregator->setWakeupModel(test_model_file);
+    g_assert(fixture->speech_recognizer_aggregator->setWakeupModel(test_model_file));
     checkWakeupInfo();
 }
 

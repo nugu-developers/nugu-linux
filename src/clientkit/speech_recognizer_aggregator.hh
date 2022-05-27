@@ -37,7 +37,7 @@ public:
     // implements ISpeechRecognizerAggregator
     void addListener(ISpeechRecognizerAggregatorListener* listener) override;
     void removeListener(ISpeechRecognizerAggregatorListener* listener) override;
-    void setWakeupModel(const WakeupModelFile& model_file) override;
+    bool setWakeupModel(const WakeupModelFile& model_file) override;
     void startListeningWithTrigger() override;
     void startListening(float power_noise = 0, float power_speech = 0, ASRInitiator initiator = ASRInitiator::TAP) override;
     void stopListening(bool cancel = false) override;
