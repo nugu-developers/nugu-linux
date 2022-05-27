@@ -77,15 +77,17 @@ void SpeechRecognizerAggregator::removeListener(ISpeechRecognizerAggregatorListe
     pimpl->listeners.erase(listener);
 }
 
-void SpeechRecognizerAggregator::setWakeupModel(const WakeupModelFile& model_file)
+bool SpeechRecognizerAggregator::setWakeupModel(const WakeupModelFile& model_file)
 {
     if (model_file.net.empty() || model_file.search.empty() || pimpl->isInvalid()) {
         nugu_error("It's failed to change wakeup model.");
-        return;
+        return false;
     }
 
     pimpl->asr_handler->stopRecognition();
     pimpl->wakeup_handler->changeModel(model_file);
+
+    return true;
 }
 
 void SpeechRecognizerAggregator::startListeningWithTrigger()
