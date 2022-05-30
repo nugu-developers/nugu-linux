@@ -50,24 +50,22 @@ public:
     void remove_method(const std::string& tag);
 
 public:
-    static std::map<NuguRunner*, NuguRunnerPrivate*> private_map;
     std::vector<std::string> tag_vector;
     std::map<std::string, ExecuteType> type_map;
     std::map<std::string, NuguRunner::request_method> method_map;
     std::mutex m;
     std::condition_variable cv;
-    static int unique;
     int done;
     guint src_id;
 };
 
-int NuguRunnerPrivate::unique = 0;
-std::map<NuguRunner*, NuguRunnerPrivate*> NuguRunnerPrivate::private_map;
+static int unique = 0;
+static std::map<NuguRunner*, NuguRunnerPrivate*> private_map;
 
 gboolean NuguRunnerPrivate::method_dispatch_cb(void* userdata)
 {
     NuguRunner* runner = static_cast<NuguRunner*>(userdata);
-    NuguRunnerPrivate* d = NuguRunnerPrivate::private_map[runner];
+    NuguRunnerPrivate* d = private_map[runner];
 
     if (!d) {
         nugu_error("Nugu Runner is something wrong");
@@ -128,14 +126,14 @@ void NuguRunnerPrivate::remove_method(const std::string& tag)
 NuguRunner::NuguRunner()
     : d(new NuguRunnerPrivate())
 {
-    d->private_map[this] = d;
+    private_map[this] = d;
 }
 
 NuguRunner::~NuguRunner()
 {
-    auto private_iter = d->private_map.find(this);
-    if (private_iter != d->private_map.end())
-        d->private_map.erase(private_iter);
+    auto private_iter = private_map.find(this);
+    if (private_iter != private_map.end())
+        private_map.erase(private_iter);
 
     if (d->src_id > 0)
         g_source_remove(d->src_id);
@@ -154,7 +152,7 @@ bool NuguRunner::invokeMethod(const std::string& tag, request_method method, Exe
         }
     }
 
-    std::string unique_tag = tag + std::to_string(d->unique++);
+    std::string unique_tag = tag + std::to_string(unique++);
     addMethod2Dispatcher(unique_tag, std::move(method), type);
 
     if (type == ExecuteType::Blocking) {
