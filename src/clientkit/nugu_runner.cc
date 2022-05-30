@@ -162,7 +162,8 @@ bool NuguRunner::invokeMethod(const std::string& tag, request_method method, Exe
         std::unique_lock<std::mutex> lk(mtx);
 
         if (timeout <= 0) {
-            d->cv.wait(lk);
+            if (d->done == 0)
+                d->cv.wait(lk);
             return true;
         }
 
