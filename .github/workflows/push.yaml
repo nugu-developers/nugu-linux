@@ -23,6 +23,9 @@ jobs:
             focal_x64,
             focal_arm64,
             focal_armhf,
+            jammy_x64,
+            jammy_arm64,
+            jammy_armhf,
           ]
     steps:
       - name: Info
