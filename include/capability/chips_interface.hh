@@ -56,7 +56,7 @@ enum class ChipsType {
  * @brief Model for holding chips Info.
  * @see IChipsListener::onReceiveRender
  */
-typedef struct {
+typedef struct _ChipsInfo {
     struct Content {
         ChipsType type; /**< chips type */
         std::string text; /**< text for voice command guide */
