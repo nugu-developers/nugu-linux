@@ -1,0 +1,79 @@
+Source: nugu
+Section: libs
+Priority: optional
+Maintainer: Inho Oh <inho.oh@sk.com>
+Build-Depends: debhelper (>=10),
+	cmake,
+	pkg-config,
+	git-core,
+	libnugu-kwd-dev,
+	libnugu-epd-dev,
+	libglib2.0-dev,
+	libcurl4-openssl-dev,
+	libopus-dev,
+	portaudio19-dev,
+	libssl-dev,
+	libasound2-dev,
+	libgstreamer-plugins-base1.0-dev,
+	libgstreamer1.0-dev,
+	ca-certificates,
+	libasan6
+Standards-Version: 4.1.4
+
+Package: libnugu
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Recommends: libnugu-plugins-default
+Description: NUGU is an AI service platform
+ NUGU OpenSDK
+ .
+ NUGU is an AI platform that supports ASR and TTS.
+ .
+ The libnugu package provide shared libraries.
+
+Package: libnugu-dev
+Architecture: any
+Section: libdevel
+Depends: libnugu, ${misc:Depends}
+Description: NUGU is an AI service platform (development files)
+ NUGU OpenSDK
+ .
+ NUGU is an AI platform that supports ASR and TTS.
+ .
+ The libnugu-dev package provide development files.
+
+Package: libnugu-dbg
+Section: debug
+Priority: optional
+Architecture: any
+Depends: libnugu (= ${binary:Version}), ${shlibs:Depends}, ${misc:Depends}
+Description: NUGU is an AI service platform (debugging symbols)
+ NUGU OpenSDK
+ .
+ NUGU is an AI platform that supports ASR and TTS.
+ .
+ The libnugu-dbg package provide debugging symbols.
+
+Package: libnugu-plugins-default
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends},
+	gstreamer1.0-plugins-base,
+	gstreamer1.0-plugins-good,
+	gstreamer1.0-plugins-bad,
+	gstreamer1.0-plugins-ugly
+Description: NUGU is an AI service platform (plugins)
+ NUGU OpenSDK
+ .
+ NUGU is an AI platform that supports ASR and TTS.
+ .
+ The libnugu-plugins-default package provide default plugins.
+
+Package: libnugu-examples
+Architecture: any
+Depends: libnugu, ${shlibs:Depends}, ${misc:Depends}, python, python-flask-restful, python-requests-oauthlib, curl, jq
+Description: NUGU is an AI service platform (examples)
+ NUGU OpenSDK
+ .
+ NUGU is an AI platform that supports ASR and TTS.
+ .
+ The libnugu-examples package provide examples.
