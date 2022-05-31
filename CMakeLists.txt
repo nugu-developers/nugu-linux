@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.9)
 PROJECT(nugu)
 
 INCLUDE(GNUInstallDirs)
@@ -57,6 +57,7 @@ ENDIF()
 
 # Set default build options
 DEFINE_FEATURE(LOG_ANSICOLOR ON "ANSI Color to log message")
+DEFINE_FEATURE(LTO ON "Link Time Optimization")
 DEFINE_FEATURE(ASAN ${ASAN_DEFAULT} "Address Sanitizer")
 DEFINE_FEATURE(VENDOR_LIBRARY ON "vendor specific library(nugu_wwd, nugu_epd)")
 DEFINE_FEATURE(OPUS_LIBRARY OFF "compile built-in OPUS library")
@@ -179,6 +180,15 @@ ADD_COMPILE_OPTIONS(
 	# Not warnings
 	-Wno-missing-field-initializers
 	-Wno-unused-parameter)
+
+IF (ENABLE_LTO)
+	INCLUDE(CheckIPOSupported)
+	check_ipo_supported(RESULT IPO_SUPPORTED)
+	IF(IPO_SUPPORTED)
+		SET(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+		MESSAGE("LTO supported and enabled")
+	ENDIF()
+ENDIF()
 
 IF(ENABLE_ASAN)
 	# Apply AddressSanitizer
