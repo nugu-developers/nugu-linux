@@ -25,7 +25,6 @@ struct SpeechRecognizerAggregator::Impl {
     IASRHandler* asr_handler = nullptr;
     std::set<ISpeechRecognizerAggregatorListener*> listeners;
 
-    bool isInvalid();
     void notifyResult(const RecognitionResult& result, const std::string& dialog_id);
     void notifyWakeupState(WakeupDetectState state, float power_noise, float power_speech);
     void notifyASRState(ASRState state, const std::string& dialog_id, ASRInitiator initiator);
@@ -62,7 +61,7 @@ void SpeechRecognizerAggregator::setASRHandler(IASRHandler* asr_handler)
 
 void SpeechRecognizerAggregator::reset()
 {
-    if (!pimpl->isInvalid())
+    if (pimpl->wakeup_handler)
         pimpl->wakeup_handler->stopWakeup();
 }
 
@@ -79,7 +78,7 @@ void SpeechRecognizerAggregator::removeListener(ISpeechRecognizerAggregatorListe
 
 bool SpeechRecognizerAggregator::setWakeupModel(const WakeupModelFile& model_file)
 {
-    if (model_file.net.empty() || model_file.search.empty() || pimpl->isInvalid()) {
+    if (model_file.net.empty() || model_file.search.empty() || !pimpl->wakeup_handler || !pimpl->asr_handler) {
         nugu_error("It's failed to change wakeup model.");
         return false;
     }
@@ -92,8 +91,8 @@ bool SpeechRecognizerAggregator::setWakeupModel(const WakeupModelFile& model_fil
 
 void SpeechRecognizerAggregator::startListeningWithTrigger()
 {
-    if (pimpl->isInvalid()) {
-        nugu_error("The wakeup/asr handlers are not prepared.");
+    if (!pimpl->wakeup_handler || !pimpl->asr_handler) {
+        nugu_error("The wakeup or asr handler is not prepared.");
         return;
     }
 
@@ -103,8 +102,8 @@ void SpeechRecognizerAggregator::startListeningWithTrigger()
 
 void SpeechRecognizerAggregator::startListening(float power_noise, float power_speech, ASRInitiator initiator)
 {
-    if (pimpl->isInvalid()) {
-        nugu_error("The wakeup/asr handlers are not prepared.");
+    if (!pimpl->asr_handler) {
+        nugu_error("The asr handler is not prepared.");
         return;
     }
 
@@ -118,13 +117,15 @@ void SpeechRecognizerAggregator::startListening(float power_noise, float power_s
 
 void SpeechRecognizerAggregator::stopListening(bool cancel)
 {
-    if (pimpl->isInvalid()) {
-        nugu_error("The wakeup/asr handlers are not prepared.");
+    if (!pimpl->asr_handler) {
+        nugu_error("The asr handler is not prepared.");
         return;
     }
 
     pimpl->asr_handler->stopRecognition(cancel);
-    pimpl->wakeup_handler->stopWakeup();
+
+    if (pimpl->wakeup_handler)
+        pimpl->wakeup_handler->stopWakeup();
 }
 
 void SpeechRecognizerAggregator::onWakeupState(WakeupDetectState state, float power_noise, float power_speech)
@@ -178,11 +179,6 @@ void SpeechRecognizerAggregator::onCancel(const std::string& dialog_id)
 /*******************************************************************************
  * define Impl
  ******************************************************************************/
-
-bool SpeechRecognizerAggregator::Impl::isInvalid()
-{
-    return !wakeup_handler || !asr_handler;
-}
 
 void SpeechRecognizerAggregator::Impl::notifyResult(const RecognitionResult& result, const std::string& dialog_id)
 {
