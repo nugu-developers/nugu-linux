@@ -570,6 +570,31 @@ static void test_speech_recognizer_aggregator_stop_before_change_wakeup(TestFixt
     g_assert(state.asr == ASRState::IDLE);
 }
 
+static void test_speech_recognizer_aggregator_no_wakeup_handler(TestFixture* fixture, gconstpointer ignored)
+{
+    auto speech_recognizer_aggregator = std::make_shared<SpeechRecognizerAggregator>();
+    speech_recognizer_aggregator->addListener(fixture->listener.get());
+    speech_recognizer_aggregator->setASRHandler(fixture->asr_handler.get());
+
+    const auto& state = fixture->listener->getState();
+
+    g_assert(state.wakeup != WakeupDetectState::WAKEUP_DETECTING);
+    g_assert(state.asr == ASRState::IDLE);
+
+    speech_recognizer_aggregator->startListening();
+    g_assert(state.asr == ASRState::LISTENING);
+
+    speech_recognizer_aggregator->stopListening();
+    g_assert(state.asr == ASRState::IDLE);
+
+    // only activate when both wakeup/asr handler set
+    speech_recognizer_aggregator->startListeningWithTrigger();
+    g_assert(state.wakeup != WakeupDetectState::WAKEUP_DETECTING);
+    g_assert(state.asr == ASRState::IDLE);
+
+    g_assert(!speech_recognizer_aggregator->setWakeupModel({ ARIA_NET, ARIA_SEARCH }));
+}
+
 static void test_speech_recognizer_aggregator_notify_result(TestFixture* fixture, gconstpointer ignored)
 {
     const auto& state = fixture->listener->getState();
@@ -640,6 +665,7 @@ int main(int argc, char* argv[])
     G_TEST_ADD_FUNC("/clientkit/SpeechRecognizerAggregator/consecutiveStartListening", test_speech_recognizer_aggregator_consecutive_start_listening);
     G_TEST_ADD_FUNC("/clientkit/SpeechRecognizerAggregator/handleSeparateWakeup", test_speech_recognizer_aggregator_handle_separate_wakeup);
     G_TEST_ADD_FUNC("/clientkit/SpeechRecognizerAggregator/stopBeforeChangeWakeup", test_speech_recognizer_aggregator_stop_before_change_wakeup);
+    G_TEST_ADD_FUNC("/clientkit/SpeechRecognizerAggregator/noWakeupHandler", test_speech_recognizer_aggregator_no_wakeup_handler);
     G_TEST_ADD_FUNC("/clientkit/SpeechRecognizerAggregator/notifyResult", test_speech_recognizer_aggregator_notify_result);
     G_TEST_ADD_FUNC("/clientkit/SpeechRecognizerAggregator/reset", test_speech_recognizer_aggregator_reset);
 
