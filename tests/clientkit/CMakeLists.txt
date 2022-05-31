@@ -6,18 +6,8 @@ SET(UNIT_TESTS
 	test_clientkit_dialog_ux_state_aggregator
 	test_clientkit_speech_recognizer_aggregator)
 
-# Add Compile Sources with Mock for test
-SET(test_clientkit_nugu_runner_srcs ../../src/clientkit/nugu_runner.cc)
-SET(test_clientkit_capability_srcs ../../src/clientkit/capability.cc)
-SET(test_clientkit_dialog_ux_state_aggregator_srcs ../../src/clientkit/dialog_ux_state_aggregator.cc)
-SET(test_clientkit_speech_recognizer_aggregator_srcs ../../src/clientkit/speech_recognizer_aggregator.cc)
-
 FOREACH(test ${UNIT_TESTS})
-	SET(SRC ${test}.cc)
-	IF (${test}_srcs)
-		LIST(APPEND SRC ${${test}_srcs})
-	ENDIF ()
-	ADD_EXECUTABLE(${test} ${SRC})
+	ADD_EXECUTABLE(${test} ${test}.cc)
 	TARGET_COMPILE_DEFINITIONS(${test} PRIVATE
 		-DRUNPATH="${CMAKE_CURRENT_BINARY_DIR}")
 	TARGET_INCLUDE_DIRECTORIES(${test} PRIVATE
