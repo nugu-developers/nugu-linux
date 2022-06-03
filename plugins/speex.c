@@ -204,6 +204,7 @@ int _encoder_destroy(NuguEncoderDriver *driver, NuguEncoder *enc)
 			ed->dump_fd = -1;
 		}
 #endif
+		free(ed);
 	}
 
 	nugu_encoder_set_driver_data(enc, NULL);
