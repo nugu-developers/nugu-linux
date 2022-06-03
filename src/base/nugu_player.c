@@ -461,13 +461,22 @@ EXPORT_API void nugu_player_set_event_callback(NuguPlayer *player,
 EXPORT_API void nugu_player_emit_event(NuguPlayer *player,
 				       enum nugu_media_event event)
 {
+	gboolean emit_status_callback = FALSE;
+
 	g_return_if_fail(player != NULL);
 
-	if (event == NUGU_MEDIA_EVENT_END_OF_STREAM)
-		player->status = NUGU_MEDIA_STATUS_STOPPED;
+	if (event == NUGU_MEDIA_EVENT_END_OF_STREAM) {
+		if (player->status != NUGU_MEDIA_STATUS_STOPPED) {
+			player->status = NUGU_MEDIA_STATUS_STOPPED;
+			emit_status_callback = TRUE;
+		}
+	}
 
 	if (player->ecb != NULL)
 		player->ecb(event, player->eud);
+
+	if (emit_status_callback && player->scb)
+		player->scb(player->status, player->sud);
 }
 
 EXPORT_API int nugu_player_set_driver_data(NuguPlayer *player, void *data)
