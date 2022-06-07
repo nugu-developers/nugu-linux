@@ -121,6 +121,7 @@ static void setup_opus_head(struct opus_data *od)
 	p_head.packetno = od->packetno++;
 	ogg_stream_packetin(&(od->os), &p_head);
 
+	free(p_head.packet);
 	nugu_buffer_free(header, 1);
 }
 
@@ -145,6 +146,7 @@ static void setup_opus_tags(struct opus_data *od)
 	p_tags.packetno = od->packetno++;
 	ogg_stream_packetin(&(od->os), &p_tags);
 
+	free(p_tags.packet);
 	nugu_buffer_free(header, 1);
 }
 
