@@ -1,6 +1,6 @@
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -811,6 +811,10 @@ endif()
+@@ -858,6 +858,10 @@ endif()
  #
  # CA handling
  #
