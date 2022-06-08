@@ -405,6 +405,7 @@ static void *_loop(void *data)
 			curl_easy_getinfo(easy, CURLINFO_EFFECTIVE_URL, &url);
 
 			nugu_dbg("remove incomplete req=%p (%s)", fake_p, url);
+			curl_multi_remove_handle(net->handle, easy);
 			http2_request_unref((HTTP2Request *)fake_p);
 			cur = cur->next;
 		}
