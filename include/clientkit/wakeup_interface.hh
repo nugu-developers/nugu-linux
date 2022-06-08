@@ -34,6 +34,7 @@ namespace NuguClientKit {
  * @brief WakeupDetectState
  */
 enum class WakeupDetectState {
+    WAKEUP_IDLE, /**< Initial state */
     WAKEUP_DETECTING, /**< Wakeup word detecting */
     WAKEUP_DETECTED, /**< Wakeup word is detected */
     WAKEUP_FAIL /**< Failure */
