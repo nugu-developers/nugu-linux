@@ -336,7 +336,7 @@ public:
     }
 
 private:
-    SpeechRecognizerAggregatorState aggregate_state { WakeupDetectState::WAKEUP_FAIL, ASRState::IDLE };
+    SpeechRecognizerAggregatorState aggregate_state { WakeupDetectState::WAKEUP_IDLE, ASRState::IDLE };
     RecognitionResult result {};
     std::string dialog_id;
 };
@@ -400,7 +400,7 @@ static void test_speech_recognizer_aggregator_start_listening_with_trigger(TestF
 {
     const auto& state = fixture->listener->getState();
 
-    g_assert(state.wakeup != WakeupDetectState::WAKEUP_DETECTING);
+    g_assert(state.wakeup == WakeupDetectState::WAKEUP_IDLE);
     g_assert(state.asr == ASRState::IDLE);
 
     fixture->speech_recognizer_aggregator->startListeningWithTrigger();
@@ -578,7 +578,7 @@ static void test_speech_recognizer_aggregator_no_wakeup_handler(TestFixture* fix
 
     const auto& state = fixture->listener->getState();
 
-    g_assert(state.wakeup != WakeupDetectState::WAKEUP_DETECTING);
+    g_assert(state.wakeup == WakeupDetectState::WAKEUP_IDLE);
     g_assert(state.asr == ASRState::IDLE);
 
     speech_recognizer_aggregator->startListening();
