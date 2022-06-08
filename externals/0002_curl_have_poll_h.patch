@@ -1,6 +1,6 @@
 --- a/CMake/OtherTests.cmake
 +++ b/CMake/OtherTests.cmake
-@@ -226,39 +226,6 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+@@ -247,40 +247,7 @@ if(NOT DEFINED CMAKE_TOOLCHAIN_FILE)
    elseif(HAVE_POLL_H)
      set(CMAKE_REQUIRED_FLAGS "-DHAVE_POLL_H")
    endif()
