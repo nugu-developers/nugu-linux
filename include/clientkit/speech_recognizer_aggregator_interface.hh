@@ -17,6 +17,8 @@
 #ifndef __SPEECH_RECOGNIZER_AGGREGATOR_INTERFACE_H__
 #define __SPEECH_RECOGNIZER_AGGREGATOR_INTERFACE_H__
 
+#include <memory>
+
 #include <capability/asr_interface.hh>
 #include <clientkit/wakeup_interface.hh>
 
@@ -109,6 +111,12 @@ public:
      * @param[in] listener ISpeechRecognizerAggregatorListener object
      */
     virtual void removeListener(ISpeechRecognizerAggregatorListener* listener) = 0;
+
+    /**
+     * @brief Set the IWakeupHandler object.
+     * @param[in] wakeup_handler IWakeupHandler object
+     */
+    virtual void setWakeupHandler(const std::shared_ptr<IWakeupHandler>& wakeup_handler) = 0;
 
     /**
      * @brief Set wakeup model file.

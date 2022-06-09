@@ -43,20 +43,17 @@ SpeechRecognizerAggregator::~SpeechRecognizerAggregator()
 {
 }
 
-void SpeechRecognizerAggregator::setWakeupHandler(const std::shared_ptr<IWakeupHandler>& wakeup_handler)
-{
-    if (wakeup_handler) {
-        pimpl->wakeup_handler = wakeup_handler;
-        pimpl->wakeup_handler->setListener(this);
-    }
-}
-
 void SpeechRecognizerAggregator::setASRHandler(IASRHandler* asr_handler)
 {
     if (asr_handler) {
         pimpl->asr_handler = asr_handler;
         pimpl->asr_handler->addListener(this);
     }
+}
+
+const std::shared_ptr<IWakeupHandler>& SpeechRecognizerAggregator::getWakeupHandler() const
+{
+    return pimpl->wakeup_handler;
 }
 
 void SpeechRecognizerAggregator::reset()
@@ -74,6 +71,14 @@ void SpeechRecognizerAggregator::addListener(ISpeechRecognizerAggregatorListener
 void SpeechRecognizerAggregator::removeListener(ISpeechRecognizerAggregatorListener* listener)
 {
     pimpl->listeners.erase(listener);
+}
+
+void SpeechRecognizerAggregator::setWakeupHandler(const std::shared_ptr<IWakeupHandler>& wakeup_handler)
+{
+    if (wakeup_handler) {
+        pimpl->wakeup_handler = wakeup_handler;
+        pimpl->wakeup_handler->setListener(this);
+    }
 }
 
 bool SpeechRecognizerAggregator::setWakeupModel(const WakeupModelFile& model_file)

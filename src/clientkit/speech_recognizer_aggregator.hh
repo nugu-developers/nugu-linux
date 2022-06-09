@@ -17,8 +17,6 @@
 #ifndef __SPEECH_RECOGNIZER_AGGREGATOR_H__
 #define __SPEECH_RECOGNIZER_AGGREGATOR_H__
 
-#include <memory>
-
 #include "clientkit/speech_recognizer_aggregator_interface.hh"
 
 namespace NuguClientKit {
@@ -30,13 +28,14 @@ public:
     SpeechRecognizerAggregator();
     virtual ~SpeechRecognizerAggregator();
 
-    void setWakeupHandler(const std::shared_ptr<IWakeupHandler>& wakeup_handler);
     void setASRHandler(IASRHandler* asr_handler);
+    const std::shared_ptr<IWakeupHandler>& getWakeupHandler() const;
     void reset();
 
     // implements ISpeechRecognizerAggregator
     void addListener(ISpeechRecognizerAggregatorListener* listener) override;
     void removeListener(ISpeechRecognizerAggregatorListener* listener) override;
+    void setWakeupHandler(const std::shared_ptr<IWakeupHandler>& wakeup_handler) override;
     bool setWakeupModel(const WakeupModelFile& model_file) override;
     void startListeningWithTrigger() override;
     void startListening(float power_noise = 0, float power_speech = 0, ASRInitiator initiator = ASRInitiator::TAP) override;
