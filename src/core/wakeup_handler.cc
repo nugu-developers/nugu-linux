@@ -72,6 +72,14 @@ void WakeupHandler::onWakeupState(WakeupState state, const std::string& id, floa
         if (listener)
             listener->onWakeupState(WakeupDetectState::WAKEUP_DETECTED, noise, speech);
         break;
+    case WakeupState::STOPPED:
+        nugu_dbg("[id: %s] WakeupState::STOPPED", id.c_str());
+
+        if (listener)
+            listener->onWakeupState(WakeupDetectState::WAKEUP_IDLE, noise, speech);
+
+        break;
+
     case WakeupState::DONE:
         nugu_dbg("[id: %s] WakeupState::DONE", id.c_str());
         break;
