@@ -28,6 +28,7 @@ enum class WakeupState {
     FAIL,
     DETECTING,
     DETECTED,
+    STOPPED,
     DONE
 };
 

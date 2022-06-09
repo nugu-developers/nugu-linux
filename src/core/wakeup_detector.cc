@@ -138,19 +138,25 @@ void WakeupDetector::loop()
 
             if (recorder->isMute()) {
                 nugu_error("recorder is mute");
-                sendWakeupEvent(WakeupState::FAIL, id);
+
+                if (is_running)
+                    sendWakeupEvent(WakeupState::FAIL, id);
                 break;
             }
 
             if (!recorder->getAudioFrame(pcm_buf, &pcm_size, 0)) {
                 nugu_error("recorder->getAudioFrame() failed");
-                sendWakeupEvent(WakeupState::FAIL, id);
+
+                if (is_running)
+                    sendWakeupEvent(WakeupState::FAIL, id);
                 break;
             }
 
             if (pcm_size == 0) {
                 nugu_error("pcm_size result is 0");
-                sendWakeupEvent(WakeupState::FAIL, id);
+
+                if (is_running)
+                    sendWakeupEvent(WakeupState::FAIL, id);
                 break;
             }
 
@@ -168,8 +174,15 @@ void WakeupDetector::loop()
             }
         }
 
-        is_running = false;
-        recorder->stop();
+        // If is_running is false, it indicate wakeup is stopped explicitly.
+        // So, it send WakeupState::STOPPED event.
+        if (!is_running) {
+            sendWakeupEvent(WakeupState::STOPPED, id);
+        } else {
+            is_running = false;
+            recorder->stop();
+        }
+
         kwd_deinitialize();
 
         if (g_atomic_int_get(&destroy) == 0)
