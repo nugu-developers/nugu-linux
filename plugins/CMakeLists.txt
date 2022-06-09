@@ -4,8 +4,7 @@ SET(PLUGINS
 
 FOREACH(plugin ${PLUGINS})
 	ADD_LIBRARY(${plugin} SHARED ${plugin}.c)
-	TARGET_LINK_LIBRARIES(${plugin} ${pkgs_LDFLAGS}
-		-L${CMAKE_BINARY_DIR}/src -lnugu)
+	TARGET_LINK_LIBRARIES(${plugin} ${pkgs_LDFLAGS} -lnugu)
 	SET_TARGET_PROPERTIES(${plugin} PROPERTIES PREFIX "" OUTPUT_NAME ${plugin})
 	INSTALL(TARGETS ${plugin} LIBRARY DESTINATION ${plugindir})
 	ADD_DEPENDENCIES(${plugin} libnugu)
@@ -20,13 +19,12 @@ IF(ENABLE_OPUS_PLUGIN)
 			${CMAKE_BINARY_DIR}/opus/include/opus)
 		TARGET_LINK_LIBRARIES(opus ${pkgs_LDFLAGS}
 			${CMAKE_BINARY_DIR}/opus/lib/libopus.a
-			-L${CMAKE_BINARY_DIR}/src -lnugu -lm)
+			-lnugu -lm)
 		ADD_DEPENDENCIES(opus OPUSLIB)
 	ELSE()
 		pkg_check_modules(opus REQUIRED opus)
 		TARGET_COMPILE_OPTIONS(opus PRIVATE ${opus_CFLAGS})
-		TARGET_LINK_LIBRARIES(opus ${pkgs_LDFLAGS} ${opus_LDFLAGS}
-			-L${CMAKE_BINARY_DIR}/src -lnugu)
+		TARGET_LINK_LIBRARIES(opus ${pkgs_LDFLAGS} ${opus_LDFLAGS} -lnugu)
 	ENDIF()
 
 	SET_TARGET_PROPERTIES(opus PROPERTIES PREFIX "" OUTPUT_NAME opus)
@@ -39,8 +37,7 @@ IF(ENABLE_OPUSENC_PLUGIN)
 	ADD_LIBRARY(opusenc SHARED opus_encoder.c)
 	pkg_check_modules(opusenc REQUIRED opus ogg)
 	TARGET_COMPILE_OPTIONS(opusenc PRIVATE ${opusenc_CFLAGS})
-	TARGET_LINK_LIBRARIES(opusenc ${pkgs_LDFLAGS} ${opusenc_LDFLAGS}
-		-L${CMAKE_BINARY_DIR}/src -lnugu)
+	TARGET_LINK_LIBRARIES(opusenc ${pkgs_LDFLAGS} ${opusenc_LDFLAGS} -lnugu)
 	SET_TARGET_PROPERTIES(opusenc PROPERTIES PREFIX "" OUTPUT_NAME opusenc)
 	INSTALL(TARGETS opusenc LIBRARY DESTINATION ${plugindir})
 	ADD_DEPENDENCIES(opusenc libnugu)
@@ -58,8 +55,7 @@ IF(ENABLE_PORTAUDIO_PLUGIN)
 	FOREACH(plugin ${PORTAUDIO_PLUGINS})
 		ADD_LIBRARY(${plugin} SHARED ${plugin}.c)
 		TARGET_COMPILE_OPTIONS(${plugin} PRIVATE ${portaudio_CFLAGS})
-		TARGET_LINK_LIBRARIES(${plugin} ${pkgs_LDFLAGS} ${portaudio_LDFLAGS}
-			-L${CMAKE_BINARY_DIR}/src -lnugu)
+		TARGET_LINK_LIBRARIES(${plugin} ${pkgs_LDFLAGS} ${portaudio_LDFLAGS} -lnugu)
 		SET_TARGET_PROPERTIES(${plugin} PROPERTIES PREFIX "" OUTPUT_NAME ${plugin})
 		INSTALL(TARGETS ${plugin} LIBRARY DESTINATION ${plugindir})
 		ADD_DEPENDENCIES(${plugin} libnugu)
@@ -75,8 +71,7 @@ IF(ENABLE_GSTREAMER_PLUGIN)
 
 	FOREACH(plugin ${GSTREAMER_PLUGINS})
 		ADD_LIBRARY(${plugin} SHARED ${plugin}.c)
-		TARGET_LINK_LIBRARIES(${plugin} ${pkgs_LDFLAGS}
-			-L${CMAKE_BINARY_DIR}/src -lnugu)
+		TARGET_LINK_LIBRARIES(${plugin} ${pkgs_LDFLAGS} -lnugu)
 		SET_TARGET_PROPERTIES(${plugin} PROPERTIES PREFIX "" OUTPUT_NAME ${plugin})
 		INSTALL(TARGETS ${plugin} LIBRARY DESTINATION ${plugindir})
 		ADD_DEPENDENCIES(${plugin} libnugu)
@@ -86,9 +81,7 @@ ENDIF(ENABLE_GSTREAMER_PLUGIN)
 # Speex plugin
 IF(ENABLE_SPEEX_PLUGIN AND ENABLE_VENDOR_LIBRARY)
 	ADD_LIBRARY(speex SHARED speex.c)
-	TARGET_LINK_LIBRARIES(speex ${pkgs_LDFLAGS}
-		-L${CMAKE_BINARY_DIR}/src -lnugu)
-
+	TARGET_LINK_LIBRARIES(speex ${pkgs_LDFLAGS} -lnugu)
 	SET_TARGET_PROPERTIES(speex PROPERTIES PREFIX "" OUTPUT_NAME speex)
 	INSTALL(TARGETS speex LIBRARY DESTINATION ${plugindir})
 	ADD_DEPENDENCIES(speex libnugu)

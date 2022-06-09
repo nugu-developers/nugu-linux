@@ -188,6 +188,10 @@ IF(ENABLE_ASAN)
 	MESSAGE("Address Sanitizer enabled")
 ENDIF()
 
+# Sets the option so that the built library has a higher link order than
+# the library already installed on the system.
+LINK_LIBRARIES(-L${CMAKE_BINARY_DIR}/src)
+
 IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	ADD_COMPILE_OPTIONS(
 		# Non-executable stack
