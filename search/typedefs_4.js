@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['timer_5fcallback_2293',['timer_callback',['../classNuguClientKit_1_1INuguTimer.html#acc3f8a178cfe77ffbc0ce6327c411b51',1,'NuguClientKit::INuguTimer']]]
+  ['request_5fmethod_2324',['request_method',['../group__NuguRunner.html#ga2e15837ae41f91f3a96968e547bf664d',1,'NuguClientKit::NuguRunner']]],
+  ['responsecallback_2325',['ResponseCallback',['../classNuguClientKit_1_1NuguHttpRest.html#a638c4aecdfa51dc3ad152fd0deb2f20a',1,'NuguClientKit::NuguHttpRest']]]
 ];

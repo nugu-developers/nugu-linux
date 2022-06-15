@@ -3,6 +3,7 @@ var group__NuguClient =
     [ "NuguClient", "classNuguClientKit_1_1NuguClient.html", [
       [ "CapabilityBuilder", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html", [
         [ "add", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#a234a8b1a0eedb5d374aad7c92d98efa3", null ],
+        [ "setWakeupModel", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#aebd5f521fa6c4ff9e3e4aab5ba2552de", null ],
         [ "construct", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#a5fa03281804df2c704003347666b84bc", null ],
         [ "NuguClient", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html#a2f6f37eaa13f0d9d68ebe246eb7c34fd", null ]
       ] ],
@@ -18,6 +19,7 @@ var group__NuguClient =
       [ "getNetworkManager", "classNuguClientKit_1_1NuguClient.html#aa600061f3d9fd1f07eb933d10069ed81", null ],
       [ "getCapabilityHandler", "classNuguClientKit_1_1NuguClient.html#ab789df431ad90492b494e30a8e19a2e2", null ],
       [ "getFocusManager", "classNuguClientKit_1_1NuguClient.html#a954a8d5091c5ca5cb75870f88c82dea2", null ],
+      [ "getSpeechRecognizerAggregator", "classNuguClientKit_1_1NuguClient.html#abbba2b70f9f8913f3ca706c2769812d9", null ],
       [ "addDialogUXStateListener", "classNuguClientKit_1_1NuguClient.html#aa30ac062033d32e3f159b12abdf2a773", null ],
       [ "removeDialogUXStateListener", "classNuguClientKit_1_1NuguClient.html#a811cbed8ee74b40ded248b88f6d4c53e", null ]
     ] ]

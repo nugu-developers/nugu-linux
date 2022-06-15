@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['wakeupmodelfile_1452',['WakeupModelFile',['../structNuguClientKit_1_1WakeupModelFile.html',1,'NuguClientKit']]]
+  ['textattribute_1471',['TextAttribute',['../structNuguCapability_1_1TextAttribute.html',1,'NuguCapability']]],
+  ['ttsattribute_1472',['TTSAttribute',['../structNuguCapability_1_1TTSAttribute.html',1,'NuguCapability']]]
 ];

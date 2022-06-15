@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.1</span>
+   &#160;<span id="projectnumber">1.7.2</span>
    </div>
   </td>
  </tr>
@@ -108,60 +108,62 @@ $(document).ready(function(){initNavTree('wakeup__interface_8hh_source.html','')
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="keyword">namespace </span>NuguClientKit {</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
 <div class="line"><a name="l00036"></a><span class="lineno"><a class="line" href="group__WakeupInterface.html#ga5379a1d6d0c4ea118547f802b851e119">   36</a></span>&#160;<span class="keyword">enum class</span> <a class="code" href="group__WakeupInterface.html#ga5379a1d6d0c4ea118547f802b851e119">WakeupDetectState</a> {</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119aaa5bf1ece51d36575b3f26c570899008">WAKEUP_DETECTING</a>, </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a414bbfd491b2bcc1fe2538cff08c2c28">WAKEUP_DETECTED</a>, </div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a7b2e84d7ac904c69cc66b63252822dbe">WAKEUP_FAIL</a> </div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;};</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
-<div class="line"><a name="l00046"></a><span class="lineno"><a class="line" href="structNuguClientKit_1_1WakeupModelFile.html">   46</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
-<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="structNuguClientKit_1_1WakeupModelFile.html#ab87fdcd134ffbc461678db48641b7161">   47</a></span>&#160;    std::string <a class="code" href="structNuguClientKit_1_1WakeupModelFile.html#ab87fdcd134ffbc461678db48641b7161">net</a>; </div>
-<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="structNuguClientKit_1_1WakeupModelFile.html#ab91be1ddff06d1cd321b543d50e9128d">   48</a></span>&#160;    std::string <a class="code" href="structNuguClientKit_1_1WakeupModelFile.html#ab91be1ddff06d1cd321b543d50e9128d">search</a>; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;} <a class="code" href="structNuguClientKit_1_1WakeupModelFile.html">WakeupModelFile</a>;</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1IWakeupListener.html">   55</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguClientKit_1_1IWakeupListener.html">IWakeupListener</a> {</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguClientKit_1_1IWakeupListener.html">IWakeupListener</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1IWakeupListener.html#a1d622bddce42ade2425524dc534b6929">onWakeupState</a>(<a class="code" href="group__WakeupInterface.html#ga5379a1d6d0c4ea118547f802b851e119">WakeupDetectState</a> state, <span class="keywordtype">float</span> power_noise, <span class="keywordtype">float</span> power_speech) = 0;</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;};</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1IWakeupHandler.html">   73</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguClientKit_1_1IWakeupHandler.html">IWakeupHandler</a> {</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguClientKit_1_1IWakeupHandler.html">IWakeupHandler</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1IWakeupHandler.html#ac5725f07b3b20a9ff39b18261df4280c">setListener</a>(<a class="code" href="classNuguClientKit_1_1IWakeupListener.html">IWakeupListener</a>* listener) = 0;</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1IWakeupHandler.html#af03bb635a82ec3143d534ca5b8f90413">startWakeup</a>() = 0;</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1IWakeupHandler.html#a26800967ca4b90caa23359f629361acc">stopWakeup</a>() = 0;</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1IWakeupHandler.html#ab44237672cd041751f94985676bca0a4">changeModel</a>(<span class="keyword">const</span> <a class="code" href="structNuguClientKit_1_1WakeupModelFile.html">WakeupModelFile</a>&amp; model_file) = 0;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;};</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160; </div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;} <span class="comment">// NuguClientKit</span></div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160; </div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_WAKEUP_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    <a class="code" href="group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a770eba40f32e9fe22e4b967fe80dbbc3">WAKEUP_IDLE</a>, </div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <a class="code" href="group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119aaa5bf1ece51d36575b3f26c570899008">WAKEUP_DETECTING</a>, </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <a class="code" href="group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a414bbfd491b2bcc1fe2538cff08c2c28">WAKEUP_DETECTED</a>, </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;    <a class="code" href="group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a7b2e84d7ac904c69cc66b63252822dbe">WAKEUP_FAIL</a> </div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;};</div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="structNuguClientKit_1_1WakeupModelFile.html">   47</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a name="l00048"></a><span class="lineno"><a class="line" href="structNuguClientKit_1_1WakeupModelFile.html#ab87fdcd134ffbc461678db48641b7161">   48</a></span>&#160;    std::string <a class="code" href="structNuguClientKit_1_1WakeupModelFile.html#ab87fdcd134ffbc461678db48641b7161">net</a>; </div>
+<div class="line"><a name="l00049"></a><span class="lineno"><a class="line" href="structNuguClientKit_1_1WakeupModelFile.html#ab91be1ddff06d1cd321b543d50e9128d">   49</a></span>&#160;    std::string <a class="code" href="structNuguClientKit_1_1WakeupModelFile.html#ab91be1ddff06d1cd321b543d50e9128d">search</a>; </div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;} <a class="code" href="structNuguClientKit_1_1WakeupModelFile.html">WakeupModelFile</a>;</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
+<div class="line"><a name="l00056"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1IWakeupListener.html">   56</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguClientKit_1_1IWakeupListener.html">IWakeupListener</a> {</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguClientKit_1_1IWakeupListener.html">IWakeupListener</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160; </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1IWakeupListener.html#a1d622bddce42ade2425524dc534b6929">onWakeupState</a>(<a class="code" href="group__WakeupInterface.html#ga5379a1d6d0c4ea118547f802b851e119">WakeupDetectState</a> state, <span class="keywordtype">float</span> power_noise, <span class="keywordtype">float</span> power_speech) = 0;</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
+<div class="line"><a name="l00074"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1IWakeupHandler.html">   74</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguClientKit_1_1IWakeupHandler.html">IWakeupHandler</a> {</div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguClientKit_1_1IWakeupHandler.html">IWakeupHandler</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1IWakeupHandler.html#ac5725f07b3b20a9ff39b18261df4280c">setListener</a>(<a class="code" href="classNuguClientKit_1_1IWakeupListener.html">IWakeupListener</a>* listener) = 0;</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1IWakeupHandler.html#af03bb635a82ec3143d534ca5b8f90413">startWakeup</a>() = 0;</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1IWakeupHandler.html#a26800967ca4b90caa23359f629361acc">stopWakeup</a>() = 0;</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1IWakeupHandler.html#ab44237672cd041751f94985676bca0a4">changeModel</a>(<span class="keyword">const</span> <a class="code" href="structNuguClientKit_1_1WakeupModelFile.html">WakeupModelFile</a>&amp; model_file) = 0;</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;} <span class="comment">// NuguClientKit</span></div>
+<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160; </div>
+<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_WAKEUP_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="agroup__WakeupInterface_html_gga5379a1d6d0c4ea118547f802b851e119a7b2e84d7ac904c69cc66b63252822dbe"><div class="ttname"><a href="group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a7b2e84d7ac904c69cc66b63252822dbe">NuguClientKit::WakeupDetectState::WAKEUP_FAIL</a></div><div class="ttdeci">@ WAKEUP_FAIL</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IWakeupHandler_html_a26800967ca4b90caa23359f629361acc"><div class="ttname"><a href="classNuguClientKit_1_1IWakeupHandler.html#a26800967ca4b90caa23359f629361acc">NuguClientKit::IWakeupHandler::stopWakeup</a></div><div class="ttdeci">virtual void stopWakeup()=0</div><div class="ttdoc">Stop the wakeup detection.</div></div>
 <div class="ttc" id="agroup__WakeupInterface_html_gga5379a1d6d0c4ea118547f802b851e119aaa5bf1ece51d36575b3f26c570899008"><div class="ttname"><a href="group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119aaa5bf1ece51d36575b3f26c570899008">NuguClientKit::WakeupDetectState::WAKEUP_DETECTING</a></div><div class="ttdeci">@ WAKEUP_DETECTING</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IWakeupHandler_html_ac5725f07b3b20a9ff39b18261df4280c"><div class="ttname"><a href="classNuguClientKit_1_1IWakeupHandler.html#ac5725f07b3b20a9ff39b18261df4280c">NuguClientKit::IWakeupHandler::setListener</a></div><div class="ttdeci">virtual void setListener(IWakeupListener *listener)=0</div><div class="ttdoc">Set the Listener object.</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1IWakeupListener_html"><div class="ttname"><a href="classNuguClientKit_1_1IWakeupListener.html">NuguClientKit::IWakeupListener</a></div><div class="ttdoc">Wakeup listener interface.</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:55</div></div>
-<div class="ttc" id="astructNuguClientKit_1_1WakeupModelFile_html"><div class="ttname"><a href="structNuguClientKit_1_1WakeupModelFile.html">NuguClientKit::WakeupModelFile</a></div><div class="ttdoc">Model for holding Wakeup model file info.</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:46</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1IWakeupListener_html"><div class="ttname"><a href="classNuguClientKit_1_1IWakeupListener.html">NuguClientKit::IWakeupListener</a></div><div class="ttdoc">Wakeup listener interface.</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:56</div></div>
+<div class="ttc" id="astructNuguClientKit_1_1WakeupModelFile_html"><div class="ttname"><a href="structNuguClientKit_1_1WakeupModelFile.html">NuguClientKit::WakeupModelFile</a></div><div class="ttdoc">Model for holding Wakeup model file info.</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:47</div></div>
 <div class="ttc" id="agroup__WakeupInterface_html_gga5379a1d6d0c4ea118547f802b851e119a414bbfd491b2bcc1fe2538cff08c2c28"><div class="ttname"><a href="group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a414bbfd491b2bcc1fe2538cff08c2c28">NuguClientKit::WakeupDetectState::WAKEUP_DETECTED</a></div><div class="ttdeci">@ WAKEUP_DETECTED</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1IWakeupHandler_html"><div class="ttname"><a href="classNuguClientKit_1_1IWakeupHandler.html">NuguClientKit::IWakeupHandler</a></div><div class="ttdoc">Wakeup handler interface.</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:73</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1IWakeupHandler_html"><div class="ttname"><a href="classNuguClientKit_1_1IWakeupHandler.html">NuguClientKit::IWakeupHandler</a></div><div class="ttdoc">Wakeup handler interface.</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:74</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IWakeupHandler_html_ab44237672cd041751f94985676bca0a4"><div class="ttname"><a href="classNuguClientKit_1_1IWakeupHandler.html#ab44237672cd041751f94985676bca0a4">NuguClientKit::IWakeupHandler::changeModel</a></div><div class="ttdeci">virtual void changeModel(const WakeupModelFile &amp;model_file)=0</div><div class="ttdoc">Change wakeup word model.</div></div>
-<div class="ttc" id="astructNuguClientKit_1_1WakeupModelFile_html_ab91be1ddff06d1cd321b543d50e9128d"><div class="ttname"><a href="structNuguClientKit_1_1WakeupModelFile.html#ab91be1ddff06d1cd321b543d50e9128d">NuguClientKit::WakeupModelFile::search</a></div><div class="ttdeci">std::string search</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:48</div></div>
+<div class="ttc" id="astructNuguClientKit_1_1WakeupModelFile_html_ab91be1ddff06d1cd321b543d50e9128d"><div class="ttname"><a href="structNuguClientKit_1_1WakeupModelFile.html#ab91be1ddff06d1cd321b543d50e9128d">NuguClientKit::WakeupModelFile::search</a></div><div class="ttdeci">std::string search</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:49</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IWakeupHandler_html_af03bb635a82ec3143d534ca5b8f90413"><div class="ttname"><a href="classNuguClientKit_1_1IWakeupHandler.html#af03bb635a82ec3143d534ca5b8f90413">NuguClientKit::IWakeupHandler::startWakeup</a></div><div class="ttdeci">virtual bool startWakeup()=0</div><div class="ttdoc">Start the wakeup detection.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1IWakeupListener_html_a1d622bddce42ade2425524dc534b6929"><div class="ttname"><a href="classNuguClientKit_1_1IWakeupListener.html#a1d622bddce42ade2425524dc534b6929">NuguClientKit::IWakeupListener::onWakeupState</a></div><div class="ttdeci">virtual void onWakeupState(WakeupDetectState state, float power_noise, float power_speech)=0</div><div class="ttdoc">Report to the user wakeup detection state changed.</div></div>
 <div class="ttc" id="agroup__WakeupInterface_html_ga5379a1d6d0c4ea118547f802b851e119"><div class="ttname"><a href="group__WakeupInterface.html#ga5379a1d6d0c4ea118547f802b851e119">NuguClientKit::WakeupDetectState</a></div><div class="ttdeci">WakeupDetectState</div><div class="ttdoc">WakeupDetectState.</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:36</div></div>
-<div class="ttc" id="astructNuguClientKit_1_1WakeupModelFile_html_ab87fdcd134ffbc461678db48641b7161"><div class="ttname"><a href="structNuguClientKit_1_1WakeupModelFile.html#ab87fdcd134ffbc461678db48641b7161">NuguClientKit::WakeupModelFile::net</a></div><div class="ttdeci">std::string net</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:47</div></div>
+<div class="ttc" id="agroup__WakeupInterface_html_gga5379a1d6d0c4ea118547f802b851e119a770eba40f32e9fe22e4b967fe80dbbc3"><div class="ttname"><a href="group__WakeupInterface.html#gga5379a1d6d0c4ea118547f802b851e119a770eba40f32e9fe22e4b967fe80dbbc3">NuguClientKit::WakeupDetectState::WAKEUP_IDLE</a></div><div class="ttdeci">@ WAKEUP_IDLE</div></div>
+<div class="ttc" id="astructNuguClientKit_1_1WakeupModelFile_html_ab87fdcd134ffbc461678db48641b7161"><div class="ttname"><a href="structNuguClientKit_1_1WakeupModelFile.html#ab87fdcd134ffbc461678db48641b7161">NuguClientKit::WakeupModelFile::net</a></div><div class="ttdeci">std::string net</div><div class="ttdef"><b>Definition:</b> wakeup_interface.hh:48</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_261219a980049fd8e6168264a7da95ca.html">clientkit</a></li><li class="navelem"><a class="el" href="wakeup__interface_8hh.html">wakeup_interface.hh</a></li>
-    <li class="footer">Generated on Wed May 4 2022 09:00:03 for NUGU SDK Linux by
+    <li class="footer">Generated on Wed Jun 15 2022 05:01:18 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>

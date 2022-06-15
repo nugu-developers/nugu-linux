@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "NuguCapability::_ChipsInfo", "structNuguCapability_1_1__ChipsInfo.html", null ],
     [ "_nugu_http_response", "struct__nugu__http__response.html", null ],
     [ "NuguCapability::ASRAttribute", "structNuguCapability_1_1ASRAttribute.html", null ],
     [ "NuguCapability::BatteryInfo", "structNuguCapability_1_1BatteryInfo.html", null ],
@@ -9,8 +10,7 @@ var hierarchy =
     [ "NuguClientKit::NuguClient::CapabilityBuilder", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html", null ],
     [ "NuguClientKit::CapabilityEvent", "classNuguClientKit_1_1CapabilityEvent.html", null ],
     [ "NuguCapability::CapabilityFactory", "classNuguCapability_1_1CapabilityFactory.html", null ],
-    [ "NuguCapability::ChipsInfo", "structNuguCapability_1_1ChipsInfo.html", null ],
-    [ "NuguCapability::ChipsInfo::Content", "structNuguCapability_1_1ChipsInfo_1_1Content.html", null ],
+    [ "NuguCapability::_ChipsInfo::Content", "structNuguCapability_1_1__ChipsInfo_1_1Content.html", null ],
     [ "NuguClientKit::DirectiveCancelPolicy", "structNuguClientKit_1_1DirectiveCancelPolicy.html", null ],
     [ "NuguCapability::DisplayContextInfo", "structNuguCapability_1_1DisplayContextInfo.html", null ],
     [ "NuguClientKit::EpdAttribute", "structNuguClientKit_1_1EpdAttribute.html", null ],
@@ -88,6 +88,8 @@ var hierarchy =
     [ "NuguClientKit::ISessionManager", "classNuguClientKit_1_1ISessionManager.html", null ],
     [ "NuguClientKit::ISessionManagerListener", "classNuguClientKit_1_1ISessionManagerListener.html", null ],
     [ "NuguClientKit::ISpeechRecognizer", "classNuguClientKit_1_1ISpeechRecognizer.html", null ],
+    [ "NuguClientKit::ISpeechRecognizerAggregator", "classNuguClientKit_1_1ISpeechRecognizerAggregator.html", null ],
+    [ "NuguClientKit::ISpeechRecognizerAggregatorListener", "classNuguClientKit_1_1ISpeechRecognizerAggregatorListener.html", null ],
     [ "NuguClientKit::ISpeechRecognizerListener", "classNuguClientKit_1_1ISpeechRecognizerListener.html", null ],
     [ "NuguClientKit::IWakeupHandler", "classNuguClientKit_1_1IWakeupHandler.html", null ],
     [ "NuguClientKit::IWakeupListener", "classNuguClientKit_1_1IWakeupListener.html", null ],
@@ -107,6 +109,7 @@ var hierarchy =
     [ "NuguClientKit::NuguHttpRest", "classNuguClientKit_1_1NuguHttpRest.html", null ],
     [ "NuguClientKit::NuguRunner", "classNuguClientKit_1_1NuguRunner.html", null ],
     [ "NuguClientKit::NuguToken", "structNuguClientKit_1_1NuguToken.html", null ],
+    [ "NuguClientKit::RecognitionResult", "structNuguClientKit_1_1RecognitionResult.html", null ],
     [ "NuguClientKit::Session", "structNuguClientKit_1_1Session.html", null ],
     [ "NuguCapability::SpeakerInfo", "classNuguCapability_1_1SpeakerInfo.html", null ],
     [ "NuguCapability::TextAttribute", "structNuguCapability_1_1TextAttribute.html", null ],

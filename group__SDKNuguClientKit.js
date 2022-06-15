@@ -18,6 +18,7 @@ var group__SDKNuguClientKit =
     [ "PlaySyncManagerInterface", "group__PlaySyncManagerInterface.html", "group__PlaySyncManagerInterface" ],
     [ "RoutineManagerInterface", "group__RoutineManagerInterface.html", "group__RoutineManagerInterface" ],
     [ "SessionManagerInterface", "group__SessionManagerInterface.html", "group__SessionManagerInterface" ],
+    [ "SpeechRecognizerAggregatorInterface", "group__SpeechRecognizerAggregatorInterface.html", "group__SpeechRecognizerAggregatorInterface" ],
     [ "SpeechRecognizerInterface", "group__SpeechRecognizerInterface.html", "group__SpeechRecognizerInterface" ],
     [ "WakeupInterface", "group__WakeupInterface.html", "group__WakeupInterface" ]
 ];

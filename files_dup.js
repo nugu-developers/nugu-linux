@@ -56,6 +56,7 @@ var files_dup =
     [ "session_manager_interface.hh", "session__manager__interface_8hh.html", null ],
     [ "sound_interface.hh", "sound__interface_8hh.html", "sound__interface_8hh" ],
     [ "speaker_interface.hh", "speaker__interface_8hh.html", "speaker__interface_8hh" ],
+    [ "speech_recognizer_aggregator_interface.hh", "speech__recognizer__aggregator__interface_8hh.html", null ],
     [ "speech_recognizer_interface.hh", "speech__recognizer__interface_8hh.html", "speech__recognizer__interface_8hh" ],
     [ "system_interface.hh", "system__interface_8hh.html", "system__interface_8hh" ],
     [ "text_interface.hh", "text__interface_8hh.html", "text__interface_8hh" ],

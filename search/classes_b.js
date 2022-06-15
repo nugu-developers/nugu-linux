@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['textattribute_1450',['TextAttribute',['../structNuguCapability_1_1TextAttribute.html',1,'NuguCapability']]],
-  ['ttsattribute_1451',['TTSAttribute',['../structNuguCapability_1_1TTSAttribute.html',1,'NuguCapability']]]
+  ['session_1469',['Session',['../structNuguClientKit_1_1Session.html',1,'NuguClientKit']]],
+  ['speakerinfo_1470',['SpeakerInfo',['../classNuguCapability_1_1SpeakerInfo.html',1,'NuguCapability']]]
 ];

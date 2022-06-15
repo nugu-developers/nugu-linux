@@ -1,6 +1,7 @@
 var chips__interface_8hh =
 [
-    [ "Content", "structNuguCapability_1_1ChipsInfo_1_1Content.html", "structNuguCapability_1_1ChipsInfo_1_1Content" ],
+    [ "Content", "structNuguCapability_1_1__ChipsInfo_1_1Content.html", "structNuguCapability_1_1__ChipsInfo_1_1Content" ],
+    [ "ChipsInfo", "chips__interface_8hh.html#gaf940d68433f733de8a2b8c9e132de483", null ],
     [ "ChipsTarget", "chips__interface_8hh.html#gad4d8fcfcbdf141607ee378b3ae2ba180", [
       [ "DM", "chips__interface_8hh.html#ggad4d8fcfcbdf141607ee378b3ae2ba180a2ecda7a0252b442ac6ecf47462119f51", null ],
       [ "LISTEN", "chips__interface_8hh.html#ggad4d8fcfcbdf141607ee378b3ae2ba180ac1f9314a03f63f33410be3489b12b29b", null ],

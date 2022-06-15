@@ -1,12 +1,12 @@
 var annotated_dup =
 [
     [ "NuguCapability", null, [
+      [ "_ChipsInfo", "structNuguCapability_1_1__ChipsInfo.html", "structNuguCapability_1_1__ChipsInfo" ],
       [ "ASRAttribute", "structNuguCapability_1_1ASRAttribute.html", "structNuguCapability_1_1ASRAttribute" ],
       [ "BatteryInfo", "structNuguCapability_1_1BatteryInfo.html", "structNuguCapability_1_1BatteryInfo" ],
       [ "BTDeviceInfo", "structNuguCapability_1_1BTDeviceInfo.html", "structNuguCapability_1_1BTDeviceInfo" ],
       [ "BTProfile", "structNuguCapability_1_1BTProfile.html", "structNuguCapability_1_1BTProfile" ],
       [ "CapabilityFactory", "classNuguCapability_1_1CapabilityFactory.html", "classNuguCapability_1_1CapabilityFactory" ],
-      [ "ChipsInfo", "structNuguCapability_1_1ChipsInfo.html", "structNuguCapability_1_1ChipsInfo" ],
       [ "DisplayContextInfo", "structNuguCapability_1_1DisplayContextInfo.html", "structNuguCapability_1_1DisplayContextInfo" ],
       [ "IASRHandler", "classNuguCapability_1_1IASRHandler.html", "classNuguCapability_1_1IASRHandler" ],
       [ "IASRListener", "classNuguCapability_1_1IASRListener.html", "classNuguCapability_1_1IASRListener" ],
@@ -85,6 +85,8 @@ var annotated_dup =
       [ "ISessionManager", "classNuguClientKit_1_1ISessionManager.html", "classNuguClientKit_1_1ISessionManager" ],
       [ "ISessionManagerListener", "classNuguClientKit_1_1ISessionManagerListener.html", "classNuguClientKit_1_1ISessionManagerListener" ],
       [ "ISpeechRecognizer", "classNuguClientKit_1_1ISpeechRecognizer.html", "classNuguClientKit_1_1ISpeechRecognizer" ],
+      [ "ISpeechRecognizerAggregator", "classNuguClientKit_1_1ISpeechRecognizerAggregator.html", "classNuguClientKit_1_1ISpeechRecognizerAggregator" ],
+      [ "ISpeechRecognizerAggregatorListener", "classNuguClientKit_1_1ISpeechRecognizerAggregatorListener.html", "classNuguClientKit_1_1ISpeechRecognizerAggregatorListener" ],
       [ "ISpeechRecognizerListener", "classNuguClientKit_1_1ISpeechRecognizerListener.html", "classNuguClientKit_1_1ISpeechRecognizerListener" ],
       [ "ITTSPlayer", "classNuguClientKit_1_1ITTSPlayer.html", "classNuguClientKit_1_1ITTSPlayer" ],
       [ "IWakeupHandler", "classNuguClientKit_1_1IWakeupHandler.html", "classNuguClientKit_1_1IWakeupHandler" ],
@@ -95,6 +97,7 @@ var annotated_dup =
       [ "NuguHttpRest", "classNuguClientKit_1_1NuguHttpRest.html", "classNuguClientKit_1_1NuguHttpRest" ],
       [ "NuguRunner", "classNuguClientKit_1_1NuguRunner.html", "classNuguClientKit_1_1NuguRunner" ],
       [ "NuguToken", "structNuguClientKit_1_1NuguToken.html", "structNuguClientKit_1_1NuguToken" ],
+      [ "RecognitionResult", "structNuguClientKit_1_1RecognitionResult.html", "structNuguClientKit_1_1RecognitionResult" ],
       [ "Session", "structNuguClientKit_1_1Session.html", "structNuguClientKit_1_1Session" ],
       [ "WakeupModelFile", "structNuguClientKit_1_1WakeupModelFile.html", "structNuguClientKit_1_1WakeupModelFile" ]
     ] ],
