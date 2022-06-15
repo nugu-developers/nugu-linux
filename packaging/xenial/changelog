@@ -1,3 +1,22 @@
+nugu (1.7.2ubuntu1~xenial) xenial; urgency=medium
+
+  * Fixed Chips interface
+  * Fixed nugu_runner
+  * Fixed speex memory leak
+  * Fixed opus encoder memory leak
+  * Fixed http2 network memory leak
+  * Fixed unit test build
+  * Fixed link directory search order
+  * Added SpeechRecognizerAggregator
+  * Updated wakeup interface
+  * Updated WakeupHandler
+  * Updated AddressSanitizer
+  * Upgraded to support ubuntu 22.04
+  * Upgraded nghttp2 to v1.47.0
+  * Upgraded curl to v7.83.1
+
+ -- nugulinux <nugulinux@gmail.com>  Wed, 15 Jun 2022 14:30:00 +0900
+
 nugu (1.7.1ubuntu3~xenial) xenial; urgency=medium
 
   * Fixed static analysis issues
