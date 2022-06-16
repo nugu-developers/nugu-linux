@@ -51,9 +51,6 @@ jobs:
       matrix:
         target:
           [
-            xenial_x64,
-            xenial_arm64,
-            xenial_armhf,
             bionic_x64,
             bionic_arm64,
             bionic_armhf,
