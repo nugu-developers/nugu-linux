@@ -18,7 +18,7 @@ NUGU SDK is Linux based client library which is possible to use various NUGU Ser
 
 ### Linux Distribution
 
-- Ubuntu Xenial (16.04), Bionic (18.04), Focal (20.04)
+- Ubuntu Bionic (18.04), Focal (20.04), Jammy (22.04)
 
 ### Third-party Packages
 
