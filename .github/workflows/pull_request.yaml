@@ -34,7 +34,7 @@ jobs:
         run: |
           mkdir build
           docker run -t --rm -v $PWD:$PWD -w $PWD/build \
-            nugulinux/devenv:bionic cmake ..
+            nugulinux/devenv:focal cmake ..
       - name: Run cppcheck
         run: |
           docker run -t --rm -v $PWD:$PWD -w $PWD \
