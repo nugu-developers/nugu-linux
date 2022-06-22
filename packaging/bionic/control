@@ -70,7 +70,7 @@ Description: NUGU is an AI service platform (plugins)
 
 Package: libnugu-examples
 Architecture: any
-Depends: libnugu, ${shlibs:Depends}, ${misc:Depends}, python, python-flask-restful, python-requests-oauthlib, curl, jq
+Depends: libnugu, ${shlibs:Depends}, ${misc:Depends}, python3, python3-flask-restful, python3-requests-oauthlib, curl, jq
 Description: NUGU is an AI service platform (examples)
  NUGU OpenSDK
  .

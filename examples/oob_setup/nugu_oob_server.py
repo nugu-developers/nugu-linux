@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 from flask import Flask, request, redirect, session, json, url_for, make_response
 from flask.json import jsonify
@@ -12,6 +12,7 @@ log.addHandler(logging.StreamHandler(sys.stdout))
 log.setLevel(logging.DEBUG)
 
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+os.environ['FLASK_ENV'] = 'development'
 
 PORT = 8080
 
@@ -51,7 +52,7 @@ app = Flask(__name__)
 app.secret_key = 'test'
 
 def refresh_token():
-    print '\n\033[1mRefresh the access_token\033[0m'
+    print('\n\033[1mRefresh the access_token\033[0m')
     with open(CONFIG_PATH_AUTH, 'r') as reader:
         authinfo = json.load(reader)
 
@@ -59,7 +60,7 @@ def refresh_token():
         oauthinfo = json.load(reader)
 
     if 'refresh_token' not in authinfo or authinfo['refresh_token'] == '':
-        print '\n\033[1;93mrefresh_token is not exist\033[0m'
+        print('\n\033[1;93mrefresh_token is not exist\033[0m')
         return
 
     extra = {
@@ -75,7 +76,7 @@ def refresh_token():
     token = nugu.refresh_token(token_url, **extra)
 
     token_json = json.dumps(token, indent=4)
-    print token_json
+    print(token_json)
 
     with open(CONFIG_PATH_AUTH, 'w') as writer:
         writer.write(token_json)
@@ -129,23 +130,23 @@ def refresh():
 
 @app.route('/revoke', methods=['POST'])
 def revoke():
-    print '\n\033[1mRevoke the access_token\033[0m'
+    print('\n\033[1mRevoke the access_token\033[0m')
     data = {
         'token' : request.form['token'],
         'client_id':  request.form['clientId'],
         'client_secret':  request.form['clientSecret'],
     }
-    print data
+    print(data)
 
     headers = {
         "Accept": "application/json",
         "Content-Type": ("application/x-www-form-urlencoded;charset=UTF-8"),
     }
-    print headers
+    print(headers)
 
     nugu = OAuth2Session(request.form['clientId'])
     resp = nugu.post(revoke_url, data=data, headers=headers)
-    print resp
+    print(resp)
 
     if resp.status_code == 200:
         with open(CONFIG_PATH_AUTH, 'w') as writer:
@@ -345,7 +346,7 @@ def login_authorization_code():
         authorization_base_url, data='{{"deviceSerialNumber":"{serial}"}}'.format(serial=serial))
 
     # State is used to prevent CSRF(Cross Site Request Forgery), keep this for later.
-    print 'state=%s' % state
+    print('state=%s' % state)
 
     session['oauth_state'] = state
     return redirect(authorization_url)
@@ -361,10 +362,10 @@ def callback():
 
     if 'oauth_state' in session:
         oauth_state = session['oauth_state']
-        print 'state=%s' % oauth_state
+        print('state=%s' % oauth_state)
     else:
         oauth_state = ''
-        print 'can not found oauth_state'
+        print('can not found oauth_state')
 
     nugu = OAuth2Session(
         clientId, state=oauth_state, redirect_uri=redirect_uri)
@@ -373,7 +374,7 @@ def callback():
                                 data='{{"deviceSerialNumber":"{serial}"}}'.format(serial=serial))
 
     token_json = json.dumps(token, indent=4)
-    print token_json
+    print(token_json)
     with open(CONFIG_PATH_AUTH, 'w') as writer:
         writer.write(token_json)
 
@@ -402,11 +403,11 @@ def login_client_credentials():
 
     nugu = OAuth2Session(clientId)
     resp = nugu.post(token_url, data=data, headers=headers)
-    print resp
+    print(resp)
 
     if resp.status_code == 200:
         token_json = json.dumps(resp.json(), indent=4)
-        print token_json
+        print(token_json)
 
         with open(CONFIG_PATH_AUTH, 'w') as writer:
             writer.write(token_json)
@@ -416,23 +417,23 @@ def login_client_credentials():
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    print '\033[1mNUGU Out-Of-Box sample server for authentication\033[0m'
+    print('\033[1mNUGU Out-Of-Box sample server for authentication\033[0m')
 
     if not os.path.isdir(CONFIG_PATH):
-        print ' - Create Configuration directory %s' % CONFIG_PATH
+        print(' - Create Configuration directory %s' % CONFIG_PATH)
         os.makedirs(CONFIG_PATH)
 
-    print ' - OAuth2 url = %s' % OAUTH2_URL
+    print(' - OAuth2 url = %s' % OAUTH2_URL)
 
-    print ' - OAuth2 configuration path = %s' % CONFIG_PATH_OAUTH
+    print(' - OAuth2 configuration path = %s' % CONFIG_PATH_OAUTH)
     if not os.path.exists(CONFIG_PATH_OAUTH):
-        print '   - Create default %s' % CONFIG_PATH_OAUTH
+        print('   - Create default %s' % CONFIG_PATH_OAUTH)
         with open(CONFIG_PATH_OAUTH, 'w') as writer:
             writer.write(DEFAULT_JSON_OAUTH)
 
-    print ' - Authentication path = %s' % CONFIG_PATH_AUTH
+    print(' - Authentication path = %s' % CONFIG_PATH_AUTH)
     if not os.path.exists(CONFIG_PATH_AUTH):
-        print '   - Create default %s' % CONFIG_PATH_AUTH
+        print('   - Create default %s' % CONFIG_PATH_AUTH)
         with open(CONFIG_PATH_AUTH, 'w') as writer:
             writer.write(DEFAULT_JSON_AUTH)
 
@@ -441,6 +442,6 @@ if __name__ == '__main__':
             refresh_token()
             sys.exit(0)
 
-    print '\n\033[1mPlease connect to %d port.\033[0m' % PORT
+    print('\n\033[1mPlease connect to %d port.\033[0m' % PORT)
 
-    app.run(host='0.0.0.0', port=PORT)
+    app.run(host='0.0.0.0', port=PORT, debug=False)
