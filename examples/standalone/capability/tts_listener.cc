@@ -57,7 +57,7 @@ void TTSListener::onTTSCancel(const std::string& dialog_id)
     std::cout << "[TTS][id:" << dialog_id << "] CANCEL... " << std::endl;
 }
 
-std::string TTSListener::extractText(std::string raw_text)
+std::string TTSListener::extractText(const std::string& raw_text)
 {
     // remove '< ~ >' tag
     std::string extracted_text;

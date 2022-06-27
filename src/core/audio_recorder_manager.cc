@@ -95,7 +95,7 @@ AudioRecorderManager::~AudioRecorderManager()
 {
     std::lock_guard<std::mutex> lock(mutex);
 
-    for (auto container : nugu_recorders)
+    for (const auto& container : nugu_recorders)
         nugu_recorder_free(container.second);
     nugu_recorders.clear();
 }
@@ -204,7 +204,7 @@ bool AudioRecorderManager::setMute(bool mute)
     muted = mute;
 
     if (muted == false) {
-        for (auto container : nugu_recorders)
+        for (const auto& container : nugu_recorders)
             nugu_recorder_clear(container.second);
     }
 

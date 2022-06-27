@@ -269,10 +269,10 @@ void FocusManager::setConfigurations(std::vector<FocusConfiguration>& request, s
     request_configuration_map.clear();
     release_configuration_map.clear();
 
-    for (auto configuration : request)
+    for (const auto& configuration : request)
         request_configuration_map[configuration.type] = configuration.priority;
 
-    for (auto configuration : release)
+    for (const auto& configuration : release)
         release_configuration_map[configuration.type] = configuration.priority;
 
     printConfigurations();
@@ -379,10 +379,10 @@ void FocusManager::onFocusChanged(const std::string& type, const std::string& na
 void FocusManager::printConfigurations()
 {
     nugu_info("Focus Resource Configurtaion  =================");
-    for (auto configuration : request_configuration_map)
+    for (const auto& configuration : request_configuration_map)
         nugu_info("Request - priority:%4d, type: %s", configuration.second, configuration.first.c_str());
     nugu_info("-----------------------------------------------");
-    for (auto configuration : release_configuration_map)
+    for (const auto& configuration : release_configuration_map)
         nugu_info("Release - priority:%4d, type: %s", configuration.second, configuration.first.c_str());
     nugu_info("===============================================");
 }

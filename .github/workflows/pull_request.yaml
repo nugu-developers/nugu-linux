@@ -18,7 +18,7 @@ jobs:
         with:
           submodules: true
       - name: Run clang-tidy review
-        uses: kimhyungrok/clang-tidy-action@v1
+        uses: kimhyungrok/clang-tidy-action@v1.2
         with:
           exclude: 'externals'
 

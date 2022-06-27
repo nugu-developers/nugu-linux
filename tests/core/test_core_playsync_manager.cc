@@ -638,7 +638,7 @@ static void test_playsync_manager_implicit_release_sync_later(TestFixture* fixtu
 
 static void test_playsync_manager_release_sync_later_in_stack_condition(TestFixture* fixture, gconstpointer ignored)
 {
-    auto execMediaStackedSync = [&](std::function<void()> case_checker) {
+    auto execMediaStackedSync = [&](std::function<void()>&& case_checker) {
         fixture->playsync_manager->prepareSync("ps_id_1", fixture->ndir_media);
         fixture->playsync_manager->startSync("ps_id_1", "TTS");
         fixture->playsync_manager->startSync("ps_id_1", "AudioPlayer");

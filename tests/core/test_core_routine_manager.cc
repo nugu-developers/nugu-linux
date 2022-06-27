@@ -110,7 +110,7 @@ private:
 
 class RoutineTestHelper {
 public:
-    void composeActions(std::vector<RoutineTestData> test_datas)
+    void composeActions(std::vector<RoutineTestData>&& test_datas)
     {
         actions.clear();
 
