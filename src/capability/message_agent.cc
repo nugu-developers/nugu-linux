@@ -154,9 +154,11 @@ void MessageAgent::candidatesListed(const std::string& context_template, const s
     }
 
     this->context_template = context_template;
-    sendEvent("CandidatesListed", capa_helper->makeAllContextInfo(), writer.write(root), [&](...) {
-        finishInteractionControl();
-    });
+    sendEvent("CandidatesListed", capa_helper->makeAllContextInfo(), writer.write(root),
+        // NOLINTNEXTLINE(cert-dcl50-cpp)
+        [&](...) {
+            finishInteractionControl();
+        });
 }
 
 void MessageAgent::sendMessageSucceeded(const std::string& payload)
@@ -319,9 +321,11 @@ void MessageAgent::sendEventGetMessage(std::string&& event_name, const std::stri
         interaction_control_payloads.second.clear();
     }
 
-    sendEvent(event_name, getContextInfo(), writer.write(root), [&](...) {
-        finishInteractionControl();
-    });
+    sendEvent(event_name, getContextInfo(), writer.write(root),
+        // NOLINTNEXTLINE(cert-dcl50-cpp)
+        [&](...) {
+            finishInteractionControl();
+        });
 }
 
 void MessageAgent::sendEventReadMessageFinished(EventResultCallback cb)

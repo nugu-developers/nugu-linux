@@ -396,6 +396,7 @@ void DisplayAgent::sendEventControlFocusFailed(const std::string& ps_id, Control
 void DisplayAgent::sendEventControlScrollSucceeded(const std::string& ps_id, ControlDirection direction)
 {
     sendEventControl("ControlScrollSucceeded", ps_id, direction,
+        // NOLINTNEXTLINE(cert-dcl50-cpp)
         [&](...) {
             interaction_control_manager->finish(interaction_mode, getName());
         });

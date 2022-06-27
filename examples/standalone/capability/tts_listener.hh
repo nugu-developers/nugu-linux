@@ -30,7 +30,7 @@ public:
     void onTTSCancel(const std::string& dialog_id) override;
 
 private:
-    std::string extractText(std::string raw_text);
+    std::string extractText(const std::string& raw_text);
 
     const std::string WAKEUP_WORD_TAG = "{W}";
     const std::string WAKEUP_WORD = "아리아"; // It skip to get wakeup word from NuguCoreContainer

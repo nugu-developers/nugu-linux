@@ -239,7 +239,7 @@ void DisplayRenderHelper::removedRenderInfo(const std::string& id) noexcept
 
 void DisplayRenderHelper::clear()
 {
-    for (auto info : render_infos)
+    for (const auto& info : render_infos)
         delete info.second;
 
     render_infos.clear();

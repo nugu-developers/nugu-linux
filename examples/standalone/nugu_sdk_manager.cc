@@ -312,7 +312,7 @@ void NuguSDKManager::setDefaultSoundLayerPolicy()
 void NuguSDKManager::setAdditionalExecutor()
 {
     nugu_sample_manager->setTextCommander(
-        [&](std::string text, bool include_dialog_attribute) {
+        [&](const std::string& text, bool include_dialog_attribute) {
             text_handler->requestTextInput(text, "", "USERINPUT", include_dialog_attribute);
         });
     nugu_sample_manager->setPlayStackRetriever([&]() {
