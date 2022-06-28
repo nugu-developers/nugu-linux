@@ -16,8 +16,10 @@ ADD_LIBRARY(objhttp2 OBJECT
 TARGET_INCLUDE_DIRECTORIES(objhttp2 PRIVATE
 	network
 	${CMAKE_SOURCE_DIR}/src/base
-	${CMAKE_SOURCE_DIR}/externals/curl/include)
-ADD_DEPENDENCIES(objhttp2 CURL)
+	${CURL_INCLUDE})
+IF(ENABLE_BUILTIN_CURL)
+	ADD_DEPENDENCIES(objhttp2 CURL)
+ENDIF()
 
 # NUGU Base
 FILE(GLOB SRCS *.c)
@@ -41,4 +43,6 @@ TARGET_COMPILE_OPTIONS(objbase PRIVATE
 	-Waggregate-return
 	-Wmissing-declarations
 	-Wswitch-default)
-ADD_DEPENDENCIES(objbase CURL)
+IF(ENABLE_BUILTIN_CURL)
+	ADD_DEPENDENCIES(objbase CURL)
+ENDIF()
