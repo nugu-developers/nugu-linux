@@ -65,6 +65,7 @@ DEFINE_FEATURE(ASAN ${ASAN_DEFAULT} "Address Sanitizer")
 DEFINE_FEATURE(VENDOR_LIBRARY ON "vendor specific library(nugu_wwd, nugu_epd)")
 DEFINE_FEATURE(OPUS_LIBRARY OFF "compile built-in OPUS library")
 DEFINE_FEATURE(OPUS_LIBRARY_FLOAT_API OFF "floating point to OPUS library")
+DEFINE_FEATURE(BUILTIN_CURL ON "compile built-in curl library")
 
 DEFINE_FEATURE(DL_LINKING ON "-ldl linking")
 DEFINE_FEATURE(SOCKET_LINKING OFF "-lsocket linking")
@@ -108,11 +109,23 @@ IF(HAVE_SYSCALL)
 	ADD_DEFINITIONS(-DHAVE_SYSCALL)
 ENDIF()
 
+IF(ENABLE_BUILTIN_CURL)
+	SET(CURL_LIBRARY
+		${CMAKE_BINARY_DIR}/curl/lib/libcurl.a
+		${CMAKE_BINARY_DIR}/nghttp2/lib/libnghttp2.a)
+	SET(CURL_PKGCONFIG)
+	SET(CURL_INCLUDE ${CMAKE_SOURCE_DIR}/externals/curl/include)
+ELSE()
+	SET(CURL_LIBRARY)
+	SET(CURL_PKGCONFIG libcurl)
+	SET(CURL_INCLUDE)
+ENDIF()
+
 # Set NUGU SDK library default dependency
 SET(DEFAULT_LIB_DEPENDENCY
 	glib-2.0 gio-2.0 gio-unix-2.0 gthread-2.0
 	openssl
-	zlib)
+	zlib ${CURL_PKGCONFIG})
 SET(FORCE_LIB_DEPENDENCY)
 
 # Add vendor specific library dependency (keyword detector, end-point detector)
