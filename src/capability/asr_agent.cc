@@ -24,7 +24,7 @@
 namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "ASR";
-static const char* CAPABILITY_VERSION = "1.6";
+static const char* CAPABILITY_VERSION = "1.7";
 
 class ASRAgent::FocusListener : public IFocusResourceListener {
 public:
