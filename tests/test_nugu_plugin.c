@@ -150,6 +150,7 @@ static void test_plugin_init_fail(void)
 static void test_plugin_load(void)
 {
 	NuguPlugin *plugin;
+	NuguPlugin *plugin2;
 	int (*custom_add)(int a, int b);
 
 	/* File does not exist. */
@@ -168,6 +169,17 @@ static void test_plugin_load(void)
 	/* There is no 'custom_add' symbol in this plugin. */
 	g_assert(nugu_plugin_get_symbol(plugin, "custom_add") == NULL);
 
+	g_assert(nugu_plugin_add(plugin) == 0);
+	g_assert(nugu_plugin_add(plugin) == 1);
+
+	/* Attempt to add plugin with same file path */
+	plugin2 = nugu_plugin_new_from_file(PLUGIN_NUGU);
+	g_assert(plugin2 != NULL);
+
+	g_assert(nugu_plugin_add(plugin2) == -1);
+	nugu_plugin_free(plugin2);
+
+	g_assert(nugu_plugin_remove(plugin) == 0);
 	nugu_plugin_free(plugin);
 
 	/* nugu plugin with custom symbol */
@@ -214,12 +226,13 @@ static void test_plugin_default(void)
 	p = nugu_plugin_new(&test_plugin_desc);
 	g_assert(p != NULL);
 
+	nugu_plugin_initialize();
+
 	g_assert(nugu_plugin_find("test") == NULL);
 	g_assert(nugu_plugin_add(p) == 0);
+	g_assert(nugu_plugin_add(p) == 1);
 	g_assert(nugu_plugin_find("test") == p);
 
-	nugu_plugin_initialize();
-	g_assert(nugu_plugin_find("test") == p);
 	nugu_plugin_deinitialize();
 
 	g_assert(nugu_plugin_find("test") == NULL);

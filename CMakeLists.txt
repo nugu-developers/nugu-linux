@@ -218,7 +218,17 @@ ENDIF()
 # the library already installed on the system.
 LINK_LIBRARIES(-L${CMAKE_BINARY_DIR}/src)
 
-IF ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+IF (CMAKE_COMPILER_IS_GNUCC)
+	# Enable a new static analysis pass and associated warnings. (Introduced gcc v10.1)
+	# This option will not work if LTO is enabled.
+	IF (CMAKE_C_COMPILER_VERSION VERSION_GREATER 10.1)
+		# It is recommended to use only C language.
+		STRING(APPEND CMAKE_C_FLAGS " -fanalyzer")
+
+		# Not errors
+		STRING(APPEND CMAKE_C_FLAGS " -Wno-analyzer-possible-null-dereference")
+	ENDIF()
+
 	ADD_COMPILE_OPTIONS(
 		# Non-executable stack
 		-Wa,--execstack

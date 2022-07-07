@@ -27,6 +27,7 @@ struct _plugin {
 	const struct nugu_plugin_desc *desc;
 	void *data;
 	void *handle;
+	char *filename;
 	gboolean active;
 };
 
@@ -54,6 +55,7 @@ EXPORT_API NuguPlugin *nugu_plugin_new(struct nugu_plugin_desc *desc)
 	p->data = NULL;
 	p->handle = NULL;
 	p->active = FALSE;
+	p->filename = NULL;
 
 	return p;
 }
@@ -86,6 +88,7 @@ EXPORT_API NuguPlugin *nugu_plugin_new_from_file(const char *filepath)
 		return NULL;
 	}
 
+	p->filename = strdup(filepath);
 	p->handle = handle;
 
 	return p;
@@ -101,16 +104,40 @@ EXPORT_API void nugu_plugin_free(NuguPlugin *p)
 	if (p->handle)
 		dlclose(p->handle);
 
+	if (p->filename)
+		free(p->filename);
+
 	memset(p, 0, sizeof(struct _plugin));
 	free(p);
 }
 
 EXPORT_API int nugu_plugin_add(NuguPlugin *p)
 {
+	GList *cur;
+	NuguPlugin *tmp;
+
 	g_return_val_if_fail(p != NULL, -1);
 
-	if (g_list_find(_plugin_list, p))
-		return 0;
+	for (cur = _plugin_list; cur; cur = cur->next) {
+		tmp = cur->data;
+		if (!tmp)
+			continue;
+
+		if (tmp == p) {
+			nugu_error("plugin '%s' already registered",
+				   p->desc->name);
+			return 1;
+		}
+
+		if (tmp->filename != NULL && p->filename != NULL) {
+			if (g_strcmp0(tmp->filename, p->filename) == 0) {
+				nugu_error(
+					"plugin file '%s' already registered",
+					p->filename);
+				return -1;
+			}
+		}
+	}
 
 	_plugin_list = g_list_append(_plugin_list, p);
 
@@ -198,7 +225,7 @@ EXPORT_API int nugu_plugin_load_directory(const char *dirpath)
 
 		g_free(filename);
 
-		if (nugu_plugin_add(p) < 0)
+		if (nugu_plugin_add(p) != 0)
 			nugu_plugin_free(p);
 	}
 
