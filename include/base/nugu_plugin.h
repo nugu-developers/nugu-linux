@@ -137,7 +137,8 @@ void nugu_plugin_free(NuguPlugin *p);
  * @param[in] p plugin object
  * @return result
  * @retval 0 success
- * @retval -1 failure
+ * @retval 1 success (plugin is already registered)
+ * @retval -1 failure (another plugin using the same file is already registered)
  * @see nugu_plugin_find()
  * @see nugu_plugin_remove()
  */
