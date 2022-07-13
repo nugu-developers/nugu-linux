@@ -67,6 +67,26 @@ static void test_nugu_auth_discovery()
     g_assert(auth->discovery() == true);
     g_assert(auth->getGatewayRegistryUri().size() != 0);
     g_assert(auth->getTemplateServerUri().size() != 0);
+
+    /* Async request */
+    GMainLoop* loop;
+    loop = g_main_loop_new(NULL, FALSE);
+    int check_value = 0;
+
+    g_assert(auth->discovery([&](bool success) {
+        g_assert(success == true);
+        g_assert(check_value == 0);
+
+        check_value = 1;
+        g_main_loop_quit(loop);
+    }) == true);
+
+    g_main_loop_run(loop);
+    g_main_loop_unref(loop);
+
+    g_assert(check_value == 1);
+    g_assert(auth->getGatewayRegistryUri().size() != 0);
+    g_assert(auth->getTemplateServerUri().size() != 0);
 }
 
 static void test_nugu_auth_url()

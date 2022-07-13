@@ -41,6 +41,30 @@ static char* base64_decode(const char* orig)
     return decoded;
 }
 
+unsigned int find_grant_types(const Json::Value& grant_types)
+{
+    unsigned int supported_grant_types = 0;
+
+    if (grant_types.isArray()) {
+        Json::ArrayIndex type_len = grant_types.size();
+        for (Json::ArrayIndex i = 0; i < type_len; ++i) {
+            nugu_dbg("grant_types_supported[%d] = %s", i, grant_types[i].asCString());
+            if (grant_types[i].asString() == "authorization_code") {
+                supported_grant_types |= GrantType::AUTHORIZATION_CODE;
+            } else if (grant_types[i].asString() == "client_credentials") {
+                supported_grant_types |= GrantType::CLIENT_CREDENTIALS;
+            } else if (grant_types[i].asString() == "refresh_token") {
+                supported_grant_types |= GrantType::REFRESH_TOKEN;
+            } else if (grant_types[i].asString() == "device_code") {
+                supported_grant_types |= GrantType::DEVICE_CODE;
+            }
+        }
+        nugu_dbg("supported_grant_types = 0x%X", supported_grant_types);
+    }
+
+    return supported_grant_types;
+}
+
 NuguAuth::NuguAuth(const NuguDeviceConfig& config)
     : config(config)
     , supported_grant_types(0)
@@ -53,6 +77,51 @@ NuguAuth::~NuguAuth()
 {
     if (rest)
         delete rest;
+}
+
+bool NuguAuth::discovery(const std::function<void(bool success)> &cb)
+{
+    if (!rest)
+        return false;
+
+    if (config.oauth_client_id.size() == 0) {
+        nugu_error("oauth_client_id is empty");
+        return false;
+    }
+
+    return rest->get(EP_DISCOVERY + config.oauth_client_id, [&, cb](const NuguHttpResponse* resp) {
+        nugu_info("%s", (char*)resp->body);
+
+        Json::Value root;
+        Json::Reader reader;
+        std::string message((char*)resp->body);
+
+        if (!reader.parse(message, root)) {
+            cb(false);
+            return;
+        }
+
+        if (root["token_endpoint"].empty()) {
+            nugu_error("can't find token_endpoint from response");
+            cb(false);
+            return;
+        }
+
+        size_t url_len = config.oauth_server_url.size();
+
+        ep_token = root["token_endpoint"].asString();
+        ep_token.erase(0, url_len);
+
+        ep_authorization = root["authorization_endpoint"].asString();
+        ep_authorization.erase(0, url_len);
+
+        uri_gateway_registry = root["device_gateway_registry_uri"].asString();
+        uri_template_server = root["template_server_uri"].asString();
+
+        supported_grant_types = find_grant_types(root["grant_types_supported"]);
+
+        cb(true);
+    });
 }
 
 bool NuguAuth::discovery()
@@ -98,24 +167,7 @@ bool NuguAuth::discovery()
     uri_gateway_registry = root["device_gateway_registry_uri"].asString();
     uri_template_server = root["template_server_uri"].asString();
 
-    supported_grant_types = 0;
-    Json::Value grant_types = root["grant_types_supported"];
-    if (grant_types.isArray()) {
-        Json::ArrayIndex type_len = grant_types.size();
-        for (Json::ArrayIndex i = 0; i < type_len; ++i) {
-            nugu_dbg("grant_types_supported[%d] = %s", i, grant_types[i].asCString());
-            if (grant_types[i].asString() == "authorization_code") {
-                supported_grant_types |= GrantType::AUTHORIZATION_CODE;
-            } else if (grant_types[i].asString() == "client_credentials") {
-                supported_grant_types |= GrantType::CLIENT_CREDENTIALS;
-            } else if (grant_types[i].asString() == "refresh_token") {
-                supported_grant_types |= GrantType::REFRESH_TOKEN;
-            } else if (grant_types[i].asString() == "device_code") {
-                supported_grant_types |= GrantType::DEVICE_CODE;
-            }
-        }
-        nugu_dbg("supported_grant_types = 0x%X", supported_grant_types);
-    }
+    supported_grant_types = find_grant_types(root["grant_types_supported"]);
 
     return true;
 }

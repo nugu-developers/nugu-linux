@@ -94,6 +94,15 @@ public:
     bool discovery();
 
     /**
+     * @brief Async OAuth2 discovery to get OAuth2 end-point and server url
+     * @param[in] cb callback function to receive response
+     * @return result
+     * @retval true success
+     * @retval false failure
+     */
+    bool discovery(const std::function<void(bool success)> &cb);
+
+    /**
      * @brief Check whether the requested grant type is supported for the client
      * @param[in] gtype grant type
      * @return result
