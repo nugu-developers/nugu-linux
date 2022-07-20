@@ -79,6 +79,7 @@ struct pa_audio_param {
 	int is_last;
 
 	int uniq_id;
+	gulong sig_msg_hid;
 
 	int cur_volume;
 	int new_volume;
@@ -198,6 +199,19 @@ static void _connect_message_to_pipeline(struct pa_audio_param *pcm_param)
 	gst_bus_add_signal_watch(bus);
 	g_signal_connect(G_OBJECT(bus), "message", G_CALLBACK(_cb_message),
 			 pcm_param);
+
+	gst_object_unref(bus);
+}
+
+static void _disconnect_message_to_pipeline(struct pa_audio_param *pcm_param)
+{
+	GstBus *bus = gst_element_get_bus(pcm_param->pipeline);
+
+	if (pcm_param->sig_msg_hid == 0)
+		return;
+
+	g_signal_handler_disconnect(G_OBJECT(bus), pcm_param->sig_msg_hid);
+	pcm_param->sig_msg_hid = 0;
 
 	gst_object_unref(bus);
 }
@@ -446,6 +460,7 @@ static void _destroy_gst_elements(struct pa_audio_param *pcm_param)
 #ifdef DEBUG_PCM
 		nugu_info("_destroy_gst_elements: %d", pcm_param->uniq_id);
 #endif
+		_disconnect_message_to_pipeline(pcm_param);
 
 		if (pcm_param->pipeline) {
 			gst_object_unref(pcm_param->pipeline);
