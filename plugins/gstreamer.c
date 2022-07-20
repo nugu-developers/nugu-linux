@@ -62,6 +62,7 @@ struct gst_handle {
 	gboolean seek_done;
 	int seek_reserve;
 	int duration;
+	gulong sig_msg_hid;
 	char *playurl;
 	NuguPlayer *player;
 	enum nugu_media_status status;
@@ -299,7 +300,21 @@ static void _connect_message_to_pipeline(GstreamerHandle *gh)
 	GstBus *bus = gst_element_get_bus(gh->pipeline);
 
 	gst_bus_add_signal_watch(bus);
-	g_signal_connect(G_OBJECT(bus), "message", G_CALLBACK(_cb_message), gh);
+	gh->sig_msg_hid = g_signal_connect(G_OBJECT(bus), "message",
+					   G_CALLBACK(_cb_message), gh);
+
+	gst_object_unref(bus);
+}
+
+static void _disconnect_message_to_pipeline(GstreamerHandle *gh)
+{
+	GstBus *bus = gst_element_get_bus(gh->pipeline);
+
+	if (gh->sig_msg_hid == 0)
+		return;
+
+	g_signal_handler_disconnect(G_OBJECT(bus), gh->sig_msg_hid);
+	gh->sig_msg_hid = 0;
 
 	gst_object_unref(bus);
 }
@@ -603,6 +618,8 @@ static void _destroy(NuguPlayerDriver *driver, NuguPlayer *player)
 		nugu_error("invalid player (no driver data)");
 		return;
 	}
+
+	_disconnect_message_to_pipeline(gh);
 
 	if (player == gh->player)
 		_stop(driver, gh->player);

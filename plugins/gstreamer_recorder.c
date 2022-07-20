@@ -48,6 +48,7 @@ struct gst_handle {
 	int samplerate;
 	int samplebyte;
 	int channel;
+	gulong sig_msg_hid;
 	void *rec;
 
 #ifdef NUGU_ENV_DUMP_PATH_RECORDER
@@ -317,8 +318,21 @@ static void _connect_message_to_pipeline(GstreamerHandle *gh)
 	GstBus *bus = gst_element_get_bus(gh->pipeline);
 
 	gst_bus_add_signal_watch(bus);
-	g_signal_connect(G_OBJECT(bus), "message",
-			 G_CALLBACK(_recorder_message), gh);
+	gh->sig_msg_hid = g_signal_connect(G_OBJECT(bus), "message",
+					   G_CALLBACK(_recorder_message), gh);
+
+	gst_object_unref(bus);
+}
+
+static void _disconnect_message_to_pipeline(GstreamerHandle *gh)
+{
+	GstBus *bus = gst_element_get_bus(gh->pipeline);
+
+	if (gh->sig_msg_hid == 0)
+		return;
+
+	g_signal_handler_disconnect(G_OBJECT(bus), gh->sig_msg_hid);
+	gh->sig_msg_hid = 0;
 
 	gst_object_unref(bus);
 }
@@ -379,6 +393,8 @@ static void _destroy(NuguRecorder *rec)
 		nugu_dbg("already destroyed");
 		return;
 	}
+
+	_disconnect_message_to_pipeline(gh);
 
 	if (gh->pipeline)
 		g_object_unref(gh->pipeline);
