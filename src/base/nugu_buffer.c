@@ -93,7 +93,7 @@ static int _buffer_resize(NuguBuffer *buf, size_t needed)
 	tmp = realloc(buf->data, new_size);
 	if (!tmp) {
 		nugu_error_nomem();
-		return -1;
+		return -EFAULT;
 	}
 
 	buf->data = tmp;
