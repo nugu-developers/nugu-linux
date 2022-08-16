@@ -21,11 +21,10 @@
 #include <glib.h>
 
 #include "base/nugu_timer.h"
+#include "mock/nugu_timer_mock.h"
 #include "nugu_timer.hh"
 
 using namespace NuguCore;
-
-extern void fake_timer_elapse();
 
 #define TIMER_ELAPSE_SEC(t)                              \
     {                                                    \
