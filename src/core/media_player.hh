@@ -20,6 +20,7 @@
 #include <string>
 
 #include "base/nugu_media.h"
+#include "base/nugu_player.h"
 #include "clientkit/media_player_interface.hh"
 
 namespace NuguCore {
@@ -64,6 +65,9 @@ public:
 
     std::string stateString(MediaPlayerState state) override;
     std::string url() override;
+
+    // only used for unit test
+    NuguPlayer* getNuguPlayer();
 
 private:
     void setPositionWithSeek(int position);

@@ -3,21 +3,16 @@ SET(UNIT_TESTS
 	test_core_focus_manager
 	test_core_directive_sequencer
 	test_core_session_manager
+	test_core_media_player
 	test_core_playstack_manager
 	test_core_playsync_manager
 	test_core_interaction_control_manager
 	test_core_routine_manager)
 
 # Add Compile Sources with Mock for test
-SET(test_core_nugu_timer_srcs
-	test_core_nugu_timer_mock.cc ../../src/core/nugu_timer.cc)
-SET(test_core_focus_manager_srcs ../../src/core/focus_manager.cc)
-SET(test_core_directive_sequencer_srcs ../../src/core/directive_sequencer.cc)
-SET(test_core_session_manager_srcs ../../src/core/session_manager.cc)
-SET(test_core_playstack_manager_srcs ../../src/core/playstack_manager.cc)
-SET(test_core_playsync_manager_srcs ../../src/core/playsync_manager.cc)
-SET(test_core_interaction_control_manager_srcs ../../src/core/interaction_control_manager.cc)
-SET(test_core_routine_manager_srcs ../../src/core/routine_manager.cc)
+SET(test_core_nugu_timer_srcs ../mock/nugu_timer_mock.c)
+SET(test_core_media_player_srcs ../mock/nugu_timer_mock.c ../mock/media_player_mock.c
+								../../src/base/nugu_player.c ../../src/core/nugu_timer.cc ../../src/core/media_player.cc)
 
 FOREACH(test ${UNIT_TESTS})
 	SET(SRC ${test}.cc)
@@ -26,12 +21,15 @@ FOREACH(test ${UNIT_TESTS})
 	ENDIF ()
 	ADD_EXECUTABLE(${test} ${SRC})
 	TARGET_COMPILE_DEFINITIONS(${test} PRIVATE
+		-DEXPORT_API=__attribute__\(\(visibility\(\"default\"\)\)\)
 		-DRUNPATH="${CMAKE_CURRENT_BINARY_DIR}")
 	TARGET_INCLUDE_DIRECTORIES(${test} PRIVATE
 		../../src/core
-		../../include)
+		../../include
+		..)
 	TARGET_LINK_LIBRARIES(${test} ${pkgs_LDFLAGS}
 		-L${CMAKE_BINARY_DIR}/src -lnugu -lstdc++)
+#TARGET_LINK_LIBRARIES(${test} ${pkgs_LDFLAGS} -lnugu -lstdc++)
 	ADD_DEPENDENCIES(${test} libnugu)
 	ADD_TEST(${test} ${test})
 	SET_PROPERTY(TEST ${test} PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${CMAKE_BINARY_DIR}/src")
