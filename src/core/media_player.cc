@@ -482,4 +482,9 @@ std::string MediaPlayer::url()
     return d->playurl;
 }
 
+NuguPlayer* MediaPlayer::getNuguPlayer()
+{
+    return d->player;
+}
+
 } // NuguCore
