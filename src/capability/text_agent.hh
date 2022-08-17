@@ -54,6 +54,7 @@ private:
         std::string token;
         std::string ps_id;
         std::string source;
+        Json::Value interaction_control;
     };
 
     using ExpectTypingInfo = struct {
@@ -64,9 +65,7 @@ private:
 
     std::string requestTextInput(TextInputParam&& text_input_param, bool routine_play, bool include_dialog_attribute = true);
     void sendEventTextInput(const TextInputParam& text_input_param, bool include_dialog_attribute = true, EventResultCallback cb = nullptr);
-    void sendEventTextSourceFailed(const TextInputParam& text_input_param, EventResultCallback cb = nullptr);
-    void sendEventTextRedirectFailed(const TextInputParam& text_input_param, const Json::Value& payload, EventResultCallback cb = nullptr);
-    void sendEventFailed(std::string&& event_name, const TextInputParam& text_input_param, Json::Value&& extra_payload, EventResultCallback cb = nullptr);
+    void sendEventFailed(std::string&& event_name, const TextInputParam& text_input_param, EventResultCallback cb = nullptr);
     void parsingTextSource(const char* message);
     void parsingTextRedirect(const char* message);
     void parsingExpectTyping(const char* message);
