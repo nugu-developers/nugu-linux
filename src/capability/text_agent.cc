@@ -287,6 +287,9 @@ void TextAgent::sendEventTextInput(const TextInputParam& text_input_param, bool 
     if (!text_input_param.source.empty())
         root["source"] = text_input_param.source;
 
+    if (!text_input_param.interaction_control.empty())
+        root["interactionControl"] = text_input_param.interaction_control;
+
     cur_dialog_id = event.getDialogRequestId();
     playsync_manager->stopHolding();
 
@@ -294,28 +297,16 @@ void TextAgent::sendEventTextInput(const TextInputParam& text_input_param, bool 
     requestFocus();
 }
 
-void TextAgent::sendEventTextSourceFailed(const TextInputParam& text_input_param, EventResultCallback cb)
+void TextAgent::sendEventFailed(std::string&& event_name, const TextInputParam& text_input_param, EventResultCallback cb)
 {
-    sendEventFailed("TextSourceFailed", text_input_param, Json::nullValue, std::move(cb));
-}
-
-void TextAgent::sendEventTextRedirectFailed(const TextInputParam& text_input_param, const Json::Value& payload, EventResultCallback cb)
-{
-    Json::Value interaction_control_payload;
-
-    if (payload.isMember("interactionControl"))
-        interaction_control_payload["interactionControl"] = payload["interactionControl"];
-
-    sendEventFailed("TextRedirectFailed", text_input_param, std::move(interaction_control_payload), std::move(cb));
-}
-
-void TextAgent::sendEventFailed(std::string&& event_name, const TextInputParam& text_input_param, Json::Value&& extra_payload, EventResultCallback cb)
-{
-    Json::Value root(extra_payload);
+    Json::Value root;
     Json::FastWriter writer;
 
     if (!text_input_param.ps_id.empty())
         root["playServiceId"] = text_input_param.ps_id;
+
+    if (!text_input_param.interaction_control.empty())
+        root["interactionControl"] = text_input_param.interaction_control;
 
     root["token"] = text_input_param.token;
     root["errorCode"] = FAIL_EVENT_ERROR_CODE;
@@ -344,7 +335,7 @@ void TextAgent::parsingTextSource(const char* message)
         if (!handleTextCommonProcess(text_input_param))
             throw "The processing TextSource is incomplete.";
     } catch (const char* exception_message) {
-        sendEventTextSourceFailed(text_input_param);
+        sendEventFailed("TextSourceFailed", text_input_param);
         nugu_error(exception_message);
     }
 }
@@ -363,13 +354,16 @@ void TextAgent::parsingTextRedirect(const char* message)
         text_input_param.token = root["token"].asString();
         text_input_param.ps_id = root["targetPlayServiceId"].asString();
 
+        if (root.isMember("interactionControl"))
+            text_input_param.interaction_control = root["interactionControl"];
+
         startInteractionControl(getInteractionMode(root["interactionControl"]));
 
         if (!handleTextCommonProcess(text_input_param))
             throw "The processing TextRedirect is incomplete.";
     } catch (const char* exception_message) {
         finishInteractionControl();
-        sendEventTextRedirectFailed(text_input_param, root);
+        sendEventFailed("TextRedirectFailed", text_input_param);
         nugu_error(exception_message);
     }
 }
