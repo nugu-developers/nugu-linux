@@ -1,0 +1,52 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ "master" ]
+  schedule:
+    #        ┌───────────── minute (0 - 59)
+    #        │  ┌───────────── hour (0 - 23)
+    #        │  │ ┌───────────── day of the month (1 - 31)
+    #        │  │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+    #        │  │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+    #        │  │ │ │ │
+    #        │  │ │ │ │
+    #        │  │ │ │ │
+    #        *  * * * *
+    - cron: '10 1 * * *' # Every 10:10 AM KST
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Install dependency packages
+      run: |
+        sudo add-apt-repository -y ppa:nugulinux/sdk
+        sudo apt update
+        sudo apt-get install -y cmake libglib2.0-dev libssl-dev \
+          zlib1g-dev libasound2-dev portaudio19-dev libopus-dev \
+          libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev \
+          libnugu-epd-dev libnugu-kwd-dev
+
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        submodules: true
+        fetch-depth: 0
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: 'cpp'
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
