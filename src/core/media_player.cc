@@ -145,6 +145,8 @@ MediaPlayer::MediaPlayer(int volume)
             // ignore STOP event after EOF
             d->state = MediaPlayerState::STOPPED;
 
+            mplayer->updatePosition();
+
             if (d->loop) {
                 mplayer->play();
                 break;
@@ -170,9 +172,7 @@ MediaPlayer::MediaPlayer(int volume)
         if (!isPlaying())
             return;
 
-        int position = nugu_player_get_position(d->player);
-        if (position >= 0)
-            setPosition(position);
+        updatePosition();
     });
     d->mp_map[this] = d;
 
@@ -480,6 +480,13 @@ std::string MediaPlayer::stateString(MediaPlayerState state)
 std::string MediaPlayer::url()
 {
     return d->playurl;
+}
+
+void MediaPlayer::updatePosition()
+{
+    int position = nugu_player_get_position(d->player);
+    if (position >= 0)
+        setPosition(position);
 }
 
 NuguPlayer* MediaPlayer::getNuguPlayer()

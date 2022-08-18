@@ -251,6 +251,7 @@ static void test_mediaplayer_short_content_with_timer_delay(mplayerFixture* fixt
 
     test_player_set_position(player->getNuguPlayer(), 1100);
     test_player_notify_event(player->getNuguPlayer(), NUGU_MEDIA_EVENT_END_OF_STREAM);
+    g_assert(player->position() == 1);
 }
 
 static void test_mediaplayer_short_content_with_timer_polling_faster(mplayerFixture* fixture, gconstpointer ignored)
@@ -282,6 +283,8 @@ static void test_mediaplayer_short_content_with_timer_polling_faster(mplayerFixt
     g_assert(player->position() == 0);
 
     test_player_notify_event(player->getNuguPlayer(), NUGU_MEDIA_EVENT_END_OF_STREAM);
+    // can get position 1 sec after EOF
+    g_assert(player->position() == 1);
 }
 
 static void test_mediaplayer_short_content_with_buffering(mplayerFixture* fixture, gconstpointer ignored)
@@ -314,6 +317,8 @@ static void test_mediaplayer_short_content_with_buffering(mplayerFixture* fixtur
 
     test_player_set_position(player->getNuguPlayer(), 1100);
     test_player_notify_event(player->getNuguPlayer(), NUGU_MEDIA_EVENT_END_OF_STREAM);
+    // can get position 1 sec after EOF
+    g_assert(player->position() == 1);
 }
 
 int main(int argc, char* argv[])

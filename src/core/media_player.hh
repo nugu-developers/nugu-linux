@@ -67,6 +67,8 @@ public:
     std::string stateString(MediaPlayerState state) override;
     std::string url() override;
 
+    void updatePosition();
+
     // only used for unit test
     NuguPlayer* getNuguPlayer();
 

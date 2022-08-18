@@ -217,6 +217,16 @@ int nugu_player_get_volume(NuguPlayer *player);
 int nugu_player_get_duration(NuguPlayer *player);
 
 /**
+ * @brief Set current playback position of player
+ * @param[in] player nugu player object
+ * @param[in] position player position
+ * @return result
+ * @retval 0 success
+ * @retval -1 failure
+ */
+int nugu_player_set_position(NuguPlayer *player, int position);
+
+/**
  * @brief Get current playback position of player
  * @param[in] player player object
  * @return result
