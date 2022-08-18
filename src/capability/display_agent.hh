@@ -82,6 +82,7 @@ private:
     void sendEventControlScrollFailed(const std::string& ps_id, ControlDirection direction);
     void sendEventClose(const std::string& ename, const std::string& ps_id);
     void sendEventControl(const std::string& ename, const std::string& ps_id, ControlDirection direction, EventResultCallback cb = nullptr);
+    void handleInteractionControl(const std::string& ename, Json::Value& root);
 
     void parsingClose(const char* message);
     void parsingControlFocus(const char* message);
@@ -144,6 +145,10 @@ private:
         { "LONG", 30 },
         { "LONGEST", 600 }
     };
+    const std::set<std::string> INTERACTION_CONTROL_EVENTS {
+        "ControlScrollSucceeded",
+        "ControlScrollFailed"
+    };
 
     DisplayRenderInfo* composeRenderInfo(const NuguDirective* ndir, const std::string& ps_id, const std::string& token);
     std::string getTemplateId(const std::string& ps_id);
@@ -158,6 +163,7 @@ private:
     std::string prepared_render_info_id;
     bool keep_history;
     InteractionMode interaction_mode;
+    Json::Value interaction_control_payload;
 
     std::stack<HistoryControl> history_control_stack;
 };
