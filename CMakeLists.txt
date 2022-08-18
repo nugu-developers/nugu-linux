@@ -249,6 +249,9 @@ IF (CMAKE_COMPILER_IS_GNUCC)
 		# Non-executable stack
 		LINK_LIBRARIES(-Wl,-z,noexecstack)
 
+		# Debian packaging default link flags
+		LINK_LIBRARIES(-Wl,-Bsymbolic-functions -Wl,-z,relro)
+
 		# RPATH is useful only for testing without installation.
 		# Please use the '-DPACKAGING' option for debian packaging.
 		IF (NOT PACKAGING)
