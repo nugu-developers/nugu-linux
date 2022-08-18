@@ -48,6 +48,7 @@ void DisplayAgent::initialize()
     prepared_render_info_id.clear();
     keep_history = false;
     interaction_mode = InteractionMode::NONE;
+    interaction_control_payload.clear();
 
     playsync_manager->addListener(getName(), this);
 
@@ -427,9 +428,21 @@ void DisplayAgent::sendEventControl(const std::string& ename, const std::string&
 
     root["playServiceId"] = ps_id;
     root["direction"] = getDirectionString(direction);
+
+    handleInteractionControl(ename, root);
+
     payload = writer.write(root);
 
     sendEvent(ename, getContextInfo(), payload, std::move(cb));
+}
+
+void DisplayAgent::handleInteractionControl(const std::string& ename, Json::Value& root)
+{
+    if (INTERACTION_CONTROL_EVENTS.find(ename) != INTERACTION_CONTROL_EVENTS.cend()
+        && !interaction_control_payload.empty()) {
+        root["interactionControl"] = interaction_control_payload;
+        interaction_control_payload.clear();
+    }
 }
 
 void DisplayAgent::parsingClose(const char* message)
@@ -517,6 +530,9 @@ void DisplayAgent::parsingControlScroll(const char* message)
         direction = ControlDirection::PREVIOUS;
     else
         direction = ControlDirection::NEXT;
+
+    if (root.isMember("interactionControl"))
+        interaction_control_payload = root["interactionControl"];
 
     ps_id = root["playServiceId"].asString();
     template_id = getTemplateId(ps_id);
