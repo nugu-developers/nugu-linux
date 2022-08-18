@@ -37,6 +37,8 @@ struct _nugu_player {
 	enum nugu_media_status status;
 	char *playurl;
 	int volume;
+	int position;
+	gboolean is_finished;
 	NuguMediaEventCallback ecb;
 	NuguMediaStatusCallback scb;
 	void *eud; /* user data for event callback */
@@ -277,6 +279,9 @@ EXPORT_API int nugu_player_start(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
+	player->is_finished = FALSE;
+	player->position = 0;
+
 	if (player->driver == NULL || player->driver->ops == NULL ||
 	    player->driver->ops->start == NULL) {
 		nugu_error("Not supported");
@@ -291,6 +296,9 @@ EXPORT_API int nugu_player_start(NuguPlayer *player)
 EXPORT_API int nugu_player_stop(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
+
+	player->is_finished = FALSE;
+	player->position = 0;
 
 	if (player->driver == NULL || player->driver->ops == NULL ||
 	    player->driver->ops->stop == NULL) {
@@ -379,9 +387,20 @@ EXPORT_API int nugu_player_get_duration(NuguPlayer *player)
 	return player->driver->ops->get_duration(player->driver, player);
 }
 
+EXPORT_API int nugu_player_set_position(NuguPlayer *player, int position)
+{
+	g_return_val_if_fail(player != NULL, -1);
+
+	player->position = position;
+	return 0;
+}
+
 EXPORT_API int nugu_player_get_position(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
+
+	if (player->is_finished && player->position)
+		return player->position;
 
 	if (player->driver == NULL || player->driver->ops == NULL ||
 	    player->driver->ops->get_position == NULL) {
@@ -438,8 +457,10 @@ EXPORT_API void nugu_player_emit_event(NuguPlayer *player,
 {
 	g_return_if_fail(player != NULL);
 
-	if (event == NUGU_MEDIA_EVENT_END_OF_STREAM)
+	if (event == NUGU_MEDIA_EVENT_END_OF_STREAM) {
 		player->status = NUGU_MEDIA_STATUS_STOPPED;
+		player->is_finished = TRUE;
+	}
 
 	if (player->ecb != NULL)
 		player->ecb(event, player->eud);
