@@ -11,8 +11,12 @@ SET(UNIT_TESTS
 
 # Add Compile Sources with Mock for test
 SET(test_core_nugu_timer_srcs ../mock/nugu_timer_mock.c)
-SET(test_core_media_player_srcs ../mock/nugu_timer_mock.c ../mock/media_player_mock.c
-								../../src/base/nugu_player.c ../../src/core/nugu_timer.cc ../../src/core/media_player.cc)
+SET(test_core_media_player_srcs
+	../mock/nugu_timer_mock.c
+	../mock/media_player_mock.c
+	../../src/base/nugu_player.c
+	../../src/core/nugu_timer.cc
+	../../src/core/media_player.cc)
 
 FOREACH(test ${UNIT_TESTS})
 	SET(SRC ${test}.cc)

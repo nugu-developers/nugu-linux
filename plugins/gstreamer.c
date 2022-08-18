@@ -236,12 +236,25 @@ static void _cb_message(GstBus *bus, GstMessage *msg, GstreamerHandle *gh)
 			NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_PLAYING);
 		break;
 	}
-	case GST_MESSAGE_EOS:
+	case GST_MESSAGE_EOS: {
+		gint64 current;
+
 		nugu_dbg("GST_MESSAGE_EOS");
+
+		if (gst_element_query_position(gh->pipeline, GST_FORMAT_TIME,
+					       &current)) {
+			int last_position;
+
+			last_position = GST_TIME_AS_SECONDS(current);
+			nugu_dbg("last position => %d sec", last_position);
+			nugu_player_set_position(gh->player, last_position);
+		}
+
 		gst_element_set_state(gh->pipeline, GST_STATE_READY);
 		NOTIFY_EVENT(NUGU_MEDIA_EVENT_END_OF_STREAM);
 		NOTIFY_STATUS_CHANGED(NUGU_MEDIA_STATUS_STOPPED);
 		break;
+	}
 
 	case GST_MESSAGE_BUFFERING: {
 		gint percent = 0;
@@ -765,7 +778,7 @@ static int _set_volume(NuguPlayerDriver *driver, NuguPlayer *player, int vol)
 static int _get_duration(NuguPlayerDriver *driver, NuguPlayer *player)
 {
 	GstreamerHandle *gh;
-	gint64 current;
+	gint64 duration;
 
 	g_return_val_if_fail(player != NULL, -1);
 
@@ -778,11 +791,11 @@ static int _get_duration(NuguPlayerDriver *driver, NuguPlayer *player)
 	if (gh->duration <= 0) {
 		/* Query the current position of the stream */
 		if (!gst_element_query_duration(gh->pipeline, GST_FORMAT_TIME,
-						&current)) {
-			nugu_error("Could not query current position!!");
+						&duration)) {
+			nugu_error("Could not query duration!!");
 			return -1;
 		}
-		gh->duration = GST_TIME_AS_SECONDS(current);
+		gh->duration = GST_TIME_AS_SECONDS(duration);
 	}
 
 	return gh->duration;

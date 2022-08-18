@@ -505,7 +505,7 @@ int main(int argc, char *argv[])
 	g_test_add_func("/player/probe", test_player_probe);
 	g_test_add_func("/player/seek", test_nugu_player_seek);
 	g_test_add_func("/player/volume", test_player_volume);
-	g_test_add_func("/pcm/audio_attribute", test_player_audio_attribute);
+	g_test_add_func("/player/audio_attribute", test_player_audio_attribute);
 
 	return g_test_run();
 }
