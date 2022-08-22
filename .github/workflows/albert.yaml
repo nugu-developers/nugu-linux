@@ -1,0 +1,53 @@
+name: Build Allwinner
+on:
+  push:
+    branches:
+      - abt*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+          fetch-depth: 0
+
+      - name: Build
+        run: |
+          # Fix permissions for docker
+          chmod 777 $PWD
+
+          cat <<EOF > sdkbuild.sh
+          #!/bin/zsh
+          set -e
+
+
+          mkdir -p /mnt/UDISK
+
+          rm -rf build
+          mkdir build
+          cd build
+
+          cmake .. \
+              -DENABLE_ASAN=OFF \
+              -DCMAKE_INSTALL_PREFIX=/mnt/UDISK \
+              -DCMAKE_INSTALL_LIBDIR=/mnt/UDISK/lib \
+              -DCMAKE_TOOLCHAIN_FILE=/opt/toolchain/Toolchain.cmake
+          make -j6
+          make install
+          mv /mnt/UDISK ./SDK
+          tar cvfz files_allwinner_$(git rev-parse --short HEAD).tgz SDK
+          EOF
+
+          chmod 755 sdkbuild.sh
+
+          echo "> Build cross-compile"
+          docker run -t --rm -v $PWD:$PWD -w $PWD \
+              nugulinux/devenv:allwinner ./sdkbuild.sh $SHORTSHA
+
+      - name: Build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          path: ./build/files_*
