@@ -1,7 +1,0 @@
-package-name-doesnt-match-sonames libnugu0
-embedded-library usr/lib/x86_64-linux-gnu/libnugu.so.1.7.2: libjsoncpp
-embedded-library usr/lib/arm-linux-gnueabihf/libnugu.so.1.7.2: libjsoncpp
-embedded-library usr/lib/aarch64-linux-gnu/libnugu.so.1.7.2: libjsoncpp
-embedded-library usr/lib/x86_64-linux-gnu/libnugu.so.1.7.2: curl
-embedded-library usr/lib/arm-linux-gnueabihf/libnugu.so.1.7.2: curl
-embedded-library usr/lib/aarch64-linux-gnu/libnugu.so.1.7.2: curl
