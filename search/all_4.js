@@ -22,7 +22,7 @@ var searchData=
   ['disconnected_133',['DISCONNECTED',['../group__NetworkManagerInterface.html#gga385a69cab88c2d456247e254424bf809a99c8ce56e7ab246445d3b134724428f3',1,'NuguClientKit']]],
   ['disconnectfailed_134',['disconnectFailed',['../classNuguCapability_1_1IBluetoothHandler.html#a2ca99de33da036a15e11114b8f90156c',1,'NuguCapability::IBluetoothHandler']]],
   ['disconnectsucceeded_135',['disconnectSucceeded',['../classNuguCapability_1_1IBluetoothHandler.html#ad5876603d05436de3a03e3717376e3f6',1,'NuguCapability::IBluetoothHandler']]],
-  ['discovery_136',['discovery',['../classNuguClientKit_1_1NuguAuth.html#a4337ddb7804965cffc7273aabc004aeb',1,'NuguClientKit::NuguAuth']]],
+  ['discovery_136',['discovery',['../classNuguClientKit_1_1NuguAuth.html#a4337ddb7804965cffc7273aabc004aeb',1,'NuguClientKit::NuguAuth::discovery()'],['../classNuguClientKit_1_1NuguAuth.html#a81a9c3c1d56fda96f2589ea08bd8529b',1,'NuguClientKit::NuguAuth::discovery(const std::function&lt; void(bool success)&gt; &amp;cb)']]],
   ['display_5finterface_2ehh_137',['display_interface.hh',['../display__interface_8hh.html',1,'']]],
   ['displaycleared_138',['displayCleared',['../classNuguCapability_1_1IDisplayHandler.html#a1739f7f715f5eed4a2b7f7c6842853b8',1,'NuguCapability::IDisplayHandler']]],
   ['displaycontextinfo_139',['DisplayContextInfo',['../structNuguCapability_1_1DisplayContextInfo.html',1,'NuguCapability']]],

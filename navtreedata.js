@@ -60,14 +60,14 @@ var NAVTREEINDEX =
 ".html",
 "classNuguCapability_1_1ISoundListener.html#a17761aba4fce10a6519a398b9093b113",
 "classNuguClientKit_1_1IMediaPlayerListener.html#aabe69756b2a317bd2f9d5f34e89c9e87",
-"functions_func_s.html",
+"functions_func_r.html",
 "group__Log.html#ga860e8aea9bbff532c81e4acbc1f7504e",
 "group__NuguDirective.html#ga8a86ecd351a5ffe05c5ebfc99e787f6b",
-"group__NuguPcm.html#ga064023536db57aa38110130d3959067f",
-"group__NuguRingBuffer.html#ga730865ec488d5df0885d48ea9732a5b3",
-"group__SpeechRecognizerAggregatorInterface.html#ga24979d1723c737b36b291a4d750706c3",
-"mic__interface_8hh.html#gaafad2a241855a2d3848567c69b00c076",
-"structNuguClientKit_1_1NuguToken.html#a20e8221793d0e7ef4a209fe82f2294ca"
+"group__NuguPcm.html",
+"group__NuguRingBuffer.html#ga57173888361d6a882a2eb2929877115e",
+"group__SpeechRecognizerAggregatorInterface.html#ga1542e0adaece9196209a01c998337459",
+"message__interface_8hh.html#ggaf96a6b24718266cf4bd44237c02d0535a5b22a97dbe7d4d7162777ecdefd3bb26",
+"structNuguClientKit_1_1NuguDeviceConfig.html#a47b41f90b7bf44328d99a90d7a8cda36"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

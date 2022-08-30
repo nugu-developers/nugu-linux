@@ -3,6 +3,7 @@ var classNuguClientKit_1_1NuguAuth =
     [ "NuguAuth", "classNuguClientKit_1_1NuguAuth.html#ac7ef4dad222f97115086ee3b3ad0c991", null ],
     [ "~NuguAuth", "classNuguClientKit_1_1NuguAuth.html#ab13ce4ee83b587064940e058f523ca3f", null ],
     [ "discovery", "classNuguClientKit_1_1NuguAuth.html#a4337ddb7804965cffc7273aabc004aeb", null ],
+    [ "discovery", "classNuguClientKit_1_1NuguAuth.html#a81a9c3c1d56fda96f2589ea08bd8529b", null ],
     [ "isSupport", "classNuguClientKit_1_1NuguAuth.html#a34c8890f95eab4dfd4abe8a296a548e8", null ],
     [ "generateAuthorizeUrl", "classNuguClientKit_1_1NuguAuth.html#ac66df0ab9510fba799d35bfe4ce62eea", null ],
     [ "getAuthorizationCodeToken", "classNuguClientKit_1_1NuguAuth.html#a238ae1378dd3ba3213ff81c6b92e68b5", null ],

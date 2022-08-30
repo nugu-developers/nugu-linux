@@ -1,7 +1,8 @@
 <map id="nugu_media.h" name="nugu_media.h">
-<area shape="rect" id="node1" title=" " alt="" coords="149,5,263,32"/>
-<area shape="rect" id="node2" href="$nugu__pcm_8h.html" title=" " alt="" coords="90,80,191,107"/>
-<area shape="rect" id="node5" href="$nugu__player_8h.html" title=" " alt="" coords="216,80,329,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="223,5,338,32"/>
+<area shape="rect" id="node2" href="$nugu__pcm_8h.html" title=" " alt="" coords="165,80,266,107"/>
+<area shape="rect" id="node5" href="$nugu__player_8h.html" title=" " alt="" coords="309,80,423,107"/>
 <area shape="rect" id="node3" href="$nugu__decoder_8h.html" title=" " alt="" coords="5,155,129,181"/>
 <area shape="rect" id="node4" href="$nugu__encoder_8h.html" title=" " alt="" coords="153,155,277,181"/>
+<area shape="rect" id="node6" href="$media__player__mock_8h_source.html" title=" " alt="" coords="301,155,468,181"/>
 </map>

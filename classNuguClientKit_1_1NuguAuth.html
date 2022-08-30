@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.2</span>
+   &#160;<span id="projectnumber">1.7.3</span>
    </div>
   </td>
  </tr>
@@ -100,6 +100,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4337ddb7804965cffc7273aabc004aeb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#a4337ddb7804965cffc7273aabc004aeb">discovery</a> ()</td></tr>
 <tr class="memdesc:a4337ddb7804965cffc7273aabc004aeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">OAuth2 discovery to get OAuth2 end-point and server url.  <a href="classNuguClientKit_1_1NuguAuth.html#a4337ddb7804965cffc7273aabc004aeb">More...</a><br /></td></tr>
 <tr class="separator:a4337ddb7804965cffc7273aabc004aeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81a9c3c1d56fda96f2589ea08bd8529b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#a81a9c3c1d56fda96f2589ea08bd8529b">discovery</a> (const std::function&lt; void(bool success)&gt; &amp;cb)</td></tr>
+<tr class="memdesc:a81a9c3c1d56fda96f2589ea08bd8529b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Async OAuth2 discovery to get OAuth2 end-point and server url.  <a href="classNuguClientKit_1_1NuguAuth.html#a81a9c3c1d56fda96f2589ea08bd8529b">More...</a><br /></td></tr>
+<tr class="separator:a81a9c3c1d56fda96f2589ea08bd8529b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac66df0ab9510fba799d35bfe4ce62eea"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#ac66df0ab9510fba799d35bfe4ce62eea">generateAuthorizeUrl</a> (const std::string &amp;device_serial)</td></tr>
 <tr class="memdesc:ac66df0ab9510fba799d35bfe4ce62eea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get OAuth2 authorization url.  <a href="classNuguClientKit_1_1NuguAuth.html#ac66df0ab9510fba799d35bfe4ce62eea">More...</a><br /></td></tr>
 <tr class="separator:ac66df0ab9510fba799d35bfe4ce62eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -138,7 +141,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p><a class="el" href="classNuguClientKit_1_1NuguAuth.html" title="NuguAuth.">NuguAuth</a>. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a4337ddb7804965cffc7273aabc004aeb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4337ddb7804965cffc7273aabc004aeb">&#9670;&nbsp;</a></span>discovery()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4337ddb7804965cffc7273aabc004aeb">&#9670;&nbsp;</a></span>discovery() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -153,6 +156,40 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>OAuth2 discovery to get OAuth2 end-point and server url. </p>
+<dl class="section return"><dt>Returns</dt><dd>result </dd></dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">true</td><td>success </td></tr>
+    <tr><td class="paramname">false</td><td>failure </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a81a9c3c1d56fda96f2589ea08bd8529b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81a9c3c1d56fda96f2589ea08bd8529b">&#9670;&nbsp;</a></span>discovery() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool NuguClientKit::NuguAuth::discovery </td>
+          <td>(</td>
+          <td class="paramtype">const std::function&lt; void(bool success)&gt; &amp;&#160;</td>
+          <td class="paramname"><em>cb</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Async OAuth2 discovery to get OAuth2 end-point and server url. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">cb</td><td>callback function to receive response </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>result </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
@@ -486,7 +523,7 @@ false token is not expired </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1NuguAuth.html">NuguAuth</a></li>
-    <li class="footer">Generated on Wed Jun 15 2022 05:01:19 for NUGU SDK Linux by
+    <li class="footer">Generated on Tue Aug 30 2022 04:45:35 for NUGU SDK Linux by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>
   </ul>
