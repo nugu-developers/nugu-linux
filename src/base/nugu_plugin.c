@@ -198,10 +198,12 @@ EXPORT_API int nugu_plugin_load_directory(const char *dirpath)
 	GDir *dir;
 
 	env_dirpath = getenv(NUGU_ENV_PLUGIN_PATH);
-	if (env_dirpath)
+	if (env_dirpath) {
 		plugin_path = (const char *)env_dirpath;
-	else
+		nugu_info("use environment variable path '%s'", plugin_path);
+	} else {
 		plugin_path = dirpath;
+	}
 
 	g_return_val_if_fail(plugin_path != NULL, -1);
 
@@ -213,7 +215,7 @@ EXPORT_API int nugu_plugin_load_directory(const char *dirpath)
 
 	while ((file = g_dir_read_name(dir)) != NULL) {
 		if (g_str_has_prefix(file, "lib") == TRUE ||
-		    g_str_has_suffix(file, ".so") == FALSE)
+		    g_str_has_suffix(file, NUGU_PLUGIN_FILE_EXTENSION) == FALSE)
 			continue;
 
 		filename = g_build_filename(plugin_path, file, NULL);

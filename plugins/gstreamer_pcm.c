@@ -22,7 +22,6 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include <alsa/error.h>
 #include <glib.h>
 #include <gst/gst.h>
 #include <gst/audio/audio-format.h>

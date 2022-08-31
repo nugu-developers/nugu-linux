@@ -233,15 +233,26 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 	}
 
 	if (_log_prefix_fields & NUGU_LOG_PREFIX_TID) {
-		int tid;
+		pid_t tid;
+		int is_main_thread = 1;
+
 #ifdef HAVE_SYSCALL
+#ifdef __APPLE__
+		pthread_threadid_np(NULL, (uint64_t *)&tid);
+		is_main_thread = pthread_main_np();
+#else
 		tid = (pid_t)syscall(SYS_gettid);
+		if (pid != 0 && pid != tid)
+			is_main_thread = 0;
+#endif
 #else
 		tid = (pid_t)gettid();
+		if (pid != 0 && pid != tid)
+			is_main_thread = 0;
 #endif
 
 #ifdef NUGU_LOG_USE_ANSICOLOR
-		if (len > 0 && pid != 0 && pid != tid)
+		if (len > 0 && is_main_thread == 0)
 			len += sprintf(prefix + len,
 				       NUGU_ANSI_COLOR_DARKGRAY
 				       "%d " NUGU_ANSI_COLOR_NORMAL,

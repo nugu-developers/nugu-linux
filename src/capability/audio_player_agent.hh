@@ -142,8 +142,6 @@ private:
     static void directiveDataCallback(NuguDirective* ndir, int seq, void* userdata);
     static void getAttachmentData(NuguDirective* ndir, void* userdata);
 
-    const unsigned int PAUSE_CONTEXT_HOLD_TIME = 60 * 10;
-
     IMediaPlayer* cur_player;
     IMediaPlayer* media_player;
     ITTSPlayer* tts_player;

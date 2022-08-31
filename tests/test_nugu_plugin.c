@@ -154,15 +154,15 @@ static void test_plugin_load(void)
 	int (*custom_add)(int a, int b);
 
 	/* File does not exist. */
-#define PLUGIN_NOFILE RUNPATH "/xxx.so"
+#define PLUGIN_NOFILE RUNPATH "/xxx" NUGU_PLUGIN_FILE_EXTENSION
 	g_assert(nugu_plugin_new_from_file(PLUGIN_NOFILE) == NULL);
 
 	/* Not the nugu plugin (can't get pre-defined symbol) */
-#define PLUGIN_DUMMY RUNPATH "/plugin_dummy.so"
+#define PLUGIN_DUMMY RUNPATH "/plugin_dummy" NUGU_PLUGIN_FILE_EXTENSION
 	g_assert(nugu_plugin_new_from_file(PLUGIN_DUMMY) == NULL);
 
 	/* nugu plugin */
-#define PLUGIN_NUGU RUNPATH "/plugin_nugu.so"
+#define PLUGIN_NUGU RUNPATH "/plugin_nugu" NUGU_PLUGIN_FILE_EXTENSION
 	plugin = nugu_plugin_new_from_file(PLUGIN_NUGU);
 	g_assert(plugin != NULL);
 
@@ -183,7 +183,9 @@ static void test_plugin_load(void)
 	nugu_plugin_free(plugin);
 
 	/* nugu plugin with custom symbol */
-#define PLUGIN_NUGU_CUSTOM RUNPATH "/plugin_nugu_custom.so"
+#define PLUGIN_NUGU_CUSTOM                                                     \
+	RUNPATH "/plugin_nugu_custom" NUGU_PLUGIN_FILE_EXTENSION
+
 	plugin = nugu_plugin_new_from_file(PLUGIN_NUGU_CUSTOM);
 	g_assert(plugin != NULL);
 
@@ -196,6 +198,7 @@ static void test_plugin_load(void)
 	/* Load all plugins */
 	nugu_plugin_initialize();
 
+	unsetenv(NUGU_ENV_PLUGIN_PATH);
 	nugu_plugin_load_directory(RUNPATH);
 
 	g_assert(nugu_plugin_find("xxx") == NULL);
