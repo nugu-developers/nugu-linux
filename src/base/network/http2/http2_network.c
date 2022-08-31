@@ -327,6 +327,14 @@ static void *_loop(void *data)
 	int i;
 	struct curl_waitfd extra_fds[1];
 
+#ifdef HAVE_PTHREAD_SETNAME_NP
+#ifdef __APPLE__
+	i = pthread_setname_np("http2");
+	if (i < 0)
+		nugu_error("pthread_setname_np() failed");
+#endif
+#endif
+
 	nugu_dbg("thread started");
 
 	net->running = 1;
@@ -668,9 +676,11 @@ int http2_network_start(HTTP2Network *net)
 	}
 
 #ifdef HAVE_PTHREAD_SETNAME_NP
+#ifndef __APPLE__
 	ret = pthread_setname_np(net->thread_id, "http2");
 	if (ret < 0)
 		nugu_error("pthread_setname_np() failed");
+#endif
 #endif
 
 	/* Wait for thread creation (maximum 5 secs) */

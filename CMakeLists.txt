@@ -66,18 +66,38 @@ ELSE()
 	ENDIF()
 ENDIF()
 
-SET(BUILTIN_CURL_DEFAULT "ON")
-SET(BUILTIN_JSONCPP_DEFAULT "ON")
-SET(PULSEAUDIO_DEFAULT "ON")
-SET(PORTAUDIO_PLUGIN_DEFAULT "ON")
+IF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+	SET(BUILTIN_CURL_DEFAULT "OFF")
+	SET(BUILTIN_JSONCPP_DEFAULT "OFF")
+	SET(PULSEAUDIO_DEFAULT "OFF")
+	SET(PORTAUDIO_PLUGIN_DEFAULT "OFF")
+	SET(ASAN_DEFAULT "OFF")
+
+	ADD_DEFINITIONS(
+		-DNUGU_PLUGIN_FILE_EXTENSION=".dylib"
+	)
+ELSE()
+	SET(BUILTIN_CURL_DEFAULT "ON")
+	SET(BUILTIN_JSONCPP_DEFAULT "ON")
+	SET(PULSEAUDIO_DEFAULT "ON")
+	SET(PORTAUDIO_PLUGIN_DEFAULT "ON")
+
+	ADD_DEFINITIONS(
+		# Run-time buffer overflow detection
+		-D_FORTIFY_SOURCE=2
+
+		-DNUGU_PLUGIN_FILE_EXTENSION=".so"
+	)
+ENDIF()
 
 # Set default build options
 DEFINE_FEATURE(LOG_ANSICOLOR ON "ANSI Color to log message")
 DEFINE_FEATURE(LTO ${LTO_DEFAULT} "Link Time Optimization")
 DEFINE_FEATURE(ASAN ${ASAN_DEFAULT} "Address Sanitizer")
 DEFINE_FEATURE(VENDOR_LIBRARY ON "vendor specific library(nugu_wwd, nugu_epd)")
-DEFINE_FEATURE(OPUS_LIBRARY OFF "compile built-in OPUS library")
-DEFINE_FEATURE(OPUS_LIBRARY_FLOAT_API OFF "floating point to OPUS library")
+
+DEFINE_FEATURE(BUILTIN_OPUS OFF "compile built-in OPUS library")
+DEFINE_FEATURE(BUILTIN_OPUS_FLOAT_API OFF "floating point to OPUS library")
 DEFINE_FEATURE(BUILTIN_CURL ${BUILTIN_CURL_DEFAULT} "compile built-in curl library")
 DEFINE_FEATURE(BUILTIN_JSONCPP ${BUILTIN_JSONCPP_DEFAULT} "compile built-in jsoncpp library")
 
@@ -127,7 +147,7 @@ IF(ENABLE_BUILTIN_CURL)
 	SET(CURL_LIBRARY
 		${CMAKE_BINARY_DIR}/curl/lib/libcurl.a
 		${CMAKE_BINARY_DIR}/nghttp2/lib/libnghttp2.a)
-	SET(CURL_PKGCONFIG)
+	SET(CURL_PKGCONFIG zlib)
 	SET(CURL_INCLUDE ${CMAKE_SOURCE_DIR}/externals/curl/include)
 ELSE()
 	SET(CURL_LIBRARY)
@@ -147,23 +167,13 @@ ELSE()
 	SET(JSONCPP_INCLUDE)
 ENDIF()
 
-# Set NUGU SDK library default dependency
-SET(DEFAULT_LIB_DEPENDENCY
-	glib-2.0 gio-2.0 gio-unix-2.0 gthread-2.0
-	openssl zlib
-	${CURL_PKGCONFIG} ${JSONCPP_PKGCONFIG})
-SET(FORCE_LIB_DEPENDENCY)
-
 # Add vendor specific library dependency (keyword detector, end-point detector)
 IF(ENABLE_VENDOR_LIBRARY)
-	ADD_DEFINITIONS(-DENABLE_VENDOR_LIBRARY)
-	LIST(APPEND DEFAULT_LIB_DEPENDENCY nugu-kwd nugu-epd)
-ENDIF()
+	SET(VENDOR_PKGCONFIG nugu-kwd nugu-epd)
 
-# Gstreamer does not support dynamic loading/unloading of their libraries.
-# Therefore, add the library dependency to NUGU SDK instead of NUGU Plugin.
-IF(ENABLE_GSTREAMER_PLUGIN)
-	LIST(APPEND FORCE_LIB_DEPENDENCY gstreamer-1.0 gstreamer-app-1.0 gstreamer-pbutils-1.0 gstreamer-app-1.0)
+	ADD_DEFINITIONS(-DENABLE_VENDOR_LIBRARY)
+ELSE()
+	SET(VENDOR_PKGCONFIG)
 ENDIF()
 
 IF(ENABLE_PULSEAUDIO)
@@ -182,14 +192,21 @@ ELSE()
 	SET(LDFLAG_SOCKET "")
 ENDIF()
 
+# Set NUGU SDK library default dependency
+SET(DEFAULT_LIB_DEPENDENCY
+	glib-2.0 gio-2.0 gio-unix-2.0 gthread-2.0 openssl
+	${CURL_PKGCONFIG} ${JSONCPP_PKGCONFIG} ${VENDOR_PKGCONFIG})
+
 # Get CFLAGS and LDFLAGS from pkg-config list
 pkg_check_modules(pkgs REQUIRED ${DEFAULT_LIB_DEPENDENCY})
 FOREACH(flag ${pkgs_CFLAGS})
 	ADD_COMPILE_OPTIONS(${flag})
 ENDFOREACH()
 
-IF(FORCE_LIB_DEPENDENCY)
-	pkg_check_modules(force_pkgs REQUIRED ${FORCE_LIB_DEPENDENCY})
+# Gstreamer does not support dynamic loading/unloading of their libraries.
+# Therefore, add the library dependency to NUGU SDK instead of NUGU Plugin.
+IF(ENABLE_GSTREAMER_PLUGIN)
+	pkg_check_modules(force_pkgs REQUIRED gstreamer-1.0 gstreamer-app-1.0 gstreamer-pbutils-1.0 gstreamer-app-1.0)
 	FOREACH(flag ${force_pkgs_CFLAGS})
 		ADD_COMPILE_OPTIONS(${flag})
 	ENDFOREACH(flag)
@@ -244,6 +261,7 @@ ENDIF()
 # the library already installed on the system.
 LINK_LIBRARIES(-L${CMAKE_BINARY_DIR}/src)
 
+# Compiler specific options (gcc, clang)
 IF (CMAKE_COMPILER_IS_GNUCC)
 	# Enable a new static analysis pass and associated warnings. (Introduced gcc v10.1)
 	# This option will not work if LTO is enabled.
@@ -262,38 +280,44 @@ IF (CMAKE_COMPILER_IS_GNUCC)
 		# Eliminate unused code and data (with --gc-sections link option)
 		-Wl,--gc-sections)
 
-	IF (NOT ${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+	LINK_LIBRARIES(
 		# Link with force dependency libraries
-		LINK_LIBRARIES(-Wl,--no-as-needed ${force_pkgs_LDFLAGS})
+		-Wl,--no-as-needed ${force_pkgs_LDFLAGS}
 
 		# Link only needed libraries
-		LINK_LIBRARIES(-Wl,--as-needed)
+		-Wl,--as-needed
 
 		# Enforces symbol resolution at build time
-		LINK_LIBRARIES(-Wl,-z,defs)
+		-Wl,-z,defs
 
 		# Non-executable stack
-		LINK_LIBRARIES(-Wl,-z,noexecstack)
+		-Wl,-z,noexecstack
 
 		# Debian packaging default link flags
-		LINK_LIBRARIES(-Wl,-Bsymbolic-functions -Wl,-z,relro)
+		-Wl,-Bsymbolic-functions -Wl,-z,relro)
 
-		# RPATH is useful only for testing without installation.
-		# Please use the '-DPACKAGING' option for debian packaging.
-		IF (NOT PACKAGING)
-			LINK_LIBRARIES(-Wl,--rpath=${CMAKE_BINARY_DIR}/src)
+	# RPATH is useful only for testing without installation.
+	# Please use the '-DPACKAGING' option for debian packaging.
+	IF (NOT PACKAGING)
+		LINK_LIBRARIES(-Wl,--rpath=${CMAKE_BINARY_DIR}/src)
+	ENDIF()
+
+	# Add __FILENAME__ macro to use path from source directory instead of full path
+	IF(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 8.0)
+		ADD_COMPILE_OPTIONS(-fmacro-prefix-map=${CMAKE_SOURCE_DIR}/=)
+	ELSE()
+		IF(CMAKE_GENERATOR MATCHES "Unix Makefiles")
+			SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${CMAKE_SOURCE_DIR})/,,$(abspath $<))\"'")
+			SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${CMAKE_SOURCE_DIR})/,,$(abspath $<))\"'")
 		ENDIF()
 	ENDIF()
-ENDIF()
-
-# Add __FILENAME__ macro to use path from source directory instead of full path
-IF(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 8.0)
-	ADD_COMPILE_OPTIONS(-fmacro-prefix-map=${CMAKE_SOURCE_DIR}/=)
 ELSE()
-	MESSAGE("CMAKE_GENERATOR = ${CMAKE_GENERATOR}")
-	IF(CMAKE_GENERATOR MATCHES "Unix Makefiles")
-		SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${CMAKE_SOURCE_DIR})/,,$(abspath $<))\"'")
-		SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${CMAKE_SOURCE_DIR})/,,$(abspath $<))\"'")
+	ADD_COMPILE_OPTIONS(-fmacro-prefix-map=${CMAKE_SOURCE_DIR}/=)
+
+	LINK_LIBRARIES(${force_pkgs_LDFLAGS})
+
+	IF (NOT PACKAGING)
+		LINK_LIBRARIES(-Wl,-rpath,${CMAKE_BINARY_DIR}/src)
 	ENDIF()
 ENDIF()
 
@@ -307,9 +331,6 @@ ADD_DEFINITIONS(-DNUGU_ASSET_PATH="${datadir}")
 
 # Global definitions
 ADD_DEFINITIONS(
-	# Run-time buffer overflow detection
-	-D_FORTIFY_SOURCE=2
-
 	# Environment variable names
 	# - Please comment out the following definition to avoid overwriting
 	#   the value by setting an environment variable. (e.g. Production)

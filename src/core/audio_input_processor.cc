@@ -57,12 +57,22 @@ void AudioInputProcessor::init(std::string&& name, std::string& sample, std::str
 
     thread_created = false;
     destroy = 0;
-    thread = std::thread([this] { this->loop(); });
+    thread = std::thread([this] {
+#ifdef HAVE_PTHREAD_SETNAME_NP
+#ifdef __APPLE__
+    int ret = pthread_setname_np("AudioInputProcessor");
+    if (ret < 0)
+        nugu_error("pthread_setname_np() failed");
+#endif
+#endif
+        this->loop(); });
 
 #ifdef HAVE_PTHREAD_SETNAME_NP
+#ifndef __APPLE__
     int ret = pthread_setname_np(thread.native_handle(), name.append("_loop").c_str());
     if (ret < 0)
         nugu_error("pthread_setname_np() failed");
+#endif
 #endif
 
     /* Wait until thread creation */
