@@ -60,7 +60,7 @@ public:
         return "";
     }
 
-    void setDestoryDirectiveByAgent(bool by_agent)
+    void setDestroyDirectiveByAgent(bool by_agent)
     {
         is_destroy_directive_by_agent = by_agent;
     }
@@ -111,12 +111,12 @@ static void test_capability_handle_single_dialog(TestFixture* fixture, gconstpoi
     sub_test_compose_directive(fixture);
 
     // handle directive by capability (complete directive by self)
-    fixture->agent->setDestoryDirectiveByAgent(false);
+    fixture->agent->setDestroyDirectiveByAgent(false);
     g_assert(fixture->dir_seq->add(fixture->ndir_first));
     g_assert(!fixture->agent->getNuguDirective());
 
     // handle directive by agent
-    fixture->agent->setDestoryDirectiveByAgent(true);
+    fixture->agent->setDestroyDirectiveByAgent(true);
     g_assert(fixture->dir_seq->add(fixture->ndir_second));
     g_assert(fixture->agent->getNuguDirective());
     g_assert(fixture->dir_seq->getCanceledDialogId().empty());

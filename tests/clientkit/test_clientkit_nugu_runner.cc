@@ -165,7 +165,7 @@ static gboolean _execute_method_runner_with_queue_on_nuguloop(gpointer userdata)
     g_assert(test_executor.runMethod(ExecuteType::Queued) == true);
     g_assert(test_executor.ret_bool == false);
 
-    // terminate loop before the job is excuted.
+    // terminate loop before the job is executed.
     g_main_loop_quit(loop);
     return FALSE;
 }
@@ -249,7 +249,7 @@ static void test_nugu_runner_reserve_execute_method_next_idle_time_on_nuguloop(n
     g_main_loop_run(loop);
 }
 
-static void test_nugu_runner_execute_method_imediately_on_nuguloop(nuguFixture* fixture, gconstpointer ignored)
+static void test_nugu_runner_execute_method_immediately_on_nuguloop(nuguFixture* fixture, gconstpointer ignored)
 {
     GMainLoop* loop = fixture->loop;
 
@@ -311,7 +311,7 @@ int main(int argc, char* argv[])
     g_log_set_always_fatal((GLogLevelFlags)G_LOG_FATAL_MASK);
 
     G_TEST_ADD_FUNC("/app/NuguRunnerReserveExecuteMethodNextIdleTime", test_nugu_runner_reserve_execute_method_next_idle_time_on_nuguloop);
-    G_TEST_ADD_FUNC("/app/NuguRunnerReserveExecuteMethodImediately", test_nugu_runner_execute_method_imediately_on_nuguloop);
+    G_TEST_ADD_FUNC("/app/NuguRunnerReserveExecuteMethodImmediately", test_nugu_runner_execute_method_immediately_on_nuguloop);
     G_TEST_ADD_FUNC("/app/NuguRunnerExecuteMethodOnAnotherThread", test_nugu_runner_execute_method_on_another_thread);
     G_TEST_ADD_FUNC("/app/NuguRunnerExecuteMethodReturnType", test_nugu_runner_execute_method_return_type);
     G_TEST_ADD_FUNC("/app/NuguRunnerExecuteMultipleMethodOnAnotherThread", test_nugu_runner_execute_multiple_method_on_anther_thread);

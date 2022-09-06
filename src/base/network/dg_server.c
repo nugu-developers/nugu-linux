@@ -362,7 +362,7 @@ int dg_server_is_retry_over(DGServer *server)
 	return 0;
 }
 
-void dg_server_increse_retry_count(DGServer *server)
+void dg_server_increase_retry_count(DGServer *server)
 {
 	g_return_if_fail(server != NULL);
 

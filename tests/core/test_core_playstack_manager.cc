@@ -371,7 +371,7 @@ static void test_playstack_manager_reset_playstack_hold_time(TestFixture* fixtur
 
 static void test_playstack_manager_set_default_playstack_hold_time(TestFixture* fixture, gconstpointer ignored)
 {
-    using HoldTimes = PlayStackManager::PlayStakcHoldTimes;
+    using HoldTimes = PlayStackManager::PlayStackHoldTimes;
     const HoldTimes NEW_DEFAULT_HOLD_TIME { 3, 300 };
     const auto& hold_times(fixture->playstack_manager->getPlayStackHoldTime());
 

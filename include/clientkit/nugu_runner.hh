@@ -38,7 +38,7 @@ namespace NuguClientKit {
  * @brief ExecuteType
  */
 enum class ExecuteType {
-    Auto, /**< The method is executed synchronized if caller is on nugu loop, otherwise it is executed asyncronized */
+    Auto, /**< The method is executed synchronized if caller is on nugu loop, otherwise it is executed asynchronously */
     Queued, /**< The method is executed on next idle time even if caller is on nugu loop */
     Blocking /**< The caller is blocking until the method is executed done */
 };

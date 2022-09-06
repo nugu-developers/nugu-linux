@@ -51,7 +51,7 @@ NuguClientImpl::NuguClientImpl()
 
 NuguClientImpl::~NuguClientImpl()
 {
-    nugu_core_container->destoryAudioRecorderManager();
+    nugu_core_container->destroyAudioRecorderManager();
     nugu_core_container->destroyInstance();
 
     if (plugin_loaded)

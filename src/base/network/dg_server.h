@@ -47,7 +47,7 @@ int dg_server_stop_health_check(DGServer *server);
 unsigned int dg_server_get_retry_count(DGServer *server);
 unsigned int dg_server_get_retry_count_limit(DGServer *server);
 int dg_server_is_retry_over(DGServer *server);
-void dg_server_increse_retry_count(DGServer *server);
+void dg_server_increase_retry_count(DGServer *server);
 void dg_server_reset_retry_count(DGServer *server);
 
 int dg_server_send_event(DGServer *server, NuguEvent *nev);
