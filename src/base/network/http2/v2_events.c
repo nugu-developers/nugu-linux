@@ -23,7 +23,6 @@
 #include "base/nugu_equeue.h"
 #include "base/nugu_uuid.h"
 #include "base/nugu_prof.h"
-#include "base/nugu_event.h"
 
 #include "dg_types.h"
 

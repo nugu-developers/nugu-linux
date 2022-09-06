@@ -17,6 +17,7 @@
 #ifndef __HTTP2_V2_EVENTS_H__
 #define __HTTP2_V2_EVENTS_H__
 
+#include "base/nugu_event.h"
 #include "http2/http2_network.h"
 
 #ifdef __cplusplus

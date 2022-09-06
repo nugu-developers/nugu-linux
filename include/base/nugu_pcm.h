@@ -17,6 +17,7 @@
 #ifndef __NUGU_PCM_H__
 #define __NUGU_PCM_H__
 
+#include <stddef.h>
 #include <base/nugu_audio.h>
 #include <base/nugu_media.h>
 
