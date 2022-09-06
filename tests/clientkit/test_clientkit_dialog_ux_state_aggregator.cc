@@ -216,7 +216,7 @@ private:
     ChipsInfo chips;
 };
 
-using TestFixture = struct {
+using TestFixture = struct _TestFixture {
     std::shared_ptr<NuguClient> nugu_client;
     std::shared_ptr<DialogUXStateAggregator> dialog_ux_state_aggregator;
     std::shared_ptr<DialogUXStateAggregatorListener> listener;

@@ -69,7 +69,7 @@ private:
     bool is_destroy_directive_by_agent = true;
 };
 
-using TestFixture = struct {
+using TestFixture = struct _TestFixture {
     std::unique_ptr<NuguClient> nugu_client;
     std::unique_ptr<FakeAgent> agent;
     IDirectiveSequencer* dir_seq;

@@ -62,7 +62,7 @@ private:
 
 using TestModeChecker = InteractionControlManagerListener::InteractionModeChecker;
 
-typedef struct {
+typedef struct _TestFixture {
     std::shared_ptr<InteractionControlManager> ic_manager;
     std::shared_ptr<InteractionControlManagerListener> ic_manager_listener;
     std::shared_ptr<InteractionControlManagerListener> ic_manager_listener_snd;

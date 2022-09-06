@@ -25,7 +25,7 @@
 
 namespace NuguCapability {
 
-typedef struct {
+typedef struct _DisplayRenderInfo {
     std::string id;
     std::string type;
     std::string view;

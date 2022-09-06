@@ -80,7 +80,7 @@ enum class ASRError {
  * @brief Attributes for setting ASR options.
  * @see IASRHandler::setAttribute
  */
-typedef struct {
+typedef struct _ASRAttribute {
     std::string model_path; /**< Epd model file path */
     std::string epd_type; /**< Epd type : CLIENT, SERVER */
     std::string asr_encoding; /**< Asr encoding type : PARTIAL, COMPLETE */

@@ -54,7 +54,7 @@ enum class TextError {
 /**
  * @brief Attributes for setting Text options.
  */
-typedef struct {
+typedef struct _TextAttribute {
     int response_timeout; /**< Server response timeout about sent text */
 } TextAttribute;
 

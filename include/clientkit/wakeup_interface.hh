@@ -46,7 +46,7 @@ enum class WakeupDetectState {
  * @brief Model for holding Wakeup model file info.
  * @see IWakeupHandler::changeModel
  */
-typedef struct {
+typedef struct _WakeupModelFile {
     std::string net; /**< model net file */
     std::string search; /**< model search file */
 } WakeupModelFile;

@@ -58,7 +58,7 @@ public:
     void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas) override;
 
 private:
-    using HistoryControl = struct {
+    using HistoryControl = struct _HistoryControl {
         bool parent = false;
         bool child = false;
         std::string parent_token;
@@ -67,7 +67,7 @@ private:
         bool is_render = false;
     };
 
-    using DisplayContextCollection = struct : DisplayContextInfo {
+    using DisplayContextCollection = struct _DisplayContextCollection: DisplayContextInfo {
         std::string ps_id;
         std::string token;
     };

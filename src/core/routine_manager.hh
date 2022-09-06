@@ -32,7 +32,7 @@ using namespace NuguClientKit;
 
 class RoutineManager : public IRoutineManager {
 public:
-    using RoutineAction = struct {
+    using RoutineAction = struct _RoutineAction {
         std::string type;
         std::string play_service_id;
         std::string text;

@@ -81,7 +81,7 @@ enum class FocusState {
 /**
  * @brief FocusConfiguration
  */
-typedef struct {
+typedef struct _FocusConfiguration {
     std::string type; /**< focus type */
     int priority; /**< focus priority */
 } FocusConfiguration;

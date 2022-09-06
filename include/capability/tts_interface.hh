@@ -48,7 +48,7 @@ enum class TTSState {
 /**
  * @brief Attributes for setting TTS options.
  */
-typedef struct {
+typedef struct _TTSAttribute {
     std::string tts_engine; /**< TTS engine type */
 } TTSAttribute;
 

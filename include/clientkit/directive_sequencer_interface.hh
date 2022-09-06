@@ -48,7 +48,7 @@ enum class BlockingMedium {
 /**
  * @brief BlockingPolicy
  */
-typedef struct {
+typedef struct _BlockingPolicy {
     BlockingMedium medium; /**< BlockingMedium */
     bool isBlocking; /**< true: Blocking, false: Non-blocking */
 } BlockingPolicy;

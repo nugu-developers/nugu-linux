@@ -49,7 +49,7 @@ public:
     void onStackChanged(const std::pair<std::string, std::string>& ps_ids) override;
 
 private:
-    using TextInputParam = struct {
+    using TextInputParam = struct _TextInputParam {
         std::string text;
         std::string token;
         std::string ps_id;
@@ -57,7 +57,7 @@ private:
         Json::Value interaction_control;
     };
 
-    using ExpectTypingInfo = struct {
+    using ExpectTypingInfo = struct _ExpectTypingInfo {
         bool is_handle = false;
         std::string playstack;
         Json::Value payload;

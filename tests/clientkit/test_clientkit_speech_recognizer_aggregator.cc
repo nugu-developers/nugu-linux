@@ -145,12 +145,12 @@ class FakeASRHandler : public IASRHandler,
                        public Capability,
                        public FakeExecutorListener {
 public:
-    using WakeupPower = struct {
+    using WakeupPower = struct _WakeupPower {
         float noise;
         float speech;
     };
 
-    using ASRResult = struct {
+    using ASRResult = struct _ASRResult {
         std::string text;
         ASRError error;
     };
@@ -284,7 +284,7 @@ private:
     int dialog_id_index = 0;
 };
 
-typedef struct {
+typedef struct _SpeechRecognizerAggregatorState {
     WakeupDetectState wakeup;
     ASRState asr;
 
@@ -295,7 +295,6 @@ typedef struct {
     };
 
     Extras extras;
-
 } SpeechRecognizerAggregatorState;
 
 class SpeechRecognizerAggregatorListener : public ISpeechRecognizerAggregatorListener {
@@ -340,7 +339,8 @@ private:
     RecognitionResult result {};
     std::string dialog_id;
 };
-using TestFixture = struct {
+
+using TestFixture = struct _TestFixture {
     std::shared_ptr<FakeWakeupHandler> wakeup_handler;
     std::shared_ptr<FakeASRHandler> asr_handler;
     std::shared_ptr<FakeExecutor> executor;

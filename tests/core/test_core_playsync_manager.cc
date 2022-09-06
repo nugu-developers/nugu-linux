@@ -220,7 +220,7 @@ static NuguDirective* createDirective(const std::string& name_space, const std::
         "ref_1", "{}", groups.c_str());
 }
 
-typedef struct {
+typedef struct _TestFixture {
     std::shared_ptr<PlaySyncManager> playsync_manager;
     std::shared_ptr<PlaySyncManagerListener> playsync_manager_listener;
     std::shared_ptr<PlaySyncManagerListener> playsync_manager_listener_snd;
@@ -238,7 +238,6 @@ typedef struct {
     NuguDirective* ndir_nudge;
     NuguDirective* ndir_alerts;
     NuguDirective* ndir_disp_expect_speech;
-
 } TestFixture;
 
 static void setup(TestFixture* fixture, gconstpointer user_data)
