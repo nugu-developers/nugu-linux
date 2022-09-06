@@ -114,7 +114,7 @@ void NuguCoreContainer::createAudioRecorderManager()
     AudioRecorderManager::getInstance();
 }
 
-void NuguCoreContainer::destoryAudioRecorderManager()
+void NuguCoreContainer::destroyAudioRecorderManager()
 {
     AudioRecorderManager::destroyInstance();
 }

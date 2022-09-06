@@ -206,7 +206,7 @@ public:
 
     /**
      * @brief Check whether the previous dialog has to be handled or not.
-     * @param[in] prev_ndir preivous directive
+     * @param[in] prev_ndir previous directive
      * @param[in] cur_ndir current directive
      * @return true if has to be handled, otherwise false
      */

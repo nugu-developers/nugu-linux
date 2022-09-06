@@ -196,7 +196,7 @@ void DisplayAgent::displayCleared(const std::string& id)
     if (history_control_stack.empty() || history_control_stack.top().id != id)
         render_helper->removedRenderInfo(id);
 
-    deactiveSession();
+    deactivateSession();
 
     context_collection = {};
 }
@@ -677,7 +677,7 @@ void DisplayAgent::activateSession(NuguDirective* ndir)
     session_manager->activate(dialog_id);
 }
 
-void DisplayAgent::deactiveSession()
+void DisplayAgent::deactivateSession()
 {
     for (const auto& session_dialog_id : session_dialog_ids)
         session_manager->deactivate(session_dialog_id);

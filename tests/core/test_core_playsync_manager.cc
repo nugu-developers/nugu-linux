@@ -1081,7 +1081,7 @@ static void test_playsync_manager_refresh_extra_data(TestFixture* fixture, gcons
 
 static void test_playsync_manager_check_expect_speech(TestFixture* fixture, gconstpointer ignored)
 {
-    auto checkHasMultiTurnNotifiedRepeatly = [&](NuguDirective* dir) {
+    auto checkHasMultiTurnNotifiedRepeatedly = [&](NuguDirective* dir) {
         fixture->playsync_manager->prepareSync("ps_id_2", dir);
         g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 1);
     };
@@ -1097,7 +1097,7 @@ static void test_playsync_manager_check_expect_speech(TestFixture* fixture, gcon
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Prepared);
     g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 1);
 
-    checkHasMultiTurnNotifiedRepeatly(fixture->ndir_expect_speech);
+    checkHasMultiTurnNotifiedRepeatedly(fixture->ndir_expect_speech);
 
     // [2] start sync
     fixture->playsync_manager->startSync("ps_id_2", "TTS");
@@ -1109,7 +1109,7 @@ static void test_playsync_manager_check_expect_speech(TestFixture* fixture, gcon
     fixture->ic_manager->finish(InteractionMode::MULTI_TURN, "ASR");
     g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 0);
 
-    // [4] emulate start recogintion in TTS playing
+    // [4] emulate start recognition in TTS playing
     fixture->playsync_manager->postPoneRelease();
     fixture->playsync_manager->releaseSync("ps_id_2", "TTS");
     fixture->playsync_manager->stopHolding();
@@ -1119,7 +1119,7 @@ static void test_playsync_manager_check_expect_speech(TestFixture* fixture, gcon
     g_assert(fixture->playsync_manager_listener->getSyncState("ps_id_2") == PlaySyncState::Synced);
     g_assert(fixture->ic_manager_listener->getHasMultiTurnNotifiedCount() == 1);
 
-    checkHasMultiTurnNotifiedRepeatly(fixture->ndir_expect_speech_second);
+    checkHasMultiTurnNotifiedRepeatedly(fixture->ndir_expect_speech_second);
 
     // [extra] prepare sync another playstack
     fixture->playsync_manager->prepareSync("ps_id_3", fixture->ndir_expect_speech_third);

@@ -375,7 +375,7 @@ static void _try_connect_to_handoff(NetworkManager *nm)
 
 	/* Retry to connect to handoff server */
 	if (dg_server_is_retry_over(nm->handoff) == 0) {
-		dg_server_increse_retry_count(nm->handoff);
+		dg_server_increase_retry_count(nm->handoff);
 		_log_server_info(nm, nm->handoff);
 
 		if (dg_server_connect_async(nm->handoff) == 0) {
@@ -446,7 +446,7 @@ static void _try_connect_to_servers(NetworkManager *nm)
 
 		/* Retry to connect to current server */
 		if (dg_server_is_retry_over(nm->server) == 0) {
-			dg_server_increse_retry_count(nm->server);
+			dg_server_increase_retry_count(nm->server);
 			_log_server_info(nm, nm->server);
 
 			if (dg_server_connect_async(nm->server) == 0) {

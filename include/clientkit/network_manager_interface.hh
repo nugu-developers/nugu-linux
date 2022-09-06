@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#ifndef __NUGU_INETWORK_MANAGER_INTERFACE_H__
-#define __NUGU_INETWORK_MANAGER_INTERFACE_H__
+#ifndef __NUGU_NETWORK_MANAGER_INTERFACE_H__
+#define __NUGU_NETWORK_MANAGER_INTERFACE_H__
 
 #include <string>
 #include <base/nugu_event.h>

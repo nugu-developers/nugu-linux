@@ -92,14 +92,14 @@ private:
     IFocusManager* focus_manager_interface;
 };
 
-class TestFocusResorce : public IFocusResourceListener {
+class TestFocusResource : public IFocusResourceListener {
 public:
-    explicit TestFocusResorce(IFocusManager* focus_manager)
+    explicit TestFocusResource(IFocusManager* focus_manager)
         : focus_manager_interface(focus_manager)
         , cur_state(FocusState::NONE)
     {
     }
-    virtual ~TestFocusResorce() = default;
+    virtual ~TestFocusResource() = default;
 
     bool requestFocus(const std::string& type, const std::string& name)
     {
@@ -151,11 +151,11 @@ private:
 typedef struct {
     FocusManager* focus_manager;
     FocusManagerObserver* focus_observer;
-    TestFocusResorce* asr_resource;
-    TestFocusResorce* info_resource;
-    TestFocusResorce* alert_resource;
-    TestFocusResorce* media_resource;
-    TestFocusResorce* another_asr_resource;
+    TestFocusResource* asr_resource;
+    TestFocusResource* info_resource;
+    TestFocusResource* alert_resource;
+    TestFocusResource* media_resource;
+    TestFocusResource* another_asr_resource;
 } nFocusFixture;
 
 static void setup(nFocusFixture* fixture, gconstpointer user_data)
@@ -164,11 +164,11 @@ static void setup(nFocusFixture* fixture, gconstpointer user_data)
     fixture->focus_observer = new FocusManagerObserver(fixture->focus_manager);
     fixture->focus_manager->addObserver(fixture->focus_observer);
 
-    fixture->asr_resource = new TestFocusResorce(fixture->focus_manager);
-    fixture->info_resource = new TestFocusResorce(fixture->focus_manager);
-    fixture->alert_resource = new TestFocusResorce(fixture->focus_manager);
-    fixture->media_resource = new TestFocusResorce(fixture->focus_manager);
-    fixture->another_asr_resource = new TestFocusResorce(fixture->focus_manager);
+    fixture->asr_resource = new TestFocusResource(fixture->focus_manager);
+    fixture->info_resource = new TestFocusResource(fixture->focus_manager);
+    fixture->alert_resource = new TestFocusResource(fixture->focus_manager);
+    fixture->media_resource = new TestFocusResource(fixture->focus_manager);
+    fixture->another_asr_resource = new TestFocusResource(fixture->focus_manager);
 
     std::vector<FocusConfiguration> focus_configuration;
 

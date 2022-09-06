@@ -95,7 +95,7 @@ private:
     void prehandleTemplates(NuguDirective* ndir);
     void handleHistoryControl(const Json::Value& root, const DisplayRenderInfo* render_info);
     void activateSession(NuguDirective* ndir);
-    void deactiveSession();
+    void deactivateSession();
     void startPlaySync(const NuguDirective* ndir, const Json::Value& root);
     bool hasPlayStack();
     bool hasMediaPlayStack();

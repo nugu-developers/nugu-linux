@@ -410,15 +410,15 @@ bool NuguAuth::parseAccessToken(NuguToken* token)
         return false;
 
     /* Parsing JWT */
-    gchar** splited_text;
-    splited_text = g_strsplit(token->access_token.c_str(), ".", -1);
-    if (!splited_text || !splited_text[1]) {
+    gchar** splitted_text;
+    splitted_text = g_strsplit(token->access_token.c_str(), ".", -1);
+    if (!splitted_text || !splitted_text[1]) {
         nugu_error("invalid access_token");
         return false;
     }
 
-    gchar* decoded = base64_decode(splited_text[1]);
-    g_strfreev(splited_text);
+    gchar* decoded = base64_decode(splitted_text[1]);
+    g_strfreev(splitted_text);
 
     if (!decoded) {
         nugu_error("base64 decoding failed");

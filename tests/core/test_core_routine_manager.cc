@@ -438,7 +438,7 @@ static void test_routine_manager_continue(TestFixture* fixture, gconstpointer ig
 {
     sub_test_routine_manager_preset_start(fixture, ignored);
 
-    // execute next second actionx
+    // execute next second action
     fixture->routine_manager->finish();
     g_assert(fixture->routine_manager_listener->getActivity() == RoutineActivity::PLAYING);
     g_assert(fixture->routine_manager->getCurrentActionIndex() == 2);

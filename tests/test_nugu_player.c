@@ -370,7 +370,7 @@ static void test_nugu_player_seek(void)
 	CHECK_STATUS(NUGU_MEDIA_STATUS_STOPPED);
 	g_assert(nugu_player_stop(player) == 0);
 
-	/* test for positive seek when palyer is paused */
+	/* test for positive seek when player is paused */
 	CHECK_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOADED);
 	CHECK_STATUS(NUGU_MEDIA_STATUS_PLAYING);
 	CHECK_VOLUME(NUGU_SET_VOLUME_DEFAULT);

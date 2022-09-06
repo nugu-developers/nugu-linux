@@ -102,7 +102,7 @@ void PlaySyncManager::prepareSync(const std::string& ps_id, NuguDirective* ndir)
 
         appendSync(ps_id, ndir);
 
-        // notify hasMutliTurn callback again when same PlayServiceId exist
+        // notify hasMultiTurn callback again when same PlayServiceId exist
         if (playstack_map.find(ps_id) != playstack_map.cend())
             notifyHasMultiTurn(ndir);
 

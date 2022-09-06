@@ -47,7 +47,7 @@ public:
 
     // wrapping AudioRecorderManager functions
     void createAudioRecorderManager();
-    void destoryAudioRecorderManager();
+    void destroyAudioRecorderManager();
 };
 
 } // NuguCore
