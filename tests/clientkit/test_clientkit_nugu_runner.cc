@@ -138,7 +138,7 @@ public:
     std::string ret_str;
 };
 
-typedef struct {
+typedef struct _nuguFixture {
     GMainLoop* loop;
 } nuguFixture;
 

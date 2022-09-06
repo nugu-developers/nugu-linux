@@ -148,7 +148,7 @@ private:
     std::string name;
 };
 
-typedef struct {
+typedef struct _nFocusFixture {
     FocusManager* focus_manager;
     FocusManagerObserver* focus_observer;
     TestFocusResource* asr_resource;

@@ -34,7 +34,7 @@ using namespace NuguCore;
 
 #define TIMEOUT_UNIT_SEC (1 * NUGU_TIMER_UNIT_SEC)
 
-typedef struct {
+typedef struct _ntimerFixture {
     NUGUTimer* timer1;
     NUGUTimer* timer2;
 } ntimerFixture;

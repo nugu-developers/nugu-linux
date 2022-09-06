@@ -62,7 +62,7 @@ private:
     int call_count = 0;
 };
 
-typedef struct {
+typedef struct _TestFixture {
     std::shared_ptr<SessionManager> session_manager;
     std::shared_ptr<SessionManagerListener> session_manager_listener;
     std::shared_ptr<SessionManagerListener> session_manager_listener_snd;

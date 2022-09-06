@@ -42,7 +42,7 @@ namespace NuguClientKit {
 /**
  * @brief Policy about canceling directives which are belong to the specific dialog id.
  */
-typedef struct {
+typedef struct _DirectiveCancelPolicy {
     bool cancel_all; /**< cancel all directives or selections */
     std::set<std::string> dir_groups; /**< directive groups for canceling */
 } DirectiveCancelPolicy;

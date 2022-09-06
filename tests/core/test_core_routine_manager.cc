@@ -31,7 +31,7 @@ const unsigned int TIMER_DOWNSCALE_FACTOR = 10;
 std::mutex mutex;
 std::condition_variable cv;
 
-using RoutineTestData = struct {
+using RoutineTestData = struct _RoutineTestData {
     Json::Value type;
     Json::Value play_service_id;
     Json::Value text;
@@ -39,7 +39,7 @@ using RoutineTestData = struct {
     Json::Value post_delay_msec;
 };
 
-using DirectiveElement = struct {
+using DirectiveElement = struct _DirectiveElement {
     std::string name_space;
     std::string name;
     std::string dialog_id;
@@ -185,7 +185,7 @@ static void changeDialogId(NuguDirective*& ndir, std::string&& dialog_id)
     ndir = createDirective({ name_space, name, dialog_id, groups });
 }
 
-typedef struct {
+typedef struct _TestFixture {
     std::shared_ptr<RoutineManager> routine_manager;
     std::shared_ptr<RoutineTestHelper> routine_helper;
     std::shared_ptr<RoutineManagerListener> routine_manager_listener;

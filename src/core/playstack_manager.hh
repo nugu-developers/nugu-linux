@@ -50,7 +50,7 @@ public:
 class PlayStackManager {
 public:
     using PlayStack = std::pair<std::map<std::string, PlayStackActivity>, std::vector<std::string>>;
-    using PlayStackHoldTimes = struct {
+    using PlayStackHoldTimes = struct _PlayStackHoldTimes {
         unsigned int normal_time;
         unsigned int long_time;
     };

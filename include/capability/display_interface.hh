@@ -53,7 +53,7 @@ enum class TemplateControlType {
 /**
  * @brief Display Context Information
  */
-typedef struct {
+typedef struct _DisplayContextInfo {
     std::string focused_item_token; /**< a unique identifier to identify the focused item */
     std::vector<std::string> visible_token_list; /**< unique identifier list to identify the items being displayed */
 } DisplayContextInfo;

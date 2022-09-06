@@ -37,7 +37,7 @@ using namespace NuguClientKit;
 /**
  * @brief Battery Information
  */
-typedef struct {
+typedef struct _BatteryInfo {
     int level = -1; /**< battery level (0 ~ 100) */
     bool charging = false; /**< whether the battery is charged */
     bool approximate_level = false; /**< approximate battery level */

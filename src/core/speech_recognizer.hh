@@ -27,7 +27,7 @@ using namespace NuguClientKit;
 class SpeechRecognizer : public ISpeechRecognizer,
                          public AudioInputProcessor {
 public:
-    using Attribute = struct {
+    using Attribute = struct _Attribute {
         std::string sample;
         std::string format;
         std::string channel;

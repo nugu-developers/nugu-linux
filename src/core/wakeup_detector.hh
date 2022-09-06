@@ -42,7 +42,7 @@ public:
 
 class WakeupDetector : public AudioInputProcessor {
 public:
-    using Attribute = struct {
+    using Attribute = struct _Attribute {
         std::string model_net_file;
         std::string model_search_file;
         std::string sample;

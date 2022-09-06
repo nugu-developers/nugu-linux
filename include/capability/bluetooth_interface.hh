@@ -38,7 +38,7 @@ using namespace NuguClientKit;
  * @brief Bluetooth profiles information
  * @see BTDeviceInfo
  */
-typedef struct {
+typedef struct _BTProfile {
     std::string name; /**< profile name (reference by https://www.bluetooth.com/specifications/specs/) */
     bool enable; /**< profile usage */
 } BTProfile;
@@ -47,7 +47,7 @@ typedef struct {
  * @brief Bluetooth device information
  * @see IBluetoothListener::setDeviceInformation
  */
-typedef struct {
+typedef struct _BTDeviceInfo {
     std::string device_name; /**< bluetooth adaptor's name */
     bool power_on; /**< bluetooth adaptor's power on state */
     std::vector<BTProfile> profiles; /**< paired 2nd device's profiles */

@@ -42,7 +42,7 @@ using namespace NuguCapability;
  * @brief Model for holding recognition result.
  * @see ISpeechRecognizerAggregatorListener::onResult
  */
-typedef struct {
+typedef struct _RecognitionResult {
     /**
      * @brief Result status
      */

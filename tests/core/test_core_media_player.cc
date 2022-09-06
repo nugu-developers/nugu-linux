@@ -36,7 +36,7 @@
 
 using namespace NuguCore;
 
-typedef struct {
+typedef struct _mplayerFixture {
     MediaPlayer* player;
 } mplayerFixture;
 

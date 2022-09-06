@@ -37,7 +37,7 @@ namespace NuguClientKit {
  * @brief Model for containing session info.
  * @see ISessionManager
  */
-typedef struct {
+typedef struct _Session {
     std::string session_id; /**< session id */
     std::string ps_id; /**< play service id */
 } Session;

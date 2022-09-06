@@ -76,7 +76,7 @@ static NuguDirective* createDirective(const std::string& name_space, const std::
         "ref_1", "{}", groups.c_str());
 }
 
-typedef struct {
+typedef struct _TestFixture {
     std::shared_ptr<PlayStackManager> playstack_manager;
     std::shared_ptr<PlayStackManagerListener> playstack_manager_listener;
     std::shared_ptr<PlayStackManagerListener> playstack_manager_listener_snd;
