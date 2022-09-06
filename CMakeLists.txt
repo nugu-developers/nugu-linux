@@ -12,6 +12,14 @@ SET(VERSION_MINOR 7)
 SET(VERSION_PATCH 3)
 SET(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
+MESSAGE("-- Build information:\n")
+MESSAGE(" * System: ${CMAKE_SYSTEM_NAME}")
+MESSAGE(" * Compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
+MESSAGE(" * CMAKE_GENERATOR = ${CMAKE_GENERATOR}")
+MESSAGE(" * CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
+MESSAGE(" * CMAKE_BINARY_DIR = ${CMAKE_BINARY_DIR}")
+MESSAGE(" * CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX}")
+
 # OpenSDK/{sdk-version} ({platform}) Client/{app-version} [additional-info]
 SET(NUGU_USERAGENT_FORMAT "OpenSDK/${VERSION} (Linux) Client/%s %s")
 
@@ -58,6 +66,11 @@ ELSE()
 	ENDIF()
 ENDIF()
 
+SET(BUILTIN_CURL_DEFAULT "ON")
+SET(BUILTIN_JSONCPP_DEFAULT "ON")
+SET(PULSEAUDIO_DEFAULT "ON")
+SET(PORTAUDIO_PLUGIN_DEFAULT "ON")
+
 # Set default build options
 DEFINE_FEATURE(LOG_ANSICOLOR ON "ANSI Color to log message")
 DEFINE_FEATURE(LTO ${LTO_DEFAULT} "Link Time Optimization")
@@ -65,17 +78,18 @@ DEFINE_FEATURE(ASAN ${ASAN_DEFAULT} "Address Sanitizer")
 DEFINE_FEATURE(VENDOR_LIBRARY ON "vendor specific library(nugu_wwd, nugu_epd)")
 DEFINE_FEATURE(OPUS_LIBRARY OFF "compile built-in OPUS library")
 DEFINE_FEATURE(OPUS_LIBRARY_FLOAT_API OFF "floating point to OPUS library")
-DEFINE_FEATURE(BUILTIN_CURL ON "compile built-in curl library")
+DEFINE_FEATURE(BUILTIN_CURL ${BUILTIN_CURL_DEFAULT} "compile built-in curl library")
+DEFINE_FEATURE(BUILTIN_JSONCPP ${BUILTIN_JSONCPP_DEFAULT} "compile built-in jsoncpp library")
 
 DEFINE_FEATURE(DL_LINKING ON "-ldl linking")
 DEFINE_FEATURE(SOCKET_LINKING OFF "-lsocket linking")
 DEFINE_FEATURE(EVENTFD ON "eventfd")
-DEFINE_FEATURE(PULSEAUDIO ON "pulseaudio")
+DEFINE_FEATURE(PULSEAUDIO ${PULSEAUDIO_DEFAULT} "pulseaudio")
 
 DEFINE_FEATURE(GSTREAMER_PLUGIN ON "GStreamer plugin")
 DEFINE_FEATURE(OPUS_PLUGIN ON "OPUS plugin")
 DEFINE_FEATURE(SPEEX_PLUGIN ON "SPEEX plugin")
-DEFINE_FEATURE(PORTAUDIO_PLUGIN ON "PortAudio plugin")
+DEFINE_FEATURE(PORTAUDIO_PLUGIN ${PORTAUDIO_PLUGIN_DEFAULT} "PortAudio plugin")
 DEFINE_FEATURE(OPUSENC_PLUGIN OFF "OPUS encoder plugin")
 
 DEFINE_FEATURE(EXAMPLES_OOB_SETUP ON "Examples - OOB setup")
@@ -121,11 +135,23 @@ ELSE()
 	SET(CURL_INCLUDE)
 ENDIF()
 
+IF(ENABLE_BUILTIN_JSONCPP)
+	SET(JSONCPP_LIBRARY ${CMAKE_BINARY_DIR}/externals/libjsoncpp.a)
+	SET(JSONCPP_PKGCONFIG)
+	SET(JSONCPP_INCLUDE ${CMAKE_SOURCE_DIR}/externals/jsoncpp/include)
+
+	INCLUDE_DIRECTORIES(${JSONCPP_INCLUDE})
+ELSE()
+	SET(JSONCPP_LIBRARY)
+	SET(JSONCPP_PKGCONFIG jsoncpp)
+	SET(JSONCPP_INCLUDE)
+ENDIF()
+
 # Set NUGU SDK library default dependency
 SET(DEFAULT_LIB_DEPENDENCY
 	glib-2.0 gio-2.0 gio-unix-2.0 gthread-2.0
-	openssl
-	zlib ${CURL_PKGCONFIG})
+	openssl zlib
+	${CURL_PKGCONFIG} ${JSONCPP_PKGCONFIG})
 SET(FORCE_LIB_DEPENDENCY)
 
 # Add vendor specific library dependency (keyword detector, end-point detector)
@@ -202,7 +228,7 @@ IF (ENABLE_LTO)
 	check_ipo_supported(RESULT IPO_SUPPORTED)
 	IF(IPO_SUPPORTED)
 		SET(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
-		MESSAGE("LTO supported and enabled")
+		MESSAGE(" * LTO supported and enabled")
 	ENDIF()
 ENDIF()
 
@@ -211,7 +237,7 @@ IF(ENABLE_ASAN)
 	# - https://github.com/google/sanitizers/wiki/AddressSanitizer
 	ADD_COMPILE_OPTIONS(-fsanitize=address)
 	LINK_LIBRARIES(-lasan)
-	MESSAGE("Address Sanitizer enabled")
+	MESSAGE(" * Address Sanitizer enabled")
 ENDIF()
 
 # Sets the option so that the built library has a higher link order than
@@ -304,10 +330,7 @@ ADD_DEFINITIONS(
 )
 
 # Global include directories
-INCLUDE_DIRECTORIES(
-	${CMAKE_SOURCE_DIR}
-	${CMAKE_SOURCE_DIR}/externals/jsoncpp/include
-	${CMAKE_SOURCE_DIR}/include)
+INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 
 # Install header files
 CONFIGURE_FILE(nugu.h.in ${CMAKE_SOURCE_DIR}/include/nugu.h @ONLY)
@@ -322,6 +345,7 @@ INSTALL(DIRECTORY assets/model DESTINATION ${datadir})
 
 ENABLE_TESTING()
 
+MESSAGE("")
 feature_summary(WHAT ALL)
 
 # External dependency modules - nghttp2, curl, jsoncpp
