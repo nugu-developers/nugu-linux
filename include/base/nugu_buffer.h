@@ -17,6 +17,8 @@
 #ifndef __NUGU_BUFFER_H__
 #define __NUGU_BUFFER_H__
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

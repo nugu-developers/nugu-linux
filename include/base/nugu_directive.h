@@ -17,6 +17,8 @@
 #ifndef __NUGU_DIRECTIVE_H__
 #define __NUGU_DIRECTIVE_H__
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

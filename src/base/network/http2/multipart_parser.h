@@ -17,6 +17,8 @@
 #ifndef __HTTP2_MULTIPART_PARSER_H__
 #define __HTTP2_MULTIPART_PARSER_H__
 
+#include <stddef.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

@@ -15,7 +15,6 @@
  */
 
 #include <algorithm>
-#include <string>
 
 #include "base/nugu_log.h"
 #include "base/nugu_network_manager.h"

@@ -20,6 +20,7 @@
 #include <functional>
 
 #include <base/nugu_directive.h>
+#include <json/json.h>
 
 namespace NuguClientKit {
 

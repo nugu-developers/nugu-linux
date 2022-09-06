@@ -17,6 +17,8 @@
 #ifndef __NUGU_WAKEUP_INTERFACE_H__
 #define __NUGU_WAKEUP_INTERFACE_H__
 
+#include <string>
+
 namespace NuguClientKit {
 
 /**
