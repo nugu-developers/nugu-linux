@@ -43,7 +43,7 @@ jobs:
               --suppressions-list=.cppcheck_suppress.txt \
               --enable=all -j 6 -iexternals
 
-  build:
+  build_linux:
     runs-on: ubuntu-latest
     needs: [checkpatch_review, clang_tidy_review]
     strategy:
@@ -95,3 +95,23 @@ jobs:
         with:
           name: DEB packages
           path: /tmp/result/
+
+  build_mac:
+    runs-on: macos-latest
+    needs: [checkpatch_review, clang_tidy_review]
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Homebrew setup
+        run: brew install cmake jsoncpp curl openssl gstreamer gst-plugins-base
+
+      - name: Build
+        run: |
+          export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/openssl@3/lib/pkgconfig"
+
+          mkdir build && cd build
+          cmake .. -DENABLE_VENDOR_LIBRARY=OFF
+          make -j3
+          make test
+          DESTDIR=tmp make install
