@@ -7,7 +7,7 @@ on:
       - 'v*'
 
 jobs:
-  build:
+  build_linux:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
@@ -77,3 +77,22 @@ jobs:
           repo_token: ${{ github.token }}
           overwrite: true
           tag: ${{ github.ref }}
+
+  build_mac:
+    runs-on: macos-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Homebrew setup
+        run: brew install cmake jsoncpp curl openssl gstreamer gst-plugins-base
+
+      - name: Build
+        run: |
+          export PKG_CONFIG_PATH="$PKG_CONFIG_PATH:/usr/local/opt/openssl@3/lib/pkgconfig"
+
+          mkdir build && cd build
+          cmake .. -DENABLE_VENDOR_LIBRARY=OFF
+          make -j3
+          make test
+          DESTDIR=tmp make install
