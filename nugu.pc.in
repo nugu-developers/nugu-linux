@@ -5,6 +5,6 @@ version=@VERSION@
 Name: nugu
 Description: An AI platform
 Version: ${version}
-Requires: glib-2.0
+Requires: glib-2.0 @requires@
 Libs: -L${libdir} -lnugu
 Cflags: -I${includedir} -I${includedir}/base -I${includedir}/interface -I${includedir}/clientkit

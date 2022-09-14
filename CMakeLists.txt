@@ -29,7 +29,13 @@ SET(version ${VERSION})
 SET(prefix ${CMAKE_INSTALL_PREFIX})
 SET(datadir ${CMAKE_INSTALL_FULL_DATAROOTDIR}/nugu)
 SET(bindir "${prefix}/${CMAKE_INSTALL_BINDIR}")
-SET(plugindir "${CMAKE_INSTALL_FULL_LIBDIR}/nugu")
+SET(requires "")
+
+IF(PLUGIN_DIR)
+	SET(plugindir "${PLUGIN_DIR}")
+ELSE()
+	SET(plugindir "${CMAKE_INSTALL_FULL_LIBDIR}/nugu")
+ENDIF()
 
 # Generate compile_commands.json
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -112,6 +118,10 @@ DEFINE_FEATURE(SPEEX_PLUGIN ON "SPEEX plugin")
 DEFINE_FEATURE(PORTAUDIO_PLUGIN ${PORTAUDIO_PLUGIN_DEFAULT} "PortAudio plugin")
 DEFINE_FEATURE(OPUSENC_PLUGIN OFF "OPUS encoder plugin")
 
+DEFINE_FEATURE(LIBRARY_ONLY OFF "compile only SDK libraries")
+DEFINE_FEATURE(PLUGINS_ONLY OFF "compile only plugins")
+DEFINE_FEATURE(EXAMPLES_ONLY OFF "compile only examples")
+
 DEFINE_FEATURE(EXAMPLES_OOB_SETUP ON "Examples - OOB setup")
 DEFINE_FEATURE(EXAMPLES_STANDALONE ON "Examples - standalone")
 DEFINE_FEATURE(EXAMPLES_SIMPLE_TEXT ON "Examples - simple-text")
@@ -165,6 +175,7 @@ ELSE()
 	SET(JSONCPP_LIBRARY)
 	SET(JSONCPP_PKGCONFIG jsoncpp)
 	SET(JSONCPP_INCLUDE)
+	SET(requires "${requires} ${JSONCPP_PKGCONFIG}")
 ENDIF()
 
 # Add vendor specific library dependency (keyword detector, end-point detector)
@@ -192,10 +203,41 @@ ELSE()
 	SET(LDFLAG_SOCKET "")
 ENDIF()
 
-# Set NUGU SDK library default dependency
-SET(DEFAULT_LIB_DEPENDENCY
-	glib-2.0 gio-2.0 gio-unix-2.0 gthread-2.0 openssl
-	${CURL_PKGCONFIG} ${JSONCPP_PKGCONFIG} ${VENDOR_PKGCONFIG})
+SET(BUILD_LIBRARY ON)
+SET(BUILD_PLUGINS ON)
+SET(BUILD_EXAMPLES ON)
+
+IF(ENABLE_LIBRARY_ONLY)
+	SET(BUILD_LIBRARY ON)
+	SET(BUILD_PLUGINS OFF)
+	SET(BUILD_EXAMPLES OFF)
+ENDIF()
+
+IF(ENABLE_PLUGINS_ONLY)
+	SET(BUILD_LIBRARY OFF)
+	SET(BUILD_PLUGINS ON)
+	SET(BUILD_EXAMPLES OFF)
+ENDIF()
+
+IF(ENABLE_EXAMPLES_ONLY)
+	SET(BUILD_LIBRARY OFF)
+	SET(BUILD_PLUGINS OFF)
+	SET(BUILD_EXAMPLES ON)
+ENDIF()
+
+IF(BUILD_LIBRARY)
+	# Set NUGU SDK library default dependency
+	SET(DEFAULT_LIB_DEPENDENCY
+		glib-2.0 gio-2.0 gio-unix-2.0 gthread-2.0 openssl
+		${CURL_PKGCONFIG} ${JSONCPP_PKGCONFIG} ${VENDOR_PKGCONFIG})
+
+	# Sets the option so that the built library has a higher link order than
+	# the library already installed on the system.
+	LINK_LIBRARIES(-L${CMAKE_BINARY_DIR}/src)
+ELSE()
+	SET(DEFAULT_LIB_DEPENDENCY nugu)
+	ADD_CUSTOM_TARGET(libnugu)
+ENDIF()
 
 # Get CFLAGS and LDFLAGS from pkg-config list
 pkg_check_modules(pkgs REQUIRED ${DEFAULT_LIB_DEPENDENCY})
@@ -205,11 +247,13 @@ ENDFOREACH()
 
 # Gstreamer does not support dynamic loading/unloading of their libraries.
 # Therefore, add the library dependency to NUGU SDK instead of NUGU Plugin.
-IF(ENABLE_GSTREAMER_PLUGIN)
-	pkg_check_modules(force_pkgs REQUIRED gstreamer-1.0 gstreamer-app-1.0 gstreamer-pbutils-1.0 gstreamer-app-1.0)
-	FOREACH(flag ${force_pkgs_CFLAGS})
-		ADD_COMPILE_OPTIONS(${flag})
-	ENDFOREACH(flag)
+IF(BUILD_PLUGINS)
+	IF(ENABLE_GSTREAMER_PLUGIN)
+		pkg_check_modules(force_pkgs REQUIRED gstreamer-1.0 gstreamer-app-1.0 gstreamer-pbutils-1.0 gstreamer-app-1.0)
+		FOREACH(flag ${force_pkgs_CFLAGS})
+			ADD_COMPILE_OPTIONS(${flag})
+		ENDFOREACH(flag)
+	ENDIF()
 ENDIF()
 
 # Common compile options
@@ -256,10 +300,6 @@ IF(ENABLE_ASAN)
 	LINK_LIBRARIES(-lasan)
 	MESSAGE(" * Address Sanitizer enabled")
 ENDIF()
-
-# Sets the option so that the built library has a higher link order than
-# the library already installed on the system.
-LINK_LIBRARIES(-L${CMAKE_BINARY_DIR}/src)
 
 # Compiler specific options (gcc, clang)
 IF (CMAKE_COMPILER_IS_GNUCC)
@@ -350,36 +390,43 @@ ADD_DEFINITIONS(
 	-DNUGU_ENV_PLUGIN_PATH="NUGU_PLUGIN_PATH"
 )
 
-# Global include directories
-INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
-
-# Install header files
-CONFIGURE_FILE(nugu.h.in ${CMAKE_SOURCE_DIR}/include/nugu.h @ONLY)
-INSTALL(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
-
-# Install pkgconfig
-CONFIGURE_FILE(nugu.pc.in ${CMAKE_BINARY_DIR}/nugu.pc @ONLY)
-INSTALL(FILES ${CMAKE_BINARY_DIR}/nugu.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
-
-# Install asset files
-INSTALL(DIRECTORY assets/model DESTINATION ${datadir})
-
-ENABLE_TESTING()
-
 MESSAGE("")
 feature_summary(WHAT ALL)
 
 # External dependency modules - nghttp2, curl, jsoncpp
-ADD_SUBDIRECTORY(externals)
+IF(BUILD_LIBRARY)
+	# Global include directories
+	INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
 
-# NUGU SDK
-ADD_SUBDIRECTORY(src)
+	# Install header files
+	CONFIGURE_FILE(nugu.h.in ${CMAKE_SOURCE_DIR}/include/nugu.h @ONLY)
+	INSTALL(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
 
-# Unit tests
-ADD_SUBDIRECTORY(tests)
+	# Install pkgconfig
+	CONFIGURE_FILE(nugu.pc.in ${CMAKE_BINARY_DIR}/nugu.pc @ONLY)
+	INSTALL(FILES ${CMAKE_BINARY_DIR}/nugu.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
+
+	# Install asset files
+	INSTALL(DIRECTORY assets/model DESTINATION ${datadir})
+
+	ENABLE_TESTING()
+
+	ADD_SUBDIRECTORY(externals)
+
+	# NUGU SDK
+	ADD_SUBDIRECTORY(src)
+
+	# Unit tests
+	ADD_SUBDIRECTORY(tests)
+ENDIF()
 
 # HAL Plugins
-ADD_SUBDIRECTORY(plugins)
+IF(BUILD_PLUGINS)
+	ADD_SUBDIRECTORY(plugins)
+ENDIF()
 
 # Examples
-ADD_SUBDIRECTORY(examples)
+IF(BUILD_EXAMPLES)
+	ADD_SUBDIRECTORY(examples)
+ENDIF()
+
