@@ -1353,7 +1353,7 @@ void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
 
     std::string dialog_id = nugu_directive_peek_dialog_id(getNuguDirective());
 
-    settings = root["metadata"]["template"]["settings"];
+    settings = root["metadata"]["template"]["content"]["settings"];
     if (!settings["repeat"].empty()) {
         std::string repeat = settings["repeat"].asString();
 
