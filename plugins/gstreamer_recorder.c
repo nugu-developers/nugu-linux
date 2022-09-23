@@ -44,6 +44,10 @@ struct gst_handle {
 	GstElement *audio_source;
 	GstElement *caps_filter;
 	GstElement *audio_sink;
+#ifdef __APPLE__
+	GstElement *audioconvert;
+	GstElement *resample;
+#endif
 	GstState cur_state;
 	int samplerate;
 	int samplebyte;
@@ -187,8 +191,7 @@ static int _set_property_to_param(GstreamerHandle *gh, NuguAudioProperty prop)
 	return 0;
 }
 
-static void _recorder_push(GstreamerHandle *gh, const char *buf,
-			   int buf_size)
+static void _recorder_push(GstreamerHandle *gh, const char *buf, int buf_size)
 {
 	nugu_recorder_push_frame(gh->rec, buf, buf_size);
 
@@ -344,6 +347,10 @@ static GstreamerHandle *_create(NuguRecorder *rec)
 	char audio_source[128];
 	char caps_filter[128];
 	char audio_sink[128];
+#ifdef __APPLE__
+	char audio_convert[128];
+	char audio_resample[128];
+#endif
 
 	gh = nugu_recorder_get_driver_data(rec);
 	if (gh != NULL) {
@@ -355,6 +362,10 @@ static GstreamerHandle *_create(NuguRecorder *rec)
 	g_snprintf(audio_source, 128, "rec_audio_source#%d", _uniq_id);
 	g_snprintf(caps_filter, 128, "rec_caps_filter#%d", _uniq_id);
 	g_snprintf(audio_sink, 128, "rec_audio_sink#%d", _uniq_id);
+#ifdef __APPLE__
+	g_snprintf(audio_convert, 128, "rec_audio_convert#%d", _uniq_id);
+	g_snprintf(audio_resample, 128, "rec_audio_resample#%d", _uniq_id);
+#endif
 
 	gh = (GstreamerHandle *)g_malloc0(sizeof(GstreamerHandle));
 	if (!gh) {
@@ -366,16 +377,30 @@ static GstreamerHandle *_create(NuguRecorder *rec)
 	gh->audio_source =
 		gst_element_factory_make("autoaudiosrc", audio_source);
 	gh->caps_filter = gst_element_factory_make("capsfilter", caps_filter);
+#ifdef __APPLE__
+	gh->audioconvert =
+		gst_element_factory_make("audioconvert", audio_convert);
+	gh->resample =
+		gst_element_factory_make("audioresample", audio_resample);
+#endif
 	gh->audio_sink = gst_element_factory_make("appsink", audio_sink);
 
 	g_object_set(gh->audio_sink, "emit-signals", TRUE, "sync", FALSE, NULL);
 	g_signal_connect(gh->audio_sink, "new-sample",
 			 G_CALLBACK(_new_sample_from_sink), gh);
 
+#ifdef __APPLE__
+	gst_bin_add_many(GST_BIN(gh->pipeline), gh->audio_source,
+			 gh->audioconvert, gh->resample, gh->caps_filter,
+			 gh->audio_sink, NULL);
+	gst_element_link_many(gh->audio_source, gh->audioconvert, gh->resample,
+			      gh->caps_filter, gh->audio_sink, NULL);
+#else
 	gst_bin_add_many(GST_BIN(gh->pipeline), gh->audio_source,
 			 gh->caps_filter, gh->audio_sink, NULL);
 	gst_element_link_many(gh->audio_source, gh->caps_filter, gh->audio_sink,
 			      NULL);
+#endif
 
 	_connect_message_to_pipeline(gh);
 
@@ -536,7 +561,6 @@ static int init(NuguPlugin *p)
 		rec_driver = NULL;
 		return -1;
 	}
-
 
 	pthread_mutex_init(&lock, NULL);
 
