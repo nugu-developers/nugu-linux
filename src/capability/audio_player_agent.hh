@@ -77,7 +77,7 @@ public:
     bool setMute(bool mute) override;
 
     void displayCleared(const std::string& id) override;
-    void informControlResult(const std::string& id, ControlType type, ControlDirection direction) override;
+    void informControlResult(const std::string& id, ControlType type, ControlDirection direction, bool result) override;
     void setDisplayListener(IDisplayListener* listener) override;
     void removeDisplayListener(IDisplayListener* listener) override;
 
