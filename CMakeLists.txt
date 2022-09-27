@@ -37,6 +37,12 @@ ELSE()
 	SET(plugindir "${CMAKE_INSTALL_FULL_LIBDIR}/nugu")
 ENDIF()
 
+IF(ASSET_DIR)
+	SET(assetdir "${ASSET_DIR}")
+ELSE()
+	SET(assetdir "${datadir}")
+ENDIF()
+
 # Generate compile_commands.json
 SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -367,7 +373,7 @@ IF(ENABLE_LOG_ANSICOLOR)
 ENDIF()
 
 # Set asset file path
-ADD_DEFINITIONS(-DNUGU_ASSET_PATH="${datadir}")
+ADD_DEFINITIONS(-DNUGU_ASSET_PATH="${assetdir}")
 
 # Global definitions
 ADD_DEFINITIONS(
@@ -407,7 +413,7 @@ IF(BUILD_LIBRARY)
 	INSTALL(FILES ${CMAKE_BINARY_DIR}/nugu.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
 
 	# Install asset files
-	INSTALL(DIRECTORY assets/model DESTINATION ${datadir})
+	INSTALL(DIRECTORY assets/model DESTINATION ${assetdir})
 
 	ENABLE_TESTING()
 
