@@ -1,14 +1,14 @@
-SET(PLUGINS
-	filedump
-	dummy)
+ADD_LIBRARY(dummy SHARED dummy.c)
+TARGET_LINK_LIBRARIES(dummy -lnugu)
+SET_TARGET_PROPERTIES(dummy PROPERTIES PREFIX "" OUTPUT_NAME dummy)
+INSTALL(TARGETS dummy LIBRARY DESTINATION ${plugindir})
+ADD_DEPENDENCIES(dummy libnugu)
 
-FOREACH(plugin ${PLUGINS})
-	ADD_LIBRARY(${plugin} SHARED ${plugin}.c)
-	TARGET_LINK_LIBRARIES(${plugin} ${pkgs_LDFLAGS} -lnugu)
-	SET_TARGET_PROPERTIES(${plugin} PROPERTIES PREFIX "" OUTPUT_NAME ${plugin})
-	INSTALL(TARGETS ${plugin} LIBRARY DESTINATION ${plugindir})
-	ADD_DEPENDENCIES(${plugin} libnugu)
-ENDFOREACH(plugin)
+ADD_LIBRARY(filedump SHARED filedump.c)
+TARGET_LINK_LIBRARIES(filedump ${pkgs_LDFLAGS} -lnugu)
+SET_TARGET_PROPERTIES(filedump PROPERTIES PREFIX "" OUTPUT_NAME filedump)
+INSTALL(TARGETS filedump LIBRARY DESTINATION ${plugindir})
+ADD_DEPENDENCIES(filedump libnugu)
 
 # OPUS plugin
 IF(ENABLE_OPUS_PLUGIN)
@@ -71,7 +71,14 @@ IF(ENABLE_GSTREAMER_PLUGIN)
 
 	FOREACH(plugin ${GSTREAMER_PLUGINS})
 		ADD_LIBRARY(${plugin} SHARED ${plugin}.c)
-		TARGET_LINK_LIBRARIES(${plugin} ${pkgs_LDFLAGS} -lnugu)
+		TARGET_LINK_LIBRARIES(${plugin}
+			${pkgs_LDFLAGS}
+			${gstreamer_pkgs_LDFLAGS}
+			-lnugu)
+		FOREACH(flag ${gstreamer_pkgs_CFLAGS})
+			TARGET_COMPILE_OPTIONS(${plugin} PRIVATE ${flag})
+		ENDFOREACH(flag)
+
 		SET_TARGET_PROPERTIES(${plugin} PROPERTIES PREFIX "" OUTPUT_NAME ${plugin})
 		INSTALL(TARGETS ${plugin} LIBRARY DESTINATION ${plugindir})
 		ADD_DEPENDENCIES(${plugin} libnugu)
@@ -81,7 +88,10 @@ ENDIF(ENABLE_GSTREAMER_PLUGIN)
 # Speex plugin
 IF(ENABLE_SPEEX_PLUGIN AND ENABLE_VENDOR_LIBRARY)
 	ADD_LIBRARY(speex SHARED speex.c)
-	TARGET_LINK_LIBRARIES(speex ${pkgs_LDFLAGS} -lnugu)
+	FOREACH(flag ${vendor_pkgs_CFLAGS})
+		TARGET_COMPILE_OPTIONS(speex PRIVATE ${flag})
+	ENDFOREACH(flag)
+	TARGET_LINK_LIBRARIES(speex ${pkgs_LDFLAGS} ${vendor_pkgs_LDFLAGS} -lnugu)
 	SET_TARGET_PROPERTIES(speex PROPERTIES PREFIX "" OUTPUT_NAME speex)
 	INSTALL(TARGETS speex LIBRARY DESTINATION ${plugindir})
 	ADD_DEPENDENCIES(speex libnugu)
