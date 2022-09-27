@@ -147,8 +147,9 @@ public:
      * @param[in] id display template id
      * @param[in] type control type
      * @param[in] direction control direction
+     * @param[in] result ControlFocus/ControlScroll processing result
      */
-    virtual void informControlResult(const std::string& id, ControlType type, ControlDirection direction);
+    virtual void informControlResult(const std::string& id, ControlType type, ControlDirection direction, bool result);
 
     /**
      * @brief Set the IDisplayListener object

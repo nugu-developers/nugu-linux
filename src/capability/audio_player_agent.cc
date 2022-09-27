@@ -608,9 +608,12 @@ void AudioPlayerAgent::displayCleared(const std::string& id)
     render_helper->removedRenderInfo(id);
 }
 
-void AudioPlayerAgent::informControlResult(const std::string& id, ControlType type, ControlDirection direction)
+void AudioPlayerAgent::informControlResult(const std::string& id, ControlType type, ControlDirection direction, bool result)
 {
-    sendEventControlLyricsPageSucceeded(direction == ControlDirection::NEXT ? "NEXT" : "PREVIOUS");
+    std::string direction_text = (direction == ControlDirection::NEXT) ? "NEXT" : "PREVIOUS";
+
+    result ? sendEventControlLyricsPageSucceeded(direction_text)
+           : sendEventControlLyricsPageFailed(direction_text);
 }
 
 void AudioPlayerAgent::setDisplayListener(IDisplayListener* listener)

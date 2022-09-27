@@ -245,7 +245,7 @@ void DisplayAgent::controlTemplate(const std::string& id, TemplateControlType co
     }
 }
 
-void DisplayAgent::informControlResult(const std::string& id, ControlType type, ControlDirection direction)
+void DisplayAgent::informControlResult(const std::string& id, ControlType type, ControlDirection direction, bool result)
 {
     auto render_info = render_helper->getRenderInfo(id);
 
@@ -254,9 +254,13 @@ void DisplayAgent::informControlResult(const std::string& id, ControlType type, 
         return;
     }
 
-    (type == ControlType::Scroll)
-        ? sendEventControlScrollSucceeded(render_info->ps_id, direction)
-        : sendEventControlFocusSucceeded(render_info->ps_id, direction);
+    if (type == ControlType::Scroll) {
+        result ? sendEventControlScrollSucceeded(render_info->ps_id, direction)
+               : sendEventControlScrollFailed(render_info->ps_id, direction);
+    } else if (type == ControlType::Focus) {
+        result ? sendEventControlFocusSucceeded(render_info->ps_id, direction)
+               : sendEventControlFocusFailed(render_info->ps_id, direction);
+    }
 }
 
 void DisplayAgent::setDisplayListener(IDisplayListener* listener)

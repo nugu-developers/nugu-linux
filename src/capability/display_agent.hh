@@ -47,7 +47,7 @@ public:
     void elementSelected(const std::string& id, const std::string& item_token, const std::string& postback) override;
     void triggerChild(const std::string& ps_id, const std::string& data) override;
     void controlTemplate(const std::string& id, TemplateControlType control_type) override;
-    void informControlResult(const std::string& id, ControlType type, ControlDirection direction) override;
+    void informControlResult(const std::string& id, ControlType type, ControlDirection direction, bool result) override;
     void setDisplayListener(IDisplayListener* listener) override;
     void removeDisplayListener(IDisplayListener* listener) override;
     void stopRenderingTimer(const std::string& id) override;
@@ -67,7 +67,7 @@ private:
         bool is_render = false;
     };
 
-    using DisplayContextCollection = struct _DisplayContextCollection: DisplayContextInfo {
+    using DisplayContextCollection = struct _DisplayContextCollection : DisplayContextInfo {
         std::string ps_id;
         std::string token;
     };

@@ -23,7 +23,7 @@ void IDisplayHandler::displayCleared(const std::string& id) {}
 void IDisplayHandler::elementSelected(const std::string& id, const std::string& item_token, const std::string& postback) {}
 void IDisplayHandler::triggerChild(const std::string& ps_id, const std::string& data) {}
 void IDisplayHandler::controlTemplate(const std::string& id, TemplateControlType control_type) {}
-void IDisplayHandler::informControlResult(const std::string& id, ControlType type, ControlDirection direction) {}
+void IDisplayHandler::informControlResult(const std::string& id, ControlType type, ControlDirection direction, bool result) {}
 void IDisplayHandler::setDisplayListener(IDisplayListener* listener) {}
 void IDisplayHandler::removeDisplayListener(IDisplayListener* listener) {}
 void IDisplayHandler::stopRenderingTimer(const std::string& id) {}
