@@ -16,6 +16,18 @@ TARGET_LINK_LIBRARIES(libnugu PUBLIC
 	${CURL_LIBRARY} ${JSONCPP_LIBRARY}
 	${pkgs_LDFLAGS} ${LDFLAG_SOCKET} ${LDFLAG_DL})
 
+# Gstreamer does not support dynamic loading/unloading of their libraries.
+# Therefore, add the library dependency to NUGU SDK instead of NUGU Plugin.
+FOREACH(flag ${gstreamer_pkgs_CFLAGS})
+    TARGET_COMPILE_OPTIONS(libnugu PRIVATE ${flag})
+ENDFOREACH(flag)
+
+IF(CMAKE_COMPILER_IS_GNUCC)
+    TARGET_LINK_LIBRARIES(libnugu PUBLIC -Wl,--no-as-needed ${gstreamer_pkgs_LDFLAGS})
+ELSE()
+    TARGET_LINK_LIBRARIES(libnugu PUBLIC ${gstreamer_pkgs_LDFLAGS})
+ENDIF()
+
 SET_TARGET_PROPERTIES(libnugu
 	PROPERTIES VERSION ${VERSION} SOVERSION ${VERSION_MAJOR} OUTPUT_NAME nugu)
 

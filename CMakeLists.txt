@@ -223,12 +223,21 @@ IF(ENABLE_PLUGINS_ONLY)
 	SET(BUILD_LIBRARY OFF)
 	SET(BUILD_PLUGINS ON)
 	SET(BUILD_EXAMPLES OFF)
+
+	# The SPEEX plugin requires nugu-epd.
+	IF(ENABLE_VENDOR_LIBRARY)
+		SET(VENDOR_PKGCONFIG nugu-epd)
+	ENDIF()
 ENDIF()
 
 IF(ENABLE_EXAMPLES_ONLY)
 	SET(BUILD_LIBRARY OFF)
 	SET(BUILD_PLUGINS OFF)
 	SET(BUILD_EXAMPLES ON)
+ENDIF()
+
+IF(VENDOR_PKGCONFIG)
+	pkg_check_modules(vendor_pkgs REQUIRED ${VENDOR_PKGCONFIG})
 ENDIF()
 
 IF(BUILD_LIBRARY)
@@ -242,6 +251,8 @@ IF(BUILD_LIBRARY)
 	LINK_LIBRARIES(-L${CMAKE_BINARY_DIR}/src)
 ELSE()
 	SET(DEFAULT_LIB_DEPENDENCY nugu)
+
+	# Dummy target
 	ADD_CUSTOM_TARGET(libnugu)
 ENDIF()
 
@@ -251,15 +262,9 @@ FOREACH(flag ${pkgs_CFLAGS})
 	ADD_COMPILE_OPTIONS(${flag})
 ENDFOREACH()
 
-# Gstreamer does not support dynamic loading/unloading of their libraries.
-# Therefore, add the library dependency to NUGU SDK instead of NUGU Plugin.
-IF(BUILD_PLUGINS)
-	IF(ENABLE_GSTREAMER_PLUGIN)
-		pkg_check_modules(force_pkgs REQUIRED gstreamer-1.0 gstreamer-app-1.0 gstreamer-pbutils-1.0 gstreamer-app-1.0)
-		FOREACH(flag ${force_pkgs_CFLAGS})
-			ADD_COMPILE_OPTIONS(${flag})
-		ENDFOREACH(flag)
-	ENDIF()
+IF(ENABLE_GSTREAMER_PLUGIN)
+	pkg_check_modules(gstreamer_pkgs REQUIRED
+		gstreamer-1.0 gstreamer-app-1.0 gstreamer-pbutils-1.0)
 ENDIF()
 
 # Common compile options
@@ -327,9 +332,6 @@ IF (CMAKE_COMPILER_IS_GNUCC)
 		-Wl,--gc-sections)
 
 	LINK_LIBRARIES(
-		# Link with force dependency libraries
-		-Wl,--no-as-needed ${force_pkgs_LDFLAGS}
-
 		# Link only needed libraries
 		-Wl,--as-needed
 
@@ -359,8 +361,6 @@ IF (CMAKE_COMPILER_IS_GNUCC)
 	ENDIF()
 ELSE()
 	ADD_COMPILE_OPTIONS(-fmacro-prefix-map=${CMAKE_SOURCE_DIR}/=)
-
-	LINK_LIBRARIES(${force_pkgs_LDFLAGS})
 
 	IF (NOT PACKAGING)
 		LINK_LIBRARIES(-Wl,-rpath,${CMAKE_BINARY_DIR}/src)
@@ -435,4 +435,3 @@ ENDIF()
 IF(BUILD_EXAMPLES)
 	ADD_SUBDIRECTORY(examples)
 ENDIF()
-
