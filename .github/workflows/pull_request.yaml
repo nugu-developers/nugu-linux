@@ -5,16 +5,20 @@ jobs:
   checkpatch_review:
     runs-on: ubuntu-latest
     steps:
+      - name: 'Calculate PR commits + 1'
+        run: echo "PR_FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> $GITHUB_ENV
       - name: Check out the repo
-        uses: actions/checkout@v1
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: ${{ env.PR_FETCH_DEPTH }}
       - name: Run checkpatch review
-        uses: webispy/checkpatch-action@master
-
+        uses: webispy/checkpatch-action@v9
   clang_tidy_review:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: true
       - name: Run clang-tidy review
@@ -26,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: true
           fetch-depth: 0
@@ -63,7 +67,7 @@ jobs:
           ]
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: true
           fetch-depth: 0
@@ -91,7 +95,7 @@ jobs:
           cp *.deb /tmp/result/
 
       - name: Build artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: DEB packages
           path: /tmp/result/
@@ -101,7 +105,7 @@ jobs:
     needs: [checkpatch_review, clang_tidy_review]
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Homebrew setup
         run: brew install cmake jsoncpp curl openssl gstreamer gst-plugins-base

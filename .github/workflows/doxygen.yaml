@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Generate doxygen
         run: |
@@ -17,9 +17,8 @@ jobs:
           doxygen
 
       - name: Deploy to Github Pages
-        uses: JamesIves/github-pages-deploy-action@3.7.1
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
-          GITHUB_TOKEN: ${{ github.token }}
-          BRANCH: gh-pages
-          FOLDER: doc/html
-          CLEAN: true
+          branch: gh-pages
+          folder: doc/html
+          clean: true
