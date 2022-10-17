@@ -205,7 +205,7 @@ static size_t _response_header_cb(char *buffer, size_t size, size_t nmemb,
 	return size * nmemb;
 }
 
-HTTP2Request *http2_request_new()
+HTTP2Request *http2_request_new(void)
 {
 	struct _http2_request *req;
 

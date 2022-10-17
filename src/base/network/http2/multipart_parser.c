@@ -113,7 +113,7 @@ struct _multipart_parser {
 	void *data;
 };
 
-MultipartParser *multipart_parser_new()
+MultipartParser *multipart_parser_new(void)
 {
 	struct _multipart_parser *parser;
 
@@ -341,9 +341,7 @@ int multipart_parser_parse(MultipartParser *parser, const char *src,
 			nugu_buffer_add(parser->body, pos, 1);
 			if (*pos == MARK_LF)
 				parser->step = STEP_BODY_ENDLINE;
-			else if (*pos == MARK_CR)
-				break;
-			else
+			else if (*pos != MARK_CR)
 				parser->step = STEP_BODY;
 			break;
 

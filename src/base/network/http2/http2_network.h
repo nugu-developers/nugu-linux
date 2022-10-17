@@ -25,7 +25,7 @@ extern "C" {
 
 typedef struct _http2_network HTTP2Network;
 
-HTTP2Network *http2_network_new();
+HTTP2Network *http2_network_new(void);
 void http2_network_free(HTTP2Network *net);
 
 int http2_network_add_request(HTTP2Network *net, HTTP2Request *req);

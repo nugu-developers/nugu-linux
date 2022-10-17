@@ -430,7 +430,7 @@ static void *_loop(void *data)
 	return NULL;
 }
 
-HTTP2Network *http2_network_new()
+HTTP2Network *http2_network_new(void)
 {
 	struct _http2_network *net;
 #ifndef HAVE_EVENTFD

@@ -159,11 +159,10 @@ static void _discovered_cb(GstDiscoverer *discoverer, GstDiscovererInfo *info,
 			return;
 		}
 
-		if (discoverer_result == GST_DISCOVERER_URI_INVALID) {
-			NOTIFY_EVENT(NUGU_MEDIA_EVENT_MEDIA_INVALID);
-		} else {
-			NOTIFY_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOAD_FAILED);
-		}
+		if (discoverer_result == GST_DISCOVERER_URI_INVALID)
+			NOTIFY_EVENT(NUGU_MEDIA_EVENT_MEDIA_INVALID)
+		else
+			NOTIFY_EVENT(NUGU_MEDIA_EVENT_MEDIA_LOAD_FAILED)
 
 		nugu_dbg("This URI cannot be played");
 		gst_element_set_state(gh->pipeline, GST_STATE_NULL);
@@ -526,8 +525,8 @@ static int _start(NuguPlayerDriver *driver, NuguPlayer *player)
 		gst_discoverer_start(gh->discoverer);
 
 		/* Add a request to process asynchronously the URI passed
-	 * through the command line
-	 */
+		 * through the command line
+		 */
 		if (!gst_discoverer_discover_uri_async(gh->discoverer,
 						       gh->playurl))
 			nugu_dbg("Failed to start discovering URI '%s'",
