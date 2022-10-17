@@ -29,7 +29,7 @@ typedef void (*ParserCallback)(MultipartParser *parser, const char *data,
 			       size_t length, void *userdata);
 typedef void (*ParserEndCallback)(MultipartParser *parser, void *userdata);
 
-MultipartParser *multipart_parser_new();
+MultipartParser *multipart_parser_new(void);
 void multipart_parser_free(MultipartParser *parser);
 
 void multipart_parser_set_boundary(MultipartParser *parser, const char *src,

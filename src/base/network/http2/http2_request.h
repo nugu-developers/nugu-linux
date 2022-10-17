@@ -68,7 +68,7 @@ typedef void (*RequestSendCompleteCallback)(HTTP2Request *req, void *userdata);
 
 typedef void (*HTTP2DestroyCallback)(HTTP2Request *req, void *userdata);
 
-HTTP2Request *http2_request_new();
+HTTP2Request *http2_request_new(void);
 
 int http2_request_ref(HTTP2Request *req);
 int http2_request_unref(HTTP2Request *req);

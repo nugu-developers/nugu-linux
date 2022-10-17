@@ -155,12 +155,14 @@ static int _decoder_decode(NuguDecoderDriver *driver, NuguDecoder *dec,
 	 */
 	while (packet < (unsigned char *)data + data_len) {
 		int len = READINT(packet);
+
 		packet += 4;
 
 		if (len > 160 || len == 0) {
 			nugu_error("invalid payload length(%d)", len);
 			continue;
 		}
+
 		enc_final_range = READINT(packet);
 		packet += 4;
 
