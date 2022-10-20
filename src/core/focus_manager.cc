@@ -378,7 +378,7 @@ void FocusManager::onFocusChanged(const std::string& type, const std::string& na
 
 void FocusManager::printConfigurations()
 {
-    nugu_info("Focus Resource Configurtaion  =================");
+    nugu_info("Focus Resource Configuration  =================");
     for (const auto& configuration : request_configuration_map)
         nugu_info("Request - priority:%4d, type: %s", configuration.second, configuration.first.c_str());
     nugu_info("-----------------------------------------------");
