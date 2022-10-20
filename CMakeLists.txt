@@ -17,6 +17,7 @@ MESSAGE(" * System: ${CMAKE_SYSTEM_NAME}")
 MESSAGE(" * Compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
 MESSAGE(" * CMAKE_GENERATOR = ${CMAKE_GENERATOR}")
 MESSAGE(" * CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
+MESSAGE(" * PROJECT_SOURCE_DIR = ${PROJECT_SOURCE_DIR}")
 MESSAGE(" * CMAKE_BINARY_DIR = ${CMAKE_BINARY_DIR}")
 MESSAGE(" * CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX}")
 
@@ -164,7 +165,7 @@ IF(ENABLE_BUILTIN_CURL)
 		${CMAKE_BINARY_DIR}/curl/lib/libcurl.a
 		${CMAKE_BINARY_DIR}/nghttp2/lib/libnghttp2.a)
 	SET(CURL_PKGCONFIG zlib)
-	SET(CURL_INCLUDE ${CMAKE_SOURCE_DIR}/externals/curl/include)
+	SET(CURL_INCLUDE ${PROJECT_SOURCE_DIR}/externals/curl/include)
 ELSE()
 	SET(CURL_LIBRARY)
 	SET(CURL_PKGCONFIG libcurl)
@@ -174,7 +175,7 @@ ENDIF()
 IF(ENABLE_BUILTIN_JSONCPP)
 	SET(JSONCPP_LIBRARY ${CMAKE_BINARY_DIR}/externals/libjsoncpp.a)
 	SET(JSONCPP_PKGCONFIG)
-	SET(JSONCPP_INCLUDE ${CMAKE_SOURCE_DIR}/externals/jsoncpp/include)
+	SET(JSONCPP_INCLUDE ${PROJECT_SOURCE_DIR}/externals/jsoncpp/include)
 
 	INCLUDE_DIRECTORIES(${JSONCPP_INCLUDE})
 ELSE()
@@ -352,15 +353,15 @@ IF (CMAKE_COMPILER_IS_GNUCC)
 
 	# Add __FILENAME__ macro to use path from source directory instead of full path
 	IF(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 8.0)
-		ADD_COMPILE_OPTIONS(-fmacro-prefix-map=${CMAKE_SOURCE_DIR}/=)
+		ADD_COMPILE_OPTIONS(-fmacro-prefix-map=${PROJECT_SOURCE_DIR}/=)
 	ELSE()
 		IF(CMAKE_GENERATOR MATCHES "Unix Makefiles")
-			SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${CMAKE_SOURCE_DIR})/,,$(abspath $<))\"'")
-			SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${CMAKE_SOURCE_DIR})/,,$(abspath $<))\"'")
+			SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${PROJECT_SOURCE_DIR})/,,$(abspath $<))\"'")
+			SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${PROJECT_SOURCE_DIR})/,,$(abspath $<))\"'")
 		ENDIF()
 	ENDIF()
 ELSE()
-	ADD_COMPILE_OPTIONS(-fmacro-prefix-map=${CMAKE_SOURCE_DIR}/=)
+	ADD_COMPILE_OPTIONS(-fmacro-prefix-map=${PROJECT_SOURCE_DIR}/=)
 
 	IF (NOT PACKAGING)
 		LINK_LIBRARIES(-Wl,-rpath,${CMAKE_BINARY_DIR}/src)
@@ -402,10 +403,10 @@ feature_summary(WHAT ALL)
 # External dependency modules - nghttp2, curl, jsoncpp
 IF(BUILD_LIBRARY)
 	# Global include directories
-	INCLUDE_DIRECTORIES(${CMAKE_SOURCE_DIR}/include)
+	INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)
 
 	# Install header files
-	CONFIGURE_FILE(nugu.h.in ${CMAKE_SOURCE_DIR}/include/nugu.h @ONLY)
+	CONFIGURE_FILE(nugu.h.in ${PROJECT_SOURCE_DIR}/include/nugu.h @ONLY)
 	INSTALL(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
 
 	# Install pkgconfig

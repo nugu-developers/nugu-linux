@@ -21,9 +21,11 @@
 #include <memory>
 
 #include "clientkit/capability_interface.hh"
-#include "clientkit/dialog_ux_state_aggregator.hh"
-#include "clientkit/speech_recognizer_aggregator.hh"
-#include "core/nugu_core_container.hh"
+
+#include "../core/nugu_core_container.hh"
+
+#include "dialog_ux_state_aggregator.hh"
+#include "speech_recognizer_aggregator.hh"
 
 namespace NuguClientKit {
 

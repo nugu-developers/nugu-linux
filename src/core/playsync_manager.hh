@@ -22,7 +22,7 @@
 #include <set>
 #include <vector>
 
-#include <base/nugu_directive.h>
+#include "base/nugu_directive.h"
 
 #include "clientkit/playsync_manager_interface.hh"
 #include "interaction_control_manager.hh"

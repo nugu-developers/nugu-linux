@@ -15,7 +15,7 @@ ADD_LIBRARY(objhttp2 OBJECT
 	network/dg_server.c)
 TARGET_INCLUDE_DIRECTORIES(objhttp2 PRIVATE
 	network
-	${CMAKE_SOURCE_DIR}/src/base
+	${CMAKE_CURRENT_SOURCE_DIR}
 	${CURL_INCLUDE})
 IF(ENABLE_BUILTIN_CURL)
 	ADD_DEPENDENCIES(objhttp2 CURL)
@@ -26,8 +26,8 @@ FILE(GLOB SRCS *.c)
 
 ADD_LIBRARY(objbase OBJECT ${SRCS})
 TARGET_INCLUDE_DIRECTORIES(objbase PRIVATE
-	${CMAKE_SOURCE_DIR}/src/base
-	${CMAKE_SOURCE_DIR}/externals/curl/include)
+	${CMAKE_CURRENT_SOURCE_DIR}
+	${PROJECT_SOURCE_DIR}/externals/curl/include)
 TARGET_COMPILE_DEFINITIONS(objbase PRIVATE
 	# Only symbols that use EXPORT_API are visible, and all other symbols are hidden.
 	-DEXPORT_API=__attribute__\(\(visibility\(\"default\"\)\)\)
