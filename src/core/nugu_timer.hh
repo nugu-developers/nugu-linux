@@ -17,7 +17,7 @@
 #ifndef __NUGU_TIMER_HH__
 #define __NUGU_TIMER_HH__
 
-#include <clientkit/nugu_timer_interface.hh>
+#include "clientkit/nugu_timer_interface.hh"
 
 namespace NuguCore {
 
