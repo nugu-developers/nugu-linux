@@ -162,8 +162,8 @@ ENDIF()
 
 IF(ENABLE_BUILTIN_CURL)
 	SET(CURL_LIBRARY
-		${CMAKE_BINARY_DIR}/curl/lib/libcurl.a
-		${CMAKE_BINARY_DIR}/nghttp2/lib/libnghttp2.a)
+		${PROJECT_BINARY_DIR}/curl/lib/libcurl.a
+		${PROJECT_BINARY_DIR}/nghttp2/lib/libnghttp2.a)
 	SET(CURL_PKGCONFIG zlib)
 	SET(CURL_INCLUDE ${PROJECT_SOURCE_DIR}/externals/curl/include)
 ELSE()
@@ -173,7 +173,7 @@ ELSE()
 ENDIF()
 
 IF(ENABLE_BUILTIN_JSONCPP)
-	SET(JSONCPP_LIBRARY ${CMAKE_BINARY_DIR}/externals/libjsoncpp.a)
+	SET(JSONCPP_LIBRARY ${PROJECT_BINARY_DIR}/externals/libjsoncpp.a)
 	SET(JSONCPP_PKGCONFIG)
 	SET(JSONCPP_INCLUDE ${PROJECT_SOURCE_DIR}/externals/jsoncpp/include)
 
@@ -249,7 +249,7 @@ IF(BUILD_LIBRARY)
 
 	# Sets the option so that the built library has a higher link order than
 	# the library already installed on the system.
-	LINK_LIBRARIES(-L${CMAKE_BINARY_DIR}/src)
+	LINK_LIBRARIES(-L${PROJECT_BINARY_DIR}/src)
 ELSE()
 	SET(DEFAULT_LIB_DEPENDENCY nugu)
 
@@ -348,7 +348,7 @@ IF (CMAKE_COMPILER_IS_GNUCC)
 	# RPATH is useful only for testing without installation.
 	# Please use the '-DPACKAGING' option for debian packaging.
 	IF (NOT PACKAGING)
-		LINK_LIBRARIES(-Wl,--rpath=${CMAKE_BINARY_DIR}/src)
+		LINK_LIBRARIES(-Wl,--rpath=${PROJECT_BINARY_DIR}/src)
 	ENDIF()
 
 	# Add __FILENAME__ macro to use path from source directory instead of full path
@@ -364,7 +364,7 @@ ELSE()
 	ADD_COMPILE_OPTIONS(-fmacro-prefix-map=${PROJECT_SOURCE_DIR}/=)
 
 	IF (NOT PACKAGING)
-		LINK_LIBRARIES(-Wl,-rpath,${CMAKE_BINARY_DIR}/src)
+		LINK_LIBRARIES(-Wl,-rpath,${PROJECT_BINARY_DIR}/src)
 	ENDIF()
 ENDIF()
 
@@ -410,8 +410,8 @@ IF(BUILD_LIBRARY)
 	INSTALL(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
 
 	# Install pkgconfig
-	CONFIGURE_FILE(nugu.pc.in ${CMAKE_BINARY_DIR}/nugu.pc @ONLY)
-	INSTALL(FILES ${CMAKE_BINARY_DIR}/nugu.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
+	CONFIGURE_FILE(nugu.pc.in ${PROJECT_BINARY_DIR}/nugu.pc @ONLY)
+	INSTALL(FILES ${PROJECT_BINARY_DIR}/nugu.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
 
 	# Install asset files
 	INSTALL(DIRECTORY assets/model DESTINATION ${assetdir})

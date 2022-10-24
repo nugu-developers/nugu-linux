@@ -16,9 +16,9 @@ IF(ENABLE_OPUS_PLUGIN)
 
 	IF(ENABLE_BUILTIN_OPUS)
 		TARGET_INCLUDE_DIRECTORIES(opus PRIVATE
-			${CMAKE_BINARY_DIR}/opus/include/opus)
+			${PROJECT_BINARY_DIR}/opus/include/opus)
 		TARGET_LINK_LIBRARIES(opus ${pkgs_LDFLAGS}
-			${CMAKE_BINARY_DIR}/opus/lib/libopus.a
+			${PROJECT_BINARY_DIR}/opus/lib/libopus.a
 			-lnugu -lm)
 		ADD_DEPENDENCIES(opus OPUSLIB)
 	ELSE()
