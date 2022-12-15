@@ -145,6 +145,7 @@ private:
     bool asr_cancel;
     bool listen_timeout_fail_beep;
     bool is_progress_release_focus;
+    bool is_routine_mute_delayed;
     std::string listen_timeout_event_msg_id;
     std::function<void(bool)> pending_release_focus;
 
