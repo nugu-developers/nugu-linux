@@ -58,6 +58,22 @@ public:
      * @return whether starting routine is success or not
      */
     virtual bool startRoutine(const std::string& dialog_id, const std::string& data) = 0;
+
+    /**
+     * @brief move to the next action and process.
+     * @return Result of operation
+     * @retval true succeed to move and process
+     * @retval false fail to move and process
+     */
+    virtual bool next() = 0;
+
+    /**
+     * @brief move to the previous action and process.
+     * @return Result of operation
+     * @retval true succeed to move and process
+     * @retval false fail to move and process
+     */
+    virtual bool prev() = 0;
 };
 
 /**

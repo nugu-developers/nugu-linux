@@ -1308,13 +1308,14 @@ void AudioPlayerAgent::parsingStop(const char* message)
 
     playstackctl_ps_id = getPlayServiceIdInStackControl(root["playStackControl"]);
 
-    if (!playstackctl_ps_id.empty()) {
-        is_finished
-            ? playsync_manager->releaseSync(playstackctl_ps_id, getName())
-            : playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
+    // replace to playServiceId to release correctly if playStackControl not exist in playstack
+    if (!playsync_manager->hasActivity(playstackctl_ps_id, PlayStackActivity::Media))
+        playstackctl_ps_id = ps_id;
 
-        capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
-    }
+    is_finished ? playsync_manager->releaseSync(playstackctl_ps_id, getName())
+                : playsync_manager->releaseSyncImmediately(playstackctl_ps_id, getName());
+
+    capa_helper->sendCommand("AudioPlayer", "ASR", "releaseFocus", "");
 
     clearContext();
 }
@@ -1604,8 +1605,8 @@ bool AudioPlayerAgent::hasToSkipForegroundAction()
         return true;
     }
 
-    if (routine_manager->isRoutineAlive()) {
-        nugu_info("Routine is alive. So, it ignore intermediate foreground focus.");
+    if (routine_manager->hasToSkipMedia(cur_dialog_id)) {
+        nugu_info("Routine is active. So, it ignore intermediate foreground focus.");
         return true;
     }
 

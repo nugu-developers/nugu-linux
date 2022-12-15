@@ -37,25 +37,48 @@ public:
     void updateInfoForContext(Json::Value& ctx) override;
     bool getProperty(const std::string& property, std::string& value) override;
     void parsingDirective(const char* dname, const char* message) override;
+
+    // implements IRoutineHandler
     bool startRoutine(const std::string& dialog_id, const std::string& data) override;
+    bool next() override;
+    bool prev() override;
 
 private:
+    using RoutineInfo = struct _RoutineInfo {
+        std::string play_service_id;
+        std::string token;
+        std::string name;
+        std::string routine_id;
+        std::string routine_type;
+        std::string routine_list_type;
+        std::string source;
+        Json::Value actions = Json::arrayValue;
+    };
+
     // implements IRoutineManagerListener
     void onActivity(RoutineActivity activity) override;
     void onActionTimeout(bool last_action = false) override;
 
     void handleInterrupted();
+    bool handleMoveControl(int offset);
+    bool handlePendingActionTimeout();
     void clearRoutineInfo();
 
     void parsingStart(const char* message);
     void parsingStop(const char* message);
     void parsingContinue(const char* message);
+    void parsingMove(const char* message);
 
     void sendEventStarted(EventResultCallback cb = nullptr);
     void sendEventFailed(EventResultCallback cb = nullptr);
     void sendEventFinished(EventResultCallback cb = nullptr);
     void sendEventStopped(EventResultCallback cb = nullptr);
-    void sendEventCommon(std::string&& event_name, Json::Value&& extra_value, EventResultCallback cb = nullptr, bool clear_routine_info = true);
+    void sendEventMoveControl(const int offset, EventResultCallback cb = nullptr);
+    void sendEventMoveSucceeded(EventResultCallback cb = nullptr);
+    void sendEventMoveFailed(EventResultCallback cb = nullptr);
+    void sendEventActionTimeoutTriggered(EventResultCallback cb = nullptr);
+
+    void sendEventCommon(std::string&& event_name, Json::Value&& extra_value, EventResultCallback cb = nullptr, bool clear_routine_info = false);
     std::string sendEventActionTriggered(const std::string& ps_id, const Json::Value& data, EventResultCallback cb = nullptr);
 
     const unsigned int INTERRUPT_TIME_MSEC = 60 * 1000;
@@ -65,15 +88,15 @@ private:
         { RoutineActivity::PLAYING, "PLAYING" },
         { RoutineActivity::INTERRUPTED, "INTERRUPTED" },
         { RoutineActivity::FINISHED, "FINISHED" },
-        { RoutineActivity::STOPPED, "STOPPED" }
+        { RoutineActivity::STOPPED, "STOPPED" },
+        { RoutineActivity::SUSPENDED, "SUSPENDED" }
     };
 
     IRoutineListener* routine_listener = nullptr;
     RoutineActivity activity = RoutineActivity::IDLE;
     std::unique_ptr<INuguTimer> timer = nullptr;
-    Json::Value actions = Json::arrayValue;
-    std::string play_service_id;
-    std::string token;
+    RoutineInfo routine_info {};
+    bool action_timeout_in_last_action = false;
 };
 
 } // NuguCapability

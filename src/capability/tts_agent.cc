@@ -143,6 +143,8 @@ void TTSAgent::preprocessDirective(NuguDirective* ndir)
             routine_manager->stop();
 
         playsync_manager->prepareSync(getPlayServiceIdInStackControl(message), ndir);
+    } else if (!strcmp(dname, "Stop")) {
+        routine_manager->setPendingStop(ndir);
     }
 }
 
@@ -210,7 +212,7 @@ void TTSAgent::stopTTS()
     MediaPlayerState pre_state = cur_state;
 
     sendClearNudgeCommand(speak_dir);
-    postProcessDirective(!is_finished && routine_manager->hasRoutineDirective(speak_dir));
+    postProcessDirective(!is_finished && routine_manager->isConditionToCancel(speak_dir));
 
     if (player)
         player->stop();

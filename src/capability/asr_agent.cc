@@ -53,6 +53,7 @@ ASRAgent::ASRAgent()
     , asr_cancel(false)
     , listen_timeout_fail_beep(true)
     , is_progress_release_focus(false)
+    , is_routine_mute_delayed(false)
     , asr_user_listener(std::unique_ptr<FocusListener>(new FocusListener(this, true)))
     , asr_dm_listener(std::unique_ptr<FocusListener>(new FocusListener(this, false)))
     , wakeup_power_noise(0)
@@ -104,6 +105,7 @@ void ASRAgent::initialize()
     listen_timeout_fail_beep = true;
     listen_timeout_event_msg_id.clear();
     is_progress_release_focus = false;
+    is_routine_mute_delayed = false;
     pending_release_focus = nullptr;
     wakeup_power_noise = 0;
     wakeup_power_speech = 0;
@@ -186,8 +188,12 @@ void ASRAgent::startRecognition(ASRInitiator initiator, AsrRecognizeCallback cal
 
     playsync_manager->postPoneRelease();
 
-    if (routine_manager->isRoutineProgress())
-        routine_manager->interrupt();
+    if (routine_manager->isRoutineAlive()) {
+        if (routine_manager->isRoutineProgress())
+            routine_manager->interrupt();
+
+        is_routine_mute_delayed = routine_manager->isMuteDelayed();
+    }
 
     focus_manager->requestFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME, asr_user_listener.get());
     asr_cancel = false;
@@ -712,7 +718,8 @@ void ASRAgent::releaseASRFocus(bool release_focus)
         focus_manager->releaseFocus(ASR_USER_FOCUS_TYPE, CAPABILITY_NAME);
     }
 
-    routine_manager->stop();
+    if (routine_manager->isRoutineAlive() && !is_routine_mute_delayed)
+        routine_manager->stop();
 }
 
 void ASRAgent::notifyASRErrorCancel(ASRError error, bool is_cancel)
