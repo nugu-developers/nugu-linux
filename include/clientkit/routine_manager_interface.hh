@@ -43,7 +43,8 @@ enum class RoutineActivity {
     PLAYING, /**< Routine is being executed. */
     INTERRUPTED, /**< Routine is interrupted. */
     FINISHED, /**< Routine execution is done. */
-    STOPPED /**< Routine is stopped before finish. */
+    STOPPED, /**< Routine is stopped before finish. */
+    SUSPENDED /**< Routine is suspended in the middle of actions. */
 };
 
 /**
@@ -59,6 +60,12 @@ public:
      * @param[in] activity current routine activity state
      */
     virtual void onActivity(RoutineActivity activity) = 0;
+
+    /**
+     * @brief Receive callback when the action timeout is ended.
+     * @param[in] last_action whether it was processed as the last action
+     */
+    virtual void onActionTimeout(bool last_action = false) = 0;
 };
 
 /**
@@ -120,15 +127,42 @@ public:
     virtual void resume() = 0;
 
     /**
+     * @brief Move to the specific action and process.
+     * @param[in] index action index
+     * @return Result of operation
+     * @retval true succeed to move and process
+     * @retval false fail to move and process
+     */
+    virtual bool move(unsigned int index) = 0;
+
+    /**
      * @brief Finish action.
      */
     virtual void finish() = 0;
 
     /**
+     * @brief Get token of current active action.
+     * @return token of current active action
+     */
+    virtual std::string getCurrentActionToken() = 0;
+
+    /**
      * @brief Get index of current active action.
      * @return index of current active action
      */
-    virtual int getCurrentActionIndex() = 0;
+    virtual unsigned int getCurrentActionIndex() = 0;
+
+    /**
+     * @brief Get size of countable actions.
+     * @return size of countable actions.
+     */
+    virtual unsigned int getCountableActionSize() = 0;
+
+    /**
+     * @brief Get index of current countable action.
+     * @return index of current active countable action
+     */
+    virtual unsigned int getCountableActionIndex() = 0;
 
     /**
      * @brief Check whether routine is in progress currently.
@@ -164,11 +198,46 @@ public:
     virtual bool isConditionToStop(const NuguDirective* ndir) = 0;
 
     /**
-     * @brief Check whether current condition is possible to finish progressing action
+     * @brief Check whether current condition is possible to finish progressing action.
      * @param[in] ndir NuguDirective object
      * @return true if satisfied, otherwise false
      */
     virtual bool isConditionToFinishAction(const NuguDirective* ndir) = 0;
+
+    /**
+     * @brief Check whether current condition is to cancel directive.
+     * @param[in] ndir NuguDirective object
+     * @return true if satisfied, otherwise false
+     */
+    virtual bool isConditionToCancel(const NuguDirective* ndir) = 0;
+
+    /**
+     * @brief Check whether mute delay is processed.
+     * @return Result of status
+     * @retval true in progress
+     * @retval false not in progress
+     */
+    virtual bool isMuteDelayed() = 0;
+
+    /**
+     * @brief Set default time (5 sec) when action timeout is not set.
+     */
+    virtual void presetActionTimeout() = 0;
+
+    /**
+     * @brief Set pending stop after checking whether Routine.Stop directive exists.
+     * @param[in] ndir NuguDirective object
+     */
+    virtual void setPendingStop(const NuguDirective* ndir) = 0;
+
+    /**
+     * @brief Check whether current condition should skip media play.
+     * @param[in] dialog_id dialog id
+     * @return Whether to skip media play
+     * @retval true skip
+     * @retval false not skip
+     */
+    virtual bool hasToSkipMedia(const std::string& dialog_id) = 0;
 };
 
 /**

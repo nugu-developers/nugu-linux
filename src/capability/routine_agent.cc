@@ -128,7 +128,13 @@ void RoutineAgent::onActivity(RoutineActivity activity)
         break;
     case RoutineActivity::IDLE:
         break;
+    case RoutineActivity::SUSPENDED:
+        break;
     }
+}
+
+void RoutineAgent::onActionTimeout(bool last_action)
+{
 }
 
 void RoutineAgent::handleInterrupted()
