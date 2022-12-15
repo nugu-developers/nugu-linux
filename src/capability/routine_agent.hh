@@ -42,6 +42,7 @@ public:
 private:
     // implements IRoutineManagerListener
     void onActivity(RoutineActivity activity) override;
+    void onActionTimeout(bool last_action = false) override;
 
     void handleInterrupted();
     void clearRoutineInfo();
