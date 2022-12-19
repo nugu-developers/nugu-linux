@@ -1,3 +1,20 @@
+nugu (1.7.4ubuntu1~focal) focal; urgency=medium
+
+  * Fixed AudioPlayerAgent bug
+  * Fixed default built-in option
+  * Fixed checkpatch tool report issues
+  * Fixed CodeQL action error
+  * Added to support macOS
+  * Added option for library, plugins, examples in build
+  * Added ASSET_DIR option in build
+  * Added audio resample to gstreamer plugin
+  * Applied Routine interface v1.3
+  * Updated DisplayAgent
+  * Updated RoutineManager
+  * Updated Github action version
+
+ -- nugulinux <nugulinux@gmail.com>  Tue, 20 Dec 2022 15:00:00 +0900
+
 nugu (1.7.3ubuntu1~focal) focal; urgency=medium
 
   * Fixed gstreamer plugin
