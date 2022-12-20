@@ -1,8 +1,8 @@
 var group__CapabilityInterface =
 [
-    [ "DirectiveCancelPolicy", "structNuguClientKit_1_1DirectiveCancelPolicy.html", [
-      [ "cancel_all", "structNuguClientKit_1_1DirectiveCancelPolicy.html#ae4759a57cdd2edc560e103335b48b8d2", null ],
-      [ "dir_groups", "structNuguClientKit_1_1DirectiveCancelPolicy.html#a95f6706c542e7efc815aa40d327397db", null ]
+    [ "_DirectiveCancelPolicy", "structNuguClientKit_1_1__DirectiveCancelPolicy.html", [
+      [ "cancel_all", "structNuguClientKit_1_1__DirectiveCancelPolicy.html#a0ba920e3865d4bfe66c25f866595639b", null ],
+      [ "dir_groups", "structNuguClientKit_1_1__DirectiveCancelPolicy.html#afc838eacf4e220e73c7db15fe6baa1df", null ]
     ] ],
     [ "ICapabilityInterface", "classNuguClientKit_1_1ICapabilityInterface.html", [
       [ "EventResultCallback", "classNuguClientKit_1_1ICapabilityInterface.html#a5b8577c3b5d15d48ff4e267b0bdcd125", null ],
@@ -39,5 +39,6 @@ var group__CapabilityInterface =
       [ "~ICapabilityListener", "classNuguClientKit_1_1ICapabilityListener.html#a3ecb6d5ff80bcee3c7c88cf267e9d100", null ],
       [ "setCapabilityHandler", "classNuguClientKit_1_1ICapabilityListener.html#ab6ebe17fe8072da3d5c227dff4eda9db", null ],
       [ "getCapabilityHandler", "classNuguClientKit_1_1ICapabilityListener.html#aa2e5938f8c942d662f560c33f13fa254", null ]
-    ] ]
+    ] ],
+    [ "DirectiveCancelPolicy", "group__CapabilityInterface.html#gac56614dfff5697a72cf4299d24f654b6", null ]
 ];

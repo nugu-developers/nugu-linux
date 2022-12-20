@@ -6,7 +6,7 @@ var classNuguCapability_1_1IDisplayHandler =
     [ "elementSelected", "classNuguCapability_1_1IDisplayHandler.html#a8a5ceaed2ff32888d990003d2977ccfc", null ],
     [ "triggerChild", "classNuguCapability_1_1IDisplayHandler.html#a620ba1d029e5e44c1f9668f68a07a6a5", null ],
     [ "controlTemplate", "classNuguCapability_1_1IDisplayHandler.html#a5cdb5563294676f22e685547e905166c", null ],
-    [ "informControlResult", "classNuguCapability_1_1IDisplayHandler.html#abe4dbf45c45f5380cb2447c07ae25f8b", null ],
+    [ "informControlResult", "classNuguCapability_1_1IDisplayHandler.html#a9620b09d8852d49830736d7315b238c3", null ],
     [ "setDisplayListener", "classNuguCapability_1_1IDisplayHandler.html#a44fc5f4aefe4cfdb2870e07ddd3dca15", null ],
     [ "removeDisplayListener", "classNuguCapability_1_1IDisplayHandler.html#a7eafbf5376dcffe04f152581c49c4f39", null ],
     [ "stopRenderingTimer", "classNuguCapability_1_1IDisplayHandler.html#a876ece2f77d1b914f64048c8661d7337", null ],

@@ -1,8 +1,8 @@
 var group__DisplayInterface =
 [
-    [ "DisplayContextInfo", "structNuguCapability_1_1DisplayContextInfo.html", [
-      [ "focused_item_token", "structNuguCapability_1_1DisplayContextInfo.html#a2237682b28d21e4b97973c847fb6b2aa", null ],
-      [ "visible_token_list", "structNuguCapability_1_1DisplayContextInfo.html#a7bf8f923786fd8af8c94bf8ae04fbbb2", null ]
+    [ "_DisplayContextInfo", "structNuguCapability_1_1__DisplayContextInfo.html", [
+      [ "focused_item_token", "structNuguCapability_1_1__DisplayContextInfo.html#ac21476679f232b24ef3cb0b59bb84c92", null ],
+      [ "visible_token_list", "structNuguCapability_1_1__DisplayContextInfo.html#a80ae3570c78d01bf86234b2df8591b34", null ]
     ] ],
     [ "IDisplayHandler", "classNuguCapability_1_1IDisplayHandler.html", [
       [ "~IDisplayHandler", "classNuguCapability_1_1IDisplayHandler.html#af82928f7755f33e26839a7fae4b3958f", null ],
@@ -11,7 +11,7 @@ var group__DisplayInterface =
       [ "elementSelected", "classNuguCapability_1_1IDisplayHandler.html#a8a5ceaed2ff32888d990003d2977ccfc", null ],
       [ "triggerChild", "classNuguCapability_1_1IDisplayHandler.html#a620ba1d029e5e44c1f9668f68a07a6a5", null ],
       [ "controlTemplate", "classNuguCapability_1_1IDisplayHandler.html#a5cdb5563294676f22e685547e905166c", null ],
-      [ "informControlResult", "classNuguCapability_1_1IDisplayHandler.html#abe4dbf45c45f5380cb2447c07ae25f8b", null ],
+      [ "informControlResult", "classNuguCapability_1_1IDisplayHandler.html#a9620b09d8852d49830736d7315b238c3", null ],
       [ "setDisplayListener", "classNuguCapability_1_1IDisplayHandler.html#a44fc5f4aefe4cfdb2870e07ddd3dca15", null ],
       [ "removeDisplayListener", "classNuguCapability_1_1IDisplayHandler.html#a7eafbf5376dcffe04f152581c49c4f39", null ],
       [ "stopRenderingTimer", "classNuguCapability_1_1IDisplayHandler.html#a876ece2f77d1b914f64048c8661d7337", null ],
@@ -24,6 +24,7 @@ var group__DisplayInterface =
       [ "controlDisplay", "classNuguCapability_1_1IDisplayListener.html#a8710ebdc5e0fc6695e6be1c169d192f0", null ],
       [ "updateDisplay", "classNuguCapability_1_1IDisplayListener.html#a3f05f36603ccdcae311671d00dac42c8", null ]
     ] ],
+    [ "DisplayContextInfo", "group__DisplayInterface.html#gad7316a4963bebd47f3885b3591f29d6f", null ],
     [ "ControlDirection", "group__DisplayInterface.html#ga99d4ad071b8f547cadd4a1852c9ca3f6", [
       [ "PREVIOUS", "group__DisplayInterface.html#gga99d4ad071b8f547cadd4a1852c9ca3f6a315ba7a868d45a9cb131c8dca3166b51", null ],
       [ "NEXT", "group__DisplayInterface.html#gga99d4ad071b8f547cadd4a1852c9ca3f6a47559fb833ff58321570e5e877b467f6", null ]

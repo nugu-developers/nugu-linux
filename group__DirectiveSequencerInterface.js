@@ -1,8 +1,8 @@
 var group__DirectiveSequencerInterface =
 [
-    [ "BlockingPolicy", "structNuguClientKit_1_1BlockingPolicy.html", [
-      [ "medium", "structNuguClientKit_1_1BlockingPolicy.html#a9720ec0a99692a1c4ee1d46d47feeb28", null ],
-      [ "isBlocking", "structNuguClientKit_1_1BlockingPolicy.html#a090fba7200b307b6f19bed8beb9962f2", null ]
+    [ "_BlockingPolicy", "structNuguClientKit_1_1__BlockingPolicy.html", [
+      [ "medium", "structNuguClientKit_1_1__BlockingPolicy.html#a0121c7a88803c59a2d2b486d0460c980", null ],
+      [ "isBlocking", "structNuguClientKit_1_1__BlockingPolicy.html#a9e99c3d27752fb93113d285a39943159", null ]
     ] ],
     [ "IDirectiveSequencer", "classNuguClientKit_1_1IDirectiveSequencer.html", [
       [ "~IDirectiveSequencer", "classNuguClientKit_1_1IDirectiveSequencer.html#a8057ea20311aa6e3d20120734ad0cb35", null ],
@@ -24,6 +24,7 @@ var group__DirectiveSequencerInterface =
       [ "onHandleDirective", "classNuguClientKit_1_1IDirectiveSequencerListener.html#ac6561d18b523daab6c8dc688e36c3479", null ],
       [ "onCancelDirective", "classNuguClientKit_1_1IDirectiveSequencerListener.html#a674577010b63e4735bb5d6af0c4c7bc5", null ]
     ] ],
+    [ "BlockingPolicy", "group__DirectiveSequencerInterface.html#gad58865fce563f417a71dbad13c79b2ad", null ],
     [ "BlockingMedium", "group__DirectiveSequencerInterface.html#ga27f22301768541185c29c12af55aa862", [
       [ "AUDIO", "group__DirectiveSequencerInterface.html#gga27f22301768541185c29c12af55aa862ae423b8bde9bfbfd7e9409b23b23aed91", null ],
       [ "VISUAL", "group__DirectiveSequencerInterface.html#gga27f22301768541185c29c12af55aa862a8daf3496602a64f00b16ce266e7084dc", null ],

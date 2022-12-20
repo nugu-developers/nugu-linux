@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['request_5fmethod_2326',['request_method',['../group__NuguRunner.html#ga2e15837ae41f91f3a96968e547bf664d',1,'NuguClientKit::NuguRunner']]],
-  ['responsecallback_2327',['ResponseCallback',['../classNuguClientKit_1_1NuguHttpRest.html#a638c4aecdfa51dc3ad152fd0deb2f20a',1,'NuguClientKit::NuguHttpRest']]]
+  ['epdattribute_2347',['EpdAttribute',['../group__SpeechRecognizerInterface.html#ga8767d433f15b6cf2b9f0d09d1c939e8f',1,'NuguClientKit']]],
+  ['eventresultcallback_2348',['EventResultCallback',['../classNuguClientKit_1_1ICapabilityInterface.html#a5b8577c3b5d15d48ff4e267b0bdcd125',1,'NuguClientKit::ICapabilityInterface']]]
 ];

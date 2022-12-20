@@ -1,5 +1,6 @@
 var display__interface_8hh =
 [
+    [ "DisplayContextInfo", "display__interface_8hh.html#gad7316a4963bebd47f3885b3591f29d6f", null ],
     [ "ControlDirection", "display__interface_8hh.html#ga99d4ad071b8f547cadd4a1852c9ca3f6", [
       [ "PREVIOUS", "display__interface_8hh.html#gga99d4ad071b8f547cadd4a1852c9ca3f6a315ba7a868d45a9cb131c8dca3166b51", null ],
       [ "NEXT", "display__interface_8hh.html#gga99d4ad071b8f547cadd4a1852c9ca3f6a47559fb833ff58321570e5e877b467f6", null ]

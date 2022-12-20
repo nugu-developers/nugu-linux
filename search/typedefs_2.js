@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['eventresultcallback_2281',['EventResultCallback',['../classNuguClientKit_1_1ICapabilityInterface.html#a5b8577c3b5d15d48ff4e267b0bdcd125',1,'NuguClientKit::ICapabilityInterface']]]
+  ['chipsinfo_2344',['ChipsInfo',['../group__ChipsInterface.html#gaf940d68433f733de8a2b8c9e132de483',1,'NuguCapability']]]
 ];

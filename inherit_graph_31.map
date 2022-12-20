@@ -1,3 +1,24 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classNuguClientKit_1_1IDirectiveSequencer.html" title="IDirectiveSequencer." alt="" coords="5,5,188,47"/>
+<area shape="rect" id="node1" href="$classNuguClientKit_1_1ICapabilityInterface.html" title="capability interface" alt="" coords="5,595,196,637"/>
+<area shape="rect" id="node2" href="$classNuguCapability_1_1IASRHandler.html" title="ASR handler interface." alt="" coords="255,5,466,32"/>
+<area shape="rect" id="node3" href="$classNuguCapability_1_1IAudioPlayerHandler.html" title="audioplayer handler interface" alt="" coords="525,170,736,211"/>
+<area shape="rect" id="node4" href="$classNuguCapability_1_1IBatteryHandler.html" title="battery handler interface" alt="" coords="270,107,451,149"/>
+<area shape="rect" id="node5" href="$classNuguCapability_1_1IBluetoothHandler.html" title="bluetooth handler interface" alt="" coords="263,173,459,214"/>
+<area shape="rect" id="node6" href="$classNuguCapability_1_1IChipsHandler.html" title="chips handler interface" alt="" coords="251,239,471,265"/>
+<area shape="rect" id="node7" href="$classNuguCapability_1_1IDisplayHandler.html" title="display handler interface" alt="" coords="269,290,452,331"/>
+<area shape="rect" id="node8" href="$classNuguCapability_1_1IExtensionHandler.html" title="extension handler interface" alt="" coords="262,355,459,397"/>
+<area shape="rect" id="node9" href="$classNuguCapability_1_1ILocationHandler.html" title="location handler interface" alt="" coords="267,421,455,462"/>
+<area shape="rect" id="node10" href="$classNuguCapability_1_1IMessageHandler.html" title="message handler interface" alt="" coords="265,486,456,527"/>
+<area shape="rect" id="node11" href="$classNuguCapability_1_1IMicHandler.html" title="mic handler interface" alt="" coords="257,552,464,579"/>
+<area shape="rect" id="node12" href="$classNuguCapability_1_1INudgeHandler.html" title="nudge handler interface" alt="" coords="247,603,474,629"/>
+<area shape="rect" id="node13" href="$classNuguCapability_1_1IPhoneCallHandler.html" title="phone call handler interface" alt="" coords="261,654,460,695"/>
+<area shape="rect" id="node14" href="$classNuguCapability_1_1IRoutineHandler.html" title="routine handler interface" alt="" coords="269,719,452,761"/>
+<area shape="rect" id="node15" href="$classNuguCapability_1_1ISessionHandler.html" title="session handler interface" alt="" coords="269,785,452,826"/>
+<area shape="rect" id="node16" href="$classNuguCapability_1_1ISoundHandler.html" title="sound handler interface" alt="" coords="249,851,473,877"/>
+<area shape="rect" id="node17" href="$classNuguCapability_1_1ISpeakerHandler.html" title="speaker handler interface" alt="" coords="268,902,453,943"/>
+<area shape="rect" id="node18" href="$classNuguCapability_1_1ISystemHandler.html" title="system handler interface" alt="" coords="244,968,477,995"/>
+<area shape="rect" id="node19" href="$classNuguCapability_1_1ITTSHandler.html" title="tts handler interface" alt="" coords="257,1019,465,1045"/>
+<area shape="rect" id="node20" href="$classNuguCapability_1_1ITextHandler.html" title="text handler interface" alt="" coords="255,1069,466,1096"/>
+<area shape="rect" id="node21" href="$classNuguCapability_1_1IUtilityHandler.html" title="utility handler interface" alt="" coords="274,1121,447,1162"/>
+<area shape="rect" id="node22" href="$classNuguClientKit_1_1Capability.html" title="Capability." alt="" coords="267,1187,454,1213"/>
 </map>

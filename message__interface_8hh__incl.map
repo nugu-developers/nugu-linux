@@ -1,32 +1,33 @@
 <map id="message_interface.hh" name="message_interface.hh">
-<area shape="rect" id="node1" title=" " alt="" coords="197,5,363,32"/>
-<area shape="rect" id="node2" href="$capability_8hh.html" title=" " alt="" coords="199,80,361,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="405,5,571,32"/>
+<area shape="rect" id="node2" href="$capability_8hh.html" title=" " alt="" coords="407,80,569,107"/>
 <area shape="rect" id="node3" title=" " alt="" coords="5,162,91,189"/>
 <area shape="rect" id="node4" title=" " alt="" coords="115,162,192,189"/>
-<area shape="rect" id="node5" title=" " alt="" coords="2131,512,2189,539"/>
-<area shape="rect" id="node6" title=" " alt="" coords="655,512,718,539"/>
-<area shape="rect" id="node7" href="$nugu__event_8h.html" title=" " alt="" coords="470,430,615,457"/>
-<area shape="rect" id="node8" href="$nugu__network__manager_8h.html" title=" " alt="" coords="317,341,542,367"/>
-<area shape="rect" id="node10" href="$capability__interface_8hh.html" title=" " alt="" coords="1219,155,1362,196"/>
-<area shape="rect" id="node9" href="$nugu__directive_8h.html" title=" " alt="" coords="743,512,908,539"/>
-<area shape="rect" id="node11" title=" " alt="" coords="2450,512,2537,539"/>
-<area shape="rect" id="node12" title=" " alt="" coords="1414,512,1506,539"/>
-<area shape="rect" id="node13" title=" " alt="" coords="640,430,683,457"/>
-<area shape="rect" id="node14" title=" " alt="" coords="437,512,480,539"/>
-<area shape="rect" id="node15" href="$nugu__core__container__interface_8hh.html" title=" " alt="" coords="1843,244,2018,285"/>
-<area shape="rect" id="node16" href="$capability__helper__interface_8hh.html" title=" " alt="" coords="1185,333,1340,375"/>
-<area shape="rect" id="node25" href="$media__player__interface_8hh.html" title=" " alt="" coords="2295,333,2463,375"/>
-<area shape="rect" id="node27" href="$network__manager__interface_8hh.html" title=" " alt="" coords="1609,333,1807,375"/>
-<area shape="rect" id="node28" href="$nugu__timer__interface_8hh.html" title=" " alt="" coords="2417,423,2570,464"/>
-<area shape="rect" id="node29" href="$speech__recognizer__interface_8hh.html" title=" " alt="" coords="1831,333,2031,375"/>
-<area shape="rect" id="node30" href="$wakeup__interface_8hh.html" title=" " alt="" coords="2055,341,2270,367"/>
-<area shape="rect" id="node17" href="$directive__sequencer__interface_8hh.html" title=" " alt="" coords="707,423,888,464"/>
-<area shape="rect" id="node18" href="$focus__manager__interface_8hh.html" title=" " alt="" coords="912,423,1091,464"/>
-<area shape="rect" id="node20" href="$interaction__control__manager__interface_8hh.html" title=" " alt="" coords="1581,423,1805,464"/>
-<area shape="rect" id="node21" href="$playsync__manager__interface_8hh.html" title=" " alt="" coords="1115,423,1287,464"/>
-<area shape="rect" id="node23" href="$routine__manager__interface_8hh.html" title=" " alt="" coords="1830,423,2021,464"/>
-<area shape="rect" id="node24" href="$session__manager__interface_8hh.html" title=" " alt="" coords="1363,423,1557,464"/>
-<area shape="rect" id="node19" title=" " alt="" coords="961,512,1041,539"/>
-<area shape="rect" id="node22" title=" " alt="" coords="1176,512,1227,539"/>
-<area shape="rect" id="node26" href="$nugu__audio_8h.html" title=" " alt="" coords="2197,430,2341,457"/>
+<area shape="rect" id="node5" title=" " alt="" coords="2273,512,2332,539"/>
+<area shape="rect" id="node6" title=" " alt="" coords="277,512,339,539"/>
+<area shape="rect" id="node7" href="$nugu__event_8h.html" title=" " alt="" coords="571,430,717,457"/>
+<area shape="rect" id="node8" href="$nugu__network__manager_8h.html" title=" " alt="" coords="375,341,601,367"/>
+<area shape="rect" id="node11" href="$capability__interface_8hh.html" title=" " alt="" coords="1271,155,1414,196"/>
+<area shape="rect" id="node9" href="$nugu__directive_8h.html" title=" " alt="" coords="873,512,1039,539"/>
+<area shape="rect" id="node10" title=" " alt="" coords="919,587,993,613"/>
+<area shape="rect" id="node12" title=" " alt="" coords="2551,512,2638,539"/>
+<area shape="rect" id="node13" title=" " alt="" coords="1362,512,1454,539"/>
+<area shape="rect" id="node14" title=" " alt="" coords="1979,430,2021,457"/>
+<area shape="rect" id="node15" title=" " alt="" coords="657,512,700,539"/>
+<area shape="rect" id="node16" href="$nugu__core__container__interface_8hh.html" title=" " alt="" coords="1757,244,1931,285"/>
+<area shape="rect" id="node17" href="$capability__helper__interface_8hh.html" title=" " alt="" coords="1275,333,1429,375"/>
+<area shape="rect" id="node26" href="$media__player__interface_8hh.html" title=" " alt="" coords="1760,333,1928,375"/>
+<area shape="rect" id="node28" href="$network__manager__interface_8hh.html" title=" " alt="" coords="1539,333,1736,375"/>
+<area shape="rect" id="node29" href="$nugu__timer__interface_8hh.html" title=" " alt="" coords="2518,423,2671,464"/>
+<area shape="rect" id="node30" href="$speech__recognizer__interface_8hh.html" title=" " alt="" coords="1952,333,2152,375"/>
+<area shape="rect" id="node31" href="$wakeup__interface_8hh.html" title=" " alt="" coords="2177,341,2391,367"/>
+<area shape="rect" id="node18" href="$directive__sequencer__interface_8hh.html" title=" " alt="" coords="741,423,923,464"/>
+<area shape="rect" id="node19" href="$focus__manager__interface_8hh.html" title=" " alt="" coords="267,423,445,464"/>
+<area shape="rect" id="node21" href="$interaction__control__manager__interface_8hh.html" title=" " alt="" coords="1731,423,1955,464"/>
+<area shape="rect" id="node22" href="$playsync__manager__interface_8hh.html" title=" " alt="" coords="998,423,1170,464"/>
+<area shape="rect" id="node24" href="$routine__manager__interface_8hh.html" title=" " alt="" coords="1246,423,1437,464"/>
+<area shape="rect" id="node25" href="$session__manager__interface_8hh.html" title=" " alt="" coords="1513,423,1706,464"/>
+<area shape="rect" id="node20" title=" " alt="" coords="364,512,444,539"/>
+<area shape="rect" id="node23" title=" " alt="" coords="1063,512,1113,539"/>
+<area shape="rect" id="node27" href="$nugu__audio_8h.html" title=" " alt="" coords="2096,430,2240,457"/>
 </map>

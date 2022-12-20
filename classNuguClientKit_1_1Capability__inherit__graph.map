@@ -1,6 +1,6 @@
 <map id="NuguClientKit::Capability" name="NuguClientKit::Capability">
-<area shape="rect" id="node1" title="Capability." alt="" coords="23,95,210,121"/>
-<area shape="rect" id="node3" title=" " alt="" coords="5,169,95,196"/>
-<area shape="rect" id="node4" title=" " alt="" coords="119,169,247,196"/>
-<area shape="rect" id="node2" href="$classNuguClientKit_1_1ICapabilityInterface.html" title="capability interface" alt="" coords="21,5,212,47"/>
+<area shape="rect" id="node1" title="Capability." alt="" coords="43,95,229,121"/>
+<area shape="rect" id="node3" title=" " alt="" coords="5,169,133,196"/>
+<area shape="rect" id="node4" title=" " alt="" coords="158,169,247,196"/>
+<area shape="rect" id="node2" href="$classNuguClientKit_1_1ICapabilityInterface.html" title="capability interface" alt="" coords="41,5,231,47"/>
 </map>

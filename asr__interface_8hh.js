@@ -3,6 +3,7 @@ var asr__interface_8hh =
     [ "NUGU_ASR_EPD_TYPE", "group__ASRInterface.html#ga5419ab10266ab89d5d5a405bf2f209cd", null ],
     [ "NUGU_ASR_ENCODING", "group__ASRInterface.html#ga77a3c02799354f9bd5e7217bc7a81841", null ],
     [ "NUGU_SERVER_RESPONSE_TIMEOUT_SEC", "group__ASRInterface.html#gae425613eee5e6fac62f785e0bdb107aa", null ],
+    [ "ASRAttribute", "asr__interface_8hh.html#ga30efbf9d5ab40cdffdf64a665d412d3c", null ],
     [ "ASRState", "asr__interface_8hh.html#gafe4f48f063bafec608e5060090a9543b", [
       [ "IDLE", "asr__interface_8hh.html#ggafe4f48f063bafec608e5060090a9543baa5daf7f2ebbba4975d61dab1c40188c7", null ],
       [ "EXPECTING_SPEECH", "asr__interface_8hh.html#ggafe4f48f063bafec608e5060090a9543ba2ad686da9d27bb3646616a1620173f83", null ],

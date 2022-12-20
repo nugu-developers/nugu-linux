@@ -1,5 +1,8 @@
 var group__TTSInterface =
 [
+    [ "_TTSAttribute", "structNuguCapability_1_1__TTSAttribute.html", [
+      [ "tts_engine", "structNuguCapability_1_1__TTSAttribute.html#aabda45b4a9023ae7f514777e08bbd646", null ]
+    ] ],
     [ "ITTSHandler", "classNuguCapability_1_1ITTSHandler.html", [
       [ "~ITTSHandler", "classNuguCapability_1_1ITTSHandler.html#acd5eb6906fcb7678d1087dd58e88c184", null ],
       [ "addListener", "classNuguCapability_1_1ITTSHandler.html#ac6fb7834ac4d069d15d6f4cbbb2a1af9", null ],
@@ -17,9 +20,7 @@ var group__TTSInterface =
       [ "onTTSText", "classNuguCapability_1_1ITTSListener.html#a0eee1cd379ef2adde22bfcc0e63c1c62", null ],
       [ "onTTSCancel", "classNuguCapability_1_1ITTSListener.html#a2286ebc32f17412ca1390989829401b7", null ]
     ] ],
-    [ "TTSAttribute", "structNuguCapability_1_1TTSAttribute.html", [
-      [ "tts_engine", "structNuguCapability_1_1TTSAttribute.html#a3d27107d98ea2fbdff928b47ffa7c432", null ]
-    ] ],
+    [ "TTSAttribute", "group__TTSInterface.html#ga42950c6a9af4f29941d6d755fd70c759", null ],
     [ "TTSState", "group__TTSInterface.html#ga7d4f4423b5757b9a2b029a5ce5fbcccf", [
       [ "TTS_SPEECH_START", "group__TTSInterface.html#gga7d4f4423b5757b9a2b029a5ce5fbcccfa6bd04d658b5dee0510833fa07ead4543", null ],
       [ "TTS_SPEECH_STOP", "group__TTSInterface.html#gga7d4f4423b5757b9a2b029a5ce5fbcccfa5403a575dd609954035245918942cacb", null ],

@@ -13,7 +13,7 @@
 <area shape="rect" id="node12" href="$group__Profiling.html" title="Profiling functions." alt="" coords="172,548,247,573"/>
 <area shape="rect" id="node13" href="$group__Buffer.html" title="Buffer manipulation functions." alt="" coords="179,597,240,623"/>
 <area shape="rect" id="node14" href="$group__NuguPlayer.html" title="Media player functions." alt="" coords="156,647,263,672"/>
-<area shape="rect" id="node15" title="@breif Base infrastructure API" alt="" coords="5,425,91,451"/>
+<area shape="rect" id="node15" title=" " alt="" coords="5,425,91,451"/>
 <area shape="rect" id="node16" href="$group__NuguRingBuffer.html" title="RingBuffer manipulation functions." alt="" coords="164,696,255,721"/>
 <area shape="rect" id="node17" href="$group__NuguPcm.html" title="PCM manipulation functions." alt="" coords="139,745,280,771"/>
 <area shape="rect" id="node18" href="$group__NuguEvent.html" title="The message object sent to the server." alt="" coords="158,795,261,820"/>

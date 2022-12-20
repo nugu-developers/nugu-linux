@@ -1,8 +1,8 @@
 var group__FocusManagerInterface =
 [
-    [ "FocusConfiguration", "structNuguClientKit_1_1FocusConfiguration.html", [
-      [ "type", "group__FocusManagerInterface.html#gaf1d7910d2d2c0a5769397a7330c33d5b", null ],
-      [ "priority", "group__FocusManagerInterface.html#gaf4dae3160301fc11c3fd6a6aa9540aff", null ]
+    [ "_FocusConfiguration", "structNuguClientKit_1_1__FocusConfiguration.html", [
+      [ "type", "group__FocusManagerInterface.html#ga6cc9ba79643dd904c7cc417159405314", null ],
+      [ "priority", "group__FocusManagerInterface.html#gaa02db1e50a68ec759c1363b691391e48", null ]
     ] ],
     [ "IFocusManager", "classNuguClientKit_1_1IFocusManager.html", [
       [ "requestFocus", "group__FocusManagerInterface.html#gab29d3665dae878ed7e76a984f049f912", null ],
@@ -25,6 +25,7 @@ var group__FocusManagerInterface =
       [ "~IFocusResourceListener", "group__FocusManagerInterface.html#ga4b606ab8433d6311a4af3e4507d678fb", null ],
       [ "onFocusChanged", "group__FocusManagerInterface.html#ga2d11291f6c00c40a4c92d2578ddda9dd", null ]
     ] ],
+    [ "FocusConfiguration", "group__FocusManagerInterface.html#ga44cbe212eaf2747447bb75337df8a8df", null ],
     [ "FocusState", "group__FocusManagerInterface.html#ga0a43ecaeb330bca6b94215d69e54bfe6", [
       [ "FOREGROUND", "group__FocusManagerInterface.html#gga0a43ecaeb330bca6b94215d69e54bfe6ae41f4c3e11dd067fd5691da0124b8fd2", null ],
       [ "BACKGROUND", "group__FocusManagerInterface.html#gga0a43ecaeb330bca6b94215d69e54bfe6a87ed58ce5596142e11cb65deb049bb4b", null ],
@@ -43,6 +44,6 @@ var group__FocusManagerInterface =
     [ "convertToFocusState", "group__FocusManagerInterface.html#ga7fa5acd493280fcf74ae877b781d4488", null ],
     [ "addObserver", "group__FocusManagerInterface.html#gaa4a33e5d89941e07ab5c3d11b092ce3d", null ],
     [ "removeObserver", "group__FocusManagerInterface.html#ga0b2b321ce06f60cbc1074530d5c94d61", null ],
-    [ "type", "group__FocusManagerInterface.html#gaf1d7910d2d2c0a5769397a7330c33d5b", null ],
-    [ "priority", "group__FocusManagerInterface.html#gaf4dae3160301fc11c3fd6a6aa9540aff", null ]
+    [ "type", "group__FocusManagerInterface.html#ga6cc9ba79643dd904c7cc417159405314", null ],
+    [ "priority", "group__FocusManagerInterface.html#gaa02db1e50a68ec759c1363b691391e48", null ]
 ];

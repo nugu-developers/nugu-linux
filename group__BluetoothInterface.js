@@ -1,18 +1,18 @@
 var group__BluetoothInterface =
 [
-    [ "BTDeviceInfo", "structNuguCapability_1_1BTDeviceInfo.html", [
-      [ "device_name", "structNuguCapability_1_1BTDeviceInfo.html#a38387e6d2f689f9c4004f43bd87cdbee", null ],
-      [ "power_on", "structNuguCapability_1_1BTDeviceInfo.html#a1ee92eef6b5f064cbf58eb11c92926fe", null ],
-      [ "profiles", "structNuguCapability_1_1BTDeviceInfo.html#a68ef3692d179d9f9ede0c320bf592f8f", null ],
-      [ "is_paired_device", "structNuguCapability_1_1BTDeviceInfo.html#af423f3c0971efd2379045b4e6833c059", null ],
-      [ "is_active_device", "structNuguCapability_1_1BTDeviceInfo.html#a010d314f983a896d858e760a7d72566d", null ],
-      [ "active_device_id", "structNuguCapability_1_1BTDeviceInfo.html#a7b0fce5467ff7aaf668bbd2445883513", null ],
-      [ "active_device_name", "structNuguCapability_1_1BTDeviceInfo.html#ae0eefaf2bf2399e863f3d58a95f401b7", null ],
-      [ "active_device_streaming", "structNuguCapability_1_1BTDeviceInfo.html#a3e98068bc50acf1153cefe5cdaacda1d", null ]
+    [ "_BTDeviceInfo", "structNuguCapability_1_1__BTDeviceInfo.html", [
+      [ "device_name", "structNuguCapability_1_1__BTDeviceInfo.html#a81f3ba1abb9e6159d85ae45034fdd8ab", null ],
+      [ "power_on", "structNuguCapability_1_1__BTDeviceInfo.html#a12c15d9f2b2ecd11c3cf4dc8b549bcdb", null ],
+      [ "profiles", "structNuguCapability_1_1__BTDeviceInfo.html#a5e961d72db9c4736f62a55c142582166", null ],
+      [ "is_paired_device", "structNuguCapability_1_1__BTDeviceInfo.html#a42fa7cd64a6e2a80f598b6124ba560a7", null ],
+      [ "is_active_device", "structNuguCapability_1_1__BTDeviceInfo.html#ae9d49cfff60d3136997710dafee96d37", null ],
+      [ "active_device_id", "structNuguCapability_1_1__BTDeviceInfo.html#a8db2b670aa195df0b8e207f07880afed", null ],
+      [ "active_device_name", "structNuguCapability_1_1__BTDeviceInfo.html#a6af236f10fee99c76972fcf7f2336d47", null ],
+      [ "active_device_streaming", "structNuguCapability_1_1__BTDeviceInfo.html#a3de5b930df9bddc6e2a91ab26c2b07ba", null ]
     ] ],
-    [ "BTProfile", "structNuguCapability_1_1BTProfile.html", [
-      [ "name", "structNuguCapability_1_1BTProfile.html#a44f080cee173c48be75dcd7aff51fa27", null ],
-      [ "enable", "structNuguCapability_1_1BTProfile.html#abc112b7333212914e3c63774b2f348fb", null ]
+    [ "_BTProfile", "structNuguCapability_1_1__BTProfile.html", [
+      [ "name", "structNuguCapability_1_1__BTProfile.html#ae7b70936d4e2df177ff000b1ddaea55b", null ],
+      [ "enable", "structNuguCapability_1_1__BTProfile.html#a37b7bc3f08170d1a3b15be4097f2b1bb", null ]
     ] ],
     [ "IBluetoothHandler", "classNuguCapability_1_1IBluetoothHandler.html", [
       [ "~IBluetoothHandler", "classNuguCapability_1_1IBluetoothHandler.html#a2e15fff23d35056fe4ab7dc66fcd5984", null ],
@@ -45,5 +45,7 @@ var group__BluetoothInterface =
       [ "next", "classNuguCapability_1_1IBluetoothListener.html#ab711a3b281a0d5ea1073303f0d970559", null ],
       [ "previous", "classNuguCapability_1_1IBluetoothListener.html#adaa6f75131fc0d7605ea33c1ad18d29f", null ],
       [ "requestContext", "classNuguCapability_1_1IBluetoothListener.html#a5d4496ee4fb99a521bbce2c29f507982", null ]
-    ] ]
+    ] ],
+    [ "BTProfile", "group__BluetoothInterface.html#gad9cfa1170fc2f35ef309d8c7b0279741", null ],
+    [ "BTDeviceInfo", "group__BluetoothInterface.html#ga7a42ec21a502fb7153339adec83282e5", null ]
 ];

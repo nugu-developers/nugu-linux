@@ -1,24 +1,26 @@
 /*
-@licstart  The following is the entire license notice for the
-JavaScript code in this file.
+ @licstart  The following is the entire license notice for the JavaScript code in this file.
 
-Copyright (C) 1997-2019 by Dimitri van Heesch
+ The MIT License (MIT)
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of version 2 of the GNU General Public License as published by
-the Free Software Foundation
+ Copyright (C) 1997-2020 by Dimitri van Heesch
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this software
+ and associated documentation files (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge, publish, distribute,
+ sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
 
-You should have received a copy of the GNU General Public License along
-with this program; if not, write to the Free Software Foundation, Inc.,
-51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ The above copyright notice and this permission notice shall be included in all copies or
+ substantial portions of the Software.
 
-@licend  The above is the entire license notice
-for the JavaScript code in this file
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+ BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+ DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+ @licend  The above is the entire license notice for the JavaScript code in this file
 */
 var NAVTREE =
 [
@@ -57,17 +59,17 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-".html",
-"classNuguCapability_1_1ISoundListener.html#a17761aba4fce10a6519a398b9093b113",
-"classNuguClientKit_1_1IMediaPlayerListener.html#aabe69756b2a317bd2f9d5f34e89c9e87",
-"functions_func_r.html",
-"group__Log.html#ga860e8aea9bbff532c81e4acbc1f7504e",
-"group__NuguDirective.html#ga8a86ecd351a5ffe05c5ebfc99e787f6b",
-"group__NuguPcm.html",
-"group__NuguRingBuffer.html#ga57173888361d6a882a2eb2929877115e",
-"group__SpeechRecognizerAggregatorInterface.html#ga1542e0adaece9196209a01c998337459",
-"message__interface_8hh.html#ggaf96a6b24718266cf4bd44237c02d0535a5b22a97dbe7d4d7162777ecdefd3bb26",
-"structNuguClientKit_1_1NuguDeviceConfig.html#a47b41f90b7bf44328d99a90d7a8cda36"
+"annotated.html",
+"classNuguCapability_1_1ISessionListener.html#af47b502cfebbb037491cd664657bc46f",
+"classNuguClientKit_1_1IMediaPlayerListener.html#a3cea4f5ed081bfdc2c18189f1ac2dce0",
+"functions_d.html",
+"group__Log.html#ga0f4e65da8d54e62ed9eac7f96cad0ddf",
+"group__NuguDirective.html",
+"group__NuguHttp.html#gaba84664dceb6f23283592336700eaab3",
+"group__NuguRecorder.html#gae8dca5d6b22297b6ebff4b34b47c6da2",
+"group__SpeakerInterface.html",
+"group__uuid.html#gaff6041ce1d21c47646a8b38f65494095",
+"structNuguCapability_1_1__BTProfile.html#a37b7bc3f08170d1a3b15be4097f2b1bb"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

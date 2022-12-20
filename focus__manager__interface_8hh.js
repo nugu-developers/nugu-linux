@@ -27,6 +27,7 @@ var focus__manager__interface_8hh =
     [ "DUMMY_FOCUS_TYPE", "group__FocusManagerInterface.html#ga5e1f4eb42bf182f1eb4398577ea6a361", null ],
     [ "DUMMY_FOCUS_REQUEST_PRIORITY", "group__FocusManagerInterface.html#ga31718616fa92071495bd39f0a606652f", null ],
     [ "DUMMY_FOCUS_RELEASE_PRIORITY", "group__FocusManagerInterface.html#gabfe12ba56256c161a90cfafdb3d11d60", null ],
+    [ "FocusConfiguration", "focus__manager__interface_8hh.html#ga44cbe212eaf2747447bb75337df8a8df", null ],
     [ "FocusState", "focus__manager__interface_8hh.html#ga0a43ecaeb330bca6b94215d69e54bfe6", [
       [ "FOREGROUND", "focus__manager__interface_8hh.html#gga0a43ecaeb330bca6b94215d69e54bfe6ae41f4c3e11dd067fd5691da0124b8fd2", null ],
       [ "BACKGROUND", "focus__manager__interface_8hh.html#gga0a43ecaeb330bca6b94215d69e54bfe6a87ed58ce5596142e11cb65deb049bb4b", null ],

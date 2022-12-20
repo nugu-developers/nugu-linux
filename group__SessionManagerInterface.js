@@ -1,5 +1,9 @@
 var group__SessionManagerInterface =
 [
+    [ "_Session", "structNuguClientKit_1_1__Session.html", [
+      [ "session_id", "structNuguClientKit_1_1__Session.html#ac232ba3cc69e08e01b1db55a59e63288", null ],
+      [ "ps_id", "structNuguClientKit_1_1__Session.html#a2d269317afe504a0a7359a57bf1b0087", null ]
+    ] ],
     [ "ISessionManager", "classNuguClientKit_1_1ISessionManager.html", [
       [ "~ISessionManager", "classNuguClientKit_1_1ISessionManager.html#a18a12639f138f2490ce3a730ce8a1ff6", null ],
       [ "addListener", "classNuguClientKit_1_1ISessionManager.html#abf696022474d865619797ac032ec2590", null ],
@@ -15,8 +19,5 @@ var group__SessionManagerInterface =
       [ "activated", "classNuguClientKit_1_1ISessionManagerListener.html#a1dbd0f76c9f8fec2518838defc9db303", null ],
       [ "deactivated", "classNuguClientKit_1_1ISessionManagerListener.html#a82d8d04d7addd7c2c7526c21c9f4fc52", null ]
     ] ],
-    [ "Session", "structNuguClientKit_1_1Session.html", [
-      [ "session_id", "structNuguClientKit_1_1Session.html#a6c683d93b5af2a0faee10c30a7fb2c64", null ],
-      [ "ps_id", "structNuguClientKit_1_1Session.html#a700b2fb4d066e47e9ff529b33323886c", null ]
-    ] ]
+    [ "Session", "group__SessionManagerInterface.html#ga0805f71c0fcdf4d6ded9cd469ba6d3cc", null ]
 ];

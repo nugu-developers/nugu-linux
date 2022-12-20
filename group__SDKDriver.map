@@ -3,6 +3,6 @@
 <area shape="rect" id="node2" href="$group__NuguRecorderDriver.html" title="Audio recorder driver." alt="" coords="140,55,299,80"/>
 <area shape="rect" id="node3" href="$group__NuguEncoderDriver.html" title="Encoder driver." alt="" coords="161,104,277,129"/>
 <area shape="rect" id="node4" href="$group__NuguDecoderDriver.html" title="Decoder driver." alt="" coords="160,153,279,179"/>
-<area shape="rect" id="node5" title="@breif Driver API for HAL(hardware abstraction layer) Support." alt="" coords="5,104,92,129"/>
+<area shape="rect" id="node5" title=" " alt="" coords="5,104,92,129"/>
 <area shape="rect" id="node6" href="$group__NuguPlayerDriver.html" title="Media player driver." alt="" coords="145,203,294,228"/>
 </map>

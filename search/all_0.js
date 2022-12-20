@@ -1,5 +1,20 @@
 var searchData=
 [
-  ['_5fchipsinfo_0',['_ChipsInfo',['../structNuguCapability_1_1__ChipsInfo.html',1,'NuguCapability']]],
-  ['_5fnugu_5fhttp_5fresponse_1',['_nugu_http_response',['../struct__nugu__http__response.html',1,'']]]
+  ['_5fasrattribute_0',['_ASRAttribute',['../structNuguCapability_1_1__ASRAttribute.html',1,'NuguCapability']]],
+  ['_5fbatteryinfo_1',['_BatteryInfo',['../structNuguCapability_1_1__BatteryInfo.html',1,'NuguCapability']]],
+  ['_5fblockingpolicy_2',['_BlockingPolicy',['../structNuguClientKit_1_1__BlockingPolicy.html',1,'NuguClientKit']]],
+  ['_5fbtdeviceinfo_3',['_BTDeviceInfo',['../structNuguCapability_1_1__BTDeviceInfo.html',1,'NuguCapability']]],
+  ['_5fbtprofile_4',['_BTProfile',['../structNuguCapability_1_1__BTProfile.html',1,'NuguCapability']]],
+  ['_5fchipsinfo_5',['_ChipsInfo',['../structNuguCapability_1_1__ChipsInfo.html',1,'NuguCapability']]],
+  ['_5fdirectivecancelpolicy_6',['_DirectiveCancelPolicy',['../structNuguClientKit_1_1__DirectiveCancelPolicy.html',1,'NuguClientKit']]],
+  ['_5fdisplaycontextinfo_7',['_DisplayContextInfo',['../structNuguCapability_1_1__DisplayContextInfo.html',1,'NuguCapability']]],
+  ['_5fepdattribute_8',['_EpdAttribute',['../structNuguClientKit_1_1__EpdAttribute.html',1,'NuguClientKit']]],
+  ['_5ffocusconfiguration_9',['_FocusConfiguration',['../structNuguClientKit_1_1__FocusConfiguration.html',1,'NuguClientKit']]],
+  ['_5flocationinfo_10',['_LocationInfo',['../structNuguCapability_1_1__LocationInfo.html',1,'NuguCapability']]],
+  ['_5fnugu_5fhttp_5fresponse_11',['_nugu_http_response',['../struct__nugu__http__response.html',1,'']]],
+  ['_5frecognitionresult_12',['_RecognitionResult',['../structNuguClientKit_1_1__RecognitionResult.html',1,'NuguClientKit']]],
+  ['_5fsession_13',['_Session',['../structNuguClientKit_1_1__Session.html',1,'NuguClientKit']]],
+  ['_5ftextattribute_14',['_TextAttribute',['../structNuguCapability_1_1__TextAttribute.html',1,'NuguCapability']]],
+  ['_5fttsattribute_15',['_TTSAttribute',['../structNuguCapability_1_1__TTSAttribute.html',1,'NuguCapability']]],
+  ['_5fwakeupmodelfile_16',['_WakeupModelFile',['../structNuguClientKit_1_1__WakeupModelFile.html',1,'NuguClientKit']]]
 ];

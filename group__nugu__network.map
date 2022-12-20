@@ -1,4 +1,4 @@
 <map id="NetworkManager" name="NetworkManager">
 <area shape="rect" id="node1" title="Network management." alt="" coords="139,5,273,31"/>
-<area shape="rect" id="node2" href="$group__SDKBase.html" title="@breif Base infrastructure API" alt="" coords="5,5,91,31"/>
+<area shape="rect" id="node2" href="$group__SDKBase.html" title=" " alt="" coords="5,5,91,31"/>
 </map>

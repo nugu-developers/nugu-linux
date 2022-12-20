@@ -1,10 +1,10 @@
 var group__ASRInterface =
 [
-    [ "ASRAttribute", "structNuguCapability_1_1ASRAttribute.html", [
-      [ "model_path", "structNuguCapability_1_1ASRAttribute.html#a81d5159679ea5a8a88b2e99d6464f86f", null ],
-      [ "epd_type", "structNuguCapability_1_1ASRAttribute.html#ae504d2e2415d00bafb6e45cdbe0800db", null ],
-      [ "asr_encoding", "structNuguCapability_1_1ASRAttribute.html#aca284c4ed6aeb87e035dfe40c5ca4a14", null ],
-      [ "response_timeout", "structNuguCapability_1_1ASRAttribute.html#af9c89e2373e575694f5a756677ca782f", null ]
+    [ "_ASRAttribute", "structNuguCapability_1_1__ASRAttribute.html", [
+      [ "model_path", "structNuguCapability_1_1__ASRAttribute.html#ae52cec3ec0541489cb35534e7dc83f5d", null ],
+      [ "epd_type", "structNuguCapability_1_1__ASRAttribute.html#acef924f58318d143127d86b3c28b6798", null ],
+      [ "asr_encoding", "structNuguCapability_1_1__ASRAttribute.html#aca8cff1b929878b6517145826359d95b", null ],
+      [ "response_timeout", "structNuguCapability_1_1__ASRAttribute.html#aa9697fbb4821881636a853ff1e894b91", null ]
     ] ],
     [ "IASRHandler", "classNuguCapability_1_1IASRHandler.html", [
       [ "AsrRecognizeCallback", "classNuguCapability_1_1IASRHandler.html#ad49e6bf6b6f66c6ab0ed3dcfbede937f", null ],
@@ -27,6 +27,7 @@ var group__ASRInterface =
       [ "onError", "classNuguCapability_1_1IASRListener.html#a14209e11ff08651e11b5d5c0cc2c323b", null ],
       [ "onCancel", "classNuguCapability_1_1IASRListener.html#afd6df670314542e5bce36444921258f6", null ]
     ] ],
+    [ "ASRAttribute", "group__ASRInterface.html#ga30efbf9d5ab40cdffdf64a665d412d3c", null ],
     [ "ASRState", "group__ASRInterface.html#gafe4f48f063bafec608e5060090a9543b", [
       [ "IDLE", "group__ASRInterface.html#ggafe4f48f063bafec608e5060090a9543baa5daf7f2ebbba4975d61dab1c40188c7", null ],
       [ "EXPECTING_SPEECH", "group__ASRInterface.html#ggafe4f48f063bafec608e5060090a9543ba2ad686da9d27bb3646616a1620173f83", null ],
