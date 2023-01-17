@@ -470,6 +470,12 @@ EXPORT_API enum nugu_log_system nugu_log_get_system(void)
 {
 	enum nugu_log_system log_system;
 
+	if (!_log_override_checked) {
+		pthread_mutex_lock(&_log_mutex);
+		_log_check_override();
+		pthread_mutex_unlock(&_log_mutex);
+	}
+
 	pthread_mutex_lock(&_log_mutex);
 	log_system = _log_system;
 	pthread_mutex_unlock(&_log_mutex);
@@ -511,6 +517,12 @@ EXPORT_API enum nugu_log_prefix nugu_log_get_prefix_fields(void)
 {
 	enum nugu_log_prefix tmp;
 
+	if (!_log_override_checked) {
+		pthread_mutex_lock(&_log_mutex);
+		_log_check_override();
+		pthread_mutex_unlock(&_log_mutex);
+	}
+
 	pthread_mutex_lock(&_log_mutex);
 	tmp = _log_prefix_fields;
 	pthread_mutex_unlock(&_log_mutex);
@@ -529,6 +541,12 @@ EXPORT_API unsigned int nugu_log_get_modules(void)
 {
 	unsigned int tmp;
 
+	if (!_log_override_checked) {
+		pthread_mutex_lock(&_log_mutex);
+		_log_check_override();
+		pthread_mutex_unlock(&_log_mutex);
+	}
+
 	pthread_mutex_lock(&_log_mutex);
 	tmp = _log_module_bitset;
 	pthread_mutex_unlock(&_log_mutex);
@@ -546,6 +564,12 @@ EXPORT_API void nugu_log_set_level(enum nugu_log_level level)
 EXPORT_API enum nugu_log_level nugu_log_get_level(void)
 {
 	enum nugu_log_level tmp;
+
+	if (!_log_override_checked) {
+		pthread_mutex_lock(&_log_mutex);
+		_log_check_override();
+		pthread_mutex_unlock(&_log_mutex);
+	}
 
 	pthread_mutex_lock(&_log_mutex);
 	tmp = _log_level;
@@ -567,6 +591,12 @@ EXPORT_API void nugu_log_set_protocol_line_limit(int length)
 EXPORT_API int nugu_log_get_protocol_line_limit(void)
 {
 	int tmp;
+
+	if (!_log_override_checked) {
+		pthread_mutex_lock(&_log_mutex);
+		_log_check_override();
+		pthread_mutex_unlock(&_log_mutex);
+	}
 
 	pthread_mutex_lock(&_log_mutex);
 	tmp = _log_line_limit;
