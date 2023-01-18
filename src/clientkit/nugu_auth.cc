@@ -90,6 +90,18 @@ bool NuguAuth::discovery(const std::function<void(bool success)> &cb)
     }
 
     return rest->get(EP_DISCOVERY + config.oauth_client_id, [&, cb](const NuguHttpResponse* resp) {
+        if (resp->code != 200) {
+            nugu_error("invalid response code %d", resp->code);
+            cb(false);
+            return;
+        }
+
+        if (resp->body == NULL) {
+            nugu_error("response body is NULL");
+            cb(false);
+            return;
+        }
+
         nugu_info("%s", (char*)resp->body);
 
         Json::Value root;
@@ -97,6 +109,7 @@ bool NuguAuth::discovery(const std::function<void(bool success)> &cb)
         std::string message((char*)resp->body);
 
         if (!reader.parse(message, root)) {
+            nugu_error("JSON parsing error: %s", message.c_str());
             cb(false);
             return;
         }
@@ -140,6 +153,16 @@ bool NuguAuth::discovery()
         return false;
     }
 
+    if (resp->code != 200) {
+        nugu_error("invalid response code %d", resp->code);
+        return false;
+    }
+
+    if (resp->body == NULL) {
+        nugu_error("response body is NULL");
+        return false;
+    }
+
     nugu_info("%s", (char*)resp->body);
 
     std::string message((char*)resp->body);
@@ -148,8 +171,10 @@ bool NuguAuth::discovery()
     Json::Value root;
     Json::Reader reader;
 
-    if (!reader.parse(message, root))
+    if (!reader.parse(message, root)) {
+        nugu_error("JSON parsing error: %s", message.c_str());
         return false;
+    }
 
     if (root["token_endpoint"].empty()) {
         nugu_error("can't find token_endpoint from response");
@@ -268,6 +293,11 @@ NuguToken* NuguAuth::getAuthorizationCodeToken(const std::string& code,
         return nullptr;
     }
 
+    if (resp->body == NULL) {
+        nugu_error("response body is NULL");
+        return nullptr;
+    }
+
     nugu_info("response: %s", (char*)resp->body);
 
     std::string message((char*)resp->body);
@@ -355,6 +385,11 @@ NuguToken* NuguAuth::getClientCredentialsToken(const std::string& device_serial)
             nugu_error("error response body: %s", (char*)resp->body);
 
         nugu_http_response_free(resp);
+        return nullptr;
+    }
+
+    if (resp->body == NULL) {
+        nugu_error("response body is NULL");
         return nullptr;
     }
 
@@ -562,6 +597,11 @@ bool NuguAuth::refresh(NuguToken* token, const std::string& device_serial)
             nugu_error("error response body: %s", (char*)resp->body);
 
         nugu_http_response_free(resp);
+        return false;
+    }
+
+    if (resp->body == NULL) {
+        nugu_error("response body is NULL");
         return false;
     }
 
