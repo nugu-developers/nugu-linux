@@ -377,7 +377,7 @@ static void _curl_perform(NuguHttpRequest *req)
 
 	ret = curl_easy_perform(req->curl);
 	if (ret != CURLE_OK) {
-		nugu_error("%s", curl_easy_strerror(ret));
+		nugu_error("curl_easy_perform failed: %s", curl_easy_strerror(ret));
 		req->resp->code = -1;
 		return;
 	}
