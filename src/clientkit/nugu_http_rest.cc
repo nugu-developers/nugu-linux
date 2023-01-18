@@ -76,10 +76,15 @@ bool NuguHttpRest::addHeader(const std::string& key, const std::string& value)
 int NuguHttpRest::response_callback(NuguHttpRequest* req,
     const NuguHttpResponse* resp, void* user_data)
 {
-    NuguHttpRest* rest = static_cast<NuguHttpRest*>(user_data);
+    struct pending_async_data *pdata = static_cast<struct pending_async_data*>(user_data);
 
-    rest->pending_async_callback[req](resp);
-    rest->pending_async_callback.erase(req);
+    if (!pdata) {
+        nugu_error("pdata is NULL");
+        return 1;
+    }
+
+    pdata->cb(resp);
+    delete pdata;
 
     return 1;
 }
@@ -124,16 +129,19 @@ bool NuguHttpRest::get(const std::string& path,
 {
     NuguHttpRequest* req;
     NuguHttpHeader* header = make_header(common_header, additional_header);
+    struct pending_async_data *pdata;
 
-    req = nugu_http_get(host, path.c_str(), header, response_callback, this);
+    pdata = new struct pending_async_data;
+    pdata->cb = std::move(cb);
+
+    req = nugu_http_get(host, path.c_str(), header, response_callback, pdata);
     if (req == NULL) {
         nugu_error("nugu_http_get() failed");
         if (header)
             nugu_http_header_free(header);
+        delete pdata;
         return false;
     }
-
-    pending_async_callback[req] = std::move(cb);
 
     if (header)
         nugu_http_header_free(header);
@@ -181,16 +189,19 @@ bool NuguHttpRest::post(const std::string& path, const std::string& body,
 {
     NuguHttpRequest* req;
     NuguHttpHeader* header = make_header(common_header, additional_header);
+    struct pending_async_data *pdata;
 
-    req = nugu_http_post(host, path.c_str(), header, body.c_str(), body.size(), response_callback, this);
+    pdata = new struct pending_async_data;
+    pdata->cb = std::move(cb);
+
+    req = nugu_http_post(host, path.c_str(), header, body.c_str(), body.size(), response_callback, pdata);
     if (req == NULL) {
         nugu_error("nugu_http_post() failed");
         if (header)
             nugu_http_header_free(header);
+        delete pdata;
         return false;
     }
-
-    pending_async_callback[req] = std::move(cb);
 
     if (header)
         nugu_http_header_free(header);
@@ -238,16 +249,19 @@ bool NuguHttpRest::put(const std::string& path, const std::string& body,
 {
     NuguHttpRequest* req;
     NuguHttpHeader* header = make_header(common_header, additional_header);
+    struct pending_async_data *pdata;
 
-    req = nugu_http_put(host, path.c_str(), header, body.c_str(), body.size(), response_callback, this);
+    pdata = new struct pending_async_data;
+    pdata->cb = std::move(cb);
+
+    req = nugu_http_put(host, path.c_str(), header, body.c_str(), body.size(), response_callback, pdata);
     if (req == NULL) {
         nugu_error("nugu_http_put() failed");
         if (header)
             nugu_http_header_free(header);
+        delete pdata;
         return false;
     }
-
-    pending_async_callback[req] = std::move(cb);
 
     if (header)
         nugu_http_header_free(header);
@@ -295,16 +309,19 @@ bool NuguHttpRest::del(const std::string& path,
 {
     NuguHttpRequest* req;
     NuguHttpHeader* header = make_header(common_header, additional_header);
+    struct pending_async_data *pdata;
 
-    req = nugu_http_delete(host, path.c_str(), header, response_callback, this);
+    pdata = new struct pending_async_data;
+    pdata->cb = std::move(cb);
+
+    req = nugu_http_delete(host, path.c_str(), header, response_callback, pdata);
     if (req == NULL) {
         nugu_error("nugu_http_delete() failed");
         if (header)
             nugu_http_header_free(header);
+        delete pdata;
         return false;
     }
-
-    pending_async_callback[req] = std::move(cb);
 
     if (header)
         nugu_http_header_free(header);

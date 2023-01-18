@@ -18,7 +18,6 @@
 #define __NUGU_HTTP_REST_H__
 
 #include <functional>
-#include <map>
 #include <string>
 
 #include <base/nugu_http.h>
@@ -211,7 +210,9 @@ private:
 
     NuguHttpHost* host;
     NuguHttpHeader* common_header;
-    std::map<NuguHttpRequest*, ResponseCallback> pending_async_callback;
+    struct pending_async_data {
+        ResponseCallback cb;
+    };
 };
 
 /**
