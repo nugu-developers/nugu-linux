@@ -1,0 +1,9 @@
+Package: libnugu
+Version: 1.7.4
+Section: libs
+Source: https://github.com/nugulinux/nugu-linux
+Priority: required
+Maintainer: Inho Oh <inho.oh@sk.com>
+Architecture: arm
+Depends: libnugu-epd, libnugu-kwd
+Description: NUGU SDK library
