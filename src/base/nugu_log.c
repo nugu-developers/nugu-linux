@@ -34,6 +34,7 @@
 
 #include "base/nugu_log.h"
 
+#define MAX_LOG_LENGTH 4096
 #define MAX_FIELDSIZE_FILENAME 30
 #define MAX_FIELDSIZE_FUNCNAME 30
 
@@ -183,6 +184,58 @@ static void _log_check_override_line_limit(void)
 }
 #endif
 
+#ifdef NUGU_ENV_LOG_PREFIX
+static void _log_check_override_prefix(void)
+{
+	gchar **fields = NULL;
+	const char *env;
+	gint count = 0;
+	gint i;
+	unsigned int bitset = 0;
+
+	env = getenv(NUGU_ENV_LOG_PREFIX);
+	if (!env)
+		return;
+
+	fields = g_strsplit(env, ",", -1);
+	if (!fields)
+		return;
+
+	count = g_strv_length(fields);
+	for (i = 0; i < count; i++) {
+		if (!strncasecmp(fields[i], "all", 4)) {
+			bitset = NUGU_LOG_PREFIX_ALL;
+			break;
+		} else if (!strncasecmp(fields[i], "none", 4)) {
+			bitset = NUGU_LOG_PREFIX_NONE;
+			break;
+		}
+
+		if (!strncasecmp(fields[i], "default", 8))
+			bitset = bitset | NUGU_LOG_PREFIX_DEFAULT;
+		else if (!strncasecmp(fields[i], "timestamp", 10))
+			bitset = bitset | NUGU_LOG_PREFIX_TIMESTAMP;
+		else if (!strncasecmp(fields[i], "pid", 4))
+			bitset = bitset | NUGU_LOG_PREFIX_PID;
+		else if (!strncasecmp(fields[i], "tid", 4))
+			bitset = bitset | NUGU_LOG_PREFIX_TID;
+		else if (!strncasecmp(fields[i], "level", 6))
+			bitset = bitset | NUGU_LOG_PREFIX_LEVEL;
+		else if (!strncasecmp(fields[i], "filepath", 9))
+			bitset = bitset | NUGU_LOG_PREFIX_FILEPATH;
+		else if (!strncasecmp(fields[i], "filename", 9))
+			bitset = bitset | NUGU_LOG_PREFIX_FILENAME;
+		else if (!strncasecmp(fields[i], "function", 9))
+			bitset = bitset | NUGU_LOG_PREFIX_FUNCTION;
+		else if (!strncasecmp(fields[i], "line", 5))
+			bitset = bitset | NUGU_LOG_PREFIX_LINE;
+	}
+
+	_log_prefix_fields = bitset;
+	g_strfreev(fields);
+}
+#endif
+
 static void _log_check_override(void)
 {
 	if (_log_override_checked)
@@ -192,6 +245,8 @@ static void _log_check_override(void)
 
 #ifdef NUGU_ENV_LOG
 	_log_check_override_system();
+	if (_log_system == NUGU_LOG_SYSTEM_SYSLOG)
+		_log_prefix_fields = NUGU_LOG_PREFIX_NONE;
 #endif
 
 #ifdef NUGU_ENV_LOG_LEVEL
@@ -204,6 +259,10 @@ static void _log_check_override(void)
 
 #ifdef NUGU_ENV_LOG_PROTOCOL_LINE_LIMIT
 	_log_check_override_line_limit();
+#endif
+
+#ifdef NUGU_ENV_LOG_PREFIX
+	_log_check_override_prefix();
 #endif
 }
 
@@ -338,7 +397,7 @@ static void _log_formatted(enum nugu_log_module module,
 			   const char *funcname, int line, const char *format,
 			   va_list arg)
 {
-	char prefix[4096] = { 0 };
+	char prefix[MAX_LOG_LENGTH] = { 0 };
 	int len = 0;
 	FILE *fp = NULL;
 
@@ -350,9 +409,9 @@ static void _log_formatted(enum nugu_log_module module,
 	else if (_log_system == NUGU_LOG_SYSTEM_STDOUT)
 		fp = stdout;
 	else if (_log_system == NUGU_LOG_SYSTEM_CUSTOM && _log_handler) {
-		char msg[4096];
+		char msg[MAX_LOG_LENGTH];
 
-		vsnprintf(msg, 4096, format, arg);
+		vsnprintf(msg, MAX_LOG_LENGTH, format, arg);
 		_log_handler(module, level, prefix, msg,
 			     _log_handler_user_data);
 
@@ -398,6 +457,39 @@ static void _log_formatted(enum nugu_log_module module,
 	pthread_mutex_unlock(&_log_mutex);
 }
 
+static void _syslog_formatted(enum nugu_log_module module,
+			      enum nugu_log_level level, const char *filename,
+			      const char *funcname, int line,
+			      const char *format, va_list arg)
+{
+	int len;
+	int remain;
+	int format_len;
+	char prefix[MAX_LOG_LENGTH] = { 0 };
+
+	len = _log_make_prefix(prefix, level, filename, funcname, line);
+	if (len <= 0) {
+		vsyslog(_log_level_map[level].syslog_level, format, arg);
+		return;
+	}
+
+	/* Calculate remain buffer length
+	 *  = MAX_LOG_LENGTH - prefix_length - format_length - space - '\0'
+	 */
+	format_len = strlen(format);
+	remain = MAX_LOG_LENGTH - len - format_len - 2;
+	if (remain > 0) {
+		snprintf(prefix + len, format_len + 2, " %s", format);
+		vsyslog(_log_level_map[level].syslog_level, prefix, arg);
+	} else {
+		char *buf;
+
+		buf = g_strdup_printf("%s %s", prefix, format);
+		vsyslog(_log_level_map[level].syslog_level, buf, arg);
+		g_free(buf);
+	}
+}
+
 EXPORT_API void nugu_log_print(enum nugu_log_module module,
 			       enum nugu_log_level level, const char *filename,
 			       const char *funcname, int line,
@@ -426,7 +518,12 @@ EXPORT_API void nugu_log_print(enum nugu_log_module module,
 	switch (log_system) {
 	case NUGU_LOG_SYSTEM_SYSLOG:
 		va_start(arg, format);
-		vsyslog(_log_level_map[level].syslog_level, format, arg);
+		if (_log_prefix_fields == NUGU_LOG_PREFIX_NONE)
+			vsyslog(_log_level_map[level].syslog_level, format,
+				arg);
+		else
+			_syslog_formatted(module, level, filename, funcname,
+					  line, format, arg);
 		va_end(arg);
 		break;
 
