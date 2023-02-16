@@ -25,6 +25,8 @@
 
 #include "base/nugu_http.h"
 
+#define FAKE_URL "https://localhost:12345"
+
 static const char *SERVER;
 
 static int on_not_reached(NuguHttpRequest *req, const NuguHttpResponse *resp,
@@ -140,6 +142,7 @@ static void test_nugu_http_default(void)
 	NuguHttpHeader *header;
 	NuguHttpHeader *header2;
 	const NuguHttpResponse *resp;
+	const char *url;
 
 	g_assert(nugu_http_host_new(NULL) == NULL);
 	g_assert(nugu_http_get(NULL, NULL, NULL, NULL, NULL) == NULL);
@@ -187,8 +190,12 @@ static void test_nugu_http_default(void)
 	g_assert_cmpstr(nugu_http_header_find(header, "qwer"), ==, "5678");
 	nugu_http_header_free(header);
 
-	host = nugu_http_host_new("https://localhost:12345");
+	host = nugu_http_host_new(FAKE_URL);
 	g_assert(host != NULL);
+
+	url = nugu_http_host_peek_url(host);
+	g_assert(url != NULL);
+	g_assert_cmpstr(url, ==, FAKE_URL);
 
 	/* callback is mandatory for async api */
 	g_assert(nugu_http_get(host, NULL, NULL, NULL, NULL) == NULL);
@@ -676,6 +683,10 @@ int main(int argc, char *argv[])
 	g_test_init(&argc, &argv, NULL);
 	g_log_set_always_fatal((GLogLevelFlags)G_LOG_FATAL_MASK);
 
+	nugu_http_init();
+
+	g_test_add_func("/http/default", test_nugu_http_default);
+
 	/*
 	 * If the "HTTP_TEST_SERVER" environment value is not set,
 	 * the HTTP test is skipped.
@@ -689,9 +700,6 @@ int main(int argc, char *argv[])
 
 	SERVER = getenv("HTTP_TEST_SERVER");
 
-	nugu_http_init();
-
-	g_test_add_func("/http/default", test_nugu_http_default);
 	g_test_add_func("/http/timeout", test_nugu_http_timeout);
 	g_test_add_func("/http/invalid_async", test_nugu_http_invalid_async);
 	g_test_add_func("/http/get_sync", test_nugu_http_get_sync);

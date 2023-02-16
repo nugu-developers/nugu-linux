@@ -61,6 +61,12 @@ public:
     void setConnectionTimeout(long msecs);
 
     /**
+     * @brief Get the url of host
+     * @return url
+     */
+    std::string getUrl();
+
+    /**
      * @brief Add a key-value string to common header
      * @param[in] key key string, e.g. "Content-Type"
      * @param[in] value value string, e.g. "application/json"
@@ -69,6 +75,22 @@ public:
      * @retval false failure
      */
     bool addHeader(const std::string& key, const std::string& value);
+
+    /**
+     * @brief Remove a key-value from common header
+     * @param[in] key key string, e.g. "Content-Type"
+     * @return result
+     * @retval true success
+     * @retval false failure
+     */
+    bool removeHeader(const std::string& key);
+
+    /**
+     * @brief Find a value for key from common header
+     * @param[in] key key string, e.g. "Content-Type"
+     * @return value
+     */
+    std::string findHeader(const std::string& key);
 
     /**
      * @brief HTTP GET requests

@@ -121,6 +121,13 @@ EXPORT_API void nugu_http_host_set_connection_timeout(NuguHttpHost *host,
 	host->conn_timeout = msecs;
 }
 
+EXPORT_API const char *nugu_http_host_peek_url(NuguHttpHost *host)
+{
+	g_return_val_if_fail(host != NULL, NULL);
+
+	return host->url;
+}
+
 EXPORT_API void nugu_http_host_free(NuguHttpHost *host)
 {
 	g_return_if_fail(host != NULL);
