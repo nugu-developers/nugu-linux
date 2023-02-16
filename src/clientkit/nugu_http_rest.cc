@@ -62,6 +62,11 @@ void NuguHttpRest::setConnectionTimeout(long msecs)
     nugu_http_host_set_connection_timeout(host, msecs);
 }
 
+std::string NuguHttpRest::getUrl()
+{
+    return nugu_http_host_peek_url(host);
+}
+
 bool NuguHttpRest::addHeader(const std::string& key, const std::string& value)
 {
     if (common_header == nullptr)
@@ -71,6 +76,32 @@ bool NuguHttpRest::addHeader(const std::string& key, const std::string& value)
         return false;
 
     return true;
+}
+
+bool NuguHttpRest::removeHeader(const std::string& key)
+{
+    if (common_header == nullptr)
+        return false;
+
+    if (nugu_http_header_remove(common_header, key.c_str()) < 0)
+        return false;
+
+    return true;
+}
+
+
+std::string NuguHttpRest::findHeader(const std::string& key)
+{
+    const char *value;
+
+    if (common_header == nullptr)
+        return "";
+
+    value = nugu_http_header_find(common_header, key.c_str());
+    if (!value)
+        return "";
+
+    return value;
 }
 
 int NuguHttpRest::response_callback(NuguHttpRequest* req,

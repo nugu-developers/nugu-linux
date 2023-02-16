@@ -103,6 +103,7 @@ void nugu_http_init(void);
  * @param[in] url host url
  * @return HTTP host object
  * @see nugu_http_host_free()
+ * @see nugu_http_peek_url();
  */
 NuguHttpHost *nugu_http_host_new(const char *url);
 
@@ -119,6 +120,13 @@ void nugu_http_host_set_timeout(NuguHttpHost *host, long msecs);
  * @param[in] msecs millisecond
  */
 void nugu_http_host_set_connection_timeout(NuguHttpHost *host, long msecs);
+
+/**
+ * @brief Get url from HTTP host object
+ * @param[in] host host object
+ * @return url
+ */
+const char *nugu_http_host_peek_url(NuguHttpHost *host);
 
 /**
  * @brief Destroy the host object

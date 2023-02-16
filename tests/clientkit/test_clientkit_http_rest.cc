@@ -19,9 +19,42 @@
 #include "base/nugu_log.h"
 #include "clientkit/nugu_http_rest.hh"
 
+#define FAKE_URL "https://localhost:12345"
+
 using namespace NuguClientKit;
 
 static const char* SERVER;
+
+static void test_nugu_http_rest_default()
+{
+    NuguHttpRest myserver(FAKE_URL);
+    std::string value;
+
+    value = myserver.getUrl();
+    g_assert(value.size() > 0);
+
+    g_assert(myserver.addHeader("key1", "value1") == true);
+
+    value = myserver.findHeader("key1");
+    g_assert(value.size() > 0);
+    g_assert_cmpstr(value.c_str(), ==, "value1");
+
+    value = myserver.findHeader("key2");
+    g_assert(value.size() == 0);
+
+    g_assert(myserver.removeHeader("key2") == false);
+    g_assert(myserver.removeHeader("key1") == true);
+
+    value = myserver.findHeader("key1");
+    g_assert(value.size() == 0);
+
+    g_assert(myserver.addHeader("key1", "value1") == true);
+    g_assert(myserver.addHeader("key1", "value_new") == true);
+
+    value = myserver.findHeader("key1");
+    g_assert(value.size() > 0);
+    g_assert_cmpstr(value.c_str(), ==, "value_new");
+}
 
 static void test_nugu_http_rest_get()
 {
@@ -223,6 +256,8 @@ int main(int argc, char* argv[])
     g_test_init(&argc, &argv, (void*)NULL);
     g_log_set_always_fatal((GLogLevelFlags)G_LOG_FATAL_MASK);
 
+    g_test_add_func("/http_rest/default", test_nugu_http_rest_default);
+
     /*
 	 * If the "HTTP_TEST_SERVER" environment value is not set,
 	 * the HTTP test is skipped.
@@ -232,7 +267,7 @@ int main(int argc, char* argv[])
 	 *     export HTTP_TEST_SERVER=http://localhost:3000
 	 */
     if (getenv("HTTP_TEST_SERVER") == NULL)
-        return 0;
+        return g_test_run();
 
     SERVER = getenv("HTTP_TEST_SERVER");
 
