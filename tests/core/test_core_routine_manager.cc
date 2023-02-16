@@ -285,6 +285,7 @@ static void teardown(TestFixture* fixture, gconstpointer user_data)
     nugu_directive_unref(fixture->ndir_info_disp);
     nugu_directive_unref(fixture->ndir_info_tts);
     nugu_directive_unref(fixture->ndir_routine);
+    nugu_directive_unref(fixture->ndir_routine_stop);
     nugu_directive_unref(fixture->ndir_dm);
 
     fixture->routine_manager_listener.reset();
