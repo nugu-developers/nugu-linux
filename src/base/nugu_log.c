@@ -42,7 +42,6 @@
 #define HEXDUMP_LINE_BUFSIZE                                                   \
 	(8 + (HEXDUMP_COLUMN_SIZE * 3) + 3 + 3 + (HEXDUMP_COLUMN_SIZE) + 2)
 
-
 static enum nugu_log_system _log_system = NUGU_LOG_SYSTEM_STDERR;
 static enum nugu_log_prefix _log_prefix_fields = NUGU_LOG_PREFIX_DEFAULT;
 static enum nugu_log_level _log_level = NUGU_LOG_LEVEL_DEBUG;
@@ -272,7 +271,6 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 {
 	const char *pretty_filename = NULL;
 	int len = 0;
-	pid_t pid = 0;
 
 	if (_log_prefix_fields & NUGU_LOG_PREFIX_TIMESTAMP) {
 		struct timespec tp;
@@ -286,41 +284,44 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 				tp.tv_nsec / 1000000);
 	}
 
-	if (_log_prefix_fields & NUGU_LOG_PREFIX_PID) {
-		pid = getpid();
-		len += sprintf(prefix + len, "%d ", pid);
-	}
+	if (_log_prefix_fields & NUGU_LOG_PREFIX_PID ||
+	    _log_prefix_fields & NUGU_LOG_PREFIX_TID) {
+		pid_t pid = getpid();
 
-	if (_log_prefix_fields & NUGU_LOG_PREFIX_TID) {
-		pid_t tid;
-		int is_main_thread = 1;
+		if (_log_prefix_fields & NUGU_LOG_PREFIX_PID)
+			len += sprintf(prefix + len, "%d ", pid);
+
+		if (_log_prefix_fields & NUGU_LOG_PREFIX_TID) {
+			pid_t tid;
+			int is_main_thread = 1;
 
 #ifdef HAVE_SYSCALL
 #ifdef __APPLE__
-		pthread_threadid_np(NULL, (uint64_t *)&tid);
-		is_main_thread = pthread_main_np();
+			pthread_threadid_np(NULL, (uint64_t *)&tid);
+			is_main_thread = pthread_main_np();
 #else
-		tid = (pid_t)syscall(SYS_gettid);
-		if (pid != 0 && pid != tid)
-			is_main_thread = 0;
+			tid = (pid_t)syscall(SYS_gettid);
+			if (pid != 0 && pid != tid)
+				is_main_thread = 0;
 #endif
 #else
-		tid = (pid_t)gettid();
-		if (pid != 0 && pid != tid)
-			is_main_thread = 0;
+			tid = (pid_t)gettid();
+			if (pid != 0 && pid != tid)
+				is_main_thread = 0;
 #endif
 
 #ifdef NUGU_LOG_USE_ANSICOLOR
-		if (len > 0 && is_main_thread == 0)
-			len += sprintf(prefix + len,
-				       NUGU_ANSI_COLOR_DARKGRAY
-				       "%d " NUGU_ANSI_COLOR_NORMAL,
-				       tid);
-		else
-			len += sprintf(prefix + len, "%d ", tid);
+			if (is_main_thread == 0)
+				len += sprintf(prefix + len,
+					       NUGU_ANSI_COLOR_DARKGRAY
+					       "%d " NUGU_ANSI_COLOR_NORMAL,
+					       tid);
+			else
+				len += sprintf(prefix + len, "%d ", tid);
 #else
-		len += sprintf(prefix + len, "%d ", tid);
+			len += sprintf(prefix + len, "%d ", tid);
 #endif
+		}
 	}
 
 	if (_log_prefix_fields & NUGU_LOG_PREFIX_LEVEL) {
