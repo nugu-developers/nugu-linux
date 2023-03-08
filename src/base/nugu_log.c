@@ -38,6 +38,22 @@
 #define MAX_FIELDSIZE_FILENAME 30
 #define MAX_FIELDSIZE_FUNCNAME 30
 
+#ifdef NUGU_LOG_USE_ANSICOLOR
+#define COLOR_THREAD_ID NUGU_ANSI_COLOR_DARKGRAY
+#define COLOR_DEBUG
+#define COLOR_WARNING NUGU_ANSI_COLOR_LIGHTGRAY
+#define COLOR_INFO NUGU_ANSI_COLOR_LIGHTBLUE
+#define COLOR_ERROR NUGU_ANSI_COLOR_LIGHTRED
+#define COLOR_OFF NUGU_ANSI_COLOR_NORMAL
+#else
+#define COLOR_THREAD_ID ""
+#define COLOR_DEBUG NULL
+#define COLOR_WARNING NULL
+#define COLOR_INFO NULL
+#define COLOR_ERROR NULL
+#define COLOR_OFF ""
+#endif
+
 #define HEXDUMP_COLUMN_SIZE 32
 #define HEXDUMP_LINE_BUFSIZE                                                   \
 	(8 + (HEXDUMP_COLUMN_SIZE * 3) + 3 + 3 + (HEXDUMP_COLUMN_SIZE) + 2)
@@ -59,12 +75,13 @@ static pthread_mutex_t _log_mutex = PTHREAD_MUTEX_INITIALIZER;
 static struct _log_level_info {
 	char mark;
 	int syslog_level;
+	const char *color;
 } _log_level_map[] = {
-	/* [level] = { mark, syslog_level } */
-	[NUGU_LOG_LEVEL_ERROR] = { 'E', LOG_ERR },
-	[NUGU_LOG_LEVEL_WARNING] = { 'W', LOG_WARNING },
-	[NUGU_LOG_LEVEL_INFO] = { 'I', LOG_INFO },
-	[NUGU_LOG_LEVEL_DEBUG] = { 'D', LOG_DEBUG }
+	/* [level] = { mark, syslog_level, color string } */
+	[NUGU_LOG_LEVEL_ERROR] = { 'E', LOG_ERR, COLOR_ERROR },
+	[NUGU_LOG_LEVEL_WARNING] = { 'W', LOG_WARNING, COLOR_WARNING },
+	[NUGU_LOG_LEVEL_INFO] = { 'I', LOG_INFO, COLOR_INFO },
+	[NUGU_LOG_LEVEL_DEBUG] = { 'D', LOG_DEBUG, COLOR_DEBUG }
 };
 
 #ifdef NUGU_ENV_LOG
@@ -310,17 +327,12 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 				is_main_thread = 0;
 #endif
 
-#ifdef NUGU_LOG_USE_ANSICOLOR
-			if (is_main_thread == 0)
+			if (is_main_thread == 0 && COLOR_THREAD_ID[0] != '\0')
 				len += sprintf(prefix + len,
-					       NUGU_ANSI_COLOR_DARKGRAY
-					       "%d " NUGU_ANSI_COLOR_NORMAL,
+					       COLOR_THREAD_ID "%d " COLOR_OFF,
 					       tid);
 			else
 				len += sprintf(prefix + len, "%d ", tid);
-#else
-			len += sprintf(prefix + len, "%d ", tid);
-#endif
 		}
 	}
 
@@ -427,32 +439,15 @@ static void _log_formatted(enum nugu_log_module module,
 	if (len > 0)
 		fprintf(fp, "%s ", prefix);
 
-#ifdef NUGU_LOG_USE_ANSICOLOR
-	switch (level) {
-	case NUGU_LOG_LEVEL_DEBUG:
-		break;
-	case NUGU_LOG_LEVEL_INFO:
-		fputs(NUGU_ANSI_COLOR_LIGHTBLUE, fp);
-		break;
-	case NUGU_LOG_LEVEL_WARNING:
-		fputs(NUGU_ANSI_COLOR_LIGHTGRAY, fp);
-		break;
-	case NUGU_LOG_LEVEL_ERROR:
-		fputs(NUGU_ANSI_COLOR_LIGHTRED, fp);
-		break;
-	default:
-		break;
+	if (_log_level_map[level].color != NULL) {
+		fputs(_log_level_map[level].color, fp);
+		vfprintf(fp, format, arg);
+		fputs(COLOR_OFF "\n", fp);
+	} else {
+		vfprintf(fp, format, arg);
+		fputc('\n', fp);
 	}
-#endif
 
-	vfprintf(fp, format, arg);
-
-#ifdef NUGU_LOG_USE_ANSICOLOR
-	fputs(NUGU_ANSI_COLOR_NORMAL, fp);
-#endif
-
-	/* new line */
-	fputc('\n', fp);
 	fflush(fp);
 
 	pthread_mutex_unlock(&_log_mutex);
@@ -464,31 +459,27 @@ static void _syslog_formatted(enum nugu_log_module module,
 			      const char *format, va_list arg)
 {
 	int len;
-	int remain;
-	int format_len;
 	char prefix[MAX_LOG_LENGTH] = { 0 };
+	GString *buf;
 
 	len = _log_make_prefix(prefix, level, filename, funcname, line);
-	if (len <= 0) {
-		vsyslog(_log_level_map[level].syslog_level, format, arg);
-		return;
-	}
-
-	/* Calculate remain buffer length
-	 *  = MAX_LOG_LENGTH - prefix_length - format_length - space - '\0'
-	 */
-	format_len = strlen(format);
-	remain = MAX_LOG_LENGTH - len - format_len - 2;
-	if (remain > 0) {
-		snprintf(prefix + len, format_len + 2, " %s", format);
-		vsyslog(_log_level_map[level].syslog_level, prefix, arg);
+	if (len > 0) {
+		buf = g_string_new(prefix);
+		g_string_append_c(buf, ' ');
 	} else {
-		char *buf;
-
-		buf = g_strdup_printf("%s %s", prefix, format);
-		vsyslog(_log_level_map[level].syslog_level, buf, arg);
-		g_free(buf);
+		buf = g_string_new(NULL);
 	}
+
+	if (_log_level_map[level].color != NULL) {
+		g_string_append(buf, _log_level_map[level].color);
+		g_string_append(buf, format);
+		g_string_append(buf, COLOR_OFF);
+	} else {
+		g_string_append(buf, format);
+	}
+
+	vsyslog(_log_level_map[level].syslog_level, buf->str, arg);
+	g_string_free(buf, TRUE);
 }
 
 EXPORT_API void nugu_log_print(enum nugu_log_module module,
