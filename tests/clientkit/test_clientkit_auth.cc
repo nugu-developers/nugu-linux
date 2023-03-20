@@ -73,13 +73,24 @@ static void test_nugu_auth_discovery()
     loop = g_main_loop_new(NULL, FALSE);
     int check_value = 0;
 
-    g_assert(auth->discovery([&](bool success) {
+    g_assert(auth->discovery([&](bool success, const struct AuthResponse* response) {
         g_assert(success == true);
         g_assert(check_value == 0);
+        g_assert(response->code == 200);
+        g_assert(response->body.size() > 0);
 
         check_value = 1;
         g_main_loop_quit(loop);
     }) == true);
+
+    /* Sync request without response data */
+    g_assert(auth->discovery() == true);
+
+    /* Sync request with response data */
+    struct AuthResponse response;
+    g_assert(auth->discovery(&response) == true);
+    g_assert(response.code == 200);
+    g_assert(response.body.size() > 0);
 
     g_main_loop_run(loop);
     g_main_loop_unref(loop);
@@ -126,15 +137,29 @@ static void test_nugu_auth_refresh()
     if (auth->isSupport(GrantType::REFRESH_TOKEN) == false)
         return;
 
+    struct AuthResponse response;
     NuguToken* token = new NuguToken();
     g_assert(token != nullptr);
 
     token->access_token = getenv(ENV_NUGU_TOKEN);
-    token->refresh_token = getenv(ENV_NUGU_REFRESH_TOKEN);
+    token->refresh_token = "invalid.refresh.token";
     token->ext_srl = "1234";
 
+    /* Test with invalid refresh token */
     g_assert(auth->parseAccessToken(token) == true);
+    g_assert(auth->refresh(token) == false);
+    g_assert(auth->refresh(token, "", &response) == false);
+    g_assert(response.code != 200);
+    g_assert(response.body.size() > 0);
+
+    /* Test with valid refresh token */
+    token->refresh_token = getenv(ENV_NUGU_REFRESH_TOKEN);
+    g_assert(auth->parseAccessToken(token) == true);
+
     g_assert(auth->refresh(token) == true);
+    g_assert(auth->refresh(token, "", &response) == true);
+    g_assert(response.code == 200);
+    g_assert(response.body.size() > 0);
 
     g_assert_cmpstr(getenv(ENV_NUGU_TOKEN), !=, token->access_token.c_str());
 

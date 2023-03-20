@@ -78,6 +78,14 @@ struct NuguToken {
 };
 
 /**
+ * @brief AuthResponse
+ */
+struct AuthResponse {
+    int code; /* HTTP Response code */
+    std::string body; /* HTTP Response body */
+};
+
+/**
  * @brief NuguAuth
  */
 class NuguAuth {
@@ -87,11 +95,12 @@ public:
 
     /**
      * @brief OAuth2 discovery to get OAuth2 end-point and server url
+     * @param[out] response HTTP response data
      * @return result
      * @retval true success
      * @retval false failure
      */
-    bool discovery();
+    bool discovery(struct AuthResponse* response = nullptr);
 
     /**
      * @brief Async OAuth2 discovery to get OAuth2 end-point and server url
@@ -100,7 +109,7 @@ public:
      * @retval true success
      * @retval false failure
      */
-    bool discovery(const std::function<void(bool success)> &cb);
+    bool discovery(const std::function<void(bool success, const struct AuthResponse* response)>& cb);
 
     /**
      * @brief Check whether the requested grant type is supported for the client
@@ -122,16 +131,20 @@ public:
      * @brief Get the token using authorization code (token exchange)
      * @param[in] code OAuth2 authorization code
      * @param[in] device_serial device serial info
+     * @param[out] response HTTP response data
      * @return NuguToken* token information
      */
-    NuguToken* getAuthorizationCodeToken(const std::string& code, const std::string& device_serial);
+    NuguToken* getAuthorizationCodeToken(const std::string& code, const std::string& device_serial,
+        struct AuthResponse* response = nullptr);
 
     /**
      * @brief Get the token using client credentials
      * @param[in] device_serial device serial info
+     * @param[out] response HTTP response data
      * @return NuguToken* token information
      */
-    NuguToken* getClientCredentialsToken(const std::string& device_serial);
+    NuguToken* getClientCredentialsToken(const std::string& device_serial,
+        struct AuthResponse* response = nullptr);
 
     /**
      * @brief Parsing the JWT access_token and fill the token information
@@ -145,10 +158,12 @@ public:
      * @brief Refresh the access_token and update the token information
      * @param[in,out] token token information
      * @param[in] device_serial device serial info
+     * @param[out] response HTTP response data
      * @return true success
      * @return false failure
      */
-    bool refresh(NuguToken* token, const std::string& device_serial = "");
+    bool refresh(NuguToken* token, const std::string& device_serial = "",
+        struct AuthResponse* response = nullptr);
 
     /**
      * @brief Check the token is expired or not

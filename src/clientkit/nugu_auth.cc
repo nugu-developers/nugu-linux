@@ -79,7 +79,7 @@ NuguAuth::~NuguAuth()
         delete rest;
 }
 
-bool NuguAuth::discovery(const std::function<void(bool success)> &cb)
+bool NuguAuth::discovery(const std::function<void(bool success, const struct AuthResponse* response)>& cb)
 {
     if (!rest)
         return false;
@@ -90,15 +90,21 @@ bool NuguAuth::discovery(const std::function<void(bool success)> &cb)
     }
 
     return rest->get(EP_DISCOVERY + config.oauth_client_id, [&, cb](const NuguHttpResponse* resp) {
+        struct AuthResponse response;
+
+        response.code = resp->code;
+        if (resp->body != NULL)
+            response.body = (char*)resp->body;
+
         if (resp->code != 200) {
             nugu_error("invalid response code %d", resp->code);
-            cb(false);
+            cb(false, &response);
             return;
         }
 
         if (resp->body == NULL) {
             nugu_error("response body is NULL");
-            cb(false);
+            cb(false, &response);
             return;
         }
 
@@ -106,17 +112,16 @@ bool NuguAuth::discovery(const std::function<void(bool success)> &cb)
 
         Json::Value root;
         Json::Reader reader;
-        std::string message((char*)resp->body);
 
-        if (!reader.parse(message, root)) {
-            nugu_error("JSON parsing error: %s", message.c_str());
-            cb(false);
+        if (!reader.parse(response.body, root)) {
+            nugu_error("JSON parsing error: %s", response.body.c_str());
+            cb(false, &response);
             return;
         }
 
         if (root["token_endpoint"].empty()) {
             nugu_error("can't find token_endpoint from response");
-            cb(false);
+            cb(false, &response);
             return;
         }
 
@@ -133,12 +138,17 @@ bool NuguAuth::discovery(const std::function<void(bool success)> &cb)
 
         supported_grant_types = find_grant_types(root["grant_types_supported"]);
 
-        cb(true);
+        cb(true, &response);
     });
 }
 
-bool NuguAuth::discovery()
+bool NuguAuth::discovery(struct AuthResponse* response)
 {
+    if (response) {
+        response->code = -1;
+        response->body = "";
+    }
+
     if (!rest)
         return false;
 
@@ -151,6 +161,12 @@ bool NuguAuth::discovery()
     if (!resp) {
         nugu_error("GET request failed");
         return false;
+    }
+
+    if (response) {
+        response->code = resp->code;
+        if (resp->body != NULL)
+            response->body = (char*)resp->body;
     }
 
     if (resp->code != 200) {
@@ -242,8 +258,13 @@ std::string NuguAuth::generateAuthorizeUrl(const std::string& device_serial)
 }
 
 NuguToken* NuguAuth::getAuthorizationCodeToken(const std::string& code,
-    const std::string& device_serial)
+    const std::string& device_serial, struct AuthResponse* response)
 {
+    if (response) {
+        response->code = -1;
+        response->body = "";
+    }
+
     if (config.oauth_client_id.size() == 0
         || config.oauth_client_secret.size() == 0
         || config.oauth_redirect_uri.size() == 0) {
@@ -282,6 +303,12 @@ NuguToken* NuguAuth::getAuthorizationCodeToken(const std::string& code,
     if (!resp) {
         nugu_error("POST request failed");
         return nullptr;
+    }
+
+    if (response) {
+        response->code = resp->code;
+        if (resp->body != NULL)
+            response->body = (char*)resp->body;
     }
 
     if (resp->code != 200) {
@@ -341,8 +368,13 @@ NuguToken* NuguAuth::getAuthorizationCodeToken(const std::string& code,
     return token;
 }
 
-NuguToken* NuguAuth::getClientCredentialsToken(const std::string& device_serial)
+NuguToken* NuguAuth::getClientCredentialsToken(const std::string& device_serial, struct AuthResponse* response)
 {
+    if (response) {
+        response->code = -1;
+        response->body = "";
+    }
+
     if (config.oauth_client_id.size() == 0 || config.oauth_client_secret.size() == 0) {
         nugu_error("client info is empty");
         return nullptr;
@@ -377,6 +409,12 @@ NuguToken* NuguAuth::getClientCredentialsToken(const std::string& device_serial)
     if (!resp) {
         nugu_error("POST request failed");
         return nullptr;
+    }
+
+    if (response) {
+        response->code = resp->code;
+        if (resp->body != NULL)
+            response->body = (char*)resp->body;
     }
 
     if (resp->code != 200) {
@@ -536,9 +574,14 @@ bool NuguAuth::parseAccessToken(NuguToken* token)
     return true;
 }
 
-bool NuguAuth::refresh(NuguToken* token, const std::string& device_serial)
+bool NuguAuth::refresh(NuguToken* token, const std::string& device_serial, struct AuthResponse* response)
 {
     std::string serial;
+
+    if (response) {
+        response->code = -1;
+        response->body = "";
+    }
 
     if (!token)
         return false;
@@ -589,6 +632,12 @@ bool NuguAuth::refresh(NuguToken* token, const std::string& device_serial)
     if (!resp) {
         nugu_error("POST request failed");
         return false;
+    }
+
+    if (response) {
+        response->code = resp->code;
+        if (resp->body != NULL)
+            response->body = (char*)resp->body;
     }
 
     if (resp->code != 200) {
