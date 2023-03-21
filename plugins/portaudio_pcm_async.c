@@ -217,13 +217,11 @@ static int _playbackCallback(const void *inputBuffer, void *outputBuffer,
 		param->written += buf_size;
 
 #ifdef NUGU_ENV_DUMP_PATH_PCM
-#ifndef DUMP_ON_PCM_PUSH_DATA
 		if (param->dump_fd != -1) {
 			if (write(param->dump_fd, buf, buf_size) < 0)
 				nugu_error("write to fd-%d failed",
 					   param->dump_fd);
 		}
-#endif
 #endif
 	} else if (nugu_pcm_receive_is_last_data(pcm)) {
 		// send event to the main loop thread
