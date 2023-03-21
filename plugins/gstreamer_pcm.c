@@ -96,6 +96,30 @@ static const gdouble VOLUME_ZERO = 0.0000001;
 
 static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm);
 
+#ifdef NUGU_ENV_DUMP_LINK_FILE_PCM
+static void _dumpfile_link(const char *filename)
+{
+	char *link_file;
+	int ret;
+
+	if (!filename)
+		return;
+
+	link_file = getenv(NUGU_ENV_DUMP_LINK_FILE_PCM);
+	if (!link_file)
+		link_file = "tts_audio.pcm";
+
+	unlink(link_file);
+	ret = link(filename, link_file);
+	if (ret < 0) {
+		nugu_error("link(%s) failed: %s", link_file, strerror(errno));
+		return;
+	}
+
+	nugu_dbg("link file: %s -> %s", link_file, filename);
+}
+#endif
+
 #if defined(NUGU_ENV_DUMP_PATH_PCM)
 static int _dumpfile_open(const char *path, const char *prefix)
 {
@@ -125,6 +149,9 @@ static int _dumpfile_open(const char *path, const char *prefix)
 
 	nugu_dbg("%s filedump to '%s' (fd=%d)", prefix, buf, fd);
 
+#ifdef NUGU_ENV_DUMP_LINK_FILE_PCM
+	_dumpfile_link(buf);
+#endif
 	free(buf);
 
 	return fd;
