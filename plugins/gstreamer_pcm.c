@@ -806,6 +806,14 @@ static int _pcm_push_data(NuguPcmDriver *driver, NuguPcm *pcm, const char *data,
 		return -1;
 	}
 	memcpy(temp, data, size);
+
+#ifdef NUGU_ENV_DUMP_PATH_PCM
+	if (pcm_param->dump_fd != -1) {
+		if (write(pcm_param->dump_fd, temp, size) < 0)
+			nugu_error("write to fd-%d failed", pcm_param->dump_fd);
+	}
+#endif
+
 	buf = gst_buffer_new_wrapped(temp, size);
 	if (buf == NULL) {
 		nugu_error("gst buffer allocation failed");
@@ -820,15 +828,6 @@ static int _pcm_push_data(NuguPcmDriver *driver, NuguPcm *pcm, const char *data,
 		g_free(temp);
 		return -1;
 	}
-
-#ifdef NUGU_ENV_DUMP_PATH_PCM
-#ifndef DUMP_ON_PCM_PUSH_DATA
-	if (pcm_param->dump_fd != -1) {
-		if (write(pcm_param->dump_fd, buf, size) < 0)
-			nugu_error("write to fd-%d failed", pcm_param->dump_fd);
-	}
-#endif
-#endif
 
 #ifdef DEBUG_PCM
 	nugu_dbg("write data => %d/%d(%d)", size, pcm_param->written, is_last);
