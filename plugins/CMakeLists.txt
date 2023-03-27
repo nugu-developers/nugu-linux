@@ -10,6 +10,12 @@ SET_TARGET_PROPERTIES(filedump PROPERTIES PREFIX "" OUTPUT_NAME filedump)
 INSTALL(TARGETS filedump LIBRARY DESTINATION ${plugindir} COMPONENT libnugu)
 ADD_DEPENDENCIES(filedump libnugu)
 
+ADD_LIBRARY(filereader SHARED filereader.c)
+TARGET_LINK_LIBRARIES(filereader ${pkgs_LDFLAGS} -lnugu)
+SET_TARGET_PROPERTIES(filereader PROPERTIES PREFIX "" OUTPUT_NAME filereader)
+INSTALL(TARGETS filereader LIBRARY DESTINATION ${plugindir} COMPONENT libnugu)
+ADD_DEPENDENCIES(filereader libnugu)
+
 # OPUS plugin
 IF(ENABLE_OPUS_PLUGIN)
 	ADD_LIBRARY(opus SHARED opus.c)
