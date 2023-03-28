@@ -62,6 +62,30 @@ static void dump_opus_error(int error_code)
 		  opus_error_defines[error_code * -1]);
 }
 
+#ifdef NUGU_ENV_DUMP_LINK_FILE_DECODER
+static void _dumpfile_link(const char *filename)
+{
+	char *link_file;
+	int ret;
+
+	if (!filename)
+		return;
+
+	link_file = getenv(NUGU_ENV_DUMP_LINK_FILE_DECODER);
+	if (!link_file)
+		link_file = "tts_audio.opus";
+
+	unlink(link_file);
+	ret = link(filename, link_file);
+	if (ret < 0) {
+		nugu_error("link(%s) failed: %s", link_file, strerror(errno));
+		return;
+	}
+
+	nugu_dbg("link file: %s -> %s", link_file, filename);
+}
+#endif
+
 static int _dumpfile_open(const char *path, const char *prefix)
 {
 	char ymd[32];
@@ -90,6 +114,9 @@ static int _dumpfile_open(const char *path, const char *prefix)
 
 	nugu_dbg("%s filedump to '%s' (fd=%d)", prefix, buf, fd);
 
+#ifdef NUGU_ENV_DUMP_LINK_FILE_DECODER
+	_dumpfile_link(buf);
+#endif
 	free(buf);
 
 	return fd;
