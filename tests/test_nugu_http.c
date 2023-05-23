@@ -612,9 +612,9 @@ static int on_download_done(NuguHttpRequest *req, const NuguHttpResponse *resp,
 	return 1;
 }
 
-static void on_download_progress(NuguHttpRequest *req,
+static int on_download_progress(NuguHttpRequest *req,
 				 const NuguHttpResponse *resp,
-				 size_t downloaded, size_t total,
+				 long long downloaded, long long total,
 				 void *user_data)
 {
 	g_assert(req != NULL);
@@ -622,6 +622,8 @@ static void on_download_progress(NuguHttpRequest *req,
 	g_assert(user_data != NULL);
 
 	g_assert(downloaded <= total);
+
+	return 0;
 }
 
 static void test_nugu_http_download(void)
