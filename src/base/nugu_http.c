@@ -353,25 +353,32 @@ static size_t _on_progress(void *user_data, curl_off_t dltotal,
 {
 	NuguHttpRequest *req = user_data;
 	size_t ratio = 0;
+	int ret;
 
 	if (req->prev_dlnow == dlnow)
 		return 0;
 
 	if (dltotal > 0) {
+		/* If progress is equal, skip calling the callback. */
 		ratio = (dlnow * 100) / dltotal;
 		if (req->prev_ratio == ratio)
 			return 0;
 	}
 
-	if (req->progress_callback)
-		req->progress_callback(req, req->resp, dlnow, dltotal,
-				       req->callback_userdata);
-	else
-		nugu_dbg("download %zd / %zd bytes (%zd%%)", dlnow, dltotal,
-			 ratio);
-
 	req->prev_dlnow = dlnow;
 	req->prev_ratio = ratio;
+
+	if (req->progress_callback) {
+		ret = req->progress_callback(req, req->resp, dlnow, dltotal,
+					     req->callback_userdata);
+		if (ret < 0) {
+			nugu_error("download abort request (return %d)", ret);
+			return ret;
+		}
+	} else {
+		nugu_dbg("download %lld / %lld bytes (%zd%%)", dlnow, dltotal,
+			 ratio);
+	}
 
 	return 0;
 }
@@ -384,7 +391,8 @@ static void _curl_perform(NuguHttpRequest *req)
 
 	ret = curl_easy_perform(req->curl);
 	if (ret != CURLE_OK) {
-		nugu_error("curl_easy_perform failed: %s", curl_easy_strerror(ret));
+		nugu_error("curl_easy_perform failed: %s",
+			   curl_easy_strerror(ret));
 		req->resp->code = -1;
 		return;
 	}

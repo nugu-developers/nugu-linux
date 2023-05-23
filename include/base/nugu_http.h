@@ -88,10 +88,10 @@ typedef int (*NuguHttpCallback)(NuguHttpRequest *req,
 /**
  * @brief Callback prototype for HTTP download progress
  */
-typedef void (*NuguHttpProgressCallback)(NuguHttpRequest *req,
-					 const NuguHttpResponse *resp,
-					 size_t downloaded, size_t total,
-					 void *user_data);
+typedef int (*NuguHttpProgressCallback)(NuguHttpRequest *req,
+					const NuguHttpResponse *resp,
+					long long downloaded, long long total,
+					void *user_data);
 
 /**
  * @brief Initialize HTTP module (curl_global_init)
