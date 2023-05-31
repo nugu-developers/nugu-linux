@@ -30,27 +30,21 @@
 
 #define PLUGIN_DRIVER_NAME "filereader"
 #define SAMPLE_SILENCE (0.0f)
-#define AUDIO_SAMPLING_100MS (100)
 
 struct audio_param {
-	GSource *source;
 	int samplerate;
 	int samplebyte;
 	int channel;
 	void *data;
 
-#if defined(NUGU_ENV_DUMP_PATH_RECORDER)
 	int dump_fd;
-#endif
-
-#ifdef NUGU_ENV_RECORDING_FROM_FILE
 	int src_fd;
-#endif
+	int idle_id;
 };
 
 static NuguRecorderDriver *rec_driver;
+static pthread_mutex_t mutex;
 
-#ifdef NUGU_ENV_DUMP_LINK_FILE_RECORDER
 static void _dumpfile_link(const char *filename)
 {
 	char *link_file;
@@ -72,9 +66,7 @@ static void _dumpfile_link(const char *filename)
 
 	nugu_dbg("link file: %s -> %s", link_file, filename);
 }
-#endif
 
-#if defined(NUGU_ENV_DUMP_PATH_RECORDER)
 static int _dumpfile_open(const char *path, const char *prefix)
 {
 	char ymd[32];
@@ -103,14 +95,11 @@ static int _dumpfile_open(const char *path, const char *prefix)
 
 	nugu_dbg("%s filedump to '%s' (fd=%d)", prefix, buf, fd);
 
-#ifdef NUGU_ENV_DUMP_LINK_FILE_RECORDER
 	_dumpfile_link(buf);
-#endif
 	free(buf);
 
 	return fd;
 }
-#endif
 
 static int _set_property_to_param(struct audio_param *param,
 				  NuguAudioProperty prop)
@@ -171,19 +160,35 @@ static void _recorder_push(struct audio_param *param, const char *buf,
 {
 	nugu_recorder_push_frame(param->data, buf, buf_size);
 
-#ifdef NUGU_ENV_DUMP_PATH_RECORDER
 	if (param->dump_fd != -1) {
 		if (write(param->dump_fd, buf, buf_size) < 0)
 			nugu_error("write to fd-%d failed", param->dump_fd);
 	}
-#endif
 }
 
-#ifdef NUGU_ENV_RECORDING_FROM_FILE
-static int _recording_from_file(struct audio_param *param, int buf_size)
+static long _get_new_audio_size(struct audio_param *param)
+{
+	long offset, total;
+	long audio_size = 0;
+
+	offset = lseek(param->src_fd, 0L, SEEK_CUR);
+	total = lseek(param->src_fd, 0L, SEEK_END);
+	if (total > 0 && offset >= 0 && total > offset) {
+		audio_size = total - offset;
+		lseek(param->src_fd, offset, SEEK_SET);
+	}
+	return audio_size;
+}
+
+static int _read_and_push_audio_from_file(struct audio_param *param)
 {
 	char *buf;
 	ssize_t nread;
+	long buf_size;
+
+	buf_size = _get_new_audio_size(param);
+	if (!buf_size)
+		return 0;
 
 	buf = malloc(buf_size);
 	if (!buf) {
@@ -194,55 +199,69 @@ static int _recording_from_file(struct audio_param *param, int buf_size)
 	nread = read(param->src_fd, buf, buf_size);
 	if (nread < 0) {
 		nugu_error("read() failed: %s", strerror(errno));
-
 		free(buf);
-		close(param->src_fd);
-		param->src_fd = -1;
 		return -1;
 	} else if (nread == 0) {
-		nugu_dbg("read all pcm data from file. fill the SILENCE data");
-
-		memset(buf, SAMPLE_SILENCE, buf_size);
-		nread = buf_size;
+		nugu_dbg("read zero pcm data from file");
+		free(buf);
+		return 0;
 	}
 
+	nugu_info("read => %d", nread);
 	_recorder_push(param, buf, nread);
 
 	free(buf);
-
 	return 0;
 }
-#endif
 
 static gboolean _record_callback(gpointer userdata)
 {
-	struct audio_param *rec_param = (struct audio_param *)userdata;
-	int buf_size = rec_param->samplerate * rec_param->samplebyte / 10;
+	NuguRecorder *rec = (NuguRecorder *)userdata;
+	struct audio_param *rec_param;
 
-#ifdef NUGU_ENV_RECORDING_FROM_FILE
-	/* Use file source instead of real microphone data */
-	if (rec_param->src_fd != -1) {
-		if (_recording_from_file(rec_param, buf_size) < 0)
-			return FALSE;
-		else
-			return TRUE;
+	pthread_mutex_lock(&mutex);
+	rec_param = nugu_recorder_get_driver_data(rec);
+	if (rec_param == NULL || rec_param->src_fd == -1) {
+		nugu_dbg("record is stopped");
+		pthread_mutex_unlock(&mutex);
+		return FALSE;
 	}
-#endif
 
-	return FALSE;
+	if (_read_and_push_audio_from_file(rec_param) < 0) {
+		nugu_error("fail to read and push audio");
+		close(rec_param->src_fd);
+		rec_param->src_fd = -1;
+		rec_param->idle_id = 0;
+
+		pthread_mutex_unlock(&mutex);
+		return FALSE;
+	}
+
+	pthread_mutex_unlock(&mutex);
+	return TRUE;
 }
 
 static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 		      NuguAudioProperty prop)
 {
 	struct audio_param *rec_param = nugu_recorder_get_driver_data(rec);
+	char *rec_file;
 	int rec_5sec;
 	int rec_100ms; // 3200 byte
+	int src_fd = -1;
 
 	if (rec_param) {
 		nugu_dbg("already start");
 		return 0;
 	}
+
+	rec_file = getenv(NUGU_ENV_RECORDING_FROM_FILE);
+	src_fd = open(rec_file, O_RDONLY);
+	if (src_fd == -1) {
+		nugu_error("can't open the file: '%s'", rec_file);
+		return -1;
+	}
+	nugu_dbg("recording from file: '%s'", rec_file);
 
 	rec_param = (struct audio_param *)g_malloc0(sizeof(struct audio_param));
 
@@ -258,30 +277,13 @@ static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 	nugu_dbg("rec - %d, %d", rec_100ms, rec_5sec);
 	nugu_recorder_set_frame_size(rec, rec_100ms, rec_5sec);
 
-	// timeout
-	rec_param->source = g_timeout_source_new(AUDIO_SAMPLING_100MS);
-	g_source_set_callback(rec_param->source, _record_callback,
-			      (gpointer)rec_param, NULL);
-	g_source_attach(rec_param->source, g_main_context_default());
-	g_source_unref(rec_param->source);
-
-#ifdef NUGU_ENV_DUMP_PATH_RECORDER
 	rec_param->dump_fd =
 		_dumpfile_open(getenv(NUGU_ENV_DUMP_PATH_RECORDER), "rec");
-#endif
-
-#ifdef NUGU_ENV_RECORDING_FROM_FILE
-	if (getenv(NUGU_ENV_RECORDING_FROM_FILE)) {
-		rec_param->src_fd =
-			open(getenv(NUGU_ENV_RECORDING_FROM_FILE), O_RDONLY);
-		nugu_dbg("recording from file: '%s'",
-			 getenv(NUGU_ENV_RECORDING_FROM_FILE));
-	} else {
-		rec_param->src_fd = -1;
-	}
-#endif
+	rec_param->src_fd = src_fd;
 
 	nugu_recorder_set_driver_data(rec, rec_param);
+
+	rec_param->idle_id = g_idle_add(_record_callback, (gpointer)rec);
 
 	nugu_dbg("start done");
 	return 0;
@@ -291,25 +293,33 @@ static int _rec_stop(NuguRecorderDriver *driver, NuguRecorder *rec)
 {
 	struct audio_param *rec_param = nugu_recorder_get_driver_data(rec);
 
+	pthread_mutex_lock(&mutex);
+
 	if (rec_param == NULL) {
 		nugu_dbg("already stop");
+		pthread_mutex_unlock(&mutex);
 		return 0;
 	}
 
-	if (rec_param->source) {
-		g_source_destroy(rec_param->source);
-		rec_param->source = NULL;
+	if (rec_param->dump_fd >= 0) {
+		close(rec_param->dump_fd);
+		rec_param->dump_fd = -1;
 	}
 
-#ifdef NUGU_ENV_RECORDING_FROM_FILE
 	if (rec_param->src_fd >= 0) {
 		close(rec_param->src_fd);
 		rec_param->src_fd = -1;
 	}
-#endif
+
+	if (rec_param->idle_id) {
+		g_source_remove(rec_param->idle_id);
+		rec_param->idle_id = 0;
+	}
 
 	g_free(rec_param);
 	nugu_recorder_set_driver_data(rec, NULL);
+
+	pthread_mutex_unlock(&mutex);
 
 	nugu_dbg("stop done");
 
@@ -327,6 +337,11 @@ static int init(NuguPlugin *p)
 	nugu_dbg("'%s' plugin initialized",
 		 nugu_plugin_get_description(p)->name);
 
+	if (!getenv(NUGU_ENV_RECORDING_FROM_FILE)) {
+		nugu_error("must set environment => NUGU_RECORDING_FROM_FILE");
+		return -1;
+	}
+
 	rec_driver = nugu_recorder_driver_new(PLUGIN_DRIVER_NAME, &rec_ops);
 	if (!rec_driver) {
 		nugu_error("nugu_recorder_driver_new() failed");
@@ -338,6 +353,8 @@ static int init(NuguPlugin *p)
 		rec_driver = NULL;
 		return -1;
 	}
+
+	pthread_mutex_init(&mutex, NULL);
 
 	nugu_dbg("'%s' plugin initialized done",
 		 nugu_plugin_get_description(p)->name);
