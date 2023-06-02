@@ -18,9 +18,9 @@
 #include <endpoint_detector.h>
 #endif
 
+#include "base/nugu_encoder.h"
 #include "base/nugu_log.h"
 #include "base/nugu_prof.h"
-#include "base/nugu_encoder.h"
 
 #include "nugu_timer.hh"
 #include "speech_recognizer.hh"
@@ -89,7 +89,8 @@ void SpeechRecognizer::initialize(Attribute&& attribute)
 void SpeechRecognizer::loop()
 {
     NUGUTimer* timer = new NUGUTimer(true);
-    unsigned char epd_buf[OUT_DATA_SIZE];
+    char* epd_buf = NULL;
+    int epd_buf_alloc_size = 0;
     EpdParam epd_param;
     int pcm_size;
     int length;
@@ -150,9 +151,9 @@ void SpeechRecognizer::loop()
         is_started = true;
         id = listening_id;
 
-        epd_param.max_speech_duration = epd_max_duration;
-        epd_param.time_out = epd_timeout;
-        epd_param.pause_length = epd_pause_length;
+        epd_param.max_speech_duration_secs = epd_max_duration;
+        epd_param.time_out_secs = epd_timeout;
+        epd_param.pause_length_msecs = epd_pause_length;
 
         nugu_dbg("epd_max_duration: %d", epd_max_duration);
         nugu_dbg("epd_timeout: %d", epd_timeout);
@@ -233,12 +234,25 @@ void SpeechRecognizer::loop()
                 break;
             }
 
-            length = OUT_DATA_SIZE;
-            epd_ret = epd_client_run((char*)epd_buf, &length, (short*)pcm_buf, pcm_size);
+            epd_ret = epd_client_run(pcm_buf, pcm_size);
             if (epd_ret < 0 || epd_ret > EPD_END_CHECK) {
                 nugu_error("epd_client_run() failed: %d", epd_ret);
                 sendListeningEvent(ListeningState::FAILED, id);
                 break;
+            }
+
+            length = epd_client_get_output_size();
+            if (length > 0) {
+                if (length > epd_buf_alloc_size) {
+                    /* Resize buffer */
+                    if (epd_buf)
+                        free(epd_buf);
+
+                    epd_buf = (char *)malloc(length);
+                    epd_buf_alloc_size = length;
+                }
+
+                epd_client_get_output(epd_buf, length);
             }
 
             if (epd_ret == EPD_END_DETECTED
@@ -309,7 +323,11 @@ void SpeechRecognizer::loop()
             timer->start();
         }
     }
+
     delete timer;
+    if (epd_buf)
+        free(epd_buf);
+
     nugu_dbg("Listening Thread: exited");
 }
 #else
