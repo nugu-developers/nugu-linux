@@ -70,7 +70,10 @@ struct gst_handle {
 
 static NuguPlayerDriver *driver;
 static int _uniq_id;
+
+#ifdef ENABLE_GSTREAMER_PLUGIN_VOLUME
 static const gdouble VOLUME_ZERO = 0.0000001;
+#endif
 
 #ifdef ENABLE_PULSEAUDIO
 static void _set_audio_attribute(GstreamerHandle *gh, NuguPlayer *player)
@@ -86,6 +89,8 @@ static void _set_audio_attribute(GstreamerHandle *gh, NuguPlayer *player)
 
 	s = gst_structure_new("properties", "media.role", G_TYPE_STRING,
 			      media_role, NULL);
+
+	nugu_dbg("media.role => %s", media_role);
 
 	g_object_set(G_OBJECT(gh->audio_sink), "stream-properties", s, NULL);
 	gst_structure_free(s);
@@ -436,11 +441,13 @@ static int _create(NuguPlayerDriver *driver, NuguPlayer *player)
 	}
 #endif
 
+#ifdef ENABLE_GSTREAMER_PLUGIN_VOLUME
 	gh->volume = gst_element_factory_make("volume", volume);
 	if (!gh->volume) {
 		nugu_error("create gst_element for 'volume' failed");
 		goto error_out;
 	}
+#endif
 
 	gh->discoverer =
 		gst_discoverer_new(NUGU_SET_LOADING_TIMEOUT * GST_SECOND, &err);
@@ -459,10 +466,16 @@ static int _create(NuguPlayerDriver *driver, NuguPlayer *player)
 	gh->status = NUGU_MEDIA_STATUS_STOPPED;
 	gh->player = player;
 
+#ifdef ENABLE_GSTREAMER_PLUGIN_VOLUME
 	gst_bin_add_many(GST_BIN(gh->pipeline), gh->audio_src,
 			 gh->audio_convert, gh->volume, gh->audio_sink, NULL);
 	gst_element_link_many(gh->audio_convert, gh->volume, gh->audio_sink,
 			      NULL);
+#else
+	gst_bin_add_many(GST_BIN(gh->pipeline), gh->audio_src,
+			 gh->audio_convert, gh->audio_sink, NULL);
+	gst_element_link_many(gh->audio_convert, gh->audio_sink, NULL);
+#endif
 	_connect_message_to_pipeline(gh);
 
 	/* Connect to the pad-added signal */
@@ -749,6 +762,7 @@ static int _seek(NuguPlayerDriver *driver, NuguPlayer *player, int sec)
 
 static int _set_volume(NuguPlayerDriver *driver, NuguPlayer *player, int vol)
 {
+#ifdef ENABLE_GSTREAMER_PLUGIN_VOLUME
 	GstreamerHandle *gh;
 	gdouble volume;
 
@@ -770,7 +784,7 @@ static int _set_volume(NuguPlayerDriver *driver, NuguPlayer *player, int vol)
 		g_object_set(gh->volume, "volume", VOLUME_ZERO, NULL);
 	else
 		g_object_set(gh->volume, "volume", volume, NULL);
-
+#endif
 	return 0;
 }
 

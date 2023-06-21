@@ -92,7 +92,10 @@ struct pa_audio_param {
 static NuguPcmDriver *pcm_driver;
 static int _uniq_id;
 static const int INITIAL_VOLUME = -1;
+
+#ifdef ENABLE_GSTREAMER_PLUGIN_VOLUME
 static const gdouble VOLUME_ZERO = 0.0000001;
+#endif
 
 static int _pcm_stop(NuguPcmDriver *driver, NuguPcm *pcm);
 
@@ -411,11 +414,13 @@ static int _create_gst_elements(struct pa_audio_param *pcm_param)
 		goto error_out;
 	}
 
+#ifdef ENABLE_GSTREAMER_PLUGIN_VOLUME
 	pcm_param->volume = gst_element_factory_make("volume", volume);
 	if (!pcm_param->volume) {
 		nugu_error("create gst_element for 'volume' failed");
 		goto error_out;
 	}
+#endif
 
 #ifdef ENABLE_PULSEAUDIO
 	pcm_param->audio_sink =
@@ -433,6 +438,7 @@ static int _create_gst_elements(struct pa_audio_param *pcm_param)
 	}
 #endif
 
+#ifdef ENABLE_GSTREAMER_PLUGIN_VOLUME
 	gst_bin_add_many(GST_BIN(pcm_param->pipeline),
 			 (GstElement *)pcm_param->app_src,
 			 pcm_param->raw_parser, pcm_param->convert,
@@ -440,6 +446,15 @@ static int _create_gst_elements(struct pa_audio_param *pcm_param)
 	gst_element_link_many((GstElement *)pcm_param->app_src,
 			      pcm_param->raw_parser, pcm_param->convert,
 			      pcm_param->volume, pcm_param->audio_sink, NULL);
+#else
+	gst_bin_add_many(GST_BIN(pcm_param->pipeline),
+			 (GstElement *)pcm_param->app_src,
+			 pcm_param->raw_parser, pcm_param->convert,
+			 pcm_param->audio_sink, NULL);
+	gst_element_link_many((GstElement *)pcm_param->app_src,
+			      pcm_param->raw_parser, pcm_param->convert,
+			      pcm_param->audio_sink, NULL);
+#endif
 
 	g_signal_connect(pcm_param->app_src, "need-data",
 			 G_CALLBACK(_pcm_drain_handler), pcm_param);
@@ -498,6 +513,7 @@ static void _destroy_gst_elements(struct pa_audio_param *pcm_param)
 
 static void _change_volume(struct pa_audio_param *pcm_param)
 {
+#ifdef ENABLE_GSTREAMER_PLUGIN_VOLUME
 	gdouble volume;
 
 	if (!pcm_param) {
@@ -522,6 +538,7 @@ static void _change_volume(struct pa_audio_param *pcm_param)
 		g_object_set(pcm_param->volume, "volume", VOLUME_ZERO, NULL);
 	else
 		g_object_set(pcm_param->volume, "volume", volume, NULL);
+#endif
 }
 
 static int _pcm_create(NuguPcmDriver *driver, NuguPcm *pcm,
