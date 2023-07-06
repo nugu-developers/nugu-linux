@@ -39,21 +39,21 @@ void BluetoothListener::finishDiscoverableMode()
         bt_handler->finishDiscoverableModeSucceeded();
 }
 
-void BluetoothListener::play()
+void BluetoothListener::play(bool by_focus)
 {
-    if (bt_handler)
+    if (bt_handler && !by_focus)
         bt_handler->mediaControlPlaySucceeded();
 }
 
-void BluetoothListener::stop()
+void BluetoothListener::stop(bool by_focus)
 {
-    if (bt_handler)
+    if (bt_handler && !by_focus)
         bt_handler->mediaControlStopSucceeded();
 }
 
-void BluetoothListener::pause()
+void BluetoothListener::pause(bool by_focus)
 {
-    if (bt_handler)
+    if (bt_handler && !by_focus)
         bt_handler->mediaControlPauseSucceeded();
 }
 

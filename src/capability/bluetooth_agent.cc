@@ -133,6 +133,50 @@ void BluetoothAgent::updateInfoForContext(Json::Value& ctx)
     ctx[getName()] = root;
 }
 
+void BluetoothAgent::onFocusChanged(FocusState state)
+{
+    if (state == focus_state)
+        return;
+
+    nugu_info("Focus Changed(%s -> %s)", focus_manager->getStateString(focus_state).c_str(), focus_manager->getStateString(state).c_str());
+
+    switch (state) {
+    case FocusState::FOREGROUND:
+        executeOnForegroundAction();
+        break;
+    case FocusState::BACKGROUND:
+        executeOnBackgroundAction();
+        break;
+    case FocusState::NONE:
+        executeOnNoneAction();
+        break;
+    }
+    focus_state = state;
+}
+
+void BluetoothAgent::setAudioPlayerState(const std::string& state)
+{
+    if (state == player_state)
+        return;
+
+    nugu_info("A2DP: audio player state: %s -> %s", player_state.c_str(), state.c_str());
+
+    if (state == "INACTIVE") {
+        if (focus_state != FocusState::NONE)
+            focus_manager->releaseFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME);
+    } else if (state == "ACTIVE") {
+        if (focus_state == FocusState::FOREGROUND)
+            executeOnForegroundAction();
+        else
+            focus_manager->requestFocus(MEDIA_FOCUS_TYPE, CAPABILITY_NAME, this);
+    } else if (state == "PAUSED") {
+    } else {
+        return;
+    }
+
+    player_state = state;
+}
+
 void BluetoothAgent::startDiscoverableModeSucceeded(bool has_paired_devices)
 {
     sendEventDiscoverableMode("StartDiscoverableModeSucceeded", has_paired_devices);
@@ -345,6 +389,30 @@ void BluetoothAgent::parsingPrevious(const char* message)
 
     if (bt_listener)
         bt_listener->previous();
+}
+
+void BluetoothAgent::executeOnForegroundAction()
+{
+    nugu_dbg("executeOnForegroundAction()");
+
+    if (bt_listener)
+        bt_listener->play(true);
+}
+
+void BluetoothAgent::executeOnBackgroundAction()
+{
+    nugu_dbg("executeOnBackgroundAction()");
+
+    if (bt_listener)
+        bt_listener->pause(true);
+}
+
+void BluetoothAgent::executeOnNoneAction()
+{
+    nugu_dbg("executeOnNoneAction()");
+
+    if (bt_listener)
+        bt_listener->stop(true);
 }
 
 void BluetoothAgent::printDeviceInformation(const BTDeviceInfo& device_info)

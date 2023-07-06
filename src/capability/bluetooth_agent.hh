@@ -23,6 +23,7 @@
 namespace NuguCapability {
 
 class BluetoothAgent final : public Capability,
+                             public IFocusResourceListener,
                              public IBluetoothHandler {
 public:
     BluetoothAgent();
@@ -35,6 +36,9 @@ public:
     void parsingDirective(const char* dname, const char* message) override;
     void updateInfoForContext(Json::Value& ctx) override;
 
+    void onFocusChanged(FocusState state) override;
+
+    void setAudioPlayerState(const std::string& state) override;
     void startDiscoverableModeSucceeded(bool has_paired_devices) override;
     void startDiscoverableModeFailed(bool has_paired_devices) override;
     void finishDiscoverableModeSucceeded() override;
@@ -68,11 +72,17 @@ private:
     void parsingNext(const char* message);
     void parsingPrevious(const char* message);
 
+    void executeOnForegroundAction();
+    void executeOnBackgroundAction();
+    void executeOnNoneAction();
+
     void printDeviceInformation(const BTDeviceInfo& device_info);
 
     IBluetoothListener* bt_listener = nullptr;
     std::string context_info;
     std::string ps_id;
+    FocusState focus_state = FocusState::NONE;
+    std::string player_state = "UNUSABLE";
 };
 } // NuguCapability
 
