@@ -79,18 +79,21 @@ public:
 
     /**
      * @brief Send command to play media to bluetooth adaptor
+     * @param by_focus request to play media to bluetooth adaptor by focus policy
      */
-    virtual void play() = 0;
+    virtual void play(bool by_focus = false) = 0;
 
     /**
      * @brief Send command to stop media to bluetooth adaptor
+     * @param by_focus request to stop media to bluetooth adaptor by focus policy
      */
-    virtual void stop() = 0;
+    virtual void stop(bool by_focus = false) = 0;
 
     /**
      * @brief Send command to pause media to bluetooth adaptor
+     * @param by_focus request to pause media to bluetooth adaptor by focus policy
      */
-    virtual void pause() = 0;
+    virtual void pause(bool by_focus = false) = 0;
 
     /**
      * @brief Send command to play next media to bluetooth adaptor
@@ -116,6 +119,12 @@ public:
 class IBluetoothHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IBluetoothHandler() = default;
+
+    /**
+     * @brief Notify the audio player's state
+     * @param state audio player's state (INACTIVE / ACTIVE / PAUSED / UNUSABLE)
+     */
+    virtual void setAudioPlayerState(const std::string& state) = 0;
 
     /**
      * @brief Notify the success result of start discoverable mode

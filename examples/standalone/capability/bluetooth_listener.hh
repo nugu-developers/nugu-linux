@@ -29,9 +29,9 @@ public:
     void setCapabilityHandler(ICapabilityInterface* handler) override;
     void startDiscoverableMode(long duration_sec) override;
     void finishDiscoverableMode() override;
-    void play() override;
-    void stop() override;
-    void pause() override;
+    void play(bool by_focus) override;
+    void stop(bool by_focus) override;
+    void pause(bool by_focus) override;
     void next() override;
     void previous() override;
     void requestContext(BTDeviceInfo& device_info) override;
