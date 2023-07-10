@@ -75,6 +75,7 @@ private:
     void executeOnForegroundAction();
     void executeOnBackgroundAction();
     void executeOnNoneAction();
+    bool hasToSkipForegroundAction();
 
     void printDeviceInformation(const BTDeviceInfo& device_info);
 
