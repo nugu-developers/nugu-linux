@@ -23,6 +23,7 @@ namespace NuguCapability {
 
 static const char* CAPABILITY_NAME = "Bluetooth";
 static const char* CAPABILITY_VERSION = "1.1";
+static const char* DEFAULT_PLAY_SERVICE_ID = "nugu.builtin.bluetooth";
 
 BluetoothAgent::BluetoothAgent()
     : Capability(CAPABILITY_NAME, CAPABILITY_VERSION)
@@ -272,10 +273,8 @@ void BluetoothAgent::sendEventCommon(const std::string& ename, EventResultCallba
     Json::FastWriter writer;
     Json::Value root;
 
-    if (ps_id.size() == 0) {
-        nugu_error("there is something wrong [%s]", ename.c_str());
-        return;
-    }
+    if (ps_id.size() == 0)
+        ps_id = DEFAULT_PLAY_SERVICE_ID;
 
     root["playServiceId"] = ps_id;
 
@@ -393,6 +392,9 @@ void BluetoothAgent::parsingPrevious(const char* message)
 
 void BluetoothAgent::executeOnForegroundAction()
 {
+    if (hasToSkipForegroundAction())
+        return;
+
     nugu_dbg("executeOnForegroundAction()");
 
     if (bt_listener)
@@ -413,6 +415,21 @@ void BluetoothAgent::executeOnNoneAction()
 
     if (bt_listener)
         bt_listener->stop(true);
+}
+
+bool BluetoothAgent::hasToSkipForegroundAction()
+{
+    if (interaction_control_manager->isMultiTurnActive()) {
+        nugu_info("The multi-turn is active. So, it ignore intermediate foreground focus.");
+        return true;
+    }
+
+    if (routine_manager->hasToSkipMedia("")) {
+        nugu_info("Routine is active. So, it ignore intermediate foreground focus.");
+        return true;
+    }
+
+    return false;
 }
 
 void BluetoothAgent::printDeviceInformation(const BTDeviceInfo& device_info)
