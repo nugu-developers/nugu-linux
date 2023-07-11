@@ -67,6 +67,7 @@ private:
     void setPower(float power);
     void getPower(float& noise, float& speech);
     void setModelFile(const std::string& model_net_file, const std::string& model_search_file);
+    void preloadModelFile();
 
     IWakeupDetectorListener* listener = nullptr;
 

@@ -77,6 +77,8 @@ void WakeupDetector::initialize(Attribute&& attribute)
 
     std::memset(power_speech, 0, sizeof(power_speech));
     std::memset(power_noise, 0, sizeof(power_noise));
+
+    preloadModelFile();
 }
 
 #ifdef ENABLE_VENDOR_LIBRARY
@@ -118,6 +120,11 @@ void WakeupDetector::loop()
             sendWakeupEvent(WakeupState::FAIL, id);
             sendWakeupEvent(WakeupState::DONE, id);
             continue;
+        }
+
+        if (id != listening_id && !is_started) {
+            nugu_dbg("restart wakeup");
+            is_running = false;
         }
 
         pcm_size = recorder->getAudioFrameSize();
@@ -295,6 +302,16 @@ void WakeupDetector::setModelFile(const std::string& model_net_file, const std::
 
     this->model_search_file = model_search_file;
     nugu_dbg("kwd model search-file: %s", model_search_file.c_str());
+}
+
+void WakeupDetector::preloadModelFile()
+{
+#ifdef ENABLE_VENDOR_LIBRARY
+    if (kwd_initialize(model_net_file.c_str(), model_search_file.c_str()) < 0)
+        nugu_error("kwd_initialize() failed");
+
+    kwd_deinitialize();
+#endif
 }
 
 } // NuguCore
