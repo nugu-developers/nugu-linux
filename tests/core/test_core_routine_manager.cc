@@ -350,6 +350,31 @@ static void test_routine_manager_validation(TestFixture* fixture, gconstpointer 
     g_assert(action_container.size() == 3);
 }
 
+static void test_routine_manager_check_action_valid(TestFixture* fixture, gconstpointer ignored)
+{
+    fixture->routine_helper->composeActions({
+        // valid
+        { "TEXT", "ps_id_1", "token_1", "text_1", Json::nullValue },
+        // invalid (no type)
+        { "", "ps_id_2", "token_2", "text_2", Json::nullValue },
+        // valid
+        { "DATA", "ps_id_3", "token_3", "", Json::Value("DATA_VALUE") },
+        // invalid (no playServiceId)
+        { "DATA", "", "token_4", "", Json::Value("DATA_VALUE") },
+        // invalid (no data)
+        { "DATA", "", "token_4", "", Json::nullValue },
+    });
+
+    auto actions = fixture->routine_helper->getActions();
+    int valid_action_count = 0;
+
+    for (const auto& action : actions)
+        if (fixture->routine_manager->isActionValid(action))
+            valid_action_count++;
+
+    g_assert(valid_action_count == 2);
+}
+
 static void test_routine_manager_compose_action_queue(TestFixture* fixture, gconstpointer ignored)
 {
     fixture->routine_helper->composeActions({
@@ -1085,6 +1110,7 @@ int main(int argc, char* argv[])
 
     G_TEST_ADD_FUNC("/core/RoutineManager/listener", test_routine_manager_listener);
     G_TEST_ADD_FUNC("/core/RoutineManager/validation", test_routine_manager_validation);
+    G_TEST_ADD_FUNC("/core/RoutineManager/checkActionValid", test_routine_manager_check_action_valid);
     G_TEST_ADD_FUNC("/core/RoutineManager/composeActionQueue", test_routine_manager_compose_action_queue);
     G_TEST_ADD_FUNC("/core/RoutineManager/normal", test_routine_manager_normal);
     G_TEST_ADD_FUNC("/core/RoutineManager/interrupt", test_routine_manager_interrupt);
