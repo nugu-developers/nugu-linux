@@ -70,6 +70,7 @@ public:
     unsigned int getCurrentActionIndex() override;
     unsigned int getCountableActionSize() override;
     unsigned int getCountableActionIndex() override;
+    bool isActionValid(const Json::Value& action) override;
     bool isRoutineProgress() override;
     bool isRoutineAlive() override;
     bool isActionProgress(const std::string& dialog_id) override;

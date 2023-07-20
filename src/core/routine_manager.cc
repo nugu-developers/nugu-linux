@@ -251,6 +251,17 @@ unsigned int RoutineManager::getCountableActionIndex()
     return cur_countable_action_index;
 }
 
+bool RoutineManager::isActionValid(const Json::Value& action)
+{
+    std::string type = action["type"].asString();
+    std::string play_service_id = action["playServiceId"].asString();
+
+    if (type.empty() || (type == ACTION_TYPE_DATA && (play_service_id.empty() || action["data"].empty())))
+        return false;
+
+    return true;
+}
+
 bool RoutineManager::isRoutineProgress()
 {
     return !is_interrupted && activity == RoutineActivity::PLAYING;
@@ -473,23 +484,17 @@ void RoutineManager::setActions(const Json::Value& actions)
 {
     clearContainer();
 
-    for (const auto& action : actions) {
-        std::string type = action["type"].asString();
-        std::string play_service_id = action["playServiceId"].asString();
-
-        if (type.empty() || (type == ACTION_TYPE_DATA && (play_service_id.empty() || action["data"].empty())))
-            continue;
-
-        action_queue.emplace_back(RoutineAction {
-            type,
-            play_service_id,
-            action["text"].asString(),
-            action["token"].asString(),
-            action["data"],
-            action["postDelayInMilliseconds"].asLargestInt(),
-            action["muteDelayInMilliseconds"].asLargestInt(),
-            action["actionTimeoutInMilliseconds"].asLargestInt() });
-    }
+    for (const auto& action : actions)
+        if (isActionValid(action))
+            action_queue.emplace_back(RoutineAction {
+                action["type"].asString(),
+                action["playServiceId"].asString(),
+                action["text"].asString(),
+                action["token"].asString(),
+                action["data"],
+                action["postDelayInMilliseconds"].asLargestInt(),
+                action["muteDelayInMilliseconds"].asLargestInt(),
+                action["actionTimeoutInMilliseconds"].asLargestInt() });
 }
 
 void RoutineManager::setActivity(RoutineActivity activity)

@@ -222,7 +222,10 @@ bool RoutineAgent::startRoutine(const std::string& dialog_id, const std::string&
         routine_info.routine_type = root["routineType"].asString();
         routine_info.routine_list_type = root["routineListType"].asString();
         routine_info.source = root["source"].asString();
-        routine_info.actions = root["actions"];
+
+        for (const auto& action : root["actions"])
+            if (routine_manager->isActionValid(action))
+                routine_info.actions.append(action);
 
         if (!routine_manager->start(routine_info.token, routine_info.actions))
             throw "Routine start is failed";

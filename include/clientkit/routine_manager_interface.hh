@@ -165,6 +165,12 @@ public:
     virtual unsigned int getCountableActionIndex() = 0;
 
     /**
+     * @brief Check whether the action is valid.
+     * @return true if valid, otherwise false
+     */
+    virtual bool isActionValid(const Json::Value& action) = 0;
+
+    /**
      * @brief Check whether routine is in progress currently.
      * @return true if in progress, otherwise false
      */
