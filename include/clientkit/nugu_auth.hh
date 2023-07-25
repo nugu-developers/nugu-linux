@@ -195,6 +195,9 @@ public:
     std::string getTemplateServerUri();
 
 private:
+    bool parseDiscoveryResult(const std::string& response);
+    bool parseAndSaveToken(const std::string& response, NuguToken* token);
+
     NuguDeviceConfig config;
     NuguHttpRest* rest;
     unsigned int supported_grant_types;

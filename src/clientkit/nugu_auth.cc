@@ -110,35 +110,7 @@ bool NuguAuth::discovery(const std::function<void(bool success, const struct Aut
 
         nugu_info("%s", (char*)resp->body);
 
-        Json::Value root;
-        Json::Reader reader;
-
-        if (!reader.parse(response.body, root)) {
-            nugu_error("JSON parsing error: %s", response.body.c_str());
-            cb(false, &response);
-            return;
-        }
-
-        if (root["token_endpoint"].empty()) {
-            nugu_error("can't find token_endpoint from response");
-            cb(false, &response);
-            return;
-        }
-
-        size_t url_len = config.oauth_server_url.size();
-
-        ep_token = root["token_endpoint"].asString();
-        ep_token.erase(0, url_len);
-
-        ep_authorization = root["authorization_endpoint"].asString();
-        ep_authorization.erase(0, url_len);
-
-        uri_gateway_registry = root["device_gateway_registry_uri"].asString();
-        uri_template_server = root["template_server_uri"].asString();
-
-        supported_grant_types = find_grant_types(root["grant_types_supported"]);
-
-        cb(true, &response);
+        cb(parseDiscoveryResult(response.body), &response);
     });
 }
 
@@ -184,33 +156,7 @@ bool NuguAuth::discovery(struct AuthResponse* response)
     std::string message((char*)resp->body);
     nugu_http_response_free(resp);
 
-    Json::Value root;
-    Json::Reader reader;
-
-    if (!reader.parse(message, root)) {
-        nugu_error("JSON parsing error: %s", message.c_str());
-        return false;
-    }
-
-    if (root["token_endpoint"].empty()) {
-        nugu_error("can't find token_endpoint from response");
-        return false;
-    }
-
-    size_t url_len = config.oauth_server_url.size();
-
-    ep_token = root["token_endpoint"].asString();
-    ep_token.erase(0, url_len);
-
-    ep_authorization = root["authorization_endpoint"].asString();
-    ep_authorization.erase(0, url_len);
-
-    uri_gateway_registry = root["device_gateway_registry_uri"].asString();
-    uri_template_server = root["template_server_uri"].asString();
-
-    supported_grant_types = find_grant_types(root["grant_types_supported"]);
-
-    return true;
+    return parseDiscoveryResult(message);
 }
 
 bool NuguAuth::isSupport(const GrantType& gtype)
@@ -330,40 +276,17 @@ NuguToken* NuguAuth::getAuthorizationCodeToken(const std::string& code,
     std::string message((char*)resp->body);
     nugu_http_response_free(resp);
 
-    Json::Value root;
-    Json::Reader reader;
-
-    if (!reader.parse(message, root)) {
-        nugu_error("JSON parsing error: %s", message.c_str());
-        return nullptr;
-    }
-
-    if (!root["access_token"].isString()) {
-        nugu_error("can't find access_token from response");
-        return nullptr;
-    }
-
     NuguToken* token = new NuguToken();
     if (!token) {
         nugu_error_nomem();
         return nullptr;
     }
 
-    token->access_token = root["access_token"].asString();
-    token->timestamp = time(NULL);
-
-    if (root["refresh_token"].isString())
-        token->refresh_token = root["refresh_token"].asString();
-
-    if (root["token_type"].isString())
-        token->token_type = root["token_type"].asString();
-
-    if (root["expires_in"].isInt())
-        token->expires_in = root["expires_in"].asInt();
-    else
-        token->expires_in = 0;
-
-    parseAccessToken(token);
+    if (!parseAndSaveToken(message, token)) {
+        nugu_error("parsing error");
+        delete token;
+        return nullptr;
+    }
 
     return token;
 }
@@ -436,40 +359,17 @@ NuguToken* NuguAuth::getClientCredentialsToken(const std::string& device_serial,
     std::string message((char*)resp->body);
     nugu_http_response_free(resp);
 
-    Json::Value root;
-    Json::Reader reader;
-
-    if (!reader.parse(message, root)) {
-        nugu_error("JSON parsing error: %s", message.c_str());
-        return nullptr;
-    }
-
-    if (!root["access_token"].isString()) {
-        nugu_error("can't find access_token from response");
-        return nullptr;
-    }
-
     NuguToken* token = new NuguToken();
     if (!token) {
         nugu_error_nomem();
         return nullptr;
     }
 
-    token->access_token = root["access_token"].asString();
-    token->timestamp = time(NULL);
-
-    if (root["refresh_token"].isString())
-        token->refresh_token = root["refresh_token"].asString();
-
-    if (root["token_type"].isString())
-        token->token_type = root["token_type"].asString();
-
-    if (root["expires_in"].isInt())
-        token->expires_in = root["expires_in"].asInt();
-    else
-        token->expires_in = 0;
-
-    parseAccessToken(token);
+    if (!parseAndSaveToken(message, token)) {
+        nugu_error("parsing error");
+        delete token;
+        return nullptr;
+    }
 
     return token;
 }
@@ -555,17 +455,17 @@ bool NuguAuth::parseAccessToken(NuguToken* token)
             nugu_dbg("ext[usr]: %s", token->ext_usr.c_str());
         }
 
-        if (ext["usr"].isString()) {
+        if (ext["dvc"].isString()) {
             token->ext_dvc = ext["dvc"].asString();
             nugu_dbg("ext[dvc]: %s", token->ext_dvc.c_str());
         }
 
-        if (ext["usr"].isString()) {
+        if (ext["srl"].isString()) {
             token->ext_srl = ext["srl"].asString();
             nugu_dbg("ext[srl]: %s", token->ext_srl.c_str());
         }
 
-        if (ext["usr"].isString()) {
+        if (ext["poc"].isString()) {
             token->ext_poc = ext["poc"].asString();
             nugu_dbg("ext[poc]: %s", token->ext_poc.c_str());
         }
@@ -659,36 +559,7 @@ bool NuguAuth::refresh(NuguToken* token, const std::string& device_serial, struc
     std::string message((char*)resp->body);
     nugu_http_response_free(resp);
 
-    Json::Value root;
-    Json::Reader reader;
-
-    if (!reader.parse(message, root)) {
-        nugu_error("JSON parsing error: %s", message.c_str());
-        return false;
-    }
-
-    if (!root["access_token"].isString()) {
-        nugu_error("can't find access_token from response");
-        return false;
-    }
-
-    token->access_token = root["access_token"].asString();
-    token->timestamp = time(NULL);
-
-    if (root["refresh_token"].isString())
-        token->refresh_token = root["refresh_token"].asString();
-
-    if (root["token_type"].isString())
-        token->token_type = root["token_type"].asString();
-
-    if (root["expires_in"].isInt())
-        token->expires_in = root["expires_in"].asInt();
-    else
-        token->expires_in = 0;
-
-    parseAccessToken(token);
-
-    return true;
+    return parseAndSaveToken(message, token);
 }
 
 bool NuguAuth::isExpired(const NuguToken* token, time_t base_time)
@@ -734,6 +605,73 @@ std::string NuguAuth::getGatewayRegistryUri()
 std::string NuguAuth::getTemplateServerUri()
 {
     return uri_template_server;
+}
+
+bool NuguAuth::parseDiscoveryResult(const std::string& response)
+{
+    Json::Value root;
+    Json::Reader reader;
+
+    if (!reader.parse(response, root)) {
+        nugu_error("JSON parsing error: %s", response.c_str());
+        return false;
+    }
+
+    if (root["token_endpoint"].empty()) {
+        nugu_error("can't find token_endpoint from response");
+        return false;
+    }
+
+    size_t url_len = config.oauth_server_url.size();
+
+    ep_token = root["token_endpoint"].asString();
+    ep_token.erase(0, url_len);
+
+    ep_authorization = root["authorization_endpoint"].asString();
+    ep_authorization.erase(0, url_len);
+
+    uri_gateway_registry = root["device_gateway_registry_uri"].asString();
+    uri_template_server = root["template_server_uri"].asString();
+
+    supported_grant_types = find_grant_types(root["grant_types_supported"]);
+    return true;
+}
+
+bool NuguAuth::parseAndSaveToken(const std::string& response, NuguToken* token)
+{
+    Json::Value root;
+    Json::Reader reader;
+
+    if (token == NULL) {
+        nugu_error("NuguToken is null");
+        return false;
+    }
+
+    if (!reader.parse(response, root)) {
+        nugu_error("JSON parsing error: %s", response.c_str());
+        return false;
+    }
+
+    if (!root["access_token"].isString()) {
+        nugu_error("can't find access_token from response");
+        return false;
+    }
+
+    token->access_token = root["access_token"].asString();
+    token->timestamp = time(NULL);
+
+    if (root["refresh_token"].isString())
+        token->refresh_token = root["refresh_token"].asString();
+
+    if (root["token_type"].isString())
+        token->token_type = root["token_type"].asString();
+
+    if (root["expires_in"].isInt())
+        token->expires_in = root["expires_in"].asInt();
+    else
+        token->expires_in = 0;
+
+    return parseAccessToken(token);
 }
 
 } // NuguClientKit
