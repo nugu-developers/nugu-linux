@@ -34,7 +34,7 @@ public:
     void initialize() override;
     void deInitialize() override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
     bool getProperty(const std::string& property, std::string& value) override;
     void parsingDirective(const char* dname, const char* message) override;
 
@@ -52,7 +52,7 @@ private:
         std::string routine_type;
         std::string routine_list_type;
         std::string source;
-        Json::Value actions = Json::arrayValue;
+        NJson::Value actions = NJson::arrayValue;
     };
 
     // implements IRoutineManagerListener
@@ -78,8 +78,8 @@ private:
     void sendEventMoveFailed(EventResultCallback cb = nullptr);
     void sendEventActionTimeoutTriggered(EventResultCallback cb = nullptr);
 
-    void sendEventCommon(std::string&& event_name, Json::Value&& extra_value, EventResultCallback cb = nullptr, bool clear_routine_info = false);
-    std::string sendEventActionTriggered(const std::string& ps_id, const Json::Value& data, EventResultCallback cb = nullptr);
+    void sendEventCommon(std::string&& event_name, NJson::Value&& extra_value, EventResultCallback cb = nullptr, bool clear_routine_info = false);
+    std::string sendEventActionTriggered(const std::string& ps_id, const NJson::Value& data, EventResultCallback cb = nullptr);
 
     const unsigned int INTERRUPT_TIME_MSEC = 60 * 1000;
     const std::string FAIL_EVENT_ERROR_CODE = "NOT_SUPPORTED_STATE";

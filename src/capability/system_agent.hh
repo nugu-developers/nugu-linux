@@ -32,7 +32,7 @@ public:
     void deInitialize() override;
 
     void parsingDirective(const char* dname, const char* message) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     bool receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;

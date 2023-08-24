@@ -20,7 +20,7 @@
 #include <functional>
 
 #include <base/nugu_directive.h>
-#include <json/json.h>
+#include <njson/njson.h>
 
 namespace NuguClientKit {
 
@@ -75,7 +75,7 @@ public:
 class IRoutineManager {
 public:
     using TextRequester = std::function<std::string(const std::string&, const std::string&, const std::string&)>;
-    using DataRequester = std::function<std::string(const std::string&, const Json::Value&)>;
+    using DataRequester = std::function<std::string(const std::string&, const NJson::Value&)>;
 
 public:
     virtual ~IRoutineManager() = default;
@@ -109,7 +109,7 @@ public:
      * @param[in] token token which is delivered from routine play
      * @param[in] actions action list
      */
-    virtual bool start(const std::string& token, const Json::Value& actions) = 0;
+    virtual bool start(const std::string& token, const NJson::Value& actions) = 0;
 
     /**
      * @brief Stop routine.
@@ -168,7 +168,7 @@ public:
      * @brief Check whether the action is valid.
      * @return true if valid, otherwise false
      */
-    virtual bool isActionValid(const Json::Value& action) = 0;
+    virtual bool isActionValid(const NJson::Value& action) = 0;
 
     /**
      * @brief Check whether routine is in progress currently.

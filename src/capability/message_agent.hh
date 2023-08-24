@@ -36,7 +36,7 @@ public:
     void deInitialize() override;
 
     void setCapabilityListener(ICapabilityListener* clistener) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
     void parsingDirective(const char* dname, const char* message) override;
 
     static void directiveDataCallback(NuguDirective* ndir, int seq, void* userdata);
@@ -72,7 +72,7 @@ private:
 
     void executeOnForegroundAction();
     std::string getCurrentTTSState();
-    void startInteractionControl(const Json::Value& payload);
+    void startInteractionControl(const NJson::Value& payload);
     void finishInteractionControl();
 
     IMessageListener* message_listener;
@@ -87,7 +87,7 @@ private:
     std::string dialog_id;
     std::string received_time;
     InteractionMode interaction_mode;
-    std::pair<Json::Value, Json::Value> interaction_control_payloads;
+    std::pair<NJson::Value, NJson::Value> interaction_control_payloads;
 };
 
 } // NuguCapability

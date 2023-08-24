@@ -32,11 +32,11 @@ public:
     {
     }
 
-    void updateInfoForContext(Json::Value& ctx) override {}
+    void updateInfoForContext(NJson::Value& ctx) override { }
 
-    void updateCompactContext(Json::Value& ctx) override {}
+    void updateCompactContext(NJson::Value& ctx) override { }
 
-    void onCancelDirective(NuguDirective* ndir) override {}
+    void onCancelDirective(NuguDirective* ndir) override { }
 
     bool onPreHandleDirective(NuguDirective* ndir) override
     {

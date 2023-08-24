@@ -117,7 +117,7 @@ public:
         actions.clear();
 
         for (const auto& element : test_datas) {
-            Json::Value action;
+            NJson::Value action;
             action["type"] = element.type;
             action["playServiceId"] = element.play_service_id;
 
@@ -143,7 +143,7 @@ public:
         }
     }
 
-    Json::Value getActions()
+    NJson::Value getActions()
     {
         return actions;
     }
@@ -160,7 +160,7 @@ public:
 
     std::string getActionToken(unsigned int index)
     {
-        for (Json::Value::ArrayIndex i = 0; i < actions.size(); i++) {
+        for (NJson::Value::ArrayIndex i = 0; i < actions.size(); i++) {
             if (i == index - 1)
                 return actions[i]["token"].asString();
         }
@@ -169,7 +169,7 @@ public:
     }
 
 private:
-    Json::Value actions;
+    NJson::Value actions;
     std::string token = "token";
 };
 
@@ -256,13 +256,13 @@ static void setup(TestFixture* fixture, gconstpointer user_data)
     fixture->routine_manager->setTextRequester([](const std::string& token, const std::string& text, const std::string& ps_id) {
         return ps_id == "ps_id_1" ? "dialog_1" : "dialog_2";
     });
-    fixture->routine_manager->setDataRequester([](const std::string& ps_id, const Json::Value& data) {
+    fixture->routine_manager->setDataRequester([](const std::string& ps_id, const NJson::Value& data) {
         return "dialog_3";
     });
     fixture->routine_helper->composeActions({
-        { "TEXT", "ps_id_1", "token_1", "text_1", Json::nullValue },
-        { "TEXT", "ps_id_2", "token_2", "text_2", Json::nullValue },
-        { "DATA", "ps_id_3", "token_3", "", Json::Value("DATA_VALUE") },
+        { "TEXT", "ps_id_1", "token_1", "text_1", NJson::nullValue },
+        { "TEXT", "ps_id_2", "token_2", "text_2", NJson::nullValue },
+        { "DATA", "ps_id_3", "token_3", "", NJson::Value("DATA_VALUE") },
     });
 
     fixture->ndir_info = createDirective({ "TTS", "Speak", "dialog_1",
@@ -340,7 +340,7 @@ static void test_routine_manager_validation(TestFixture* fixture, gconstpointer 
 {
     const auto& action_container = fixture->routine_manager->getActionContainer();
 
-    g_assert(!fixture->routine_manager->start(fixture->routine_helper->getToken(), Json::arrayValue));
+    g_assert(!fixture->routine_manager->start(fixture->routine_helper->getToken(), NJson::arrayValue));
     g_assert(action_container.empty() && fixture->routine_manager->getCurrentActionIndex() == 0);
 
     // remove previous actions when calling start
@@ -354,15 +354,15 @@ static void test_routine_manager_check_action_valid(TestFixture* fixture, gconst
 {
     fixture->routine_helper->composeActions({
         // valid
-        { "TEXT", "ps_id_1", "token_1", "text_1", Json::nullValue },
+        { "TEXT", "ps_id_1", "token_1", "text_1", NJson::nullValue },
         // invalid (no type)
-        { "", "ps_id_2", "token_2", "text_2", Json::nullValue },
+        { "", "ps_id_2", "token_2", "text_2", NJson::nullValue },
         // valid
-        { "DATA", "ps_id_3", "token_3", "", Json::Value("DATA_VALUE") },
+        { "DATA", "ps_id_3", "token_3", "", NJson::Value("DATA_VALUE") },
         // invalid (no playServiceId)
-        { "DATA", "", "token_4", "", Json::Value("DATA_VALUE") },
+        { "DATA", "", "token_4", "", NJson::Value("DATA_VALUE") },
         // invalid (no data)
-        { "DATA", "", "token_4", "", Json::nullValue },
+        { "DATA", "", "token_4", "", NJson::nullValue },
     });
 
     auto actions = fixture->routine_helper->getActions();
@@ -378,17 +378,17 @@ static void test_routine_manager_check_action_valid(TestFixture* fixture, gconst
 static void test_routine_manager_compose_action_queue(TestFixture* fixture, gconstpointer ignored)
 {
     fixture->routine_helper->composeActions({
-        { "", "ps_id_0", "token_0", "text_0", Json::nullValue },
-        { "", "ps_id_0", "token_0", "", Json::nullValue },
+        { "", "ps_id_0", "token_0", "text_0", NJson::nullValue },
+        { "", "ps_id_0", "token_0", "", NJson::nullValue },
 
-        { "TEXT", "ps_id_1", "token_1", "text_1", Json::nullValue },
-        { "TEXT", "", "", "text_2", Json::nullValue },
-        { "TEXT", "", "", "text_3", Json::nullValue },
+        { "TEXT", "ps_id_1", "token_1", "text_1", NJson::nullValue },
+        { "TEXT", "", "", "text_2", NJson::nullValue },
+        { "TEXT", "", "", "text_3", NJson::nullValue },
 
-        { "DATA", "ps_id_2", "token_2", "", Json::Value("DATA_VALUE") },
-        { "DATA", "ps_id_2", "token_2", "", Json::nullValue },
-        { "DATA", "", "", "", Json::Value("DATA_VALUE") },
-        { "DATA", "", "", "", Json::Value("DATA_VALUE") },
+        { "DATA", "ps_id_2", "token_2", "", NJson::Value("DATA_VALUE") },
+        { "DATA", "ps_id_2", "token_2", "", NJson::nullValue },
+        { "DATA", "", "", "", NJson::Value("DATA_VALUE") },
+        { "DATA", "", "", "", NJson::Value("DATA_VALUE") },
     });
 
     g_assert(fixture->routine_manager->start(fixture->routine_helper->getToken(), fixture->routine_helper->getActions()));
@@ -433,42 +433,42 @@ static void sub_test_routine_manager_start_routine(TestFixture* fixture, TestTyp
 
     if (test_type == TestType::PostDelay)
         test_datas = {
-            { "TEXT", "ps_id_1", "token_1", "text_1", Json::nullValue, 1000 },
-            { "TEXT", "ps_id_2", "token_2", "text_2", Json::nullValue, 2000 },
-            { "DATA", "ps_id_3", "token_3", "", Json::Value("DATA_VALUE") },
-            { "DATA", "ps_id_4", "token_4", "", Json::Value("DATA_VALUE") },
+            { "TEXT", "ps_id_1", "token_1", "text_1", NJson::nullValue, 1000 },
+            { "TEXT", "ps_id_2", "token_2", "text_2", NJson::nullValue, 2000 },
+            { "DATA", "ps_id_3", "token_3", "", NJson::Value("DATA_VALUE") },
+            { "DATA", "ps_id_4", "token_4", "", NJson::Value("DATA_VALUE") },
         };
     else if (test_type == TestType::ActionTimeout)
         test_datas = {
-            { "TEXT", "ps_id_1", "token_1", "text_1", Json::nullValue },
-            { "DATA", "ps_id_2", "token_2", "", Json::Value("DATA_VALUE"), 0, 0, 2000 },
-            { "TEXT", "ps_id_3", "token_3", "text_3", Json::nullValue },
-            { "DATA", "ps_id_4", "token_4", "", Json::Value("DATA_VALUE"), 0, 0, 2000 },
+            { "TEXT", "ps_id_1", "token_1", "text_1", NJson::nullValue },
+            { "DATA", "ps_id_2", "token_2", "", NJson::Value("DATA_VALUE"), 0, 0, 2000 },
+            { "TEXT", "ps_id_3", "token_3", "text_3", NJson::nullValue },
+            { "DATA", "ps_id_4", "token_4", "", NJson::Value("DATA_VALUE"), 0, 0, 2000 },
         };
     else if (test_type == TestType::DefaultActionTimeout)
         test_datas = {
-            { "TEXT", "ps_id_1", "token_1", "text_1", Json::nullValue },
-            { "DATA", "ps_id_2", "token_2", "", Json::Value("DATA_VALUE"), 0, 0, 2000 },
-            { "TEXT", "ps_id_3", "token_3", "text_3", Json::nullValue },
+            { "TEXT", "ps_id_1", "token_1", "text_1", NJson::nullValue },
+            { "DATA", "ps_id_2", "token_2", "", NJson::Value("DATA_VALUE"), 0, 0, 2000 },
+            { "TEXT", "ps_id_3", "token_3", "text_3", NJson::nullValue },
         };
     else if (test_type == TestType::BreakAction)
         test_datas = {
-            { "TEXT", "ps_id_1", "token_1", "text_1", Json::nullValue },
-            { "BREAK", "ps_id_2", "token_2", "", Json::nullValue, 0, 1000 },
-            { "DATA", "ps_id_3", "token_3", "", Json::Value("DATA_VALUE") },
-            { "BREAK", "ps_id_4", "token_4", "", Json::nullValue, 0, 0 },
-            { "DATA", "ps_id_5", "token_5", "", Json::Value("DATA_VALUE") },
+            { "TEXT", "ps_id_1", "token_1", "text_1", NJson::nullValue },
+            { "BREAK", "ps_id_2", "token_2", "", NJson::nullValue, 0, 1000 },
+            { "DATA", "ps_id_3", "token_3", "", NJson::Value("DATA_VALUE") },
+            { "BREAK", "ps_id_4", "token_4", "", NJson::nullValue, 0, 0 },
+            { "DATA", "ps_id_5", "token_5", "", NJson::Value("DATA_VALUE") },
         };
     else if (test_type == TestType::CountableAction)
         test_datas = {
-            { "TEXT", "ps_id_1", "token_1", "text_1", Json::nullValue },
-            { "BREAK", "ps_id_2", "token_2", "text_2", Json::nullValue, 0, 1000 },
-            { "DATA", "ps_id_3", "token_3", "", Json::Value("DATA_VALUE") },
+            { "TEXT", "ps_id_1", "token_1", "text_1", NJson::nullValue },
+            { "BREAK", "ps_id_2", "token_2", "text_2", NJson::nullValue, 0, 1000 },
+            { "DATA", "ps_id_3", "token_3", "", NJson::Value("DATA_VALUE") },
         };
     else if (test_type == TestType::LastActionProcessed)
         test_datas = {
-            { "TEXT", "ps_id_1", "token_1", "text_1", Json::nullValue },
-            { "TEXT", "ps_id_2", "token_2", "text_2", Json::nullValue },
+            { "TEXT", "ps_id_1", "token_1", "text_1", NJson::nullValue },
+            { "TEXT", "ps_id_2", "token_2", "text_2", NJson::nullValue },
         };
 
     if (!test_datas.empty())
@@ -1074,7 +1074,7 @@ static void test_routine_manager_reset(TestFixture* fixture, gconstpointer ignor
                 return "dialog_1";
             });
         fixture->routine_manager->setDataRequester(
-            [](const std::string& ps_id, const Json::Value& data) {
+            [](const std::string& ps_id, const NJson::Value& data) {
                 return "dialog_3";
             });
 

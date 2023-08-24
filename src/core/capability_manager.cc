@@ -247,9 +247,9 @@ ICapabilityInterface* CapabilityManager::findCapability(const std::string& cname
     }
 }
 
-std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::Value& cap_ctx)
+std::string CapabilityManager::makeContextInfo(const std::string& cname, NJson::Value& cap_ctx)
 {
-    Json::FastWriter writer;
+    NJson::FastWriter writer;
 
     for (const auto& cap : caps) {
         if (cap.second->getName() == cname)
@@ -258,14 +258,14 @@ std::string CapabilityManager::makeContextInfo(const std::string& cname, Json::V
         cap.second->updateCompactContext(cap_ctx);
     }
 
-    return writer.write(getBaseContextInfo(cap_ctx, Json::arrayValue));
+    return writer.write(getBaseContextInfo(cap_ctx, NJson::arrayValue));
 }
 
 std::string CapabilityManager::makeAllContextInfo()
 {
-    Json::FastWriter writer;
-    Json::Value cap_ctx;
-    Json::Value playstack_ctx = Json::arrayValue;
+    NJson::FastWriter writer;
+    NJson::Value cap_ctx;
+    NJson::Value playstack_ctx = NJson::arrayValue;
     const auto& playstacks = playsync_manager->getAllPlayStackItems();
 
     for (const auto& cap : caps)
@@ -277,10 +277,10 @@ std::string CapabilityManager::makeAllContextInfo()
     return writer.write(getBaseContextInfo(cap_ctx, std::move(playstack_ctx)));
 }
 
-Json::Value CapabilityManager::getBaseContextInfo(const Json::Value& supported_interfaces, Json::Value&& playstack)
+NJson::Value CapabilityManager::getBaseContextInfo(const NJson::Value& supported_interfaces, NJson::Value&& playstack)
 {
-    Json::Value root;
-    Json::Value client;
+    NJson::Value root;
+    NJson::Value client;
 
     client["wakeupWord"] = wword;
     client["os"] = CONTEXT_OS;

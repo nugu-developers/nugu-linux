@@ -17,7 +17,7 @@
 #ifndef __NUGU_SESSION_MANAGER_INTERFACE_H__
 #define __NUGU_SESSION_MANAGER_INTERFACE_H__
 
-#include <json/json.h>
+#include <njson/njson.h>
 #include <string>
 
 namespace NuguClientKit {
@@ -107,7 +107,7 @@ public:
      * @brief Get current active session info which is composed by session list.
      * @return session info which is formatted to json type
      */
-    virtual Json::Value getActiveSessionInfo() = 0;
+    virtual NJson::Value getActiveSessionInfo() = 0;
 
     /**
      * @brief Clear all session info.

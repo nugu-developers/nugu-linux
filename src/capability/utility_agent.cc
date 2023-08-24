@@ -63,9 +63,9 @@ void UtilityAgent::setCapabilityListener(ICapabilityListener* clistener)
         utility_listener = dynamic_cast<IUtilityListener*>(clistener);
 }
 
-void UtilityAgent::updateInfoForContext(Json::Value& ctx)
+void UtilityAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value utility;
+    NJson::Value utility;
 
     utility["version"] = getVersion();
     ctx[getName()] = utility;
@@ -83,8 +83,8 @@ void UtilityAgent::parsingDirective(const char* dname, const char* message)
 
 void UtilityAgent::parsingBlock(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");

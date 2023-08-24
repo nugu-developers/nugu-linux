@@ -29,7 +29,7 @@ public:
     virtual ~LocationAgent() = default;
 
     void setCapabilityListener(ICapabilityListener* clistener) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
 
 private:
     ILocationListener* location_listener = nullptr;

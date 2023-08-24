@@ -38,7 +38,7 @@ public:
 
     void preprocessDirective(NuguDirective* ndir) override;
     void parsingDirective(const char* dname, const char* message) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
     bool getProperty(const std::string& property, std::string& value) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
@@ -73,7 +73,7 @@ private:
     };
 
     void sendEventElementSelected(const std::string& item_token, const std::string& postback);
-    void sendEventTriggerChild(const std::string& ps_id, const std::string& parent_token, const Json::Value& data);
+    void sendEventTriggerChild(const std::string& ps_id, const std::string& parent_token, const NJson::Value& data);
     void sendEventCloseSucceeded(const std::string& ps_id);
     void sendEventCloseFailed(const std::string& ps_id);
     void sendEventControlFocusSucceeded(const std::string& ps_id, ControlDirection direction);
@@ -82,7 +82,7 @@ private:
     void sendEventControlScrollFailed(const std::string& ps_id, ControlDirection direction);
     void sendEventClose(const std::string& ename, const std::string& ps_id);
     void sendEventControl(const std::string& ename, const std::string& ps_id, ControlDirection direction, EventResultCallback cb = nullptr);
-    void handleInteractionControl(const std::string& ename, Json::Value& root);
+    void handleInteractionControl(const std::string& ename, NJson::Value& root);
 
     void parsingClose(const char* message);
     void parsingControlFocus(const char* message);
@@ -90,13 +90,13 @@ private:
     void parsingUpdate(const char* message);
     void parsingTemplates(const char* message);
     void parsingRedirectTriggerChild(const char* message);
-    void parsingHistoryControl(const Json::Value& root);
+    void parsingHistoryControl(const NJson::Value& root);
 
     void prehandleTemplates(NuguDirective* ndir);
-    void handleHistoryControl(const Json::Value& root, const DisplayRenderInfo* render_info);
+    void handleHistoryControl(const NJson::Value& root, const DisplayRenderInfo* render_info);
     void activateSession(NuguDirective* ndir);
     void deactivateSession();
-    void startPlaySync(const NuguDirective* ndir, const Json::Value& root);
+    void startPlaySync(const NuguDirective* ndir, const NJson::Value& root);
     bool hasPlayStack();
     bool hasMediaPlayStack();
 
@@ -163,7 +163,7 @@ private:
     std::string prepared_render_info_id;
     bool keep_history;
     InteractionMode interaction_mode;
-    Json::Value interaction_control_payload;
+    NJson::Value interaction_control_payload;
 
     std::stack<HistoryControl> history_control_stack;
 };

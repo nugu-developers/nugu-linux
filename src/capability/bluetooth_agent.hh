@@ -34,7 +34,7 @@ public:
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     void parsingDirective(const char* dname, const char* message) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
 
     void onFocusChanged(FocusState state) override;
 
@@ -63,7 +63,7 @@ private:
     void sendEventDiscoverableMode(const std::string& ename, bool has_paired_devices, EventResultCallback cb = nullptr);
 
     // parsing directive
-    bool parsingCommon(const char* message, Json::Value& root);
+    bool parsingCommon(const char* message, NJson::Value& root);
     void parsingStartDiscoverableMode(const char* message);
     void parsingFinishDiscoverableMode(const char* message);
     void parsingPlay(const char* message);

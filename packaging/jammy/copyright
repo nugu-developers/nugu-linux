@@ -4,10 +4,6 @@ Files: *
 Copyright: (c) 2019 SK Telecom Co., Ltd. All rights reserved.
 License: Apache-2.0
 
-Files: externals/jsoncpp/*
-Copyright: 2007-2010 Baptiste Lepilleur
-License: MIT
-
 Files: externals/nghttp2/*
 Copyright: (c) 2012, 2014, 2015, 2016 Tatsuhiro Tsujikawa
            (c) 2012, 2014, 2015, 2016 nghttp2 contributors

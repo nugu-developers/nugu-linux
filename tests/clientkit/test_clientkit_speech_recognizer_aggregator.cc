@@ -161,7 +161,7 @@ public:
     }
 
     // define no-op
-    void updateInfoForContext(Json::Value& ctx) override { }
+    void updateInfoForContext(NJson::Value& ctx) override { }
     void removeListener(IASRListener* listener) override { }
     void setAttribute(ASRAttribute&& attribute) override { }
     void setEpdAttribute(EpdAttribute&& attribute) override { }

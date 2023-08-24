@@ -94,8 +94,8 @@ void DisplayAgent::preprocessDirective(NuguDirective* ndir)
 
 void DisplayAgent::parsingDirective(const char* dname, const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     nugu_dbg("message: %s", message);
 
@@ -117,9 +117,9 @@ void DisplayAgent::parsingDirective(const char* dname, const char* message)
     }
 }
 
-void DisplayAgent::updateInfoForContext(Json::Value& ctx)
+void DisplayAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value display;
+    NJson::Value display;
 
     display["version"] = getVersion();
 
@@ -218,8 +218,8 @@ void DisplayAgent::elementSelected(const std::string& id, const std::string& ite
 
 void DisplayAgent::triggerChild(const std::string& ps_id, const std::string& data)
 {
-    Json::Reader reader;
-    Json::Value data_obj;
+    NJson::Reader reader;
+    NJson::Value data_obj;
 
     if (ps_id.empty() || context_collection.token.empty()
         || data.empty() || !reader.parse(data, data_obj)) {
@@ -349,10 +349,10 @@ void DisplayAgent::sendEventElementSelected(const std::string& item_token, const
 {
     std::string ename = "ElementSelected";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Reader reader;
-    Json::Value root;
-    Json::Value temp;
+    NJson::FastWriter writer;
+    NJson::Reader reader;
+    NJson::Value root;
+    NJson::Value temp;
 
     root["playServiceId"] = context_collection.ps_id;
     root["token"] = item_token;
@@ -365,10 +365,10 @@ void DisplayAgent::sendEventElementSelected(const std::string& item_token, const
     sendEvent(ename, capa_helper->makeAllContextInfo(), payload);
 }
 
-void DisplayAgent::sendEventTriggerChild(const std::string& ps_id, const std::string& parent_token, const Json::Value& data)
+void DisplayAgent::sendEventTriggerChild(const std::string& ps_id, const std::string& parent_token, const NJson::Value& data)
 {
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     root["playServiceId"] = ps_id;
     root["parentToken"] = parent_token;
@@ -414,8 +414,8 @@ void DisplayAgent::sendEventControlScrollFailed(const std::string& ps_id, Contro
 void DisplayAgent::sendEventClose(const std::string& ename, const std::string& ps_id)
 {
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     root["playServiceId"] = ps_id;
     payload = writer.write(root);
@@ -426,8 +426,8 @@ void DisplayAgent::sendEventClose(const std::string& ename, const std::string& p
 void DisplayAgent::sendEventControl(const std::string& ename, const std::string& ps_id, ControlDirection direction, EventResultCallback cb)
 {
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     root["playServiceId"] = ps_id;
     root["direction"] = getDirectionString(direction);
@@ -439,7 +439,7 @@ void DisplayAgent::sendEventControl(const std::string& ename, const std::string&
     sendEvent(ename, getContextInfo(), payload, std::move(cb));
 }
 
-void DisplayAgent::handleInteractionControl(const std::string& ename, Json::Value& root)
+void DisplayAgent::handleInteractionControl(const std::string& ename, NJson::Value& root)
 {
     if (INTERACTION_CONTROL_EVENTS.find(ename) != INTERACTION_CONTROL_EVENTS.cend()
         && !interaction_control_payload.empty()) {
@@ -450,8 +450,8 @@ void DisplayAgent::handleInteractionControl(const std::string& ename, Json::Valu
 
 void DisplayAgent::parsingClose(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string ps_id;
     std::string template_id;
 
@@ -478,8 +478,8 @@ void DisplayAgent::parsingClose(const char* message)
 
 void DisplayAgent::parsingControlFocus(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string ps_id;
     std::string template_id;
     ControlDirection direction;
@@ -513,8 +513,8 @@ void DisplayAgent::parsingControlFocus(const char* message)
 
 void DisplayAgent::parsingControlScroll(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string ps_id;
     std::string template_id;
     ControlDirection direction;
@@ -554,8 +554,8 @@ void DisplayAgent::parsingControlScroll(const char* message)
 
 void DisplayAgent::parsingUpdate(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string ps_id;
     std::string template_id;
 
@@ -589,8 +589,8 @@ void DisplayAgent::parsingUpdate(const char* message)
 
 void DisplayAgent::parsingTemplates(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     NuguDirective* ndir = getNuguDirective();
 
     if (!reader.parse(message, root)) {
@@ -618,8 +618,8 @@ void DisplayAgent::parsingTemplates(const char* message)
 
 void DisplayAgent::parsingRedirectTriggerChild(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -637,8 +637,8 @@ void DisplayAgent::parsingRedirectTriggerChild(const char* message)
 
 void DisplayAgent::prehandleTemplates(NuguDirective* ndir)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(nugu_directive_peek_json(ndir), root)) {
         nugu_error("parsing error");
@@ -653,7 +653,7 @@ void DisplayAgent::prehandleTemplates(NuguDirective* ndir)
     playsync_manager->prepareSync(playstackctl_ps_id, ndir);
 }
 
-void DisplayAgent::handleHistoryControl(const Json::Value& root, const DisplayRenderInfo* render_info)
+void DisplayAgent::handleHistoryControl(const NJson::Value& root, const DisplayRenderInfo* render_info)
 {
     if (!root.isMember("historyControl"))
         return;
@@ -688,7 +688,7 @@ void DisplayAgent::deactivateSession()
     session_dialog_ids.clear();
 }
 
-void DisplayAgent::startPlaySync(const NuguDirective* ndir, const Json::Value& root)
+void DisplayAgent::startPlaySync(const NuguDirective* ndir, const NJson::Value& root)
 {
     try {
         playsync_manager->startSync(playstackctl_ps_id, getName(), render_helper->getRenderInfo(prepared_render_info_id));

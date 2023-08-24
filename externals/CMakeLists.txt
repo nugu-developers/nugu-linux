@@ -1,13 +1,11 @@
 include(ExternalProject)
 
-IF(ENABLE_BUILTIN_JSONCPP)
-	# jsoncpp
-	FILE(GLOB_RECURSE jsoncpp_files jsoncpp/src/lib_json/*.cpp)
-	ADD_LIBRARY(jsoncpp STATIC ${jsoncpp_files})
-	TARGET_COMPILE_OPTIONS(jsoncpp PRIVATE -Wno-implicit-fallthrough)
-	INSTALL(DIRECTORY jsoncpp/include/json
-			DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
-ENDIF()
+# njson
+FILE(GLOB_RECURSE njson_files njson/src/*.cpp)
+ADD_LIBRARY(njson STATIC ${njson_files})
+TARGET_INCLUDE_DIRECTORIES(njson PRIVATE njson/include)
+INSTALL(DIRECTORY njson/include/njson
+		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
 
 # In Bionic(18.04), the PKG_CONFIG_EXECUTABLE value with an absolute path is
 # passed from the debian package build script.

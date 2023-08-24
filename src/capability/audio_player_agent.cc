@@ -286,9 +286,9 @@ void AudioPlayerAgent::parsingDirective(const char* dname, const char* message)
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
 }
 
-void AudioPlayerAgent::updateInfoForContext(Json::Value& ctx)
+void AudioPlayerAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value aplayer;
+    NJson::Value aplayer;
     double offset = cur_player->position() * 1000;
     double duration = cur_player->duration() * 1000;
 
@@ -477,8 +477,8 @@ std::string AudioPlayerAgent::requestFavoriteCommand(bool current_favorite)
 {
     std::string ename = "FavoriteCommandIssued";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     if (cur_token.empty()) {
         nugu_warn("there is no media content in the playlist.");
@@ -503,8 +503,8 @@ std::string AudioPlayerAgent::requestRepeatCommand(RepeatType current_repeat)
 {
     std::string ename = "RepeatCommandIssued";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     if (cur_token.empty()) {
         nugu_warn("there is no media content in the playlist.");
@@ -539,8 +539,8 @@ std::string AudioPlayerAgent::requestShuffleCommand(bool current_shuffle)
 {
     std::string ename = "ShuffleCommandIssued";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     if (cur_token.empty()) {
         nugu_warn("there is no media content in the playlist.");
@@ -828,8 +828,8 @@ void AudioPlayerAgent::onDataChanged(const std::string& ps_id, std::pair<void*, 
 
 std::string AudioPlayerAgent::sendEventCommon(const std::string& ename, EventResultCallback cb, bool include_all_context)
 {
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
     long offset = cur_player->position() * 1000;
 
     if (offset < 0 || cur_token.size() == 0 || ps_id.size() == 0) {
@@ -858,8 +858,8 @@ void AudioPlayerAgent::sendEventPlaybackStopped(EventResultCallback cb)
 {
     std::string ename = "PlaybackStopped";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
     long offset = cur_player->position() * 1000;
 
     if (offset < 0 || cur_token.size() == 0 || ps_id.size() == 0) {
@@ -890,8 +890,8 @@ void AudioPlayerAgent::sendEventPlaybackFailed(PlaybackError err, const std::str
 {
     std::string ename = "PlaybackFailed";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
     long offset = cur_player->position() * 1000;
 
     if (offset < 0 || cur_token.size() == 0 || ps_id.size() == 0) {
@@ -938,8 +938,8 @@ void AudioPlayerAgent::sendEventShowLyricsSucceeded(EventResultCallback cb)
 {
     std::string ename = "ShowLyricsSucceeded";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     if (ps_id.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
@@ -956,8 +956,8 @@ void AudioPlayerAgent::sendEventShowLyricsFailed(EventResultCallback cb)
 {
     std::string ename = "EventShowLyricsFailed";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     root["playServiceId"] = ps_id;
     payload = writer.write(root);
@@ -969,8 +969,8 @@ void AudioPlayerAgent::sendEventHideLyricsSucceeded(EventResultCallback cb)
 {
     std::string ename = "HideLyricsSucceeded";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     if (ps_id.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
@@ -987,8 +987,8 @@ void AudioPlayerAgent::sendEventHideLyricsFailed(EventResultCallback cb)
 {
     std::string ename = "HideLyricsFailed";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     if (ps_id.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
@@ -1005,8 +1005,8 @@ void AudioPlayerAgent::sendEventControlLyricsPageSucceeded(const std::string& di
 {
     std::string ename = "ControlLyricsPageSucceeded";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     if (ps_id.size() == 0 || direction.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
@@ -1024,8 +1024,8 @@ void AudioPlayerAgent::sendEventControlLyricsPageFailed(const std::string& direc
 {
     std::string ename = "ControlLyricsPageFailed";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     if (ps_id.size() == 0 || direction.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
@@ -1055,8 +1055,8 @@ void AudioPlayerAgent::sendEventRequestCommandFailed(const std::string& play_ser
 {
     std::string ename = "RequestCommandFailed";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     root["token"] = cur_token;
     root["playServiceId"] = play_service_id;
@@ -1087,11 +1087,11 @@ bool AudioPlayerAgent::isContentCached(const std::string& key, std::string& play
 
 void AudioPlayerAgent::parsingPlay(const char* message)
 {
-    Json::Value root;
-    Json::Value audio_item;
-    Json::Value stream;
-    Json::Value report;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Value audio_item;
+    NJson::Value stream;
+    NJson::Value report;
+    NJson::Reader reader;
     std::string source_type;
     std::string url;
     std::string cache_key;
@@ -1249,9 +1249,9 @@ void AudioPlayerAgent::parsingPlay(const char* message)
 
 void AudioPlayerAgent::parsingPause(const char* message)
 {
-    Json::Value root;
-    Json::Value audio_item;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Value audio_item;
+    NJson::Reader reader;
     std::string playserviceid;
 
     if (cur_token.empty()) {
@@ -1291,9 +1291,9 @@ void AudioPlayerAgent::parsingPause(const char* message)
 
 void AudioPlayerAgent::parsingStop(const char* message)
 {
-    Json::Value root;
-    Json::Value audio_item;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Value audio_item;
+    NJson::Reader reader;
     std::string playstackctl_ps_id;
 
     if (cur_token.empty()) {
@@ -1322,10 +1322,10 @@ void AudioPlayerAgent::parsingStop(const char* message)
 
 void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
 {
-    Json::Value root;
-    Json::Value settings;
-    Json::Reader reader;
-    Json::StyledWriter writer;
+    NJson::Value root;
+    NJson::Value settings;
+    NJson::Reader reader;
+    NJson::StyledWriter writer;
     std::string playserviceid;
 
     if (cur_token.empty()) {
@@ -1389,8 +1389,8 @@ void AudioPlayerAgent::parsingUpdateMetadata(const char* message)
 
 void AudioPlayerAgent::parsingShowLyrics(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string playserviceid;
 
     try {
@@ -1419,8 +1419,8 @@ void AudioPlayerAgent::parsingShowLyrics(const char* message)
 
 void AudioPlayerAgent::parsingHideLyrics(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string playserviceid;
 
     try {
@@ -1449,8 +1449,8 @@ void AudioPlayerAgent::parsingHideLyrics(const char* message)
 
 void AudioPlayerAgent::parsingControlLyricsPage(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string playserviceid;
     std::string direction;
     ControlDirection control_direction;
@@ -1489,8 +1489,8 @@ void AudioPlayerAgent::parsingControlLyricsPage(const char* message)
 
 void AudioPlayerAgent::parsingRequestPlayCommand(const char* dname, const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string play_service_id;
     std::string payload;
 
@@ -1512,8 +1512,8 @@ void AudioPlayerAgent::parsingRequestPlayCommand(const char* dname, const char* 
 
 void AudioPlayerAgent::parsingRequestOthersCommand(const char* dname, const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string play_service_id;
     std::string err_type;
     std::string err_reason;
@@ -1553,10 +1553,10 @@ void AudioPlayerAgent::parsingRequestOthersCommand(const char* dname, const char
 
 DisplayRenderInfo* AudioPlayerAgent::composeRenderInfo(NuguDirective* ndir, const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
-    Json::Value meta;
-    Json::StyledWriter writer;
+    NJson::Value root;
+    NJson::Reader reader;
+    NJson::Value meta;
+    NJson::StyledWriter writer;
 
     if (!reader.parse(message, root)
         || ((meta = root["audioItem"]["metadata"]).empty() || meta["template"].empty())) {

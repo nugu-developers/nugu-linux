@@ -174,9 +174,9 @@ void TTSAgent::cancelDirective(NuguDirective* ndir)
     }
 }
 
-void TTSAgent::updateInfoForContext(Json::Value& ctx)
+void TTSAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value tts;
+    NJson::Value tts;
 
     if (tts_engine.size())
         tts["engine"] = tts_engine;
@@ -340,8 +340,8 @@ void TTSAgent::onSyncState(const std::string& ps_id, PlaySyncState state, void* 
 void TTSAgent::sendEventCommon(CapabilityEvent* event, const std::string& token, EventResultCallback cb)
 {
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     if (!event) {
         nugu_error("event is NULL");
@@ -397,8 +397,8 @@ std::string TTSAgent::sendEventSpeechPlay(const std::string& token, const std::s
 {
     std::string ename = "SpeechPlay";
     std::string payload = "";
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
     std::string skml = text;
 
     if (text.size() == 0 || token.size() == 0) {
@@ -423,8 +423,8 @@ std::string TTSAgent::sendEventSpeechPlay(const std::string& token, const std::s
 
 void TTSAgent::parsingSpeak(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string format;
     std::string text;
     std::string token;
@@ -491,8 +491,8 @@ void TTSAgent::parsingSpeak(const char* message)
 
 void TTSAgent::parsingStop(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");

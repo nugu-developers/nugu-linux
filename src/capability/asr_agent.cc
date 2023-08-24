@@ -245,9 +245,9 @@ void ASRAgent::cancelDirective(NuguDirective* ndir)
     resetExpectSpeechState();
 }
 
-void ASRAgent::updateInfoForContext(Json::Value& ctx)
+void ASRAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value asr;
+    NJson::Value asr;
 
     asr["version"] = getVersion();
     asr["engine"] = "skt";
@@ -256,7 +256,7 @@ void ASRAgent::updateInfoForContext(Json::Value& ctx)
     try {
         asr["initiator"] = ASR_INITIATOR_TEXTS.at(asr_initiator);
     } catch (const std::out_of_range& oor) {
-        asr["initiator"] = Json::nullValue;
+        asr["initiator"] = NJson::nullValue;
     }
 
     ctx[getName()] = asr;
@@ -293,7 +293,7 @@ bool ASRAgent::getProperty(const std::string& property, std::string& value)
         value = es_attr.play_service_id;
     } else if (property == "es.asrContext") {
         if (!es_attr.asr_context.empty()) {
-            Json::FastWriter writer;
+            NJson::FastWriter writer;
             value = writer.write(es_attr.asr_context);
         }
     } else if (property == "focusState") {
@@ -385,8 +385,8 @@ void ASRAgent::sendEventCommon(const std::string& ename, EventResultCallback cb,
     std::string payload = "";
 
     if (es_attr.is_handle) {
-        Json::FastWriter writer;
-        Json::Value root;
+        NJson::FastWriter writer;
+        NJson::Value root;
 
         root["playServiceId"] = es_attr.play_service_id;
         payload = writer.write(root);
@@ -397,8 +397,8 @@ void ASRAgent::sendEventCommon(const std::string& ename, EventResultCallback cb,
 
 void ASRAgent::sendEventRecognize(unsigned char* data, size_t length, bool is_end, EventResultCallback cb)
 {
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
     std::string payload;
     std::string et_attr;
 
@@ -468,9 +468,9 @@ void ASRAgent::sendEventStopRecognize(EventResultCallback cb)
 
 void ASRAgent::parsingExpectSpeech(std::string&& dialog_id, const char* message)
 {
-    Json::Value root;
-    Json::Value epd;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Value epd;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -508,8 +508,8 @@ void ASRAgent::parsingExpectSpeech(std::string&& dialog_id, const char* message)
 
 void ASRAgent::parsingNotifyResult(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string result;
     std::string state;
 
@@ -547,8 +547,8 @@ void ASRAgent::parsingNotifyResult(const char* message)
 
 void ASRAgent::parsingCancelRecognize(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string cause;
 
     if (!reader.parse(message, root)) {
@@ -862,10 +862,10 @@ bool ASRAgent::isExpectSpeechState()
     return es_attr.is_handle;
 }
 
-void ASRAgent::setExpectTypingAttributes(Json::Value& root, std::string&& et_attr)
+void ASRAgent::setExpectTypingAttributes(NJson::Value& root, std::string&& et_attr)
 {
-    Json::Value et_attr_json;
-    Json::Reader reader;
+    NJson::Value et_attr_json;
+    NJson::Reader reader;
 
     if (!reader.parse(et_attr, et_attr_json))
         return;

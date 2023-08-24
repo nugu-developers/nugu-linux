@@ -17,9 +17,9 @@
 #ifndef __NUGU_ROUTINE_MANAGER_H__
 #define __NUGU_ROUTINE_MANAGER_H__
 
-#include <json/json.h>
 #include <map>
 #include <memory>
+#include <njson/njson.h>
 #include <queue>
 #include <set>
 #include <vector>
@@ -38,7 +38,7 @@ public:
         std::string play_service_id;
         std::string text;
         std::string token;
-        Json::Value data;
+        NJson::Value data;
         long long post_delay_msec;
         long long mute_delay_msec;
         long long action_timeout_msec;
@@ -61,7 +61,7 @@ public:
     TextRequester getTextRequester();
     DataRequester getDataRequester();
 
-    bool start(const std::string& token, const Json::Value& actions) override;
+    bool start(const std::string& token, const NJson::Value& actions) override;
     void stop() override;
     void interrupt() override;
     void resume() override;
@@ -71,7 +71,7 @@ public:
     unsigned int getCurrentActionIndex() override;
     unsigned int getCountableActionSize() override;
     unsigned int getCountableActionIndex() override;
-    bool isActionValid(const Json::Value& action) override;
+    bool isActionValid(const NJson::Value& action) override;
     bool isRoutineProgress() override;
     bool isRoutineAlive() override;
     bool isActionProgress(const std::string& dialog_id) override;
@@ -101,7 +101,7 @@ private:
     void next();
     void handleActionTimeout(const long long action_time_msec);
     void postHandle(TimerCallback&& func);
-    void setActions(const Json::Value& actions);
+    void setActions(const NJson::Value& actions);
     void setActivity(RoutineActivity activity);
     void removePreviousActionDialog();
     void clearContainer();

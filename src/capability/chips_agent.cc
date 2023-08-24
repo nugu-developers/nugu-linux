@@ -63,9 +63,9 @@ void ChipsAgent::removeListener(IChipsListener* listener)
         chips_listeners.erase(iterator);
 }
 
-void ChipsAgent::updateInfoForContext(Json::Value& ctx)
+void ChipsAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value chips;
+    NJson::Value chips;
 
     chips["version"] = getVersion();
     ctx[getName()] = chips;
@@ -83,8 +83,8 @@ void ChipsAgent::parsingDirective(const char* dname, const char* message)
 
 void ChipsAgent::parsingRender(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     try {
         if (!reader.parse(message, root))

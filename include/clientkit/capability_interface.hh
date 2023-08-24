@@ -18,8 +18,8 @@
 #define __NUGU_CAPABILITY_INTERFACE_H__
 
 #include <functional>
-#include <json/json.h>
 #include <list>
+#include <njson/njson.h>
 #include <set>
 #include <string>
 
@@ -194,13 +194,13 @@ public:
      * @brief Update the current context information of the capability agent.
      * @param[in] ctx capability agent's context
      */
-    virtual void updateInfoForContext(Json::Value& ctx) = 0;
+    virtual void updateInfoForContext(NJson::Value& ctx) = 0;
 
     /**
      * @brief Update the compact context information of the capability agent.
      * @param[in] ctx capability agent's context
      */
-    virtual void updateCompactContext(Json::Value& ctx) = 0;
+    virtual void updateCompactContext(NJson::Value& ctx) = 0;
 
     /**
      * @brief Process command from other objects.

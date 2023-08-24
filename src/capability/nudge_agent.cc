@@ -40,7 +40,7 @@ void NudgeAgent::initialize()
 
     state_checkers.clear();
     dialog_id.clear();
-    nudge_info = Json::nullValue;
+    nudge_info = NJson::nullValue;
 
     initialized = true;
 }
@@ -51,9 +51,9 @@ void NudgeAgent::setCapabilityListener(ICapabilityListener* clistener)
         nudge_listener = dynamic_cast<INudgeListener*>(clistener);
 }
 
-void NudgeAgent::updateInfoForContext(Json::Value& ctx)
+void NudgeAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value nudge;
+    NJson::Value nudge;
 
     nudge["version"] = getVersion();
 
@@ -98,8 +98,8 @@ void NudgeAgent::prepareNudgeStateCheck(NuguDirective* ndir)
 
 void NudgeAgent::parsingAppend(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -139,7 +139,7 @@ void NudgeAgent::updateNudgeState(const std::string& filter, const std::string& 
 
     if (state_checkers.empty()) {
         this->dialog_id.clear();
-        nudge_info = Json::nullValue;
+        nudge_info = NJson::nullValue;
     }
 }
 

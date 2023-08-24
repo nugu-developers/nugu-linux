@@ -31,7 +31,7 @@ public:
     void initialize() override;
 
     void parsingDirective(const char* dname, const char* message) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void enable() override;
     void disable() override;

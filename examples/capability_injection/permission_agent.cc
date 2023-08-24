@@ -30,9 +30,9 @@ void PermissionAgent::setCapabilityListener(ICapabilityListener* clistener)
         permission_listener = dynamic_cast<IPermissionListener*>(clistener);
 }
 
-void PermissionAgent::updateInfoForContext(Json::Value& ctx)
+void PermissionAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value permission;
+    NJson::Value permission;
     std::vector<PermissionInfo> permission_infos;
 
     permission["version"] = getVersion();
@@ -44,7 +44,7 @@ void PermissionAgent::updateInfoForContext(Json::Value& ctx)
         if (permission_info.name.empty() || permission_info.state.empty())
             continue;
 
-        Json::Value permission_element;
+        NJson::Value permission_element;
         permission_element["name"] = permission_info.name;
         permission_element["state"] = permission_info.state;
         permission["permissions"].append(permission_element);

@@ -64,7 +64,7 @@ public:
     void setWakeupWord(const std::string& word);
     std::string getWakeupWord();
 
-    std::string makeContextInfo(const std::string& cname, Json::Value& cap_ctx);
+    std::string makeContextInfo(const std::string& cname, NJson::Value& cap_ctx);
     std::string makeAllContextInfo();
 
     bool isSupportDirectiveVersion(const std::string& version, ICapabilityInterface* cap);
@@ -83,7 +83,7 @@ public:
 
 private:
     ICapabilityInterface* findCapability(const std::string& cname);
-    Json::Value getBaseContextInfo(const Json::Value& supported_interfaces, Json::Value&& playstack);
+    NJson::Value getBaseContextInfo(const NJson::Value& supported_interfaces, NJson::Value&& playstack);
     bool isConditionToSendCommand(const NuguDirective* ndir);
 
     const unsigned int PROGRESS_DIALOGS_MAX = 5;

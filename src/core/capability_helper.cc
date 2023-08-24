@@ -117,7 +117,7 @@ bool CapabilityHelper::getCapabilityProperties(const std::string& cap, const std
     return CapabilityManager::getInstance()->getCapabilityProperties(cap, property, values);
 }
 
-std::string CapabilityHelper::makeContextInfo(const std::string& cname, Json::Value& ctx)
+std::string CapabilityHelper::makeContextInfo(const std::string& cname, NJson::Value& ctx)
 {
     return CapabilityManager::getInstance()->makeContextInfo(cname, ctx);
 }

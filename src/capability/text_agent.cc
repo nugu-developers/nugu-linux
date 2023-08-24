@@ -125,9 +125,9 @@ void TextAgent::parsingDirective(const char* dname, const char* message)
     }
 }
 
-void TextAgent::updateInfoForContext(Json::Value& ctx)
+void TextAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value text;
+    NJson::Value text;
 
     text["version"] = getVersion();
 
@@ -169,7 +169,7 @@ bool TextAgent::getProperty(const std::string& property, std::string& value)
 
     if (property == "et.attributes") {
         if (expect_typing.is_handle) {
-            Json::FastWriter writer;
+            NJson::FastWriter writer;
             value = writer.write(expect_typing.payload);
         }
     } else {
@@ -253,8 +253,8 @@ std::string TextAgent::requestTextInput(TextInputParam&& text_input_param, bool 
 void TextAgent::sendEventTextInput(const TextInputParam& text_input_param, bool include_dialog_attribute, EventResultCallback cb)
 {
     CapabilityEvent event("TextInput", this);
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     root["text"] = text_input_param.text;
 
@@ -299,8 +299,8 @@ void TextAgent::sendEventTextInput(const TextInputParam& text_input_param, bool 
 
 void TextAgent::sendEventFailed(std::string&& event_name, const TextInputParam& text_input_param, EventResultCallback cb)
 {
-    Json::Value root;
-    Json::FastWriter writer;
+    NJson::Value root;
+    NJson::FastWriter writer;
 
     if (!text_input_param.ps_id.empty())
         root["playServiceId"] = text_input_param.ps_id;
@@ -316,8 +316,8 @@ void TextAgent::sendEventFailed(std::string&& event_name, const TextInputParam& 
 
 void TextAgent::parsingTextSource(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     TextInputParam text_input_param;
 
     try {
@@ -342,8 +342,8 @@ void TextAgent::parsingTextSource(const char* message)
 
 void TextAgent::parsingTextRedirect(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     TextInputParam text_input_param;
 
     try {
@@ -370,8 +370,8 @@ void TextAgent::parsingTextRedirect(const char* message)
 
 void TextAgent::parsingExpectTyping(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     expect_typing = {};
 
     if (!reader.parse(message, root)) {

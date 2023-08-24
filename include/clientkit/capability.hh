@@ -238,7 +238,7 @@ public:
      * @param[in] playstack_control json object which has playStackControl field
      * @return current play service id
      */
-    std::string getPlayServiceIdInStackControl(const Json::Value& playstack_control);
+    std::string getPlayServiceIdInStackControl(const NJson::Value& playstack_control);
 
     /**
      * @brief Get play service id which is managed by play stack control.
@@ -251,7 +251,7 @@ public:
      * @brief Get interaction mode which is included in interactionControl.
      * @return interaction mode (NONE, MULTI_TURN,...)
      */
-    InteractionMode getInteractionMode(const Json::Value& interaction_control);
+    InteractionMode getInteractionMode(const NJson::Value& interaction_control);
 
     /**
      * @brief Receive a directive preprocessing request from Directive sequencer.
@@ -378,7 +378,7 @@ public:
      * @brief Update the compact context information of the capability agent.
      * @param[in] ctx capability agent's context
      */
-    virtual void updateCompactContext(Json::Value& ctx) override;
+    virtual void updateCompactContext(NJson::Value& ctx) override;
 
     /**
      * @brief Get ICapabilityHelper instance for using NuguCore functions.

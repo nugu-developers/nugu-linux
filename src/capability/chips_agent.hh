@@ -34,7 +34,7 @@ public:
     void setCapabilityListener(ICapabilityListener* clistener) override;
     void addListener(IChipsListener* listener) override;
     void removeListener(IChipsListener* listener) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
 
 private:
     void parsingRender(const char* message);

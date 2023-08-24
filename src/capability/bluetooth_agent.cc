@@ -90,12 +90,12 @@ void BluetoothAgent::parsingDirective(const char* dname, const char* message)
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
 }
 
-void BluetoothAgent::updateInfoForContext(Json::Value& ctx)
+void BluetoothAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value root;
-    Json::Value device;
-    Json::Value device_profile;
-    Json::Value active_device;
+    NJson::Value root;
+    NJson::Value device;
+    NJson::Value device_profile;
+    NJson::Value active_device;
     BTDeviceInfo device_info;
 
     root["version"] = getVersion();
@@ -270,8 +270,8 @@ void BluetoothAgent::mediaControlPreviousFailed()
 
 void BluetoothAgent::sendEventCommon(const std::string& ename, EventResultCallback cb)
 {
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     if (ps_id.size() == 0)
         ps_id = DEFAULT_PLAY_SERVICE_ID;
@@ -283,8 +283,8 @@ void BluetoothAgent::sendEventCommon(const std::string& ename, EventResultCallba
 
 void BluetoothAgent::sendEventDiscoverableMode(const std::string& ename, bool has_paired_devices, EventResultCallback cb)
 {
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     if (ps_id.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
@@ -297,9 +297,9 @@ void BluetoothAgent::sendEventDiscoverableMode(const std::string& ename, bool ha
     sendEvent(ename, getContextInfo(), writer.write(root), std::move(cb));
 }
 
-bool BluetoothAgent::parsingCommon(const char* message, Json::Value& root)
+bool BluetoothAgent::parsingCommon(const char* message, NJson::Value& root)
 {
-    Json::Reader reader;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -318,7 +318,7 @@ bool BluetoothAgent::parsingCommon(const char* message, Json::Value& root)
 
 void BluetoothAgent::parsingStartDiscoverableMode(const char* message)
 {
-    Json::Value root;
+    NJson::Value root;
     long duration_sec;
 
     if (!parsingCommon(message, root))
@@ -332,7 +332,7 @@ void BluetoothAgent::parsingStartDiscoverableMode(const char* message)
 
 void BluetoothAgent::parsingFinishDiscoverableMode(const char* message)
 {
-    Json::Value root;
+    NJson::Value root;
 
     parsingCommon(message, root);
 
@@ -342,7 +342,7 @@ void BluetoothAgent::parsingFinishDiscoverableMode(const char* message)
 
 void BluetoothAgent::parsingPlay(const char* message)
 {
-    Json::Value root;
+    NJson::Value root;
 
     parsingCommon(message, root);
 
@@ -352,7 +352,7 @@ void BluetoothAgent::parsingPlay(const char* message)
 
 void BluetoothAgent::parsingStop(const char* message)
 {
-    Json::Value root;
+    NJson::Value root;
 
     parsingCommon(message, root);
 
@@ -362,7 +362,7 @@ void BluetoothAgent::parsingStop(const char* message)
 
 void BluetoothAgent::parsingPause(const char* message)
 {
-    Json::Value root;
+    NJson::Value root;
 
     parsingCommon(message, root);
 
@@ -372,7 +372,7 @@ void BluetoothAgent::parsingPause(const char* message)
 
 void BluetoothAgent::parsingNext(const char* message)
 {
-    Json::Value root;
+    NJson::Value root;
 
     parsingCommon(message, root);
 
@@ -382,7 +382,7 @@ void BluetoothAgent::parsingNext(const char* message)
 
 void BluetoothAgent::parsingPrevious(const char* message)
 {
-    Json::Value root;
+    NJson::Value root;
 
     parsingCommon(message, root);
 
