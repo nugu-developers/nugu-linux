@@ -78,11 +78,11 @@ void MessageAgent::setCapabilityListener(ICapabilityListener* clistener)
         message_listener = dynamic_cast<IMessageListener*>(clistener);
 }
 
-void MessageAgent::updateInfoForContext(Json::Value& ctx)
+void MessageAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value message;
-    Json::Value temp;
-    Json::Reader reader;
+    NJson::Value message;
+    NJson::Value temp;
+    NJson::Reader reader;
 
     message["version"] = getVersion();
     message["readActivity"] = getCurrentTTSState();
@@ -138,9 +138,9 @@ void MessageAgent::getAttachmentData(NuguDirective* ndir, void* userdata)
 
 void MessageAgent::candidatesListed(const std::string& context_template, const std::string& payload)
 {
-    Json::Value root;
-    Json::Reader reader;
-    Json::FastWriter writer;
+    NJson::Value root;
+    NJson::Reader reader;
+    NJson::FastWriter writer;
 
     if (!reader.parse(context_template, root) || !reader.parse(payload, root)) {
         nugu_error("context template or payload is not json format!!");
@@ -163,8 +163,8 @@ void MessageAgent::candidatesListed(const std::string& context_template, const s
 
 void MessageAgent::sendMessageSucceeded(const std::string& payload)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(payload, root)) {
         nugu_error("payload(%s) is not json format!!", payload.c_str());
@@ -177,8 +177,8 @@ void MessageAgent::sendMessageSucceeded(const std::string& payload)
 
 void MessageAgent::sendMessageFailed(const std::string& payload)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(payload, root)) {
         nugu_error("payload(%s) is not json format!!", payload.c_str());
@@ -201,8 +201,8 @@ void MessageAgent::getMessageFailed(const std::string& payload)
 
 void MessageAgent::parsingSendCandidates(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -225,8 +225,8 @@ void MessageAgent::parsingSendCandidates(const char* message)
 
 void MessageAgent::parsingSendMessage(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -244,8 +244,8 @@ void MessageAgent::parsingSendMessage(const char* message)
 
 void MessageAgent::parsingGetMessage(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -268,8 +268,8 @@ void MessageAgent::parsingGetMessage(const char* message)
 
 void MessageAgent::parsingReadMessage(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     std::string play_service_id;
     std::string token;
@@ -306,9 +306,9 @@ void MessageAgent::parsingReadMessage(const char* message)
 
 void MessageAgent::sendEventGetMessage(std::string&& event_name, const std::string& payload)
 {
-    Json::Value root;
-    Json::Reader reader;
-    Json::FastWriter writer;
+    NJson::Value root;
+    NJson::Reader reader;
+    NJson::FastWriter writer;
 
     if (!reader.parse(payload, root)) {
         nugu_error("payload(%s) is not json format!!", payload.c_str());
@@ -330,8 +330,8 @@ void MessageAgent::sendEventGetMessage(std::string&& event_name, const std::stri
 
 void MessageAgent::sendEventReadMessageFinished(EventResultCallback cb)
 {
-    Json::Value root;
-    Json::StyledWriter writer;
+    NJson::Value root;
+    NJson::StyledWriter writer;
 
     std::string payload;
 
@@ -479,7 +479,7 @@ std::string MessageAgent::getCurrentTTSState()
     return tts_state;
 }
 
-void MessageAgent::startInteractionControl(const Json::Value& payload)
+void MessageAgent::startInteractionControl(const NJson::Value& payload)
 {
     interaction_mode = getInteractionMode(payload["interactionControl"]);
     interaction_control_manager->start(interaction_mode, getName());

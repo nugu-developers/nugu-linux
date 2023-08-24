@@ -59,10 +59,10 @@ void SessionAgent::setCapabilityListener(ICapabilityListener* clistener)
         session_listener = dynamic_cast<ISessionListener*>(clistener);
 }
 
-void SessionAgent::updateInfoForContext(Json::Value& ctx)
+void SessionAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value session;
-    Json::Value session_list = session_manager->getActiveSessionInfo();
+    NJson::Value session;
+    NJson::Value session_list = session_manager->getActiveSessionInfo();
 
     session["version"] = getVersion();
 
@@ -86,8 +86,8 @@ void SessionAgent::parsingDirective(const char* dname, const char* message)
 
 void SessionAgent::parsingSet(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");

@@ -38,7 +38,7 @@ public:
     virtual ~PermissionAgent() = default;
 
     void setCapabilityListener(ICapabilityListener* clistener) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
 
 private:
     IPermissionListener* permission_listener = nullptr;

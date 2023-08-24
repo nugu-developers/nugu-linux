@@ -33,7 +33,7 @@ public:
     void initialize() override;
     void deInitialize() override;
     void parsingDirective(const char* dname, const char* message) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
 
     // implements IPhoneCallHandler
@@ -70,7 +70,7 @@ private:
     std::string context_template;
     std::string context_recipient;
     std::string playstackctl_ps_id;
-    Json::Value interaction_control_payload;
+    NJson::Value interaction_control_payload;
     bool blockable;
 };
 

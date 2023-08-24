@@ -19,7 +19,7 @@
 
 #include <glib.h>
 
-#include "json/json.h"
+#include "njson/njson.h"
 
 #include "base/nugu_buffer.h"
 #include "base/nugu_equeue.h"
@@ -30,9 +30,9 @@
 #include "http2/http2_request.h"
 #include "http2/v1_policies.h"
 
-static void _parse_servers(const Json::Value& root)
+static void _parse_servers(const NJson::Value& root)
 {
-    Json::Value server_list;
+    NJson::Value server_list;
     GList* servers = NULL;
 
     if (root["serverPolicies"].empty()) {
@@ -47,9 +47,9 @@ static void _parse_servers(const Json::Value& root)
         return;
     }
 
-    for (Json::ArrayIndex i = 0; i < server_list.size(); ++i) {
+    for (NJson::ArrayIndex i = 0; i < server_list.size(); ++i) {
         NuguNetworkServerPolicy* server_item;
-        Json::Value server = server_list[i];
+        NJson::Value server = server_list[i];
 
         server_item = (NuguNetworkServerPolicy*)calloc(1, sizeof(NuguNetworkServerPolicy));
         if (!server_item) {
@@ -130,9 +130,9 @@ static void _parse_servers(const Json::Value& root)
     }
 }
 
-static int _parse_health_policy(const Json::Value& root)
+static int _parse_health_policy(const NJson::Value& root)
 {
-    Json::Value health;
+    NJson::Value health;
     struct dg_health_check_policy* policy;
 
     health = root["healthCheckPolicy"];
@@ -164,12 +164,12 @@ static int _parse_health_policy(const Json::Value& root)
 static void _on_finish(HTTP2Request* req, void* userdata)
 {
     int code;
-    NuguBuffer *buf = http2_request_peek_response_body(req);
+    NuguBuffer* buf = http2_request_peek_response_body(req);
     char* message = (char*)nugu_buffer_peek(buf);
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string dump;
-    Json::StyledWriter writer;
+    NJson::StyledWriter writer;
 
     code = http2_request_get_response_code(req);
     if (code != HTTP2_RESPONSE_OK) {

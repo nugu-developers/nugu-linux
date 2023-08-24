@@ -113,9 +113,9 @@ void SystemAgent::parsingDirective(const char* dname, const char* message)
         nugu_warn("%s[%s] is not support %s directive", getName().c_str(), getVersion().c_str(), dname);
 }
 
-void SystemAgent::updateInfoForContext(Json::Value& ctx)
+void SystemAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value root;
+    NJson::Value root;
 
     root["version"] = getVersion();
     ctx[getName()] = root;
@@ -208,8 +208,8 @@ void SystemAgent::parsingResetUserInactivity(const char* message)
 
 void SystemAgent::parsingHandoffConnection(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     NuguNetworkServerPolicy policy;
 
     if (!reader.parse(message, root)) {
@@ -298,8 +298,8 @@ void SystemAgent::parsingUpdateState(const char* message)
 
 void SystemAgent::parsingException(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string code;
     std::string description;
 
@@ -336,8 +336,8 @@ void SystemAgent::parsingException(const char* message)
 
 void SystemAgent::parsingNoDirectives(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -352,8 +352,8 @@ void SystemAgent::parsingNoDirectives(const char* message)
 
 void SystemAgent::parsingRevoke(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string reason;
 
     if (!reader.parse(message, root)) {
@@ -387,8 +387,8 @@ void SystemAgent::parsingNoop(const char* message)
 
 void SystemAgent::parsingResetConnection(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string desc;
 
     if (!reader.parse(message, root)) {

@@ -20,7 +20,7 @@
 
 #include <glib.h>
 
-#include "json/json.h"
+#include "njson/njson.h"
 
 #include "base/nugu_equeue.h"
 #include "base/nugu_log.h"
@@ -152,11 +152,11 @@ static void on_parsing_header(MultipartParser* parser, const char* data,
 
 static void _body_json(DirParser* dp, const char* data, size_t length)
 {
-    Json::Value root;
-    Json::Value dir_list;
-    Json::ArrayIndex list_size;
-    Json::Reader reader;
-    Json::StyledWriter writer;
+    NJson::Value root;
+    NJson::Value dir_list;
+    NJson::ArrayIndex list_size;
+    NJson::Reader reader;
+    NJson::StyledWriter writer;
     std::string group;
     char group_buf[32];
 
@@ -197,9 +197,9 @@ static void _body_json(DirParser* dp, const char* data, size_t length)
     list_size = dir_list.size();
 
     group = "{ \"directives\": [";
-    for (Json::ArrayIndex i = 0; i < list_size; ++i) {
-        Json::Value dir = dir_list[i];
-        Json::Value h;
+    for (NJson::ArrayIndex i = 0; i < list_size; ++i) {
+        NJson::Value dir = dir_list[i];
+        NJson::Value h;
 
         h = dir["header"];
 
@@ -215,9 +215,9 @@ static void _body_json(DirParser* dp, const char* data, size_t length)
     if (list_size > 1)
         nugu_dbg("group=%s", group.c_str());
 
-    for (Json::ArrayIndex i = 0; i < list_size; ++i) {
-        Json::Value dir = dir_list[i];
-        Json::Value h;
+    for (NJson::ArrayIndex i = 0; i < list_size; ++i) {
+        NJson::Value dir = dir_list[i];
+        NJson::Value h;
         NuguDirective* ndir;
         std::string referrer;
         std::string p;

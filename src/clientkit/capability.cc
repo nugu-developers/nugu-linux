@@ -272,7 +272,7 @@ std::string Capability::getVersion()
     return pimpl->version;
 }
 
-std::string Capability::getPlayServiceIdInStackControl(const Json::Value& playstack_control)
+std::string Capability::getPlayServiceIdInStackControl(const NJson::Value& playstack_control)
 {
     if (!playstack_control.empty() && playstack_control["type"].asString() == "PUSH")
         return playstack_control["playServiceId"].asString();
@@ -287,8 +287,8 @@ std::string Capability::getPlayServiceIdInStackControl(const char* payload)
         return "";
     }
 
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(payload, root)) {
         nugu_error("parsing error");
@@ -298,7 +298,7 @@ std::string Capability::getPlayServiceIdInStackControl(const char* payload)
     return getPlayServiceIdInStackControl(root["playStackControl"]);
 }
 
-InteractionMode Capability::getInteractionMode(const Json::Value& interaction_control)
+InteractionMode Capability::getInteractionMode(const NJson::Value& interaction_control)
 {
     if (!interaction_control.empty() && interaction_control["mode"].asString() == "MULTI_TURN")
         return InteractionMode::MULTI_TURN;
@@ -497,13 +497,13 @@ void Capability::receiveCommandAll(const std::string& command, const std::string
 
 std::string Capability::getContextInfo()
 {
-    Json::Value ctx;
+    NJson::Value ctx;
     updateInfoForContext(ctx);
 
     return capa_helper->makeContextInfo(getName(), ctx);
 }
 
-void Capability::updateCompactContext(Json::Value& ctx)
+void Capability::updateCompactContext(NJson::Value& ctx)
 {
     ctx[getName()]["version"] = getVersion();
 }

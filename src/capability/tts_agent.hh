@@ -39,7 +39,7 @@ public:
     void preprocessDirective(NuguDirective* ndir) override;
     void parsingDirective(const char* dname, const char* message) override;
     void cancelDirective(NuguDirective* ndir) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
 
     void stopTTS() override;
     std::string requestTTS(const std::string& text, const std::string& play_service_id, const std::string& referrer_id = "") override;

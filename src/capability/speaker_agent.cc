@@ -69,10 +69,10 @@ void SpeakerAgent::parsingDirective(const char* dname, const char* message)
     }
 }
 
-void SpeakerAgent::updateInfoForContext(Json::Value& ctx)
+void SpeakerAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value speaker;
-    Json::Value volumes;
+    NJson::Value speaker;
+    NJson::Value volumes;
 
     speaker["version"] = getVersion();
     for (const auto& container : speakers) {
@@ -80,7 +80,7 @@ void SpeakerAgent::updateInfoForContext(Json::Value& ctx)
         if (!sinfo->can_control)
             continue;
 
-        Json::Value volume;
+        NJson::Value volume;
         volume["name"] = getSpeakerName(sinfo->type);
         if (sinfo->volume != NUGU_SPEAKER_UNABLE_CONTROL)
             volume["volume"] = sinfo->volume;
@@ -199,7 +199,7 @@ void SpeakerAgent::updateSpeakerMute(SpeakerType type, bool mute)
 
 bool SpeakerAgent::getSpeakerType(const std::string& name, SpeakerType& type)
 {
-    for (auto iter = SPEAKER_NAMES_FOR_TYPES.begin(); iter != SPEAKER_NAMES_FOR_TYPES.end(); ++iter){
+    for (auto iter = SPEAKER_NAMES_FOR_TYPES.begin(); iter != SPEAKER_NAMES_FOR_TYPES.end(); ++iter) {
         if (name == iter->second) {
             type = iter->first;
             return true;
@@ -212,7 +212,7 @@ std::string SpeakerAgent::getSpeakerName(const SpeakerType& type)
 {
     std::string name = NUGU_SPEAKER_NUGU_STRING;
 
-    for (auto iter = SPEAKER_NAMES_FOR_TYPES.begin(); iter != SPEAKER_NAMES_FOR_TYPES.end(); ++iter){
+    for (auto iter = SPEAKER_NAMES_FOR_TYPES.begin(); iter != SPEAKER_NAMES_FOR_TYPES.end(); ++iter) {
         if (type == iter->first) {
             name = iter->second;
             break;
@@ -245,8 +245,8 @@ void SpeakerAgent::sendEventSetMuteFailed(const std::string& ps_id, EventResultC
 void SpeakerAgent::sendEventCommon(const std::string& ps_id, const std::string& ename, EventResultCallback cb)
 {
     std::string payload = "";
-    Json::Value root;
-    Json::FastWriter writer;
+    NJson::Value root;
+    NJson::FastWriter writer;
 
     if (ps_id.size() == 0) {
         nugu_error("there is something wrong [%s]", ename.c_str());
@@ -261,9 +261,9 @@ void SpeakerAgent::sendEventCommon(const std::string& ps_id, const std::string& 
 
 void SpeakerAgent::parsingSetVolume(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
-    Json::Value volumes;
+    NJson::Value root;
+    NJson::Reader reader;
+    NJson::Value volumes;
     std::string rate;
     std::string ps_id;
 
@@ -303,9 +303,9 @@ void SpeakerAgent::parsingSetVolume(const char* message)
 
 void SpeakerAgent::parsingSetMute(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
-    Json::Value volumes;
+    NJson::Value root;
+    NJson::Reader reader;
+    NJson::Value volumes;
     std::string ps_id;
 
     if (!reader.parse(message, root)) {

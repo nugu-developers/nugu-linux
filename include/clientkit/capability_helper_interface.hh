@@ -17,8 +17,8 @@
 #ifndef __NUGU_CAPABILITY_HELPER_INTERFACE_H__
 #define __NUGU_CAPABILITY_HELPER_INTERFACE_H__
 
-#include <json/json.h>
 #include <list>
+#include <njson/njson.h>
 
 #include <base/nugu_event.h>
 #include <clientkit/directive_sequencer_interface.hh>
@@ -149,7 +149,7 @@ public:
      * @param[in] cname The name of the capability requesting the context
      * @param[in] ctx reference object for storing context info
      */
-    virtual std::string makeContextInfo(const std::string& cname, Json::Value& ctx) = 0;
+    virtual std::string makeContextInfo(const std::string& cname, NJson::Value& ctx) = 0;
 
     /**
      * @brief Get context info from All CapabilityAgents.

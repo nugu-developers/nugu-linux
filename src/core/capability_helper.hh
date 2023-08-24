@@ -46,7 +46,7 @@ public:
     bool getCapabilityProperties(const std::string& cap, const std::string& property, std::list<std::string>& values) override;
 
     // about context
-    std::string makeContextInfo(const std::string& cname, Json::Value& ctx) override;
+    std::string makeContextInfo(const std::string& cname, NJson::Value& ctx) override;
     std::string makeAllContextInfo() override;
 
 private:

@@ -87,11 +87,11 @@ void PhoneCallAgent::parsingDirective(const char* dname, const char* message)
     }
 }
 
-void PhoneCallAgent::updateInfoForContext(Json::Value& ctx)
+void PhoneCallAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value phone_call;
-    Json::Value temp;
-    Json::Reader reader;
+    NJson::Value phone_call;
+    NJson::Value temp;
+    NJson::Reader reader;
 
     phone_call["version"] = getVersion();
     phone_call["state"] = getStateStr(cur_state);
@@ -115,9 +115,9 @@ void PhoneCallAgent::setCapabilityListener(ICapabilityListener* clistener)
 
 void PhoneCallAgent::candidatesListed(const std::string& context_template, const std::string& payload)
 {
-    Json::Value root;
-    Json::Reader reader;
-    Json::FastWriter writer;
+    NJson::Value root;
+    NJson::Reader reader;
+    NJson::FastWriter writer;
 
     if (!reader.parse(context_template, root) || !reader.parse(payload, root)) {
         nugu_error("context template or payload is not json format!!");
@@ -139,10 +139,10 @@ void PhoneCallAgent::candidatesListed(const std::string& context_template, const
 
 void PhoneCallAgent::callArrived(const std::string& payload)
 {
-    Json::Value root;
-    Json::Value caller;
-    Json::Reader reader;
-    Json::StyledWriter writer;
+    NJson::Value root;
+    NJson::Value caller;
+    NJson::Reader reader;
+    NJson::StyledWriter writer;
 
     if (!reader.parse(payload, root)) {
         nugu_error("payload is not json format!!");
@@ -167,8 +167,8 @@ void PhoneCallAgent::callArrived(const std::string& payload)
 
 void PhoneCallAgent::callEnded(const std::string& payload)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(payload, root)) {
         nugu_error("payload is not json format!!");
@@ -186,8 +186,8 @@ void PhoneCallAgent::callEnded(const std::string& payload)
 
 void PhoneCallAgent::callEstablished(const std::string& payload)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(payload, root)) {
         nugu_error("payload is not json format!!");
@@ -200,8 +200,8 @@ void PhoneCallAgent::callEstablished(const std::string& payload)
 
 void PhoneCallAgent::makeCallSucceeded(const std::string& payload)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(payload, root)) {
         nugu_error("payload is not json format!!");
@@ -218,8 +218,8 @@ void PhoneCallAgent::makeCallSucceeded(const std::string& payload)
 
 void PhoneCallAgent::makeCallFailed(const std::string& payload)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(payload, root)) {
         nugu_error("payload is not json format!!");
@@ -270,8 +270,8 @@ void PhoneCallAgent::onStackChanged(const std::pair<std::string, std::string>& p
 
 void PhoneCallAgent::parsingSendCandidates(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     InteractionMode interaction_mode;
 
     if (!reader.parse(message, root)) {
@@ -299,8 +299,8 @@ void PhoneCallAgent::parsingSendCandidates(const char* message)
 
 void PhoneCallAgent::parsingMakeCall(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -320,8 +320,8 @@ void PhoneCallAgent::parsingMakeCall(const char* message)
 
 void PhoneCallAgent::parsingEndCall(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -339,8 +339,8 @@ void PhoneCallAgent::parsingEndCall(const char* message)
 
 void PhoneCallAgent::parsingAcceptCall(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -358,8 +358,8 @@ void PhoneCallAgent::parsingAcceptCall(const char* message)
 
 void PhoneCallAgent::parsingBlockIncomingCall(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -377,8 +377,8 @@ void PhoneCallAgent::parsingBlockIncomingCall(const char* message)
 
 void PhoneCallAgent::parsingBlockNumber(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");

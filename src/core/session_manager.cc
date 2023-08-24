@@ -15,6 +15,7 @@
  */
 
 #include <algorithm>
+#include <stdexcept>
 
 #include "base/nugu_log.h"
 #include "session_manager.hh"
@@ -129,9 +130,9 @@ void SessionManager::deactivate(const std::string& dialog_id)
         active_list.end());
 }
 
-Json::Value SessionManager::getActiveSessionInfo()
+NJson::Value SessionManager::getActiveSessionInfo()
 {
-    Json::Value session_info_list;
+    NJson::Value session_info_list;
     std::map<std::string, std::string> rearranged_sessions;
 
     for (const auto& item : active_list) {
@@ -144,7 +145,7 @@ Json::Value SessionManager::getActiveSessionInfo()
     }
 
     for (const auto& session : rearranged_sessions) {
-        Json::Value session_info;
+        NJson::Value session_info;
         session_info["sessionId"] = session.second;
         session_info["playServiceId"] = session.first;
         session_info_list.append(session_info);

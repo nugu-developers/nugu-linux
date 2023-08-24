@@ -113,7 +113,7 @@ RoutineManager::DataRequester RoutineManager::getDataRequester()
     return data_requester;
 }
 
-bool RoutineManager::start(const std::string& token, const Json::Value& actions)
+bool RoutineManager::start(const std::string& token, const NJson::Value& actions)
 {
     this->token = token;
     setActions(actions);
@@ -251,7 +251,7 @@ unsigned int RoutineManager::getCountableActionIndex()
     return cur_countable_action_index;
 }
 
-bool RoutineManager::isActionValid(const Json::Value& action)
+bool RoutineManager::isActionValid(const NJson::Value& action)
 {
     std::string type = action["type"].asString();
     std::string play_service_id = action["playServiceId"].asString();
@@ -480,7 +480,7 @@ void RoutineManager::postHandle(TimerCallback&& func)
     timer->start();
 }
 
-void RoutineManager::setActions(const Json::Value& actions)
+void RoutineManager::setActions(const NJson::Value& actions)
 {
     clearContainer();
 

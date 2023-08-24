@@ -42,7 +42,7 @@ void RoutineAgent::initialize()
     action_timeout_in_last_action = false;
 
     routine_manager->addListener(this);
-    routine_manager->setDataRequester([&](const std::string& ps_id, const Json::Value& data) {
+    routine_manager->setDataRequester([&](const std::string& ps_id, const NJson::Value& data) {
         return sendEventActionTriggered(ps_id, data);
     });
 
@@ -77,9 +77,9 @@ void RoutineAgent::setCapabilityListener(ICapabilityListener* clistener)
         routine_listener = dynamic_cast<IRoutineListener*>(clistener);
 }
 
-void RoutineAgent::updateInfoForContext(Json::Value& ctx)
+void RoutineAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value routine;
+    NJson::Value routine;
 
     routine["version"] = getVersion();
     routine["routineActivity"] = ROUTINE_ACTIVITY_TEXTS.at(activity);
@@ -203,8 +203,8 @@ void RoutineAgent::clearRoutineInfo()
 
 bool RoutineAgent::startRoutine(const std::string& dialog_id, const std::string& data)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     try {
         setReferrerDialogRequestId("Start", dialog_id);
@@ -283,8 +283,8 @@ void RoutineAgent::parsingStart(const char* message)
 
 void RoutineAgent::parsingStop(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -307,8 +307,8 @@ void RoutineAgent::parsingStop(const char* message)
 
 void RoutineAgent::parsingContinue(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     try {
         if (!reader.parse(message, root))
@@ -333,8 +333,8 @@ void RoutineAgent::parsingContinue(const char* message)
 
 void RoutineAgent::parsingMove(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     unsigned int position;
     unsigned int action_count = routine_info.actions.size();
 
@@ -366,12 +366,12 @@ void RoutineAgent::parsingMove(const char* message)
 
 void RoutineAgent::sendEventStarted(EventResultCallback cb)
 {
-    sendEventCommon("Started", Json::Value(), std::move(cb));
+    sendEventCommon("Started", NJson::Value(), std::move(cb));
 }
 
 void RoutineAgent::sendEventFailed(EventResultCallback cb)
 {
-    Json::Value root;
+    NJson::Value root;
     root["errorMessage"] = FAIL_EVENT_ERROR_CODE;
 
     sendEventCommon("Failed", std::move(root), std::move(cb), true);
@@ -379,17 +379,17 @@ void RoutineAgent::sendEventFailed(EventResultCallback cb)
 
 void RoutineAgent::sendEventFinished(EventResultCallback cb)
 {
-    sendEventCommon("Finished", Json::Value(), std::move(cb), true);
+    sendEventCommon("Finished", NJson::Value(), std::move(cb), true);
 }
 
 void RoutineAgent::sendEventStopped(EventResultCallback cb)
 {
-    sendEventCommon("Stopped", Json::Value(), std::move(cb), true);
+    sendEventCommon("Stopped", NJson::Value(), std::move(cb), true);
 }
 
 void RoutineAgent::sendEventMoveControl(const int offset, EventResultCallback cb)
 {
-    Json::Value root;
+    NJson::Value root;
     root["offset"] = offset;
 
     sendEventCommon("MoveControl", std::move(root), std::move(cb));
@@ -397,12 +397,12 @@ void RoutineAgent::sendEventMoveControl(const int offset, EventResultCallback cb
 
 void RoutineAgent::sendEventMoveSucceeded(EventResultCallback cb)
 {
-    sendEventCommon("MoveSucceeded", Json::Value(), std::move(cb));
+    sendEventCommon("MoveSucceeded", NJson::Value(), std::move(cb));
 }
 
 void RoutineAgent::sendEventMoveFailed(EventResultCallback cb)
 {
-    Json::Value root;
+    NJson::Value root;
     root["errorMessage"] = FAIL_EVENT_ERROR_CODE;
 
     sendEventCommon("MoveFailed", std::move(root), std::move(cb));
@@ -417,21 +417,21 @@ void RoutineAgent::sendEventActionTimeoutTriggered(EventResultCallback cb)
         return;
     }
 
-    Json::Value root;
+    NJson::Value root;
     root["token"] = cur_action_token;
 
     sendEventCommon("ActionTimeoutTriggered", std::move(root), std::move(cb));
 }
 
-std::string RoutineAgent::sendEventActionTriggered(const std::string& ps_id, const Json::Value& data, EventResultCallback cb)
+std::string RoutineAgent::sendEventActionTriggered(const std::string& ps_id, const NJson::Value& data, EventResultCallback cb)
 {
     if (ps_id.empty() || data.empty()) {
         nugu_error("The mandatory data for sending event is missed.");
         return "";
     }
 
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     root["data"] = data;
     root["playServiceId"] = ps_id;
@@ -439,15 +439,15 @@ std::string RoutineAgent::sendEventActionTriggered(const std::string& ps_id, con
     return sendEvent("ActionTriggered", getContextInfo(), writer.write(root), std::move(cb));
 }
 
-void RoutineAgent::sendEventCommon(std::string&& event_name, Json::Value&& extra_value, EventResultCallback cb, bool clear_routine_info)
+void RoutineAgent::sendEventCommon(std::string&& event_name, NJson::Value&& extra_value, EventResultCallback cb, bool clear_routine_info)
 {
     if (routine_info.play_service_id.empty()) {
         nugu_error("The mandatory data for sending event is missed.");
         return;
     }
 
-    Json::FastWriter writer;
-    Json::Value root { extra_value };
+    NJson::FastWriter writer;
+    NJson::Value root { extra_value };
 
     root["playServiceId"] = routine_info.play_service_id;
 

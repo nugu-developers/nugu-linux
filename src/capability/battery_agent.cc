@@ -32,9 +32,9 @@ void BatteryAgent::setCapabilityListener(ICapabilityListener* clistener)
         battery_listener = dynamic_cast<IBatteryListener*>(clistener);
 }
 
-void BatteryAgent::updateInfoForContext(Json::Value& ctx)
+void BatteryAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value battery;
+    NJson::Value battery;
     BatteryInfo battery_info;
 
     battery["version"] = getVersion();

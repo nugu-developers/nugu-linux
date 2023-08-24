@@ -6,7 +6,7 @@
 #include <base/nugu_log.h>
 #include <capability/tts_interface.hh>
 #include <clientkit/nugu_client.hh>
-#include <json/json.h>
+#include <njson/njson.h>
 
 #include "filter.h"
 
@@ -85,8 +85,8 @@ public:
         if (g_strcmp0(nugu_directive_peek_name(ndir), "NotifyResult") != 0)
             return false;
 
-        Json::Value root;
-        Json::Reader reader;
+        NJson::Value root;
+        NJson::Reader reader;
 
         if (!reader.parse(nugu_directive_peek_json(ndir), root)) {
             nugu_error("parsing error");
@@ -134,8 +134,8 @@ public:
         if (g_strcmp0(nugu_event_peek_name(nev), "TextInput") != 0)
             return;
 
-        Json::Value root;
-        Json::Reader reader;
+        NJson::Value root;
+        NJson::Reader reader;
 
         if (!reader.parse(nugu_event_peek_json(nev), root)) {
             nugu_error("parsing error");

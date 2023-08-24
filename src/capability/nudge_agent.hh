@@ -30,7 +30,7 @@ public:
 
     void initialize() override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
     void preprocessDirective(NuguDirective* ndir) override;
     bool receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
 
@@ -48,7 +48,7 @@ private:
     INudgeListener* nudge_listener = nullptr;
     std::set<std::string> state_checkers;
     std::string dialog_id;
-    Json::Value nudge_info;
+    NJson::Value nudge_info;
 };
 
 } // NuguCapability

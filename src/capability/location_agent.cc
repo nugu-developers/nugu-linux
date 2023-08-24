@@ -32,9 +32,9 @@ void LocationAgent::setCapabilityListener(ICapabilityListener* clistener)
         location_listener = dynamic_cast<ILocationListener*>(clistener);
 }
 
-void LocationAgent::updateInfoForContext(Json::Value& ctx)
+void LocationAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value location;
+    NJson::Value location;
     LocationInfo location_info {};
 
     location["version"] = getVersion();
@@ -44,7 +44,7 @@ void LocationAgent::updateInfoForContext(Json::Value& ctx)
 
     // set current if latitude and longitude conditions are satisfied
     if (!location_info.latitude.empty() && !location_info.longitude.empty()) {
-        Json::Value current;
+        NJson::Value current;
 
         current["latitude"] = location_info.latitude;
         current["longitude"] = location_info.longitude;

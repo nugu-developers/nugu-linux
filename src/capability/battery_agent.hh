@@ -29,7 +29,7 @@ public:
     virtual ~BatteryAgent() = default;
 
     void setCapabilityListener(ICapabilityListener* clistener) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
 
 private:
     IBatteryListener* battery_listener = nullptr;

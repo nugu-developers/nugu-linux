@@ -57,11 +57,11 @@ void ExtensionAgent::setCapabilityListener(ICapabilityListener* clistener)
         extension_listener = dynamic_cast<IExtensionListener*>(clistener);
 }
 
-void ExtensionAgent::updateInfoForContext(Json::Value& ctx)
+void ExtensionAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value root;
-    Json::Value data;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Value data;
+    NJson::Reader reader;
     std::string context_info;
 
     if (extension_listener)
@@ -118,8 +118,8 @@ void ExtensionAgent::postProcessDirective()
 
 void ExtensionAgent::sendEventCommandIssued(const std::string& ps_id, const std::string& data, EventResultCallback cb)
 {
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     root["playServiceId"] = ps_id;
     root["data"] = data;
@@ -129,8 +129,8 @@ void ExtensionAgent::sendEventCommandIssued(const std::string& ps_id, const std:
 
 void ExtensionAgent::sendEventCommon(std::string&& ename, EventResultCallback cb)
 {
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     root["playServiceId"] = ps_id;
 
@@ -139,8 +139,8 @@ void ExtensionAgent::sendEventCommon(std::string&& ename, EventResultCallback cb
 
 void ExtensionAgent::parsingAction(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -148,7 +148,7 @@ void ExtensionAgent::parsingAction(const char* message)
     }
 
     ps_id = root["playServiceId"].asString();
-    Json::Value data = root["data"];
+    NJson::Value data = root["data"];
 
     if (data.isNull()) {
         nugu_error("There is no mandatory data in directive message");
@@ -156,7 +156,7 @@ void ExtensionAgent::parsingAction(const char* message)
     }
 
     if (extension_listener) {
-        Json::FastWriter writer;
+        NJson::FastWriter writer;
         std::string action = writer.write(data);
 
         destroy_directive_by_agent = true;

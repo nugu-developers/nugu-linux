@@ -81,7 +81,6 @@ ENDIF()
 
 IF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 	SET(BUILTIN_CURL_DEFAULT "OFF")
-	SET(BUILTIN_JSONCPP_DEFAULT "OFF")
 	SET(PULSEAUDIO_DEFAULT "OFF")
 	SET(PORTAUDIO_PLUGIN_DEFAULT "OFF")
 	SET(ASAN_DEFAULT "OFF")
@@ -91,7 +90,6 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 	)
 ELSE()
 	SET(BUILTIN_CURL_DEFAULT "ON")
-	SET(BUILTIN_JSONCPP_DEFAULT "ON")
 	SET(PULSEAUDIO_DEFAULT "ON")
 	SET(PORTAUDIO_PLUGIN_DEFAULT "ON")
 
@@ -112,7 +110,6 @@ DEFINE_FEATURE(VENDOR_LIBRARY ON "vendor specific library(nugu_wwd, nugu_epd)")
 DEFINE_FEATURE(BUILTIN_OPUS OFF "compile built-in OPUS library")
 DEFINE_FEATURE(BUILTIN_OPUS_FLOAT_API OFF "floating point to OPUS library")
 DEFINE_FEATURE(BUILTIN_CURL ${BUILTIN_CURL_DEFAULT} "compile built-in curl library")
-DEFINE_FEATURE(BUILTIN_JSONCPP ${BUILTIN_JSONCPP_DEFAULT} "compile built-in jsoncpp library")
 
 DEFINE_FEATURE(DL_LINKING ON "-ldl linking")
 DEFINE_FEATURE(SOCKET_LINKING OFF "-lsocket linking")
@@ -173,18 +170,9 @@ ELSE()
 	SET(CURL_INCLUDE)
 ENDIF()
 
-IF(ENABLE_BUILTIN_JSONCPP)
-	SET(JSONCPP_LIBRARY ${PROJECT_BINARY_DIR}/externals/libjsoncpp.a)
-	SET(JSONCPP_PKGCONFIG)
-	SET(JSONCPP_INCLUDE ${PROJECT_SOURCE_DIR}/externals/jsoncpp/include)
-
-	INCLUDE_DIRECTORIES(${JSONCPP_INCLUDE})
-ELSE()
-	SET(JSONCPP_LIBRARY)
-	SET(JSONCPP_PKGCONFIG jsoncpp)
-	SET(JSONCPP_INCLUDE)
-	SET(requires "${requires} ${JSONCPP_PKGCONFIG}")
-ENDIF()
+# set njson variables
+SET(NJSON_LIBRARY ${PROJECT_BINARY_DIR}/externals/libnjson.a)
+INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/externals/njson/include)
 
 # Add vendor specific library dependency (keyword detector, end-point detector)
 IF(ENABLE_VENDOR_LIBRARY)
@@ -246,7 +234,7 @@ IF(BUILD_LIBRARY)
 	# Set NUGU SDK library default dependency
 	SET(DEFAULT_LIB_DEPENDENCY
 		glib-2.0 gio-2.0 gio-unix-2.0 gthread-2.0 openssl
-		${CURL_PKGCONFIG} ${JSONCPP_PKGCONFIG} ${VENDOR_PKGCONFIG})
+		${CURL_PKGCONFIG} ${VENDOR_PKGCONFIG})
 
 	# Sets the option so that the built library has a higher link order than
 	# the library already installed on the system.
@@ -409,7 +397,7 @@ ADD_DEFINITIONS(
 MESSAGE("")
 feature_summary(WHAT ALL)
 
-# External dependency modules - nghttp2, curl, jsoncpp
+# External dependency modules - nghttp2, curl
 IF(BUILD_LIBRARY)
 	# Global include directories
 	INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)

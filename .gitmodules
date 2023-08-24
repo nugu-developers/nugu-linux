@@ -1,6 +1,3 @@
-[submodule "externals/jsoncpp"]
-	path = externals/jsoncpp
-	url = https://github.com/open-source-parsers/jsoncpp.git
 [submodule "externals/nghttp2"]
 	path = externals/nghttp2
 	url = https://github.com/nghttp2/nghttp2.git
@@ -11,3 +8,6 @@
 [submodule "externals/opus"]
 	path = externals/opus
 	url = https://github.com/xiph/opus
+[submodule "externals/njson"]
+	path = externals/njson
+	url = https://github.com/nugulinux/njson

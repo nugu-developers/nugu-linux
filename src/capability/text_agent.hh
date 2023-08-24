@@ -35,7 +35,7 @@ public:
     void deInitialize() override;
 
     void parsingDirective(const char* dname, const char* message) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
     void receiveCommandAll(const std::string& command, const std::string& param) override;
     bool getProperty(const std::string& property, std::string& value) override;
     void setCapabilityListener(ICapabilityListener* clistener) override;
@@ -54,13 +54,13 @@ private:
         std::string token;
         std::string ps_id;
         std::string source;
-        Json::Value interaction_control;
+        NJson::Value interaction_control;
     };
 
     using ExpectTypingInfo = struct _ExpectTypingInfo {
         bool is_handle = false;
         std::string playstack;
-        Json::Value payload;
+        NJson::Value payload;
     };
 
     std::string requestTextInput(TextInputParam&& text_input_param, bool routine_play, bool include_dialog_attribute = true);

@@ -56,9 +56,9 @@ void SoundAgent::setCapabilityListener(ICapabilityListener* clistener)
         sound_listener = dynamic_cast<ISoundListener*>(clistener);
 }
 
-void SoundAgent::updateInfoForContext(Json::Value& ctx)
+void SoundAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value sound;
+    NJson::Value sound;
 
     sound["version"] = getVersion();
 
@@ -90,8 +90,8 @@ void SoundAgent::parsingDirective(const char* dname, const char* message)
 
 void SoundAgent::parsingBeep(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(message, root)) {
         nugu_error("parsing error");
@@ -138,8 +138,8 @@ void SoundAgent::sendEventCommon(std::string&& event_name, EventResultCallback c
         return;
     }
 
-    Json::FastWriter writer;
-    Json::Value root;
+    NJson::FastWriter writer;
+    NJson::Value root;
 
     root["playServiceId"] = play_service_id;
 

@@ -15,7 +15,7 @@
  */
 
 #include <glib.h>
-#include <json/json.h>
+#include <njson/njson.h>
 
 #include "base/nugu_log.h"
 
@@ -41,13 +41,13 @@ static char* base64_decode(const char* orig)
     return decoded;
 }
 
-unsigned int find_grant_types(const Json::Value& grant_types)
+unsigned int find_grant_types(const NJson::Value& grant_types)
 {
     unsigned int supported_grant_types = 0;
 
     if (grant_types.isArray()) {
-        Json::ArrayIndex type_len = grant_types.size();
-        for (Json::ArrayIndex i = 0; i < type_len; ++i) {
+        NJson::ArrayIndex type_len = grant_types.size();
+        for (NJson::ArrayIndex i = 0; i < type_len; ++i) {
             nugu_dbg("grant_types_supported[%d] = %s", i, grant_types[i].asCString());
             if (grant_types[i].asString() == "authorization_code") {
                 supported_grant_types |= GrantType::AUTHORIZATION_CODE;
@@ -400,8 +400,8 @@ bool NuguAuth::parseAccessToken(NuguToken* token)
 
     nugu_dbg("token: %s", decoded);
 
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(decoded, root)) {
         nugu_error("JSON parsing error: %s", decoded);
@@ -428,10 +428,10 @@ bool NuguAuth::parseAccessToken(NuguToken* token)
     token->sid = false;
     token->scope.clear();
 
-    Json::Value scope = root["scope"];
+    NJson::Value scope = root["scope"];
     if (scope.isArray()) {
-        Json::ArrayIndex scope_len = scope.size();
-        for (Json::ArrayIndex i = 0; i < scope_len; ++i) {
+        NJson::ArrayIndex scope_len = scope.size();
+        for (NJson::ArrayIndex i = 0; i < scope_len; ++i) {
             nugu_dbg("scope[%d] = %s", i, scope[i].asCString());
             token->scope.push_back(scope[i].asCString());
 
@@ -448,7 +448,7 @@ bool NuguAuth::parseAccessToken(NuguToken* token)
     token->ext_poc = "";
 
     if (root["ext"].isObject()) {
-        Json::Value ext = root["ext"];
+        NJson::Value ext = root["ext"];
 
         if (ext["usr"].isString()) {
             token->ext_usr = ext["usr"].asString();
@@ -609,8 +609,8 @@ std::string NuguAuth::getTemplateServerUri()
 
 bool NuguAuth::parseDiscoveryResult(const std::string& response)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (!reader.parse(response, root)) {
         nugu_error("JSON parsing error: %s", response.c_str());
@@ -639,8 +639,8 @@ bool NuguAuth::parseDiscoveryResult(const std::string& response)
 
 bool NuguAuth::parseAndSaveToken(const std::string& response, NuguToken* token)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
 
     if (token == NULL) {
         nugu_error("NuguToken is null");

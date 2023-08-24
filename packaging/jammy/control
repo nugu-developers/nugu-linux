@@ -17,6 +17,7 @@ Build-Depends: debhelper (>=10),
 	libgstreamer-plugins-base1.0-dev,
 	libgstreamer1.0-dev,
 	ca-certificates,
+	rapidjson-dev,
 	libasan6
 Standards-Version: 4.1.4
 

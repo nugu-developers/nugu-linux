@@ -13,7 +13,7 @@ ADD_LIBRARY(libnugu SHARED
 	$<TARGET_OBJECTS:objclientkit>)
 
 TARGET_LINK_LIBRARIES(libnugu PUBLIC
-	${CURL_LIBRARY} ${JSONCPP_LIBRARY}
+	${CURL_LIBRARY} ${NJSON_LIBRARY}
 	${pkgs_LDFLAGS} ${LDFLAG_SOCKET} ${LDFLAG_DL})
 
 # Gstreamer does not support dynamic loading/unloading of their libraries.

@@ -29,8 +29,8 @@ typedef struct expect_speech_attr {
     bool is_handle;
     std::string dialog_id;
     std::string play_service_id;
-    Json::Value domain_types;
-    Json::Value asr_context;
+    NJson::Value domain_types;
+    NJson::Value asr_context;
 } ExpectSpeechAttr;
 
 class ASRAgent final : public Capability,
@@ -52,7 +52,7 @@ public:
     void preprocessDirective(NuguDirective* ndir) override;
     void parsingDirective(const char* dname, const char* message) override;
     void cancelDirective(NuguDirective* ndir) override;
-    void updateInfoForContext(Json::Value& ctx) override;
+    void updateInfoForContext(NJson::Value& ctx) override;
 
     bool receiveCommand(const std::string& from, const std::string& command, const std::string& param) override;
     bool getProperty(const std::string& property, std::string& value) override;
@@ -110,7 +110,7 @@ private:
     ASRState getASRState();
     void resetExpectSpeechState();
     bool isExpectSpeechState();
-    void setExpectTypingAttributes(Json::Value& root, std::string&& et_attr);
+    void setExpectTypingAttributes(NJson::Value& root, std::string&& et_attr);
 
     const ASRInitiator NONE_INITIATOR = static_cast<ASRInitiator>(-1);
     const std::map<ASRState, std::string> ASR_STATE_TEXTS {

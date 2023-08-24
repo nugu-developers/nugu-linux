@@ -61,9 +61,9 @@ void MicAgent::parsingDirective(const char* dname, const char* message)
     }
 }
 
-void MicAgent::updateInfoForContext(Json::Value& ctx)
+void MicAgent::updateInfoForContext(NJson::Value& ctx)
 {
-    Json::Value mic;
+    NJson::Value mic;
 
     mic["version"] = getVersion();
     mic["micStatus"] = getCurrentMicStatusText();
@@ -99,8 +99,8 @@ void MicAgent::sendEventSetMicFailed(EventResultCallback cb)
 
 void MicAgent::sendEventCommon(std::string&& ename, EventResultCallback cb)
 {
-    Json::Value root;
-    Json::FastWriter writer;
+    NJson::Value root;
+    NJson::FastWriter writer;
 
     root["playServiceId"] = ps_id;
     root["micStatus"] = getCurrentMicStatusText();
@@ -110,8 +110,8 @@ void MicAgent::sendEventCommon(std::string&& ename, EventResultCallback cb)
 
 void MicAgent::parsingSetMic(const char* message)
 {
-    Json::Value root;
-    Json::Reader reader;
+    NJson::Value root;
+    NJson::Reader reader;
     std::string mic_status;
 
     if (!reader.parse(message, root)) {

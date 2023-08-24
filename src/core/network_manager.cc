@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-#include <string.h>
 #include <glib.h>
+#include <string.h>
 
 #include <algorithm>
 
-#include "json/json.h"
+#include "njson/njson.h"
 
 #include "base/nugu_log.h"
 #include "base/nugu_network_manager.h"
@@ -181,7 +181,7 @@ std::vector<INetworkManagerListener*> NetworkManager::getListener()
 bool NetworkManager::setToken(const std::string& token)
 {
     /* JWT format consist of 3 parts (header, payload, signature) */
-    gchar **jwt = g_strsplit(token.c_str(), ".", -1);
+    gchar** jwt = g_strsplit(token.c_str(), ".", -1);
     if (jwt == NULL) {
         nugu_error("invalid JWT token format");
         return false;
@@ -194,12 +194,12 @@ bool NetworkManager::setToken(const std::string& token)
     }
 
     /* add optional padding('==') for base64 decoding */
-    gchar *tmp = g_strdup_printf("%s==", jwt[1]);
+    gchar* tmp = g_strdup_printf("%s==", jwt[1]);
 
     g_strfreev(jwt);
 
     gsize out_len = 0;
-    guchar *payload = g_base64_decode(tmp, &out_len);
+    guchar* payload = g_base64_decode(tmp, &out_len);
     g_free(tmp);
 
     if (payload == NULL || out_len <= 0) {
@@ -208,7 +208,7 @@ bool NetworkManager::setToken(const std::string& token)
     }
 
     /* generate null-terminated string from decoding result */
-    gchar *json_text = (gchar *)g_malloc(out_len + 1);
+    gchar* json_text = (gchar*)g_malloc(out_len + 1);
     memcpy(json_text, payload, out_len);
     json_text[out_len] = 0;
     g_free(payload);
@@ -216,8 +216,8 @@ bool NetworkManager::setToken(const std::string& token)
     nugu_dbg("JWT payload: %s", json_text);
 
     /* find the 'device:S.I.D.' from the scope */
-    Json::Reader reader;
-    Json::Value root;
+    NJson::Reader reader;
+    NJson::Value root;
 
     if (!reader.parse(json_text, root)) {
         nugu_error("Payload parsing error");
@@ -229,10 +229,10 @@ bool NetworkManager::setToken(const std::string& token)
 
     bool is_connection_oriented = false;
 
-    Json::Value scope = root["scope"];
+    NJson::Value scope = root["scope"];
     if (scope.isArray()) {
-        Json::ArrayIndex scope_len = scope.size();
-        for (Json::ArrayIndex i = 0; i < scope_len; ++i) {
+        NJson::ArrayIndex scope_len = scope.size();
+        for (NJson::ArrayIndex i = 0; i < scope_len; ++i) {
             nugu_dbg("scope[%d] = %s", i, scope[i].asCString());
             if (scope[i].asString() == "device:S.I.D.") {
                 is_connection_oriented = true;
