@@ -18,6 +18,7 @@
 #define __NUGU_ROUTINE_MANAGER_H__
 
 #include <json/json.h>
+#include <map>
 #include <memory>
 #include <queue>
 #include <set>
