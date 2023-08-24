@@ -368,7 +368,6 @@ void DisplayAgent::sendEventElementSelected(const std::string& item_token, const
 void DisplayAgent::sendEventTriggerChild(const std::string& ps_id, const std::string& parent_token, const Json::Value& data)
 {
     Json::FastWriter writer;
-    Json::Reader reader;
     Json::Value root;
 
     root["playServiceId"] = ps_id;

@@ -102,7 +102,7 @@ void PhoneCallAgent::updateInfoForContext(Json::Value& ctx)
     if (context_recipient.size() && reader.parse(context_recipient, temp))
         phone_call["recipient"] = temp;
 
-    (blockable == true) ? phone_call["numberBlockable"] = "TRUE" : "FALSE";
+    phone_call["numberBlockable"] = (blockable == true) ? "TRUE" : "FALSE";
 
     ctx[getName()] = phone_call;
 }
