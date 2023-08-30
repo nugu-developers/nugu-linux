@@ -1,3 +1,21 @@
+nugu (1.7.5ubuntu1~focal) focal; urgency=medium
+
+  * Fixed RoutineManager test memory leak
+  * Fixed gstreamer plugin runtime error
+  * Fixed CodeQL build error
+  * Added bluetooth focus handling
+  * Added plugin audio file reader
+  * Added opkg packaging control
+  * Updated nugu_http
+  * Updated nugu_log
+  * Updated NuguAuth
+  * Enhanced routine validation check
+  * Improved kwd model loading time
+  * Changed macOS CI optional
+  * Changed jsoncpp to njson(RapidJson wrapper)
+
+ -- nugulinux <nugulinux@gmail.com>  Thu, 31 Aug 2023 10:00:00 +0900
+
 nugu (1.7.4ubuntu1~focal) focal; urgency=medium
 
   * Fixed AudioPlayerAgent bug

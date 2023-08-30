@@ -1,5 +1,5 @@
 Package: libnugu
-Version: 1.7.4
+Version: 1.7.5
 Section: libs
 Source: https://github.com/nugulinux/nugu-linux
 Priority: required
