@@ -17,6 +17,7 @@ var hierarchy =
     [ "NuguCapability::_TextAttribute", "structNuguCapability_1_1__TextAttribute.html", null ],
     [ "NuguCapability::_TTSAttribute", "structNuguCapability_1_1__TTSAttribute.html", null ],
     [ "NuguClientKit::_WakeupModelFile", "structNuguClientKit_1_1__WakeupModelFile.html", null ],
+    [ "NuguClientKit::AuthResponse", "structNuguClientKit_1_1AuthResponse.html", null ],
     [ "NuguClientKit::NuguClient::CapabilityBuilder", "classNuguClientKit_1_1NuguClient_1_1CapabilityBuilder.html", null ],
     [ "NuguClientKit::CapabilityEvent", "classNuguClientKit_1_1CapabilityEvent.html", null ],
     [ "NuguCapability::CapabilityFactory", "classNuguCapability_1_1CapabilityFactory.html", null ],

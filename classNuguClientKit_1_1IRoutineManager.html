@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.4</span>
+   &#160;<span id="projectnumber">1.7.5</span>
    </div>
   </td>
  </tr>
@@ -98,9 +98,9 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1IRoutineManager.
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-types"></a>
 Public Types</h2></td></tr>
-<tr class="memitem:ac89f926b35175442096dc44cdab13455"><td class="memItemLeft" align="right" valign="top"><a id="ac89f926b35175442096dc44cdab13455"></a>
-using&#160;</td><td class="memItemRight" valign="bottom"><b>DataRequester</b> = std::function&lt; std::string(const std::string &amp;, const Json::Value &amp;)&gt;</td></tr>
-<tr class="separator:ac89f926b35175442096dc44cdab13455"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4782bb43a3eb49abf0b8b0dcac463e2"><td class="memItemLeft" align="right" valign="top"><a id="ac4782bb43a3eb49abf0b8b0dcac463e2"></a>
+using&#160;</td><td class="memItemRight" valign="bottom"><b>DataRequester</b> = std::function&lt; std::string(const std::string &amp;, const NJson::Value &amp;)&gt;</td></tr>
+<tr class="separator:ac4782bb43a3eb49abf0b8b0dcac463e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83624ee829dd1cd2b69441c0357ecadb"><td class="memItemLeft" align="right" valign="top"><a id="a83624ee829dd1cd2b69441c0357ecadb"></a>
 using&#160;</td><td class="memItemRight" valign="bottom"><b>TextRequester</b> = std::function&lt; std::string(const std::string &amp;, const std::string &amp;, const std::string &amp;)&gt;</td></tr>
 <tr class="separator:a83624ee829dd1cd2b69441c0357ecadb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -139,6 +139,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a1a7b0b30ecf6f11a233bd78bb16e0121"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IRoutineManager.html#a1a7b0b30ecf6f11a233bd78bb16e0121">isActionProgress</a> (const std::string &amp;dialog_id)=0</td></tr>
 <tr class="memdesc:a1a7b0b30ecf6f11a233bd78bb16e0121"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether action is in progress currently.  <a href="classNuguClientKit_1_1IRoutineManager.html#a1a7b0b30ecf6f11a233bd78bb16e0121">More...</a><br /></td></tr>
 <tr class="separator:a1a7b0b30ecf6f11a233bd78bb16e0121"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a4aa3d6bf296530d3d110d8f09509de"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IRoutineManager.html#a7a4aa3d6bf296530d3d110d8f09509de">isActionValid</a> (const NJson::Value &amp;action)=0</td></tr>
+<tr class="memdesc:a7a4aa3d6bf296530d3d110d8f09509de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether the action is valid.  <a href="classNuguClientKit_1_1IRoutineManager.html#a7a4aa3d6bf296530d3d110d8f09509de">More...</a><br /></td></tr>
+<tr class="separator:a7a4aa3d6bf296530d3d110d8f09509de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a741e18d36405d7b1adf2341c273ce055"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IRoutineManager.html#a741e18d36405d7b1adf2341c273ce055">isConditionToCancel</a> (const <a class="el" href="group__NuguDirective.html#ga0e689d212db128a33b2869181169e216">NuguDirective</a> *ndir)=0</td></tr>
 <tr class="memdesc:a741e18d36405d7b1adf2341c273ce055"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether current condition is to cancel directive.  <a href="classNuguClientKit_1_1IRoutineManager.html#a741e18d36405d7b1adf2341c273ce055">More...</a><br /></td></tr>
 <tr class="separator:a741e18d36405d7b1adf2341c273ce055"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,9 +183,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <tr class="memitem:a2074339702aa578b30eee8921f0ab90e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IRoutineManager.html#a2074339702aa578b30eee8921f0ab90e">setTextRequester</a> (TextRequester requester)=0</td></tr>
 <tr class="memdesc:a2074339702aa578b30eee8921f0ab90e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set TextRequester delegate for handling text type action.  <a href="classNuguClientKit_1_1IRoutineManager.html#a2074339702aa578b30eee8921f0ab90e">More...</a><br /></td></tr>
 <tr class="separator:a2074339702aa578b30eee8921f0ab90e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acbfe2f62cd2b169519f40b5ce7b74a34"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IRoutineManager.html#acbfe2f62cd2b169519f40b5ce7b74a34">start</a> (const std::string &amp;token, const Json::Value &amp;actions)=0</td></tr>
-<tr class="memdesc:acbfe2f62cd2b169519f40b5ce7b74a34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start routine.  <a href="classNuguClientKit_1_1IRoutineManager.html#acbfe2f62cd2b169519f40b5ce7b74a34">More...</a><br /></td></tr>
-<tr class="separator:acbfe2f62cd2b169519f40b5ce7b74a34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78203edfd61613b9d4adacf4b888c4e0"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IRoutineManager.html#a78203edfd61613b9d4adacf4b888c4e0">start</a> (const std::string &amp;token, const NJson::Value &amp;actions)=0</td></tr>
+<tr class="memdesc:a78203edfd61613b9d4adacf4b888c4e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start routine.  <a href="classNuguClientKit_1_1IRoutineManager.html#a78203edfd61613b9d4adacf4b888c4e0">More...</a><br /></td></tr>
+<tr class="separator:a78203edfd61613b9d4adacf4b888c4e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ef7941d23fcdaf25819e7fff310d9a3"><td class="memItemLeft" align="right" valign="top"><a id="a6ef7941d23fcdaf25819e7fff310d9a3"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1IRoutineManager.html#a6ef7941d23fcdaf25819e7fff310d9a3">stop</a> ()=0</td></tr>
 <tr class="memdesc:a6ef7941d23fcdaf25819e7fff310d9a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop routine. <br /></td></tr>
@@ -328,8 +331,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="acbfe2f62cd2b169519f40b5ce7b74a34"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acbfe2f62cd2b169519f40b5ce7b74a34">&#9670;&nbsp;</a></span>start()</h2>
+<a id="a78203edfd61613b9d4adacf4b888c4e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78203edfd61613b9d4adacf4b888c4e0">&#9670;&nbsp;</a></span>start()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -346,7 +349,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Json::Value &amp;&#160;</td>
+          <td class="paramtype">const NJson::Value &amp;&#160;</td>
           <td class="paramname"><em>actions</em>&#160;</td>
         </tr>
         <tr>
@@ -524,6 +527,35 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 <p>Get index of current countable action. </p>
 <dl class="section return"><dt>Returns</dt><dd>index of current active countable action </dd></dl>
+
+</div>
+</div>
+<a id="a7a4aa3d6bf296530d3d110d8f09509de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a4aa3d6bf296530d3d110d8f09509de">&#9670;&nbsp;</a></span>isActionValid()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual bool NuguClientKit::IRoutineManager::isActionValid </td>
+          <td>(</td>
+          <td class="paramtype">const NJson::Value &amp;&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Check whether the action is valid. </p>
+<dl class="section return"><dt>Returns</dt><dd>true if valid, otherwise false </dd></dl>
 
 </div>
 </div>
@@ -878,7 +910,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1IRoutineManager.html">IRoutineManager</a></li>
-    <li class="footer">Generated on Tue Dec 20 2022 09:10:34 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Aug 30 2023 09:35:58 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -15,6 +15,6 @@ var classNuguClientKit_1_1ICapabilityHelper =
     [ "getWakeupWord", "classNuguClientKit_1_1ICapabilityHelper.html#a807b1ca12dd3b9424c6f20ac410bffe5", null ],
     [ "getCapabilityProperty", "classNuguClientKit_1_1ICapabilityHelper.html#ab8f64c7b6191db4a4ec1d9ceb68f84eb", null ],
     [ "getCapabilityProperties", "classNuguClientKit_1_1ICapabilityHelper.html#a1157318cda796a656411de1fb043f234", null ],
-    [ "makeContextInfo", "classNuguClientKit_1_1ICapabilityHelper.html#ad0ad702511967625952dce147e81e14f", null ],
+    [ "makeContextInfo", "classNuguClientKit_1_1ICapabilityHelper.html#a149dc944db81c7ef41ee586e97c5c5e8", null ],
     [ "makeAllContextInfo", "classNuguClientKit_1_1ICapabilityHelper.html#ab8bb6c82bc6661316bf36230be31392e", null ]
 ];

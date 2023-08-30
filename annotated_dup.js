@@ -62,6 +62,7 @@ var annotated_dup =
       [ "_RecognitionResult", "structNuguClientKit_1_1__RecognitionResult.html", "structNuguClientKit_1_1__RecognitionResult" ],
       [ "_Session", "structNuguClientKit_1_1__Session.html", "structNuguClientKit_1_1__Session" ],
       [ "_WakeupModelFile", "structNuguClientKit_1_1__WakeupModelFile.html", "structNuguClientKit_1_1__WakeupModelFile" ],
+      [ "AuthResponse", "structNuguClientKit_1_1AuthResponse.html", "structNuguClientKit_1_1AuthResponse" ],
       [ "Capability", "classNuguClientKit_1_1Capability.html", "classNuguClientKit_1_1Capability" ],
       [ "CapabilityEvent", "classNuguClientKit_1_1CapabilityEvent.html", "classNuguClientKit_1_1CapabilityEvent" ],
       [ "ICapabilityHelper", "classNuguClientKit_1_1ICapabilityHelper.html", "classNuguClientKit_1_1ICapabilityHelper" ],

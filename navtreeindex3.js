@@ -1,5 +1,10 @@
 var NAVTREEINDEX3 =
 {
+"focus__manager__interface_8hh.html#gga0a43ecaeb330bca6b94215d69e54bfe6ae41f4c3e11dd067fd5691da0124b8fd2":[3,0,13,28,0],
+"focus__manager__interface_8hh_source.html":[3,0,13],
+"functions.html":[2,3,0],
+"functions.html":[2,3,0,0],
+"functions_c.html":[2,3,0,1],
 "functions_d.html":[2,3,0,2],
 "functions_e.html":[2,3,0,3],
 "functions_enum.html":[2,3,4],
@@ -244,10 +249,5 @@ var NAVTREEINDEX3 =
 "group__InteractionControlManagerInterface.html#gga7ed168a573888495a90b6f74bdfb5e2da840044d2d261feb9f03ae3390e681323":[1,0,6,2,1],
 "group__InteractionControlManagerInterface.html#gga7ed168a573888495a90b6f74bdfb5e2dab50339a10e1de285ac99d4c3990b8693":[1,0,6,2,0],
 "group__LocationInterface.html":[1,1,8],
-"group__LocationInterface.html#gae4d400813604622395920328b6fb8028":[1,1,8,3],
-"group__Log.html":[1,2,7],
-"group__Log.html#ga06ed753e9946392fe99db5a90fac744d":[3,0,34,7],
-"group__Log.html#ga087457802942b6cddead13bf0e061851":[3,0,34,34],
-"group__Log.html#ga087457802942b6cddead13bf0e061851":[1,2,7,12],
-"group__Log.html#ga0f0b9ef76cbc8c5700d0c437e7a9e107":[3,0,34,9]
+"group__LocationInterface.html#gae4d400813604622395920328b6fb8028":[1,1,8,3]
 };

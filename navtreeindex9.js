@@ -1,10 +1,17 @@
 var NAVTREEINDEX9 =
 {
+"group__uuid.html#ga98a7f70acff1804014eadbe698fbcfea":[1,2,17,8],
+"group__uuid.html#gaa9ba86139cb5e850c77f1deb0902a434":[1,2,17,4],
+"group__uuid.html#gaa9ba86139cb5e850c77f1deb0902a434":[3,0,47,4],
+"group__uuid.html#gabcebf51cf57b8ead681e4cb0abfc8e77":[1,2,17,9],
+"group__uuid.html#gabcebf51cf57b8ead681e4cb0abfc8e77":[3,0,47,9],
+"group__uuid.html#gadcdfa588cf5e3233476e5b4752b63d74":[1,2,17,0],
+"group__uuid.html#gadcdfa588cf5e3233476e5b4752b63d74":[3,0,47,0],
 "group__uuid.html#gaff6041ce1d21c47646a8b38f65494095":[3,0,47,1],
 "group__uuid.html#gaff6041ce1d21c47646a8b38f65494095":[1,2,17,1],
 "hierarchy.html":[2,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "index.html#intro":[0,0],
 "index.html#license":[0,2],
 "index.html#overview":[0,1],
@@ -242,12 +249,5 @@ var NAVTREEINDEX9 =
 "structNuguCapability_1_1__ASRAttribute.html#ae52cec3ec0541489cb35534e7dc83f5d":[1,1,0,0,0],
 "structNuguCapability_1_1__BTDeviceInfo.html":[1,1,3,0],
 "structNuguCapability_1_1__BTDeviceInfo.html#a12c15d9f2b2ecd11c3cf4dc8b549bcdb":[1,1,3,0,1],
-"structNuguCapability_1_1__BTDeviceInfo.html#a3de5b930df9bddc6e2a91ab26c2b07ba":[1,1,3,0,7],
-"structNuguCapability_1_1__BTDeviceInfo.html#a42fa7cd64a6e2a80f598b6124ba560a7":[1,1,3,0,3],
-"structNuguCapability_1_1__BTDeviceInfo.html#a5e961d72db9c4736f62a55c142582166":[1,1,3,0,2],
-"structNuguCapability_1_1__BTDeviceInfo.html#a6af236f10fee99c76972fcf7f2336d47":[1,1,3,0,6],
-"structNuguCapability_1_1__BTDeviceInfo.html#a81f3ba1abb9e6159d85ae45034fdd8ab":[1,1,3,0,0],
-"structNuguCapability_1_1__BTDeviceInfo.html#a8db2b670aa195df0b8e207f07880afed":[1,1,3,0,5],
-"structNuguCapability_1_1__BTDeviceInfo.html#ae9d49cfff60d3136997710dafee96d37":[1,1,3,0,4],
-"structNuguCapability_1_1__BTProfile.html":[1,1,3,1]
+"structNuguCapability_1_1__BTDeviceInfo.html#a3de5b930df9bddc6e2a91ab26c2b07ba":[1,1,3,0,7]
 };

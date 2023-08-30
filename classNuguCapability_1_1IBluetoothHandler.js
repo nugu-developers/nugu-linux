@@ -1,6 +1,7 @@
 var classNuguCapability_1_1IBluetoothHandler =
 [
     [ "~IBluetoothHandler", "classNuguCapability_1_1IBluetoothHandler.html#a2e15fff23d35056fe4ab7dc66fcd5984", null ],
+    [ "setAudioPlayerState", "classNuguCapability_1_1IBluetoothHandler.html#a4ea8cb591a26a325a8922fac9a838223", null ],
     [ "startDiscoverableModeSucceeded", "classNuguCapability_1_1IBluetoothHandler.html#a2d86774191a7b976903a5028cc0a6009", null ],
     [ "startDiscoverableModeFailed", "classNuguCapability_1_1IBluetoothHandler.html#a68306af769610b77ba8119f742aaa8c4", null ],
     [ "finishDiscoverableModeSucceeded", "classNuguCapability_1_1IBluetoothHandler.html#a0ceed6b03892ba8bbf92066222307f0e", null ],

@@ -1,13 +1,13 @@
 var classNuguClientKit_1_1IRoutineManager =
 [
     [ "TextRequester", "classNuguClientKit_1_1IRoutineManager.html#a83624ee829dd1cd2b69441c0357ecadb", null ],
-    [ "DataRequester", "classNuguClientKit_1_1IRoutineManager.html#ac89f926b35175442096dc44cdab13455", null ],
+    [ "DataRequester", "classNuguClientKit_1_1IRoutineManager.html#ac4782bb43a3eb49abf0b8b0dcac463e2", null ],
     [ "~IRoutineManager", "classNuguClientKit_1_1IRoutineManager.html#a74bc4d960cc81a2747936bdc28aaa601", null ],
     [ "addListener", "classNuguClientKit_1_1IRoutineManager.html#a8b6f876be3d2ced614b566ff4fa9912b", null ],
     [ "removeListener", "classNuguClientKit_1_1IRoutineManager.html#afa0a8131fdeb730c77869d8880f86704", null ],
     [ "setTextRequester", "classNuguClientKit_1_1IRoutineManager.html#a2074339702aa578b30eee8921f0ab90e", null ],
     [ "setDataRequester", "classNuguClientKit_1_1IRoutineManager.html#a2cbeee626f3e73eeccf3e65cc7262221", null ],
-    [ "start", "classNuguClientKit_1_1IRoutineManager.html#acbfe2f62cd2b169519f40b5ce7b74a34", null ],
+    [ "start", "classNuguClientKit_1_1IRoutineManager.html#a78203edfd61613b9d4adacf4b888c4e0", null ],
     [ "stop", "classNuguClientKit_1_1IRoutineManager.html#a6ef7941d23fcdaf25819e7fff310d9a3", null ],
     [ "interrupt", "classNuguClientKit_1_1IRoutineManager.html#a02586cd365a1392a8c986960c5944c14", null ],
     [ "resume", "classNuguClientKit_1_1IRoutineManager.html#a467252066e021d0aee8276793a22ebc0", null ],
@@ -17,6 +17,7 @@ var classNuguClientKit_1_1IRoutineManager =
     [ "getCurrentActionIndex", "classNuguClientKit_1_1IRoutineManager.html#ad6cfa4115e6c35ad68d338d3651fe7b5", null ],
     [ "getCountableActionSize", "classNuguClientKit_1_1IRoutineManager.html#afdc8f6870a0e771682c92e3ffbc728b7", null ],
     [ "getCountableActionIndex", "classNuguClientKit_1_1IRoutineManager.html#aae0a1d3b2246cb289dda798f9633866e", null ],
+    [ "isActionValid", "classNuguClientKit_1_1IRoutineManager.html#a7a4aa3d6bf296530d3d110d8f09509de", null ],
     [ "isRoutineProgress", "classNuguClientKit_1_1IRoutineManager.html#a53e27e28fb0c378aa6a709d1562bb1d9", null ],
     [ "isRoutineAlive", "classNuguClientKit_1_1IRoutineManager.html#ad5d4ef321390a7bef9b8b34810e5d9cc", null ],
     [ "isActionProgress", "classNuguClientKit_1_1IRoutineManager.html#a1a7b0b30ecf6f11a233bd78bb16e0121", null ],

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.4</span>
+   &#160;<span id="projectnumber">1.7.5</span>
    </div>
   </td>
  </tr>
@@ -125,10 +125,10 @@ typedef struct _nugu_http_header&#160;</td><td class="memItemRight" valign="bott
 typedef struct _nugu_http_host&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguHttp.html#gad4d6c395bbc50233b5880c8bbc69b6f4">NuguHttpHost</a></td></tr>
 <tr class="memdesc:gad4d6c395bbc50233b5880c8bbc69b6f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP Host object. <br /></td></tr>
 <tr class="separator:gad4d6c395bbc50233b5880c8bbc69b6f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga69ad125f6b47a3b464687c4a93a16d81"><td class="memItemLeft" align="right" valign="top"><a id="ga69ad125f6b47a3b464687c4a93a16d81"></a>
-typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguHttp.html#ga69ad125f6b47a3b464687c4a93a16d81">NuguHttpProgressCallback</a>) (<a class="el" href="group__NuguHttp.html#ga9c908b4729991bb8b707f8af7aec565b">NuguHttpRequest</a> *req, const <a class="el" href="group__NuguHttp.html#ga6d10365bb5380cd7d12fd9aa1789b725">NuguHttpResponse</a> *resp, size_t downloaded, size_t total, void *user_data)</td></tr>
-<tr class="memdesc:ga69ad125f6b47a3b464687c4a93a16d81"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback prototype for HTTP download progress. <br /></td></tr>
-<tr class="separator:ga69ad125f6b47a3b464687c4a93a16d81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga86ef47ce7dc8cdf675a16427b230607e"><td class="memItemLeft" align="right" valign="top"><a id="ga86ef47ce7dc8cdf675a16427b230607e"></a>
+typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguHttp.html#ga86ef47ce7dc8cdf675a16427b230607e">NuguHttpProgressCallback</a>) (<a class="el" href="group__NuguHttp.html#ga9c908b4729991bb8b707f8af7aec565b">NuguHttpRequest</a> *req, const <a class="el" href="group__NuguHttp.html#ga6d10365bb5380cd7d12fd9aa1789b725">NuguHttpResponse</a> *resp, long long downloaded, long long total, void *user_data)</td></tr>
+<tr class="memdesc:ga86ef47ce7dc8cdf675a16427b230607e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Callback prototype for HTTP download progress. <br /></td></tr>
+<tr class="separator:ga86ef47ce7dc8cdf675a16427b230607e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9c908b4729991bb8b707f8af7aec565b"><td class="memItemLeft" align="right" valign="top"><a id="ga9c908b4729991bb8b707f8af7aec565b"></a>
 typedef struct _nugu_http_request&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguHttp.html#ga9c908b4729991bb8b707f8af7aec565b">NuguHttpRequest</a></td></tr>
 <tr class="memdesc:ga9c908b4729991bb8b707f8af7aec565b"><td class="mdescLeft">&#160;</td><td class="mdescRight">HTTP Request object. <br /></td></tr>
@@ -156,7 +156,7 @@ Functions</h2></td></tr>
 <tr class="memitem:gad29f0d7e4ab6713b04faba110cebc645"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__NuguHttp.html#ga9c908b4729991bb8b707f8af7aec565b">NuguHttpRequest</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguHttp.html#gad29f0d7e4ab6713b04faba110cebc645">nugu_http_delete_sync</a> (<a class="el" href="group__NuguHttp.html#gad4d6c395bbc50233b5880c8bbc69b6f4">NuguHttpHost</a> *host, const char *path, <a class="el" href="group__NuguHttp.html#ga0428a9667c385ad083199bb5bcbfbe1e">NuguHttpHeader</a> *header)</td></tr>
 <tr class="memdesc:gad29f0d7e4ab6713b04faba110cebc645"><td class="mdescLeft">&#160;</td><td class="mdescRight">A convenient API for HTTP DELETE sync requests.  <a href="group__NuguHttp.html#gad29f0d7e4ab6713b04faba110cebc645">More...</a><br /></td></tr>
 <tr class="separator:gad29f0d7e4ab6713b04faba110cebc645"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae029603be268933ae17fe9368958df53"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__NuguHttp.html#ga9c908b4729991bb8b707f8af7aec565b">NuguHttpRequest</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguHttp.html#gae029603be268933ae17fe9368958df53">nugu_http_download</a> (<a class="el" href="group__NuguHttp.html#gad4d6c395bbc50233b5880c8bbc69b6f4">NuguHttpHost</a> *host, const char *path, const char *dest_path, <a class="el" href="group__NuguHttp.html#ga0428a9667c385ad083199bb5bcbfbe1e">NuguHttpHeader</a> *header, <a class="el" href="group__NuguHttp.html#gaca28aaf191e2f049667fa7494bbe41d2">NuguHttpCallback</a> callback, <a class="el" href="group__NuguHttp.html#ga69ad125f6b47a3b464687c4a93a16d81">NuguHttpProgressCallback</a> progress_callback, void *user_data)</td></tr>
+<tr class="memitem:gae029603be268933ae17fe9368958df53"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__NuguHttp.html#ga9c908b4729991bb8b707f8af7aec565b">NuguHttpRequest</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguHttp.html#gae029603be268933ae17fe9368958df53">nugu_http_download</a> (<a class="el" href="group__NuguHttp.html#gad4d6c395bbc50233b5880c8bbc69b6f4">NuguHttpHost</a> *host, const char *path, const char *dest_path, <a class="el" href="group__NuguHttp.html#ga0428a9667c385ad083199bb5bcbfbe1e">NuguHttpHeader</a> *header, <a class="el" href="group__NuguHttp.html#gaca28aaf191e2f049667fa7494bbe41d2">NuguHttpCallback</a> callback, <a class="el" href="group__NuguHttp.html#ga86ef47ce7dc8cdf675a16427b230607e">NuguHttpProgressCallback</a> progress_callback, void *user_data)</td></tr>
 <tr class="memdesc:gae029603be268933ae17fe9368958df53"><td class="mdescLeft">&#160;</td><td class="mdescRight">A convenient API for HTTP file download async requests.  <a href="group__NuguHttp.html#gae029603be268933ae17fe9368958df53">More...</a><br /></td></tr>
 <tr class="separator:gae029603be268933ae17fe9368958df53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac1d30cd06f4d8fc9b490b767ef888746"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__NuguHttp.html#ga9c908b4729991bb8b707f8af7aec565b">NuguHttpRequest</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguHttp.html#gac1d30cd06f4d8fc9b490b767ef888746">nugu_http_get</a> (<a class="el" href="group__NuguHttp.html#gad4d6c395bbc50233b5880c8bbc69b6f4">NuguHttpHost</a> *host, const char *path, <a class="el" href="group__NuguHttp.html#ga0428a9667c385ad083199bb5bcbfbe1e">NuguHttpHeader</a> *header, <a class="el" href="group__NuguHttp.html#gaca28aaf191e2f049667fa7494bbe41d2">NuguHttpCallback</a> callback, void *user_data)</td></tr>
@@ -192,6 +192,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ga999fabe32f49e9ce44bf61cb43f4c7df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__NuguHttp.html#gad4d6c395bbc50233b5880c8bbc69b6f4">NuguHttpHost</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguHttp.html#ga999fabe32f49e9ce44bf61cb43f4c7df">nugu_http_host_new</a> (const char *url)</td></tr>
 <tr class="memdesc:ga999fabe32f49e9ce44bf61cb43f4c7df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create a new HTTP host object.  <a href="group__NuguHttp.html#ga999fabe32f49e9ce44bf61cb43f4c7df">More...</a><br /></td></tr>
 <tr class="separator:ga999fabe32f49e9ce44bf61cb43f4c7df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1a578fc1a284ef5b5560da3104c0fa22"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguHttp.html#ga1a578fc1a284ef5b5560da3104c0fa22">nugu_http_host_peek_url</a> (<a class="el" href="group__NuguHttp.html#gad4d6c395bbc50233b5880c8bbc69b6f4">NuguHttpHost</a> *host)</td></tr>
+<tr class="memdesc:ga1a578fc1a284ef5b5560da3104c0fa22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get url from HTTP host object.  <a href="group__NuguHttp.html#ga1a578fc1a284ef5b5560da3104c0fa22">More...</a><br /></td></tr>
+<tr class="separator:ga1a578fc1a284ef5b5560da3104c0fa22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa8b192fa6fbbe47af2a28d75e19f6437"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguHttp.html#gaa8b192fa6fbbe47af2a28d75e19f6437">nugu_http_host_set_connection_timeout</a> (<a class="el" href="group__NuguHttp.html#gad4d6c395bbc50233b5880c8bbc69b6f4">NuguHttpHost</a> *host, long msecs)</td></tr>
 <tr class="memdesc:gaa8b192fa6fbbe47af2a28d75e19f6437"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set connection timeout to host.  <a href="group__NuguHttp.html#gaa8b192fa6fbbe47af2a28d75e19f6437">More...</a><br /></td></tr>
 <tr class="separator:gaa8b192fa6fbbe47af2a28d75e19f6437"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -286,7 +289,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>HTTP host object </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__NuguHttp.html#ga904db9339647123223d16778df140189" title="Destroy the host object.">nugu_http_host_free()</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="group__NuguHttp.html#ga904db9339647123223d16778df140189" title="Destroy the host object.">nugu_http_host_free()</a> </dd>
+<dd>
+nugu_http_peek_url(); </dd></dl>
 
 </div>
 </div>
@@ -361,6 +366,33 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ga1a578fc1a284ef5b5560da3104c0fa22"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1a578fc1a284ef5b5560da3104c0fa22">&#9670;&nbsp;</a></span>nugu_http_host_peek_url()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const char* nugu_http_host_peek_url </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__NuguHttp.html#gad4d6c395bbc50233b5880c8bbc69b6f4">NuguHttpHost</a> *&#160;</td>
+          <td class="paramname"><em>host</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get url from HTTP host object. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">host</td><td>host object </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>url </dd></dl>
 
 </div>
 </div>
@@ -1327,7 +1359,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__NuguHttp.html#ga69ad125f6b47a3b464687c4a93a16d81">NuguHttpProgressCallback</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="group__NuguHttp.html#ga86ef47ce7dc8cdf675a16427b230607e">NuguHttpProgressCallback</a>&#160;</td>
           <td class="paramname"><em>progress_callback</em>, </td>
         </tr>
         <tr>
@@ -1478,7 +1510,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 20 2022 09:10:34 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Aug 30 2023 09:35:57 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

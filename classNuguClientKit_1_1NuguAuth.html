@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.4</span>
+   &#160;<span id="projectnumber">1.7.5</span>
    </div>
   </td>
  </tr>
@@ -97,21 +97,21 @@ $(document).ready(function(){initNavTree('classNuguClientKit_1_1NuguAuth.html','
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4337ddb7804965cffc7273aabc004aeb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#a4337ddb7804965cffc7273aabc004aeb">discovery</a> ()</td></tr>
-<tr class="memdesc:a4337ddb7804965cffc7273aabc004aeb"><td class="mdescLeft">&#160;</td><td class="mdescRight">OAuth2 discovery to get OAuth2 end-point and server url.  <a href="classNuguClientKit_1_1NuguAuth.html#a4337ddb7804965cffc7273aabc004aeb">More...</a><br /></td></tr>
-<tr class="separator:a4337ddb7804965cffc7273aabc004aeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81a9c3c1d56fda96f2589ea08bd8529b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#a81a9c3c1d56fda96f2589ea08bd8529b">discovery</a> (const std::function&lt; void(bool success)&gt; &amp;cb)</td></tr>
-<tr class="memdesc:a81a9c3c1d56fda96f2589ea08bd8529b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Async OAuth2 discovery to get OAuth2 end-point and server url.  <a href="classNuguClientKit_1_1NuguAuth.html#a81a9c3c1d56fda96f2589ea08bd8529b">More...</a><br /></td></tr>
-<tr class="separator:a81a9c3c1d56fda96f2589ea08bd8529b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92afb4025f47e51774487a1e58011cfd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#a92afb4025f47e51774487a1e58011cfd">discovery</a> (const std::function&lt; void(bool success, const struct <a class="el" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a> *response)&gt; &amp;cb)</td></tr>
+<tr class="memdesc:a92afb4025f47e51774487a1e58011cfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Async OAuth2 discovery to get OAuth2 end-point and server url.  <a href="classNuguClientKit_1_1NuguAuth.html#a92afb4025f47e51774487a1e58011cfd">More...</a><br /></td></tr>
+<tr class="separator:a92afb4025f47e51774487a1e58011cfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa65ac971dec370b107abbf4543846af8"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#aa65ac971dec370b107abbf4543846af8">discovery</a> (struct <a class="el" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a> *response=nullptr)</td></tr>
+<tr class="memdesc:aa65ac971dec370b107abbf4543846af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">OAuth2 discovery to get OAuth2 end-point and server url.  <a href="classNuguClientKit_1_1NuguAuth.html#aa65ac971dec370b107abbf4543846af8">More...</a><br /></td></tr>
+<tr class="separator:aa65ac971dec370b107abbf4543846af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac66df0ab9510fba799d35bfe4ce62eea"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#ac66df0ab9510fba799d35bfe4ce62eea">generateAuthorizeUrl</a> (const std::string &amp;device_serial)</td></tr>
 <tr class="memdesc:ac66df0ab9510fba799d35bfe4ce62eea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get OAuth2 authorization url.  <a href="classNuguClientKit_1_1NuguAuth.html#ac66df0ab9510fba799d35bfe4ce62eea">More...</a><br /></td></tr>
 <tr class="separator:ac66df0ab9510fba799d35bfe4ce62eea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a238ae1378dd3ba3213ff81c6b92e68b5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#a238ae1378dd3ba3213ff81c6b92e68b5">getAuthorizationCodeToken</a> (const std::string &amp;code, const std::string &amp;device_serial)</td></tr>
-<tr class="memdesc:a238ae1378dd3ba3213ff81c6b92e68b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the token using authorization code (token exchange)  <a href="classNuguClientKit_1_1NuguAuth.html#a238ae1378dd3ba3213ff81c6b92e68b5">More...</a><br /></td></tr>
-<tr class="separator:a238ae1378dd3ba3213ff81c6b92e68b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33176e55667f9f6a1ef320774e8d31a0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#a33176e55667f9f6a1ef320774e8d31a0">getClientCredentialsToken</a> (const std::string &amp;device_serial)</td></tr>
-<tr class="memdesc:a33176e55667f9f6a1ef320774e8d31a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the token using client credentials.  <a href="classNuguClientKit_1_1NuguAuth.html#a33176e55667f9f6a1ef320774e8d31a0">More...</a><br /></td></tr>
-<tr class="separator:a33176e55667f9f6a1ef320774e8d31a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab316f16ed44e743070c2b15bb605d6df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#ab316f16ed44e743070c2b15bb605d6df">getAuthorizationCodeToken</a> (const std::string &amp;code, const std::string &amp;device_serial, struct <a class="el" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a> *response=nullptr)</td></tr>
+<tr class="memdesc:ab316f16ed44e743070c2b15bb605d6df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the token using authorization code (token exchange)  <a href="classNuguClientKit_1_1NuguAuth.html#ab316f16ed44e743070c2b15bb605d6df">More...</a><br /></td></tr>
+<tr class="separator:ab316f16ed44e743070c2b15bb605d6df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad605f2d7d7c83723ece7d6f5b4e6d76f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#ad605f2d7d7c83723ece7d6f5b4e6d76f">getClientCredentialsToken</a> (const std::string &amp;device_serial, struct <a class="el" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a> *response=nullptr)</td></tr>
+<tr class="memdesc:ad605f2d7d7c83723ece7d6f5b4e6d76f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the token using client credentials.  <a href="classNuguClientKit_1_1NuguAuth.html#ad605f2d7d7c83723ece7d6f5b4e6d76f">More...</a><br /></td></tr>
+<tr class="separator:ad605f2d7d7c83723ece7d6f5b4e6d76f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aebda0279b846615cc15aaa8fe76fae5e"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#aebda0279b846615cc15aaa8fe76fae5e">getGatewayRegistryUri</a> ()</td></tr>
 <tr class="memdesc:aebda0279b846615cc15aaa8fe76fae5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get uri for device gateway registry.  <a href="classNuguClientKit_1_1NuguAuth.html#aebda0279b846615cc15aaa8fe76fae5e">More...</a><br /></td></tr>
 <tr class="separator:aebda0279b846615cc15aaa8fe76fae5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,15 +133,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0f9055afa4777c1d8f91bc21201140e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#a0f9055afa4777c1d8f91bc21201140e5">parseAccessToken</a> (<a class="el" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a> *token)</td></tr>
 <tr class="memdesc:a0f9055afa4777c1d8f91bc21201140e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Parsing the JWT access_token and fill the token information.  <a href="classNuguClientKit_1_1NuguAuth.html#a0f9055afa4777c1d8f91bc21201140e5">More...</a><br /></td></tr>
 <tr class="separator:a0f9055afa4777c1d8f91bc21201140e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac50dc13178f8b5080783aa2a8bac9413"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#ac50dc13178f8b5080783aa2a8bac9413">refresh</a> (<a class="el" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a> *token, const std::string &amp;device_serial=&quot;&quot;)</td></tr>
-<tr class="memdesc:ac50dc13178f8b5080783aa2a8bac9413"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refresh the access_token and update the token information.  <a href="classNuguClientKit_1_1NuguAuth.html#ac50dc13178f8b5080783aa2a8bac9413">More...</a><br /></td></tr>
-<tr class="separator:ac50dc13178f8b5080783aa2a8bac9413"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3ad8ca3b28cc06880da07202dcabeee"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1NuguAuth.html#ac3ad8ca3b28cc06880da07202dcabeee">refresh</a> (<a class="el" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a> *token, const std::string &amp;device_serial=&quot;&quot;, struct <a class="el" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a> *response=nullptr)</td></tr>
+<tr class="memdesc:ac3ad8ca3b28cc06880da07202dcabeee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refresh the access_token and update the token information.  <a href="classNuguClientKit_1_1NuguAuth.html#ac3ad8ca3b28cc06880da07202dcabeee">More...</a><br /></td></tr>
+<tr class="separator:ac3ad8ca3b28cc06880da07202dcabeee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="classNuguClientKit_1_1NuguAuth.html" title="NuguAuth.">NuguAuth</a>. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4337ddb7804965cffc7273aabc004aeb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4337ddb7804965cffc7273aabc004aeb">&#9670;&nbsp;</a></span>discovery() <span class="overload">[1/2]</span></h2>
+<a id="aa65ac971dec370b107abbf4543846af8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa65ac971dec370b107abbf4543846af8">&#9670;&nbsp;</a></span>discovery() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -149,13 +149,20 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">bool NuguClientKit::NuguAuth::discovery </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">struct <a class="el" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a> *&#160;</td>
+          <td class="paramname"><em>response</em> = <code>nullptr</code></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>OAuth2 discovery to get OAuth2 end-point and server url. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">response</td><td>HTTP response data </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>result </dd></dl>
 <dl class="retval"><dt>Return values</dt><dd>
   <table class="retval">
@@ -167,8 +174,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a81a9c3c1d56fda96f2589ea08bd8529b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81a9c3c1d56fda96f2589ea08bd8529b">&#9670;&nbsp;</a></span>discovery() <span class="overload">[2/2]</span></h2>
+<a id="a92afb4025f47e51774487a1e58011cfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a92afb4025f47e51774487a1e58011cfd">&#9670;&nbsp;</a></span>discovery() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,7 +183,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="memname">bool NuguClientKit::NuguAuth::discovery </td>
           <td>(</td>
-          <td class="paramtype">const std::function&lt; void(bool success)&gt; &amp;&#160;</td>
+          <td class="paramtype">const std::function&lt; void(bool success, const struct <a class="el" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a> *response)&gt; &amp;&#160;</td>
           <td class="paramname"><em>cb</em></td><td>)</td>
           <td></td>
         </tr>
@@ -262,8 +269,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a238ae1378dd3ba3213ff81c6b92e68b5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a238ae1378dd3ba3213ff81c6b92e68b5">&#9670;&nbsp;</a></span>getAuthorizationCodeToken()</h2>
+<a id="ab316f16ed44e743070c2b15bb605d6df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab316f16ed44e743070c2b15bb605d6df">&#9670;&nbsp;</a></span>getAuthorizationCodeToken()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -278,7 +285,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>device_serial</em>&#160;</td>
+          <td class="paramname"><em>device_serial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a> *&#160;</td>
+          <td class="paramname"><em>response</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -293,6 +306,7 @@ Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">code</td><td>OAuth2 authorization code </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">device_serial</td><td>device serial info </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">response</td><td>HTTP response data </td></tr>
   </table>
   </dd>
 </dl>
@@ -300,8 +314,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a33176e55667f9f6a1ef320774e8d31a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33176e55667f9f6a1ef320774e8d31a0">&#9670;&nbsp;</a></span>getClientCredentialsToken()</h2>
+<a id="ad605f2d7d7c83723ece7d6f5b4e6d76f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad605f2d7d7c83723ece7d6f5b4e6d76f">&#9670;&nbsp;</a></span>getClientCredentialsToken()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -310,8 +324,18 @@ Public Member Functions</h2></td></tr>
           <td class="memname"><a class="el" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* NuguClientKit::NuguAuth::getClientCredentialsToken </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>device_serial</em></td><td>)</td>
+          <td class="paramname"><em>device_serial</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">struct <a class="el" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a> *&#160;</td>
+          <td class="paramname"><em>response</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -320,6 +344,7 @@ Public Member Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramdir">[in]</td><td class="paramname">device_serial</td><td>device serial info </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">response</td><td>HTTP response data </td></tr>
   </table>
   </dd>
 </dl>
@@ -356,8 +381,8 @@ false parsing failed </dd></dl>
 
 </div>
 </div>
-<a id="ac50dc13178f8b5080783aa2a8bac9413"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac50dc13178f8b5080783aa2a8bac9413">&#9670;&nbsp;</a></span>refresh()</h2>
+<a id="ac3ad8ca3b28cc06880da07202dcabeee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3ad8ca3b28cc06880da07202dcabeee">&#9670;&nbsp;</a></span>refresh()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -372,7 +397,13 @@ false parsing failed </dd></dl>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>device_serial</em> = <code>&quot;&quot;</code>&#160;</td>
+          <td class="paramname"><em>device_serial</em> = <code>&quot;&quot;</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">struct <a class="el" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a> *&#160;</td>
+          <td class="paramname"><em>response</em> = <code>nullptr</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -387,6 +418,7 @@ false parsing failed </dd></dl>
   <table class="params">
     <tr><td class="paramdir">[in,out]</td><td class="paramname">token</td><td>token information </td></tr>
     <tr><td class="paramdir">[in]</td><td class="paramname">device_serial</td><td>device serial info </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">response</td><td>HTTP response data </td></tr>
   </table>
   </dd>
 </dl>
@@ -523,7 +555,7 @@ false token is not expired </dd></dl>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1NuguAuth.html">NuguAuth</a></li>
-    <li class="footer">Generated on Tue Dec 20 2022 09:10:34 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Aug 30 2023 09:35:58 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

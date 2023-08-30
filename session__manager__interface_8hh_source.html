@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.4</span>
+   &#160;<span id="projectnumber">1.7.5</span>
    </div>
   </td>
  </tr>
@@ -105,7 +105,7 @@ $(document).ready(function(){initNavTree('session__manager__interface_8hh_source
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#ifndef __NUGU_SESSION_MANAGER_INTERFACE_H__</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#define __NUGU_SESSION_MANAGER_INTERFACE_H__</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;json/json.h&gt;</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;njson/njson.h&gt;</span></div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
 <div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
 <div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">namespace </span>NuguClientKit {</div>
@@ -138,7 +138,7 @@ $(document).ready(function(){initNavTree('session__manager__interface_8hh_source
 <div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160; </div>
 <div class="line"><a name="l00104"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1ISessionManager.html#a3d05ff2597d22c036fb9e8bf8aa3600d">  104</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1ISessionManager.html#a3d05ff2597d22c036fb9e8bf8aa3600d">deactivate</a>(<span class="keyword">const</span> std::string&amp; dialog_id) = 0;</div>
 <div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
-<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1ISessionManager.html#a99e5ce28175393565e6263270a704580">  110</a></span>&#160;    <span class="keyword">virtual</span> Json::Value <a class="code" href="classNuguClientKit_1_1ISessionManager.html#a99e5ce28175393565e6263270a704580">getActiveSessionInfo</a>() = 0;</div>
+<div class="line"><a name="l00110"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1ISessionManager.html#a0c92f20d59813c58a41b0cba8ae80559">  110</a></span>&#160;    <span class="keyword">virtual</span> NJson::Value <a class="code" href="classNuguClientKit_1_1ISessionManager.html#a0c92f20d59813c58a41b0cba8ae80559">getActiveSessionInfo</a>() = 0;</div>
 <div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160; </div>
 <div class="line"><a name="l00115"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1ISessionManager.html#a626713cfb36793f7d7b4499c64e55946">  115</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguClientKit_1_1ISessionManager.html#a626713cfb36793f7d7b4499c64e55946">clear</a>() = 0;</div>
 <div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;};</div>
@@ -151,10 +151,10 @@ $(document).ready(function(){initNavTree('session__manager__interface_8hh_source
 <div class="ttc" id="aclassNuguClientKit_1_1ISessionManagerListener_html_a82d8d04d7addd7c2c7526c21c9f4fc52"><div class="ttname"><a href="classNuguClientKit_1_1ISessionManagerListener.html#a82d8d04d7addd7c2c7526c21c9f4fc52">NuguClientKit::ISessionManagerListener::deactivated</a></div><div class="ttdeci">virtual void deactivated(const std::string &amp;dialog_id)=0</div><div class="ttdoc">Receive callback when the session is deactivated.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ISessionManager_html"><div class="ttname"><a href="classNuguClientKit_1_1ISessionManager.html">NuguClientKit::ISessionManager</a></div><div class="ttdoc">SessionManager interface.</div><div class="ttdef"><b>Definition:</b> session_manager_interface.hh:71</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ISessionManager_html_a031783e6131c9ed38cab7ba87e159616"><div class="ttname"><a href="classNuguClientKit_1_1ISessionManager.html#a031783e6131c9ed38cab7ba87e159616">NuguClientKit::ISessionManager::activate</a></div><div class="ttdeci">virtual void activate(const std::string &amp;dialog_id)=0</div><div class="ttdoc">Activate Session which is mapped with dialog request id.</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ISessionManager_html_a0c92f20d59813c58a41b0cba8ae80559"><div class="ttname"><a href="classNuguClientKit_1_1ISessionManager.html#a0c92f20d59813c58a41b0cba8ae80559">NuguClientKit::ISessionManager::getActiveSessionInfo</a></div><div class="ttdeci">virtual NJson::Value getActiveSessionInfo()=0</div><div class="ttdoc">Get current active session info which is composed by session list.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ISessionManager_html_a3d05ff2597d22c036fb9e8bf8aa3600d"><div class="ttname"><a href="classNuguClientKit_1_1ISessionManager.html#a3d05ff2597d22c036fb9e8bf8aa3600d">NuguClientKit::ISessionManager::deactivate</a></div><div class="ttdeci">virtual void deactivate(const std::string &amp;dialog_id)=0</div><div class="ttdoc">Deactivate Session which is mapped with dialog request id.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ISessionManager_html_a626713cfb36793f7d7b4499c64e55946"><div class="ttname"><a href="classNuguClientKit_1_1ISessionManager.html#a626713cfb36793f7d7b4499c64e55946">NuguClientKit::ISessionManager::clear</a></div><div class="ttdeci">virtual void clear()=0</div><div class="ttdoc">Clear all session info.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ISessionManager_html_a96d1caa170d96dd48a36f71086f11401"><div class="ttname"><a href="classNuguClientKit_1_1ISessionManager.html#a96d1caa170d96dd48a36f71086f11401">NuguClientKit::ISessionManager::removeListener</a></div><div class="ttdeci">virtual void removeListener(ISessionManagerListener *listener)=0</div><div class="ttdoc">Remove ISessionManagerListener.</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1ISessionManager_html_a99e5ce28175393565e6263270a704580"><div class="ttname"><a href="classNuguClientKit_1_1ISessionManager.html#a99e5ce28175393565e6263270a704580">NuguClientKit::ISessionManager::getActiveSessionInfo</a></div><div class="ttdeci">virtual Json::Value getActiveSessionInfo()=0</div><div class="ttdoc">Get current active session info which is composed by session list.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ISessionManager_html_abf696022474d865619797ac032ec2590"><div class="ttname"><a href="classNuguClientKit_1_1ISessionManager.html#abf696022474d865619797ac032ec2590">NuguClientKit::ISessionManager::addListener</a></div><div class="ttdeci">virtual void addListener(ISessionManagerListener *listener)=0</div><div class="ttdoc">Add ISessionManagerListener.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1ISessionManager_html_aee13d23c0f297903cd5e293f06d37eaf"><div class="ttname"><a href="classNuguClientKit_1_1ISessionManager.html#aee13d23c0f297903cd5e293f06d37eaf">NuguClientKit::ISessionManager::set</a></div><div class="ttdeci">virtual void set(const std::string &amp;dialog_id, Session &amp;&amp;session)=0</div><div class="ttdoc">Set Session object which is received by Session Interface.</div></div>
 <div class="ttc" id="agroup__SessionManagerInterface_html_ga0805f71c0fcdf4d6ded9cd469ba6d3cc"><div class="ttname"><a href="group__SessionManagerInterface.html#ga0805f71c0fcdf4d6ded9cd469ba6d3cc">NuguClientKit::Session</a></div><div class="ttdeci">struct NuguClientKit::_Session Session</div><div class="ttdoc">Model for containing session info.</div></div>
@@ -167,7 +167,7 @@ $(document).ready(function(){initNavTree('session__manager__interface_8hh_source
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_261219a980049fd8e6168264a7da95ca.html">clientkit</a></li><li class="navelem"><a class="el" href="session__manager__interface_8hh.html">session_manager_interface.hh</a></li>
-    <li class="footer">Generated on Tue Dec 20 2022 09:10:33 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Aug 30 2023 09:35:57 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

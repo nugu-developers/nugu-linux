@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.4</span>
+   &#160;<span id="projectnumber">1.7.5</span>
    </div>
   </td>
  </tr>
@@ -209,12 +209,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html#a9bed51feea2e4b9ccce65885feac510a">suspend</a> ()=0</td></tr>
 <tr class="memdesc:a9bed51feea2e4b9ccce65885feac510a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Suspend current action. <br /></td></tr>
 <tr class="separator:a9bed51feea2e4b9ccce65885feac510a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35cb7a70ab375759297182954084e859"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html#a35cb7a70ab375759297182954084e859">updateCompactContext</a> (Json::Value &amp;ctx)=0</td></tr>
-<tr class="memdesc:a35cb7a70ab375759297182954084e859"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the compact context information of the capability agent.  <a href="classNuguClientKit_1_1ICapabilityInterface.html#a35cb7a70ab375759297182954084e859">More...</a><br /></td></tr>
-<tr class="separator:a35cb7a70ab375759297182954084e859"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a743711b81aacc194fef39f00d5c5c5d7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html#a743711b81aacc194fef39f00d5c5c5d7">updateInfoForContext</a> (Json::Value &amp;ctx)=0</td></tr>
-<tr class="memdesc:a743711b81aacc194fef39f00d5c5c5d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the current context information of the capability agent.  <a href="classNuguClientKit_1_1ICapabilityInterface.html#a743711b81aacc194fef39f00d5c5c5d7">More...</a><br /></td></tr>
-<tr class="separator:a743711b81aacc194fef39f00d5c5c5d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e4dc8e159e744b760d628834efbc958"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html#a4e4dc8e159e744b760d628834efbc958">updateCompactContext</a> (NJson::Value &amp;ctx)=0</td></tr>
+<tr class="memdesc:a4e4dc8e159e744b760d628834efbc958"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the compact context information of the capability agent.  <a href="classNuguClientKit_1_1ICapabilityInterface.html#a4e4dc8e159e744b760d628834efbc958">More...</a><br /></td></tr>
+<tr class="separator:a4e4dc8e159e744b760d628834efbc958"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14770d75da6e1f71ce8533df59b06d94"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html#a14770d75da6e1f71ce8533df59b06d94">updateInfoForContext</a> (NJson::Value &amp;ctx)=0</td></tr>
+<tr class="memdesc:a14770d75da6e1f71ce8533df59b06d94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the current context information of the capability agent.  <a href="classNuguClientKit_1_1ICapabilityInterface.html#a14770d75da6e1f71ce8533df59b06d94">More...</a><br /></td></tr>
+<tr class="separator:a14770d75da6e1f71ce8533df59b06d94"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>capability interface </p>
@@ -693,8 +693,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a743711b81aacc194fef39f00d5c5c5d7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a743711b81aacc194fef39f00d5c5c5d7">&#9670;&nbsp;</a></span>updateInfoForContext()</h2>
+<a id="a14770d75da6e1f71ce8533df59b06d94"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14770d75da6e1f71ce8533df59b06d94">&#9670;&nbsp;</a></span>updateInfoForContext()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -705,7 +705,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="memname">virtual void NuguClientKit::ICapabilityInterface::updateInfoForContext </td>
           <td>(</td>
-          <td class="paramtype">Json::Value &amp;&#160;</td>
+          <td class="paramtype">NJson::Value &amp;&#160;</td>
           <td class="paramname"><em>ctx</em></td><td>)</td>
           <td></td>
         </tr>
@@ -727,8 +727,8 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 
 </div>
 </div>
-<a id="a35cb7a70ab375759297182954084e859"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35cb7a70ab375759297182954084e859">&#9670;&nbsp;</a></span>updateCompactContext()</h2>
+<a id="a4e4dc8e159e744b760d628834efbc958"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e4dc8e159e744b760d628834efbc958">&#9670;&nbsp;</a></span>updateCompactContext()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -739,7 +739,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
         <tr>
           <td class="memname">virtual void NuguClientKit::ICapabilityInterface::updateCompactContext </td>
           <td>(</td>
-          <td class="paramtype">Json::Value &amp;&#160;</td>
+          <td class="paramtype">NJson::Value &amp;&#160;</td>
           <td class="paramname"><em>ctx</em></td><td>)</td>
           <td></td>
         </tr>
@@ -759,7 +759,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classNuguClientKit_1_1Capability.html#a40c1a1d46f219cd4947a2e6f8f142564">NuguClientKit::Capability</a>.</p>
+<p>Implemented in <a class="el" href="classNuguClientKit_1_1Capability.html#ab3a8b8f0da9dd3a7309eef5414721da5">NuguClientKit::Capability</a>.</p>
 
 </div>
 </div>
@@ -1074,7 +1074,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" hr
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><b>NuguClientKit</b></li><li class="navelem"><a class="el" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a></li>
-    <li class="footer">Generated on Tue Dec 20 2022 09:10:34 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Wed Aug 30 2023 09:35:58 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>
