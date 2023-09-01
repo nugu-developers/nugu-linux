@@ -18,7 +18,7 @@ Build-Depends: debhelper (>=10),
 	libgstreamer1.0-dev,
 	ca-certificates,
 	rapidjson-dev,
-	libasan4
+	libasan5
 Standards-Version: 4.1.4
 
 Package: libnugu
