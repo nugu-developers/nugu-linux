@@ -78,3 +78,48 @@ jobs:
           overwrite: true
           tag: ${{ github.ref }}
 
+  blackduck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
+      - name: Prepare
+        run: |
+          # Use only njson submodule
+          git submodule update --init externals/njson
+
+          # generate.sh script
+          cat <<EOF > generate.sh
+          #!/bin/sh
+
+          mkdir build && cd build
+          cmake .. -DENABLE_BUILTIN_CURL=OFF -DCMAKE_INSTALL_PREFIX=/usr
+          cd ..
+
+          cp build/compile_commands.json .
+          cp build/nugu.pc .
+          rm -rf build
+          EOF
+
+          # Run cmake in docker container
+          chmod +x generate.sh
+          docker run -t --rm -v $PWD:$PWD -w $PWD \
+            nugulinux/devenv:jammy ./generate.sh
+
+          # Get version from pc file
+          VERSION=`pkg-config --modversion ./nugu.pc`
+          echo "version=${VERSION}" >> $GITHUB_ENV
+
+      - name : Black Duck Synopsys Detect
+        run: |
+          bash <(curl -s -L https://detect.synopsys.com/detect8.sh) \
+          --blackduck.url="${{ secrets.BLACKDUCK_URL }}" \
+          --blackduck.api.token="${{ secrets.BLACKDUCK_API_TOKEN }}" \
+          --blackduck.trust.cert=true \
+          --detect.project.name="${{ secrets.BLACKDUCK_PROJECT_NAME }}" \
+          --detect.project.version.name="${{ env.version }}" \
+          --detect.source.path="./" \
+          --detect.blackduck.signature.scanner.snippet.matching=SNIPPET_MATCHING \
+          --detect.blackduck.signature.scanner.upload.source.mode=true \
+          --detect.clone.project.version.latest=true \
+          --detect.project.tags=TYPE_sdk
