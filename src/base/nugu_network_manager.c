@@ -1075,7 +1075,11 @@ EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
 
 		now = time(NULL);
 		gmtime_r(&now, &tm);
-		strftime(buf, sizeof(buf), "%a, %d %b %Y %H:%M:%S %Z", &tm);
+		if (strftime(buf, sizeof(buf), "%a, %d %b %Y %H:%M:%S %Z",
+			     &tm) == 0) {
+			nugu_error("strftime() failed");
+			buf[sizeof(buf) - 1] = 0;
+		}
 
 		if (_network->last_asr)
 			free(_network->last_asr);

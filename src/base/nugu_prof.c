@@ -134,8 +134,12 @@ static void _fill_timestr(char *dest_buf, size_t bufsize,
 
 	localtime_r(&(ts->tv_sec), &tm_local);
 
-	strftime(dest_buf, 15, "%m-%d %H:%M:%S", &tm_local);
+	if (strftime(dest_buf, 15, "%m-%d %H:%M:%S", &tm_local) == 0) {
+		nugu_error("strftime() failed");
+		return;
+	}
 
+	/* NOLINTNEXTLINE(cert-err33-c) */
 	snprintf(dest_buf + 14, bufsize - 14, ".%03d",
 		 (int)(ts->tv_nsec / 1000000));
 }

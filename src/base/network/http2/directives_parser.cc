@@ -36,6 +36,7 @@
 #define FILTER_BODY_CONTENT_TYPE "Content-Type: "
 #define FILTER_JSON_TYPE "application/json"
 #define FILTER_OPUS_TYPE "audio/opus"
+#define MAX_GROUPNAME 32
 
 enum content_type {
     CONTENT_TYPE_UNKNOWN,
@@ -158,7 +159,7 @@ static void _body_json(DirParser* dp, const char* data, size_t length)
     NJson::Reader reader;
     NJson::StyledWriter writer;
     std::string group;
-    char group_buf[32];
+    char group_buf[MAX_GROUPNAME];
 
     if (!reader.parse(data, root)) {
         nugu_error("parsing error: '%s'", data);
@@ -206,8 +207,11 @@ static void _body_json(DirParser* dp, const char* data, size_t length)
         if (i > 0)
             group.append(",");
 
-        snprintf(group_buf, sizeof(group_buf), "\"%s.%s\"",
-            h["namespace"].asCString(), h["name"].asCString());
+        if (snprintf(group_buf, MAX_GROUPNAME, "\"%s.%s\"",
+                h["namespace"].asCString(), h["name"].asCString())
+            == 0)
+            group_buf[MAX_GROUPNAME - 1] = 0;
+
         group.append(group_buf);
     }
     group.append("] }");

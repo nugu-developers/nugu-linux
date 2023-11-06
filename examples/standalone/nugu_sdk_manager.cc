@@ -229,7 +229,11 @@ void NuguSDKManager::createInstance()
     setDefaultSoundLayerPolicy();
 
     network_manager->addListener(this);
-    network_manager->setToken(getenv("NUGU_TOKEN"));
+
+    const char* env_token = getenv("NUGU_TOKEN");
+    if (env_token)
+        network_manager->setToken(env_token);
+
     network_manager->setUserAgent("0.2.0");
 }
 

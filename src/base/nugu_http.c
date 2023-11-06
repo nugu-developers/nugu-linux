@@ -233,11 +233,9 @@ EXPORT_API void nugu_http_header_free(NuguHttpHeader *header)
 	g_free(header);
 }
 
-static NuguHttpResponse *nugu_http_response_new(NuguHttpRequest *req)
+static NuguHttpResponse *nugu_http_response_new(void)
 {
 	struct _nugu_http_response *resp;
-
-	g_return_val_if_fail(req != NULL, NULL);
 
 	resp = malloc(sizeof(struct _nugu_http_response));
 	if (!resp) {
@@ -353,7 +351,6 @@ static size_t _on_progress(void *user_data, curl_off_t dltotal,
 {
 	NuguHttpRequest *req = user_data;
 	size_t ratio = 0;
-	int ret;
 
 	if (req->prev_dlnow == dlnow)
 		return 0;
@@ -369,6 +366,8 @@ static size_t _on_progress(void *user_data, curl_off_t dltotal,
 	req->prev_ratio = ratio;
 
 	if (req->progress_callback) {
+		int ret;
+
 		ret = req->progress_callback(req, req->resp, dlnow, dltotal,
 					     req->callback_userdata);
 		if (ret < 0) {
@@ -412,7 +411,9 @@ static void _curl_perform(NuguHttpRequest *req)
 	nugu_buffer_add(req->resp_body, "\0", 1);
 
 	if (req->fp) {
-		fclose(req->fp);
+		if (fclose(req->fp))
+			nugu_error("fclose() failed");
+
 		req->fp = NULL;
 	}
 }
@@ -495,7 +496,7 @@ static NuguHttpRequest *_request_new(NuguHttpHost *host, const char *path,
 		return NULL;
 	}
 
-	req->resp = nugu_http_response_new(req);
+	req->resp = nugu_http_response_new();
 	if (!req->resp) {
 		nugu_http_request_free(req);
 		return NULL;
@@ -742,7 +743,9 @@ nugu_http_download(NuguHttpHost *host, const char *path, const char *dest_path,
 
 	req = _request_new(host, path, header);
 	if (!req) {
-		fclose(fp);
+		if (fclose(fp))
+			nugu_error("fclose() failed");
+
 		return NULL;
 	}
 
@@ -788,8 +791,10 @@ EXPORT_API void nugu_http_request_free(NuguHttpRequest *req)
 
 	nugu_dbg("req(%p) destroy", req);
 
-	if (req->fp)
-		fclose(req->fp);
+	if (req->fp) {
+		if (fclose(req->fp))
+			nugu_error("fclose() failed");
+	}
 
 	if (req->tid)
 		g_thread_join(req->tid);

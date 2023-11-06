@@ -15,6 +15,7 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdarg.h>
 
 #include <alsa/error.h>
@@ -28,15 +29,29 @@
 static void snd_error_log(const char *file, int line, const char *function,
 			  int err, const char *fmt, ...)
 {
-	char msg[4096];
+	char *buf;
+	size_t buf_size;
 	va_list arg;
 
 	va_start(arg, fmt);
-	vsnprintf(msg, 4096, fmt, arg);
+	buf_size = vsnprintf(NULL, 0, fmt, arg) + 1;
+	va_end(arg);
+
+	buf = malloc(buf_size);
+	if (!buf) {
+		nugu_error_nomem();
+		return;
+	}
+
+	va_start(arg, fmt);
+	/* NOLINTNEXTLINE(cert-err33-c) */
+	vsnprintf(buf, 4096, fmt, arg);
 	va_end(arg);
 
 	nugu_log_print(NUGU_LOG_MODULE_AUDIO, NUGU_LOG_LEVEL_DEBUG, NULL, NULL,
-		       -1, "[ALSA] <%s:%d> err=%d, %s", file, line, err, msg);
+		       -1, "[ALSA] <%s:%d> err=%d, %s", file, line, err, buf);
+
+	free(buf);
 }
 
 static int init(NuguPlugin *p)

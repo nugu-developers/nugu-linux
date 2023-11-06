@@ -114,11 +114,12 @@ EXPORT_API void nugu_plugin_free(NuguPlugin *p)
 EXPORT_API int nugu_plugin_add(NuguPlugin *p)
 {
 	GList *cur;
-	NuguPlugin *tmp;
 
 	g_return_val_if_fail(p != NULL, -1);
 
 	for (cur = _plugin_list; cur; cur = cur->next) {
+		NuguPlugin *tmp;
+
 		tmp = cur->data;
 		if (!tmp)
 			continue;

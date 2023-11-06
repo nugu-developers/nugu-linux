@@ -246,6 +246,7 @@ void NuguSampleManager::showPrompt(void)
                   << C_RESET;
     }
 
+    // NOLINTNEXTLINE(cert-err33-c)
     fflush(stdout);
 }
 

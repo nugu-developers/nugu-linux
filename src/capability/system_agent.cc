@@ -178,7 +178,11 @@ void SystemAgent::sendEventUserInactivityReport(int seconds, EventResultCallback
         return;
     }
 
-    snprintf(buf, 64, "{\"inactiveTimeInSeconds\": %d}", seconds);
+    if (snprintf(buf, 64, "{\"inactiveTimeInSeconds\": %d}", seconds) == 0) {
+        nugu_error("snprintf() failed");
+        buf[sizeof(buf) - 1] = 0;
+    }
+
     payload = buf;
 
     sendEvent(ename, getContextInfo(), payload, std::move(cb));
