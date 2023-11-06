@@ -93,7 +93,7 @@ static void test_nugu_uuid_time(void)
 	g_assert(t_spec.tv_sec == 1579655759);
 	g_assert(t_spec.tv_nsec == 39000000);
 	gmtime_r(&t_spec.tv_sec, &t_tm);
-	strftime(timestr, sizeof(timestr), "%F %T", &t_tm);
+	g_assert(strftime(timestr, sizeof(timestr), "%F %T", &t_tm) != 0);
 	g_assert_cmpstr(timestr, ==, "2020-01-22 01:15:59");
 
 	/* Convert timespec to 5 bytes */
@@ -108,7 +108,7 @@ static void test_nugu_uuid_time(void)
 	g_assert(t_spec.tv_sec == 1579655809);
 	g_assert(t_spec.tv_nsec == 627000000);
 	gmtime_r(&t_spec.tv_sec, &t_tm);
-	strftime(timestr, sizeof(timestr), "%F %T", &t_tm);
+	g_assert(strftime(timestr, sizeof(timestr), "%F %T", &t_tm) != 0);
 	g_assert_cmpstr(timestr, ==, "2020-01-22 01:16:49");
 
 	/* Convert timespec to 5 bytes */
@@ -123,7 +123,7 @@ static void test_nugu_uuid_time(void)
 	g_assert(t_spec.tv_sec == 1579740221);
 	g_assert(t_spec.tv_nsec == 516000000);
 	gmtime_r(&t_spec.tv_sec, &t_tm);
-	strftime(timestr, sizeof(timestr), "%F %T", &t_tm);
+	g_assert(strftime(timestr, sizeof(timestr), "%F %T", &t_tm) != 0);
 	g_assert_cmpstr(timestr, ==, "2020-01-23 00:43:41");
 
 	/* Convert timespec to 5 bytes */

@@ -256,6 +256,11 @@ static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 	}
 
 	rec_file = getenv(NUGU_ENV_RECORDING_FROM_FILE);
+	if (rec_file == NULL) {
+		nugu_error("can't get recording filename");
+		return -1;
+	}
+
 	src_fd = open(rec_file, O_RDONLY);
 	if (src_fd == -1) {
 		nugu_error("can't open the file: '%s'", rec_file);

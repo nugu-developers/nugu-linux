@@ -424,7 +424,10 @@ static void _log_formatted(enum nugu_log_module module,
 	else if (_log_system == NUGU_LOG_SYSTEM_CUSTOM && _log_handler) {
 		char msg[MAX_LOG_LENGTH];
 
-		vsnprintf(msg, MAX_LOG_LENGTH, format, arg);
+		if (vsnprintf(msg, MAX_LOG_LENGTH, format, arg) >=
+		    MAX_LOG_LENGTH)
+			msg[MAX_LOG_LENGTH - 1] = 0;
+
 		_log_handler(module, level, prefix, msg,
 			     _log_handler_user_data);
 
@@ -436,18 +439,28 @@ static void _log_formatted(enum nugu_log_module module,
 
 	pthread_mutex_lock(&_log_mutex);
 
+	/* NOLINTNEXTLINE(cert-err33-c) */
 	if (len > 0)
 		fprintf(fp, "%s ", prefix);
 
 	if (_log_level_map[level].color != NULL) {
+		/* NOLINTNEXTLINE(cert-err33-c) */
 		fputs(_log_level_map[level].color, fp);
+
+		/* NOLINTNEXTLINE(cert-err33-c) */
 		vfprintf(fp, format, arg);
+
+		/* NOLINTNEXTLINE(cert-err33-c) */
 		fputs(COLOR_OFF "\n", fp);
 	} else {
+		/* NOLINTNEXTLINE(cert-err33-c) */
 		vfprintf(fp, format, arg);
+
+		/* NOLINTNEXTLINE(cert-err33-c) */
 		fputc('\n', fp);
 	}
 
+	/* NOLINTNEXTLINE(cert-err33-c) */
 	fflush(fp);
 
 	pthread_mutex_unlock(&_log_mutex);
@@ -783,6 +796,7 @@ EXPORT_API void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
 	}
 
 	if (i % HEXDUMP_COLUMN_SIZE != 0)
+		/* NOLINTNEXTLINE(cert-err33-c) */
 		fputc('\n', fp);
 
 	if (footer)

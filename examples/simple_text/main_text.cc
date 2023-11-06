@@ -83,12 +83,15 @@ public:
 
 int main(int argc, char* argv[])
 {
+    const char* env_token;
+
     if (argc != 2) {
         std::cout << "Usage: " << argv[0] << " Text-Command" << std::endl;
         return 0;
     }
 
-    if (getenv("NUGU_TOKEN") == NULL) {
+    env_token = getenv("NUGU_TOKEN");
+    if (env_token == NULL) {
         std::cout << "Please set the token using the NUGU_TOKEN environment variable." << std::endl;
         return -1;
     }
@@ -136,7 +139,7 @@ int main(int argc, char* argv[])
 
     auto network_manager(nugu_client->getNetworkManager());
     network_manager->addListener(network_manager_listener.get());
-    network_manager->setToken(getenv("NUGU_TOKEN"));
+    network_manager->setToken(env_token);
     network_manager->connect();
 
     /* Start GMainLoop */

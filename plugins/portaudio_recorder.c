@@ -286,6 +286,9 @@ static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 	struct pa_audio_param *rec_param = nugu_recorder_get_driver_data(rec);
 	int rec_5sec;
 	int rec_100ms;
+#ifdef NUGU_ENV_RECORDING_FROM_FILE
+	const char *env_filename;
+#endif
 
 	if (rec_param) {
 		nugu_dbg("already start");
@@ -345,11 +348,10 @@ static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 #endif
 
 #ifdef NUGU_ENV_RECORDING_FROM_FILE
-	if (getenv(NUGU_ENV_RECORDING_FROM_FILE)) {
-		rec_param->src_fd =
-			open(getenv(NUGU_ENV_RECORDING_FROM_FILE), O_RDONLY);
-		nugu_dbg("recording from file: '%s'",
-			 getenv(NUGU_ENV_RECORDING_FROM_FILE));
+	env_filename = getenv(NUGU_ENV_RECORDING_FROM_FILE);
+	if (env_filename) {
+		rec_param->src_fd = open(env_filename, O_RDONLY);
+		nugu_dbg("recording from file: '%s'", env_filename);
 	} else {
 		rec_param->src_fd = -1;
 	}

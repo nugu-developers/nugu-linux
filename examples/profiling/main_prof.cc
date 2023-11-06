@@ -100,7 +100,7 @@ static void test_finished(void)
         return;
     }
 
-    /* CSV data */
+    /* CSV data, NOLINTNEXTLINE(cert-err33-c) */
     fprintf(fp_out, "%s,%d,%ld,%d,%d,%d,%d,%d,%s\n",
         test_name.c_str(), test_iteration, tmp->timestamp.tv_sec,
         nugu_prof_get_diff_msec_type(NUGU_PROF_TYPE_ASR_LISTENING_STARTED, NUGU_PROF_TYPE_ASR_END_POINT_DETECTED),
@@ -268,6 +268,7 @@ int main(int argc, char* argv[])
     std::string input_file;
     std::string output_file;
     std::string model_path = DEFAULT_MODEL_PATH;
+    const char* env_token;
 
     while ((c = getopt(argc, argv, "i:o:n:m:d:t:c:")) != -1) {
         switch (c) {
@@ -298,7 +299,8 @@ int main(int argc, char* argv[])
         }
     }
 
-    if (getenv("NUGU_TOKEN") == NULL) {
+    env_token = getenv("NUGU_TOKEN");
+    if (env_token == NULL) {
         printf("Please set the token using the NUGU_TOKEN environment variable.\n");
         return -1;
     }
@@ -313,7 +315,9 @@ int main(int argc, char* argv[])
         printf("Fail to open input file '%s'\n", input_file.c_str());
         return -1;
     }
-    fclose(fp_out);
+
+    if (fclose(fp_out))
+        printf("fclose() failed\n");
 
     if (test_name.size() == 0)
         test_name = input_file;
@@ -326,7 +330,7 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    /* CSV header */
+    /* CSV header, NOLINTNEXTLINE(cert-err33-c) */
     fprintf(fp_out, "Testcase,Num,timestamp,%s,%s,%s,%s,%s,Dialog_Request_ID\n",
         nugu_prof_get_type_name(NUGU_PROF_TYPE_ASR_END_POINT_DETECTED),
         nugu_prof_get_type_name(NUGU_PROF_TYPE_ASR_RESULT),
@@ -384,7 +388,7 @@ int main(int argc, char* argv[])
 
     auto network_manager(nugu_client->getNetworkManager());
     network_manager->addListener(network_manager_listener.get());
-    network_manager->setToken(getenv("NUGU_TOKEN"));
+    network_manager->setToken(env_token);
 
     network_timer_src = g_timeout_add_seconds(test_network_timeout, _network_timeout_cb, NULL);
     network_manager->connect();
@@ -400,8 +404,10 @@ int main(int argc, char* argv[])
 
     nugu_client->deInitialize();
 
-    if (fp_out)
-        fclose(fp_out);
+    if (fp_out) {
+        if (fclose(fp_out))
+            printf("fclose() failed\n");
+    }
 
     return 0;
 }
