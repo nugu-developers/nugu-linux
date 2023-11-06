@@ -268,7 +268,7 @@ void SpeechRecognizer::loop()
                     length, &encoded_size);
                 if (encoded) {
                     /* Invoke the onRecordData callback in thread context */
-                    if (listener)
+                    if (listener && (is_epd_end || encoded_size != 0))
                         listener->onRecordData(encoded, encoded_size, is_epd_end);
 
                     free(encoded);
