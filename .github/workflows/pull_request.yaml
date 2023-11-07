@@ -3,49 +3,21 @@ on: pull_request
 
 jobs:
   checkpatch_review:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Calculate PR commits + 1'
-        run: echo "PR_FETCH_DEPTH=$(( ${{ github.event.pull_request.commits }} + 1 ))" >> $GITHUB_ENV
-      - name: Check out the repo
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-          fetch-depth: ${{ env.PR_FETCH_DEPTH }}
-      - name: Run checkpatch review
-        uses: webispy/checkpatch-action@v9
+    uses: nugulinux/.github/.github/workflows/checkpatch.yml@master
+    with:
+      commits: ${{ github.event.pull_request.commits }}
+      head_sha: ${{ github.event.pull_request.head.sha }}
+
   clang_tidy_review:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Run clang-tidy review
-        uses: kimhyungrok/clang-tidy-action@v1.2.1
-        with:
-          exclude: 'externals /usr'
+    uses: nugulinux/.github/.github/workflows/clang_tidy.yml@master
+    with:
+      exclude: 'externals'
 
   cppcheck:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out the repo
-        uses: actions/checkout@v3
-        with:
-          submodules: true
-          fetch-depth: 0
-      - name: Generate compile_commands.json
-        run: |
-          mkdir build
-          docker run -t --rm -v $PWD:$PWD -w $PWD/build \
-            nugulinux/devenv:focal cmake ..
-      - name: Run cppcheck
-        run: |
-          docker run -t --rm -v $PWD:$PWD -w $PWD \
-            ghcr.io/facthunder/cppcheck:2.6 \
-            cppcheck --project=build/compile_commands.json \
-              --suppressions-list=.cppcheck_suppress.txt \
-              --enable=all -j 6 -iexternals
+    uses: nugulinux/.github/.github/workflows/cppcheck.yml@master
+    with:
+      docker_image: nugulinux/devenv:jammy
+      command: cmake ..
 
   build_linux:
     runs-on: ubuntu-latest
