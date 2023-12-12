@@ -20,6 +20,14 @@
 #include "base/nugu_log.h"
 #include "playsync_manager.hh"
 
+namespace {
+template <typename T, typename A>
+bool hasElement(const T& container, const A& element)
+{
+    return container.find(element) != container.cend();
+}
+}
+
 namespace NuguCore {
 
 PlaySyncManager::PlaySyncManager()
@@ -325,14 +333,12 @@ void PlaySyncManager::appendSync(const std::string& ps_id, const NuguDirective* 
     if (!ndir)
         return;
 
-    try {
+    if (hasElement(playstack_map, ps_id)) {
         auto& playsync_container(playstack_map.at(ps_id));
         std::string requester = nugu_directive_peek_namespace(ndir);
 
         if (sync_capability_list.find(requester) != sync_capability_list.cend())
             playsync_container.emplace(requester, std::make_pair(PlaySyncState::Appending, nullptr));
-    } catch (std::out_of_range& exception) {
-        // skip silently
     }
 }
 
@@ -352,22 +358,19 @@ void PlaySyncManager::updateExtraData(const std::string& ps_id, const std::strin
 
 void PlaySyncManager::notifyStateChanged(const std::string& ps_id, PlaySyncState state, const std::string& requester)
 {
-    try {
+    if (hasElement(playstack_map, ps_id)) {
         const auto& playsync_container = playstack_map.at(ps_id);
 
         if (!requester.empty()) {
-            listener_map.at(requester)->onSyncState(ps_id, state, playsync_container.at(requester).second);
+            if (hasElement(listener_map, requester) && hasElement(playsync_container, requester))
+                listener_map.at(requester)->onSyncState(ps_id, state, playsync_container.at(requester).second);
         } else {
-            for (const auto& element : playsync_container) {
-                try {
+            for (const auto& element : playsync_container)
+                if (hasElement(listener_map, element.first))
                     listener_map.at(element.first)->onSyncState(ps_id, state, element.second.second);
-                } catch (std::out_of_range& exception) {
-                    // skip silently
-                }
-            }
         }
-    } catch (std::out_of_range& exception) {
-        nugu_warn("The PlaySyncContainer or requester's element not exist.");
+    } else {
+        nugu_warn("The PlaySyncContainer is not exist.");
     }
 }
 
