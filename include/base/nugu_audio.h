@@ -118,6 +118,13 @@ void nugu_audio_set_attribute_str(const NuguAudioAttribute attribute,
  */
 const char *nugu_audio_get_attribute_str(const NuguAudioAttribute attribute);
 
+/**
+ * @brief Get audio attribute type from string
+ * @param[in] str audio attribute's string
+ * @return audio attribute
+ */
+NuguAudioAttribute nugu_audio_get_attribute(const char *str);
+
 #ifdef __cplusplus
 }
 #endif

@@ -92,3 +92,32 @@ nugu_audio_get_attribute_str(const NuguAudioAttribute attribute)
 
 	return nugu_audio_get_default_attribute_str(attribute);
 }
+
+EXPORT_API NuguAudioAttribute nugu_audio_get_attribute(const char *str)
+{
+	if (str == NULL)
+		return NUGU_AUDIO_ATTRIBUTE_MUSIC;
+
+	if (!strncmp(str, NUGU_AUDIO_ATTRIBUTE_MUSIC_DEFAULT_STRING, 5))
+		return NUGU_AUDIO_ATTRIBUTE_MUSIC;
+	else if (!strncmp(str, NUGU_AUDIO_ATTRIBUTE_RINGTONE_DEFAULT_STRING, 5))
+		return NUGU_AUDIO_ATTRIBUTE_RINGTONE;
+	else if (!strncmp(str, NUGU_AUDIO_ATTRIBUTE_CALL_DEFAULT_STRING, 5))
+		return NUGU_AUDIO_ATTRIBUTE_CALL;
+	else if (!strncmp(str, NUGU_AUDIO_ATTRIBUTE_NOTIFICATION_DEFAULT_STRING,
+			  5))
+		return NUGU_AUDIO_ATTRIBUTE_NOTIFICATION;
+	else if (!strncmp(str, NUGU_AUDIO_ATTRIBUTE_ALARM_DEFAULT_STRING, 5))
+		return NUGU_AUDIO_ATTRIBUTE_ALARM;
+	else if (!strncmp(str,
+			  NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND_DEFAULT_STRING, 5))
+		return NUGU_AUDIO_ATTRIBUTE_VOICE_COMMAND;
+	else if (!strncmp(str, NUGU_AUDIO_ATTRIBUTE_NAVIGATION_DEFAULT_STRING,
+			  5))
+		return NUGU_AUDIO_ATTRIBUTE_NAVIGATION;
+	else if (!strncmp(str, NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND_DEFAULT_STRING,
+			  5))
+		return NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND;
+	else
+		return NUGU_AUDIO_ATTRIBUTE_MUSIC;
+}
