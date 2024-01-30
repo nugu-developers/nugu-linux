@@ -299,9 +299,13 @@ IF (ENABLE_LTO)
 ENDIF()
 
 IF(ENABLE_ASAN)
-	# Apply AddressSanitizer
-	# - https://github.com/google/sanitizers/wiki/AddressSanitizer
-	ADD_COMPILE_OPTIONS(-fsanitize=address)
+	ADD_COMPILE_OPTIONS(
+		# Apply AddressSanitizer
+		# - https://github.com/google/sanitizers/wiki/AddressSanitizer
+		-fsanitize=address
+
+		# Disable warning message for '... changed in GCC 7.1'
+		-Wno-psabi)
 	LINK_LIBRARIES(-lasan)
 	MESSAGE(" * Address Sanitizer enabled")
 ENDIF()
