@@ -39,7 +39,7 @@ jobs:
           ]
     steps:
       - name: Check out the repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
           fetch-depth: 0
@@ -67,8 +67,8 @@ jobs:
           cp *.deb /tmp/result/
 
       - name: Build artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: DEB packages
+          name: deb-${{ matrix.target }}
           path: /tmp/result/
 

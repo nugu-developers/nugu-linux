@@ -15,7 +15,7 @@ jobs:
         run: echo "Comment - ${{ github.event.inputs.comment }}"
 
       - name: Check out the repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Homebrew setup
         run: brew install cmake jsoncpp curl openssl gstreamer gst-plugins-base pkg-config
