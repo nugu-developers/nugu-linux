@@ -17,9 +17,6 @@ TARGET_INCLUDE_DIRECTORIES(objhttp2 PRIVATE
 	network
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CURL_INCLUDE})
-TARGET_COMPILE_OPTIONS(objhttp2 PRIVATE
-	# Not warnings (GCC 10.3 issue)
-	-Wno-analyzer-malloc-leak)
 IF(ENABLE_BUILTIN_CURL)
 	ADD_DEPENDENCIES(objhttp2 CURL)
 ENDIF()
@@ -40,9 +37,6 @@ TARGET_COMPILE_DEFINITIONS(objbase PRIVATE
 TARGET_COMPILE_OPTIONS(objbase PRIVATE
 	# Set default visibility to hidden to reduce symbol count
 	-fvisibility=hidden
-
-	# Not warnings (GCC 10.3 issue)
-	-Wno-analyzer-malloc-leak
 
 	# Turn on extra warnings
 	-Wmissing-prototypes
