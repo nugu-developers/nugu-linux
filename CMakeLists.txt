@@ -173,6 +173,10 @@ ENDIF()
 # set njson variables
 SET(NJSON_LIBRARY ${PROJECT_BINARY_DIR}/externals/libnjson.a)
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/externals/njson/include)
+pkg_check_modules(rapidjson_pkgs QUIET RapidJSON)
+IF(rapidjson_pkgs_FOUND)
+	SET(RAPIDJSON_PKGCONFIG RapidJSON)
+ENDIF()
 
 # Add vendor specific library dependency (keyword detector, end-point detector)
 IF(ENABLE_VENDOR_LIBRARY)
@@ -234,7 +238,7 @@ IF(BUILD_LIBRARY)
 	# Set NUGU SDK library default dependency
 	SET(DEFAULT_LIB_DEPENDENCY
 		glib-2.0 gio-2.0 gio-unix-2.0 gthread-2.0 openssl
-		${CURL_PKGCONFIG} ${VENDOR_PKGCONFIG})
+		${CURL_PKGCONFIG} ${VENDOR_PKGCONFIG} ${RAPIDJSON_PKGCONFIG})
 
 	# Sets the option so that the built library has a higher link order than
 	# the library already installed on the system.
@@ -320,6 +324,9 @@ IF (CMAKE_COMPILER_IS_GNUCC)
 
 		# Not errors
 		STRING(APPEND CMAKE_C_FLAGS " -Wno-analyzer-possible-null-dereference")
+
+		# Not warnings (GCC 10.3 issue)
+		STRING(APPEND CMAKE_C_FLAGS " -Wno-analyzer-malloc-leak")
 	ENDIF()
 
 	ADD_COMPILE_OPTIONS(
