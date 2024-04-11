@@ -292,11 +292,15 @@ void NuguClientImpl::unregisterDialogUXStateAggregator()
 
 void NuguClientImpl::setupSpeechRecognizerAggregator()
 {
-    // setup only if WakeupHandler is not exist as considering user setup case
-    if (!wakeup_model_file.net.empty() && !wakeup_model_file.search.empty() && !speech_recognizer_aggregator->getWakeupHandler())
-        speech_recognizer_aggregator->setWakeupHandler(std::shared_ptr<IWakeupHandler>(nugu_core_container->createWakeupHandler(wakeup_model_file)));
+    try {
+        // setup only if WakeupHandler is not exist as considering user setup case
+        if (!wakeup_model_file.net.empty() && !wakeup_model_file.search.empty() && !speech_recognizer_aggregator->getWakeupHandler())
+            speech_recognizer_aggregator->setWakeupHandler(std::shared_ptr<IWakeupHandler>(nugu_core_container->createWakeupHandler(wakeup_model_file)));
 
-    speech_recognizer_aggregator->setASRHandler(dynamic_cast<IASRHandler*>(icapability_map.at("ASR")));
+        speech_recognizer_aggregator->setASRHandler(dynamic_cast<IASRHandler*>(icapability_map.at("ASR")));
+    } catch (std::out_of_range& exception) {
+        // skip silently
+    }
 }
 
 template <typename H>
