@@ -143,7 +143,7 @@ public:
 
     /**
      * @brief Set the device gateway registry url.
-     * @param[in] registry url
+     * @param[in] url registry url
      * @return result
      * @retval 0 success
      * @retval -1 failure

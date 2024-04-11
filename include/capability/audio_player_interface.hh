@@ -226,7 +226,7 @@ public:
 
     /**
      * @brief Request the audio player to move the current content section.
-     * @param[in] sec content's position. It is moved from the current media position.
+     * @param[in] msec content's position. It is moved from the current media position.
      */
     virtual void seek(int msec) = 0;
 

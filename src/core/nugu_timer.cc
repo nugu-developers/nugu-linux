@@ -38,11 +38,11 @@ public:
     NUGUTimer::timer_callback cb;
 };
 
-NUGUTimer::NUGUTimer(bool singleShot)
+NUGUTimer::NUGUTimer(bool singleshot)
     : d(new NUGUTimerPrivate())
 {
     d->timer = nugu_timer_new(DEFAULT_TIMEOUT_MSEC);
-    nugu_timer_set_singleshot(d->timer, singleShot);
+    nugu_timer_set_singleshot(d->timer, singleshot);
     nugu_timer_set_callback(d->timer, timerCallback, this);
 }
 
@@ -69,9 +69,9 @@ unsigned int NUGUTimer::getInterval()
     return nugu_timer_get_interval(d->timer);
 }
 
-void NUGUTimer::setSingleShot(bool singleShot)
+void NUGUTimer::setSingleShot(bool singleshot)
 {
-    nugu_timer_set_singleshot(d->timer, singleShot);
+    nugu_timer_set_singleshot(d->timer, singleshot);
 }
 
 bool NUGUTimer::getSingleShot()

@@ -73,7 +73,7 @@ public:
      * the timer only once. The default value of singleshot is false,
      * and the timer runs repeatedly.
      */
-    virtual INuguTimer* createNuguTimer(bool singleShot = false) = 0;
+    virtual INuguTimer* createNuguTimer(bool singleshot = false) = 0;
 
     /**
      * @brief Get CapabilityHelper instance
