@@ -194,7 +194,7 @@ EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver,
 	if (pcm->buf == NULL) {
 		nugu_error("nugu_buffer_new() failed");
 		g_free(pcm->name);
-		free(pcm);
+		g_free(pcm);
 		return NULL;
 	}
 

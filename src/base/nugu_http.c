@@ -133,7 +133,7 @@ EXPORT_API void nugu_http_host_free(NuguHttpHost *host)
 	g_return_if_fail(host != NULL);
 
 	g_free(host->url);
-	g_free(host);
+	free(host);
 }
 
 EXPORT_API NuguHttpHeader *nugu_http_header_new(void)
@@ -230,7 +230,7 @@ EXPORT_API void nugu_http_header_free(NuguHttpHeader *header)
 		header->map = NULL;
 	}
 
-	g_free(header);
+	free(header);
 }
 
 static NuguHttpResponse *nugu_http_response_new(void)
@@ -289,7 +289,7 @@ static void _nugu_http_response_free_internal(NuguHttpResponse *resp)
 	g_return_if_fail(resp != NULL);
 
 	memset(resp, 0, sizeof(struct _nugu_http_response));
-	g_free(resp);
+	free(resp);
 }
 
 EXPORT_API void nugu_http_response_free(NuguHttpResponse *resp)
@@ -818,7 +818,7 @@ EXPORT_API void nugu_http_request_free(NuguHttpRequest *req)
 		free(req->body);
 
 	g_free(req->endpoint);
-	g_free(req);
+	free(req);
 }
 
 EXPORT_API void nugu_http_init(void)

@@ -71,10 +71,10 @@ void v1_event_attachment_free(V1EventAttachment *attach)
 	g_return_if_fail(attach != NULL);
 
 	if (attach->host)
-		free(attach->host);
+		g_free(attach->host);
 
 	if (attach->msgid)
-		free(attach->msgid);
+		g_free(attach->msgid);
 
 	if (attach->req)
 		http2_request_unref(attach->req);

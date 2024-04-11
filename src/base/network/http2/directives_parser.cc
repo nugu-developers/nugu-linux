@@ -135,7 +135,7 @@ static void on_parsing_header(MultipartParser* parser, const char* data,
             dp->body_size = (size_t)strtoumax(value.c_str(), nullptr, 10);
         } else if (key.compare("Parent-Message-Id") == 0) {
             if (dp->parent_msg_id)
-                free(dp->parent_msg_id);
+                g_free(dp->parent_msg_id);
             dp->parent_msg_id = g_strdup(value.c_str());
         } else if (key.compare("Filename") == 0) {
             dp->seq = std::stoi(value);
@@ -345,10 +345,10 @@ void dir_parser_free(DirParser* dp)
     multipart_parser_free(dp->m_parser);
 
     if (dp->debug_msg)
-        free(dp->debug_msg);
+        g_free(dp->debug_msg);
 
     if (dp->parent_msg_id)
-        free(dp->parent_msg_id);
+        g_free(dp->parent_msg_id);
 
     free(dp);
 }
@@ -394,7 +394,7 @@ int dir_parser_set_debug_message(DirParser* dp, const char* msg)
     g_return_val_if_fail(dp != NULL, -1);
 
     if (dp->debug_msg) {
-        free(dp->debug_msg);
+        g_free(dp->debug_msg);
         dp->debug_msg = NULL;
     }
 

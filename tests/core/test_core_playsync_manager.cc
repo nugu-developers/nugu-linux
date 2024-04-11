@@ -24,6 +24,7 @@
 #include <mutex>
 #include <set>
 #include <thread>
+#include <stdexcept>
 
 #include "interaction_control_manager.hh"
 #include "playsync_manager.hh"

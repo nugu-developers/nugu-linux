@@ -121,9 +121,9 @@ static void _emit_send_result(int code, HTTP2Request *req)
 		nugu_error("nugu_equeue_push failed");
 
 		if (event->dialog_id)
-			free(event->dialog_id);
+			g_free(event->dialog_id);
 		if (event->msg_id)
-			free(event->msg_id);
+			g_free(event->msg_id);
 		free(event);
 	}
 }

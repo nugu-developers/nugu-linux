@@ -115,23 +115,23 @@ EXPORT_API void nugu_event_free(NuguEvent *nev)
 {
 	g_return_if_fail(nev != NULL);
 
-	free(nev->name_space);
-	free(nev->name);
-	free(nev->msg_id);
-	free(nev->dialog_id);
-	free(nev->version);
+	g_free(nev->name_space);
+	g_free(nev->name);
+	g_free(nev->msg_id);
+	g_free(nev->dialog_id);
+	g_free(nev->version);
 
 	if (nev->referrer_id)
-		free(nev->referrer_id);
+		g_free(nev->referrer_id);
 
 	if (nev->json)
-		free(nev->json);
+		g_free(nev->json);
 
 	if (nev->context)
-		free(nev->context);
+		g_free(nev->context);
 
 	if (nev->mime_type)
-		free(nev->mime_type);
+		g_free(nev->mime_type);
 
 	memset(nev, 0, sizeof(NuguEvent));
 	free(nev);
@@ -166,7 +166,7 @@ EXPORT_API int nugu_event_set_context(NuguEvent *nev, const char *context)
 	g_return_val_if_fail(context != NULL, -1);
 
 	if (nev->context)
-		free(nev->context);
+		g_free(nev->context);
 
 	nev->context = g_strdup(context);
 
@@ -192,7 +192,7 @@ EXPORT_API int nugu_event_set_json(NuguEvent *nev, const char *json)
 	g_return_val_if_fail(nev != NULL, -1);
 
 	if (nev->json) {
-		free(nev->json);
+		g_free(nev->json);
 		nev->json = NULL;
 	}
 
@@ -227,7 +227,7 @@ EXPORT_API int nugu_event_set_dialog_id(NuguEvent *nev, const char *dialog_id)
 	g_return_val_if_fail(dialog_id != NULL, -1);
 
 	if (nev->dialog_id)
-		free(nev->dialog_id);
+		g_free(nev->dialog_id);
 
 	nev->dialog_id = g_strdup(dialog_id);
 
@@ -247,7 +247,7 @@ EXPORT_API int nugu_event_set_referrer_id(NuguEvent *nev,
 	g_return_val_if_fail(nev != NULL, -1);
 
 	if (nev->referrer_id)
-		free(nev->referrer_id);
+		g_free(nev->referrer_id);
 
 	if (referrer_id)
 		nev->referrer_id = g_strdup(referrer_id);
@@ -326,7 +326,7 @@ EXPORT_API int nugu_event_set_mime_type(NuguEvent *nev, const char *type)
 	g_return_val_if_fail(nev != NULL, -1);
 
 	if (nev->mime_type)
-		free(nev->mime_type);
+		g_free(nev->mime_type);
 
 	if (type)
 		nev->mime_type = g_strdup(type);

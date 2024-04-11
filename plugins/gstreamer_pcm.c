@@ -155,7 +155,7 @@ static int _dumpfile_open(const char *path, const char *prefix)
 #ifdef NUGU_ENV_DUMP_LINK_FILE_PCM
 	_dumpfile_link(buf);
 #endif
-	free(buf);
+	g_free(buf);
 
 	return fd;
 }
@@ -579,7 +579,7 @@ static void _pcm_destroy(NuguPcmDriver *driver, NuguPcm *pcm)
 	_pcm_stop(driver, pcm);
 
 	if (pcm_param)
-		free(pcm_param);
+		g_free(pcm_param);
 
 	nugu_pcm_set_driver_data(pcm, NULL);
 
