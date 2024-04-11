@@ -125,7 +125,7 @@ static int _send_v1_attachment(DGServer *server, NuguEvent *nev, int is_end,
 				      nugu_event_peek_msg_id(nev), msg_id,
 				      nugu_event_peek_dialog_id(nev),
 				      nugu_event_get_seq(nev), is_end);
-	free(msg_id);
+	g_free(msg_id);
 
 	v1_event_attachment_set_data(ea, data, length);
 
@@ -156,7 +156,7 @@ static int _send_v2_events_attachment(DGServer *server, NuguEvent *nev,
 				    nugu_event_peek_msg_id(nev));
 	nugu_prof_mark_data(NUGU_PROF_TYPE_NETWORK_EVENT_ATTACHMENT_REQUEST,
 			    nugu_event_peek_dialog_id(nev), msg_id, prof_data);
-	free(prof_data);
+	g_free(prof_data);
 
 	if (is_end == 1)
 		nugu_prof_mark_data(NUGU_PROF_TYPE_ASR_LAST_ATTACHMENT,
@@ -169,7 +169,7 @@ static int _send_v2_events_attachment(DGServer *server, NuguEvent *nev,
 
 	v2_events_send_binary(e, msg_id, nugu_event_get_seq(nev), is_end,
 			      nugu_event_peek_mime_type(nev), length, data);
-	free(msg_id);
+	g_free(msg_id);
 
 	if (is_end == 0)
 		return 0;

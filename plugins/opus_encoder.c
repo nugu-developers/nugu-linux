@@ -88,7 +88,7 @@ static int _dumpfile_open(const char *path, const char *prefix)
 
 	nugu_dbg("%s filedump to '%s' (fd=%d)", prefix, buf, fd);
 
-	free(buf);
+	g_free(buf);
 
 	return fd;
 }

@@ -217,7 +217,7 @@ static gboolean _emit_in_idle(gpointer userdata)
 		cb(data->type, data, cb_userdata);
 
 	if (data->contents)
-		free(data->contents);
+		g_free(data->contents);
 	free(data);
 
 	return FALSE;

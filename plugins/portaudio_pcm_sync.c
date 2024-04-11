@@ -21,6 +21,7 @@
 #include <time.h>
 #include <fcntl.h>
 #include <errno.h>
+#include <pthread.h>
 
 #include <alsa/error.h>
 #include <glib.h>
@@ -128,7 +129,7 @@ static int _dumpfile_open(const char *path, const char *prefix)
 #ifdef NUGU_ENV_DUMP_LINK_FILE_PCM
 	_dumpfile_link(buf);
 #endif
-	free(buf);
+	g_free(buf);
 
 	return fd;
 }
@@ -388,7 +389,7 @@ static void _pcm_destroy(NuguPcmDriver *driver, NuguPcm *pcm)
 	if (err != paNoError)
 		nugu_error("Pa_CloseStream return fail(%d)", err);
 
-	free(pcm_param);
+	g_free(pcm_param);
 	nugu_pcm_set_driver_data(pcm, NULL);
 
 #ifdef DEBUG_PCM

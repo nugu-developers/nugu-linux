@@ -85,9 +85,9 @@ static void _emit_send_result(int code, HTTP2Request *req)
 		nugu_error("nugu_equeue_push failed");
 
 		if (event->dialog_id)
-			free(event->dialog_id);
+			g_free(event->dialog_id);
 		if (event->msg_id)
-			free(event->msg_id);
+			g_free(event->msg_id);
 		free(event);
 	}
 }
@@ -121,11 +121,11 @@ static void _emit_directive_response(HTTP2Request *req, const char *json)
 		nugu_error("nugu_equeue_push failed");
 
 		if (event->event_dialog_id)
-			free(event->event_dialog_id);
+			g_free(event->event_dialog_id);
 		if (event->event_msg_id)
-			free(event->event_msg_id);
+			g_free(event->event_msg_id);
 		if (event->json)
-			free(event->json);
+			g_free(event->json);
 		free(event);
 	}
 }
@@ -331,7 +331,7 @@ void v2_events_free(V2Events *event)
 	g_return_if_fail(event != NULL);
 
 	if (event->boundary)
-		free(event->boundary);
+		g_free(event->boundary);
 
 	if (event->req)
 		http2_request_unref(event->req);

@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <list>
 #include <map>
+#include <pthread.h>
 
 #include <glib.h>
 

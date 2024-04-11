@@ -94,35 +94,35 @@ static void nugu_directive_free(NuguDirective *ndir)
 	nugu_info("destroy: %s.%s 'id=%s'", ndir->name_space, ndir->name,
 		  ndir->msg_id);
 
-	free(ndir->name_space);
+	g_free(ndir->name_space);
 	ndir->name_space = NULL;
 
-	free(ndir->name);
+	g_free(ndir->name);
 	ndir->name = NULL;
 
-	free(ndir->version);
+	g_free(ndir->version);
 	ndir->version = NULL;
 
-	free(ndir->msg_id);
+	g_free(ndir->msg_id);
 	ndir->msg_id = NULL;
 
-	free(ndir->dialog_id);
+	g_free(ndir->dialog_id);
 	ndir->dialog_id = NULL;
 
-	free(ndir->referrer_id);
+	g_free(ndir->referrer_id);
 	ndir->referrer_id = NULL;
 
-	free(ndir->json);
+	g_free(ndir->json);
 	ndir->json = NULL;
 
-	free(ndir->groups);
+	g_free(ndir->groups);
 	ndir->groups = NULL;
 
 	nugu_buffer_free(ndir->buf, 1);
 	ndir->buf = NULL;
 
 	if (ndir->media_type)
-		free(ndir->media_type);
+		g_free(ndir->media_type);
 
 	memset(ndir, 0, sizeof(NuguDirective));
 	free(ndir);
@@ -226,7 +226,7 @@ EXPORT_API int nugu_directive_set_media_type(NuguDirective *ndir,
 	g_return_val_if_fail(ndir != NULL, -1);
 
 	if (ndir->media_type) {
-		free(ndir->media_type);
+		g_free(ndir->media_type);
 		ndir->media_type = NULL;
 	}
 

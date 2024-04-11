@@ -15,6 +15,7 @@
  */
 
 #include <algorithm>
+#include <pthread.h>
 
 #include "base/nugu_log.h"
 

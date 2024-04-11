@@ -29,7 +29,7 @@ static NuguClient* nugu_client = nullptr;
 static void setFilterDialogId(const char* dialog_id)
 {
     if (filter_dialog_id)
-        free(filter_dialog_id);
+        g_free(filter_dialog_id);
 
     filter_dialog_id = g_strdup(dialog_id);
 }
@@ -188,7 +188,7 @@ void filter_remove(void)
     }
 
     if (filter_dialog_id) {
-        free(filter_dialog_id);
+        g_free(filter_dialog_id);
         filter_dialog_id = NULL;
     }
 }

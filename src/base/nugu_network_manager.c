@@ -165,9 +165,9 @@ static void on_destroy_attachment(void *data)
 	if (item->data)
 		free(item->data);
 	if (item->parent_msg_id)
-		free(item->parent_msg_id);
+		g_free(item->parent_msg_id);
 	if (item->media_type)
-		free(item->media_type);
+		g_free(item->media_type);
 
 	free(item);
 }
@@ -177,10 +177,10 @@ static void on_destroy_event_send_result(void *data)
 	struct equeue_data_request_result *item = data;
 
 	if (item->msg_id)
-		free(item->msg_id);
+		g_free(item->msg_id);
 
 	if (item->dialog_id)
-		free(item->dialog_id);
+		g_free(item->dialog_id);
 
 	free(item);
 }
@@ -208,13 +208,13 @@ static void on_destroy_event_response(void *data)
 	struct equeue_data_event_response *item = data;
 
 	if (item->event_msg_id)
-		free(item->event_msg_id);
+		g_free(item->event_msg_id);
 
 	if (item->event_dialog_id)
-		free(item->event_dialog_id);
+		g_free(item->event_dialog_id);
 
 	if (item->json)
-		free(item->json);
+		g_free(item->json);
 
 	free(item);
 }
@@ -779,16 +779,16 @@ static void nugu_network_manager_free(NetworkManager *nm)
 		g_list_free_full(nm->server_list, free);
 
 	if (nm->token)
-		free(nm->token);
+		g_free(nm->token);
 
 	if (nm->last_asr)
-		free(nm->last_asr);
+		g_free(nm->last_asr);
 
 	if (nm->registry_url)
-		free(nm->registry_url);
+		g_free(nm->registry_url);
 
 	if (nm->useragent)
-		free(nm->useragent);
+		g_free(nm->useragent);
 
 	memset(nm, 0, sizeof(NetworkManager));
 	free(nm);
@@ -1082,7 +1082,7 @@ EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
 		}
 
 		if (_network->last_asr)
-			free(_network->last_asr);
+			g_free(_network->last_asr);
 
 		_network->last_asr = g_strdup(buf);
 		nugu_info("update Last-Asr-Event-Time: '%s'",
@@ -1189,13 +1189,13 @@ EXPORT_API int nugu_network_manager_set_token(const char *token)
 	}
 
 	if (_network->token)
-		free(_network->token);
+		g_free(_network->token);
 
 	_network->token = g_strdup(token);
 
 	/* Reset the Last-Asr-Event-Time header */
 	if (_network->last_asr) {
-		free(_network->last_asr);
+		g_free(_network->last_asr);
 		_network->last_asr = NULL;
 	}
 
@@ -1229,7 +1229,7 @@ EXPORT_API int nugu_network_manager_set_registry_url(const char *urlname)
 	}
 
 	if (_network->registry_url)
-		free(_network->registry_url);
+		g_free(_network->registry_url);
 
 #ifdef NUGU_ENV_NETWORK_REGISTRY_SERVER
 	override_value = getenv(NUGU_ENV_NETWORK_REGISTRY_SERVER);
@@ -1273,7 +1273,7 @@ EXPORT_API int nugu_network_manager_set_useragent(const char *app_version,
 	}
 
 	if (_network->useragent)
-		free(_network->useragent);
+		g_free(_network->useragent);
 
 	if (additional_info != NULL)
 		more_info = additional_info;

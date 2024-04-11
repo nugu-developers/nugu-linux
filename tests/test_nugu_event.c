@@ -92,7 +92,7 @@ static void test_nugu_event_default(void)
 
 	payload = nugu_event_generate_payload(ev);
 	g_assert(payload != NULL);
-	free(payload);
+	g_free(payload);
 
 	nugu_event_free(ev);
 }

@@ -80,7 +80,7 @@ EXPORT_API int nugu_recorder_driver_free(NuguRecorderDriver *driver)
 	if (_default_driver == driver)
 		_default_driver = NULL;
 
-	free(driver->name);
+	g_free(driver->name);
 
 	memset(driver, 0, sizeof(struct _nugu_recorder_driver));
 	free(driver);

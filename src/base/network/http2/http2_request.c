@@ -19,6 +19,7 @@
 #include <time.h>
 #include <errno.h>
 #include <unistd.h>
+#include <pthread.h>
 
 #include <glib.h>
 
@@ -259,13 +260,13 @@ static void http2_request_free(HTTP2Request *req)
 		req->destroy_cb(req, req->destroy_cb_userdata);
 
 	if (req->msg_id)
-		free(req->msg_id);
+		g_free(req->msg_id);
 
 	if (req->dialog_id)
-		free(req->dialog_id);
+		g_free(req->dialog_id);
 
 	if (req->profiling_contents)
-		free(req->profiling_contents);
+		g_free(req->profiling_contents);
 
 	if (strlen(req->curl_errbuf) > 0)
 		nugu_error("CURL ERROR: %s", req->curl_errbuf);
@@ -676,7 +677,7 @@ int http2_request_set_msgid(HTTP2Request *req, const char *msgid)
 	g_return_val_if_fail(req != NULL, -1);
 
 	if (req->msg_id)
-		free(req->msg_id);
+		g_free(req->msg_id);
 
 	if (msgid)
 		req->msg_id = g_strdup(msgid);
@@ -698,7 +699,7 @@ int http2_request_set_dialogid(HTTP2Request *req, const char *dialogid)
 	g_return_val_if_fail(req != NULL, -1);
 
 	if (req->dialog_id)
-		free(req->dialog_id);
+		g_free(req->dialog_id);
 
 	if (dialogid)
 		req->dialog_id = g_strdup(dialogid);
@@ -721,7 +722,7 @@ int http2_request_set_profiling_contents(HTTP2Request *req,
 	g_return_val_if_fail(req != NULL, -1);
 
 	if (req->profiling_contents)
-		free(req->profiling_contents);
+		g_free(req->profiling_contents);
 
 	if (contents)
 		req->profiling_contents = g_strdup(contents);

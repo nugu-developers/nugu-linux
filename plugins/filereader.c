@@ -23,6 +23,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <glib.h>
+#include <pthread.h>
 
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
@@ -96,7 +97,7 @@ static int _dumpfile_open(const char *path, const char *prefix)
 	nugu_dbg("%s filedump to '%s' (fd=%d)", prefix, buf, fd);
 
 	_dumpfile_link(buf);
-	free(buf);
+	g_free(buf);
 
 	return fd;
 }
@@ -272,6 +273,7 @@ static int _rec_start(NuguRecorderDriver *driver, NuguRecorder *rec,
 
 	if (_set_property_to_param(rec_param, prop) != 0) {
 		g_free(rec_param);
+		close(src_fd);
 		return -1;
 	}
 
