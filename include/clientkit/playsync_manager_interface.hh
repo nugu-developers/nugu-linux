@@ -68,7 +68,7 @@ public:
 
     /**
      * @brief Receive callback when sync state is changed.
-     * @param[in] ps_is play service id
+     * @param[in] ps_id play service id
      * @param[in] state play sync state
      * @param[in] extra_data an extra_data which is sent at starting sync
      */
@@ -76,7 +76,7 @@ public:
 
     /**
      * @brief Receive callback when the extra data is changed.
-     * @param[in] ps_is play service id
+     * @param[in] ps_id play service id
      * @param[in] extra_datas the extra_datas which are composed by previous and new
      */
     virtual void onDataChanged(const std::string& ps_id, std::pair<void*, void*> extra_datas);

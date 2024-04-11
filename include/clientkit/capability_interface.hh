@@ -223,7 +223,7 @@ public:
     /**
      * @brief It is possible to share own property value among objects.
      * @param[in] property capability property
-     * @param[in] values capability property value
+     * @param[in] value capability property value
      * @return property get result
      * @retval true The property is valid
      * @retval false The property is invalid

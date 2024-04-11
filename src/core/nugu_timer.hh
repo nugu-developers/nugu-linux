@@ -26,12 +26,12 @@ using namespace NuguClientKit;
 class NUGUTimerPrivate;
 class NUGUTimer : public INuguTimer {
 public:
-    NUGUTimer(bool singleShot = false);
+    NUGUTimer(bool singleshot = false);
     virtual ~NUGUTimer();
 
     void setInterval(unsigned int sec) override;
     unsigned int getInterval() override;
-    void setSingleShot(bool singleShot) override;
+    void setSingleShot(bool singleshot) override;
     bool getSingleShot() override;
 
     void stop() override;

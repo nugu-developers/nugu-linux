@@ -63,7 +63,7 @@ public:
      * @brief Set timer running single shot
      * @param[in] singleshot singleshot
      */
-    virtual void setSingleShot(bool singleShot) = 0;
+    virtual void setSingleShot(bool singleshot) = 0;
     /**
      * @brief Get timer single shot property
      * @return single shot value
