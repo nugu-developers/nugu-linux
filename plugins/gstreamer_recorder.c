@@ -404,8 +404,13 @@ static GstreamerHandle *_create(NuguRecorder *rec)
 	}
 
 	gh->pipeline = gst_pipeline_new(pipeline);
+#ifdef __MSYS__
+	gh->audio_source =
+		gst_element_factory_make("directsoundsrc", audio_source);
+#else
 	gh->audio_source =
 		gst_element_factory_make("autoaudiosrc", audio_source);
+#endif
 	gh->caps_filter = gst_element_factory_make("capsfilter", caps_filter);
 #ifdef __APPLE__
 	gh->audioconvert =

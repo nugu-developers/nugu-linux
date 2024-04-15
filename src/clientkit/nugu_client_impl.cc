@@ -22,6 +22,9 @@
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
 #include "base/nugu_prof.h"
+#ifdef __MSYS__
+#include "base/nugu_winsock.h"
+#endif
 
 #include "nugu_client_impl.hh"
 
@@ -38,6 +41,9 @@ NuguClientImpl::NuguClientImpl()
     nugu_prof_clear();
     nugu_prof_mark(NUGU_PROF_TYPE_SDK_CREATED);
 
+#ifdef __MSYS__
+    nugu_winsock_init();
+#endif
     nugu_equeue_initialize();
 
     network_manager = std::unique_ptr<INetworkManager>(nugu_core_container->createNetworkManager());
@@ -58,6 +64,9 @@ NuguClientImpl::~NuguClientImpl()
         unloadPlugins();
 
     nugu_equeue_deinitialize();
+#ifdef __MSYS__
+    nugu_winsock_deinit();
+#endif
 }
 
 void NuguClientImpl::setWakeupWord(const std::string& wakeup_word)

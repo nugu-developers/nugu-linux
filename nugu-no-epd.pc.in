@@ -1,0 +1,10 @@
+libdir=@CMAKE_INSTALL_FULL_LIBDIR@
+includedir=@CMAKE_INSTALL_FULL_INCLUDEDIR@/nugu
+version=@VERSION@
+
+Name: nugu
+Description: An AI platform
+Version: ${version}
+Requires: glib-2.0 @requires@
+Libs: -L${libdir} -lnugu
+Cflags: -I${includedir} -I${includedir}/base -I${includedir}/interface -I${includedir}/clientkit

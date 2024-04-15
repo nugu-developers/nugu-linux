@@ -21,6 +21,8 @@
 #include <string.h>
 #ifdef HAVE_SYSCALL
 #include <sys/syscall.h>
+#elif defined(__MSYS__)
+#include <windows.h>
 #endif
 #include <syslog.h>
 #include <errno.h>
@@ -321,6 +323,10 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 			if (pid != 0 && pid != tid)
 				is_main_thread = 0;
 #endif
+#elif defined(__MSYS__)
+			tid = (pid_t)GetCurrentThreadId();
+			if (pid != 0 && pid != tid)
+				is_main_thread = 0;
 #else
 			tid = (pid_t)gettid();
 			if (pid != 0 && pid != tid)
