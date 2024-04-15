@@ -26,6 +26,8 @@
 
 #ifdef HAVE_EVENTFD
 #include <sys/eventfd.h>
+#elif defined(__MSYS__)
+#include "base/nugu_winsock.h"
 #else
 #include <glib-unix.h>
 #endif
@@ -80,6 +82,10 @@ struct _http2_network {
 
 	/* thread creation check */
 	ThreadSync *sync_init;
+
+#ifdef __MSYS__
+	NuguWinSocket *wsock;
+#endif
 };
 
 static void _curl_code_to_result(HTTP2Request *req, CURLcode code)
@@ -321,11 +327,13 @@ static void *_loop(void *data)
 	HTTP2Network *net = data;
 	CURLMcode mc;
 	CURLMsg *curl_message;
-	int numfds;
 	char *fake_p;
 	int still_running = 0;
 	int i;
+#ifndef __MSYS__
 	struct curl_waitfd extra_fds[1];
+	int numfds;
+#endif
 
 #ifdef HAVE_PTHREAD_SETNAME_NP
 #ifdef __APPLE__
@@ -364,7 +372,18 @@ static void *_loop(void *data)
 
 			_process_completed(net, curl_message);
 		}
+#ifdef __MSYS__
+		if (nugu_winsock_check_for_data(net->wakeup_fds[0]) == 0) {
+			char ev;
 
+			if (nugu_winsock_read(net->wakeup_fds[0], &ev,
+					      sizeof(ev)) < 0) {
+				nugu_error("error read");
+				continue;
+			}
+			_process_async_queue(net);
+		}
+#else
 		/*
 		 * wait for activity, timeout or "nothing"
 		 *
@@ -398,6 +417,7 @@ static void *_loop(void *data)
 
 			_process_async_queue(net);
 		}
+#endif
 	}
 
 	/* remove incomplete requests */
@@ -433,7 +453,7 @@ static void *_loop(void *data)
 HTTP2Network *http2_network_new(void)
 {
 	struct _http2_network *net;
-#ifndef HAVE_EVENTFD
+#if !defined(HAVE_EVENTFD) && !defined(__MSYS__)
 	GError *error = NULL;
 #endif
 
@@ -446,6 +466,18 @@ HTTP2Network *http2_network_new(void)
 	net->wakeup_fds[0] = -1;
 	net->wakeup_fds[1] = -1;
 
+#ifdef __MSYS__
+	net->wsock = nugu_winsock_create();
+	if (net->wsock == NULL) {
+		nugu_error("failed to create window socket");
+		free(net);
+		return NULL;
+	}
+	net->wakeup_fds[0] =
+		nugu_winsock_get_handle(net->wsock, NUGU_WINSOCKET_CLIENT);
+	net->wakeup_fds[1] =
+		nugu_winsock_get_handle(net->wsock, NUGU_WINSOCKET_SERVER);
+#else
 #ifdef HAVE_EVENTFD
 	net->wakeup_fds[0] = eventfd(0, EFD_CLOEXEC);
 	if (net->wakeup_fds[0] < 0) {
@@ -462,6 +494,7 @@ HTTP2Network *http2_network_new(void)
 	}
 	nugu_dbg("pipe fds[0] = %d", net->wakeup_fds[0]);
 	nugu_dbg("pipe fds[1] = %d", net->wakeup_fds[1]);
+#endif
 #endif
 
 	net->requests =
@@ -501,10 +534,14 @@ void http2_network_free(HTTP2Network *net)
 	if (net->requests)
 		g_async_queue_unref(net->requests);
 
+#ifdef __MSYS__
+	nugu_winsock_remove(net->wsock);
+#else
 	if (net->wakeup_fds[0] != -1)
 		close(net->wakeup_fds[0]);
 	if (net->wakeup_fds[1] != -1)
 		close(net->wakeup_fds[1]);
+#endif
 
 	if (net->sync_init)
 		thread_sync_free(net->sync_init);
@@ -558,6 +595,16 @@ int http2_network_wakeup(HTTP2Network *net)
 
 	g_return_val_if_fail(net != NULL, -1);
 
+#ifdef __MSYS__
+	if (net->wakeup_fds[1] != -1) {
+		char ev = '1';
+
+		written =
+			nugu_winsock_write(net->wakeup_fds[1], &ev, sizeof(ev));
+		if (written != sizeof(ev))
+			nugu_error("error wakeup");
+	}
+#else
 	/* wakeup request using eventfd */
 	if (net->wakeup_fds[1] == -1) {
 		uint64_t ev = 1;
@@ -572,6 +619,7 @@ int http2_network_wakeup(HTTP2Network *net)
 		if (written != sizeof(ev))
 			nugu_error("write failed");
 	}
+#endif
 
 	return 0;
 }

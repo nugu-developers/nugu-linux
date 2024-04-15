@@ -109,6 +109,8 @@ static void setup_opus_head(struct opus_data *od)
 	uint8_t channel_mapping = 0;
 	ogg_packet p_head;
 
+	memset(&p_head, 0, sizeof(ogg_packet));
+
 	nugu_buffer_add(header, "OpusHead", 8);
 	nugu_buffer_add(header, &version, 1);
 	nugu_buffer_add(header, &channel, 1);
@@ -137,6 +139,8 @@ static void setup_opus_tags(struct opus_data *od)
 	uint32_t vendor_len = strlen(vendor);
 	uint32_t comment_list_len = 0;
 
+	memset(&p_tags, 0, sizeof(ogg_packet));
+
 	nugu_buffer_add(header, "OpusTags", 8);
 	nugu_buffer_add(header, &vendor_len, 4);
 	nugu_buffer_add(header, vendor, vendor_len);
@@ -156,11 +160,11 @@ static void setup_opus_tags(struct opus_data *od)
 
 static void flush_stream(struct opus_data *od)
 {
-	unsigned int i;
 	ogg_page og;
 
-	i = ogg_stream_flush(&(od->os), &og);
-	for (; i != 0; i = ogg_stream_flush(&(od->os), &og)) {
+	memset(&og, 0, sizeof(ogg_page));
+
+	while (ogg_stream_flush(&od->os, &og) != 0) {
 		nugu_buffer_add(od->buf, og.header, og.header_len);
 		nugu_buffer_add(od->buf, og.body, og.body_len);
 	}
@@ -175,7 +179,7 @@ static int _encoder_create(NuguEncoderDriver *driver, NuguEncoder *enc,
 	g_return_val_if_fail(driver != NULL, -1);
 	g_return_val_if_fail(enc != NULL, -1);
 
-	od = malloc(sizeof(struct opus_data));
+	od = calloc(1, sizeof(struct opus_data));
 	if (!od) {
 		nugu_error_nomem();
 		return -1;
@@ -216,6 +220,9 @@ static int do_encode(struct opus_data *od, int is_last,
 	size_t samples = buf_len / 2;
 	size_t i = 0;
 	ogg_packet op;
+
+	memset(&op, 0, sizeof(op));
+	memset(&od->frames, 0, sizeof(od->frames));
 
 	if (buf) {
 		for (; i < samples; i++)

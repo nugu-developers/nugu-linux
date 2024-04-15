@@ -18,8 +18,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
+#ifdef __MSYS__
+#include <windows.h>
+#endif
 #include <pthread.h>
+#include <unistd.h>
 
 #include "clientkit/nugu_runner.hh"
 
@@ -29,6 +32,13 @@ using namespace NuguClientKit;
 #define TIMER_500MS 500
 #define TIMER_100MS 100
 #define TIMEOUT_IMMEDIATELY 1
+
+#ifdef __MSYS__
+void usleep(unsigned int usec)
+{
+    Sleep(usec / 1000); // msec
+}
+#endif
 
 class TestExecutor : public NuguRunner {
 public:

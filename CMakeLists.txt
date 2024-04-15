@@ -85,13 +85,22 @@ ELSE()
 	ENDIF()
 ENDIF()
 
+SET(BUILTIN_CURL_DEFAULT "OFF")
+SET(PULSEAUDIO_DEFAULT "OFF")
+SET(PORTAUDIO_PLUGIN_DEFAULT "OFF")
+
 IF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-	SET(BUILTIN_CURL_DEFAULT "OFF")
-	SET(PULSEAUDIO_DEFAULT "OFF")
 	SET(ASAN_DEFAULT "OFF")
 
 	ADD_DEFINITIONS(
 		-DNUGU_PLUGIN_FILE_EXTENSION=".dylib"
+	)
+ELSEIF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
+	ADD_DEFINITIONS(
+		# Run-time buffer overflow detection
+		-D_FORTIFY_SOURCE=2
+
+		-DNUGU_PLUGIN_FILE_EXTENSION=".dll"
 	)
 ELSE()
 	SET(BUILTIN_CURL_DEFAULT "ON")
@@ -211,6 +220,12 @@ ELSE()
 	SET(LDFLAG_SOCKET "")
 ENDIF()
 
+IF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
+	SET(LDFLAG_WINSOCK "-lws2_32")
+ELSE()
+	SET(LDFLAG_WINSOCK "")
+ENDIF()
+
 SET(BUILD_LIBRARY ON)
 SET(BUILD_PLUGINS ON)
 SET(BUILD_EXAMPLES ON)
@@ -250,10 +265,16 @@ IF(VENDOR_PKGCONFIG)
 	pkg_check_modules(vendor_pkgs REQUIRED ${VENDOR_PKGCONFIG})
 ENDIF()
 
+IF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
+	SET(GIO_PKGCONFIG gio-windows-2.0)
+ELSE()
+	SET(GIO_PKGCONFIG gio-unix-2.0)
+ENDIF()
+
 IF(BUILD_LIBRARY)
 	# Set NUGU SDK library default dependency
 	SET(DEFAULT_LIB_DEPENDENCY
-		glib-2.0 gio-2.0 gio-unix-2.0 gthread-2.0
+		glib-2.0 gio-2.0 gthread-2.0 ${GIO_PKGCONFIG}
 		${CURL_PKGCONFIG} ${VENDOR_PKGCONFIG} ${RAPIDJSON_PKGCONFIG})
 
 	# Sets the option so that the built library has a higher link order than
@@ -343,27 +364,34 @@ IF (CMAKE_COMPILER_IS_GNUCC)
 
 		# Not warnings (GCC 10.3 issue)
 		STRING(APPEND CMAKE_C_FLAGS " -Wno-analyzer-malloc-leak")
+
+		IF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
+			# Not warnings (false alarm in window)
+			STRING(APPEND CMAKE_C_FLAGS " -Wno-analyzer-fd-leak")
+		ENDIF()
 	ENDIF()
 
-	ADD_COMPILE_OPTIONS(
-		# Non-executable stack
-		-Wa,--execstack
+	IF(NOT CMAKE_SYSTEM_NAME MATCHES "MINGW")
+		ADD_COMPILE_OPTIONS(
+			# Non-executable stack
+			-Wa,--execstack
 
-		# Eliminate unused code and data (with --gc-sections link option)
-		-Wl,--gc-sections)
+			# Eliminate unused code and data (with --gc-sections link option)
+			-Wl,--gc-sections)
 
-	LINK_LIBRARIES(
-		# Link only needed libraries
-		-Wl,--as-needed
+		LINK_LIBRARIES(
+			# Link only needed libraries
+			-Wl,--as-needed
 
-		# Enforces symbol resolution at build time
-		-Wl,-z,defs
+			# Enforces symbol resolution at build time
+			-Wl,-z,defs
 
-		# Non-executable stack
-		-Wl,-z,noexecstack
+			# Non-executable stack
+			-Wl,-z,noexecstack
 
-		# Debian packaging default link flags
-		-Wl,-Bsymbolic-functions -Wl,-z,relro)
+			# Debian packaging default link flags
+			-Wl,-Bsymbolic-functions -Wl,-z,relro)
+	ENDIF()
 
 	# RPATH is useful only for testing without installation.
 	# Please use the '-DPACKAGING' option for debian packaging.
@@ -450,7 +478,11 @@ IF(BUILD_LIBRARY)
 	INSTALL(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
 
 	# Install pkgconfig
-	CONFIGURE_FILE(nugu.pc.in ${PROJECT_BINARY_DIR}/nugu.pc @ONLY)
+	IF(ENABLE_VOICE_STREAMING)
+		CONFIGURE_FILE(nugu-no-epd.pc.in ${PROJECT_BINARY_DIR}/nugu.pc @ONLY)
+	ELSE()
+		CONFIGURE_FILE(nugu.pc.in ${PROJECT_BINARY_DIR}/nugu.pc @ONLY)
+	ENDIF()
 	INSTALL(FILES ${PROJECT_BINARY_DIR}/nugu.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
 
 	# Install asset files

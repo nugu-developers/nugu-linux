@@ -424,6 +424,14 @@ static int _create_gst_elements(struct pa_audio_param *pcm_param)
 	}
 #endif
 
+#ifdef __MSYS__
+	pcm_param->audio_sink =
+		gst_element_factory_make("directsoundsink", audio_sink);
+	if (!pcm_param->audio_sink) {
+		nugu_error("create gst_element for 'directsoundsink' failed");
+		goto error_out;
+	}
+#else
 #ifdef ENABLE_PULSEAUDIO
 	pcm_param->audio_sink =
 		gst_element_factory_make("pulsesink", audio_sink);
@@ -438,6 +446,7 @@ static int _create_gst_elements(struct pa_audio_param *pcm_param)
 		nugu_error("create gst_element for 'autoaudiosink' failed");
 		goto error_out;
 	}
+#endif
 #endif
 
 #ifdef ENABLE_GSTREAMER_PLUGIN_VOLUME

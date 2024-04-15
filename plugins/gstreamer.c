@@ -430,6 +430,14 @@ static int _create(NuguPlayerDriver *driver, NuguPlayer *player)
 		goto error_out;
 	}
 
+#ifdef __MSYS__
+	gh->audio_sink =
+		gst_element_factory_make("directsoundsink", audio_sink);
+	if (!gh->audio_sink) {
+		nugu_error("create gst_element for 'directsoundsink' failed");
+		goto error_out;
+	}
+#else
 #ifdef ENABLE_PULSEAUDIO
 	gh->audio_sink = gst_element_factory_make("pulsesink", audio_sink);
 	if (!gh->audio_sink) {
@@ -442,6 +450,7 @@ static int _create(NuguPlayerDriver *driver, NuguPlayer *player)
 		nugu_error("create gst_element for 'autoaudiosink' failed");
 		goto error_out;
 	}
+#endif
 #endif
 
 #ifdef ENABLE_GSTREAMER_PLUGIN_VOLUME

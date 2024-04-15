@@ -4,6 +4,9 @@ include(ExternalProject)
 FILE(GLOB_RECURSE njson_files njson/src/*.cpp)
 ADD_LIBRARY(njson STATIC ${njson_files})
 TARGET_INCLUDE_DIRECTORIES(njson PRIVATE njson/include)
+IF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
+	TARGET_COMPILE_OPTIONS(njson PRIVATE -Wno-class-memaccess)
+ENDIF()
 INSTALL(DIRECTORY njson/include/njson
 		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
 
