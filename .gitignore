@@ -32,4 +32,5 @@ doc/latex
 
 # Auto-generated file
 include/nugu.h
+src/base/builtin.h
 

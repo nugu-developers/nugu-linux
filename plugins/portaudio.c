@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+#ifdef NUGU_PLUGIN_BUILTIN_PORTAUDIO
+#define NUGU_PLUGIN_BUILTIN
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -54,8 +58,7 @@ static void snd_error_log(const char *file, int line, const char *function,
 
 static int init(NuguPlugin *p)
 {
-	nugu_dbg("'%s' plugin initialized",
-		 nugu_plugin_get_description(p)->name);
+	nugu_dbg("plugin-init '%s'", nugu_plugin_get_description(p)->name);
 
 	if (Pa_Initialize() != paNoError) {
 		nugu_error("initialize is failed");
@@ -64,7 +67,7 @@ static int init(NuguPlugin *p)
 
 	nugu_info("version: %s", Pa_GetVersionText());
 
-	nugu_dbg("'%s' plugin initialized done",
+	nugu_dbg("'%s' plugin initialized",
 		 nugu_plugin_get_description(p)->name);
 
 	return 0;
@@ -72,7 +75,7 @@ static int init(NuguPlugin *p)
 
 static int load(void)
 {
-	nugu_dbg("plugin loaded");
+	nugu_dbg("plugin-load");
 	snd_lib_error_set_handler(snd_error_log);
 
 	return 0;
@@ -80,19 +83,18 @@ static int load(void)
 
 static void unload(NuguPlugin *p)
 {
-	nugu_dbg("'%s' plugin unloaded", nugu_plugin_get_description(p)->name);
+	nugu_dbg("plugin-unload '%s'", nugu_plugin_get_description(p)->name);
 
 	Pa_Terminate();
 
 	snd_lib_error_set_handler(NULL);
 
-	nugu_dbg("'%s' plugin unloaded done",
-		 nugu_plugin_get_description(p)->name);
+	nugu_dbg("'%s' plugin unloaded", nugu_plugin_get_description(p)->name);
 }
 
 NUGU_PLUGIN_DEFINE(
 	/* NUGU SDK Plug-in description */
-	"portaudio", /* Plugin name */
+	portaudio, /* Plugin name */
 	NUGU_PLUGIN_PRIORITY_DEFAULT + 1, /* Plugin priority */
 	"0.0.2", /* Plugin version */
 	load, /* dlopen */

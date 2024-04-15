@@ -1,104 +1,162 @@
-ADD_LIBRARY(dummy SHARED dummy.c)
-TARGET_LINK_LIBRARIES(dummy -lnugu)
-SET_TARGET_PROPERTIES(dummy PROPERTIES PREFIX "" OUTPUT_NAME dummy)
-INSTALL(TARGETS dummy LIBRARY DESTINATION ${plugindir})
-ADD_DEPENDENCIES(dummy libnugu)
+# for TARGET_COMPILE_DEFINITIONS
+SET(BUILTIN_PLUGIN_DEFS "")
 
-ADD_LIBRARY(filedump SHARED filedump.c)
-TARGET_LINK_LIBRARIES(filedump ${pkgs_LDFLAGS} -lnugu)
-SET_TARGET_PROPERTIES(filedump PROPERTIES PREFIX "" OUTPUT_NAME filedump)
-INSTALL(TARGETS filedump LIBRARY DESTINATION ${plugindir} COMPONENT libnugu_component)
-ADD_DEPENDENCIES(filedump libnugu)
+# for TARGET_INCLUDE_DIRECTORIES
+SET(BUILTIN_PLUGIN_IDIR "")
 
-ADD_LIBRARY(filereader SHARED filereader.c)
-TARGET_LINK_LIBRARIES(filereader ${pkgs_LDFLAGS} -lnugu)
-SET_TARGET_PROPERTIES(filereader PROPERTIES PREFIX "" OUTPUT_NAME filereader)
-INSTALL(TARGETS filereader LIBRARY DESTINATION ${plugindir} COMPONENT libnugu_component)
-ADD_DEPENDENCIES(filereader libnugu)
+# for ADD_DEPENDENCIES
+SET(BUILTIN_PLUGIN_DEPS "")
 
-# OPUS plugin
-IF(ENABLE_OPUS_PLUGIN)
-	ADD_LIBRARY(opus SHARED opus.c)
+# for ADD_LIBRARY
+SET(BUILTIN_PLUGIN_SRCS "")
 
-	IF(ENABLE_BUILTIN_OPUS)
-		TARGET_INCLUDE_DIRECTORIES(opus PRIVATE
-			${PROJECT_BINARY_DIR}/opus/include/opus)
-		TARGET_LINK_LIBRARIES(opus ${pkgs_LDFLAGS}
-			${PROJECT_BINARY_DIR}/opus/lib/libopus.a
-			-lnugu -lm)
-		ADD_DEPENDENCIES(opus OPUSLIB)
+# for pkg_check_modules
+SET(BUILTIN_PLUGIN_PKGS "")
+
+# shared library plugin list
+SET(PLUGIN_LIST "")
+
+# Macro for plugin definition
+MACRO(DEFINE_PLUGIN name)
+	STRING(TOUPPER ${name} NAME_UPPER)
+	IF("${name}" IN_LIST BUILTIN_PLUGIN_LIST)
+		SET(BUILTIN_PLUGIN_DEFS ${BUILTIN_PLUGIN_DEFS}
+			-DNUGU_PLUGIN_BUILTIN_${NAME_UPPER})
+		LIST(APPEND BUILTIN_PLUGIN_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/${name}.c)
 	ELSE()
-		pkg_check_modules(opus REQUIRED opus)
-		TARGET_COMPILE_OPTIONS(opus PRIVATE ${opus_CFLAGS})
-		TARGET_LINK_LIBRARIES(opus ${pkgs_LDFLAGS} ${opus_LDFLAGS} -lnugu)
+		LIST(APPEND PLUGIN_LIST ${name})
+		ADD_LIBRARY(${name} SHARED ${name}.c)
+		TARGET_LINK_LIBRARIES(${name} ${pkgs_LDFLAGS} -lnugu)
+		SET_TARGET_PROPERTIES(${name} PROPERTIES PREFIX "" OUTPUT_NAME ${name})
+		INSTALL(TARGETS ${name} LIBRARY DESTINATION ${plugindir} COMPONENT libnugu_component)
+		ADD_DEPENDENCIES(${name} libnugu)
 	ENDIF()
+ENDMACRO(DEFINE_PLUGIN)
 
-	SET_TARGET_PROPERTIES(opus PROPERTIES PREFIX "" OUTPUT_NAME opus)
-	INSTALL(TARGETS opus LIBRARY DESTINATION ${plugindir} COMPONENT libnugu_component)
-	ADD_DEPENDENCIES(opus libnugu)
+DEFINE_PLUGIN(dummy)
+DEFINE_PLUGIN(filedump)
+DEFINE_PLUGIN(filereader)
+
+# OPUS decoder plugin
+IF(ENABLE_OPUS_PLUGIN)
+	DEFINE_PLUGIN(opus)
+
+	IF("opus" IN_LIST BUILTIN_PLUGIN_LIST)
+		IF(ENABLE_BUILTIN_OPUS)
+			# Use opus static library(externals/opus)
+			SET(BUILTIN_PLUGIN_IDIR ${BUILTIN_PLUGIN_IDIR}
+				${PROJECT_BINARY_DIR}/opus/include/opus)
+			SET(BUILTIN_PLUGIN_LIBS ${BUILTIN_PLUGIN_LIBS}
+				${PROJECT_BINARY_DIR}/opus/lib/libopus.a PARENT_SCOPE)
+			LIST(APPEND BUILTIN_PLUGIN_DEPS OPUSLIB)
+		ELSE()
+			# Use opus shared library
+			SET(BUILTIN_PLUGIN_PKGS ${BUILTIN_PLUGIN_PKGS} opus)
+		ENDIF()
+	ELSE()
+		IF(ENABLE_BUILTIN_OPUS)
+			# Use opus static library(externals/opus)
+			TARGET_INCLUDE_DIRECTORIES(opus PRIVATE
+				${PROJECT_BINARY_DIR}/opus/include/opus)
+			TARGET_LINK_LIBRARIES(opus ${pkgs_LDFLAGS}
+				${PROJECT_BINARY_DIR}/opus/lib/libopus.a
+				-lnugu -lm)
+			ADD_DEPENDENCIES(opus OPUSLIB)
+		ELSE()
+			# Use opus shared library
+			pkg_check_modules(opus REQUIRED opus)
+			TARGET_COMPILE_OPTIONS(opus PRIVATE ${opus_CFLAGS})
+			TARGET_LINK_LIBRARIES(opus ${pkgs_LDFLAGS} ${opus_LDFLAGS} -lnugu)
+		ENDIF()
+	ENDIF()
 ENDIF(ENABLE_OPUS_PLUGIN)
 
 # OPUS encoder plugin
 IF(ENABLE_OPUSENC_PLUGIN)
-	ADD_LIBRARY(opus_encoder SHARED opus_encoder.c)
-	pkg_check_modules(opus_encoder REQUIRED opus ogg)
-	TARGET_COMPILE_OPTIONS(opus_encoder PRIVATE ${opus_encoder_CFLAGS})
-	TARGET_LINK_LIBRARIES(opus_encoder ${pkgs_LDFLAGS} ${opus_encoder_LDFLAGS} -lnugu)
-	SET_TARGET_PROPERTIES(opus_encoder PROPERTIES PREFIX "" OUTPUT_NAME opus_encoder)
-	INSTALL(TARGETS opus_encoder LIBRARY DESTINATION ${plugindir} COMPONENT libnugu_component)
-	ADD_DEPENDENCIES(opus_encoder libnugu)
+	DEFINE_PLUGIN(opus_encoder)
+
+	IF("opus_encoder" IN_LIST BUILTIN_PLUGIN_LIST)
+		SET(BUILTIN_PLUGIN_PKGS ${BUILTIN_PLUGIN_PKGS} opus ogg)
+	ELSE()
+		pkg_check_modules(opus_encoder REQUIRED opus ogg)
+		TARGET_COMPILE_OPTIONS(opus_encoder PRIVATE ${opus_encoder_CFLAGS})
+		TARGET_LINK_LIBRARIES(opus_encoder ${pkgs_LDFLAGS} ${opus_encoder_LDFLAGS} -lnugu)
+	ENDIF()
 ENDIF(ENABLE_OPUSENC_PLUGIN)
 
-# PortAudio plugin
+# PortAudio plugin - recorder, pcm
 IF(ENABLE_PORTAUDIO_PLUGIN)
-	pkg_check_modules(portaudio REQUIRED portaudio-2.0 alsa)
-	SET(PORTAUDIO_PLUGINS
-		portaudio
-		portaudio_recorder
-		portaudio_pcm_sync
-		portaudio_pcm_async)
+	SET(PORTAUDIO_BUILTIN 0)
 
-	FOREACH(plugin ${PORTAUDIO_PLUGINS})
-		ADD_LIBRARY(${plugin} SHARED ${plugin}.c)
-		TARGET_COMPILE_OPTIONS(${plugin} PRIVATE ${portaudio_CFLAGS})
-		TARGET_LINK_LIBRARIES(${plugin} ${pkgs_LDFLAGS} ${portaudio_LDFLAGS} -lnugu)
-		SET_TARGET_PROPERTIES(${plugin} PROPERTIES PREFIX "" OUTPUT_NAME ${plugin})
-		INSTALL(TARGETS ${plugin} LIBRARY DESTINATION ${plugindir} COMPONENT libnugu_component)
-		ADD_DEPENDENCIES(${plugin} libnugu)
-	ENDFOREACH(plugin)
+	pkg_check_modules(portaudio REQUIRED portaudio-2.0 alsa)
+
+	FOREACH(item portaudio portaudio_recorder portaudio_pcm_sync portaudio_pcm_async)
+		DEFINE_PLUGIN(${item})
+		IF("${item}" IN_LIST BUILTIN_PLUGIN_LIST)
+			SET(PORTAUDIO_BUILTIN 1)
+		ELSE()
+			TARGET_COMPILE_OPTIONS(${item} PRIVATE ${portaudio_CFLAGS})
+			TARGET_LINK_LIBRARIES(${item} ${pkgs_LDFLAGS} ${portaudio_LDFLAGS} -lnugu)
+		ENDIF()
+	ENDFOREACH()
+
+	IF(PORTAUDIO_BUILTIN)
+		SET(BUILTIN_PLUGIN_PKGS ${BUILTIN_PLUGIN_PKGS} portaudio-2.0 alsa)
+	ENDIF()
 ENDIF(ENABLE_PORTAUDIO_PLUGIN)
 
-# gstreamer plugin
+# Gstreamer plugin - recorder, pcm, player
 IF(ENABLE_GSTREAMER_PLUGIN)
-	SET(GSTREAMER_PLUGINS
-		gstreamer
-		gstreamer_recorder
-		gstreamer_pcm)
+	SET(GSTREAMER_BUILTIN 0)
 
-	FOREACH(plugin ${GSTREAMER_PLUGINS})
-		ADD_LIBRARY(${plugin} SHARED ${plugin}.c)
-		TARGET_LINK_LIBRARIES(${plugin}
-			${pkgs_LDFLAGS}
-			${gstreamer_pkgs_LDFLAGS}
-			-lnugu)
-		FOREACH(flag ${gstreamer_pkgs_CFLAGS})
-			TARGET_COMPILE_OPTIONS(${plugin} PRIVATE ${flag})
-		ENDFOREACH(flag)
+	FOREACH(item gstreamer gstreamer_recorder gstreamer_pcm)
+		DEFINE_PLUGIN(${item})
+		IF("${item}" IN_LIST BUILTIN_PLUGIN_LIST)
+			SET(GSTREAMER_BUILTIN 1)
+		ELSE()
+			TARGET_LINK_LIBRARIES(${item} ${pkgs_LDFLAGS}
+				${gstreamer_pkgs_LDFLAGS} -lnugu)
+			TARGET_COMPILE_OPTIONS(${item} PRIVATE ${gstreamer_pkgs_CFLAGS})
+		ENDIF()
+	ENDFOREACH()
 
-		SET_TARGET_PROPERTIES(${plugin} PROPERTIES PREFIX "" OUTPUT_NAME ${plugin})
-		INSTALL(TARGETS ${plugin} LIBRARY DESTINATION ${plugindir} COMPONENT libnugu_component)
-		ADD_DEPENDENCIES(${plugin} libnugu)
-	ENDFOREACH(plugin)
+	IF(GSTREAMER_BUILTIN)
+		SET(BUILTIN_PLUGIN_PKGS ${BUILTIN_PLUGIN_PKGS}
+			gstreamer-1.0 gstreamer-app-1.0 gstreamer-pbutils-1.0)
+	ENDIF()
+
 ENDIF(ENABLE_GSTREAMER_PLUGIN)
 
-# Speex plugin
+# Speex encoder plugin
 IF(ENABLE_SPEEX_PLUGIN AND ENABLE_VENDOR_LIBRARY)
-	ADD_LIBRARY(speex SHARED speex.c)
-	FOREACH(flag ${vendor_pkgs_CFLAGS})
-		TARGET_COMPILE_OPTIONS(speex PRIVATE ${flag})
-	ENDFOREACH(flag)
-	TARGET_LINK_LIBRARIES(speex ${pkgs_LDFLAGS} ${vendor_pkgs_LDFLAGS} -lnugu)
-	SET_TARGET_PROPERTIES(speex PROPERTIES PREFIX "" OUTPUT_NAME speex)
-	INSTALL(TARGETS speex LIBRARY DESTINATION ${plugindir} COMPONENT libnugu_component)
-	ADD_DEPENDENCIES(speex libnugu)
+	DEFINE_PLUGIN(speex)
+
+	IF ("speex" IN_LIST BUILTIN_PLUGIN_LIST)
+	ELSE()
+		TARGET_COMPILE_OPTIONS(speex PRIVATE ${vendor_pkgs_CFLAGS})
+		TARGET_LINK_LIBRARIES(speex ${pkgs_LDFLAGS} ${vendor_pkgs_LDFLAGS} -lnugu)
+	ENDIF()
 ENDIF()
+
+# Plugins built into the SDK library.
+IF(BUILTIN_PLUGIN_SRCS)
+	ADD_LIBRARY(objbuiltin OBJECT ${BUILTIN_PLUGIN_SRCS})
+	TARGET_COMPILE_DEFINITIONS(objbuiltin PRIVATE ${BUILTIN_PLUGIN_DEFS})
+	TARGET_INCLUDE_DIRECTORIES(objbuiltin PRIVATE ${BUILTIN_PLUGIN_IDIR})
+
+	IF(BUILTIN_PLUGIN_PKGS)
+		# Get CFLAGS and LDFLAGS from pkg-config list
+		pkg_check_modules(builtin_plugin_pkgs REQUIRED ${BUILTIN_PLUGIN_PKGS})
+		TARGET_COMPILE_OPTIONS(objbuiltin PRIVATE ${builtin_plugin_pkgs_CFLAGS})
+	ENDIF()
+
+	FOREACH(lib ${BUILTIN_PLUGIN_DEPS})
+		ADD_DEPENDENCIES(objbuiltin ${lib})
+	ENDFOREACH()
+
+	SET(BUILTIN_PLUGIN_DEPS ${BUILTIN_PLUGIN_DEPS} PARENT_SCOPE)
+ENDIF()
+
+# output message
+MESSAGE("-- Built-in plugin list: ${BUILTIN_PLUGIN_LIST}")
+MESSAGE("-- Plugin list: ${PLUGIN_LIST}")

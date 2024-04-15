@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+#ifdef NUGU_PLUGIN_BUILTIN_DUMMY
+#define NUGU_PLUGIN_BUILTIN
+#endif
+
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
 
@@ -36,7 +40,7 @@ static void unload(NuguPlugin *p)
 	nugu_dbg("plugin-unload '%s'", nugu_plugin_get_description(p)->name);
 }
 
-NUGU_PLUGIN_DEFINE("dummy",
+NUGU_PLUGIN_DEFINE(dummy,
 	NUGU_PLUGIN_PRIORITY_DEFAULT,
 	"0.0.1",
 	load,

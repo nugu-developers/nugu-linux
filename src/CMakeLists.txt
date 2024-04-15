@@ -5,16 +5,33 @@ ADD_SUBDIRECTORY(capability)
 ADD_SUBDIRECTORY(clientkit)
 
 # NUGU SDK Library
-ADD_LIBRARY(libnugu SHARED
-	$<TARGET_OBJECTS:objhttp2>
-	$<TARGET_OBJECTS:objbase>
-	$<TARGET_OBJECTS:objcore>
-	$<TARGET_OBJECTS:objcapability>
-	$<TARGET_OBJECTS:objclientkit>)
+IF(BUILTIN_PLUGIN_LIST)
+	ADD_LIBRARY(libnugu SHARED
+		$<TARGET_OBJECTS:objhttp2>
+		$<TARGET_OBJECTS:objbase>
+		$<TARGET_OBJECTS:objcore>
+		$<TARGET_OBJECTS:objcapability>
+		$<TARGET_OBJECTS:objclientkit>
+		$<TARGET_OBJECTS:objbuiltin>)
+ELSE()
+	ADD_LIBRARY(libnugu SHARED
+		$<TARGET_OBJECTS:objhttp2>
+		$<TARGET_OBJECTS:objbase>
+		$<TARGET_OBJECTS:objcore>
+		$<TARGET_OBJECTS:objcapability>
+		$<TARGET_OBJECTS:objclientkit>)
+ENDIF()
 
 TARGET_LINK_LIBRARIES(libnugu PUBLIC
-	${CURL_LIBRARY} ${NJSON_LIBRARY}
-	${pkgs_LDFLAGS} ${LDFLAG_SOCKET} ${LDFLAG_DL})
+	${CURL_LIBRARY} njson
+	${pkgs_LDFLAGS}
+	${builtin_plugin_pkgs_LDFLAGS}
+	${BUILTIN_PLUGIN_LIBS}
+	${LDFLAG_SOCKET} ${LDFLAG_DL})
+
+FOREACH(lib ${BUILTIN_PLUGIN_DEPS})
+	ADD_DEPENDENCIES(libnugu ${lib})
+ENDFOREACH()
 
 # Gstreamer does not support dynamic loading/unloading of their libraries.
 # Therefore, add the library dependency to NUGU SDK instead of NUGU Plugin.

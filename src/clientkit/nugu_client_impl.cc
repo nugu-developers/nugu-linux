@@ -161,7 +161,8 @@ int NuguClientImpl::createCapabilities(void)
 
 bool NuguClientImpl::loadPlugins(const std::string& path)
 {
-    int result;
+    int builtin_result = 0;
+    int file_result = 0;
 
     if (plugin_loaded) {
         nugu_info("plugin already loaded.");
@@ -170,29 +171,31 @@ bool NuguClientImpl::loadPlugins(const std::string& path)
 
     nugu_prof_mark(NUGU_PROF_TYPE_SDK_PLUGIN_INIT_START);
 
+    nugu_dbg("load built-in plugins");
+    builtin_result = nugu_plugin_load_builtin();
+    if (builtin_result <= 0)
+        nugu_info("no built-in plugins");
+
     if (path.size() > 0) {
         nugu_dbg("load plugins from directory(%s)", path.c_str());
-        result = nugu_plugin_load_directory(path.c_str());
+        file_result = nugu_plugin_load_directory(path.c_str());
     } else {
         nugu_dbg("load plugins from default directory(%s)", NUGU_PLUGIN_DIR);
-        result = nugu_plugin_load_directory(NUGU_PLUGIN_DIR);
+        file_result = nugu_plugin_load_directory(NUGU_PLUGIN_DIR);
     }
 
-    if (result < 0) {
-        nugu_error("Fail to load directory");
-        return false;
-    }
+    if (file_result <= 0)
+        nugu_info("no file plugins");
 
     plugin_loaded = true;
 
-    if (result == 0) {
+    if (builtin_result == 0 && file_result == 0) {
         nugu_info("no plugins");
         nugu_prof_mark(NUGU_PROF_TYPE_SDK_PLUGIN_INIT_DONE);
         return true;
     }
 
-    result = nugu_plugin_initialize();
-    nugu_info("loaded %d plugins", result);
+    nugu_info("loaded %d plugins", nugu_plugin_initialize());
     nugu_prof_mark(NUGU_PROF_TYPE_SDK_PLUGIN_INIT_DONE);
 
     return true;

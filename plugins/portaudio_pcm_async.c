@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+#ifdef NUGU_PLUGIN_BUILTIN_PORTAUDIO_PCM_ASYNC
+#define NUGU_PLUGIN_BUILTIN
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -572,7 +576,7 @@ static int init(NuguPlugin *p)
 	const struct nugu_plugin_desc *desc;
 
 	desc = nugu_plugin_get_description(p);
-	nugu_dbg("'%s' plugin initialized", desc->name);
+	nugu_dbg("plugin-init '%s'", desc->name);
 
 	if (!nugu_plugin_find("portaudio")) {
 		nugu_error("portaudio plugin is not initialized");
@@ -592,21 +596,21 @@ static int init(NuguPlugin *p)
 		return -1;
 	}
 
-	nugu_dbg("'%s' plugin initialized done", desc->name);
+	nugu_dbg("'%s' plugin initialized", desc->name);
 
 	return 0;
 }
 
 static int load(void)
 {
-	nugu_dbg("plugin loaded");
+	nugu_dbg("plugin-load");
 
 	return 0;
 }
 
 static void unload(NuguPlugin *p)
 {
-	nugu_dbg("'%s' plugin unloaded", nugu_plugin_get_description(p)->name);
+	nugu_dbg("plugin-unload '%s'", nugu_plugin_get_description(p)->name);
 
 	if (pcm_driver) {
 		nugu_pcm_driver_remove(pcm_driver);
@@ -614,13 +618,12 @@ static void unload(NuguPlugin *p)
 		pcm_driver = NULL;
 	}
 
-	nugu_dbg("'%s' plugin unloaded done",
-		 nugu_plugin_get_description(p)->name);
+	nugu_dbg("'%s' plugin unloaded", nugu_plugin_get_description(p)->name);
 }
 
 NUGU_PLUGIN_DEFINE(
 	/* NUGU SDK Plug-in description */
-	"portaudio_pcm_async", /* Plugin name */
+	portaudio_pcm_async, /* Plugin name */
 	NUGU_PLUGIN_PRIORITY_DEFAULT + 2, /* Plugin priority */
 	"0.0.2", /* Plugin version */
 	load, /* dlopen */

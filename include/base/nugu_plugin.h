@@ -58,14 +58,25 @@ extern "C" {
 /**
  * @brief Macros to easily define plugins
  */
+#ifdef NUGU_PLUGIN_BUILTIN
 #define NUGU_PLUGIN_DEFINE(p_name, p_prio, p_ver, p_load, p_unload, p_init)    \
 	__attribute__((visibility("default"))) struct nugu_plugin_desc         \
-		nugu_plugin_define_desc = { .name = p_name,                    \
+		_builtin_plugin_##p_name = { .name = #p_name,                  \
+					     .priority = p_prio,               \
+					     .version = p_ver,                 \
+					     .load = p_load,                   \
+					     .unload = p_unload,               \
+					     .init = p_init }
+#else
+#define NUGU_PLUGIN_DEFINE(p_name, p_prio, p_ver, p_load, p_unload, p_init)    \
+	__attribute__((visibility("default"))) struct nugu_plugin_desc         \
+		nugu_plugin_define_desc = { .name = #p_name,                   \
 					    .priority = p_prio,                \
 					    .version = p_ver,                  \
 					    .load = p_load,                    \
 					    .unload = p_unload,                \
 					    .init = p_init }
+#endif
 
 /**
  * @brief Plugin object
@@ -205,6 +216,13 @@ const struct nugu_plugin_desc *nugu_plugin_get_description(NuguPlugin *p);
  * @retval -1 failure
  */
 int nugu_plugin_load_directory(const char *dirpath);
+
+/**
+ * @brief Load all built-in plugins
+ * @return Number of plugins loaded
+ * @retval -1 failure
+ */
+int nugu_plugin_load_builtin(void);
 
 /**
  * @brief Initialize plugin
