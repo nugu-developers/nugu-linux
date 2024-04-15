@@ -23,6 +23,8 @@
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
 
+#include "builtin.h"
+
 struct _plugin {
 	const struct nugu_plugin_desc *desc;
 	void *data;
@@ -240,6 +242,29 @@ EXPORT_API int nugu_plugin_load_directory(const char *dirpath)
 		return 0;
 	else
 		return g_list_length(_plugin_list);
+}
+
+EXPORT_API int nugu_plugin_load_builtin(void)
+{
+	size_t length;
+	size_t i;
+	NuguPlugin *p;
+
+	length = sizeof(_builtin_list) / sizeof(struct nugu_plugin_desc *);
+	nugu_info("built-in plugin count: %d", length);
+
+	for (i = 0; i < length; i++) {
+		p = nugu_plugin_new(_builtin_list[i]);
+		if (!p) {
+			nugu_error("nugu_plugin_new() failed");
+			continue;
+		}
+
+		if (nugu_plugin_add(p) != 0)
+			nugu_plugin_free(p);
+	}
+
+	return g_list_length(_plugin_list);
 }
 
 static gint _sort_priority_cmp(gconstpointer a, gconstpointer b)

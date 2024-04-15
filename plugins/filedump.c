@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+#ifdef NUGU_PLUGIN_BUILTIN_FILEDUMP
+#define NUGU_PLUGIN_BUILTIN
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -240,6 +244,7 @@ static int init(NuguPlugin *p)
 
 	if (nugu_decoder_driver_register(decoder_driver) < 0) {
 		nugu_decoder_driver_free(decoder_driver);
+		decoder_driver = NULL;
 		return -1;
 	}
 
@@ -247,17 +252,21 @@ static int init(NuguPlugin *p)
 	if (!pcm_driver) {
 		nugu_decoder_driver_remove(decoder_driver);
 		nugu_decoder_driver_free(decoder_driver);
+		decoder_driver = NULL;
 		return -1;
 	}
 
 	if (nugu_pcm_driver_register(pcm_driver) != 0) {
 		nugu_pcm_driver_free(pcm_driver);
+		pcm_driver = NULL;
+
 		nugu_decoder_driver_remove(decoder_driver);
 		nugu_decoder_driver_free(decoder_driver);
+		decoder_driver = NULL;
 		return -1;
 	}
 
-	nugu_dbg("filedump decoder/pcm driver registered");
+	nugu_dbg("'%s' plugin initialized", desc->name);
 
 	return 0;
 }
@@ -284,9 +293,11 @@ static void unload(NuguPlugin *p)
 		nugu_pcm_driver_free(pcm_driver);
 		pcm_driver = NULL;
 	}
+
+	nugu_dbg("'%s' plugin unloaded", nugu_plugin_get_description(p)->name);
 }
 
-NUGU_PLUGIN_DEFINE("filedump",
+NUGU_PLUGIN_DEFINE(filedump,
 	NUGU_PLUGIN_PRIORITY_LOW,
 	"0.0.1",
 	load,

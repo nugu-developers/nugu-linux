@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+#ifdef NUGU_PLUGIN_BUILTIN_FILEREADER
+#define NUGU_PLUGIN_BUILTIN
+#endif
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -343,7 +347,7 @@ static int init(NuguPlugin *p)
 	const struct nugu_plugin_desc *desc;
 
 	desc = nugu_plugin_get_description(p);
-	nugu_dbg("'%s' plugin initialized", desc->name);
+	nugu_dbg("plugin-init '%s'", desc->name);
 
 	if (!getenv(NUGU_ENV_RECORDING_FROM_FILE)) {
 		nugu_error("must set environment => NUGU_RECORDING_FROM_FILE");
@@ -364,21 +368,21 @@ static int init(NuguPlugin *p)
 
 	pthread_mutex_init(&mutex, NULL);
 
-	nugu_dbg("'%s' plugin initialized done", desc->name);
+	nugu_dbg("'%s' plugin initialized", desc->name);
 
 	return 0;
 }
 
 static int load(void)
 {
-	nugu_dbg("plugin loaded");
+	nugu_dbg("plugin-load");
 
 	return 0;
 }
 
 static void unload(NuguPlugin *p)
 {
-	nugu_dbg("'%s' plugin unloaded", nugu_plugin_get_description(p)->name);
+	nugu_dbg("plugin-unload '%s'", nugu_plugin_get_description(p)->name);
 
 	if (rec_driver) {
 		nugu_recorder_driver_remove(rec_driver);
@@ -386,12 +390,11 @@ static void unload(NuguPlugin *p)
 		rec_driver = NULL;
 	}
 
-	nugu_dbg("'%s' plugin unloaded done",
-		 nugu_plugin_get_description(p)->name);
+	nugu_dbg("'%s' plugin unloaded", nugu_plugin_get_description(p)->name);
 }
 
 NUGU_PLUGIN_DEFINE(
-	"filereader",
+	filereader,
 	NUGU_PLUGIN_PRIORITY_LOW,
 	"0.0.1",
 	load,

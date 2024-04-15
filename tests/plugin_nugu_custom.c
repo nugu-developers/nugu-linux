@@ -20,5 +20,5 @@ int custom_add(int a, int b)
 	return a + b;
 }
 
-NUGU_PLUGIN_DEFINE("test_nugu_custom", NUGU_PLUGIN_PRIORITY_DEFAULT, "1.0",
+NUGU_PLUGIN_DEFINE(test_nugu_custom, NUGU_PLUGIN_PRIORITY_DEFAULT, "1.0",
 		   on_load, on_unload, on_init);

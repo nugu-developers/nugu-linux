@@ -31,6 +31,12 @@ SET(prefix ${CMAKE_INSTALL_PREFIX})
 SET(datadir ${CMAKE_INSTALL_FULL_DATAROOTDIR}/nugu)
 SET(bindir "${prefix}/${CMAKE_INSTALL_BINDIR}")
 SET(requires "")
+SET(builtin_decl "")
+SET(builtin_list "")
+
+SET(BUILTIN_PLUGIN_LIST "") # Array for built-in plugin
+SET(BUILTIN_PLUGIN_LIBS "") # TARGET_LINK_LIBRARIES for libnugu
+SET(BUILTIN_PLUGIN_DEPS "") # ADD_DEPENDENCIES for libnugu
 
 IF(PLUGIN_DIR)
 	SET(plugindir "${PLUGIN_DIR}")
@@ -108,6 +114,7 @@ DEFINE_FEATURE(VENDOR_LIBRARY ON "vendor specific library(nugu_wwd, nugu_epd)")
 DEFINE_FEATURE(BUILTIN_OPUS OFF "compile built-in OPUS library")
 DEFINE_FEATURE(BUILTIN_OPUS_FLOAT_API OFF "floating point to OPUS library")
 DEFINE_FEATURE(BUILTIN_CURL ${BUILTIN_CURL_DEFAULT} "compile built-in curl library")
+DEFINE_FEATURE(BUILTIN_PLUGIN "dummy,filedump" "List of plugins to be built-in in SDK")
 
 DEFINE_FEATURE(DL_LINKING ON "-ldl linking")
 DEFINE_FEATURE(SOCKET_LINKING OFF "-lsocket linking")
@@ -228,6 +235,11 @@ IF(ENABLE_EXAMPLES_ONLY)
 	SET(BUILD_EXAMPLES ON)
 ENDIF()
 
+IF(ENABLE_BUILTIN_PLUGIN)
+	# Change comma separated string to array
+	STRING(REPLACE "," ";" BUILTIN_PLUGIN_LIST ${ENABLE_BUILTIN_PLUGIN})
+ENDIF()
+
 IF(VENDOR_PKGCONFIG)
 	pkg_check_modules(vendor_pkgs REQUIRED ${VENDOR_PKGCONFIG})
 ENDIF()
@@ -257,10 +269,10 @@ ENDFOREACH()
 IF(ENABLE_GSTREAMER_PLUGIN)
 	pkg_check_modules(gstreamer_pkgs REQUIRED
 		gstreamer-1.0 gstreamer-app-1.0 gstreamer-pbutils-1.0)
-ENDIF()
 
-IF(ENABLE_GSTREAMER_PLUGIN_VOLUME)
-	ADD_DEFINITIONS(-DENABLE_GSTREAMER_PLUGIN_VOLUME)
+	IF(ENABLE_GSTREAMER_PLUGIN_VOLUME)
+		ADD_DEFINITIONS(-DENABLE_GSTREAMER_PLUGIN_VOLUME)
+	ENDIF()
 ENDIF()
 
 # Common compile options
@@ -406,13 +418,29 @@ ADD_DEFINITIONS(
 MESSAGE("")
 feature_summary(WHAT ALL)
 
-# External dependency modules - nghttp2, curl
 IF(BUILD_LIBRARY)
 	# Global include directories
 	INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)
 
-	# Install header files
+	FOREACH(item ${BUILTIN_PLUGIN_LIST})
+		SET(builtin_decl "${builtin_decl}extern struct nugu_plugin_desc _builtin_plugin_${item};\n")
+		SET(builtin_list "${builtin_list}&_builtin_plugin_${item},\n")
+	ENDFOREACH()
+
+	CONFIGURE_FILE(src/base/builtin.h.in ${PROJECT_SOURCE_DIR}/src/base/builtin.h @ONLY)
 	CONFIGURE_FILE(nugu.h.in ${PROJECT_SOURCE_DIR}/include/nugu.h @ONLY)
+ENDIF()
+
+# External dependency modules - nghttp2, curl
+ADD_SUBDIRECTORY(externals)
+
+# Plugins
+IF(BUILD_PLUGINS)
+	ADD_SUBDIRECTORY(plugins)
+ENDIF()
+
+IF(BUILD_LIBRARY)
+	# Install header files
 	INSTALL(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
 
 	# Install pkgconfig
@@ -424,8 +452,6 @@ IF(BUILD_LIBRARY)
 
 	ENABLE_TESTING()
 
-	ADD_SUBDIRECTORY(externals)
-
 	# NUGU SDK
 	ADD_SUBDIRECTORY(src)
 
@@ -433,12 +459,8 @@ IF(BUILD_LIBRARY)
 	ADD_SUBDIRECTORY(tests)
 ENDIF()
 
-# HAL Plugins
-IF(BUILD_PLUGINS)
-	ADD_SUBDIRECTORY(plugins)
-ENDIF()
-
 # Examples
 IF(BUILD_EXAMPLES)
 	ADD_SUBDIRECTORY(examples)
 ENDIF()
+

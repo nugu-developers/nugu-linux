@@ -1,0 +1,20 @@
+#ifndef __NUGU_PLUGIN_BUILT_IN_H__
+#define __NUGU_PLUGIN_BUILT_IN_H__
+
+#include "base/nugu_plugin.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+@builtin_decl@
+
+static struct nugu_plugin_desc *_builtin_list[] = {
+@builtin_list@
+};
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

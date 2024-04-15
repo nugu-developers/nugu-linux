@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+#ifdef NUGU_PLUGIN_BUILTIN_OPUS
+#define NUGU_PLUGIN_BUILTIN
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -257,7 +261,7 @@ static int init(NuguPlugin *p)
 	const struct nugu_plugin_desc *desc;
 
 	desc = nugu_plugin_get_description(p);
-	nugu_dbg("'%s' plugin initialized", desc->name);
+	nugu_dbg("plugin-init '%s'", desc->name);
 
 	driver = nugu_decoder_driver_new(desc->name, NUGU_DECODER_TYPE_OPUS,
 					 &decoder_ops);
@@ -269,6 +273,8 @@ static int init(NuguPlugin *p)
 		driver = NULL;
 		return -1;
 	}
+
+	nugu_dbg("'%s' plugin initialized", desc->name);
 
 	return 0;
 }
@@ -289,9 +295,11 @@ static void unload(NuguPlugin *p)
 		nugu_decoder_driver_free(driver);
 		driver = NULL;
 	}
+
+	nugu_dbg("'%s' plugin unloaded", nugu_plugin_get_description(p)->name);
 }
 
-NUGU_PLUGIN_DEFINE("opus",
+NUGU_PLUGIN_DEFINE(opus,
 	NUGU_PLUGIN_PRIORITY_DEFAULT,
 	"0.0.1",
 	load,

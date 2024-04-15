@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+#ifdef NUGU_PLUGIN_BUILTIN_OPUS_ENCODER
+#define NUGU_PLUGIN_BUILTIN
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -342,6 +346,8 @@ static int init(NuguPlugin *p)
 		return -1;
 	}
 
+	nugu_dbg("'%s' plugin initialized", desc->name);
+
 	return 0;
 }
 
@@ -355,11 +361,17 @@ static int load(void)
 static void unload(NuguPlugin *p)
 {
 	nugu_dbg("plugin-unload '%s'", nugu_plugin_get_description(p)->name);
-	nugu_encoder_driver_remove(enc_driver);
-	nugu_encoder_driver_free(enc_driver);
+
+	if (enc_driver) {
+		nugu_encoder_driver_remove(enc_driver);
+		nugu_encoder_driver_free(enc_driver);
+		enc_driver = NULL;
+	}
+
+	nugu_dbg("'%s' plugin unloaded", nugu_plugin_get_description(p)->name);
 }
 
-NUGU_PLUGIN_DEFINE("opus_encoder",
+NUGU_PLUGIN_DEFINE(opus_encoder,
 	NUGU_PLUGIN_PRIORITY_DEFAULT,
 	"0.0.1",
 	load,

@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+#ifdef NUGU_PLUGIN_BUILTIN_SPEEX
+#define NUGU_PLUGIN_BUILTIN
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -223,7 +227,7 @@ static int init(NuguPlugin *p)
 	const struct nugu_plugin_desc *desc;
 
 	desc = nugu_plugin_get_description(p);
-	nugu_dbg("'%s' plugin initialized", desc->name);
+	nugu_dbg("plugin-init '%s'", desc->name);
 
 	driver = nugu_encoder_driver_new(desc->name, NUGU_ENCODER_TYPE_SPEEX,
 					 &encoder_ops);
@@ -236,7 +240,7 @@ static int init(NuguPlugin *p)
 		return -1;
 	}
 
-	nugu_dbg("'%s' plugin initialized done", desc->name);
+	nugu_dbg("'%s' plugin initialized", desc->name);
 
 	return 0;
 }
@@ -257,9 +261,11 @@ static void unload(NuguPlugin *p)
 		nugu_encoder_driver_free(driver);
 		driver = NULL;
 	}
+
+	nugu_dbg("'%s' plugin unloaded", nugu_plugin_get_description(p)->name);
 }
 
-NUGU_PLUGIN_DEFINE("speex",
+NUGU_PLUGIN_DEFINE(speex,
 	NUGU_PLUGIN_PRIORITY_DEFAULT,
 	"0.0.1",
 	load,
