@@ -228,10 +228,13 @@ static struct nugu_pcm_driver_ops pcm_ops = {
 
 static int init(NuguPlugin *p)
 {
-	nugu_dbg("plugin-init '%s'", nugu_plugin_get_description(p)->name);
+	const struct nugu_plugin_desc *desc;
+
+	desc = nugu_plugin_get_description(p);
+	nugu_dbg("plugin-init '%s'", desc->name);
 
 	decoder_driver = nugu_decoder_driver_new(
-		"filedump", NUGU_DECODER_TYPE_OPUS, &decoder_ops);
+		desc->name, NUGU_DECODER_TYPE_OPUS, &decoder_ops);
 	if (!decoder_driver)
 		return -1;
 
@@ -240,7 +243,7 @@ static int init(NuguPlugin *p)
 		return -1;
 	}
 
-	pcm_driver = nugu_pcm_driver_new("filedump", &pcm_ops);
+	pcm_driver = nugu_pcm_driver_new(desc->name, &pcm_ops);
 	if (!pcm_driver) {
 		nugu_decoder_driver_remove(decoder_driver);
 		nugu_decoder_driver_free(decoder_driver);

@@ -33,8 +33,6 @@
 #include "base/nugu_pcm.h"
 #include "base/nugu_prof.h"
 
-#define PLUGIN_DRIVER_NAME "gstreamer_pcm"
-
 #define GST_SET_VOLUME_MIN 0
 #define GST_SET_VOLUME_MAX 1
 
@@ -896,13 +894,15 @@ static struct nugu_pcm_driver_ops pcm_ops = {
 
 static int init(NuguPlugin *p)
 {
-	nugu_dbg("'%s' plugin initialized",
-		 nugu_plugin_get_description(p)->name);
+	const struct nugu_plugin_desc *desc;
+
+	desc = nugu_plugin_get_description(p);
+	nugu_dbg("'%s' plugin initialized", desc->name);
 
 	if (gst_is_initialized() == FALSE)
 		gst_init(NULL, NULL);
 
-	pcm_driver = nugu_pcm_driver_new(PLUGIN_DRIVER_NAME, &pcm_ops);
+	pcm_driver = nugu_pcm_driver_new(desc->name, &pcm_ops);
 	if (!pcm_driver) {
 		nugu_error("nugu_pcm_driver_new() failed");
 		return -1;
@@ -914,8 +914,7 @@ static int init(NuguPlugin *p)
 		return -1;
 	}
 
-	nugu_dbg("'%s' plugin initialized done",
-		 nugu_plugin_get_description(p)->name);
+	nugu_dbg("'%s' plugin initialized done", desc->name);
 
 	return 0;
 }
@@ -943,7 +942,7 @@ static void unload(NuguPlugin *p)
 
 NUGU_PLUGIN_DEFINE(
 	/* NUGU SDK Plug-in description */
-	PLUGIN_DRIVER_NAME, /* Plugin name */
+	"gstreamer_pcm", /* Plugin name */
 	NUGU_PLUGIN_PRIORITY_DEFAULT - 1, /* Plugin priority */
 	"0.0.1", /* Plugin version */
 	load, /* dlopen */

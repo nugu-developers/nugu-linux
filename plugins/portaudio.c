@@ -24,8 +24,6 @@
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
 
-#define PLUGIN_DRIVER_NAME "portaudio"
-
 static void snd_error_log(const char *file, int line, const char *function,
 			  int err, const char *fmt, ...)
 {
@@ -94,7 +92,7 @@ static void unload(NuguPlugin *p)
 
 NUGU_PLUGIN_DEFINE(
 	/* NUGU SDK Plug-in description */
-	PLUGIN_DRIVER_NAME, /* Plugin name */
+	"portaudio", /* Plugin name */
 	NUGU_PLUGIN_PRIORITY_DEFAULT + 1, /* Plugin priority */
 	"0.0.2", /* Plugin version */
 	load, /* dlopen */

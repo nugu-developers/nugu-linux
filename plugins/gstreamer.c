@@ -26,7 +26,6 @@
 #include "base/nugu_plugin.h"
 #include "base/nugu_player.h"
 
-#define PLUGIN_DRIVER_NAME "gstreamer"
 #define GST_SET_VOLUME_MIN 0
 #define GST_SET_VOLUME_MAX 1
 
@@ -857,13 +856,15 @@ static struct nugu_player_driver_ops player_ops = {
 
 static int init(NuguPlugin *p)
 {
-	nugu_dbg("'%s' plugin initialized",
-		 nugu_plugin_get_description(p)->name);
+	const struct nugu_plugin_desc *desc;
+
+	desc = nugu_plugin_get_description(p);
+	nugu_dbg("'%s' plugin initialized", desc->name);
 
 	if (gst_is_initialized() == FALSE)
 		gst_init(NULL, NULL);
 
-	driver = nugu_player_driver_new(PLUGIN_DRIVER_NAME, &player_ops);
+	driver = nugu_player_driver_new(desc->name, &player_ops);
 	if (!driver) {
 		nugu_error("nugu_player_driver_new() failed");
 		return -1;
@@ -875,8 +876,7 @@ static int init(NuguPlugin *p)
 		return -1;
 	}
 
-	nugu_dbg("'%s' plugin initialized done",
-		 nugu_plugin_get_description(p)->name);
+	nugu_dbg("'%s' plugin initialized done", desc->name);
 
 	return 0;
 }
@@ -901,7 +901,7 @@ static void unload(NuguPlugin *p)
 		 nugu_plugin_get_description(p)->name);
 }
 
-NUGU_PLUGIN_DEFINE(PLUGIN_DRIVER_NAME,
+NUGU_PLUGIN_DEFINE("gstreamer",
 	NUGU_PLUGIN_PRIORITY_DEFAULT,
 	"0.0.1",
 	load,

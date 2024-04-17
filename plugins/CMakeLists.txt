@@ -40,13 +40,13 @@ ENDIF(ENABLE_OPUS_PLUGIN)
 
 # OPUS encoder plugin
 IF(ENABLE_OPUSENC_PLUGIN)
-	ADD_LIBRARY(opusenc SHARED opus_encoder.c)
-	pkg_check_modules(opusenc REQUIRED opus ogg)
-	TARGET_COMPILE_OPTIONS(opusenc PRIVATE ${opusenc_CFLAGS})
-	TARGET_LINK_LIBRARIES(opusenc ${pkgs_LDFLAGS} ${opusenc_LDFLAGS} -lnugu)
-	SET_TARGET_PROPERTIES(opusenc PROPERTIES PREFIX "" OUTPUT_NAME opusenc)
-	INSTALL(TARGETS opusenc LIBRARY DESTINATION ${plugindir} COMPONENT libnugu_component)
-	ADD_DEPENDENCIES(opusenc libnugu)
+	ADD_LIBRARY(opus_encoder SHARED opus_encoder.c)
+	pkg_check_modules(opus_encoder REQUIRED opus ogg)
+	TARGET_COMPILE_OPTIONS(opus_encoder PRIVATE ${opus_encoder_CFLAGS})
+	TARGET_LINK_LIBRARIES(opus_encoder ${pkgs_LDFLAGS} ${opus_encoder_LDFLAGS} -lnugu)
+	SET_TARGET_PROPERTIES(opus_encoder PROPERTIES PREFIX "" OUTPUT_NAME opus_encoder)
+	INSTALL(TARGETS opus_encoder LIBRARY DESTINATION ${plugindir} COMPONENT libnugu_component)
+	ADD_DEPENDENCIES(opus_encoder libnugu)
 ENDIF(ENABLE_OPUSENC_PLUGIN)
 
 # PortAudio plugin

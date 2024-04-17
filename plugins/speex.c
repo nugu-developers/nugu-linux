@@ -220,9 +220,12 @@ static struct nugu_encoder_driver_ops encoder_ops = {
 
 static int init(NuguPlugin *p)
 {
-	nugu_dbg("plugin-init '%s'", nugu_plugin_get_description(p)->name);
+	const struct nugu_plugin_desc *desc;
 
-	driver = nugu_encoder_driver_new("speex", NUGU_ENCODER_TYPE_SPEEX,
+	desc = nugu_plugin_get_description(p);
+	nugu_dbg("'%s' plugin initialized", desc->name);
+
+	driver = nugu_encoder_driver_new(desc->name, NUGU_ENCODER_TYPE_SPEEX,
 					 &encoder_ops);
 	if (!driver)
 		return -1;
@@ -232,6 +235,8 @@ static int init(NuguPlugin *p)
 		driver = NULL;
 		return -1;
 	}
+
+	nugu_dbg("'%s' plugin initialized done", desc->name);
 
 	return 0;
 }
