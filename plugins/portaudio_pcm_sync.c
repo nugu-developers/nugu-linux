@@ -32,7 +32,6 @@
 #include "base/nugu_pcm.h"
 #include "base/nugu_prof.h"
 
-#define PLUGIN_DRIVER_NAME "portaudio_pcm_sync"
 #define FRAME_PER_BUFFER 512
 
 //#define DEBUG_PCM
@@ -609,15 +608,17 @@ static struct nugu_pcm_driver_ops pcm_ops = {
 
 static int init(NuguPlugin *p)
 {
-	nugu_dbg("'%s' plugin initialized",
-		 nugu_plugin_get_description(p)->name);
+	const struct nugu_plugin_desc *desc;
+
+	desc = nugu_plugin_get_description(p);
+	nugu_dbg("'%s' plugin initialized", desc->name);
 
 	if (!nugu_plugin_find("portaudio")) {
 		nugu_error("portaudio plugin is not initialized");
 		return -1;
 	}
 
-	pcm_driver = nugu_pcm_driver_new(PLUGIN_DRIVER_NAME, &pcm_ops);
+	pcm_driver = nugu_pcm_driver_new(desc->name, &pcm_ops);
 	if (!pcm_driver) {
 		nugu_error("nugu_pcm_driver_new() failed");
 		return -1;
@@ -629,8 +630,7 @@ static int init(NuguPlugin *p)
 		return -1;
 	}
 
-	nugu_dbg("'%s' plugin initialized done",
-		 nugu_plugin_get_description(p)->name);
+	nugu_dbg("'%s' plugin initialized done", desc->name);
 
 	return 0;
 }
@@ -658,7 +658,7 @@ static void unload(NuguPlugin *p)
 
 NUGU_PLUGIN_DEFINE(
 	/* NUGU SDK Plug-in description */
-	PLUGIN_DRIVER_NAME, /* Plugin name */
+	"portaudio_pcm_sync", /* Plugin name */
 	NUGU_PLUGIN_PRIORITY_DEFAULT + 3, /* Plugin priority */
 	"0.0.2", /* Plugin version */
 	load, /* dlopen */

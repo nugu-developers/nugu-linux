@@ -326,9 +326,12 @@ static struct nugu_encoder_driver_ops encoder_ops = {
 
 static int init(NuguPlugin *p)
 {
-	nugu_dbg("plugin-init '%s'", nugu_plugin_get_description(p)->name);
+	const struct nugu_plugin_desc *desc;
 
-	enc_driver = nugu_encoder_driver_new("opus", NUGU_ENCODER_TYPE_OPUS,
+	desc = nugu_plugin_get_description(p);
+	nugu_dbg("plugin-init '%s'", desc->name);
+
+	enc_driver = nugu_encoder_driver_new(desc->name, NUGU_ENCODER_TYPE_OPUS,
 					     &encoder_ops);
 	if (!enc_driver)
 		return -1;
@@ -356,7 +359,7 @@ static void unload(NuguPlugin *p)
 	nugu_encoder_driver_free(enc_driver);
 }
 
-NUGU_PLUGIN_DEFINE("opusenc",
+NUGU_PLUGIN_DEFINE("opus_encoder",
 	NUGU_PLUGIN_PRIORITY_DEFAULT,
 	"0.0.1",
 	load,

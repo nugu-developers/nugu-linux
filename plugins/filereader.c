@@ -29,7 +29,6 @@
 #include "base/nugu_plugin.h"
 #include "base/nugu_recorder.h"
 
-#define PLUGIN_DRIVER_NAME "filereader"
 #define SAMPLE_SILENCE (0.0f)
 
 struct audio_param {
@@ -341,15 +340,17 @@ static struct nugu_recorder_driver_ops rec_ops = {
 
 static int init(NuguPlugin *p)
 {
-	nugu_dbg("'%s' plugin initialized",
-		 nugu_plugin_get_description(p)->name);
+	const struct nugu_plugin_desc *desc;
+
+	desc = nugu_plugin_get_description(p);
+	nugu_dbg("'%s' plugin initialized", desc->name);
 
 	if (!getenv(NUGU_ENV_RECORDING_FROM_FILE)) {
 		nugu_error("must set environment => NUGU_RECORDING_FROM_FILE");
 		return -1;
 	}
 
-	rec_driver = nugu_recorder_driver_new(PLUGIN_DRIVER_NAME, &rec_ops);
+	rec_driver = nugu_recorder_driver_new(desc->name, &rec_ops);
 	if (!rec_driver) {
 		nugu_error("nugu_recorder_driver_new() failed");
 		return -1;
@@ -363,8 +364,7 @@ static int init(NuguPlugin *p)
 
 	pthread_mutex_init(&mutex, NULL);
 
-	nugu_dbg("'%s' plugin initialized done",
-		 nugu_plugin_get_description(p)->name);
+	nugu_dbg("'%s' plugin initialized done", desc->name);
 
 	return 0;
 }
@@ -391,7 +391,7 @@ static void unload(NuguPlugin *p)
 }
 
 NUGU_PLUGIN_DEFINE(
-	PLUGIN_DRIVER_NAME,
+	"filereader",
 	NUGU_PLUGIN_PRIORITY_LOW,
 	"0.0.1",
 	load,

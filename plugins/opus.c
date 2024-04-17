@@ -254,9 +254,12 @@ static struct nugu_decoder_driver_ops decoder_ops = {
 
 static int init(NuguPlugin *p)
 {
-	nugu_dbg("plugin-init '%s'", nugu_plugin_get_description(p)->name);
+	const struct nugu_plugin_desc *desc;
 
-	driver = nugu_decoder_driver_new("opus", NUGU_DECODER_TYPE_OPUS,
+	desc = nugu_plugin_get_description(p);
+	nugu_dbg("'%s' plugin initialized", desc->name);
+
+	driver = nugu_decoder_driver_new(desc->name, NUGU_DECODER_TYPE_OPUS,
 					 &decoder_ops);
 	if (!driver)
 		return -1;
