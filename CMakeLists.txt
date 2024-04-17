@@ -420,7 +420,7 @@ IF(BUILD_LIBRARY)
 	INSTALL(FILES ${PROJECT_BINARY_DIR}/nugu.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
 
 	# Install asset files
-	INSTALL(DIRECTORY assets/model DESTINATION ${assetdir} COMPONENT libnugu)
+	INSTALL(DIRECTORY assets/model DESTINATION ${assetdir} COMPONENT libnugu_component)
 
 	ENABLE_TESTING()
 
