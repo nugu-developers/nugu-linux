@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <glib.h>
 #include <regex>
 #include <string.h>
 
@@ -229,7 +230,7 @@ std::string TTSAgent::requestTTS(const std::string& text, const std::string& pla
 
     uuid = nugu_uuid_generate_time();
     token = uuid;
-    free(uuid);
+    g_free(uuid);
 
     if (referrer_id.size())
         setReferrerDialogRequestId("TTSAgent.requestTTS", referrer_id);
