@@ -39,6 +39,77 @@ static const int ASR_EPD_TIMEOUT_SEC = 7;
 static const int ASR_EPD_MAX_DURATION_SEC = 10;
 static const int ASR_EPD_PAUSE_LENGTH_MSEC = 700;
 
+#ifdef ENABLE_VENDOR_LIBRARY
+static EpdParam get_epd_param(const std::string& samplerate, int timeout, int max_duration, int pause_length)
+{
+    EpdParam epd_param;
+
+    if (samplerate == "8k")
+        epd_param.sample_rate = 8000;
+    else if (samplerate == "22k")
+        epd_param.sample_rate = 22050;
+    else if (samplerate == "32k")
+        epd_param.sample_rate = 32000;
+    else if (samplerate == "44k")
+        epd_param.sample_rate = 44100;
+    else
+        epd_param.sample_rate = 16000;
+
+    epd_param.input_type = EPD_DATA_TYPE_LINEAR_PCM16;
+    epd_param.output_type = EPD_DATA_TYPE_LINEAR_PCM16;
+    epd_param.max_speech_duration_secs = max_duration;
+    epd_param.time_out_secs = timeout;
+    epd_param.pause_length_msecs = pause_length;
+
+    return epd_param;
+}
+#endif
+
+#if defined(ENABLE_VENDOR_LIBRARY) || defined(ENABLE_VOICE_STREAMING)
+static NuguAudioProperty get_audio_property(const std::string& samplerate)
+{
+    NuguAudioProperty prop;
+
+    if (samplerate == "8k")
+        prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_8K;
+    else if (samplerate == "22k")
+        prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_22K;
+    else if (samplerate == "32k")
+        prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_32K;
+    else if (samplerate == "44k")
+        prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_44K;
+    else
+        prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_16K;
+
+    prop.format = NUGU_AUDIO_FORMAT_S16_LE;
+    prop.channel = 1;
+
+    return prop;
+}
+
+static bool create_encoder(NuguAudioProperty prop, NuguEncoder** encoder)
+{
+    NuguEncoderDriver* encoder_driver;
+
+    encoder_driver = nugu_encoder_driver_find_bytype(NUGU_ENCODER_TYPE_OPUS);
+    if (!encoder_driver) {
+        encoder_driver = nugu_encoder_driver_find_bytype(NUGU_ENCODER_TYPE_SPEEX);
+        if (!encoder_driver) {
+            nugu_error("can't find encoder driver");
+            return false;
+        }
+    }
+
+    *encoder = nugu_encoder_new(encoder_driver, prop);
+    if (!*encoder) {
+            nugu_error("can't create encoder");
+            return false;
+    }
+
+    return true;
+}
+#endif
+
 SpeechRecognizer::SpeechRecognizer(Attribute&& attribute)
     : epd_ret(-1)
     , listener(nullptr)
@@ -97,32 +168,12 @@ void SpeechRecognizer::loop()
     int prev_epd_ret = 0;
     bool is_epd_end = false;
     std::string model_file;
-    NuguEncoder* encoder;
+    NuguEncoder* encoder = NULL;
     NuguAudioProperty prop;
 
     std::string samplerate = recorder->getSamplerate();
-    if (samplerate == "8k") {
-        epd_param.sample_rate = 8000;
-        prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_8K;
-    } else if (samplerate == "22k") {
-        epd_param.sample_rate = 22050;
-        prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_22K;
-    } else if (samplerate == "32k") {
-        epd_param.sample_rate = 32000;
-        prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_32K;
-    } else if (samplerate == "44k") {
-        epd_param.sample_rate = 44100;
-        prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_44K;
-    } else {
-        epd_param.sample_rate = 16000;
-        prop.samplerate = NUGU_AUDIO_SAMPLE_RATE_16K;
-    }
-
-    epd_param.input_type = EPD_DATA_TYPE_LINEAR_PCM16;
-    epd_param.output_type = EPD_DATA_TYPE_LINEAR_PCM16;
-
-    prop.format = NUGU_AUDIO_FORMAT_S16_LE;
-    prop.channel = 1;
+    prop = get_audio_property(samplerate);
+    epd_param = get_epd_param(samplerate, epd_timeout, epd_max_duration, epd_pause_length);
 
     nugu_dbg("Listening Thread: started");
 
@@ -161,39 +212,25 @@ void SpeechRecognizer::loop()
         nugu_dbg("Listening Thread: asr_is_running=%d", is_running);
         sendListeningEvent(ListeningState::READY, id);
 
-        try {
-            NuguEncoderDriver* encoder_driver;
-
-            encoder_driver = nugu_encoder_driver_find_bytype(NUGU_ENCODER_TYPE_OPUS);
-            if (!encoder_driver) {
-                encoder_driver = nugu_encoder_driver_find_bytype(NUGU_ENCODER_TYPE_SPEEX);
-                if (!encoder_driver)
-                    throw "can't find encoder driver";
-            }
-
-            encoder = nugu_encoder_new(encoder_driver, prop);
-            if (!encoder)
-                throw "can't create encoder";
-
-            codec = nugu_encoder_get_codec(encoder);
-            mime_type = nugu_encoder_get_mime_type(encoder);
-
-            if (epd_client_start(model_file.c_str(), epd_param) < 0)
-                throw "epd_client_start() failed";
-
-            if (!recorder->start())
-                throw "recorder->start() failed";
-        } catch (const char* message) {
-            nugu_error(message);
+        if (create_encoder(prop, &encoder) == false
+            || epd_client_start(model_file.c_str(), epd_param) < 0
+            || !recorder->start()) {
+            nugu_error("create encoder or epd_client_start or record start failed");
 
             is_running = false;
-            recorder->stop();
             epd_client_release();
+            if (encoder) {
+                nugu_encoder_free(encoder);
+                encoder = NULL;
+            }
 
             sendListeningEvent(ListeningState::FAILED, id);
             sendListeningEvent(ListeningState::DONE, id);
             continue;
         }
+
+        codec = nugu_encoder_get_codec(encoder);
+        mime_type = nugu_encoder_get_mime_type(encoder);
 
         sendListeningEvent(ListeningState::LISTENING, id);
 
@@ -330,6 +367,152 @@ void SpeechRecognizer::loop()
 
     nugu_dbg("Listening Thread: exited");
 }
+#elif defined(ENABLE_VOICE_STREAMING)
+void SpeechRecognizer::loop()
+{
+    NUGUTimer* timer = new NUGUTimer(true);
+    NuguEncoder* encoder = NULL;
+    NuguAudioProperty prop;
+
+    int pcm_size;
+    bool is_first = true;
+
+    std::string samplerate = recorder->getSamplerate();
+    prop = get_audio_property(samplerate);
+
+    nugu_dbg("Listening Thread: started");
+
+    mutex.lock();
+    thread_created = true;
+    cond.notify_all();
+    mutex.unlock();
+
+    std::string id = listening_id;
+
+    while (g_atomic_int_get(&destroy) == 0) {
+        std::unique_lock<std::mutex> lock(mutex);
+        cond.wait(lock);
+        lock.unlock();
+
+        if (is_running == false)
+            continue;
+
+        is_started = true;
+        id = listening_id;
+
+        sendListeningEvent(ListeningState::READY, id);
+        if (create_encoder(prop, &encoder) == false
+            || !recorder->start()) {
+            nugu_error("create encoder or record start failed");
+
+            is_running = false;
+            if (encoder) {
+                nugu_encoder_free(encoder);
+                encoder = NULL;
+            }
+            recorder->stop();
+
+            sendListeningEvent(ListeningState::FAILED, id);
+            sendListeningEvent(ListeningState::DONE, id);
+            continue;
+        }
+
+        codec = nugu_encoder_get_codec(encoder);
+        mime_type = nugu_encoder_get_mime_type(encoder);
+
+        sendListeningEvent(ListeningState::LISTENING, id);
+
+        pcm_size = recorder->getAudioFrameSize();
+
+        while (is_running) {
+            char pcm_buf[pcm_size];
+
+            if (!recorder->isRecording()) {
+                struct timespec ts;
+
+                ts.tv_sec = 0;
+                ts.tv_nsec = 10 * 1000 * 1000; /* 10ms */
+
+                nugu_dbg("Listening Thread: not recording state");
+                nanosleep(&ts, NULL);
+                continue;
+            }
+
+            if (recorder->isMute()) {
+                nugu_error("nugu recorder is mute");
+                sendListeningEvent(ListeningState::FAILED, id);
+                break;
+            }
+
+            if (!recorder->getAudioFrame(pcm_buf, &pcm_size, 0)) {
+                nugu_error("nugu_recorder_get_frame_timeout() failed");
+                sendListeningEvent(ListeningState::FAILED, id);
+                break;
+            }
+
+            if (pcm_size == 0) {
+                nugu_error("pcm_size result is 0");
+                if (is_running)
+                    sendListeningEvent(ListeningState::FAILED, id);
+                break;
+            }
+
+            if (pcm_size > 0) {
+                std::lock_guard<std::mutex> lock(mtx);
+                unsigned char* encoded;
+                size_t encoded_size = 0;
+
+                encoded = (unsigned char*)nugu_encoder_encode(encoder, is_end, pcm_buf,
+                    pcm_size, &encoded_size);
+                if (encoded) {
+                    /* Invoke the onRecordData callback in thread context */
+                    if (listener && (is_end || encoded_size != 0))
+                        listener->onRecordData(encoded, encoded_size, is_end);
+
+                    free(encoded);
+                } else {
+                    nugu_error("nugu_encoder_encode(is_end=%d, pcm_size=%d) failed",
+                        is_end, pcm_size);
+                }
+
+                if (is_first) {
+                    nugu_prof_mark(NUGU_PROF_TYPE_ASR_RECOGNIZING_STARTED);
+                    sendListeningEvent(ListeningState::SPEECH_START, id);
+                    is_first = false;
+                }
+
+                if (is_end) {
+                    nugu_prof_mark(NUGU_PROF_TYPE_ASR_END_POINT_DETECTED);
+                    sendListeningEvent(ListeningState::SPEECH_END, id);
+                    break;
+                }
+            }
+        }
+
+        if (g_atomic_int_get(&destroy) == 0)
+            sendListeningEvent(ListeningState::DONE, id);
+
+        is_running = false;
+        is_first = true;
+        is_end = false;
+        recorder->stop();
+        nugu_encoder_free(encoder);
+        encoder = NULL;
+
+        if (!is_started) {
+            is_running = false;
+            timer->setCallback([&]() {
+                nugu_dbg("request to start audio input");
+                startListening(listening_id);
+            });
+            timer->start();
+        }
+    }
+
+    delete timer;
+
+    nugu_dbg("Listening Thread: exited");
+}
 #else
 void SpeechRecognizer::loop()
 {
@@ -372,6 +555,15 @@ bool SpeechRecognizer::startListening(const std::string& id)
 void SpeechRecognizer::stopListening()
 {
     AudioInputProcessor::stop();
+}
+
+void SpeechRecognizer::finishListening()
+{
+#ifdef ENABLE_VOICE_STREAMING
+    std::lock_guard<std::mutex> lock(mtx);
+
+    is_end = true;
+#endif
 }
 
 void SpeechRecognizer::setEpdAttribute(const EpdAttribute& attribute)

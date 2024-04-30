@@ -168,6 +168,9 @@ void NuguSDKManager::composeSDKCommands()
         ->add("s", { "stop listening/wakeup", [&](int& flag) {
                         speech_recognizer_aggregator->stopListening();
                     } })
+        ->add("f", { "finish listening", [&](int& flag) {
+                        speech_recognizer_aggregator->finishListening();
+                    } })
         ->add("c", { "cancel listening", [&](int& flag) {
                         speech_recognizer_aggregator->stopListening(true);
                     } })

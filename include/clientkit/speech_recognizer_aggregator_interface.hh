@@ -143,6 +143,11 @@ public:
      * @param[in] cancel if true, cancel the directives to be received for current dialog
      */
     virtual void stopListening(bool cancel = false) = 0;
+
+    /**
+     * @brief finish listening speech
+     */
+    virtual void finishListening() = 0;
 };
 
 } // NuguClientKit

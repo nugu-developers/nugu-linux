@@ -193,6 +193,11 @@ public:
             listener->onCancel(dialog_id);
     }
 
+    void finishRecognition() override
+    {
+        notifyASRState(ASRState::IDLE);
+    }
+
     void addListener(IASRListener* listener) override
     {
         this->listener = listener;
