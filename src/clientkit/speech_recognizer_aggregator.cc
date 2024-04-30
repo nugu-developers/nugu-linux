@@ -133,6 +133,16 @@ void SpeechRecognizerAggregator::stopListening(bool cancel)
         pimpl->wakeup_handler->stopWakeup();
 }
 
+void SpeechRecognizerAggregator::finishListening()
+{
+    if (!pimpl->asr_handler) {
+        nugu_error("The asr handler is not prepared.");
+        return;
+    }
+
+    pimpl->asr_handler->finishRecognition();
+}
+
 void SpeechRecognizerAggregator::onWakeupState(WakeupDetectState state, float power_noise, float power_speech)
 {
     pimpl->notifyWakeupState(state, power_noise, power_speech);

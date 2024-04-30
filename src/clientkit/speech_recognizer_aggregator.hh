@@ -40,6 +40,7 @@ public:
     void startListeningWithTrigger() override;
     void startListening(float power_noise = 0, float power_speech = 0, ASRInitiator initiator = ASRInitiator::TAP) override;
     void stopListening(bool cancel = false) override;
+    void finishListening() override;
 
     // implements IWakeupListener, IASRListener
     void onWakeupState(WakeupDetectState state, float power_noise, float power_speech) override;

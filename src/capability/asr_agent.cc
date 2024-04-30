@@ -212,6 +212,19 @@ void ASRAgent::stopRecognition(bool cancel)
     }
 }
 
+void ASRAgent::finishRecognition()
+{
+    if (speech_recognizer->isMute()) {
+        nugu_warn("recorder is mute state");
+        return;
+    }
+
+    if (getASRState() == ASRState::LISTENING
+        || getASRState() == ASRState::RECOGNIZING
+        || getASRState() == ASRState::EXPECTING_SPEECH)
+        speech_recognizer->finishListening();
+}
+
 void ASRAgent::preprocessDirective(NuguDirective* ndir)
 {
     const char* dname;

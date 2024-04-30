@@ -178,6 +178,11 @@ public:
     virtual void stopRecognition(bool cancel = false) = 0;
 
     /**
+     * @brief Finish audio recording and request recognition by a user
+     */
+    virtual void finishRecognition() = 0;
+
+    /**
      * @brief Add the Listener object
      * @param[in] listener listener object
      */

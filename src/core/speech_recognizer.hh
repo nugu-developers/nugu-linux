@@ -45,6 +45,7 @@ public:
     void setListener(ISpeechRecognizerListener* listener) override;
     bool startListening(const std::string& id) override;
     void stopListening() override;
+    void finishListening() override;
     void setEpdAttribute(const EpdAttribute& attribute) override;
     EpdAttribute getEpdAttribute() override;
     bool isMute() override;
@@ -66,6 +67,11 @@ private:
     int epd_timeout = 0;
     int epd_max_duration = 0;
     long epd_pause_length = 0;
+
+#ifdef ENABLE_VOICE_STREAMING
+    std::mutex mtx;
+    bool is_end = false;
+#endif
 };
 
 } // NuguCore

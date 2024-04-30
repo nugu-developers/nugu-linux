@@ -105,6 +105,11 @@ public:
     virtual void stopListening() = 0;
 
     /**
+     * @brief finish listening speech
+     */
+    virtual void finishListening() = 0;
+
+    /**
      * @brief Set EPD attribute
      * @param[in] attribute EPD attribute
      */
