@@ -14,29 +14,34 @@
  * limitations under the License.
  */
 
+#ifndef __NUGU_RUNNER_IMPL_H__
+#define __NUGU_RUNNER_IMPL_H__
+
 #include "clientkit/nugu_runner.hh"
-#include "base/nugu_log.h"
 
-#include "core/nugu_runner_impl.hh"
+namespace NuguCore {
 
-namespace NuguClientKit {
+class NuguRunnerImplPrivate;
 
-struct NuguRunnerPrivate {
-    NuguCore::NuguRunnerImpl impl;
+class NuguRunnerImpl {
+public:
+    NuguRunnerImpl();
+    virtual ~NuguRunnerImpl();
+
+    bool invokeMethod(const std::string& tag,
+        NuguClientKit::NuguRunner::request_method method,
+        NuguClientKit::ExecuteType type = NuguClientKit::ExecuteType::Auto,
+        int timeout = 0);
+
+private:
+    void addMethod2Dispatcher(const std::string& tag,
+        NuguClientKit::NuguRunner::request_method method,
+        NuguClientKit::ExecuteType type);
+
+private:
+    NuguRunnerImplPrivate* d;
 };
 
-NuguRunner::NuguRunner()
-    : priv(std::unique_ptr<NuguRunnerPrivate>(new NuguRunnerPrivate()))
-{
-}
+} // NuguCore
 
-NuguRunner::~NuguRunner()
-{
-}
-
-bool NuguRunner::invokeMethod(const std::string& tag, request_method method, ExecuteType type, int timeout)
-{
-    return priv->impl.invokeMethod(tag, std::move(method), type, timeout);
-}
-
-} // NuguClientKit
+#endif // __NUGU_RUNNER_IMPL_H__
