@@ -18,6 +18,7 @@
 #define __NUGU_RUNNER_H__
 
 #include <functional>
+#include <memory>
 #include <string>
 
 namespace NuguClientKit {
@@ -34,6 +35,8 @@ namespace NuguClientKit {
  * @{
  */
 
+struct NuguRunnerPrivate;
+
 /**
  * @brief ExecuteType
  */
@@ -42,11 +45,6 @@ enum class ExecuteType {
     Queued, /**< The method is executed on next idle time even if caller is on nugu loop */
     Blocking /**< The caller is blocking until the method is executed done */
 };
-
-/**
- * @brief NuguRunnerPrivate
- */
-class NuguRunnerPrivate;
 
 /**
  * @brief NuguRunner
@@ -73,10 +71,7 @@ public:
     bool invokeMethod(const std::string& tag, request_method method, ExecuteType type = ExecuteType::Auto, int timeout = 0);
 
 private:
-    void addMethod2Dispatcher(const std::string& tag, NuguRunner::request_method method, ExecuteType type);
-
-private:
-    NuguRunnerPrivate* d;
+    std::unique_ptr<NuguRunnerPrivate> priv;
 };
 
 } // NuguClientKit
