@@ -151,8 +151,16 @@ bool AudioRecorderManager::start(IAudioRecorder* recorder)
         recorders[nugu_recorder] = recorder_list;
     }
 
+    bool ret = false;
+
     nugu_dbg("start recorder: %p", recorder);
-    return (nugu_recorder_start(nugu_recorder) >= 0);
+
+    runner.invokeMethod("blocking_start", [&ret, nugu_recorder] {
+            nugu_dbg("callback invoked by runner");
+            ret = (nugu_recorder_start(nugu_recorder) >= 0); }, NuguClientKit::ExecuteType::Blocking, 2);
+
+    nugu_dbg("nugu_recorder_start() result: %d", ret);
+    return ret;
 }
 
 bool AudioRecorderManager::stop(IAudioRecorder* recorder)
@@ -172,8 +180,16 @@ bool AudioRecorderManager::stop(IAudioRecorder* recorder)
     nugu_dbg("stop recorder: %p, list's size: %d", recorder, recorder_list.size());
 
     if (!recorder_list.size()) {
+        bool ret = false;
+
         nugu_dbg("request to stop recorder because nobody use the recorder");
-        return (nugu_recorder_stop(nugu_recorder) >= 0);
+
+        runner.invokeMethod("blocking_stop", [&ret, nugu_recorder] {
+                nugu_dbg("callback invoked by runner");
+                ret = (nugu_recorder_stop(nugu_recorder) >= 0); }, NuguClientKit::ExecuteType::Blocking, 2);
+
+        nugu_dbg("nugu_recorder_stop() result: %d", ret);
+        return ret;
     } else {
         nugu_dbg("someone use the recorder");
         return true;

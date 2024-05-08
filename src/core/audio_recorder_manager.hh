@@ -23,6 +23,7 @@
 #include <string>
 
 #include "base/nugu_recorder.h"
+#include "nugu_runner_impl.hh"
 
 #include "audio_recorder_interface.hh"
 
@@ -83,6 +84,7 @@ private:
     std::map<NuguRecorder*, std::list<IAudioRecorder*>> recorders;
     std::mutex mutex;
     bool muted;
+    NuguRunnerImpl runner;
 };
 
 } // NuguCore
