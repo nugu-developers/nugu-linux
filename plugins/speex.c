@@ -164,6 +164,8 @@ int _encoder_encode(NuguEncoderDriver *driver, NuguEncoder *enc, int is_end,
 	}
 
 	nugu_dbg("SPEEX encoded %d bytes (PCM %d)", encoded_size, data_len);
+	if (encoded_size == 0)
+		return 0;
 
 	if (encoded_size > ed->buffer_size) {
 		ed->buffer_size = encoded_size;
