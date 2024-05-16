@@ -168,7 +168,7 @@ IF(ENABLE_BUILTIN_CURL)
 	SET(CURL_LIBRARY
 		${PROJECT_BINARY_DIR}/curl/lib/libcurl.a
 		${PROJECT_BINARY_DIR}/nghttp2/lib/libnghttp2.a)
-	SET(CURL_PKGCONFIG zlib)
+	SET(CURL_PKGCONFIG zlib openssl)
 	SET(CURL_INCLUDE ${PROJECT_SOURCE_DIR}/externals/curl/include)
 ELSE()
 	SET(CURL_LIBRARY)
@@ -253,7 +253,7 @@ ENDIF()
 IF(BUILD_LIBRARY)
 	# Set NUGU SDK library default dependency
 	SET(DEFAULT_LIB_DEPENDENCY
-		glib-2.0 gio-2.0 gio-unix-2.0 gthread-2.0 openssl
+		glib-2.0 gio-2.0 gio-unix-2.0 gthread-2.0
 		${CURL_PKGCONFIG} ${VENDOR_PKGCONFIG} ${RAPIDJSON_PKGCONFIG})
 
 	# Sets the option so that the built library has a higher link order than

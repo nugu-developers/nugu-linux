@@ -20,13 +20,12 @@
 #include <inttypes.h>
 
 #include <glib.h>
-#include <openssl/rand.h>
-#include <openssl/sha.h>
 
 #include "base/nugu_log.h"
 #include "base/nugu_network_manager.h"
 #include "base/nugu_uuid.h"
 
+#define SHA1_SIZE 20
 #define MAX_HASH_SIZE 6
 
 static const char *_cached_seed;
@@ -37,8 +36,12 @@ EXPORT_API int nugu_uuid_fill_random(unsigned char *dest, size_t dest_len)
 	g_return_val_if_fail(dest != NULL, -1);
 	g_return_val_if_fail(dest_len > 0, -1);
 
-	RAND_status();
-	RAND_bytes(dest, dest_len);
+	GRand *rand = g_rand_new();
+
+	for (gsize i = 0; i < dest_len; i++)
+		dest[i] = (guchar)g_rand_int_range(rand, 0, 256);
+
+	g_rand_free(rand);
 
 	return 0;
 }
@@ -162,11 +165,16 @@ EXPORT_API char *nugu_uuid_generate_time(void)
 		_cached_seed = NULL;
 		nugu_uuid_fill_random(_cached_hash, sizeof(_cached_hash));
 	} else if (seed != _cached_seed) {
-		unsigned char mdbuf[SHA_DIGEST_LENGTH];
+		unsigned char mdbuf[SHA1_SIZE + 1];
+		gsize digest_len = SHA1_SIZE;
+		GChecksum *checksum;
 
-		SHA1((unsigned char *)seed, strlen(seed), mdbuf);
+		checksum = g_checksum_new(G_CHECKSUM_SHA1);
+		g_checksum_update(checksum, (const guchar *)seed, strlen(seed));
+		g_checksum_get_digest(checksum, mdbuf, &digest_len);
+		g_checksum_free(checksum);
+
 		memcpy(_cached_hash, mdbuf, sizeof(_cached_hash));
-
 		_cached_seed = seed;
 	}
 
@@ -209,8 +217,7 @@ EXPORT_API int nugu_uuid_fill(const struct timespec *time,
 	memcpy(out + 6, hash, (hash_len > 6) ? 6 : hash_len);
 
 	/* random: 4 bytes */
-	RAND_status();
-	RAND_bytes(out + 12, 4);
+	nugu_uuid_fill_random(out + 12, 4);
 
 	return 0;
 }
