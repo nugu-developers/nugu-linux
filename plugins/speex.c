@@ -82,8 +82,8 @@ static int _dumpfile_open(const char *path, const char *prefix)
 }
 #endif
 
-int _encoder_create(NuguEncoderDriver *driver, NuguEncoder *enc,
-		    NuguAudioProperty property)
+static int _encoder_create(NuguEncoderDriver *driver, NuguEncoder *enc,
+			   NuguAudioProperty property)
 {
 	int sample_rate;
 	struct encoder_data *ed;
@@ -139,8 +139,9 @@ int _encoder_create(NuguEncoderDriver *driver, NuguEncoder *enc,
 	return 0;
 }
 
-int _encoder_encode(NuguEncoderDriver *driver, NuguEncoder *enc, int is_end,
-		    const void *data, size_t data_len, NuguBuffer *out_buf)
+static int _encoder_encode(NuguEncoderDriver *driver, NuguEncoder *enc,
+			   int is_end, const void *data, size_t data_len,
+			   NuguBuffer *out_buf)
 {
 	struct encoder_data *ed;
 	int encoded_size;
@@ -188,7 +189,7 @@ int _encoder_encode(NuguEncoderDriver *driver, NuguEncoder *enc, int is_end,
 	return 0;
 }
 
-int _encoder_destroy(NuguEncoderDriver *driver, NuguEncoder *enc)
+static int _encoder_destroy(NuguEncoderDriver *driver, NuguEncoder *enc)
 {
 	struct encoder_data *ed;
 

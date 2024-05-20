@@ -166,8 +166,8 @@ static void flush_stream(struct opus_data *od)
 	}
 }
 
-int _encoder_create(NuguEncoderDriver *driver, NuguEncoder *enc,
-		    NuguAudioProperty property)
+static int _encoder_create(NuguEncoderDriver *driver, NuguEncoder *enc,
+			   NuguAudioProperty property)
 {
 	struct opus_data *od;
 	int err;
@@ -209,8 +209,8 @@ int _encoder_create(NuguEncoderDriver *driver, NuguEncoder *enc,
 	return 0;
 }
 
-int do_encode(struct opus_data *od, int is_last, const unsigned char *buf,
-	      size_t buf_len)
+static int do_encode(struct opus_data *od, int is_last,
+		     const unsigned char *buf, size_t buf_len)
 {
 	int enc_len;
 	size_t samples = buf_len / 2;
@@ -251,8 +251,9 @@ int do_encode(struct opus_data *od, int is_last, const unsigned char *buf,
 	return enc_len;
 }
 
-int _encoder_encode(NuguEncoderDriver *driver, NuguEncoder *enc, int is_last,
-		    const void *data, size_t data_len, NuguBuffer *out_buf)
+static int _encoder_encode(NuguEncoderDriver *driver, NuguEncoder *enc,
+			   int is_last, const void *data, size_t data_len,
+			   NuguBuffer *out_buf)
 {
 	struct opus_data *od;
 	const unsigned char *buf = data;
@@ -293,7 +294,7 @@ int _encoder_encode(NuguEncoderDriver *driver, NuguEncoder *enc, int is_last,
 	return 0;
 }
 
-int _encoder_destroy(NuguEncoderDriver *driver, NuguEncoder *enc)
+static int _encoder_destroy(NuguEncoderDriver *driver, NuguEncoder *enc)
 {
 	struct opus_data *od;
 
