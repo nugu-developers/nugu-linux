@@ -438,10 +438,13 @@ int nugu_recorder_get_frame_timeout(NuguRecorder *rec, char *data, int *size,
 	if (nugu_ring_buffer_get_count(rec->buf) == 0) {
 		if (timeout) {
 #ifdef _WIN32
-			gettimeofday(&curtime, NULL);
-			spec.tv_sec = curtime.tv_sec + timeout / 1000;
-			spec.tv_nsec = curtime.tv_usec * 1000 + timeout % 1000;
+			gint64 microseconds;
+
+			microseconds = g_get_real_time();
+			spec.tv_nsec = (microseconds % 1000000) * 1000;
+			spec.tv_sec = microseconds / 1000000;
 #else
+
 			gettimeofday(&curtime, NULL);
 			spec.tv_sec = curtime.tv_sec + timeout / 1000;
 			spec.tv_nsec = curtime.tv_usec * 1000 + timeout % 1000;

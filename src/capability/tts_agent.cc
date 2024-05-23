@@ -31,7 +31,7 @@ namespace NuguCapability {
 static const char* CAPABILITY_NAME = "TTS";
 static const char* CAPABILITY_VERSION = "1.3";
 
-struct _SpeechStateEventParam {
+struct TTSAgent::_SpeechStateEventParam {
     std::string name;
     nugu_prof_type prof_type;
     TTSState state;

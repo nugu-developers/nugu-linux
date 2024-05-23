@@ -22,15 +22,19 @@ ELSE()
 		$<TARGET_OBJECTS:objclientkit>)
 ENDIF()
 
+MESSAGE("LDFLAGS_XXX: ${LDFLAGS_XXX}")
+
 TARGET_LINK_LIBRARIES(libnugu PUBLIC
-	${CURL_LIBRARY} njson -lstdc++
-	${pkgs_LDFLAGS}
+#	${CURL_LIBRARY}
+	njson # -lstdc++
+#	${pkgs_LDFLAGS}
 	${builtin_plugin_pkgs_LDFLAGS}
 	${BUILTIN_PLUGIN_LIBS}
 	${LDFLAG_SOCKET}
 	${LDFLAG_WINSOCK}
 	${LDFLAG_DL}
-	${LDFLAGS_PTHREAD4W})
+	${LDFLAGS_PTHREAD4W}
+	${LDFLAGS_XXX})
 
 FOREACH(lib ${BUILTIN_PLUGIN_DEPS})
 	ADD_DEPENDENCIES(libnugu ${lib})

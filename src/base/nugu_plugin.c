@@ -34,11 +34,13 @@
 #define DYNLIB_LOAD(a) LoadLibrary(a)
 #define DYNLIB_GETSYM(a, b) GetProcAddress(a, b)
 #define DYNLIB_UNLOAD(a) FreeLibrary(a)
+#define DYNLIB_ERROR() "dlerror()"
 #else
 #define DYNLIB_HANDLE void *
 #define DYNLIB_LOAD(a) dlopen(a, RTLD_NOW | RTLD_LOCAL)
 #define DYNLIB_GETSYM(a, b) dlsym(a, b)
 #define DYNLIB_UNLOAD(a) dlclose(a)
+#define DYNLIB_ERROR() dlerror()
 #endif
 
 struct _plugin {
@@ -89,20 +91,20 @@ NuguPlugin *nugu_plugin_new_from_file(const char *filepath)
 	handle = DYNLIB_LOAD(filepath);
 	if (!handle) {
 		nugu_error("dlopen failed: '%s' plugin. %s", filepath,
-			   dlerror());
+			   DYNLIB_ERROR());
 		return NULL;
 	}
 
 	desc = DYNLIB_GETSYM(handle, NUGU_PLUGIN_SYMBOL);
 	if (!desc) {
-		nugu_error("dlsym failed: %s", dlerror());
-		dlclose(handle);
+		nugu_error("dlsym failed: %s", DYNLIB_ERROR());
+		DYNLIB_UNLOAD(handle);
 		return NULL;
 	}
 
 	p = nugu_plugin_new(desc);
 	if (!p) {
-		dlclose(handle);
+		DYNLIB_UNLOAD(handle);
 		return NULL;
 	}
 

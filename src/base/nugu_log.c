@@ -35,6 +35,7 @@
 #define LOG_WARNING 4
 #define LOG_INFO 6
 #define LOG_DEBUG 7
+#define strncasecmp _strnicmp
 #else
 #include <syslog.h>
 #include <sys/types.h>
@@ -301,13 +302,20 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 	if (_log_prefix_fields & NUGU_LOG_PREFIX_TIMESTAMP) {
 		struct timespec tp;
 		struct tm ti;
+		gint64 msec;
+		time_t now;
 
-		clock_gettime(CLOCK_REALTIME, &tp);
-		localtime_r(&(tp.tv_sec), &ti);
+		msec = g_get_real_time() / 1000;
+		time(&now);
+
+#ifdef _WIN32
+		localtime_s(&ti, &now);
+#else
+		localtime_r(&now, &ti);
+#endif
 
 		len += (int)strftime(prefix, 15, "%m-%d %H:%M:%S", &ti);
-		len += snprintf(prefix + len, 6, ".%03ld ",
-				tp.tv_nsec / 1000000);
+		len += snprintf(prefix + len, 6, ".%03ld ", msec);
 	}
 
 	if (_log_prefix_fields & NUGU_LOG_PREFIX_PID ||
@@ -479,6 +487,7 @@ static void _log_formatted(enum nugu_log_module module,
 	pthread_mutex_unlock(&_log_mutex);
 }
 
+#ifndef _WIN32
 static void _syslog_formatted(enum nugu_log_module module,
 			      enum nugu_log_level level, const char *filename,
 			      const char *funcname, int line,
@@ -507,6 +516,7 @@ static void _syslog_formatted(enum nugu_log_module module,
 	vsyslog(_log_level_map[level].syslog_level, buf->str, arg);
 	g_string_free(buf, TRUE);
 }
+#endif
 
 void nugu_log_print(enum nugu_log_module module, enum nugu_log_level level,
 		    const char *filename, const char *funcname, int line,
@@ -534,6 +544,7 @@ void nugu_log_print(enum nugu_log_module module, enum nugu_log_level level,
 
 	switch (log_system) {
 	case NUGU_LOG_SYSTEM_SYSLOG:
+#ifndef _WIN32
 		va_start(arg, format);
 		if (_log_prefix_fields == NUGU_LOG_PREFIX_NONE)
 			vsyslog(_log_level_map[level].syslog_level, format,
@@ -543,7 +554,7 @@ void nugu_log_print(enum nugu_log_module module, enum nugu_log_level level,
 					  line, format, arg);
 		va_end(arg);
 		break;
-
+#endif
 	case NUGU_LOG_SYSTEM_STDERR:
 	case NUGU_LOG_SYSTEM_STDOUT:
 	case NUGU_LOG_SYSTEM_CUSTOM:
