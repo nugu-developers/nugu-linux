@@ -17,6 +17,8 @@
 #ifndef __NUGU_TIMER_H__
 #define __NUGU_TIMER_H__
 
+#include <nugu.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -47,13 +49,13 @@ typedef void (*NuguTimeoutCallback)(void *userdata);
  * @param[in] interval interval seconds
  * @return timer object
  */
-NuguTimer *nugu_timer_new(long interval);
+NUGU_API NuguTimer *nugu_timer_new(long interval);
 
 /**
  * @brief Destroy the timer object
  * @param[in] timer timer object
  */
-void nugu_timer_delete(NuguTimer *timer);
+NUGU_API void nugu_timer_delete(NuguTimer *timer);
 
 /**
  * @brief Set interval
@@ -61,7 +63,7 @@ void nugu_timer_delete(NuguTimer *timer);
  * @param[in] interval interval seconds
  * @see nugu_timer_get_interval()
  */
-void nugu_timer_set_interval(NuguTimer *timer, long interval);
+NUGU_API void nugu_timer_set_interval(NuguTimer *timer, long interval);
 
 /**
  * @brief Get interval
@@ -69,7 +71,7 @@ void nugu_timer_set_interval(NuguTimer *timer, long interval);
  * @return interval
  * @see nugu_timer_set_interval()
  */
-long nugu_timer_get_interval(NuguTimer *timer);
+NUGU_API long nugu_timer_get_interval(NuguTimer *timer);
 
 /**
  * @brief Set timer running single shot
@@ -79,7 +81,7 @@ long nugu_timer_get_interval(NuguTimer *timer);
  * and the timer runs repeatedly.
  * @see nugu_timer_get_singleshot()
  */
-void nugu_timer_set_singleshot(NuguTimer *timer, int singleshot);
+NUGU_API void nugu_timer_set_singleshot(NuguTimer *timer, int singleshot);
 
 /**
  * @brief Get timer single shot property
@@ -87,21 +89,21 @@ void nugu_timer_set_singleshot(NuguTimer *timer, int singleshot);
  * @return single shot value
  * @see nugu_timer_set_singleshot()
  */
-int nugu_timer_get_singleshot(NuguTimer *timer);
+NUGU_API int nugu_timer_get_singleshot(NuguTimer *timer);
 
 /**
  * @brief Start the timer
  * @param[in] timer timer object
  * @see nugu_timer_stop()
  */
-void nugu_timer_start(NuguTimer *timer);
+NUGU_API void nugu_timer_start(NuguTimer *timer);
 
 /**
  * @brief Stop the timer
  * @param[in] timer timer object
  * @see nugu_timer_start()
  */
-void nugu_timer_stop(NuguTimer *timer);
+NUGU_API void nugu_timer_stop(NuguTimer *timer);
 
 /**
  * @brief Set timeout callback
@@ -109,8 +111,9 @@ void nugu_timer_stop(NuguTimer *timer);
  * @param[in] callback callback function
  * @param[in] userdata data to pass to the user callback
  */
-void nugu_timer_set_callback(NuguTimer *timer, NuguTimeoutCallback callback,
-			     void *userdata);
+NUGU_API void nugu_timer_set_callback(NuguTimer *timer,
+				      NuguTimeoutCallback callback,
+				      void *userdata);
 
 /**
  * @}

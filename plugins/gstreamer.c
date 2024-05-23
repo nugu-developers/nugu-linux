@@ -430,7 +430,7 @@ static int _create(NuguPlayerDriver *driver, NuguPlayer *player)
 		goto error_out;
 	}
 
-#ifdef __MSYS__
+#ifdef _WIN32
 	gh->audio_sink =
 		gst_element_factory_make("directsoundsink", audio_sink);
 	if (!gh->audio_sink) {

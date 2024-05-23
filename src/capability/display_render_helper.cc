@@ -15,7 +15,12 @@
  */
 
 #include <stdexcept>
+
+#ifdef _WIN32
+#include <windows.h>
+#else
 #include <sys/time.h>
+#endif
 
 #include "base/nugu_log.h"
 #include "display_render_helper.hh"

@@ -42,9 +42,9 @@ struct _nugu_decoder_driver {
 
 static GList *_decoder_drivers;
 
-EXPORT_API NuguDecoderDriver *
-nugu_decoder_driver_new(const char *name, enum nugu_decoder_type type,
-			struct nugu_decoder_driver_ops *ops)
+NuguDecoderDriver *nugu_decoder_driver_new(const char *name,
+					   enum nugu_decoder_type type,
+					   struct nugu_decoder_driver_ops *ops)
 {
 	NuguDecoderDriver *driver;
 
@@ -60,7 +60,7 @@ nugu_decoder_driver_new(const char *name, enum nugu_decoder_type type,
 	return driver;
 }
 
-EXPORT_API int nugu_decoder_driver_free(NuguDecoderDriver *driver)
+int nugu_decoder_driver_free(NuguDecoderDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
 
@@ -75,7 +75,7 @@ EXPORT_API int nugu_decoder_driver_free(NuguDecoderDriver *driver)
 	return 0;
 }
 
-EXPORT_API int nugu_decoder_driver_register(NuguDecoderDriver *driver)
+int nugu_decoder_driver_register(NuguDecoderDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
 
@@ -89,7 +89,7 @@ EXPORT_API int nugu_decoder_driver_register(NuguDecoderDriver *driver)
 	return 0;
 }
 
-EXPORT_API int nugu_decoder_driver_remove(NuguDecoderDriver *driver)
+int nugu_decoder_driver_remove(NuguDecoderDriver *driver)
 {
 	GList *l;
 
@@ -102,7 +102,7 @@ EXPORT_API int nugu_decoder_driver_remove(NuguDecoderDriver *driver)
 	return 0;
 }
 
-EXPORT_API NuguDecoderDriver *nugu_decoder_driver_find(const char *name)
+NuguDecoderDriver *nugu_decoder_driver_find(const char *name)
 {
 	GList *cur;
 
@@ -120,8 +120,7 @@ EXPORT_API NuguDecoderDriver *nugu_decoder_driver_find(const char *name)
 	return NULL;
 }
 
-EXPORT_API NuguDecoderDriver *
-nugu_decoder_driver_find_bytype(enum nugu_decoder_type type)
+NuguDecoderDriver *nugu_decoder_driver_find_bytype(enum nugu_decoder_type type)
 {
 	GList *cur;
 
@@ -136,8 +135,7 @@ nugu_decoder_driver_find_bytype(enum nugu_decoder_type type)
 	return NULL;
 }
 
-EXPORT_API NuguDecoder *nugu_decoder_new(NuguDecoderDriver *driver,
-					 NuguPcm *sink)
+NuguDecoder *nugu_decoder_new(NuguDecoderDriver *driver, NuguPcm *sink)
 {
 	NuguDecoder *dec;
 
@@ -167,7 +165,7 @@ EXPORT_API NuguDecoder *nugu_decoder_new(NuguDecoderDriver *driver,
 	return NULL;
 }
 
-EXPORT_API int nugu_decoder_free(NuguDecoder *dec)
+int nugu_decoder_free(NuguDecoder *dec)
 {
 	g_return_val_if_fail(dec != NULL, -1);
 
@@ -186,15 +184,14 @@ EXPORT_API int nugu_decoder_free(NuguDecoder *dec)
 	return 0;
 }
 
-EXPORT_API NuguPcm *nugu_decoder_get_pcm(NuguDecoder *dec)
+NuguPcm *nugu_decoder_get_pcm(NuguDecoder *dec)
 {
 	g_return_val_if_fail(dec != NULL, NULL);
 
 	return dec->pcm;
 }
 
-EXPORT_API int nugu_decoder_play(NuguDecoder *dec, const void *data,
-				 size_t data_len)
+int nugu_decoder_play(NuguDecoder *dec, const void *data, size_t data_len)
 {
 	int ret;
 	void *out;
@@ -233,8 +230,8 @@ EXPORT_API int nugu_decoder_play(NuguDecoder *dec, const void *data,
 	return 0;
 }
 
-EXPORT_API void *nugu_decoder_decode(NuguDecoder *dec, const void *data,
-				     size_t data_len, size_t *output_len)
+void *nugu_decoder_decode(NuguDecoder *dec, const void *data, size_t data_len,
+			  size_t *output_len)
 {
 	int ret;
 	void *out;
@@ -264,7 +261,7 @@ EXPORT_API void *nugu_decoder_decode(NuguDecoder *dec, const void *data,
 	return out;
 }
 
-EXPORT_API int nugu_decoder_set_driver_data(NuguDecoder *dec, void *data)
+int nugu_decoder_set_driver_data(NuguDecoder *dec, void *data)
 {
 	g_return_val_if_fail(dec != NULL, -1);
 
@@ -273,7 +270,7 @@ EXPORT_API int nugu_decoder_set_driver_data(NuguDecoder *dec, void *data)
 	return 0;
 }
 
-EXPORT_API void *nugu_decoder_get_driver_data(NuguDecoder *dec)
+void *nugu_decoder_get_driver_data(NuguDecoder *dec)
 {
 	g_return_val_if_fail(dec != NULL, NULL);
 

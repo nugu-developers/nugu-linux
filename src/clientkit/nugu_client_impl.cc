@@ -22,7 +22,7 @@
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
 #include "base/nugu_prof.h"
-#ifdef __MSYS__
+#ifdef _WIN32
 #include "base/nugu_winsock.h"
 #endif
 
@@ -41,7 +41,7 @@ NuguClientImpl::NuguClientImpl()
     nugu_prof_clear();
     nugu_prof_mark(NUGU_PROF_TYPE_SDK_CREATED);
 
-#ifdef __MSYS__
+#ifdef _WIN32
     nugu_winsock_init();
 #endif
     nugu_equeue_initialize();
@@ -64,7 +64,7 @@ NuguClientImpl::~NuguClientImpl()
         unloadPlugins();
 
     nugu_equeue_deinitialize();
-#ifdef __MSYS__
+#ifdef _WIN32
     nugu_winsock_deinit();
 #endif
 }

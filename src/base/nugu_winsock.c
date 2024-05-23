@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#ifdef __MSYS__
+#ifdef _WIN32
 
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN
@@ -28,7 +28,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <glib.h>
-#include <unistd.h>
 
 #include "base/nugu_log.h"
 #include "base/nugu_winsock.h"
@@ -246,4 +245,4 @@ int nugu_winsock_write(int handle, const char *buf, int len)
 	return ret;
 }
 
-#endif // __MSYS__
+#endif // _WIN32

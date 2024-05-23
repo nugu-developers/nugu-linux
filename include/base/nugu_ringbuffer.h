@@ -17,6 +17,8 @@
 #ifndef __NUGU_RING_BUFFER_H__
 #define __NUGU_RING_BUFFER_H__
 
+#include <nugu.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -44,13 +46,13 @@ typedef struct _nugu_ring_buffer NuguRingBuffer;
  * @param[in] max_items count of items
  * @return ringbuffer object
  */
-NuguRingBuffer *nugu_ring_buffer_new(int item_size, int max_items);
+NUGU_API NuguRingBuffer *nugu_ring_buffer_new(int item_size, int max_items);
 
 /**
  * @brief Destroy the ringbuffer object
  * @param[in] buf ringbuffer object
  */
-void nugu_ring_buffer_free(NuguRingBuffer *buf);
+NUGU_API void nugu_ring_buffer_free(NuguRingBuffer *buf);
 
 /**
  * @brief Resize the ringbuffer
@@ -61,7 +63,8 @@ void nugu_ring_buffer_free(NuguRingBuffer *buf);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_ring_buffer_resize(NuguRingBuffer *buf, int item_size, int max_items);
+NUGU_API int nugu_ring_buffer_resize(NuguRingBuffer *buf, int item_size,
+				     int max_items);
 
 /**
  * @brief Push data to ringbuffer
@@ -72,7 +75,8 @@ int nugu_ring_buffer_resize(NuguRingBuffer *buf, int item_size, int max_items);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_ring_buffer_push_data(NuguRingBuffer *buf, const char *data, int size);
+NUGU_API int nugu_ring_buffer_push_data(NuguRingBuffer *buf, const char *data,
+					int size);
 
 /**
  * @brief Read item from ringbuffer
@@ -83,7 +87,8 @@ int nugu_ring_buffer_push_data(NuguRingBuffer *buf, const char *data, int size);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_ring_buffer_read_item(NuguRingBuffer *buf, char *item, int *size);
+NUGU_API int nugu_ring_buffer_read_item(NuguRingBuffer *buf, char *item,
+					int *size);
 
 /**
  * @brief Get count
@@ -92,7 +97,7 @@ int nugu_ring_buffer_read_item(NuguRingBuffer *buf, char *item, int *size);
  * @retval >0 success (count)
  * @retval -1 failure
  */
-int nugu_ring_buffer_get_count(NuguRingBuffer *buf);
+NUGU_API int nugu_ring_buffer_get_count(NuguRingBuffer *buf);
 
 /**
  * @brief Get itemsize
@@ -101,7 +106,7 @@ int nugu_ring_buffer_get_count(NuguRingBuffer *buf);
  * @retval >0 success (itemsize)
  * @retval -1 failure
  */
-int nugu_ring_buffer_get_item_size(NuguRingBuffer *buf);
+NUGU_API int nugu_ring_buffer_get_item_size(NuguRingBuffer *buf);
 
 /**
  * @brief Get maxcount
@@ -110,13 +115,13 @@ int nugu_ring_buffer_get_item_size(NuguRingBuffer *buf);
  * @retval >0 success (max count)
  * @retval -1 failure
  */
-int nugu_ring_buffer_get_maxcount(NuguRingBuffer *buf);
+NUGU_API int nugu_ring_buffer_get_maxcount(NuguRingBuffer *buf);
 
 /**
  * @brief Clear the ringbuffer
  * @param[in] buf ringbuffer object
  */
-void nugu_ring_buffer_clear_items(NuguRingBuffer *buf);
+NUGU_API void nugu_ring_buffer_clear_items(NuguRingBuffer *buf);
 
 /**
  * @}

@@ -16,17 +16,22 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <errno.h>
 #include <pthread.h>
 #include <glib.h>
 
 #ifdef HAVE_EVENTFD
 #include <sys/eventfd.h>
-#elif defined(__MSYS__)
+#elif defined(_WIN32)
 #include "base/nugu_winsock.h"
 #else
 #include <glib-unix.h>
+#endif
+
+#ifndef _WIN32
+#include <unistd.h>
+#else
+typedef long ssize_t;
 #endif
 
 #include "base/nugu_log.h"
@@ -47,7 +52,7 @@ struct _equeue {
 	guint source;
 	GAsyncQueue *pendings;
 	struct _equeue_typemap typemap[NUGU_EQUEUE_TYPE_MAX];
-#ifdef __MSYS__
+#ifdef _WIN32
 	NuguWinSocket *wsock;
 #endif
 };
@@ -83,7 +88,7 @@ static gboolean on_event(GIOChannel *channel, GIOCondition cond,
 		return FALSE;
 	}
 
-#ifdef __MSYS__
+#ifdef _WIN32
 	if (nugu_winsock_check_for_data(_equeue->fds[0]) == 0) {
 		char ev;
 
@@ -136,10 +141,10 @@ static gboolean on_event(GIOChannel *channel, GIOCondition cond,
 	return TRUE;
 }
 
-EXPORT_API int nugu_equeue_initialize(void)
+int nugu_equeue_initialize(void)
 {
 	GIOChannel *channel;
-#if !defined(HAVE_EVENTFD) && !defined(__MSYS__)
+#if !defined(HAVE_EVENTFD) && !defined(_WIN32)
 	GError *error = NULL;
 #endif
 
@@ -170,7 +175,7 @@ EXPORT_API int nugu_equeue_initialize(void)
 		pthread_mutex_unlock(&_lock);
 		return -1;
 	}
-#elif defined(__MSYS__)
+#elif defined(_WIN32)
 	_equeue->wsock = nugu_winsock_create();
 	if (_equeue->wsock == NULL) {
 		nugu_error("failed to create window socket");
@@ -196,7 +201,7 @@ EXPORT_API int nugu_equeue_initialize(void)
 	nugu_dbg("pipe fds[1] = %d", _equeue->fds[1]);
 #endif
 
-#ifdef __MSYS__
+#ifdef _WIN32
 	channel = g_io_channel_win32_new_socket(_equeue->fds[0]);
 #else
 	channel = g_io_channel_unix_new(_equeue->fds[0]);
@@ -211,7 +216,7 @@ EXPORT_API int nugu_equeue_initialize(void)
 	return 0;
 }
 
-EXPORT_API void nugu_equeue_deinitialize(void)
+void nugu_equeue_deinitialize(void)
 {
 	pthread_mutex_lock(&_lock);
 
@@ -221,7 +226,7 @@ EXPORT_API void nugu_equeue_deinitialize(void)
 		return;
 	}
 
-#ifdef __MSYS__
+#ifdef _WIN32
 	nugu_winsock_remove(_equeue->wsock);
 #else
 	if (_equeue->fds[0] != -1)
@@ -261,10 +266,10 @@ EXPORT_API void nugu_equeue_deinitialize(void)
 	pthread_mutex_unlock(&_lock);
 }
 
-EXPORT_API int
-nugu_equeue_set_handler(enum nugu_equeue_type type, NuguEqueueCallback callback,
-			NuguEqueueDestroyCallback destroy_callback,
-			void *userdata)
+int nugu_equeue_set_handler(enum nugu_equeue_type type,
+			    NuguEqueueCallback callback,
+			    NuguEqueueDestroyCallback destroy_callback,
+			    void *userdata)
 {
 	g_return_val_if_fail(type < NUGU_EQUEUE_TYPE_MAX, -1);
 	g_return_val_if_fail(callback != NULL, -1);
@@ -286,7 +291,7 @@ nugu_equeue_set_handler(enum nugu_equeue_type type, NuguEqueueCallback callback,
 	return 0;
 }
 
-EXPORT_API int nugu_equeue_unset_handler(enum nugu_equeue_type type)
+int nugu_equeue_unset_handler(enum nugu_equeue_type type)
 {
 	g_return_val_if_fail(type < NUGU_EQUEUE_TYPE_MAX, -1);
 
@@ -307,7 +312,7 @@ EXPORT_API int nugu_equeue_unset_handler(enum nugu_equeue_type type)
 	return 0;
 }
 
-EXPORT_API int nugu_equeue_push(enum nugu_equeue_type type, void *data)
+int nugu_equeue_push(enum nugu_equeue_type type, void *data)
 {
 	struct _econtainer *item;
 	ssize_t written;
@@ -340,7 +345,7 @@ EXPORT_API int nugu_equeue_push(enum nugu_equeue_type type, void *data)
 
 	g_async_queue_push(_equeue->pendings, item);
 
-#ifdef __MSYS__
+#ifdef _WIN32
 	if (_equeue->fds[1] != -1) {
 		char ev = '1';
 

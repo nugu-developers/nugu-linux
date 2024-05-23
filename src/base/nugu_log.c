@@ -19,20 +19,27 @@
 #include <stdarg.h>
 #include <time.h>
 #include <string.h>
-#ifdef HAVE_SYSCALL
-#include <sys/syscall.h>
-#elif defined(__MSYS__)
-#include <windows.h>
-#endif
-#include <syslog.h>
 #include <errno.h>
-#include <sys/types.h>
-#include <unistd.h>
 #include <pthread.h>
 #include <inttypes.h>
 #include <ctype.h>
-
 #include <glib.h>
+
+#ifdef HAVE_SYSCALL
+#include <sys/syscall.h>
+#endif
+
+#ifdef _WIN32
+#include <windows.h>
+#define LOG_ERR 3
+#define LOG_WARNING 4
+#define LOG_INFO 6
+#define LOG_DEBUG 7
+#else
+#include <syslog.h>
+#include <sys/types.h>
+#include <unistd.h>
+#endif
 
 #include "base/nugu_log.h"
 
@@ -323,7 +330,7 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 			if (pid != 0 && pid != tid)
 				is_main_thread = 0;
 #endif
-#elif defined(__MSYS__)
+#elif defined(_WIN32)
 			tid = (pid_t)GetCurrentThreadId();
 			if (pid != 0 && pid != tid)
 				is_main_thread = 0;
@@ -501,10 +508,9 @@ static void _syslog_formatted(enum nugu_log_module module,
 	g_string_free(buf, TRUE);
 }
 
-EXPORT_API void nugu_log_print(enum nugu_log_module module,
-			       enum nugu_log_level level, const char *filename,
-			       const char *funcname, int line,
-			       const char *format, ...)
+void nugu_log_print(enum nugu_log_module module, enum nugu_log_level level,
+		    const char *filename, const char *funcname, int line,
+		    const char *format, ...)
 {
 	va_list arg;
 	enum nugu_log_system log_system;
@@ -553,7 +559,7 @@ EXPORT_API void nugu_log_print(enum nugu_log_module module,
 	}
 }
 
-EXPORT_API int nugu_log_set_system(enum nugu_log_system log_system)
+int nugu_log_set_system(enum nugu_log_system log_system)
 {
 	if (log_system > NUGU_LOG_SYSTEM_CUSTOM) {
 		nugu_error("invalid log system(%d)", log_system);
@@ -574,7 +580,7 @@ EXPORT_API int nugu_log_set_system(enum nugu_log_system log_system)
 	return 0;
 }
 
-EXPORT_API enum nugu_log_system nugu_log_get_system(void)
+enum nugu_log_system nugu_log_get_system(void)
 {
 	enum nugu_log_system log_system;
 
@@ -591,7 +597,7 @@ EXPORT_API enum nugu_log_system nugu_log_get_system(void)
 	return log_system;
 }
 
-EXPORT_API int nugu_log_set_handler(nugu_log_handler handler, void *user_data)
+int nugu_log_set_handler(nugu_log_handler handler, void *user_data)
 {
 	if (!handler) {
 		nugu_error("handler is NULL");
@@ -614,14 +620,14 @@ EXPORT_API int nugu_log_set_handler(nugu_log_handler handler, void *user_data)
 	return 0;
 }
 
-EXPORT_API void nugu_log_set_prefix_fields(enum nugu_log_prefix field_set)
+void nugu_log_set_prefix_fields(enum nugu_log_prefix field_set)
 {
 	pthread_mutex_lock(&_log_mutex);
 	_log_prefix_fields = field_set;
 	pthread_mutex_unlock(&_log_mutex);
 }
 
-EXPORT_API enum nugu_log_prefix nugu_log_get_prefix_fields(void)
+enum nugu_log_prefix nugu_log_get_prefix_fields(void)
 {
 	enum nugu_log_prefix tmp;
 
@@ -638,14 +644,14 @@ EXPORT_API enum nugu_log_prefix nugu_log_get_prefix_fields(void)
 	return tmp;
 }
 
-EXPORT_API void nugu_log_set_modules(unsigned int bitset)
+void nugu_log_set_modules(unsigned int bitset)
 {
 	pthread_mutex_lock(&_log_mutex);
 	_log_module_bitset = bitset;
 	pthread_mutex_unlock(&_log_mutex);
 }
 
-EXPORT_API unsigned int nugu_log_get_modules(void)
+unsigned int nugu_log_get_modules(void)
 {
 	unsigned int tmp;
 
@@ -662,14 +668,14 @@ EXPORT_API unsigned int nugu_log_get_modules(void)
 	return tmp;
 }
 
-EXPORT_API void nugu_log_set_level(enum nugu_log_level level)
+void nugu_log_set_level(enum nugu_log_level level)
 {
 	pthread_mutex_lock(&_log_mutex);
 	_log_level = level;
 	pthread_mutex_unlock(&_log_mutex);
 }
 
-EXPORT_API enum nugu_log_level nugu_log_get_level(void)
+enum nugu_log_level nugu_log_get_level(void)
 {
 	enum nugu_log_level tmp;
 
@@ -686,7 +692,7 @@ EXPORT_API enum nugu_log_level nugu_log_get_level(void)
 	return tmp;
 }
 
-EXPORT_API void nugu_log_set_protocol_line_limit(int length)
+void nugu_log_set_protocol_line_limit(int length)
 {
 	pthread_mutex_lock(&_log_mutex);
 	if (length <= 0)
@@ -696,7 +702,7 @@ EXPORT_API void nugu_log_set_protocol_line_limit(int length)
 	pthread_mutex_unlock(&_log_mutex);
 }
 
-EXPORT_API int nugu_log_get_protocol_line_limit(void)
+int nugu_log_get_protocol_line_limit(void)
 {
 	int tmp;
 
@@ -713,9 +719,9 @@ EXPORT_API int nugu_log_get_protocol_line_limit(void)
 	return tmp;
 }
 
-EXPORT_API void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
-			     size_t data_size, const char *header,
-			     const char *footer, const char *lineindent)
+void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
+		  size_t data_size, const char *header, const char *footer,
+		  const char *lineindent)
 {
 	size_t i;
 	size_t j;

@@ -18,6 +18,7 @@
 #define __NUGU_PCM_H__
 
 #include <stddef.h>
+#include <nugu.h>
 #include <base/nugu_audio.h>
 #include <base/nugu_media.h>
 
@@ -61,15 +62,15 @@ typedef struct _nugu_pcm_driver NuguPcmDriver;
  * @see nugu_pcm_driver_get_default()
  * @see nugu_pcm_free()
  */
-NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver,
-		      NuguAudioProperty property);
+NUGU_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver,
+			       NuguAudioProperty property);
 
 /**
  * @brief Destroy the pcm object
  * @param[in] pcm pcm object
  * @see nugu_pcm_new()
  */
-void nugu_pcm_free(NuguPcm *pcm);
+NUGU_API void nugu_pcm_free(NuguPcm *pcm);
 
 /**
  * @brief Add pcm object to managed list
@@ -80,7 +81,7 @@ void nugu_pcm_free(NuguPcm *pcm);
  * @see nugu_pcm_remove()
  * @see nugu_pcm_find()
  */
-int nugu_pcm_add(NuguPcm *pcm);
+NUGU_API int nugu_pcm_add(NuguPcm *pcm);
 
 /**
  * @brief Remove pcm object from managed list
@@ -91,7 +92,7 @@ int nugu_pcm_add(NuguPcm *pcm);
  * @see nugu_pcm_add()
  * @see nugu_pcm_find()
  */
-int nugu_pcm_remove(NuguPcm *pcm);
+NUGU_API int nugu_pcm_remove(NuguPcm *pcm);
 
 /**
  * @brief Find a pcm object by name in the managed list
@@ -100,7 +101,7 @@ int nugu_pcm_remove(NuguPcm *pcm);
  * @see nugu_pcm_add()
  * @see nugu_pcm_remove()
  */
-NuguPcm *nugu_pcm_find(const char *name);
+NUGU_API NuguPcm *nugu_pcm_find(const char *name);
 
 /**
  * @brief Set audio attribute
@@ -110,7 +111,8 @@ NuguPcm *nugu_pcm_find(const char *name);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_pcm_set_audio_attribute(NuguPcm *pcm, NuguAudioAttribute attr);
+NUGU_API int nugu_pcm_set_audio_attribute(NuguPcm *pcm,
+					  NuguAudioAttribute attr);
 
 /**
  * @brief Get audio attribute
@@ -118,7 +120,7 @@ int nugu_pcm_set_audio_attribute(NuguPcm *pcm, NuguAudioAttribute attr);
  * @return audio attribute
  * @retval -1 failure
  */
-int nugu_pcm_get_audio_attribute(NuguPcm *pcm);
+NUGU_API int nugu_pcm_get_audio_attribute(NuguPcm *pcm);
 
 /**
  * @brief Get audio attribute
@@ -126,7 +128,7 @@ int nugu_pcm_get_audio_attribute(NuguPcm *pcm);
  * @return audio attribute string
  * @retval NULL failure
  */
-const char *nugu_pcm_get_audio_attribute_str(NuguPcm *pcm);
+NUGU_API const char *nugu_pcm_get_audio_attribute_str(NuguPcm *pcm);
 
 /**
  * @brief Start pcm playback
@@ -136,7 +138,7 @@ const char *nugu_pcm_get_audio_attribute_str(NuguPcm *pcm);
  * @retval -1 failure
  * @see nugu_pcm_stop()
  */
-int nugu_pcm_start(NuguPcm *pcm);
+NUGU_API int nugu_pcm_start(NuguPcm *pcm);
 
 /**
  * @brief Stop pcm playback
@@ -146,7 +148,7 @@ int nugu_pcm_start(NuguPcm *pcm);
  * @retval -1 failure
  * @see nugu_pcm_start()
  */
-int nugu_pcm_stop(NuguPcm *pcm);
+NUGU_API int nugu_pcm_stop(NuguPcm *pcm);
 
 /**
  * @brief Pause pcm playback
@@ -156,7 +158,7 @@ int nugu_pcm_stop(NuguPcm *pcm);
  * @retval -1 failure
  * @see nugu_pcm_resume()
  */
-int nugu_pcm_pause(NuguPcm *pcm);
+NUGU_API int nugu_pcm_pause(NuguPcm *pcm);
 
 /**
  * @brief Resume pcm playback
@@ -166,7 +168,7 @@ int nugu_pcm_pause(NuguPcm *pcm);
  * @retval -1 failure
  * @see nugu_pcm_pause()
  */
-int nugu_pcm_resume(NuguPcm *pcm);
+NUGU_API int nugu_pcm_resume(NuguPcm *pcm);
 
 /**
  * @brief Set volume of pcm
@@ -177,7 +179,7 @@ int nugu_pcm_resume(NuguPcm *pcm);
  * @retval -1 failure
  * @see nugu_pcm_get_volume()
  */
-int nugu_pcm_set_volume(NuguPcm *pcm, int volume);
+NUGU_API int nugu_pcm_set_volume(NuguPcm *pcm, int volume);
 
 /**
  * @brief Get volume of pcm
@@ -187,7 +189,7 @@ int nugu_pcm_set_volume(NuguPcm *pcm, int volume);
  * @retval -1 failure
  * @see nugu_pcm_set_volume()
  */
-int nugu_pcm_get_volume(NuguPcm *pcm);
+NUGU_API int nugu_pcm_get_volume(NuguPcm *pcm);
 
 /**
  * @brief Get duration information of pcm
@@ -196,7 +198,7 @@ int nugu_pcm_get_volume(NuguPcm *pcm);
  * @retval >0 success (duration)
  * @retval -1 failure
  */
-int nugu_pcm_get_duration(NuguPcm *pcm);
+NUGU_API int nugu_pcm_get_duration(NuguPcm *pcm);
 
 /**
  * @brief Get current playback position of pcm
@@ -205,14 +207,14 @@ int nugu_pcm_get_duration(NuguPcm *pcm);
  * @retval >0 success (position)
  * @retval -1 failure
  */
-int nugu_pcm_get_position(NuguPcm *pcm);
+NUGU_API int nugu_pcm_get_position(NuguPcm *pcm);
 
 /**
  * @brief Get status of pcm
  * @param[in] pcm pcm object
  * @return status
  */
-enum nugu_media_status nugu_pcm_get_status(NuguPcm *pcm);
+NUGU_API enum nugu_media_status nugu_pcm_get_status(NuguPcm *pcm);
 
 /**
  * @brief Set pcm status callback
@@ -220,15 +222,16 @@ enum nugu_media_status nugu_pcm_get_status(NuguPcm *pcm);
  * @param[in] cb callback function
  * @param[in] userdata data to pass to the user callback
  */
-void nugu_pcm_set_status_callback(NuguPcm *pcm, NuguMediaStatusCallback cb,
-				  void *userdata);
+NUGU_API void nugu_pcm_set_status_callback(NuguPcm *pcm,
+					   NuguMediaStatusCallback cb,
+					   void *userdata);
 
 /**
  * @brief Emit status to registered callback
  * @param[in] pcm pcm object
  * @param[in] status pcm status
  */
-void nugu_pcm_emit_status(NuguPcm *pcm, enum nugu_media_status status);
+NUGU_API void nugu_pcm_emit_status(NuguPcm *pcm, enum nugu_media_status status);
 
 /**
  * @brief Set pcm event callback
@@ -236,15 +239,16 @@ void nugu_pcm_emit_status(NuguPcm *pcm, enum nugu_media_status status);
  * @param[in] cb callback function
  * @param[in] userdata data to pass to the user callback
  */
-void nugu_pcm_set_event_callback(NuguPcm *pcm, NuguMediaEventCallback cb,
-				 void *userdata);
+NUGU_API void nugu_pcm_set_event_callback(NuguPcm *pcm,
+					  NuguMediaEventCallback cb,
+					  void *userdata);
 
 /**
  * @brief Emit event to registered callback
  * @param[in] pcm pcm object
  * @param[in] event pcm event
  */
-void nugu_pcm_emit_event(NuguPcm *pcm, enum nugu_media_event event);
+NUGU_API void nugu_pcm_emit_event(NuguPcm *pcm, enum nugu_media_event event);
 
 /**
  * @brief Set custom data for driver
@@ -255,7 +259,7 @@ void nugu_pcm_emit_event(NuguPcm *pcm, enum nugu_media_event event);
  * @retval -1 failure
  * @see nugu_pcm_get_driver_data()
  */
-int nugu_pcm_set_driver_data(NuguPcm *pcm, void *data);
+NUGU_API int nugu_pcm_set_driver_data(NuguPcm *pcm, void *data);
 
 /**
  * @brief Get custom data for driver
@@ -263,13 +267,13 @@ int nugu_pcm_set_driver_data(NuguPcm *pcm, void *data);
  * @return data
  * @see nugu_pcm_set_driver_data()
  */
-void *nugu_pcm_get_driver_data(NuguPcm *pcm);
+NUGU_API void *nugu_pcm_get_driver_data(NuguPcm *pcm);
 
 /**
  * @brief Clear pcm buffer
  * @param[in] pcm pcm object
  */
-void nugu_pcm_clear_buffer(NuguPcm *pcm);
+NUGU_API void nugu_pcm_clear_buffer(NuguPcm *pcm);
 
 /**
  * @brief Push playback pcm data
@@ -281,8 +285,8 @@ void nugu_pcm_clear_buffer(NuguPcm *pcm);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_pcm_push_data(NuguPcm *pcm, const char *data, size_t size,
-		       int is_last);
+NUGU_API int nugu_pcm_push_data(NuguPcm *pcm, const char *data, size_t size,
+				int is_last);
 
 /**
  * @brief Set flag that push for all data is complete.
@@ -292,7 +296,7 @@ int nugu_pcm_push_data(NuguPcm *pcm, const char *data, size_t size,
  * @retval -1 failure
  * @see nugu_pcm_receive_is_last_data()
  */
-int nugu_pcm_push_data_done(NuguPcm *pcm);
+NUGU_API int nugu_pcm_push_data_done(NuguPcm *pcm);
 
 /**
  * @brief Get all data
@@ -303,14 +307,14 @@ int nugu_pcm_push_data_done(NuguPcm *pcm);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_pcm_get_data(NuguPcm *pcm, char *data, size_t size);
+NUGU_API int nugu_pcm_get_data(NuguPcm *pcm, char *data, size_t size);
 
 /**
  * @brief Get pcm data size
  * @param[in] pcm pcm object
  * @return size of pcm data
  */
-size_t nugu_pcm_get_data_size(NuguPcm *pcm);
+NUGU_API size_t nugu_pcm_get_data_size(NuguPcm *pcm);
 
 /**
  * @brief Get flag that all data pushes are complete.
@@ -320,7 +324,7 @@ size_t nugu_pcm_get_data_size(NuguPcm *pcm);
  * @retval -1 failure
  * @see nugu_pcm_push_data_done()
  */
-int nugu_pcm_receive_is_last_data(NuguPcm *pcm);
+NUGU_API int nugu_pcm_receive_is_last_data(NuguPcm *pcm);
 
 /**
  * @}
@@ -405,8 +409,8 @@ struct nugu_pcm_driver_ops {
  * @return pcm driver object
  * @see nugu_pcm_driver_free()
  */
-NuguPcmDriver *nugu_pcm_driver_new(const char *name,
-				   struct nugu_pcm_driver_ops *ops);
+NUGU_API NuguPcmDriver *nugu_pcm_driver_new(const char *name,
+					    struct nugu_pcm_driver_ops *ops);
 
 /**
  * @brief Destroy the pcm driver object
@@ -416,7 +420,7 @@ NuguPcmDriver *nugu_pcm_driver_new(const char *name,
  * @retval -1 failure
  * @see nugu_pcm_driver_new()
  */
-int nugu_pcm_driver_free(NuguPcmDriver *driver);
+NUGU_API int nugu_pcm_driver_free(NuguPcmDriver *driver);
 
 /**
  * @brief Register the driver to driver list
@@ -426,7 +430,7 @@ int nugu_pcm_driver_free(NuguPcmDriver *driver);
  * @retval -1 failure
  * @see nugu_pcm_driver_remove()
  */
-int nugu_pcm_driver_register(NuguPcmDriver *driver);
+NUGU_API int nugu_pcm_driver_register(NuguPcmDriver *driver);
 
 /**
  * @brief Remove the driver from driver list
@@ -436,7 +440,7 @@ int nugu_pcm_driver_register(NuguPcmDriver *driver);
  * @retval -1 failure
  * @see nugu_pcm_driver_register()
  */
-int nugu_pcm_driver_remove(NuguPcmDriver *driver);
+NUGU_API int nugu_pcm_driver_remove(NuguPcmDriver *driver);
 
 /**
  * @brief Set the default pcm driver
@@ -446,21 +450,21 @@ int nugu_pcm_driver_remove(NuguPcmDriver *driver);
  * @retval -1 failure
  * @see nugu_pcm_driver_get_default()
  */
-int nugu_pcm_driver_set_default(NuguPcmDriver *driver);
+NUGU_API int nugu_pcm_driver_set_default(NuguPcmDriver *driver);
 
 /**
  * @brief Get the default pcm driver
  * @return pcm driver
  * @see nugu_pcm_driver_set_default()
  */
-NuguPcmDriver *nugu_pcm_driver_get_default(void);
+NUGU_API NuguPcmDriver *nugu_pcm_driver_get_default(void);
 
 /**
  * @brief Find a driver by name in the driver list
  * @param[in] name pcm driver name
  * @return pcm driver
  */
-NuguPcmDriver *nugu_pcm_driver_find(const char *name);
+NUGU_API NuguPcmDriver *nugu_pcm_driver_find(const char *name);
 
 /**
  * @}

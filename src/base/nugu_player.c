@@ -50,8 +50,8 @@ static GList *_players;
 static GList *_player_drivers;
 static NuguPlayerDriver *_default_driver;
 
-EXPORT_API NuguPlayerDriver *
-nugu_player_driver_new(const char *name, struct nugu_player_driver_ops *ops)
+NuguPlayerDriver *nugu_player_driver_new(const char *name,
+					 struct nugu_player_driver_ops *ops)
 {
 	NuguPlayerDriver *driver;
 
@@ -71,7 +71,7 @@ nugu_player_driver_new(const char *name, struct nugu_player_driver_ops *ops)
 	return driver;
 }
 
-EXPORT_API int nugu_player_driver_free(NuguPlayerDriver *driver)
+int nugu_player_driver_free(NuguPlayerDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
 
@@ -88,7 +88,7 @@ EXPORT_API int nugu_player_driver_free(NuguPlayerDriver *driver)
 	return 0;
 }
 
-EXPORT_API int nugu_player_driver_register(NuguPlayerDriver *driver)
+int nugu_player_driver_register(NuguPlayerDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
 
@@ -105,7 +105,7 @@ EXPORT_API int nugu_player_driver_register(NuguPlayerDriver *driver)
 	return 0;
 }
 
-EXPORT_API int nugu_player_driver_remove(NuguPlayerDriver *driver)
+int nugu_player_driver_remove(NuguPlayerDriver *driver)
 {
 	GList *l;
 
@@ -126,7 +126,7 @@ EXPORT_API int nugu_player_driver_remove(NuguPlayerDriver *driver)
 	return 0;
 }
 
-EXPORT_API int nugu_player_driver_set_default(NuguPlayerDriver *driver)
+int nugu_player_driver_set_default(NuguPlayerDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
 
@@ -137,12 +137,12 @@ EXPORT_API int nugu_player_driver_set_default(NuguPlayerDriver *driver)
 	return 0;
 }
 
-EXPORT_API NuguPlayerDriver *nugu_player_driver_get_default(void)
+NuguPlayerDriver *nugu_player_driver_get_default(void)
 {
 	return _default_driver;
 }
 
-EXPORT_API NuguPlayerDriver *nugu_player_driver_find(const char *name)
+NuguPlayerDriver *nugu_player_driver_find(const char *name)
 {
 	GList *cur;
 
@@ -159,8 +159,7 @@ EXPORT_API NuguPlayerDriver *nugu_player_driver_find(const char *name)
 	return NULL;
 }
 
-EXPORT_API NuguPlayer *nugu_player_new(const char *name,
-				       NuguPlayerDriver *driver)
+NuguPlayer *nugu_player_new(const char *name, NuguPlayerDriver *driver)
 {
 	NuguPlayer *player;
 
@@ -196,7 +195,7 @@ EXPORT_API NuguPlayer *nugu_player_new(const char *name,
 	return player;
 }
 
-EXPORT_API void nugu_player_free(NuguPlayer *player)
+void nugu_player_free(NuguPlayer *player)
 {
 	g_return_if_fail(player != NULL);
 
@@ -214,7 +213,7 @@ EXPORT_API void nugu_player_free(NuguPlayer *player)
 	g_free(player);
 }
 
-EXPORT_API int nugu_player_add(NuguPlayer *player)
+int nugu_player_add(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
@@ -228,7 +227,7 @@ EXPORT_API int nugu_player_add(NuguPlayer *player)
 	return 0;
 }
 
-EXPORT_API int nugu_player_remove(NuguPlayer *player)
+int nugu_player_remove(NuguPlayer *player)
 {
 	GList *l;
 
@@ -241,7 +240,7 @@ EXPORT_API int nugu_player_remove(NuguPlayer *player)
 	return 0;
 }
 
-EXPORT_API NuguPlayer *nugu_player_find(const char *name)
+NuguPlayer *nugu_player_find(const char *name)
 {
 	GList *cur;
 
@@ -258,8 +257,7 @@ EXPORT_API NuguPlayer *nugu_player_find(const char *name)
 	return NULL;
 }
 
-EXPORT_API int nugu_player_set_audio_attribute(NuguPlayer *player,
-					       NuguAudioAttribute attr)
+int nugu_player_set_audio_attribute(NuguPlayer *player, NuguAudioAttribute attr)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
@@ -267,21 +265,21 @@ EXPORT_API int nugu_player_set_audio_attribute(NuguPlayer *player,
 	return 0;
 }
 
-EXPORT_API int nugu_player_get_audio_attribute(NuguPlayer *player)
+int nugu_player_get_audio_attribute(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
 	return player->attr;
 }
 
-EXPORT_API const char *nugu_player_get_audio_attribute_str(NuguPlayer *player)
+const char *nugu_player_get_audio_attribute_str(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, NULL);
 
 	return nugu_audio_get_attribute_str(player->attr);
 }
 
-EXPORT_API int nugu_player_set_source(NuguPlayer *player, const char *url)
+int nugu_player_set_source(NuguPlayer *player, const char *url)
 {
 	g_return_val_if_fail(player != NULL, -1);
 	g_return_val_if_fail(url != NULL, -1);
@@ -300,7 +298,7 @@ EXPORT_API int nugu_player_set_source(NuguPlayer *player, const char *url)
 	return player->driver->ops->set_source(player->driver, player, url);
 }
 
-EXPORT_API int nugu_player_start(NuguPlayer *player)
+int nugu_player_start(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
@@ -318,7 +316,7 @@ EXPORT_API int nugu_player_start(NuguPlayer *player)
 	return player->driver->ops->start(player->driver, player);
 }
 
-EXPORT_API int nugu_player_stop(NuguPlayer *player)
+int nugu_player_stop(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
@@ -333,7 +331,7 @@ EXPORT_API int nugu_player_stop(NuguPlayer *player)
 	return player->driver->ops->stop(player->driver, player);
 }
 
-EXPORT_API int nugu_player_pause(NuguPlayer *player)
+int nugu_player_pause(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
@@ -346,7 +344,7 @@ EXPORT_API int nugu_player_pause(NuguPlayer *player)
 	return player->driver->ops->pause(player->driver, player);
 }
 
-EXPORT_API int nugu_player_resume(NuguPlayer *player)
+int nugu_player_resume(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
@@ -359,7 +357,7 @@ EXPORT_API int nugu_player_resume(NuguPlayer *player)
 	return player->driver->ops->resume(player->driver, player);
 }
 
-EXPORT_API int nugu_player_seek(NuguPlayer *player, int sec)
+int nugu_player_seek(NuguPlayer *player, int sec)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
@@ -372,7 +370,7 @@ EXPORT_API int nugu_player_seek(NuguPlayer *player, int sec)
 	return player->driver->ops->seek(player->driver, player, sec);
 }
 
-EXPORT_API int nugu_player_set_volume(NuguPlayer *player, int vol)
+int nugu_player_set_volume(NuguPlayer *player, int vol)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
@@ -393,14 +391,14 @@ EXPORT_API int nugu_player_set_volume(NuguPlayer *player, int vol)
 					       player->volume);
 }
 
-EXPORT_API int nugu_player_get_volume(NuguPlayer *player)
+int nugu_player_get_volume(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
 	return player->volume;
 }
 
-EXPORT_API int nugu_player_get_duration(NuguPlayer *player)
+int nugu_player_get_duration(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
@@ -412,7 +410,7 @@ EXPORT_API int nugu_player_get_duration(NuguPlayer *player)
 	return player->driver->ops->get_duration(player->driver, player);
 }
 
-EXPORT_API int nugu_player_set_position(NuguPlayer *player, int position)
+int nugu_player_set_position(NuguPlayer *player, int position)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
@@ -420,7 +418,7 @@ EXPORT_API int nugu_player_set_position(NuguPlayer *player, int position)
 	return 0;
 }
 
-EXPORT_API int nugu_player_get_position(NuguPlayer *player)
+int nugu_player_get_position(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
@@ -436,16 +434,15 @@ EXPORT_API int nugu_player_get_position(NuguPlayer *player)
 	return player->driver->ops->get_position(player->driver, player);
 }
 
-EXPORT_API enum nugu_media_status nugu_player_get_status(NuguPlayer *player)
+enum nugu_media_status nugu_player_get_status(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, NUGU_MEDIA_STATUS_STOPPED);
 
 	return player->status;
 }
 
-EXPORT_API void nugu_player_set_status_callback(NuguPlayer *player,
-						NuguMediaStatusCallback cb,
-						void *userdata)
+void nugu_player_set_status_callback(NuguPlayer *player,
+				     NuguMediaStatusCallback cb, void *userdata)
 {
 	g_return_if_fail(player != NULL);
 
@@ -453,8 +450,7 @@ EXPORT_API void nugu_player_set_status_callback(NuguPlayer *player,
 	player->sud = userdata;
 }
 
-EXPORT_API void nugu_player_emit_status(NuguPlayer *player,
-					enum nugu_media_status status)
+void nugu_player_emit_status(NuguPlayer *player, enum nugu_media_status status)
 {
 	g_return_if_fail(player != NULL);
 
@@ -467,9 +463,8 @@ EXPORT_API void nugu_player_emit_status(NuguPlayer *player,
 		player->scb(status, player->sud);
 }
 
-EXPORT_API void nugu_player_set_event_callback(NuguPlayer *player,
-					       NuguMediaEventCallback cb,
-					       void *userdata)
+void nugu_player_set_event_callback(NuguPlayer *player,
+				    NuguMediaEventCallback cb, void *userdata)
 {
 	g_return_if_fail(player != NULL);
 
@@ -477,8 +472,7 @@ EXPORT_API void nugu_player_set_event_callback(NuguPlayer *player,
 	player->eud = userdata;
 }
 
-EXPORT_API void nugu_player_emit_event(NuguPlayer *player,
-				       enum nugu_media_event event)
+void nugu_player_emit_event(NuguPlayer *player, enum nugu_media_event event)
 {
 	g_return_if_fail(player != NULL);
 
@@ -491,7 +485,7 @@ EXPORT_API void nugu_player_emit_event(NuguPlayer *player,
 		player->ecb(event, player->eud);
 }
 
-EXPORT_API int nugu_player_set_driver_data(NuguPlayer *player, void *data)
+int nugu_player_set_driver_data(NuguPlayer *player, void *data)
 {
 	g_return_val_if_fail(player != NULL, -1);
 
@@ -500,7 +494,7 @@ EXPORT_API int nugu_player_set_driver_data(NuguPlayer *player, void *data)
 	return 0;
 }
 
-EXPORT_API void *nugu_player_get_driver_data(NuguPlayer *player)
+void *nugu_player_get_driver_data(NuguPlayer *player)
 {
 	g_return_val_if_fail(player != NULL, NULL);
 

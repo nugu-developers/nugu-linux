@@ -18,7 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef __MSYS__
+#ifdef _WIN32
 #include <windows.h>
 #endif
 #include <pthread.h>
@@ -33,7 +33,7 @@ using namespace NuguClientKit;
 #define TIMER_100MS 100
 #define TIMEOUT_IMMEDIATELY 1
 
-#ifdef __MSYS__
+#ifdef _WIN32
 void usleep(unsigned int usec)
 {
     Sleep(usec / 1000); // msec

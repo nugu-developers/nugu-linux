@@ -21,6 +21,10 @@
 
 #include <glib.h>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #include "base/nugu_log.h"
 #include "base/nugu_network_manager.h"
 #include "base/nugu_uuid.h"
@@ -31,7 +35,7 @@
 static const char *_cached_seed;
 static unsigned char _cached_hash[MAX_HASH_SIZE];
 
-EXPORT_API int nugu_uuid_fill_random(unsigned char *dest, size_t dest_len)
+int nugu_uuid_fill_random(unsigned char *dest, size_t dest_len)
 {
 	g_return_val_if_fail(dest != NULL, -1);
 	g_return_val_if_fail(dest_len > 0, -1);
@@ -46,9 +50,8 @@ EXPORT_API int nugu_uuid_fill_random(unsigned char *dest, size_t dest_len)
 	return 0;
 }
 
-EXPORT_API int nugu_uuid_convert_base16(const unsigned char *bytes,
-					size_t bytes_len, char *out,
-					size_t out_len)
+int nugu_uuid_convert_base16(const unsigned char *bytes, size_t bytes_len,
+			     char *out, size_t out_len)
 {
 	size_t i;
 
@@ -78,8 +81,8 @@ EXPORT_API int nugu_uuid_convert_base16(const unsigned char *bytes,
 	return 0;
 }
 
-EXPORT_API int nugu_uuid_convert_bytes(const char *base16, size_t base16_len,
-				       unsigned char *out, size_t out_len)
+int nugu_uuid_convert_bytes(const char *base16, size_t base16_len,
+			    unsigned char *out, size_t out_len)
 {
 	size_t i;
 
@@ -115,9 +118,8 @@ EXPORT_API int nugu_uuid_convert_bytes(const char *base16, size_t base16_len,
 	return 0;
 }
 
-EXPORT_API int nugu_uuid_convert_timespec(const unsigned char *bytes,
-					  size_t bytes_len,
-					  struct timespec *out_time)
+int nugu_uuid_convert_timespec(const unsigned char *bytes, size_t bytes_len,
+			       struct timespec *out_time)
 {
 	uint64_t t;
 
@@ -151,7 +153,7 @@ EXPORT_API int nugu_uuid_convert_timespec(const unsigned char *bytes,
  * - 6 bytes: hash: cut(sha1(token) 20 bytes, 0, 6 bytes)
  * - 4 bytes: random
  */
-EXPORT_API char *nugu_uuid_generate_time(void)
+char *nugu_uuid_generate_time(void)
 {
 	unsigned char buf[NUGU_MAX_UUID_SIZE];
 	char base16[NUGU_MAX_UUID_SIZE * 2 + 1];
@@ -186,9 +188,8 @@ EXPORT_API char *nugu_uuid_generate_time(void)
 	return g_strdup(base16);
 }
 
-EXPORT_API int nugu_uuid_fill(const struct timespec *time,
-			      const unsigned char *hash, size_t hash_len,
-			      unsigned char *out, size_t out_len)
+int nugu_uuid_fill(const struct timespec *time, const unsigned char *hash,
+		   size_t hash_len, unsigned char *out, size_t out_len)
 {
 	uint64_t milliseconds;
 

@@ -17,6 +17,7 @@
 #ifndef __NUGU_ENCODER_H__
 #define __NUGU_ENCODER_H__
 
+#include <nugu.h>
 #include <base/nugu_pcm.h>
 #include <base/nugu_buffer.h>
 
@@ -57,8 +58,8 @@ typedef struct _nugu_encoder_driver NuguEncoderDriver;
  * @return encoder object
  * @see nugu_encoder_free()
  */
-NuguEncoder *nugu_encoder_new(NuguEncoderDriver *driver,
-			      NuguAudioProperty property);
+NUGU_API NuguEncoder *nugu_encoder_new(NuguEncoderDriver *driver,
+				       NuguAudioProperty property);
 
 /**
  * @brief Destroy the encoder object
@@ -68,7 +69,7 @@ NuguEncoder *nugu_encoder_new(NuguEncoderDriver *driver,
  * @retval -1 failure
  * @see nugu_encoder_new()
  */
-int nugu_encoder_free(NuguEncoder *enc);
+NUGU_API int nugu_encoder_free(NuguEncoder *enc);
 
 /**
  * @brief Set custom data for driver
@@ -79,7 +80,7 @@ int nugu_encoder_free(NuguEncoder *enc);
  * @retval -1 failure
  * @see nugu_encoder_get_driver_data()
  */
-int nugu_encoder_set_driver_data(NuguEncoder *enc, void *data);
+NUGU_API int nugu_encoder_set_driver_data(NuguEncoder *enc, void *data);
 
 /**
  * @brief Get custom data for driver
@@ -87,7 +88,7 @@ int nugu_encoder_set_driver_data(NuguEncoder *enc, void *data);
  * @return data
  * @see nugu_encoder_set_driver_data()
  */
-void *nugu_encoder_get_driver_data(NuguEncoder *enc);
+NUGU_API void *nugu_encoder_get_driver_data(NuguEncoder *enc);
 
 /**
  * @brief Encode the encoded data
@@ -98,22 +99,23 @@ void *nugu_encoder_get_driver_data(NuguEncoder *enc);
  * @param[out] output_len output buffer length
  * @return memory allocated encoded data. Developer must free the data manually.
  */
-void *nugu_encoder_encode(NuguEncoder *enc, int is_last, const void *data,
-		size_t data_len, size_t *output_len);
+NUGU_API void *nugu_encoder_encode(NuguEncoder *enc, int is_last,
+				   const void *data, size_t data_len,
+				   size_t *output_len);
 
 /**
  * @brief Get encoder codec. e.g. "OGG_OPUS" or "SPEEX"
  * @param[in] enc encoder object
  * @return encoder type string
  */
-const char *nugu_encoder_get_codec(NuguEncoder *enc);
+NUGU_API const char *nugu_encoder_get_codec(NuguEncoder *enc);
 
 /**
  * @brief Get encoder mime type
  * @param[in] enc encoder object
  * @return encoder mime type string
  */
-const char *nugu_encoder_get_mime_type(NuguEncoder *enc);
+NUGU_API const char *nugu_encoder_get_mime_type(NuguEncoder *enc);
 
 /**
  * @}
@@ -155,9 +157,8 @@ struct nugu_encoder_driver_ops {
 	 * @brief Called when a encoding request is received from the encoder.
 	 * @see nugu_encoder_encode()
 	 */
-	int (*encode)(NuguEncoderDriver *driver, NuguEncoder *enc,
-		      int is_last, const void *data, size_t data_len,
-		      NuguBuffer *out_buf);
+	int (*encode)(NuguEncoderDriver *driver, NuguEncoder *enc, int is_last,
+		      const void *data, size_t data_len, NuguBuffer *out_buf);
 	/**
 	 * @brief Called when the encoder is destroyed.
 	 * @see nugu_encoder_free()
@@ -173,9 +174,9 @@ struct nugu_encoder_driver_ops {
  * @return encoder driver object
  * @see nugu_encoder_driver_free()
  */
-NuguEncoderDriver *nugu_encoder_driver_new(const char *name,
-					   enum nugu_encoder_type type,
-					   struct nugu_encoder_driver_ops *ops);
+NUGU_API NuguEncoderDriver *
+nugu_encoder_driver_new(const char *name, enum nugu_encoder_type type,
+			struct nugu_encoder_driver_ops *ops);
 
 /**
  * @brief Destroy the encoder driver
@@ -184,7 +185,7 @@ NuguEncoderDriver *nugu_encoder_driver_new(const char *name,
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_encoder_driver_free(NuguEncoderDriver *driver);
+NUGU_API int nugu_encoder_driver_free(NuguEncoderDriver *driver);
 
 /**
  * @brief Register the driver to driver list
@@ -193,7 +194,7 @@ int nugu_encoder_driver_free(NuguEncoderDriver *driver);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_encoder_driver_register(NuguEncoderDriver *driver);
+NUGU_API int nugu_encoder_driver_register(NuguEncoderDriver *driver);
 
 /**
  * @brief Remove the driver from driver list
@@ -202,7 +203,7 @@ int nugu_encoder_driver_register(NuguEncoderDriver *driver);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_encoder_driver_remove(NuguEncoderDriver *driver);
+NUGU_API int nugu_encoder_driver_remove(NuguEncoderDriver *driver);
 
 /**
  * @brief Find a driver by name in the driver list
@@ -210,7 +211,7 @@ int nugu_encoder_driver_remove(NuguEncoderDriver *driver);
  * @return encoder driver object
  * @see nugu_encoder_driver_find_bytype()
  */
-NuguEncoderDriver *nugu_encoder_driver_find(const char *name);
+NUGU_API NuguEncoderDriver *nugu_encoder_driver_find(const char *name);
 
 /**
  * @brief Find a driver by type in the driver list
@@ -218,7 +219,8 @@ NuguEncoderDriver *nugu_encoder_driver_find(const char *name);
  * @return encoder driver object
  * @see nugu_encoder_driver_find
  */
-NuguEncoderDriver *nugu_encoder_driver_find_bytype(enum nugu_encoder_type type);
+NUGU_API NuguEncoderDriver *
+nugu_encoder_driver_find_bytype(enum nugu_encoder_type type);
 
 /**
  * @}

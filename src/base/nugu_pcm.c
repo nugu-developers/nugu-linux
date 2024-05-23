@@ -54,8 +54,8 @@ static GList *_pcms;
 static GList *_pcm_drivers;
 static NuguPcmDriver *_default_driver;
 
-EXPORT_API NuguPcmDriver *nugu_pcm_driver_new(const char *name,
-					      struct nugu_pcm_driver_ops *ops)
+NuguPcmDriver *nugu_pcm_driver_new(const char *name,
+				   struct nugu_pcm_driver_ops *ops)
 {
 	NuguPcmDriver *driver;
 
@@ -75,7 +75,7 @@ EXPORT_API NuguPcmDriver *nugu_pcm_driver_new(const char *name,
 	return driver;
 }
 
-EXPORT_API int nugu_pcm_driver_free(NuguPcmDriver *driver)
+int nugu_pcm_driver_free(NuguPcmDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
 
@@ -95,7 +95,7 @@ EXPORT_API int nugu_pcm_driver_free(NuguPcmDriver *driver)
 	return 0;
 }
 
-EXPORT_API int nugu_pcm_driver_register(NuguPcmDriver *driver)
+int nugu_pcm_driver_register(NuguPcmDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
 
@@ -112,7 +112,7 @@ EXPORT_API int nugu_pcm_driver_register(NuguPcmDriver *driver)
 	return 0;
 }
 
-EXPORT_API int nugu_pcm_driver_remove(NuguPcmDriver *driver)
+int nugu_pcm_driver_remove(NuguPcmDriver *driver)
 {
 	GList *l;
 
@@ -133,7 +133,7 @@ EXPORT_API int nugu_pcm_driver_remove(NuguPcmDriver *driver)
 	return 0;
 }
 
-EXPORT_API int nugu_pcm_driver_set_default(NuguPcmDriver *driver)
+int nugu_pcm_driver_set_default(NuguPcmDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
 
@@ -144,7 +144,7 @@ EXPORT_API int nugu_pcm_driver_set_default(NuguPcmDriver *driver)
 	return 0;
 }
 
-EXPORT_API NuguPcmDriver *nugu_pcm_driver_get_default(void)
+NuguPcmDriver *nugu_pcm_driver_get_default(void)
 {
 #ifdef NUGU_ENV_DEFAULT_PCM_DRIVER
 	const char *tmp;
@@ -159,7 +159,7 @@ EXPORT_API NuguPcmDriver *nugu_pcm_driver_get_default(void)
 	return _default_driver;
 }
 
-EXPORT_API NuguPcmDriver *nugu_pcm_driver_find(const char *name)
+NuguPcmDriver *nugu_pcm_driver_find(const char *name)
 {
 	GList *cur;
 
@@ -176,8 +176,8 @@ EXPORT_API NuguPcmDriver *nugu_pcm_driver_find(const char *name)
 	return NULL;
 }
 
-EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver,
-				 NuguAudioProperty property)
+NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver,
+		      NuguAudioProperty property)
 {
 	NuguPcm *pcm;
 
@@ -232,7 +232,7 @@ EXPORT_API NuguPcm *nugu_pcm_new(const char *name, NuguPcmDriver *driver,
 	return pcm;
 }
 
-EXPORT_API void nugu_pcm_free(NuguPcm *pcm)
+void nugu_pcm_free(NuguPcm *pcm)
 {
 	g_return_if_fail(pcm != NULL);
 
@@ -252,7 +252,7 @@ EXPORT_API void nugu_pcm_free(NuguPcm *pcm)
 	g_free(pcm);
 }
 
-EXPORT_API int nugu_pcm_add(NuguPcm *pcm)
+int nugu_pcm_add(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -266,7 +266,7 @@ EXPORT_API int nugu_pcm_add(NuguPcm *pcm)
 	return 0;
 }
 
-EXPORT_API int nugu_pcm_remove(NuguPcm *pcm)
+int nugu_pcm_remove(NuguPcm *pcm)
 {
 	GList *l;
 
@@ -279,7 +279,7 @@ EXPORT_API int nugu_pcm_remove(NuguPcm *pcm)
 	return 0;
 }
 
-EXPORT_API NuguPcm *nugu_pcm_find(const char *name)
+NuguPcm *nugu_pcm_find(const char *name)
 {
 	GList *cur;
 
@@ -296,8 +296,7 @@ EXPORT_API NuguPcm *nugu_pcm_find(const char *name)
 	return NULL;
 }
 
-EXPORT_API int nugu_pcm_set_audio_attribute(NuguPcm *pcm,
-					    NuguAudioAttribute attr)
+int nugu_pcm_set_audio_attribute(NuguPcm *pcm, NuguAudioAttribute attr)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -305,21 +304,21 @@ EXPORT_API int nugu_pcm_set_audio_attribute(NuguPcm *pcm,
 	return 0;
 }
 
-EXPORT_API int nugu_pcm_get_audio_attribute(NuguPcm *pcm)
+int nugu_pcm_get_audio_attribute(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
 
 	return pcm->attr;
 }
 
-EXPORT_API const char *nugu_pcm_get_audio_attribute_str(NuguPcm *pcm)
+const char *nugu_pcm_get_audio_attribute_str(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, NULL);
 
 	return nugu_audio_get_attribute_str(pcm->attr);
 }
 
-EXPORT_API int nugu_pcm_start(NuguPcm *pcm)
+int nugu_pcm_start(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -334,7 +333,7 @@ EXPORT_API int nugu_pcm_start(NuguPcm *pcm)
 	return pcm->driver->ops->start(pcm->driver, pcm);
 }
 
-EXPORT_API int nugu_pcm_stop(NuguPcm *pcm)
+int nugu_pcm_stop(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -349,7 +348,7 @@ EXPORT_API int nugu_pcm_stop(NuguPcm *pcm)
 	return pcm->driver->ops->stop(pcm->driver, pcm);
 }
 
-EXPORT_API int nugu_pcm_pause(NuguPcm *pcm)
+int nugu_pcm_pause(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -362,7 +361,7 @@ EXPORT_API int nugu_pcm_pause(NuguPcm *pcm)
 	return pcm->driver->ops->pause(pcm->driver, pcm);
 }
 
-EXPORT_API int nugu_pcm_resume(NuguPcm *pcm)
+int nugu_pcm_resume(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -375,7 +374,7 @@ EXPORT_API int nugu_pcm_resume(NuguPcm *pcm)
 	return pcm->driver->ops->resume(pcm->driver, pcm);
 }
 
-EXPORT_API int nugu_pcm_set_volume(NuguPcm *pcm, int volume)
+int nugu_pcm_set_volume(NuguPcm *pcm, int volume)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -401,14 +400,14 @@ EXPORT_API int nugu_pcm_set_volume(NuguPcm *pcm, int volume)
 	return 0;
 }
 
-EXPORT_API int nugu_pcm_get_volume(NuguPcm *pcm)
+int nugu_pcm_get_volume(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
 
 	return pcm->volume;
 }
 
-EXPORT_API int nugu_pcm_get_duration(NuguPcm *pcm)
+int nugu_pcm_get_duration(NuguPcm *pcm)
 {
 	int samplerate;
 
@@ -438,7 +437,7 @@ EXPORT_API int nugu_pcm_get_duration(NuguPcm *pcm)
 	return (pcm->total_size / samplerate);
 }
 
-EXPORT_API int nugu_pcm_get_position(NuguPcm *pcm)
+int nugu_pcm_get_position(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -451,9 +450,8 @@ EXPORT_API int nugu_pcm_get_position(NuguPcm *pcm)
 	return pcm->driver->ops->get_position(pcm->driver, pcm);
 }
 
-EXPORT_API void nugu_pcm_set_status_callback(NuguPcm *pcm,
-					     NuguMediaStatusCallback cb,
-					     void *userdata)
+void nugu_pcm_set_status_callback(NuguPcm *pcm, NuguMediaStatusCallback cb,
+				  void *userdata)
 {
 	g_return_if_fail(pcm != NULL);
 
@@ -461,8 +459,7 @@ EXPORT_API void nugu_pcm_set_status_callback(NuguPcm *pcm,
 	pcm->sud = userdata;
 }
 
-EXPORT_API void nugu_pcm_emit_status(NuguPcm *pcm,
-				     enum nugu_media_status status)
+void nugu_pcm_emit_status(NuguPcm *pcm, enum nugu_media_status status)
 {
 	g_return_if_fail(pcm != NULL);
 
@@ -475,16 +472,15 @@ EXPORT_API void nugu_pcm_emit_status(NuguPcm *pcm,
 		pcm->scb(status, pcm->sud);
 }
 
-EXPORT_API enum nugu_media_status nugu_pcm_get_status(NuguPcm *pcm)
+enum nugu_media_status nugu_pcm_get_status(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, NUGU_MEDIA_STATUS_STOPPED);
 
 	return pcm->status;
 }
 
-EXPORT_API void nugu_pcm_set_event_callback(NuguPcm *pcm,
-					    NuguMediaEventCallback cb,
-					    void *userdata)
+void nugu_pcm_set_event_callback(NuguPcm *pcm, NuguMediaEventCallback cb,
+				 void *userdata)
 {
 	g_return_if_fail(pcm != NULL);
 
@@ -492,7 +488,7 @@ EXPORT_API void nugu_pcm_set_event_callback(NuguPcm *pcm,
 	pcm->eud = userdata;
 }
 
-EXPORT_API void nugu_pcm_emit_event(NuguPcm *pcm, enum nugu_media_event event)
+void nugu_pcm_emit_event(NuguPcm *pcm, enum nugu_media_event event)
 {
 	g_return_if_fail(pcm != NULL);
 
@@ -503,7 +499,7 @@ EXPORT_API void nugu_pcm_emit_event(NuguPcm *pcm, enum nugu_media_event event)
 		pcm->ecb(event, pcm->eud);
 }
 
-EXPORT_API int nugu_pcm_set_driver_data(NuguPcm *pcm, void *data)
+int nugu_pcm_set_driver_data(NuguPcm *pcm, void *data)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -512,14 +508,14 @@ EXPORT_API int nugu_pcm_set_driver_data(NuguPcm *pcm, void *data)
 	return 0;
 }
 
-EXPORT_API void *nugu_pcm_get_driver_data(NuguPcm *pcm)
+void *nugu_pcm_get_driver_data(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, NULL);
 
 	return pcm->driver_data;
 }
 
-EXPORT_API void nugu_pcm_clear_buffer(NuguPcm *pcm)
+void nugu_pcm_clear_buffer(NuguPcm *pcm)
 {
 	g_return_if_fail(pcm != NULL);
 	g_return_if_fail(pcm->buf != NULL);
@@ -533,8 +529,7 @@ EXPORT_API void nugu_pcm_clear_buffer(NuguPcm *pcm)
 	pthread_mutex_unlock(&pcm->mutex);
 }
 
-EXPORT_API int nugu_pcm_push_data(NuguPcm *pcm, const char *data, size_t size,
-				  int is_last)
+int nugu_pcm_push_data(NuguPcm *pcm, const char *data, size_t size, int is_last)
 {
 	int ret;
 
@@ -559,7 +554,7 @@ EXPORT_API int nugu_pcm_push_data(NuguPcm *pcm, const char *data, size_t size,
 	return ret;
 }
 
-EXPORT_API int nugu_pcm_push_data_done(NuguPcm *pcm)
+int nugu_pcm_push_data_done(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
 
@@ -575,7 +570,7 @@ EXPORT_API int nugu_pcm_push_data_done(NuguPcm *pcm)
 	return 0;
 }
 
-EXPORT_API int nugu_pcm_get_data(NuguPcm *pcm, char *data, size_t size)
+int nugu_pcm_get_data(NuguPcm *pcm, char *data, size_t size)
 {
 	size_t data_size;
 	const char *ptr;
@@ -615,7 +610,7 @@ EXPORT_API int nugu_pcm_get_data(NuguPcm *pcm, char *data, size_t size)
 	return size;
 }
 
-EXPORT_API size_t nugu_pcm_get_data_size(NuguPcm *pcm)
+size_t nugu_pcm_get_data_size(NuguPcm *pcm)
 {
 	size_t ret;
 
@@ -630,7 +625,7 @@ EXPORT_API size_t nugu_pcm_get_data_size(NuguPcm *pcm)
 	return ret;
 }
 
-EXPORT_API int nugu_pcm_receive_is_last_data(NuguPcm *pcm)
+int nugu_pcm_receive_is_last_data(NuguPcm *pcm)
 {
 	g_return_val_if_fail(pcm != NULL, -1);
 

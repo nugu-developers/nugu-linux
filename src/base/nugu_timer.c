@@ -39,7 +39,7 @@ static gboolean _nugu_timer_callback(gpointer userdata)
 	return !timer->singleshot;
 }
 
-EXPORT_API NuguTimer *nugu_timer_new(long interval)
+NuguTimer *nugu_timer_new(long interval)
 {
 	NuguTimer *timer;
 
@@ -58,7 +58,7 @@ EXPORT_API NuguTimer *nugu_timer_new(long interval)
 	return timer;
 }
 
-EXPORT_API void nugu_timer_delete(NuguTimer *timer)
+void nugu_timer_delete(NuguTimer *timer)
 {
 	g_return_if_fail(timer != NULL);
 
@@ -71,7 +71,7 @@ EXPORT_API void nugu_timer_delete(NuguTimer *timer)
 	g_free(timer);
 }
 
-EXPORT_API void nugu_timer_set_interval(NuguTimer *timer, long interval)
+void nugu_timer_set_interval(NuguTimer *timer, long interval)
 {
 	g_return_if_fail(timer != NULL);
 	g_return_if_fail(interval > 0);
@@ -79,14 +79,14 @@ EXPORT_API void nugu_timer_set_interval(NuguTimer *timer, long interval)
 	timer->interval = interval;
 }
 
-EXPORT_API long nugu_timer_get_interval(NuguTimer *timer)
+long nugu_timer_get_interval(NuguTimer *timer)
 {
 	g_return_val_if_fail(timer != NULL, -1);
 
 	return timer->interval;
 }
 
-EXPORT_API void nugu_timer_set_singleshot(NuguTimer *timer, int singleshot)
+void nugu_timer_set_singleshot(NuguTimer *timer, int singleshot)
 {
 	g_return_if_fail(timer != NULL);
 	g_return_if_fail(singleshot >= 0);
@@ -94,14 +94,14 @@ EXPORT_API void nugu_timer_set_singleshot(NuguTimer *timer, int singleshot)
 	timer->singleshot = singleshot == 0 ? FALSE : TRUE;
 }
 
-EXPORT_API int nugu_timer_get_singleshot(NuguTimer *timer)
+int nugu_timer_get_singleshot(NuguTimer *timer)
 {
 	g_return_val_if_fail(timer != NULL, FALSE);
 
 	return timer->singleshot;
 }
 
-EXPORT_API void nugu_timer_start(NuguTimer *timer)
+void nugu_timer_start(NuguTimer *timer)
 {
 	g_return_if_fail(timer != NULL);
 	g_return_if_fail(timer->cb != NULL);
@@ -115,7 +115,7 @@ EXPORT_API void nugu_timer_start(NuguTimer *timer)
 	g_source_attach(timer->source, g_main_context_default());
 }
 
-EXPORT_API void nugu_timer_stop(NuguTimer *timer)
+void nugu_timer_stop(NuguTimer *timer)
 {
 	g_return_if_fail(timer != NULL);
 
@@ -126,9 +126,8 @@ EXPORT_API void nugu_timer_stop(NuguTimer *timer)
 	}
 }
 
-EXPORT_API void nugu_timer_set_callback(NuguTimer *timer,
-					NuguTimeoutCallback callback,
-					void *userdata)
+void nugu_timer_set_callback(NuguTimer *timer, NuguTimeoutCallback callback,
+			     void *userdata)
 {
 	g_return_if_fail(timer != NULL);
 	g_return_if_fail(callback != NULL);

@@ -73,7 +73,7 @@ struct _nugu_http_host {
 	long conn_timeout;
 };
 
-EXPORT_API NuguHttpHost *nugu_http_host_new(const char *url)
+NuguHttpHost *nugu_http_host_new(const char *url)
 {
 	struct _nugu_http_host *host;
 	size_t url_len;
@@ -106,29 +106,28 @@ EXPORT_API NuguHttpHost *nugu_http_host_new(const char *url)
 	return host;
 }
 
-EXPORT_API void nugu_http_host_set_timeout(NuguHttpHost *host, long msecs)
+void nugu_http_host_set_timeout(NuguHttpHost *host, long msecs)
 {
 	g_return_if_fail(host != NULL);
 
 	host->timeout = msecs;
 }
 
-EXPORT_API void nugu_http_host_set_connection_timeout(NuguHttpHost *host,
-						      long msecs)
+void nugu_http_host_set_connection_timeout(NuguHttpHost *host, long msecs)
 {
 	g_return_if_fail(host != NULL);
 
 	host->conn_timeout = msecs;
 }
 
-EXPORT_API const char *nugu_http_host_peek_url(NuguHttpHost *host)
+const char *nugu_http_host_peek_url(NuguHttpHost *host)
 {
 	g_return_val_if_fail(host != NULL, NULL);
 
 	return host->url;
 }
 
-EXPORT_API void nugu_http_host_free(NuguHttpHost *host)
+void nugu_http_host_free(NuguHttpHost *host)
 {
 	g_return_if_fail(host != NULL);
 
@@ -136,7 +135,7 @@ EXPORT_API void nugu_http_host_free(NuguHttpHost *host)
 	free(host);
 }
 
-EXPORT_API NuguHttpHeader *nugu_http_header_new(void)
+NuguHttpHeader *nugu_http_header_new(void)
 {
 	struct _nugu_http_header *header;
 
@@ -152,8 +151,8 @@ EXPORT_API NuguHttpHeader *nugu_http_header_new(void)
 	return header;
 }
 
-EXPORT_API int nugu_http_header_add(NuguHttpHeader *header, const char *key,
-				    const char *value)
+int nugu_http_header_add(NuguHttpHeader *header, const char *key,
+			 const char *value)
 {
 	g_return_val_if_fail(header != NULL, -1);
 	g_return_val_if_fail(key != NULL, -1);
@@ -164,7 +163,7 @@ EXPORT_API int nugu_http_header_add(NuguHttpHeader *header, const char *key,
 	return 0;
 }
 
-EXPORT_API int nugu_http_header_remove(NuguHttpHeader *header, const char *key)
+int nugu_http_header_remove(NuguHttpHeader *header, const char *key)
 {
 	g_return_val_if_fail(header != NULL, -1);
 	g_return_val_if_fail(key != NULL, -1);
@@ -175,8 +174,7 @@ EXPORT_API int nugu_http_header_remove(NuguHttpHeader *header, const char *key)
 	return 0;
 }
 
-EXPORT_API const char *nugu_http_header_find(NuguHttpHeader *header,
-					     const char *key)
+const char *nugu_http_header_find(NuguHttpHeader *header, const char *key)
 {
 	g_return_val_if_fail(header != NULL, NULL);
 	g_return_val_if_fail(key != NULL, NULL);
@@ -184,8 +182,7 @@ EXPORT_API const char *nugu_http_header_find(NuguHttpHeader *header,
 	return g_hash_table_lookup(header->map, key);
 }
 
-EXPORT_API NuguHttpHeader *
-nugu_http_header_dup(const NuguHttpHeader *src_header)
+NuguHttpHeader *nugu_http_header_dup(const NuguHttpHeader *src_header)
 {
 	NuguHttpHeader *header;
 
@@ -203,8 +200,7 @@ nugu_http_header_dup(const NuguHttpHeader *src_header)
 	return header;
 }
 
-EXPORT_API int nugu_http_header_import(NuguHttpHeader *header,
-				       const NuguHttpHeader *from)
+int nugu_http_header_import(NuguHttpHeader *header, const NuguHttpHeader *from)
 {
 	GHashTableIter iter;
 	gpointer key, value;
@@ -221,7 +217,7 @@ EXPORT_API int nugu_http_header_import(NuguHttpHeader *header,
 	return 0;
 }
 
-EXPORT_API void nugu_http_header_free(NuguHttpHeader *header)
+void nugu_http_header_free(NuguHttpHeader *header)
 {
 	g_return_if_fail(header != NULL);
 
@@ -252,8 +248,7 @@ static NuguHttpResponse *nugu_http_response_new(void)
 	return resp;
 }
 
-EXPORT_API NuguHttpResponse *
-nugu_http_response_dup(const NuguHttpResponse *orig)
+NuguHttpResponse *nugu_http_response_dup(const NuguHttpResponse *orig)
 {
 	struct _nugu_http_response *resp;
 
@@ -292,7 +287,7 @@ static void _nugu_http_response_free_internal(NuguHttpResponse *resp)
 	free(resp);
 }
 
-EXPORT_API void nugu_http_response_free(NuguHttpResponse *resp)
+void nugu_http_response_free(NuguHttpResponse *resp)
 {
 	g_return_if_fail(resp != NULL);
 
@@ -576,10 +571,11 @@ static NuguHttpRequest *_request_new_body(NuguHttpHost *host, const char *path,
 	return req;
 }
 
-EXPORT_API NuguHttpRequest *
-nugu_http_request(enum NuguHttpRequestType type, NuguHttpHost *host,
-		  const char *path, NuguHttpHeader *header, const void *body,
-		  size_t body_len, NuguHttpCallback callback, void *user_data)
+NuguHttpRequest *nugu_http_request(enum NuguHttpRequestType type,
+				   NuguHttpHost *host, const char *path,
+				   NuguHttpHeader *header, const void *body,
+				   size_t body_len, NuguHttpCallback callback,
+				   void *user_data)
 {
 	struct _nugu_http_request *req;
 
@@ -617,10 +613,10 @@ nugu_http_request(enum NuguHttpRequestType type, NuguHttpHost *host,
 	return req;
 }
 
-EXPORT_API NuguHttpRequest *
-nugu_http_request_sync(enum NuguHttpRequestType type, NuguHttpHost *host,
-		       const char *path, NuguHttpHeader *header,
-		       const void *body, size_t body_len)
+NuguHttpRequest *nugu_http_request_sync(enum NuguHttpRequestType type,
+					NuguHttpHost *host, const char *path,
+					NuguHttpHeader *header,
+					const void *body, size_t body_len)
 {
 	struct _nugu_http_request *req;
 
@@ -654,75 +650,71 @@ nugu_http_request_sync(enum NuguHttpRequestType type, NuguHttpHost *host,
 	return req;
 }
 
-EXPORT_API NuguHttpRequest *nugu_http_get(NuguHttpHost *host, const char *path,
-					  NuguHttpHeader *header,
-					  NuguHttpCallback callback,
-					  void *user_data)
+NuguHttpRequest *nugu_http_get(NuguHttpHost *host, const char *path,
+			       NuguHttpHeader *header,
+			       NuguHttpCallback callback, void *user_data)
 {
 	return nugu_http_request(NUGU_HTTP_REQUEST_GET, host, path, header,
 				 NULL, 0, callback, user_data);
 }
 
-EXPORT_API NuguHttpRequest *
-nugu_http_get_sync(NuguHttpHost *host, const char *path, NuguHttpHeader *header)
+NuguHttpRequest *nugu_http_get_sync(NuguHttpHost *host, const char *path,
+				    NuguHttpHeader *header)
 {
 	return nugu_http_request_sync(NUGU_HTTP_REQUEST_GET, host, path, header,
 				      NULL, 0);
 }
 
-EXPORT_API NuguHttpRequest *nugu_http_post(NuguHttpHost *host, const char *path,
-					   NuguHttpHeader *header,
-					   const void *body, size_t body_len,
-					   NuguHttpCallback callback,
-					   void *user_data)
+NuguHttpRequest *nugu_http_post(NuguHttpHost *host, const char *path,
+				NuguHttpHeader *header, const void *body,
+				size_t body_len, NuguHttpCallback callback,
+				void *user_data)
 {
 	return nugu_http_request(NUGU_HTTP_REQUEST_POST, host, path, header,
 				 body, body_len, callback, user_data);
 }
 
-EXPORT_API NuguHttpRequest *
-nugu_http_post_sync(NuguHttpHost *host, const char *path,
-		    NuguHttpHeader *header, const void *body, size_t body_len)
+NuguHttpRequest *nugu_http_post_sync(NuguHttpHost *host, const char *path,
+				     NuguHttpHeader *header, const void *body,
+				     size_t body_len)
 {
 	return nugu_http_request_sync(NUGU_HTTP_REQUEST_POST, host, path,
 				      header, body, body_len);
 }
 
-EXPORT_API NuguHttpRequest *nugu_http_put(NuguHttpHost *host, const char *path,
-					  NuguHttpHeader *header,
-					  const void *body, size_t body_len,
-					  NuguHttpCallback callback,
-					  void *user_data)
+NuguHttpRequest *nugu_http_put(NuguHttpHost *host, const char *path,
+			       NuguHttpHeader *header, const void *body,
+			       size_t body_len, NuguHttpCallback callback,
+			       void *user_data)
 {
 	return nugu_http_request(NUGU_HTTP_REQUEST_PUT, host, path, header,
 				 body, body_len, callback, user_data);
 }
 
-EXPORT_API NuguHttpRequest *
-nugu_http_put_sync(NuguHttpHost *host, const char *path, NuguHttpHeader *header,
-		   const void *body, size_t body_len)
+NuguHttpRequest *nugu_http_put_sync(NuguHttpHost *host, const char *path,
+				    NuguHttpHeader *header, const void *body,
+				    size_t body_len)
 {
 	return nugu_http_request_sync(NUGU_HTTP_REQUEST_PUT, host, path, header,
 				      body, body_len);
 }
 
-EXPORT_API NuguHttpRequest *
-nugu_http_delete(NuguHttpHost *host, const char *path, NuguHttpHeader *header,
-		 NuguHttpCallback callback, void *user_data)
+NuguHttpRequest *nugu_http_delete(NuguHttpHost *host, const char *path,
+				  NuguHttpHeader *header,
+				  NuguHttpCallback callback, void *user_data)
 {
 	return nugu_http_request(NUGU_HTTP_REQUEST_DELETE, host, path, header,
 				 NULL, 0, callback, user_data);
 }
 
-EXPORT_API NuguHttpRequest *nugu_http_delete_sync(NuguHttpHost *host,
-						  const char *path,
-						  NuguHttpHeader *header)
+NuguHttpRequest *nugu_http_delete_sync(NuguHttpHost *host, const char *path,
+				       NuguHttpHeader *header)
 {
 	return nugu_http_request_sync(NUGU_HTTP_REQUEST_DELETE, host, path,
 				      header, NULL, 0);
 }
 
-EXPORT_API NuguHttpRequest *
+NuguHttpRequest *
 nugu_http_download(NuguHttpHost *host, const char *path, const char *dest_path,
 		   NuguHttpHeader *header, NuguHttpCallback callback,
 		   NuguHttpProgressCallback progress_callback, void *user_data)
@@ -771,15 +763,14 @@ nugu_http_download(NuguHttpHost *host, const char *path, const char *dest_path,
 	return req;
 }
 
-EXPORT_API const NuguHttpResponse *
-nugu_http_request_response_get(NuguHttpRequest *req)
+const NuguHttpResponse *nugu_http_request_response_get(NuguHttpRequest *req)
 {
 	g_return_val_if_fail(req != NULL, NULL);
 
 	return req->resp;
 }
 
-EXPORT_API void nugu_http_request_free(NuguHttpRequest *req)
+void nugu_http_request_free(NuguHttpRequest *req)
 {
 	g_return_if_fail(req != NULL);
 
@@ -821,7 +812,7 @@ EXPORT_API void nugu_http_request_free(NuguHttpRequest *req)
 	free(req);
 }
 
-EXPORT_API void nugu_http_init(void)
+void nugu_http_init(void)
 {
 	curl_global_init(CURL_GLOBAL_ALL);
 }

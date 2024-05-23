@@ -18,9 +18,15 @@
 #include <string.h>
 #include <pthread.h>
 #include <stdio.h>
-#include <unistd.h>
-#include <sys/time.h>
 #include <errno.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#include <time.h>
+#else
+#include <sys/time.h>
+#include <unistd.h>
+#endif
 
 #include <glib.h>
 
@@ -54,7 +60,7 @@ static GList *_recorders;
 static GList *_recorder_drivers;
 static NuguRecorderDriver *_default_driver;
 
-EXPORT_API NuguRecorderDriver *
+NuguRecorderDriver *
 nugu_recorder_driver_new(const char *name, struct nugu_recorder_driver_ops *ops)
 {
 	NuguRecorderDriver *driver;
@@ -73,7 +79,7 @@ nugu_recorder_driver_new(const char *name, struct nugu_recorder_driver_ops *ops)
 	return driver;
 }
 
-EXPORT_API int nugu_recorder_driver_free(NuguRecorderDriver *driver)
+int nugu_recorder_driver_free(NuguRecorderDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
 
@@ -88,7 +94,7 @@ EXPORT_API int nugu_recorder_driver_free(NuguRecorderDriver *driver)
 	return 0;
 }
 
-EXPORT_API int nugu_recorder_driver_register(NuguRecorderDriver *driver)
+int nugu_recorder_driver_register(NuguRecorderDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
 
@@ -105,7 +111,7 @@ EXPORT_API int nugu_recorder_driver_register(NuguRecorderDriver *driver)
 	return 0;
 }
 
-EXPORT_API int nugu_recorder_driver_remove(NuguRecorderDriver *driver)
+int nugu_recorder_driver_remove(NuguRecorderDriver *driver)
 {
 	GList *l;
 
@@ -126,7 +132,7 @@ EXPORT_API int nugu_recorder_driver_remove(NuguRecorderDriver *driver)
 	return 0;
 }
 
-EXPORT_API int nugu_recorder_driver_set_default(NuguRecorderDriver *driver)
+int nugu_recorder_driver_set_default(NuguRecorderDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
 
@@ -137,12 +143,12 @@ EXPORT_API int nugu_recorder_driver_set_default(NuguRecorderDriver *driver)
 	return 0;
 }
 
-EXPORT_API NuguRecorderDriver *nugu_recorder_driver_get_default(void)
+NuguRecorderDriver *nugu_recorder_driver_get_default(void)
 {
 	return _default_driver;
 }
 
-EXPORT_API NuguRecorderDriver *nugu_recorder_driver_find(const char *name)
+NuguRecorderDriver *nugu_recorder_driver_find(const char *name)
 {
 	GList *cur;
 
@@ -160,8 +166,7 @@ EXPORT_API NuguRecorderDriver *nugu_recorder_driver_find(const char *name)
 	return NULL;
 }
 
-EXPORT_API NuguRecorder *nugu_recorder_new(const char *name,
-					   NuguRecorderDriver *driver)
+NuguRecorder *nugu_recorder_new(const char *name, NuguRecorderDriver *driver)
 {
 	NuguRecorder *rec;
 
@@ -189,7 +194,7 @@ EXPORT_API NuguRecorder *nugu_recorder_new(const char *name,
 	return rec;
 }
 
-EXPORT_API void nugu_recorder_free(NuguRecorder *rec)
+void nugu_recorder_free(NuguRecorder *rec)
 {
 	g_return_if_fail(rec != NULL);
 
@@ -210,7 +215,7 @@ EXPORT_API void nugu_recorder_free(NuguRecorder *rec)
 	g_free(rec);
 }
 
-EXPORT_API int nugu_recorder_add(NuguRecorder *rec)
+int nugu_recorder_add(NuguRecorder *rec)
 {
 	g_return_val_if_fail(rec != NULL, -1);
 
@@ -224,7 +229,7 @@ EXPORT_API int nugu_recorder_add(NuguRecorder *rec)
 	return 0;
 }
 
-EXPORT_API int nugu_recorder_remove(NuguRecorder *rec)
+int nugu_recorder_remove(NuguRecorder *rec)
 {
 	GList *l;
 
@@ -237,7 +242,7 @@ EXPORT_API int nugu_recorder_remove(NuguRecorder *rec)
 	return 0;
 }
 
-EXPORT_API NuguRecorder *nugu_recorder_find(const char *name)
+NuguRecorder *nugu_recorder_find(const char *name)
 {
 	GList *cur;
 
@@ -254,8 +259,7 @@ EXPORT_API NuguRecorder *nugu_recorder_find(const char *name)
 	return NULL;
 }
 
-EXPORT_API int nugu_recorder_set_property(NuguRecorder *rec,
-					  NuguAudioProperty property)
+int nugu_recorder_set_property(NuguRecorder *rec, NuguAudioProperty property)
 {
 	g_return_val_if_fail(rec != NULL, -1);
 
@@ -264,7 +268,7 @@ EXPORT_API int nugu_recorder_set_property(NuguRecorder *rec,
 	return 0;
 }
 
-EXPORT_API int nugu_recorder_start(NuguRecorder *rec)
+int nugu_recorder_start(NuguRecorder *rec)
 {
 	g_return_val_if_fail(rec != NULL, -1);
 
@@ -284,7 +288,7 @@ EXPORT_API int nugu_recorder_start(NuguRecorder *rec)
 	return rec->driver->ops->start(rec->driver, rec, rec->property);
 }
 
-EXPORT_API int nugu_recorder_stop(NuguRecorder *rec)
+int nugu_recorder_stop(NuguRecorder *rec)
 {
 	g_return_val_if_fail(rec != NULL, -1);
 
@@ -305,7 +309,7 @@ EXPORT_API int nugu_recorder_stop(NuguRecorder *rec)
 	return rec->driver->ops->stop(rec->driver, rec);
 }
 
-EXPORT_API int nugu_recorder_clear(NuguRecorder *rec)
+int nugu_recorder_clear(NuguRecorder *rec)
 {
 	g_return_val_if_fail(rec != NULL, -1);
 
@@ -318,14 +322,14 @@ EXPORT_API int nugu_recorder_clear(NuguRecorder *rec)
 	return 0;
 }
 
-EXPORT_API int nugu_recorder_is_recording(NuguRecorder *rec)
+int nugu_recorder_is_recording(NuguRecorder *rec)
 {
 	g_return_val_if_fail(rec != NULL, -1);
 
 	return rec->is_recording;
 }
 
-EXPORT_API int nugu_recorder_set_driver_data(NuguRecorder *rec, void *data)
+int nugu_recorder_set_driver_data(NuguRecorder *rec, void *data)
 {
 	g_return_val_if_fail(rec != NULL, -1);
 
@@ -334,15 +338,14 @@ EXPORT_API int nugu_recorder_set_driver_data(NuguRecorder *rec, void *data)
 	return 0;
 }
 
-EXPORT_API void *nugu_recorder_get_driver_data(NuguRecorder *rec)
+void *nugu_recorder_get_driver_data(NuguRecorder *rec)
 {
 	g_return_val_if_fail(rec != NULL, NULL);
 
 	return rec->driver_data;
 }
 
-EXPORT_API int nugu_recorder_get_frame_size(NuguRecorder *rec, int *size,
-					    int *max)
+int nugu_recorder_get_frame_size(NuguRecorder *rec, int *size, int *max)
 {
 	g_return_val_if_fail(rec != NULL, -1);
 	g_return_val_if_fail(rec->buf != NULL, -1);
@@ -359,8 +362,7 @@ EXPORT_API int nugu_recorder_get_frame_size(NuguRecorder *rec, int *size,
 	return 0;
 }
 
-EXPORT_API int nugu_recorder_set_frame_size(NuguRecorder *rec, int size,
-					    int max)
+int nugu_recorder_set_frame_size(NuguRecorder *rec, int size, int max)
 {
 	int ret;
 
@@ -378,8 +380,7 @@ EXPORT_API int nugu_recorder_set_frame_size(NuguRecorder *rec, int size,
 	return ret;
 }
 
-EXPORT_API int nugu_recorder_push_frame(NuguRecorder *rec, const char *data,
-					int size)
+int nugu_recorder_push_frame(NuguRecorder *rec, const char *data, int size)
 {
 	int ret;
 
@@ -403,7 +404,7 @@ EXPORT_API int nugu_recorder_push_frame(NuguRecorder *rec, const char *data,
 	return ret;
 }
 
-EXPORT_API int nugu_recorder_get_frame(NuguRecorder *rec, char *data, int *size)
+int nugu_recorder_get_frame(NuguRecorder *rec, char *data, int *size)
 {
 	int ret;
 
@@ -420,8 +421,8 @@ EXPORT_API int nugu_recorder_get_frame(NuguRecorder *rec, char *data, int *size)
 	return ret;
 }
 
-EXPORT_API int nugu_recorder_get_frame_timeout(NuguRecorder *rec, char *data,
-					       int *size, int timeout)
+int nugu_recorder_get_frame_timeout(NuguRecorder *rec, char *data, int *size,
+				    int timeout)
 {
 	struct timeval curtime;
 	struct timespec spec;
@@ -436,9 +437,15 @@ EXPORT_API int nugu_recorder_get_frame_timeout(NuguRecorder *rec, char *data,
 
 	if (nugu_ring_buffer_get_count(rec->buf) == 0) {
 		if (timeout) {
+#ifdef _WIN32
 			gettimeofday(&curtime, NULL);
 			spec.tv_sec = curtime.tv_sec + timeout / 1000;
 			spec.tv_nsec = curtime.tv_usec * 1000 + timeout % 1000;
+#else
+			gettimeofday(&curtime, NULL);
+			spec.tv_sec = curtime.tv_sec + timeout / 1000;
+			spec.tv_nsec = curtime.tv_usec * 1000 + timeout % 1000;
+#endif
 			status = pthread_cond_timedwait(&rec->cond, &rec->lock,
 							&spec);
 		} else
@@ -455,7 +462,7 @@ EXPORT_API int nugu_recorder_get_frame_timeout(NuguRecorder *rec, char *data,
 	return ret;
 }
 
-EXPORT_API int nugu_recorder_get_frame_count(NuguRecorder *rec)
+int nugu_recorder_get_frame_count(NuguRecorder *rec)
 {
 	g_return_val_if_fail(rec != NULL, 0);
 

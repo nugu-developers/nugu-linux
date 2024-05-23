@@ -19,6 +19,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <nugu.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -46,62 +47,62 @@ extern "C" {
 
 #ifndef NUGU_ANSI_COLOR_NORMAL
 #ifdef NUGU_LOG_USE_ANSICOLOR
-#define NUGU_ANSI_COLOR_NORMAL       "\e[0m"
+#define NUGU_ANSI_COLOR_NORMAL "\e[0m"
 #else
-#define NUGU_ANSI_COLOR_NORMAL       ""
+#define NUGU_ANSI_COLOR_NORMAL ""
 #endif
 #endif
 
 #ifndef NUGU_ANSI_COLOR_BLACK
-#define NUGU_ANSI_COLOR_BLACK        "\e[0;30m"
+#define NUGU_ANSI_COLOR_BLACK "\e[0;30m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_RED
-#define NUGU_ANSI_COLOR_RED          "\e[0;31m"
+#define NUGU_ANSI_COLOR_RED "\e[0;31m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_GREEN
-#define NUGU_ANSI_COLOR_GREEN        "\e[0;32m"
+#define NUGU_ANSI_COLOR_GREEN "\e[0;32m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_BROWN
-#define NUGU_ANSI_COLOR_BROWN        "\e[0;33m"
+#define NUGU_ANSI_COLOR_BROWN "\e[0;33m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_BLUE
-#define NUGU_ANSI_COLOR_BLUE         "\e[0;34m"
+#define NUGU_ANSI_COLOR_BLUE "\e[0;34m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_MAGENTA
-#define NUGU_ANSI_COLOR_MAGENTA      "\e[0;35m"
+#define NUGU_ANSI_COLOR_MAGENTA "\e[0;35m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_CYAN
-#define NUGU_ANSI_COLOR_CYAN         "\e[0;36m"
+#define NUGU_ANSI_COLOR_CYAN "\e[0;36m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_LIGHTGRAY
-#define NUGU_ANSI_COLOR_LIGHTGRAY    "\e[0;37m"
+#define NUGU_ANSI_COLOR_LIGHTGRAY "\e[0;37m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_DARKGRAY
-#define NUGU_ANSI_COLOR_DARKGRAY     "\e[1;30m"
+#define NUGU_ANSI_COLOR_DARKGRAY "\e[1;30m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_LIGHTRED
-#define NUGU_ANSI_COLOR_LIGHTRED     "\e[1;31m"
+#define NUGU_ANSI_COLOR_LIGHTRED "\e[1;31m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_LIGHTGREEN
-#define NUGU_ANSI_COLOR_LIGHTGREEN   "\e[1;32m"
+#define NUGU_ANSI_COLOR_LIGHTGREEN "\e[1;32m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_YELLOW
-#define NUGU_ANSI_COLOR_YELLOW       "\e[1;33m"
+#define NUGU_ANSI_COLOR_YELLOW "\e[1;33m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_LIGHTBLUE
-#define NUGU_ANSI_COLOR_LIGHTBLUE    "\e[1;34m"
+#define NUGU_ANSI_COLOR_LIGHTBLUE "\e[1;34m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_LIGHTMAGENTA
@@ -109,11 +110,11 @@ extern "C" {
 #endif
 
 #ifndef NUGU_ANSI_COLOR_LIGHTCYAN
-#define NUGU_ANSI_COLOR_LIGHTCYAN    "\e[1;36m"
+#define NUGU_ANSI_COLOR_LIGHTCYAN "\e[1;36m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_WHITE
-#define NUGU_ANSI_COLOR_WHITE        "\e[1;37m"
+#define NUGU_ANSI_COLOR_WHITE "\e[1;37m"
 #endif
 
 /**
@@ -218,9 +219,10 @@ enum nugu_log_module {
  * @see nugu_warn()
  * @see nugu_error()
  */
-void nugu_log_print(enum nugu_log_module module, enum nugu_log_level level,
-		    const char *filename, const char *funcname, int line,
-		    const char *format, ...);
+NUGU_API void nugu_log_print(enum nugu_log_module module,
+			     enum nugu_log_level level, const char *filename,
+			     const char *funcname, int line, const char *format,
+			     ...);
 
 /**
  * @brief Custom log hook handler
@@ -241,13 +243,13 @@ typedef void (*nugu_log_handler)(enum nugu_log_module module,
  * @brief Set logging backend system
  * @see enum nugu_log_system
  */
-int nugu_log_set_system(enum nugu_log_system log_system);
+NUGU_API int nugu_log_set_system(enum nugu_log_system log_system);
 
 /**
  * @brief Get logging backend system
  * @see enum nugu_log_system
  */
-enum nugu_log_system nugu_log_get_system(void);
+NUGU_API enum nugu_log_system nugu_log_get_system(void);
 
 /**
  * @brief Set custom log handler
@@ -255,35 +257,35 @@ enum nugu_log_system nugu_log_get_system(void);
  * @param[in] user_data The user data to be passed to the callback function
  * @see nugu_log_handler
  */
-int nugu_log_set_handler(nugu_log_handler handler, void *user_data);
+NUGU_API int nugu_log_set_handler(nugu_log_handler handler, void *user_data);
 
 /**
  * @brief Set the additional information fields
  * @param[in] field_set bitmask by enum nugu_log_prefix
  * @see enum nugu_log_prefix
  */
-void nugu_log_set_prefix_fields(enum nugu_log_prefix field_set);
+NUGU_API void nugu_log_set_prefix_fields(enum nugu_log_prefix field_set);
 
 /**
  * @brief Get the additional information fields
  * @return bitmask by enum nugu_log_prefix
  * @see enum nugu_log_prefix
  */
-enum nugu_log_prefix nugu_log_get_prefix_fields(void);
+NUGU_API enum nugu_log_prefix nugu_log_get_prefix_fields(void);
 
 /**
  * @brief Set the bitset of modules
  * @param[in] bitset bitmask by enum nugu_log_prefix
  * @see enum nugu_log_module
  */
-void nugu_log_set_modules(unsigned int bitset);
+NUGU_API void nugu_log_set_modules(unsigned int bitset);
 
 /**
  * @brief Get the bitset of modules
  * @return bitmask by enum nugu_log_module
  * @see enum nugu_log_module
  */
-unsigned int nugu_log_get_modules(void);
+NUGU_API unsigned int nugu_log_get_modules(void);
 
 /**
  * @brief Set minimum log level(debug, info, warning, error)
@@ -291,25 +293,25 @@ unsigned int nugu_log_get_modules(void);
  * with info, warning, and error levels are displayed.
  * @param[in] level log level
  */
-void nugu_log_set_level(enum nugu_log_level level);
+NUGU_API void nugu_log_set_level(enum nugu_log_level level);
 
 /**
  * @brief Get log level
  * @return log level
  */
-enum nugu_log_level nugu_log_get_level(void);
+NUGU_API enum nugu_log_level nugu_log_get_level(void);
 
 /**
  * @brief Set the maximum length of each protocol log line
  * @param[in] length line length. -1 means unlimited.
  */
-void nugu_log_set_protocol_line_limit(int length);
+NUGU_API void nugu_log_set_protocol_line_limit(int length);
 
 /**
  * @brief Get the maximum length of each protocol log line
  * @return line length. -1 means unlimited.
  */
-int nugu_log_get_protocol_line_limit(void);
+NUGU_API int nugu_log_get_protocol_line_limit(void);
 
 /**
  * @brief Hexdump the specific data to stderr
@@ -320,9 +322,9 @@ int nugu_log_get_protocol_line_limit(void);
  * @param[in] footer message to be printed at the bottom of hexdump
  * @param[in] lineindent message to be printed at the beginning of each line
  */
-void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
-		  size_t data_size, const char *header, const char *footer,
-		  const char *lineindent);
+NUGU_API void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
+			   size_t data_size, const char *header,
+			   const char *footer, const char *lineindent);
 
 #ifdef __cplusplus
 }
@@ -340,9 +342,15 @@ void nugu_hexdump(enum nugu_log_module module, const uint8_t *data,
  * @see enum nugu_log_module
  * @see enum nugu_log_level
  */
+#ifdef _WIN32
+#define nugu_log(module, level, fmt, ...)                                      \
+	nugu_log_print(module, level, __FILENAME__, __FUNCSIG__, __LINE__,     \
+		       fmt, ##__VA_ARGS__)
+#else
 #define nugu_log(module, level, fmt, ...)                                      \
 	nugu_log_print(module, level, __FILENAME__, __PRETTY_FUNCTION__,       \
 		       __LINE__, fmt, ##__VA_ARGS__)
+#endif
 
 #ifdef CONFIG_RELEASE
 #define nugu_dbg(fmt, ...)

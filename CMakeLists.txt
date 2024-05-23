@@ -95,7 +95,7 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
 	ADD_DEFINITIONS(
 		-DNUGU_PLUGIN_FILE_EXTENSION=".dylib"
 	)
-ELSEIF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
+ELSEIF(CMAKE_SYSTEM_NAME MATCHES "MINGW" OR CMAKE_SYSTEM_NAME MATCHES "Windows")
 	ADD_DEFINITIONS(
 		# Run-time buffer overflow detection
 		-D_FORTIFY_SOURCE=2
@@ -220,7 +220,7 @@ ELSE()
 	SET(LDFLAG_SOCKET "")
 ENDIF()
 
-IF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
+IF(CMAKE_SYSTEM_NAME MATCHES "MINGW" OR CMAKE_SYSTEM_NAME MATCHES "Windows")
 	SET(LDFLAG_WINSOCK "-lws2_32")
 ELSE()
 	SET(LDFLAG_WINSOCK "")
@@ -265,7 +265,7 @@ IF(VENDOR_PKGCONFIG)
 	pkg_check_modules(vendor_pkgs REQUIRED ${VENDOR_PKGCONFIG})
 ENDIF()
 
-IF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
+IF(CMAKE_SYSTEM_NAME MATCHES "MINGW" OR CMAKE_SYSTEM_NAME MATCHES "Windows")
 	SET(GIO_PKGCONFIG gio-windows-2.0)
 ELSE()
 	SET(GIO_PKGCONFIG gio-unix-2.0)
@@ -302,33 +302,42 @@ IF(ENABLE_GSTREAMER_PLUGIN)
 	ENDIF()
 ENDIF()
 
-# Common compile options
-ADD_COMPILE_OPTIONS(
-	-g -Os
-	-fPIC
+IF(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    # MSVC specific options
+    ADD_COMPILE_OPTIONS(/W0)
 
-	# Improved version of “-fstack-protector” since gcc 4.9
-	-fstack-protector-strong
+    FIND_PACKAGE(PThreads4W REQUIRED)
+	SET(LDFLAGS_PTHREAD4W PThreads4W::PThreads4W)
+#    target_link_libraries(main PRIVATE PThreads4W::PThreads4W)
+ELSE()
+    # Other compilers (e.g., GCC, Clang)
+    ADD_COMPILE_OPTIONS(
+		-g -Os
+		-fPIC
 
-	# Store the stack frame pointer in a register.
-	-fno-omit-frame-pointer
+		# Improved version of “-fstack-protector” since gcc 4.9
+		-fstack-protector-strong
 
-	# Eliminate unused code and data (with --gc-sections link option)
-	-fdata-sections -ffunction-sections
+		# Store the stack frame pointer in a register.
+		-fno-omit-frame-pointer
 
-	# Increase reliability of backtraces
-	-fasynchronous-unwind-tables
+		# Eliminate unused code and data (with --gc-sections link option)
+		-fdata-sections -ffunction-sections
 
-	# Turn on all warnings and treat all warnings as errors.
-	-Werror -Wall -Wextra
+		# Increase reliability of backtraces
+		-fasynchronous-unwind-tables
 
-	# Additional warnings
-	-Wunreachable-code -Wpointer-arith
-	-Wformat=2 -Wno-format-nonliteral
+		# Turn on all warnings and treat all warnings as errors.
+		-Werror -Wall -Wextra
 
-	# Not warnings
-	-Wno-missing-field-initializers
-	-Wno-unused-parameter)
+		# Additional warnings
+		-Wunreachable-code -Wpointer-arith
+		-Wformat=2 -Wno-format-nonliteral
+
+		# Not warnings
+		-Wno-missing-field-initializers
+		-Wno-unused-parameter)
+ENDIF()
 
 IF (ENABLE_LTO)
 	INCLUDE(CheckIPOSupported)
@@ -365,13 +374,13 @@ IF (CMAKE_COMPILER_IS_GNUCC)
 		# Not warnings (GCC 10.3 issue)
 		STRING(APPEND CMAKE_C_FLAGS " -Wno-analyzer-malloc-leak")
 
-		IF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
+		IF(CMAKE_SYSTEM_NAME MATCHES "MINGW" OR CMAKE_SYSTEM_NAME MATCHES "Windows")
 			# Not warnings (false alarm in window)
 			STRING(APPEND CMAKE_C_FLAGS " -Wno-analyzer-fd-leak")
 		ENDIF()
 	ENDIF()
 
-	IF(NOT CMAKE_SYSTEM_NAME MATCHES "MINGW")
+	IF(NOT CMAKE_SYSTEM_NAME MATCHES "MINGW" OR CMAKE_SYSTEM_NAME MATCHES "Windows")
 		ADD_COMPILE_OPTIONS(
 			# Non-executable stack
 			-Wa,--execstack
@@ -408,7 +417,7 @@ IF (CMAKE_COMPILER_IS_GNUCC)
 			SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${PROJECT_SOURCE_DIR})/,,$(abspath $<))\"'")
 		ENDIF()
 	ENDIF()
-ELSE()
+ELSEIF (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 	ADD_COMPILE_OPTIONS(-fmacro-prefix-map=${PROJECT_SOURCE_DIR}/=)
 
 	IF (NOT PACKAGING)
