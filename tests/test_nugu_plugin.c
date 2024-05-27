@@ -198,7 +198,11 @@ static void test_plugin_load(void)
 	/* Load all plugins */
 	nugu_plugin_initialize();
 
+#ifdef _WIN32
+	_putenv(NUGU_ENV_PLUGIN_PATH);
+#else
 	unsetenv(NUGU_ENV_PLUGIN_PATH);
+#endif
 	nugu_plugin_load_directory(RUNPATH);
 
 	g_assert(nugu_plugin_find("xxx") == NULL);

@@ -18,13 +18,22 @@
 #define NUGU_PLUGIN_BUILTIN
 #endif
 
+#ifdef _WIN32
+#ifdef NUGU_ENV_DUMP_LINK_FILE_DECODER
+#undef NUGU_ENV_DUMP_LINK_FILE_DECODER
+#endif
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <time.h>
 #include <fcntl.h>
 #include <errno.h>
+
+#ifndef _WIN32
+#include <unistd.h>
+#endif
 
 #include <glib.h>
 #include <opus.h>
@@ -103,7 +112,11 @@ static int _dumpfile_open(const char *path, const char *prefix)
 		return -1;
 
 	now = time(NULL);
+#ifdef _WIN32
+	localtime_s(&now_tm, &now);
+#else
 	localtime_r(&now, &now_tm);
+#endif
 
 	snprintf(ymd, sizeof(ymd), "%04d%02d%02d", now_tm.tm_year + 1900,
 		 now_tm.tm_mon + 1, now_tm.tm_mday);
