@@ -144,7 +144,7 @@ static void _fill_timestr(char *dest_buf, size_t bufsize,
 		 (int)(ts->tv_nsec / 1000000));
 }
 
-EXPORT_API void nugu_prof_clear(void)
+void nugu_prof_clear(void)
 {
 	pthread_mutex_lock(&_lock);
 	memset(_prof_data, 0, sizeof(_prof_data));
@@ -153,22 +153,21 @@ EXPORT_API void nugu_prof_clear(void)
 	nugu_dbg("clear profiling cache %d bytes", sizeof(_prof_data));
 }
 
-EXPORT_API void nugu_prof_enable_tracelog(void)
+void nugu_prof_enable_tracelog(void)
 {
 	pthread_mutex_lock(&_lock);
 	_trace = TRUE;
 	pthread_mutex_unlock(&_lock);
 }
 
-EXPORT_API void nugu_prof_disable_tracelog(void)
+void nugu_prof_disable_tracelog(void)
 {
 	pthread_mutex_lock(&_lock);
 	_trace = FALSE;
 	pthread_mutex_unlock(&_lock);
 }
 
-EXPORT_API void nugu_prof_set_callback(NuguProfCallback callback,
-				       void *userdata)
+void nugu_prof_set_callback(NuguProfCallback callback, void *userdata)
 {
 	pthread_mutex_lock(&_lock);
 	_callback = callback;
@@ -262,9 +261,8 @@ static void _set_timestamp_with_emit(enum nugu_prof_type type,
 		_emit_callback(type, contents);
 }
 
-EXPORT_API int nugu_prof_mark_data(enum nugu_prof_type type,
-				   const char *dialog_id, const char *msg_id,
-				   const char *contents)
+int nugu_prof_mark_data(enum nugu_prof_type type, const char *dialog_id,
+			const char *msg_id, const char *contents)
 {
 	g_return_val_if_fail(type < NUGU_PROF_TYPE_MAX, -1);
 
@@ -287,7 +285,7 @@ EXPORT_API int nugu_prof_mark_data(enum nugu_prof_type type,
 	return 0;
 }
 
-EXPORT_API int nugu_prof_mark(enum nugu_prof_type type)
+int nugu_prof_mark(enum nugu_prof_type type)
 {
 	g_return_val_if_fail(type < NUGU_PROF_TYPE_MAX, -1);
 
@@ -299,8 +297,7 @@ EXPORT_API int nugu_prof_mark(enum nugu_prof_type type)
 	return 0;
 }
 
-EXPORT_API struct nugu_prof_data *
-nugu_prof_get_last_data(enum nugu_prof_type type)
+struct nugu_prof_data *nugu_prof_get_last_data(enum nugu_prof_type type)
 {
 	struct nugu_prof_data *tmp;
 
@@ -319,8 +316,8 @@ nugu_prof_get_last_data(enum nugu_prof_type type)
 	return tmp;
 }
 
-EXPORT_API int nugu_prof_get_diff_msec_timespec(const struct timespec *ts1,
-						const struct timespec *ts2)
+int nugu_prof_get_diff_msec_timespec(const struct timespec *ts1,
+				     const struct timespec *ts2)
 {
 	int sec;
 	int nsec;
@@ -336,15 +333,15 @@ EXPORT_API int nugu_prof_get_diff_msec_timespec(const struct timespec *ts1,
 	return (nsec / 1000000) + (sec * 1000);
 }
 
-EXPORT_API int nugu_prof_get_diff_msec_type(enum nugu_prof_type type1,
-					    enum nugu_prof_type type2)
+int nugu_prof_get_diff_msec_type(enum nugu_prof_type type1,
+				 enum nugu_prof_type type2)
 {
 	return nugu_prof_get_diff_msec_timespec(&_prof_data[type1].timestamp,
 						&_prof_data[type2].timestamp);
 }
 
-EXPORT_API int nugu_prof_get_diff_msec(const struct nugu_prof_data *prof1,
-				       const struct nugu_prof_data *prof2)
+int nugu_prof_get_diff_msec(const struct nugu_prof_data *prof1,
+			    const struct nugu_prof_data *prof2)
 {
 	if (prof1 == NULL || prof2 == NULL)
 		return 0;
@@ -357,7 +354,7 @@ EXPORT_API int nugu_prof_get_diff_msec(const struct nugu_prof_data *prof1,
 						&prof2->timestamp);
 }
 
-EXPORT_API const char *nugu_prof_get_type_name(enum nugu_prof_type type)
+const char *nugu_prof_get_type_name(enum nugu_prof_type type)
 {
 	return _hints[type].text;
 }
@@ -429,7 +426,7 @@ static void _fill_relative_part(enum nugu_prof_type type, char *dest,
 	snprintf(dest, dest_len, "[%2d ~ %2d]: %s", rel, type, buf);
 }
 
-EXPORT_API void nugu_prof_dump(enum nugu_prof_type from, enum nugu_prof_type to)
+void nugu_prof_dump(enum nugu_prof_type from, enum nugu_prof_type to)
 {
 	enum nugu_prof_type cur;
 	char ts_str[255];

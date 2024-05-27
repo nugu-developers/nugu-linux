@@ -35,7 +35,7 @@ struct _plugin {
 
 static GList *_plugin_list;
 
-EXPORT_API NuguPlugin *nugu_plugin_new(struct nugu_plugin_desc *desc)
+NuguPlugin *nugu_plugin_new(struct nugu_plugin_desc *desc)
 {
 	NuguPlugin *p;
 
@@ -62,7 +62,7 @@ EXPORT_API NuguPlugin *nugu_plugin_new(struct nugu_plugin_desc *desc)
 	return p;
 }
 
-EXPORT_API NuguPlugin *nugu_plugin_new_from_file(const char *filepath)
+NuguPlugin *nugu_plugin_new_from_file(const char *filepath)
 {
 	void *handle;
 	struct nugu_plugin_desc *desc;
@@ -96,7 +96,7 @@ EXPORT_API NuguPlugin *nugu_plugin_new_from_file(const char *filepath)
 	return p;
 }
 
-EXPORT_API void nugu_plugin_free(NuguPlugin *p)
+void nugu_plugin_free(NuguPlugin *p)
 {
 	g_return_if_fail(p != NULL);
 
@@ -113,7 +113,7 @@ EXPORT_API void nugu_plugin_free(NuguPlugin *p)
 	free(p);
 }
 
-EXPORT_API int nugu_plugin_add(NuguPlugin *p)
+int nugu_plugin_add(NuguPlugin *p)
 {
 	GList *cur;
 
@@ -147,7 +147,7 @@ EXPORT_API int nugu_plugin_add(NuguPlugin *p)
 	return 0;
 }
 
-EXPORT_API int nugu_plugin_remove(NuguPlugin *p)
+int nugu_plugin_remove(NuguPlugin *p)
 {
 	g_return_val_if_fail(p != NULL, -1);
 
@@ -159,7 +159,7 @@ EXPORT_API int nugu_plugin_remove(NuguPlugin *p)
 	return 0;
 }
 
-EXPORT_API int nugu_plugin_set_data(NuguPlugin *p, void *data)
+int nugu_plugin_set_data(NuguPlugin *p, void *data)
 {
 	g_return_val_if_fail(p != NULL, -1);
 
@@ -168,14 +168,14 @@ EXPORT_API int nugu_plugin_set_data(NuguPlugin *p, void *data)
 	return 0;
 }
 
-EXPORT_API void *nugu_plugin_get_data(NuguPlugin *p)
+void *nugu_plugin_get_data(NuguPlugin *p)
 {
 	g_return_val_if_fail(p != NULL, NULL);
 
 	return p->data;
 }
 
-EXPORT_API void *nugu_plugin_get_symbol(NuguPlugin *p, const char *symbol_name)
+void *nugu_plugin_get_symbol(NuguPlugin *p, const char *symbol_name)
 {
 	g_return_val_if_fail(p != NULL, NULL);
 	g_return_val_if_fail(symbol_name != NULL, NULL);
@@ -183,15 +183,14 @@ EXPORT_API void *nugu_plugin_get_symbol(NuguPlugin *p, const char *symbol_name)
 	return dlsym(p->handle, symbol_name);
 }
 
-EXPORT_API const struct nugu_plugin_desc *
-nugu_plugin_get_description(NuguPlugin *p)
+const struct nugu_plugin_desc *nugu_plugin_get_description(NuguPlugin *p)
 {
 	g_return_val_if_fail(p != NULL, NULL);
 
 	return p->desc;
 }
 
-EXPORT_API int nugu_plugin_load_directory(const char *dirpath)
+int nugu_plugin_load_directory(const char *dirpath)
 {
 	const gchar *file;
 	gchar *filename;
@@ -244,7 +243,7 @@ EXPORT_API int nugu_plugin_load_directory(const char *dirpath)
 		return g_list_length(_plugin_list);
 }
 
-EXPORT_API int nugu_plugin_load_builtin(void)
+int nugu_plugin_load_builtin(void)
 {
 	size_t length;
 	size_t i;
@@ -273,7 +272,7 @@ static gint _sort_priority_cmp(gconstpointer a, gconstpointer b)
 	       ((NuguPlugin *)b)->desc->priority;
 }
 
-EXPORT_API int nugu_plugin_initialize(void)
+int nugu_plugin_initialize(void)
 {
 	GList *cur;
 
@@ -312,7 +311,7 @@ EXPORT_API int nugu_plugin_initialize(void)
 		return g_list_length(_plugin_list);
 }
 
-EXPORT_API void nugu_plugin_deinitialize(void)
+void nugu_plugin_deinitialize(void)
 {
 	GList *cur;
 
@@ -334,7 +333,7 @@ EXPORT_API void nugu_plugin_deinitialize(void)
 	_plugin_list = NULL;
 }
 
-EXPORT_API NuguPlugin *nugu_plugin_find(const char *name)
+NuguPlugin *nugu_plugin_find(const char *name)
 {
 	GList *cur;
 

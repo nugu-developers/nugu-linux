@@ -18,6 +18,7 @@
 #define __NUGU_BUFFER_H__
 
 #include <stddef.h>
+#include <nugu.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -43,7 +44,7 @@ extern "C" {
  * @brief Not found return type of nugu_buffer_find_byte()
  * @see nugu_buffer_find_byte()
  */
-#define NUGU_BUFFER_NOT_FOUND ((size_t)-1)
+#define NUGU_BUFFER_NOT_FOUND ((size_t) - 1)
 
 /**
  * @brief Buffer object
@@ -57,7 +58,7 @@ typedef struct _nugu_buffer NuguBuffer;
  * @return Buffer object
  * @see nugu_buffer_free()
  */
-NuguBuffer *nugu_buffer_new(size_t default_size);
+NUGU_API NuguBuffer *nugu_buffer_new(size_t default_size);
 
 /**
  * @brief Destroy the buffer object
@@ -68,7 +69,7 @@ NuguBuffer *nugu_buffer_new(size_t default_size);
  * manually. If false, always return NULL.
  * @see nugu_buffer_new()
  */
-void *nugu_buffer_free(NuguBuffer *buf, int is_data_free);
+NUGU_API void *nugu_buffer_free(NuguBuffer *buf, int is_data_free);
 
 /**
  * @brief Append the data to buffer object
@@ -77,7 +78,8 @@ void *nugu_buffer_free(NuguBuffer *buf, int is_data_free);
  * @param[in] data_len Length of the data
  * @return added length (0 = failure)
  */
-size_t nugu_buffer_add(NuguBuffer *buf, const void *data, size_t data_len);
+NUGU_API size_t nugu_buffer_add(NuguBuffer *buf, const void *data,
+				size_t data_len);
 
 /**
  * @brief Append the data to buffer object
@@ -85,7 +87,7 @@ size_t nugu_buffer_add(NuguBuffer *buf, const void *data, size_t data_len);
  * @param[in] byte The data to add to the buffer.
  * @return added length (0 = failure)
  */
-size_t nugu_buffer_add_byte(NuguBuffer *buf, unsigned char byte);
+NUGU_API size_t nugu_buffer_add_byte(NuguBuffer *buf, unsigned char byte);
 
 /**
  * @brief Append the data to buffer object
@@ -96,7 +98,8 @@ size_t nugu_buffer_add_byte(NuguBuffer *buf, unsigned char byte);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_buffer_set_byte(NuguBuffer *buf, size_t pos, unsigned char byte);
+NUGU_API int nugu_buffer_set_byte(NuguBuffer *buf, size_t pos,
+				  unsigned char byte);
 
 /**
  * @brief Get the internal buffer
@@ -104,7 +107,7 @@ int nugu_buffer_set_byte(NuguBuffer *buf, size_t pos, unsigned char byte);
  * @return Internal buffer address. Please do not modify the data manually.
  * @see nugu_buffer_peek_byte()
  */
-const void *nugu_buffer_peek(NuguBuffer *buf);
+NUGU_API const void *nugu_buffer_peek(NuguBuffer *buf);
 
 /**
  * @brief Gets the size of the entire data added to the buffer.
@@ -112,7 +115,7 @@ const void *nugu_buffer_peek(NuguBuffer *buf);
  * @return size of data
  * @see nugu_buffer_get_alloc_size()
  */
-size_t nugu_buffer_get_size(NuguBuffer *buf);
+NUGU_API size_t nugu_buffer_get_size(NuguBuffer *buf);
 
 /**
  * @brief Gets the size of the entire data allocated for the buffer.
@@ -120,7 +123,7 @@ size_t nugu_buffer_get_size(NuguBuffer *buf);
  * @return size of allocated internal buffer.
  * @see nugu_buffer_get_size()
  */
-size_t nugu_buffer_get_alloc_size(NuguBuffer *buf);
+NUGU_API size_t nugu_buffer_get_alloc_size(NuguBuffer *buf);
 
 /**
  * @brief Get the position of the data you want to find.
@@ -129,7 +132,7 @@ size_t nugu_buffer_get_alloc_size(NuguBuffer *buf);
  * @return position. if fail, return NUGU_BUFFER_NOT_FOUND
  * @see NUGU_BUFFER_NOT_FOUND
  */
-size_t nugu_buffer_find_byte(NuguBuffer *buf, unsigned char want);
+NUGU_API size_t nugu_buffer_find_byte(NuguBuffer *buf, unsigned char want);
 
 /**
  * @brief Get data at a specific position.
@@ -137,7 +140,7 @@ size_t nugu_buffer_find_byte(NuguBuffer *buf, unsigned char want);
  * @param[in] pos position
  * @return byte data
  */
-unsigned char nugu_buffer_peek_byte(NuguBuffer *buf, size_t pos);
+NUGU_API unsigned char nugu_buffer_peek_byte(NuguBuffer *buf, size_t pos);
 
 /**
  * @brief Clear the buffer
@@ -147,7 +150,7 @@ unsigned char nugu_buffer_peek_byte(NuguBuffer *buf, size_t pos);
  * @retval -1 failure
  * @see nugu_buffer_clear_from()
  */
-int nugu_buffer_clear(NuguBuffer *buf);
+NUGU_API int nugu_buffer_clear(NuguBuffer *buf);
 
 /**
  * @brief Clear data from a specific position to the end.
@@ -158,7 +161,7 @@ int nugu_buffer_clear(NuguBuffer *buf);
  * @retval -1 failure
  * @see nugu_buffer_clear()
  */
-int nugu_buffer_clear_from(NuguBuffer *buf, size_t pos);
+NUGU_API int nugu_buffer_clear_from(NuguBuffer *buf, size_t pos);
 
 /**
  * @brief Delete a certain amount of data and move the remaining data forward.
@@ -168,7 +171,7 @@ int nugu_buffer_clear_from(NuguBuffer *buf, size_t pos);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_buffer_shift_left(NuguBuffer *buf, size_t size);
+NUGU_API int nugu_buffer_shift_left(NuguBuffer *buf, size_t size);
 
 /**
  * @brief Extract data by a certain size.
@@ -176,7 +179,7 @@ int nugu_buffer_shift_left(NuguBuffer *buf, size_t size);
  * @param[in] size size to extract
  * @return Extracted data. Developer must free the data manually.
  */
-void *nugu_buffer_pop(NuguBuffer *buf, size_t size);
+NUGU_API void *nugu_buffer_pop(NuguBuffer *buf, size_t size);
 
 /**
  * @}

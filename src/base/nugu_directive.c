@@ -49,11 +49,11 @@ struct _nugu_directive {
 	int ref_count;
 };
 
-EXPORT_API NuguDirective *
-nugu_directive_new(const char *name_space, const char *name,
-		   const char *version, const char *msg_id,
-		   const char *dialog_id, const char *referrer_id,
-		   const char *json, const char *groups)
+NuguDirective *nugu_directive_new(const char *name_space, const char *name,
+				  const char *version, const char *msg_id,
+				  const char *dialog_id,
+				  const char *referrer_id, const char *json,
+				  const char *groups)
 {
 	NuguDirective *ndir;
 
@@ -128,14 +128,14 @@ static void nugu_directive_free(NuguDirective *ndir)
 	free(ndir);
 }
 
-EXPORT_API void nugu_directive_ref(NuguDirective *ndir)
+void nugu_directive_ref(NuguDirective *ndir)
 {
 	g_return_if_fail(ndir != NULL);
 
 	ndir->ref_count++;
 }
 
-EXPORT_API void nugu_directive_unref(NuguDirective *ndir)
+void nugu_directive_unref(NuguDirective *ndir)
 {
 	g_return_if_fail(ndir != NULL);
 
@@ -146,14 +146,14 @@ EXPORT_API void nugu_directive_unref(NuguDirective *ndir)
 	nugu_directive_free(ndir);
 }
 
-EXPORT_API int nugu_directive_is_active(const NuguDirective *ndir)
+int nugu_directive_is_active(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, -1);
 
 	return ndir->is_active;
 }
 
-EXPORT_API int nugu_directive_set_active(NuguDirective *ndir, int flag)
+int nugu_directive_set_active(NuguDirective *ndir, int flag)
 {
 	g_return_val_if_fail(ndir != NULL, -1);
 	g_return_val_if_fail(flag == 0 || flag == 1, -1);
@@ -163,65 +163,63 @@ EXPORT_API int nugu_directive_set_active(NuguDirective *ndir, int flag)
 	return ndir->is_active;
 }
 
-EXPORT_API const char *nugu_directive_peek_namespace(const NuguDirective *ndir)
+const char *nugu_directive_peek_namespace(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, NULL);
 
 	return ndir->name_space;
 }
 
-EXPORT_API const char *nugu_directive_peek_name(const NuguDirective *ndir)
+const char *nugu_directive_peek_name(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, NULL);
 
 	return ndir->name;
 }
 
-EXPORT_API const char *nugu_directive_peek_groups(const NuguDirective *ndir)
+const char *nugu_directive_peek_groups(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, NULL);
 
 	return ndir->groups;
 }
 
-EXPORT_API const char *nugu_directive_peek_version(const NuguDirective *ndir)
+const char *nugu_directive_peek_version(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, NULL);
 
 	return ndir->version;
 }
 
-EXPORT_API const char *nugu_directive_peek_msg_id(const NuguDirective *ndir)
+const char *nugu_directive_peek_msg_id(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, NULL);
 
 	return ndir->msg_id;
 }
 
-EXPORT_API const char *nugu_directive_peek_dialog_id(const NuguDirective *ndir)
+const char *nugu_directive_peek_dialog_id(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, NULL);
 
 	return ndir->dialog_id;
 }
 
-EXPORT_API const char *
-nugu_directive_peek_referrer_id(const NuguDirective *ndir)
+const char *nugu_directive_peek_referrer_id(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, NULL);
 
 	return ndir->referrer_id;
 }
 
-EXPORT_API const char *nugu_directive_peek_json(const NuguDirective *ndir)
+const char *nugu_directive_peek_json(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, NULL);
 
 	return ndir->json;
 }
 
-EXPORT_API int nugu_directive_set_media_type(NuguDirective *ndir,
-					     const char *type)
+int nugu_directive_set_media_type(NuguDirective *ndir, const char *type)
 {
 	g_return_val_if_fail(ndir != NULL, -1);
 
@@ -238,15 +236,15 @@ EXPORT_API int nugu_directive_set_media_type(NuguDirective *ndir,
 	return 0;
 }
 
-EXPORT_API const char *nugu_directive_peek_media_type(const NuguDirective *ndir)
+const char *nugu_directive_peek_media_type(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, NULL);
 
 	return ndir->media_type;
 }
 
-EXPORT_API int nugu_directive_add_data(NuguDirective *ndir, size_t length,
-				       const unsigned char *data)
+int nugu_directive_add_data(NuguDirective *ndir, size_t length,
+			    const unsigned char *data)
 {
 	g_return_val_if_fail(ndir != NULL, -1);
 
@@ -279,7 +277,7 @@ EXPORT_API int nugu_directive_add_data(NuguDirective *ndir, size_t length,
 	return 0;
 }
 
-EXPORT_API int nugu_directive_close_data(NuguDirective *ndir)
+int nugu_directive_close_data(NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, -1);
 
@@ -288,15 +286,14 @@ EXPORT_API int nugu_directive_close_data(NuguDirective *ndir)
 	return 0;
 }
 
-EXPORT_API int nugu_directive_is_data_end(const NuguDirective *ndir)
+int nugu_directive_is_data_end(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, -1);
 
 	return ndir->is_end;
 }
 
-EXPORT_API unsigned char *nugu_directive_get_data(NuguDirective *ndir,
-						  size_t *length)
+unsigned char *nugu_directive_get_data(NuguDirective *ndir, size_t *length)
 {
 	unsigned char *buf;
 	size_t buf_size;
@@ -316,7 +313,7 @@ EXPORT_API unsigned char *nugu_directive_get_data(NuguDirective *ndir,
 	return buf;
 }
 
-EXPORT_API size_t nugu_directive_get_data_size(const NuguDirective *ndir)
+size_t nugu_directive_get_data_size(const NuguDirective *ndir)
 {
 	size_t size;
 
@@ -327,8 +324,9 @@ EXPORT_API size_t nugu_directive_get_data_size(const NuguDirective *ndir)
 	return size;
 }
 
-EXPORT_API int nugu_directive_set_blocking_policy(
-	NuguDirective *ndir, enum nugu_directive_medium medium, int is_block)
+int nugu_directive_set_blocking_policy(NuguDirective *ndir,
+				       enum nugu_directive_medium medium,
+				       int is_block)
 {
 	g_return_val_if_fail(ndir != NULL, -1);
 
@@ -338,7 +336,7 @@ EXPORT_API int nugu_directive_set_blocking_policy(
 	return 0;
 }
 
-EXPORT_API enum nugu_directive_medium
+enum nugu_directive_medium
 nugu_directive_get_blocking_medium(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, -1);
@@ -346,8 +344,7 @@ nugu_directive_get_blocking_medium(const NuguDirective *ndir)
 	return ndir->policy_medium;
 }
 
-EXPORT_API const char *
-nugu_directive_get_blocking_medium_string(const NuguDirective *ndir)
+const char *nugu_directive_get_blocking_medium_string(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, NULL);
 
@@ -367,15 +364,16 @@ nugu_directive_get_blocking_medium_string(const NuguDirective *ndir)
 	return "----";
 }
 
-EXPORT_API int nugu_directive_is_blocking(const NuguDirective *ndir)
+int nugu_directive_is_blocking(const NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, -1);
 
 	return ndir->is_policy_block;
 }
 
-EXPORT_API int nugu_directive_set_data_callback(
-	NuguDirective *ndir, NuguDirectiveDataCallback callback, void *userdata)
+int nugu_directive_set_data_callback(NuguDirective *ndir,
+				     NuguDirectiveDataCallback callback,
+				     void *userdata)
 {
 	g_return_val_if_fail(ndir != NULL, -1);
 	g_return_val_if_fail(callback != NULL, -1);
@@ -386,7 +384,7 @@ EXPORT_API int nugu_directive_set_data_callback(
 	return 0;
 }
 
-EXPORT_API int nugu_directive_remove_data_callback(NuguDirective *ndir)
+int nugu_directive_remove_data_callback(NuguDirective *ndir)
 {
 	g_return_val_if_fail(ndir != NULL, -1);
 

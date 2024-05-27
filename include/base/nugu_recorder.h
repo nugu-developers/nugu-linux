@@ -17,6 +17,7 @@
 #ifndef __NUGU_RECORDER_H__
 #define __NUGU_RECORDER_H__
 
+#include <nugu.h>
 #include <base/nugu_audio.h>
 
 #ifdef __cplusplus
@@ -72,14 +73,15 @@ typedef struct _nugu_recorder_driver NuguRecorderDriver;
  * @return recorder object
  * @see nugu_recorder_free()
  */
-NuguRecorder *nugu_recorder_new(const char *name, NuguRecorderDriver *driver);
+NUGU_API NuguRecorder *nugu_recorder_new(const char *name,
+					 NuguRecorderDriver *driver);
 
 /**
  * @brief Destroy the recorder object
  * @param[in] rec recorder object
  * @see nugu_recorder_new()
  */
-void nugu_recorder_free(NuguRecorder *rec);
+NUGU_API void nugu_recorder_free(NuguRecorder *rec);
 
 /**
  * @brief Add recorder object to managed list
@@ -90,7 +92,7 @@ void nugu_recorder_free(NuguRecorder *rec);
  * @see nugu_recorder_remove()
  * @see nugu_recorder_find()
  */
-int nugu_recorder_add(NuguRecorder *rec);
+NUGU_API int nugu_recorder_add(NuguRecorder *rec);
 
 /**
  * @brief Remove recorder object from managed list
@@ -99,7 +101,7 @@ int nugu_recorder_add(NuguRecorder *rec);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_recorder_remove(NuguRecorder *rec);
+NUGU_API int nugu_recorder_remove(NuguRecorder *rec);
 
 /**
  * @brief Find a recorder object by name in the managed list
@@ -108,7 +110,7 @@ int nugu_recorder_remove(NuguRecorder *rec);
  * @see nugu_recorder_add()
  * @see nugu_recorder_remove()
  */
-NuguRecorder *nugu_recorder_find(const char *name);
+NUGU_API NuguRecorder *nugu_recorder_find(const char *name);
 
 /**
  * @brief Set property to recorder object
@@ -118,7 +120,8 @@ NuguRecorder *nugu_recorder_find(const char *name);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_recorder_set_property(NuguRecorder *rec, NuguAudioProperty property);
+NUGU_API int nugu_recorder_set_property(NuguRecorder *rec,
+					NuguAudioProperty property);
 
 /**
  * @brief Start recording
@@ -128,7 +131,7 @@ int nugu_recorder_set_property(NuguRecorder *rec, NuguAudioProperty property);
  * @retval -1 failure
  * @see nugu_recorder_stop()
  */
-int nugu_recorder_start(NuguRecorder *rec);
+NUGU_API int nugu_recorder_start(NuguRecorder *rec);
 
 /**
  * @brief Stop recording
@@ -138,7 +141,7 @@ int nugu_recorder_start(NuguRecorder *rec);
  * @retval -1 failure
  * @see nugu_recorder_start()
  */
-int nugu_recorder_stop(NuguRecorder *rec);
+NUGU_API int nugu_recorder_stop(NuguRecorder *rec);
 
 /**
  * @brief Clear recording data
@@ -147,7 +150,7 @@ int nugu_recorder_stop(NuguRecorder *rec);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_recorder_clear(NuguRecorder *rec);
+NUGU_API int nugu_recorder_clear(NuguRecorder *rec);
 
 /**
  * @brief Get the status of recording
@@ -157,7 +160,7 @@ int nugu_recorder_clear(NuguRecorder *rec);
  * @retval 1 recording
  * @retval -1 failure
  */
-int nugu_recorder_is_recording(NuguRecorder *rec);
+NUGU_API int nugu_recorder_is_recording(NuguRecorder *rec);
 
 /**
  * @brief Set custom data for driver
@@ -168,7 +171,7 @@ int nugu_recorder_is_recording(NuguRecorder *rec);
  * @retval -1 failure
  * @see nugu_recorder_get_driver_data()
  */
-int nugu_recorder_set_driver_data(NuguRecorder *rec, void *data);
+NUGU_API int nugu_recorder_set_driver_data(NuguRecorder *rec, void *data);
 
 /**
  * @brief Get custom data for driver
@@ -176,7 +179,7 @@ int nugu_recorder_set_driver_data(NuguRecorder *rec, void *data);
  * @return data
  * @see nugu_recorder_set_driver_data()
  */
-void *nugu_recorder_get_driver_data(NuguRecorder *rec);
+NUGU_API void *nugu_recorder_get_driver_data(NuguRecorder *rec);
 
 /**
  * @brief Get frame size
@@ -188,7 +191,8 @@ void *nugu_recorder_get_driver_data(NuguRecorder *rec);
  * @retval -1 failure
  * @see nugu_recorder_set_frame_size()
  */
-int nugu_recorder_get_frame_size(NuguRecorder *rec, int *size, int *max);
+NUGU_API int nugu_recorder_get_frame_size(NuguRecorder *rec, int *size,
+					  int *max);
 
 /**
  * @brief Set frame size
@@ -200,7 +204,7 @@ int nugu_recorder_get_frame_size(NuguRecorder *rec, int *size, int *max);
  * @retval -1 failure
  * @see nugu_recorder_get_frame_size()
  */
-int nugu_recorder_set_frame_size(NuguRecorder *rec, int size, int max);
+NUGU_API int nugu_recorder_set_frame_size(NuguRecorder *rec, int size, int max);
 
 /**
  * @brief Push recorded data
@@ -211,7 +215,8 @@ int nugu_recorder_set_frame_size(NuguRecorder *rec, int size, int max);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_recorder_push_frame(NuguRecorder *rec, const char *data, int size);
+NUGU_API int nugu_recorder_push_frame(NuguRecorder *rec, const char *data,
+				      int size);
 
 /**
  * @brief Get recorded data
@@ -222,7 +227,7 @@ int nugu_recorder_push_frame(NuguRecorder *rec, const char *data, int size);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_recorder_get_frame(NuguRecorder *rec, char *data, int *size);
+NUGU_API int nugu_recorder_get_frame(NuguRecorder *rec, char *data, int *size);
 
 /**
  * @brief Get recorded data with timeout
@@ -234,8 +239,8 @@ int nugu_recorder_get_frame(NuguRecorder *rec, char *data, int *size);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_recorder_get_frame_timeout(NuguRecorder *rec, char *data, int *size,
-				    int timeout);
+NUGU_API int nugu_recorder_get_frame_timeout(NuguRecorder *rec, char *data,
+					     int *size, int timeout);
 
 /**
  * @brief Get frame count
@@ -244,7 +249,7 @@ int nugu_recorder_get_frame_timeout(NuguRecorder *rec, char *data, int *size,
  * @retval >0 success (frame count)
  * @retval -1 failure
  */
-int nugu_recorder_get_frame_count(NuguRecorder *rec);
+NUGU_API int nugu_recorder_get_frame_count(NuguRecorder *rec);
 
 /**
  * @}
@@ -282,7 +287,7 @@ struct nugu_recorder_driver_ops {
  * @return recorder driver object
  * @see nugu_recorder_driver_free()
  */
-NuguRecorderDriver *
+NUGU_API NuguRecorderDriver *
 nugu_recorder_driver_new(const char *name,
 			 struct nugu_recorder_driver_ops *ops);
 
@@ -294,7 +299,7 @@ nugu_recorder_driver_new(const char *name,
  * @retval -1 failure
  * @see nugu_recorder_driver_new()
  */
-int nugu_recorder_driver_free(NuguRecorderDriver *driver);
+NUGU_API int nugu_recorder_driver_free(NuguRecorderDriver *driver);
 
 /**
  * @brief Register the driver to driver list
@@ -304,7 +309,7 @@ int nugu_recorder_driver_free(NuguRecorderDriver *driver);
  * @retval -1 failure
  * @see nugu_recorder_driver_remove()
  */
-int nugu_recorder_driver_register(NuguRecorderDriver *driver);
+NUGU_API int nugu_recorder_driver_register(NuguRecorderDriver *driver);
 
 /**
  * @brief Remove the driver from driver list
@@ -314,7 +319,7 @@ int nugu_recorder_driver_register(NuguRecorderDriver *driver);
  * @retval -1 failure
  * @see nugu_recorder_driver_register()
  */
-int nugu_recorder_driver_remove(NuguRecorderDriver *driver);
+NUGU_API int nugu_recorder_driver_remove(NuguRecorderDriver *driver);
 
 /**
  * @brief Set the default recorder driver
@@ -324,21 +329,21 @@ int nugu_recorder_driver_remove(NuguRecorderDriver *driver);
  * @retval -1 failure
  * @see nugu_recorder_driver_get_default()
  */
-int nugu_recorder_driver_set_default(NuguRecorderDriver *driver);
+NUGU_API int nugu_recorder_driver_set_default(NuguRecorderDriver *driver);
 
 /**
  * @brief Get the default recorder driver
  * @return recorder driver
  * @see nugu_recorder_driver_set_default()
  */
-NuguRecorderDriver *nugu_recorder_driver_get_default(void);
+NUGU_API NuguRecorderDriver *nugu_recorder_driver_get_default(void);
 
 /**
  * @brief Find a driver by name in the driver list
  * @param[in] name recorder driver name
  * @return recorder driver
  */
-NuguRecorderDriver *nugu_recorder_driver_find(const char *name);
+NUGU_API NuguRecorderDriver *nugu_recorder_driver_find(const char *name);
 
 /**
  * @}

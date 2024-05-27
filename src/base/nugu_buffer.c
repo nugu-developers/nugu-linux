@@ -32,7 +32,7 @@ struct _nugu_buffer {
 	unsigned char *data;
 };
 
-EXPORT_API NuguBuffer *nugu_buffer_new(size_t default_size)
+NuguBuffer *nugu_buffer_new(size_t default_size)
 {
 	NuguBuffer *buf;
 
@@ -58,7 +58,7 @@ EXPORT_API NuguBuffer *nugu_buffer_new(size_t default_size)
 	return buf;
 }
 
-EXPORT_API void *nugu_buffer_free(NuguBuffer *buf, int is_data_free)
+void *nugu_buffer_free(NuguBuffer *buf, int is_data_free)
 {
 	g_return_val_if_fail(buf != NULL, NULL);
 
@@ -102,8 +102,7 @@ static int _buffer_resize(NuguBuffer *buf, size_t needed)
 	return 0;
 }
 
-EXPORT_API size_t nugu_buffer_add(NuguBuffer *buf, const void *data,
-				  size_t data_len)
+size_t nugu_buffer_add(NuguBuffer *buf, const void *data, size_t data_len)
 {
 	g_return_val_if_fail(buf != NULL, 0);
 	g_return_val_if_fail(data != NULL, 0);
@@ -120,7 +119,7 @@ EXPORT_API size_t nugu_buffer_add(NuguBuffer *buf, const void *data,
 	return data_len;
 }
 
-EXPORT_API size_t nugu_buffer_add_byte(NuguBuffer *buf, unsigned char byte)
+size_t nugu_buffer_add_byte(NuguBuffer *buf, unsigned char byte)
 {
 	g_return_val_if_fail(buf != NULL, 0);
 
@@ -135,8 +134,7 @@ EXPORT_API size_t nugu_buffer_add_byte(NuguBuffer *buf, unsigned char byte)
 	return 1;
 }
 
-EXPORT_API int nugu_buffer_set_byte(NuguBuffer *buf, size_t pos,
-				    unsigned char byte)
+int nugu_buffer_set_byte(NuguBuffer *buf, size_t pos, unsigned char byte)
 {
 	g_return_val_if_fail(buf != NULL, -1);
 
@@ -148,28 +146,28 @@ EXPORT_API int nugu_buffer_set_byte(NuguBuffer *buf, size_t pos,
 	return 0;
 }
 
-EXPORT_API const void *nugu_buffer_peek(NuguBuffer *buf)
+const void *nugu_buffer_peek(NuguBuffer *buf)
 {
 	g_return_val_if_fail(buf != NULL, NULL);
 
 	return buf->data;
 }
 
-EXPORT_API size_t nugu_buffer_get_size(NuguBuffer *buf)
+size_t nugu_buffer_get_size(NuguBuffer *buf)
 {
 	g_return_val_if_fail(buf != NULL, 0);
 
 	return buf->index;
 }
 
-EXPORT_API size_t nugu_buffer_get_alloc_size(NuguBuffer *buf)
+size_t nugu_buffer_get_alloc_size(NuguBuffer *buf)
 {
 	g_return_val_if_fail(buf != NULL, 0);
 
 	return buf->alloc_size;
 }
 
-EXPORT_API size_t nugu_buffer_find_byte(NuguBuffer *buf, unsigned char want)
+size_t nugu_buffer_find_byte(NuguBuffer *buf, unsigned char want)
 {
 	unsigned char *pos;
 	unsigned char *last_pos;
@@ -189,7 +187,7 @@ EXPORT_API size_t nugu_buffer_find_byte(NuguBuffer *buf, unsigned char want)
 	return NUGU_BUFFER_NOT_FOUND;
 }
 
-EXPORT_API unsigned char nugu_buffer_peek_byte(NuguBuffer *buf, size_t pos)
+unsigned char nugu_buffer_peek_byte(NuguBuffer *buf, size_t pos)
 {
 	g_return_val_if_fail(buf != NULL, 0);
 
@@ -199,7 +197,7 @@ EXPORT_API unsigned char nugu_buffer_peek_byte(NuguBuffer *buf, size_t pos)
 	return *(buf->data + pos);
 }
 
-EXPORT_API int nugu_buffer_clear(NuguBuffer *buf)
+int nugu_buffer_clear(NuguBuffer *buf)
 {
 	g_return_val_if_fail(buf != NULL, -1);
 
@@ -210,7 +208,7 @@ EXPORT_API int nugu_buffer_clear(NuguBuffer *buf)
 	return 0;
 }
 
-EXPORT_API int nugu_buffer_clear_from(NuguBuffer *buf, size_t pos)
+int nugu_buffer_clear_from(NuguBuffer *buf, size_t pos)
 {
 	g_return_val_if_fail(buf != NULL, -1);
 	g_return_val_if_fail(pos <= buf->index, -1);
@@ -222,7 +220,7 @@ EXPORT_API int nugu_buffer_clear_from(NuguBuffer *buf, size_t pos)
 	return 0;
 }
 
-EXPORT_API int nugu_buffer_shift_left(NuguBuffer *buf, size_t size)
+int nugu_buffer_shift_left(NuguBuffer *buf, size_t size)
 {
 	unsigned char *dst;
 	unsigned char *src;
@@ -251,7 +249,7 @@ EXPORT_API int nugu_buffer_shift_left(NuguBuffer *buf, size_t size)
 	return 0;
 }
 
-EXPORT_API void *nugu_buffer_pop(NuguBuffer *buf, size_t size)
+void *nugu_buffer_pop(NuguBuffer *buf, size_t size)
 {
 	unsigned char *tmp;
 

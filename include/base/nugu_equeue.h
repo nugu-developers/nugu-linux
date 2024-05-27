@@ -17,6 +17,8 @@
 #ifndef __NUGU_EQUEUE_H__
 #define __NUGU_EQUEUE_H__
 
+#include <nugu.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -82,12 +84,12 @@ typedef void (*NuguEqueueDestroyCallback)(void *data);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_equeue_initialize(void);
+NUGU_API int nugu_equeue_initialize(void);
 
 /**
  * @brief De-initialize the event queue
  */
-void nugu_equeue_deinitialize(void);
+NUGU_API void nugu_equeue_deinitialize(void);
 
 /**
  * @brief Set handler for event type
@@ -99,10 +101,10 @@ void nugu_equeue_deinitialize(void);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_equeue_set_handler(enum nugu_equeue_type type,
-			    NuguEqueueCallback callback,
-			    NuguEqueueDestroyCallback destroy_callback,
-			    void *userdata);
+NUGU_API int nugu_equeue_set_handler(enum nugu_equeue_type type,
+				     NuguEqueueCallback callback,
+				     NuguEqueueDestroyCallback destroy_callback,
+				     void *userdata);
 
 /**
  * @brief Unset handler for event type
@@ -111,7 +113,7 @@ int nugu_equeue_set_handler(enum nugu_equeue_type type,
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_equeue_unset_handler(enum nugu_equeue_type type);
+NUGU_API int nugu_equeue_unset_handler(enum nugu_equeue_type type);
 
 /**
  * @brief Push new event with data to queue and trigger event callback
@@ -123,7 +125,7 @@ int nugu_equeue_unset_handler(enum nugu_equeue_type type);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_equeue_push(enum nugu_equeue_type type, void *data);
+NUGU_API int nugu_equeue_push(enum nugu_equeue_type type, void *data);
 
 /**
  * @}

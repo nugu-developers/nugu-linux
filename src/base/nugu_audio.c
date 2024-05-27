@@ -63,8 +63,8 @@ static char *nugu_audio_get_default_attribute_str(NuguAudioAttribute attribute)
 	return attr_str;
 }
 
-EXPORT_API void nugu_audio_set_attribute_str(const NuguAudioAttribute attribute,
-					     const char *str)
+void nugu_audio_set_attribute_str(const NuguAudioAttribute attribute,
+				  const char *str)
 {
 	int index = GET_AUDIO_ATTR_INDEX(attribute);
 
@@ -82,8 +82,7 @@ EXPORT_API void nugu_audio_set_attribute_str(const NuguAudioAttribute attribute,
 	snprintf(audio_attr_str[index], strlen(str) + 1, "%s", str);
 }
 
-EXPORT_API const char *
-nugu_audio_get_attribute_str(const NuguAudioAttribute attribute)
+const char *nugu_audio_get_attribute_str(const NuguAudioAttribute attribute)
 {
 	int index = GET_AUDIO_ATTR_INDEX(attribute);
 
@@ -93,7 +92,7 @@ nugu_audio_get_attribute_str(const NuguAudioAttribute attribute)
 	return nugu_audio_get_default_attribute_str(attribute);
 }
 
-EXPORT_API NuguAudioAttribute nugu_audio_get_attribute(const char *str)
+NuguAudioAttribute nugu_audio_get_attribute(const char *str)
 {
 	if (str == NULL)
 		return NUGU_AUDIO_ATTRIBUTE_MUSIC;

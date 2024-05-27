@@ -17,6 +17,8 @@
 #ifndef __NUGU_PLUGIN_H__
 #define __NUGU_PLUGIN_H__
 
+#include <nugu.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -60,22 +62,24 @@ extern "C" {
  */
 #ifdef NUGU_PLUGIN_BUILTIN
 #define NUGU_PLUGIN_DEFINE(p_name, p_prio, p_ver, p_load, p_unload, p_init)    \
-	__attribute__((visibility("default"))) struct nugu_plugin_desc         \
-		_builtin_plugin_##p_name = { .name = #p_name,                  \
-					     .priority = p_prio,               \
-					     .version = p_ver,                 \
-					     .load = p_load,                   \
-					     .unload = p_unload,               \
-					     .init = p_init }
+	NUGU_API_EXPORT struct nugu_plugin_desc _builtin_plugin_##p_name = {   \
+		.name = #p_name,                                               \
+		.priority = p_prio,                                            \
+		.version = p_ver,                                              \
+		.load = p_load,                                                \
+		.unload = p_unload,                                            \
+		.init = p_init                                                 \
+	}
 #else
 #define NUGU_PLUGIN_DEFINE(p_name, p_prio, p_ver, p_load, p_unload, p_init)    \
-	__attribute__((visibility("default"))) struct nugu_plugin_desc         \
-		nugu_plugin_define_desc = { .name = #p_name,                   \
-					    .priority = p_prio,                \
-					    .version = p_ver,                  \
-					    .load = p_load,                    \
-					    .unload = p_unload,                \
-					    .init = p_init }
+	NUGU_API_EXPORT struct nugu_plugin_desc nugu_plugin_define_desc = {    \
+		.name = #p_name,                                               \
+		.priority = p_prio,                                            \
+		.version = p_ver,                                              \
+		.load = p_load,                                                \
+		.unload = p_unload,                                            \
+		.init = p_init                                                 \
+	}
 #endif
 
 /**
@@ -126,7 +130,7 @@ struct nugu_plugin_desc {
  * @see nugu_plugin_new_from_file()
  * @see nugu_plugin_free()
  */
-NuguPlugin *nugu_plugin_new(struct nugu_plugin_desc *desc);
+NUGU_API NuguPlugin *nugu_plugin_new(struct nugu_plugin_desc *desc);
 
 /**
  * @brief Create new plugin object from file
@@ -135,13 +139,13 @@ NuguPlugin *nugu_plugin_new(struct nugu_plugin_desc *desc);
  * @see nugu_plugin_new()
  * @see nugu_plugin_free()
  */
-NuguPlugin *nugu_plugin_new_from_file(const char *filepath);
+NUGU_API NuguPlugin *nugu_plugin_new_from_file(const char *filepath);
 
 /**
  * @brief Destroy the plugin
  * @param[in] p plugin object
  */
-void nugu_plugin_free(NuguPlugin *p);
+NUGU_API void nugu_plugin_free(NuguPlugin *p);
 
 /**
  * @brief Add the plugin to managed list
@@ -153,7 +157,7 @@ void nugu_plugin_free(NuguPlugin *p);
  * @see nugu_plugin_find()
  * @see nugu_plugin_remove()
  */
-int nugu_plugin_add(NuguPlugin *p);
+NUGU_API int nugu_plugin_add(NuguPlugin *p);
 
 /**
  * @brief Remove the plugin to managed list
@@ -164,7 +168,7 @@ int nugu_plugin_add(NuguPlugin *p);
  * @see nugu_plugin_add()
  * @see nugu_plugin_find()
  */
-int nugu_plugin_remove(NuguPlugin *p);
+NUGU_API int nugu_plugin_remove(NuguPlugin *p);
 
 /**
  * @brief Find a plugin by name in the managed list
@@ -173,7 +177,7 @@ int nugu_plugin_remove(NuguPlugin *p);
  * @see nugu_plugin_add()
  * @see nugu_plugin_remove()
  */
-NuguPlugin *nugu_plugin_find(const char *name);
+NUGU_API NuguPlugin *nugu_plugin_find(const char *name);
 
 /**
  * @brief Set private data to plugin
@@ -184,7 +188,7 @@ NuguPlugin *nugu_plugin_find(const char *name);
  * @retval -1 failure
  * @see nugu_plugin_get_data()
  */
-int nugu_plugin_set_data(NuguPlugin *p, void *data);
+NUGU_API int nugu_plugin_set_data(NuguPlugin *p, void *data);
 
 /**
  * @brief Get private data from plugin
@@ -192,7 +196,7 @@ int nugu_plugin_set_data(NuguPlugin *p, void *data);
  * @return data
  * @see nugu_plugin_set_data()
  */
-void *nugu_plugin_get_data(NuguPlugin *p);
+NUGU_API void *nugu_plugin_get_data(NuguPlugin *p);
 
 /**
  * @brief Get dlsym result from plugin
@@ -200,14 +204,15 @@ void *nugu_plugin_get_data(NuguPlugin *p);
  * @param[in] symbol_name symbol name to find
  * @return symbol address
  */
-void *nugu_plugin_get_symbol(NuguPlugin *p, const char *symbol_name);
+NUGU_API void *nugu_plugin_get_symbol(NuguPlugin *p, const char *symbol_name);
 
 /**
  * @brief Get the plugin description
  * @param[in] p plugin object
  * @return plugin description
  */
-const struct nugu_plugin_desc *nugu_plugin_get_description(NuguPlugin *p);
+NUGU_API const struct nugu_plugin_desc *
+nugu_plugin_get_description(NuguPlugin *p);
 
 /**
  * @brief Load all plugin files from directory
@@ -215,25 +220,25 @@ const struct nugu_plugin_desc *nugu_plugin_get_description(NuguPlugin *p);
  * @return Number of plugins loaded
  * @retval -1 failure
  */
-int nugu_plugin_load_directory(const char *dirpath);
+NUGU_API int nugu_plugin_load_directory(const char *dirpath);
 
 /**
  * @brief Load all built-in plugins
  * @return Number of plugins loaded
  * @retval -1 failure
  */
-int nugu_plugin_load_builtin(void);
+NUGU_API int nugu_plugin_load_builtin(void);
 
 /**
  * @brief Initialize plugin
  * @return Number of plugins initialized
  */
-int nugu_plugin_initialize(void);
+NUGU_API int nugu_plugin_initialize(void);
 
 /**
  * @brief De-initialize plugin
  */
-void nugu_plugin_deinitialize(void);
+NUGU_API void nugu_plugin_deinitialize(void);
 
 /**
  * @}

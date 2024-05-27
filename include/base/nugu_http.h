@@ -18,6 +18,7 @@
 #define __NUGU_HTTP_H__
 
 #include <stddef.h>
+#include <nugu.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -96,7 +97,7 @@ typedef int (*NuguHttpProgressCallback)(NuguHttpRequest *req,
 /**
  * @brief Initialize HTTP module (curl_global_init)
  */
-void nugu_http_init(void);
+NUGU_API void nugu_http_init(void);
 
 /**
  * @brief Create a new HTTP host object
@@ -105,42 +106,43 @@ void nugu_http_init(void);
  * @see nugu_http_host_free()
  * @see nugu_http_peek_url();
  */
-NuguHttpHost *nugu_http_host_new(const char *url);
+NUGU_API NuguHttpHost *nugu_http_host_new(const char *url);
 
 /**
  * @brief Set timeout to host
  * @param[in] host host object
  * @param[in] msecs millisecond
  */
-void nugu_http_host_set_timeout(NuguHttpHost *host, long msecs);
+NUGU_API void nugu_http_host_set_timeout(NuguHttpHost *host, long msecs);
 
 /**
  * @brief Set connection timeout to host
  * @param[in] host host object
  * @param[in] msecs millisecond
  */
-void nugu_http_host_set_connection_timeout(NuguHttpHost *host, long msecs);
+NUGU_API void nugu_http_host_set_connection_timeout(NuguHttpHost *host,
+						    long msecs);
 
 /**
  * @brief Get url from HTTP host object
  * @param[in] host host object
  * @return url
  */
-const char *nugu_http_host_peek_url(NuguHttpHost *host);
+NUGU_API const char *nugu_http_host_peek_url(NuguHttpHost *host);
 
 /**
  * @brief Destroy the host object
  * @param[in] host host object
  * @see nugu_http_host_new()
  */
-void nugu_http_host_free(NuguHttpHost *host);
+NUGU_API void nugu_http_host_free(NuguHttpHost *host);
 
 /**
  * @brief Create a new HTTP header object
  * @return HTTP header object
  * @see nugu_http_header_free()
  */
-NuguHttpHeader *nugu_http_header_new(void);
+NUGU_API NuguHttpHeader *nugu_http_header_new(void);
 
 /**
  * @brief Add a key-value string to header object
@@ -152,8 +154,8 @@ NuguHttpHeader *nugu_http_header_new(void);
  * @retval -1 failure
  * @see nugu_http_header_remove()
  */
-int nugu_http_header_add(NuguHttpHeader *header, const char *key,
-			 const char *value);
+NUGU_API int nugu_http_header_add(NuguHttpHeader *header, const char *key,
+				  const char *value);
 
 /**
  * @brief Remove a key-value string from header object
@@ -164,7 +166,7 @@ int nugu_http_header_add(NuguHttpHeader *header, const char *key,
  * @retval -1 failure
  * @see nugu_http_header_add()
  */
-int nugu_http_header_remove(NuguHttpHeader *header, const char *key);
+NUGU_API int nugu_http_header_remove(NuguHttpHeader *header, const char *key);
 
 /**
  * @brief Find value from header object
@@ -172,7 +174,8 @@ int nugu_http_header_remove(NuguHttpHeader *header, const char *key);
  * @param[in] key key string
  * @return value string
  */
-const char *nugu_http_header_find(NuguHttpHeader *header, const char *key);
+NUGU_API const char *nugu_http_header_find(NuguHttpHeader *header,
+					   const char *key);
 
 /**
  * @brief Duplicate the http header object
@@ -180,7 +183,7 @@ const char *nugu_http_header_find(NuguHttpHeader *header, const char *key);
  * @return duplicated new header object
  * @see nugu_http_header_new()
  */
-NuguHttpHeader *nugu_http_header_dup(const NuguHttpHeader *src_header);
+NUGU_API NuguHttpHeader *nugu_http_header_dup(const NuguHttpHeader *src_header);
 
 /**
  * @brief Import header data from other header object
@@ -190,14 +193,15 @@ NuguHttpHeader *nugu_http_header_dup(const NuguHttpHeader *src_header);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_http_header_import(NuguHttpHeader *header, const NuguHttpHeader *from);
+NUGU_API int nugu_http_header_import(NuguHttpHeader *header,
+				     const NuguHttpHeader *from);
 
 /**
  * @brief Destroy the header object
  * @param[in] header header object
  * @see nugu_http_header_new()
  */
-void nugu_http_header_free(NuguHttpHeader *header);
+NUGU_API void nugu_http_header_free(NuguHttpHeader *header);
 
 /**
  * @brief HTTP async request
@@ -212,11 +216,10 @@ void nugu_http_header_free(NuguHttpHeader *header);
  * @return HTTP request object
  * @see nugu_http_request_free()
  */
-NuguHttpRequest *nugu_http_request(enum NuguHttpRequestType type,
-				   NuguHttpHost *host, const char *path,
-				   NuguHttpHeader *header, const void *body,
-				   size_t body_len, NuguHttpCallback callback,
-				   void *user_data);
+NUGU_API NuguHttpRequest *
+nugu_http_request(enum NuguHttpRequestType type, NuguHttpHost *host,
+		  const char *path, NuguHttpHeader *header, const void *body,
+		  size_t body_len, NuguHttpCallback callback, void *user_data);
 
 /**
  * @brief HTTP sync request
@@ -230,10 +233,10 @@ NuguHttpRequest *nugu_http_request(enum NuguHttpRequestType type,
  * @see nugu_http_request_free()
  * @see nugu_http_request_response_get()
  */
-NuguHttpRequest *nugu_http_request_sync(enum NuguHttpRequestType type,
-					NuguHttpHost *host, const char *path,
-					NuguHttpHeader *header,
-					const void *body, size_t body_len);
+NUGU_API NuguHttpRequest *
+nugu_http_request_sync(enum NuguHttpRequestType type, NuguHttpHost *host,
+		       const char *path, NuguHttpHeader *header,
+		       const void *body, size_t body_len);
 
 /**
  * @brief A convenient API for HTTP GET async requests
@@ -245,9 +248,10 @@ NuguHttpRequest *nugu_http_request_sync(enum NuguHttpRequestType type,
  * @return HTTP request object
  * @see nugu_http_request_free()
  */
-NuguHttpRequest *nugu_http_get(NuguHttpHost *host, const char *path,
-			       NuguHttpHeader *header,
-			       NuguHttpCallback callback, void *user_data);
+NUGU_API NuguHttpRequest *nugu_http_get(NuguHttpHost *host, const char *path,
+					NuguHttpHeader *header,
+					NuguHttpCallback callback,
+					void *user_data);
 
 /**
  * @brief A convenient API for HTTP GET sync requests
@@ -258,8 +262,9 @@ NuguHttpRequest *nugu_http_get(NuguHttpHost *host, const char *path,
  * @see nugu_http_request_free()
  * @see nugu_http_request_response_get()
  */
-NuguHttpRequest *nugu_http_get_sync(NuguHttpHost *host, const char *path,
-				    NuguHttpHeader *header);
+NUGU_API NuguHttpRequest *nugu_http_get_sync(NuguHttpHost *host,
+					     const char *path,
+					     NuguHttpHeader *header);
 
 /**
  * @brief A convenient API for HTTP POST async requests
@@ -273,10 +278,11 @@ NuguHttpRequest *nugu_http_get_sync(NuguHttpHost *host, const char *path,
  * @return HTTP request object
  * @see nugu_http_request_free()
  */
-NuguHttpRequest *nugu_http_post(NuguHttpHost *host, const char *path,
-				NuguHttpHeader *header, const void *body,
-				size_t body_len, NuguHttpCallback callback,
-				void *user_data);
+NUGU_API NuguHttpRequest *nugu_http_post(NuguHttpHost *host, const char *path,
+					 NuguHttpHeader *header,
+					 const void *body, size_t body_len,
+					 NuguHttpCallback callback,
+					 void *user_data);
 
 /**
  * @brief A convenient API for HTTP POST sync requests
@@ -289,9 +295,9 @@ NuguHttpRequest *nugu_http_post(NuguHttpHost *host, const char *path,
  * @see nugu_http_request_free()
  * @see nugu_http_request_response_get()
  */
-NuguHttpRequest *nugu_http_post_sync(NuguHttpHost *host, const char *path,
-				     NuguHttpHeader *header, const void *body,
-				     size_t body_len);
+NUGU_API NuguHttpRequest *
+nugu_http_post_sync(NuguHttpHost *host, const char *path,
+		    NuguHttpHeader *header, const void *body, size_t body_len);
 
 /**
  * @brief A convenient API for HTTP PUT async requests
@@ -305,10 +311,11 @@ NuguHttpRequest *nugu_http_post_sync(NuguHttpHost *host, const char *path,
  * @return HTTP request object
  * @see nugu_http_request_free()
  */
-NuguHttpRequest *nugu_http_put(NuguHttpHost *host, const char *path,
-			       NuguHttpHeader *header, const void *body,
-			       size_t body_len, NuguHttpCallback callback,
-			       void *user_data);
+NUGU_API NuguHttpRequest *nugu_http_put(NuguHttpHost *host, const char *path,
+					NuguHttpHeader *header,
+					const void *body, size_t body_len,
+					NuguHttpCallback callback,
+					void *user_data);
 
 /**
  * @brief A convenient API for HTTP PUT sync requests
@@ -321,9 +328,10 @@ NuguHttpRequest *nugu_http_put(NuguHttpHost *host, const char *path,
  * @see nugu_http_request_free()
  * @see nugu_http_request_response_get()
  */
-NuguHttpRequest *nugu_http_put_sync(NuguHttpHost *host, const char *path,
-				    NuguHttpHeader *header, const void *body,
-				    size_t body_len);
+NUGU_API NuguHttpRequest *nugu_http_put_sync(NuguHttpHost *host,
+					     const char *path,
+					     NuguHttpHeader *header,
+					     const void *body, size_t body_len);
 
 /**
  * @brief A convenient API for HTTP DELETE async requests
@@ -335,9 +343,10 @@ NuguHttpRequest *nugu_http_put_sync(NuguHttpHost *host, const char *path,
  * @return HTTP request object
  * @see nugu_http_request_free()
  */
-NuguHttpRequest *nugu_http_delete(NuguHttpHost *host, const char *path,
-				  NuguHttpHeader *header,
-				  NuguHttpCallback callback, void *user_data);
+NUGU_API NuguHttpRequest *nugu_http_delete(NuguHttpHost *host, const char *path,
+					   NuguHttpHeader *header,
+					   NuguHttpCallback callback,
+					   void *user_data);
 
 /**
  * @brief A convenient API for HTTP DELETE sync requests
@@ -348,8 +357,9 @@ NuguHttpRequest *nugu_http_delete(NuguHttpHost *host, const char *path,
  * @see nugu_http_request_free()
  * @see nugu_http_request_response_get()
  */
-NuguHttpRequest *nugu_http_delete_sync(NuguHttpHost *host, const char *path,
-				       NuguHttpHeader *header);
+NUGU_API NuguHttpRequest *nugu_http_delete_sync(NuguHttpHost *host,
+						const char *path,
+						NuguHttpHeader *header);
 
 /**
  * @brief A convenient API for HTTP file download async requests
@@ -363,7 +373,7 @@ NuguHttpRequest *nugu_http_delete_sync(NuguHttpHost *host, const char *path,
  * @return HTTP request object
  * @see nugu_http_request_free()
  */
-NuguHttpRequest *
+NUGU_API NuguHttpRequest *
 nugu_http_download(NuguHttpHost *host, const char *path, const char *dest_path,
 		   NuguHttpHeader *header, NuguHttpCallback callback,
 		   NuguHttpProgressCallback progress_callback, void *user_data);
@@ -374,7 +384,7 @@ nugu_http_download(NuguHttpHost *host, const char *path, const char *dest_path,
  * @see nugu_http_request()
  * @see nugu_http_request_sync()
  */
-void nugu_http_request_free(NuguHttpRequest *req);
+NUGU_API void nugu_http_request_free(NuguHttpRequest *req);
 
 /**
  * @brief Duplicate the HTTP response object
@@ -382,21 +392,22 @@ void nugu_http_request_free(NuguHttpRequest *req);
  * @return HTTP response object
  * @see nugu_http_response_free()
  */
-NuguHttpResponse *nugu_http_response_dup(const NuguHttpResponse *orig);
+NUGU_API NuguHttpResponse *nugu_http_response_dup(const NuguHttpResponse *orig);
 
 /**
  * @brief Destroy the HTTP response object
  * @param[in] resp response object
  * @see nugu_http_response_dup()
  */
-void nugu_http_response_free(NuguHttpResponse *resp);
+NUGU_API void nugu_http_response_free(NuguHttpResponse *resp);
 
 /**
  * @brief Get the HTTP response from request object
  * @param[in] req request object
  * @return HTTP response object
  */
-const NuguHttpResponse *nugu_http_request_response_get(NuguHttpRequest *req);
+NUGU_API const NuguHttpResponse *
+nugu_http_request_response_get(NuguHttpRequest *req);
 
 /**
  * @}

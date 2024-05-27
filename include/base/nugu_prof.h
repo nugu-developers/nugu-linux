@@ -17,6 +17,7 @@
 #ifndef __NUGU_PROF_H__
 #define __NUGU_PROF_H__
 
+#include <nugu.h>
 #include <base/nugu_uuid.h>
 
 #ifdef __cplusplus
@@ -216,24 +217,24 @@ typedef void (*NuguProfCallback)(enum nugu_prof_type type,
 /**
  * @brief clear all cached profiling data
  */
-void nugu_prof_clear(void);
+NUGU_API void nugu_prof_clear(void);
 
 /**
  * @brief turn on the profiling trace log message
  */
-void nugu_prof_enable_tracelog(void);
+NUGU_API void nugu_prof_enable_tracelog(void);
 
 /**
  * @brief turn off the profiling trace log message
  */
-void nugu_prof_disable_tracelog(void);
+NUGU_API void nugu_prof_disable_tracelog(void);
 
 /**
  * @brief Set profiling callback
  * @param[in] callback callback function
  * @param[in] userdata data to pass to the user callback
  */
-void nugu_prof_set_callback(NuguProfCallback callback, void *userdata);
+NUGU_API void nugu_prof_set_callback(NuguProfCallback callback, void *userdata);
 
 /**
  * @brief Marking to profiling data and emit the callback
@@ -242,7 +243,7 @@ void nugu_prof_set_callback(NuguProfCallback callback, void *userdata);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_prof_mark(enum nugu_prof_type type);
+NUGU_API int nugu_prof_mark(enum nugu_prof_type type);
 
 /**
  * @brief Marking to profiling data with additional id and emit the callback
@@ -254,15 +255,17 @@ int nugu_prof_mark(enum nugu_prof_type type);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_prof_mark_data(enum nugu_prof_type type, const char *dialog_id,
-			const char *msg_id, const char *contents);
+NUGU_API int nugu_prof_mark_data(enum nugu_prof_type type,
+				 const char *dialog_id, const char *msg_id,
+				 const char *contents);
 
 /**
  * @brief Get last cached data by profiling type
  * @param[in] type profiling type
  * @return memory allocated nugu_prof_data struct. developer must free the data.
  */
-struct nugu_prof_data *nugu_prof_get_last_data(enum nugu_prof_type type);
+NUGU_API struct nugu_prof_data *
+nugu_prof_get_last_data(enum nugu_prof_type type);
 
 /**
  * @brief Get the time difference(ts2 - ts1) value in milliseconds
@@ -270,8 +273,8 @@ struct nugu_prof_data *nugu_prof_get_last_data(enum nugu_prof_type type);
  * @param[in] ts2 time value
  * @return milliseconds
  */
-int nugu_prof_get_diff_msec_timespec(const struct timespec *ts1,
-				     const struct timespec *ts2);
+NUGU_API int nugu_prof_get_diff_msec_timespec(const struct timespec *ts1,
+					      const struct timespec *ts2);
 
 /**
  * @brief Get the time difference(ts2 - ts1) value in milliseconds
@@ -279,8 +282,8 @@ int nugu_prof_get_diff_msec_timespec(const struct timespec *ts1,
  * @param[in] type2 profiling type
  * @return milliseconds
  */
-int nugu_prof_get_diff_msec_type(enum nugu_prof_type type1,
-				 enum nugu_prof_type type2);
+NUGU_API int nugu_prof_get_diff_msec_type(enum nugu_prof_type type1,
+					  enum nugu_prof_type type2);
 
 /**
  * @brief Get the time difference(prof2 - prof1) value in milliseconds
@@ -288,22 +291,22 @@ int nugu_prof_get_diff_msec_type(enum nugu_prof_type type1,
  * @param[in] prof2 time value
  * @return milliseconds
  */
-int nugu_prof_get_diff_msec(const struct nugu_prof_data *prof1,
-			    const struct nugu_prof_data *prof2);
+NUGU_API int nugu_prof_get_diff_msec(const struct nugu_prof_data *prof1,
+				     const struct nugu_prof_data *prof2);
 
 /**
  * @brief Get string type name for profiling type
  * @param[in] type profiling type
  * @return NULL terminated string
  */
-const char *nugu_prof_get_type_name(enum nugu_prof_type type);
+NUGU_API const char *nugu_prof_get_type_name(enum nugu_prof_type type);
 
 /**
  * @brief Dump the profiling data between 'from' type to 'to' type
  * @param[in] from start type to dump
  * @param[in] to end type to dump
  */
-void nugu_prof_dump(enum nugu_prof_type from, enum nugu_prof_type to);
+NUGU_API void nugu_prof_dump(enum nugu_prof_type from, enum nugu_prof_type to);
 
 /**
  * @}

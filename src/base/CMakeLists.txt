@@ -28,12 +28,7 @@ ADD_LIBRARY(objbase OBJECT ${SRCS})
 TARGET_INCLUDE_DIRECTORIES(objbase PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${PROJECT_SOURCE_DIR}/externals/curl/include)
-TARGET_COMPILE_DEFINITIONS(objbase PRIVATE
-	# Only symbols that use EXPORT_API are visible, and all other symbols are hidden.
-	-DEXPORT_API=__attribute__\(\(visibility\(\"default\"\)\)\)
-
-	# Convenient macro to avoid unused parameter warnings.
-	-D__UNUSED__=__attribute\(\(unused\)\))
+TARGET_COMPILE_DEFINITIONS(objbase PRIVATE -DNUGU_LIBRARY_BUILD)
 TARGET_COMPILE_OPTIONS(objbase PRIVATE
 	# Set default visibility to hidden to reduce symbol count
 	-fvisibility=hidden

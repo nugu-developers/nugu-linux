@@ -17,7 +17,9 @@
 #ifndef __NUGU_WINSOCKET_H__
 #define __NUGU_WINSOCKET_H__
 
-#ifdef __MSYS__
+#include <nugu.h>
+
+#if defined(_WIN32) || defined(__MSYS__)
 
 #ifdef __cplusplus
 extern "C" {
@@ -51,26 +53,26 @@ typedef struct _nugu_winsock_t NuguWinSocket;
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_winsock_init(void);
+NUGU_API int nugu_winsock_init(void);
 
 /**
  * @brief Deinitialize window socket
  */
-void nugu_winsock_deinit(void);
+NUGU_API void nugu_winsock_deinit(void);
 
 /**
  * @brief Create window socket
  * @return window socket
  * @see nugu_winsock_remove()
  */
-NuguWinSocket *nugu_winsock_create(void);
+NUGU_API NuguWinSocket *nugu_winsock_create(void);
 
 /**
  * @brief Remove window socket
  * @param[in] wsock window socket
  * @see nugu_winsock_create()
  */
-void nugu_winsock_remove(NuguWinSocket *wsock);
+NUGU_API void nugu_winsock_remove(NuguWinSocket *wsock);
 
 /**
  * @brief Get window socket handle for read/write
@@ -79,7 +81,8 @@ void nugu_winsock_remove(NuguWinSocket *wsock);
  * @return window socket handle
  * @retval -1 failure
  */
-int nugu_winsock_get_handle(NuguWinSocket *wsock, NuguWinSocketType type);
+NUGU_API int nugu_winsock_get_handle(NuguWinSocket *wsock,
+				     NuguWinSocketType type);
 
 /**
  * @brief Check for data in window socket
@@ -88,7 +91,7 @@ int nugu_winsock_get_handle(NuguWinSocket *wsock, NuguWinSocketType type);
  * @retval -1 failure
  * @retval 0 data is exist
  */
-int nugu_winsock_check_for_data(int handle);
+NUGU_API int nugu_winsock_check_for_data(int handle);
 
 /**
  * @brief Read data in window socket
@@ -98,7 +101,7 @@ int nugu_winsock_check_for_data(int handle);
  * @return read data size
  * @retval -1 failure
  */
-int nugu_winsock_read(int handle, char *buf, int len);
+NUGU_API int nugu_winsock_read(int handle, char *buf, int len);
 
 /**
  * @brief Write data to window socket
@@ -108,12 +111,12 @@ int nugu_winsock_read(int handle, char *buf, int len);
  * @return written data size
  * @retval -1 failure
  */
-int nugu_winsock_write(int handle, const char *buf, int len);
+NUGU_API int nugu_winsock_write(int handle, const char *buf, int len);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // __MSYS__
+#endif // _WIN32 || __MSYS__
 
 #endif // __NUGU_WINSOCKET_H__
