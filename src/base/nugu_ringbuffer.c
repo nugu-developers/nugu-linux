@@ -49,7 +49,7 @@ static void _calculate_count(NuguRingBuffer *buf, int write_item, int size)
 		buf->count = new_write_index - buf->read_index;
 }
 
-EXPORT_API NuguRingBuffer *nugu_ring_buffer_new(int item_size, int max_items)
+NuguRingBuffer *nugu_ring_buffer_new(int item_size, int max_items)
 {
 	NuguRingBuffer *buffer;
 
@@ -73,7 +73,7 @@ EXPORT_API NuguRingBuffer *nugu_ring_buffer_new(int item_size, int max_items)
 
 	return buffer;
 }
-EXPORT_API void nugu_ring_buffer_free(NuguRingBuffer *buf)
+void nugu_ring_buffer_free(NuguRingBuffer *buf)
 {
 	g_return_if_fail(buf != NULL);
 	g_return_if_fail(buf->buf != NULL);
@@ -83,8 +83,7 @@ EXPORT_API void nugu_ring_buffer_free(NuguRingBuffer *buf)
 	free(buf);
 }
 
-EXPORT_API int nugu_ring_buffer_resize(NuguRingBuffer *buf, int item_size,
-				       int max_items)
+int nugu_ring_buffer_resize(NuguRingBuffer *buf, int item_size, int max_items)
 {
 	g_return_val_if_fail(buf != NULL, -1);
 	g_return_val_if_fail(buf->buf != NULL, -1);
@@ -109,8 +108,7 @@ EXPORT_API int nugu_ring_buffer_resize(NuguRingBuffer *buf, int item_size,
 	return 0;
 }
 
-EXPORT_API int nugu_ring_buffer_push_data(NuguRingBuffer *buf, const char *data,
-					  int size)
+int nugu_ring_buffer_push_data(NuguRingBuffer *buf, const char *data, int size)
 {
 	unsigned long buf_size;
 	int write_item = 0;
@@ -182,8 +180,7 @@ EXPORT_API int nugu_ring_buffer_push_data(NuguRingBuffer *buf, const char *data,
 	return 0;
 }
 
-EXPORT_API int nugu_ring_buffer_read_item(NuguRingBuffer *buf, char *item,
-					  int *size)
+int nugu_ring_buffer_read_item(NuguRingBuffer *buf, char *item, int *size)
 {
 	g_return_val_if_fail(buf != NULL, -1);
 	g_return_val_if_fail(item != NULL, -1);
@@ -209,25 +206,25 @@ EXPORT_API int nugu_ring_buffer_read_item(NuguRingBuffer *buf, char *item,
 	return 0;
 }
 
-EXPORT_API int nugu_ring_buffer_get_count(NuguRingBuffer *buf)
+int nugu_ring_buffer_get_count(NuguRingBuffer *buf)
 {
 	g_return_val_if_fail(buf != NULL, -1);
 	return buf->count;
 }
 
-EXPORT_API int nugu_ring_buffer_get_maxcount(NuguRingBuffer *buf)
+int nugu_ring_buffer_get_maxcount(NuguRingBuffer *buf)
 {
 	g_return_val_if_fail(buf != NULL, -1);
 	return buf->max_items;
 }
 
-EXPORT_API int nugu_ring_buffer_get_item_size(NuguRingBuffer *buf)
+int nugu_ring_buffer_get_item_size(NuguRingBuffer *buf)
 {
 	g_return_val_if_fail(buf != NULL, -1);
 	return buf->item_size;
 }
 
-EXPORT_API void nugu_ring_buffer_clear_items(NuguRingBuffer *buf)
+void nugu_ring_buffer_clear_items(NuguRingBuffer *buf)
 {
 	g_return_if_fail(buf != NULL);
 

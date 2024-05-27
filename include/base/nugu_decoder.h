@@ -17,6 +17,7 @@
 #ifndef __NUGU_DECODER_H__
 #define __NUGU_DECODER_H__
 
+#include <nugu.h>
 #include <base/nugu_pcm.h>
 #include <base/nugu_buffer.h>
 
@@ -60,7 +61,8 @@ typedef struct _nugu_decoder_driver NuguDecoderDriver;
  * @see nugu_decoder_get_pcm()
  * @see nugu_pcm_new()
  */
-NuguDecoder *nugu_decoder_new(NuguDecoderDriver *driver, NuguPcm *sink);
+NUGU_API NuguDecoder *nugu_decoder_new(NuguDecoderDriver *driver,
+				       NuguPcm *sink);
 
 /**
  * @brief Destroy the decoder object
@@ -70,7 +72,7 @@ NuguDecoder *nugu_decoder_new(NuguDecoderDriver *driver, NuguPcm *sink);
  * @retval -1 failure
  * @see nugu_decoder_new()
  */
-int nugu_decoder_free(NuguDecoder *dec);
+NUGU_API int nugu_decoder_free(NuguDecoder *dec);
 
 /**
  * @brief Decode the encoded data and pass the result to sink
@@ -82,7 +84,8 @@ int nugu_decoder_free(NuguDecoder *dec);
  * @retval -1 failure
  * @see nugu_decoder_decode()
  */
-int nugu_decoder_play(NuguDecoder *dec, const void *data, size_t data_len);
+NUGU_API int nugu_decoder_play(NuguDecoder *dec, const void *data,
+			       size_t data_len);
 
 /**
  * @brief Set custom data for driver
@@ -93,7 +96,7 @@ int nugu_decoder_play(NuguDecoder *dec, const void *data, size_t data_len);
  * @retval -1 failure
  * @see nugu_decoder_get_driver_data()
  */
-int nugu_decoder_set_driver_data(NuguDecoder *dec, void *data);
+NUGU_API int nugu_decoder_set_driver_data(NuguDecoder *dec, void *data);
 
 /**
  * @brief Get custom data for driver
@@ -101,7 +104,7 @@ int nugu_decoder_set_driver_data(NuguDecoder *dec, void *data);
  * @return data
  * @see nugu_decoder_set_driver_data()
  */
-void *nugu_decoder_get_driver_data(NuguDecoder *dec);
+NUGU_API void *nugu_decoder_get_driver_data(NuguDecoder *dec);
 
 /**
  * @brief Decode the encoded data
@@ -111,8 +114,8 @@ void *nugu_decoder_get_driver_data(NuguDecoder *dec);
  * @param[out] output_len output buffer length
  * @return memory allocated decoded data. Developer must free the data manually.
  */
-void *nugu_decoder_decode(NuguDecoder *dec, const void *data, size_t data_len,
-			  size_t *output_len);
+NUGU_API void *nugu_decoder_decode(NuguDecoder *dec, const void *data,
+				   size_t data_len, size_t *output_len);
 
 /**
  * @brief Get pcm(sink) object
@@ -120,7 +123,7 @@ void *nugu_decoder_decode(NuguDecoder *dec, const void *data, size_t data_len,
  * @return pcm object
  * @see nugu_decoder_new()
  */
-NuguPcm *nugu_decoder_get_pcm(NuguDecoder *dec);
+NUGU_API NuguPcm *nugu_decoder_get_pcm(NuguDecoder *dec);
 
 /**
  * @}
@@ -177,9 +180,9 @@ struct nugu_decoder_driver_ops {
  * @return decoder driver object
  * @see nugu_decoder_driver_free()
  */
-NuguDecoderDriver *nugu_decoder_driver_new(const char *name,
-					   enum nugu_decoder_type type,
-					   struct nugu_decoder_driver_ops *ops);
+NUGU_API NuguDecoderDriver *
+nugu_decoder_driver_new(const char *name, enum nugu_decoder_type type,
+			struct nugu_decoder_driver_ops *ops);
 
 /**
  * @brief Destroy the decoder driver
@@ -188,7 +191,7 @@ NuguDecoderDriver *nugu_decoder_driver_new(const char *name,
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_decoder_driver_free(NuguDecoderDriver *driver);
+NUGU_API int nugu_decoder_driver_free(NuguDecoderDriver *driver);
 
 /**
  * @brief Register the driver to driver list
@@ -197,7 +200,7 @@ int nugu_decoder_driver_free(NuguDecoderDriver *driver);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_decoder_driver_register(NuguDecoderDriver *driver);
+NUGU_API int nugu_decoder_driver_register(NuguDecoderDriver *driver);
 
 /**
  * @brief Remove the driver from driver list
@@ -206,7 +209,7 @@ int nugu_decoder_driver_register(NuguDecoderDriver *driver);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_decoder_driver_remove(NuguDecoderDriver *driver);
+NUGU_API int nugu_decoder_driver_remove(NuguDecoderDriver *driver);
 
 /**
  * @brief Find a driver by name in the driver list
@@ -214,7 +217,7 @@ int nugu_decoder_driver_remove(NuguDecoderDriver *driver);
  * @return decoder driver object
  * @see nugu_decoder_driver_find_bytype()
  */
-NuguDecoderDriver *nugu_decoder_driver_find(const char *name);
+NUGU_API NuguDecoderDriver *nugu_decoder_driver_find(const char *name);
 
 /**
  * @brief Find a driver by type in the driver list
@@ -222,7 +225,8 @@ NuguDecoderDriver *nugu_decoder_driver_find(const char *name);
  * @return decoder driver object
  * @see nugu_decoder_driver_find
  */
-NuguDecoderDriver *nugu_decoder_driver_find_bytype(enum nugu_decoder_type type);
+NUGU_API NuguDecoderDriver *
+nugu_decoder_driver_find_bytype(enum nugu_decoder_type type);
 
 /**
  * @}

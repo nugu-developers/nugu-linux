@@ -17,6 +17,7 @@
 #ifndef __NUGU_PLAYER_H__
 #define __NUGU_PLAYER_H__
 
+#include <nugu.h>
 #include <base/nugu_audio.h>
 #include <base/nugu_media.h>
 
@@ -57,14 +58,15 @@ typedef struct _nugu_player_driver NuguPlayerDriver;
  * @return player object
  * @see nugu_player_free()
  */
-NuguPlayer *nugu_player_new(const char *name, NuguPlayerDriver *driver);
+NUGU_API NuguPlayer *nugu_player_new(const char *name,
+				     NuguPlayerDriver *driver);
 
 /**
  * @brief Destroy the player object
  * @param[in] player player object
  * @see nugu_player_new()
  */
-void nugu_player_free(NuguPlayer *player);
+NUGU_API void nugu_player_free(NuguPlayer *player);
 
 /**
  * @brief Add player object to managed list
@@ -75,7 +77,7 @@ void nugu_player_free(NuguPlayer *player);
  * @see nugu_player_find()
  * @see nugu_player_remove()
  */
-int nugu_player_add(NuguPlayer *player);
+NUGU_API int nugu_player_add(NuguPlayer *player);
 
 /**
  * @brief Remove player object from managed list
@@ -86,7 +88,7 @@ int nugu_player_add(NuguPlayer *player);
  * @see nugu_player_find()
  * @see nugu_player_add()
  */
-int nugu_player_remove(NuguPlayer *player);
+NUGU_API int nugu_player_remove(NuguPlayer *player);
 
 /**
  * @brief Find a player object by name in the managed list
@@ -95,7 +97,7 @@ int nugu_player_remove(NuguPlayer *player);
  * @see nugu_player_add()
  * @see nugu_player_remove()
  */
-NuguPlayer *nugu_player_find(const char *name);
+NUGU_API NuguPlayer *nugu_player_find(const char *name);
 
 /**
  * @brief Set audio attribute
@@ -105,8 +107,8 @@ NuguPlayer *nugu_player_find(const char *name);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_player_set_audio_attribute(NuguPlayer *player,
-				    NuguAudioAttribute attr);
+NUGU_API int nugu_player_set_audio_attribute(NuguPlayer *player,
+					     NuguAudioAttribute attr);
 
 /**
  * @brief Get audio attribute
@@ -114,7 +116,7 @@ int nugu_player_set_audio_attribute(NuguPlayer *player,
  * @return audio attribute
  * @retval NULL -1
  */
-int nugu_player_get_audio_attribute(NuguPlayer *player);
+NUGU_API int nugu_player_get_audio_attribute(NuguPlayer *player);
 
 /**
  * @brief Get audio attribute
@@ -122,7 +124,7 @@ int nugu_player_get_audio_attribute(NuguPlayer *player);
  * @return audio attribute string
  * @retval NULL failure
  */
-const char *nugu_player_get_audio_attribute_str(NuguPlayer *player);
+NUGU_API const char *nugu_player_get_audio_attribute_str(NuguPlayer *player);
 
 /**
  * @brief Set source url
@@ -132,7 +134,7 @@ const char *nugu_player_get_audio_attribute_str(NuguPlayer *player);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_player_set_source(NuguPlayer *player, const char *url);
+NUGU_API int nugu_player_set_source(NuguPlayer *player, const char *url);
 
 /**
  * @brief Start the player
@@ -143,7 +145,7 @@ int nugu_player_set_source(NuguPlayer *player, const char *url);
  * @see nugu_player_stop()
  * @see nugu_player_pause()
  */
-int nugu_player_start(NuguPlayer *player);
+NUGU_API int nugu_player_start(NuguPlayer *player);
 
 /**
  * @brief Stop the player
@@ -153,7 +155,7 @@ int nugu_player_start(NuguPlayer *player);
  * @retval -1 failure
  * @see nugu_player_start()
  */
-int nugu_player_stop(NuguPlayer *player);
+NUGU_API int nugu_player_stop(NuguPlayer *player);
 
 /**
  * @brief Pause the player
@@ -163,7 +165,7 @@ int nugu_player_stop(NuguPlayer *player);
  * @retval -1 failure
  * @see nugu_player_resume()
  */
-int nugu_player_pause(NuguPlayer *player);
+NUGU_API int nugu_player_pause(NuguPlayer *player);
 
 /**
  * @brief Resume the player
@@ -174,7 +176,7 @@ int nugu_player_pause(NuguPlayer *player);
  * @see nugu_player_pause()
  * @see nugu_player_stop()
  */
-int nugu_player_resume(NuguPlayer *player);
+NUGU_API int nugu_player_resume(NuguPlayer *player);
 
 /**
  * @brief Seek the player
@@ -184,7 +186,7 @@ int nugu_player_resume(NuguPlayer *player);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_player_seek(NuguPlayer *player, int sec);
+NUGU_API int nugu_player_seek(NuguPlayer *player, int sec);
 
 /**
  * @brief Set volume of player
@@ -195,7 +197,7 @@ int nugu_player_seek(NuguPlayer *player, int sec);
  * @retval -1 failure
  * @see nugu_player_get_volume()
  */
-int nugu_player_set_volume(NuguPlayer *player, int vol);
+NUGU_API int nugu_player_set_volume(NuguPlayer *player, int vol);
 
 /**
  * @brief Get volume of player
@@ -205,7 +207,7 @@ int nugu_player_set_volume(NuguPlayer *player, int vol);
  * @retval -1 failure
  * @see nugu_player_set_volume()
  */
-int nugu_player_get_volume(NuguPlayer *player);
+NUGU_API int nugu_player_get_volume(NuguPlayer *player);
 
 /**
  * @brief Get duration information of player
@@ -214,7 +216,7 @@ int nugu_player_get_volume(NuguPlayer *player);
  * @retval >0 success (duration)
  * @retval -1 failure
  */
-int nugu_player_get_duration(NuguPlayer *player);
+NUGU_API int nugu_player_get_duration(NuguPlayer *player);
 
 /**
  * @brief Set current playback position of player
@@ -224,7 +226,7 @@ int nugu_player_get_duration(NuguPlayer *player);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_player_set_position(NuguPlayer *player, int position);
+NUGU_API int nugu_player_set_position(NuguPlayer *player, int position);
 
 /**
  * @brief Get current playback position of player
@@ -233,14 +235,14 @@ int nugu_player_set_position(NuguPlayer *player, int position);
  * @retval >0 success (position)
  * @retval -1 failure
  */
-int nugu_player_get_position(NuguPlayer *player);
+NUGU_API int nugu_player_get_position(NuguPlayer *player);
 
 /**
  * @brief Get status of player
  * @param[in] player player object
  * @return status
  */
-enum nugu_media_status nugu_player_get_status(NuguPlayer *player);
+NUGU_API enum nugu_media_status nugu_player_get_status(NuguPlayer *player);
 
 /**
  * @brief Set player status callback
@@ -248,16 +250,17 @@ enum nugu_media_status nugu_player_get_status(NuguPlayer *player);
  * @param[in] cb callback function
  * @param[in] userdata data to pass to the user callback
  */
-void nugu_player_set_status_callback(NuguPlayer *player,
-				     NuguMediaStatusCallback cb,
-				     void *userdata);
+NUGU_API void nugu_player_set_status_callback(NuguPlayer *player,
+					      NuguMediaStatusCallback cb,
+					      void *userdata);
 
 /**
  * @brief Emit status to registered callback
  * @param[in] player player object
  * @param[in] status player status
  */
-void nugu_player_emit_status(NuguPlayer *player, enum nugu_media_status status);
+NUGU_API void nugu_player_emit_status(NuguPlayer *player,
+				      enum nugu_media_status status);
 
 /**
  * @brief Set player event callback
@@ -265,15 +268,17 @@ void nugu_player_emit_status(NuguPlayer *player, enum nugu_media_status status);
  * @param[in] cb callback function
  * @param[in] userdata data to pass to the user callback
  */
-void nugu_player_set_event_callback(NuguPlayer *player,
-				    NuguMediaEventCallback cb, void *userdata);
+NUGU_API void nugu_player_set_event_callback(NuguPlayer *player,
+					     NuguMediaEventCallback cb,
+					     void *userdata);
 
 /**
  * @brief Emit event to registered callback
  * @param[in] player player object
  * @param[in] event player event
  */
-void nugu_player_emit_event(NuguPlayer *player, enum nugu_media_event event);
+NUGU_API void nugu_player_emit_event(NuguPlayer *player,
+				     enum nugu_media_event event);
 
 /**
  * @brief Set custom data for driver
@@ -284,7 +289,7 @@ void nugu_player_emit_event(NuguPlayer *player, enum nugu_media_event event);
  * @retval -1 failure
  * @see nugu_player_get_driver_data()
  */
-int nugu_player_set_driver_data(NuguPlayer *player, void *data);
+NUGU_API int nugu_player_set_driver_data(NuguPlayer *player, void *data);
 
 /**
  * @brief Get custom data for driver
@@ -292,7 +297,7 @@ int nugu_player_set_driver_data(NuguPlayer *player, void *data);
  * @return data
  * @see nugu_player_set_driver_data()
  */
-void *nugu_player_get_driver_data(NuguPlayer *player);
+NUGU_API void *nugu_player_get_driver_data(NuguPlayer *player);
 
 /**
  * @}
@@ -389,8 +394,8 @@ struct nugu_player_driver_ops {
  * @param[in] ops operation table
  * @return player driver object
  */
-NuguPlayerDriver *nugu_player_driver_new(const char *name,
-					 struct nugu_player_driver_ops *ops);
+NUGU_API NuguPlayerDriver *
+nugu_player_driver_new(const char *name, struct nugu_player_driver_ops *ops);
 
 /**
  * @brief Destroy the player driver object
@@ -399,7 +404,7 @@ NuguPlayerDriver *nugu_player_driver_new(const char *name,
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_player_driver_free(NuguPlayerDriver *driver);
+NUGU_API int nugu_player_driver_free(NuguPlayerDriver *driver);
 
 /**
  * @brief Register the driver to driver list
@@ -408,7 +413,7 @@ int nugu_player_driver_free(NuguPlayerDriver *driver);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_player_driver_register(NuguPlayerDriver *driver);
+NUGU_API int nugu_player_driver_register(NuguPlayerDriver *driver);
 
 /**
  * @brief Remove the driver from driver list
@@ -417,7 +422,7 @@ int nugu_player_driver_register(NuguPlayerDriver *driver);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_player_driver_remove(NuguPlayerDriver *driver);
+NUGU_API int nugu_player_driver_remove(NuguPlayerDriver *driver);
 
 /**
  * @brief Set the default player driver
@@ -426,20 +431,20 @@ int nugu_player_driver_remove(NuguPlayerDriver *driver);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_player_driver_set_default(NuguPlayerDriver *driver);
+NUGU_API int nugu_player_driver_set_default(NuguPlayerDriver *driver);
 
 /**
  * @brief Get the default player driver
  * @return player driver
  */
-NuguPlayerDriver *nugu_player_driver_get_default(void);
+NUGU_API NuguPlayerDriver *nugu_player_driver_get_default(void);
 
 /**
  * @brief Find a driver by name in the driver list
  * @param[in] name player driver name
  * @return player driver
  */
-NuguPlayerDriver *nugu_player_driver_find(const char *name);
+NUGU_API NuguPlayerDriver *nugu_player_driver_find(const char *name);
 
 /**
  * @}

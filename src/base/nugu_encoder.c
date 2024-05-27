@@ -41,9 +41,9 @@ struct _nugu_encoder_driver {
 
 static GList *_encoder_drivers;
 
-EXPORT_API NuguEncoderDriver *
-nugu_encoder_driver_new(const char *name, enum nugu_encoder_type type,
-			struct nugu_encoder_driver_ops *ops)
+NuguEncoderDriver *nugu_encoder_driver_new(const char *name,
+					   enum nugu_encoder_type type,
+					   struct nugu_encoder_driver_ops *ops)
 {
 	NuguEncoderDriver *driver;
 
@@ -59,7 +59,7 @@ nugu_encoder_driver_new(const char *name, enum nugu_encoder_type type,
 	return driver;
 }
 
-EXPORT_API int nugu_encoder_driver_free(NuguEncoderDriver *driver)
+int nugu_encoder_driver_free(NuguEncoderDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
 
@@ -74,7 +74,7 @@ EXPORT_API int nugu_encoder_driver_free(NuguEncoderDriver *driver)
 	return 0;
 }
 
-EXPORT_API int nugu_encoder_driver_register(NuguEncoderDriver *driver)
+int nugu_encoder_driver_register(NuguEncoderDriver *driver)
 {
 	g_return_val_if_fail(driver != NULL, -1);
 
@@ -88,7 +88,7 @@ EXPORT_API int nugu_encoder_driver_register(NuguEncoderDriver *driver)
 	return 0;
 }
 
-EXPORT_API int nugu_encoder_driver_remove(NuguEncoderDriver *driver)
+int nugu_encoder_driver_remove(NuguEncoderDriver *driver)
 {
 	GList *l;
 
@@ -101,7 +101,7 @@ EXPORT_API int nugu_encoder_driver_remove(NuguEncoderDriver *driver)
 	return 0;
 }
 
-EXPORT_API NuguEncoderDriver *nugu_encoder_driver_find(const char *name)
+NuguEncoderDriver *nugu_encoder_driver_find(const char *name)
 {
 	GList *cur;
 
@@ -119,8 +119,7 @@ EXPORT_API NuguEncoderDriver *nugu_encoder_driver_find(const char *name)
 	return NULL;
 }
 
-EXPORT_API NuguEncoderDriver *
-nugu_encoder_driver_find_bytype(enum nugu_encoder_type type)
+NuguEncoderDriver *nugu_encoder_driver_find_bytype(enum nugu_encoder_type type)
 {
 	GList *cur;
 
@@ -135,8 +134,8 @@ nugu_encoder_driver_find_bytype(enum nugu_encoder_type type)
 	return NULL;
 }
 
-EXPORT_API NuguEncoder *nugu_encoder_new(NuguEncoderDriver *driver,
-					 NuguAudioProperty property)
+NuguEncoder *nugu_encoder_new(NuguEncoderDriver *driver,
+			      NuguAudioProperty property)
 {
 	NuguEncoder *enc;
 
@@ -165,7 +164,7 @@ EXPORT_API NuguEncoder *nugu_encoder_new(NuguEncoderDriver *driver,
 	return NULL;
 }
 
-EXPORT_API int nugu_encoder_free(NuguEncoder *enc)
+int nugu_encoder_free(NuguEncoder *enc)
 {
 	g_return_val_if_fail(enc != NULL, -1);
 
@@ -184,9 +183,8 @@ EXPORT_API int nugu_encoder_free(NuguEncoder *enc)
 	return 0;
 }
 
-EXPORT_API void *nugu_encoder_encode(NuguEncoder *enc, int is_last,
-				     const void *data, size_t data_len,
-				     size_t *output_len)
+void *nugu_encoder_encode(NuguEncoder *enc, int is_last, const void *data,
+			  size_t data_len, size_t *output_len)
 {
 	int ret;
 	void *out;
@@ -215,7 +213,7 @@ EXPORT_API void *nugu_encoder_encode(NuguEncoder *enc, int is_last,
 	return out;
 }
 
-EXPORT_API int nugu_encoder_set_driver_data(NuguEncoder *enc, void *data)
+int nugu_encoder_set_driver_data(NuguEncoder *enc, void *data)
 {
 	g_return_val_if_fail(enc != NULL, -1);
 
@@ -224,14 +222,14 @@ EXPORT_API int nugu_encoder_set_driver_data(NuguEncoder *enc, void *data)
 	return 0;
 }
 
-EXPORT_API void *nugu_encoder_get_driver_data(NuguEncoder *enc)
+void *nugu_encoder_get_driver_data(NuguEncoder *enc)
 {
 	g_return_val_if_fail(enc != NULL, NULL);
 
 	return enc->driver_data;
 }
 
-EXPORT_API const char *nugu_encoder_get_codec(NuguEncoder *enc)
+const char *nugu_encoder_get_codec(NuguEncoder *enc)
 {
 	g_return_val_if_fail(enc != NULL, NULL);
 	g_return_val_if_fail(enc->driver != NULL, NULL);
@@ -244,7 +242,7 @@ EXPORT_API const char *nugu_encoder_get_codec(NuguEncoder *enc)
 	return "CUSTOM";
 }
 
-EXPORT_API const char *nugu_encoder_get_mime_type(NuguEncoder *enc)
+const char *nugu_encoder_get_mime_type(NuguEncoder *enc)
 {
 	g_return_val_if_fail(enc != NULL, NULL);
 	g_return_val_if_fail(enc->driver != NULL, NULL);

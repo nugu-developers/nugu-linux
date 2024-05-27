@@ -736,8 +736,8 @@ static NetworkManager *nugu_network_manager_new(void)
 				on_event_send_result,
 				on_destroy_event_send_result, nm);
 	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_EVENT_RESPONSE,
-				on_event_response,
-				on_destroy_event_response, nm);
+				on_event_response, on_destroy_event_response,
+				nm);
 
 	/* Received registry policy */
 	nugu_equeue_set_handler(NUGU_EQUEUE_TYPE_REGISTRY_HEALTH,
@@ -796,7 +796,7 @@ static void nugu_network_manager_free(NetworkManager *nm)
 
 static NetworkManager *_network;
 
-EXPORT_API int nugu_network_manager_initialize(void)
+int nugu_network_manager_initialize(void)
 {
 	struct timespec spec;
 	curl_version_info_data *cinfo;
@@ -836,7 +836,7 @@ EXPORT_API int nugu_network_manager_initialize(void)
 	return 0;
 }
 
-EXPORT_API void nugu_network_manager_deinitialize(void)
+void nugu_network_manager_deinitialize(void)
 {
 	if (!_network)
 		return;
@@ -850,7 +850,7 @@ EXPORT_API void nugu_network_manager_deinitialize(void)
 	nugu_info("network manager de-initialized");
 }
 
-EXPORT_API int nugu_network_manager_connect(void)
+int nugu_network_manager_connect(void)
 {
 	g_return_val_if_fail(_network != NULL, -1);
 
@@ -891,7 +891,7 @@ static void _disconnect(NetworkManager *nm)
 	}
 }
 
-EXPORT_API int nugu_network_manager_disconnect(void)
+int nugu_network_manager_disconnect(void)
 {
 	g_return_val_if_fail(_network != NULL, -1);
 
@@ -907,7 +907,7 @@ EXPORT_API int nugu_network_manager_disconnect(void)
 	return 0;
 }
 
-EXPORT_API int nugu_network_manager_reset_connection(void)
+int nugu_network_manager_reset_connection(void)
 {
 	if (!_network) {
 		nugu_error("network manager not initialized");
@@ -921,7 +921,7 @@ EXPORT_API int nugu_network_manager_reset_connection(void)
 	return 0;
 }
 
-EXPORT_API int nugu_network_manager_set_status_callback(
+int nugu_network_manager_set_status_callback(
 	NuguNetworkManagerStatusCallback callback, void *userdata)
 {
 	if (!_network)
@@ -933,7 +933,7 @@ EXPORT_API int nugu_network_manager_set_status_callback(
 	return 0;
 }
 
-EXPORT_API int nugu_network_manager_set_handoff_status_callback(
+int nugu_network_manager_set_handoff_status_callback(
 	NuguNetworkManagerHandoffStatusCallback callback, void *userdata)
 {
 	if (!_network)
@@ -945,7 +945,7 @@ EXPORT_API int nugu_network_manager_set_handoff_status_callback(
 	return 0;
 }
 
-EXPORT_API int nugu_network_manager_set_event_send_notify_callback(
+int nugu_network_manager_set_event_send_notify_callback(
 	NuguNetworkManagerEventSendNotifyCallback callback, void *userdata)
 {
 	if (!_network)
@@ -957,7 +957,7 @@ EXPORT_API int nugu_network_manager_set_event_send_notify_callback(
 	return 0;
 }
 
-EXPORT_API int nugu_network_manager_set_event_data_send_notify_callback(
+int nugu_network_manager_set_event_data_send_notify_callback(
 	NuguNetworkManagerEventDataSendNotifyCallback callback, void *userdata)
 {
 	if (!_network)
@@ -969,7 +969,7 @@ EXPORT_API int nugu_network_manager_set_event_data_send_notify_callback(
 	return 0;
 }
 
-EXPORT_API int nugu_network_manager_set_event_result_callback(
+int nugu_network_manager_set_event_result_callback(
 	NuguNetworkManagerEventResultCallback callback, void *userdata)
 {
 	if (!_network)
@@ -981,7 +981,7 @@ EXPORT_API int nugu_network_manager_set_event_result_callback(
 	return 0;
 }
 
-EXPORT_API int nugu_network_manager_set_event_response_callback(
+int nugu_network_manager_set_event_response_callback(
 	NuguNetworkManagerEventResponseCallback callback, void *userdata)
 {
 	if (!_network)
@@ -993,7 +993,7 @@ EXPORT_API int nugu_network_manager_set_event_response_callback(
 	return 0;
 }
 
-EXPORT_API int nugu_network_manager_set_directive_callback(
+int nugu_network_manager_set_directive_callback(
 	NuguNetworkManagerDirectiveCallback callback, void *userdata)
 {
 	if (!_network)
@@ -1005,7 +1005,7 @@ EXPORT_API int nugu_network_manager_set_directive_callback(
 	return 0;
 }
 
-EXPORT_API int nugu_network_manager_set_attachment_callback(
+int nugu_network_manager_set_attachment_callback(
 	NuguNetworkManagerAttachmentCallback callback, void *userdata)
 {
 	if (!_network)
@@ -1017,12 +1017,12 @@ EXPORT_API int nugu_network_manager_set_attachment_callback(
 	return 0;
 }
 
-EXPORT_API NuguNetworkStatus nugu_network_manager_get_status(void)
+NuguNetworkStatus nugu_network_manager_get_status(void)
 {
 	return _network->cur_status;
 }
 
-EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
+int nugu_network_manager_send_event(NuguEvent *nev)
 {
 	int ret;
 
@@ -1094,7 +1094,7 @@ EXPORT_API int nugu_network_manager_send_event(NuguEvent *nev)
 	return 0;
 }
 
-EXPORT_API int nugu_network_manager_force_close_event(NuguEvent *nev)
+int nugu_network_manager_force_close_event(NuguEvent *nev)
 {
 	g_return_val_if_fail(nev != NULL, -1);
 
@@ -1116,9 +1116,8 @@ EXPORT_API int nugu_network_manager_force_close_event(NuguEvent *nev)
 	return dg_server_force_close_event(_network->server, nev);
 }
 
-EXPORT_API int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
-						    size_t length,
-						    unsigned char *data)
+int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
+					 size_t length, unsigned char *data)
 {
 	g_return_val_if_fail(nev != NULL, -1);
 
@@ -1141,8 +1140,7 @@ EXPORT_API int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
 					 data);
 }
 
-EXPORT_API int
-nugu_network_manager_handoff(const NuguNetworkServerPolicy *policy)
+int nugu_network_manager_handoff(const NuguNetworkServerPolicy *policy)
 {
 	g_return_val_if_fail(policy != NULL, -1);
 
@@ -1176,7 +1174,7 @@ nugu_network_manager_handoff(const NuguNetworkServerPolicy *policy)
 	return 0;
 }
 
-EXPORT_API int nugu_network_manager_set_token(const char *token)
+int nugu_network_manager_set_token(const char *token)
 {
 	if (!_network) {
 		nugu_error("network manager not initialized");
@@ -1202,7 +1200,7 @@ EXPORT_API int nugu_network_manager_set_token(const char *token)
 	return 0;
 }
 
-EXPORT_API const char *nugu_network_manager_peek_token(void)
+const char *nugu_network_manager_peek_token(void)
 {
 	if (!_network) {
 		nugu_error("network manager not initialized");
@@ -1212,7 +1210,7 @@ EXPORT_API const char *nugu_network_manager_peek_token(void)
 	return _network->token;
 }
 
-EXPORT_API int nugu_network_manager_set_registry_url(const char *urlname)
+int nugu_network_manager_set_registry_url(const char *urlname)
 {
 #ifdef NUGU_ENV_NETWORK_REGISTRY_SERVER
 	char *override_value;
@@ -1244,7 +1242,7 @@ EXPORT_API int nugu_network_manager_set_registry_url(const char *urlname)
 	return 0;
 }
 
-EXPORT_API const char *nugu_network_manager_peek_registry_url(void)
+const char *nugu_network_manager_peek_registry_url(void)
 {
 	if (!_network) {
 		nugu_error("network manager not initialized");
@@ -1254,8 +1252,8 @@ EXPORT_API const char *nugu_network_manager_peek_registry_url(void)
 	return _network->registry_url;
 }
 
-EXPORT_API int nugu_network_manager_set_useragent(const char *app_version,
-						  const char *additional_info)
+int nugu_network_manager_set_useragent(const char *app_version,
+				       const char *additional_info)
 {
 #ifdef NUGU_ENV_NETWORK_USERAGENT
 	char *override_value;
@@ -1293,7 +1291,7 @@ EXPORT_API int nugu_network_manager_set_useragent(const char *app_version,
 	return 0;
 }
 
-EXPORT_API const char *nugu_network_manager_peek_useragent(void)
+const char *nugu_network_manager_peek_useragent(void)
 {
 	if (!_network) {
 		nugu_error("network manager not initialized");
@@ -1303,7 +1301,7 @@ EXPORT_API const char *nugu_network_manager_peek_useragent(void)
 	return _network->useragent;
 }
 
-EXPORT_API const char *nugu_network_manager_peek_last_asr_time(void)
+const char *nugu_network_manager_peek_last_asr_time(void)
 {
 	if (!_network) {
 		nugu_error("network manager not initialized");
@@ -1313,8 +1311,7 @@ EXPORT_API const char *nugu_network_manager_peek_last_asr_time(void)
 	return _network->last_asr;
 }
 
-EXPORT_API int
-nugu_network_manager_set_connection_type(NuguNetworkConnectionType ctype)
+int nugu_network_manager_set_connection_type(NuguNetworkConnectionType ctype)
 {
 	if (!_network) {
 		nugu_error("network manager not initialized");
@@ -1326,8 +1323,7 @@ nugu_network_manager_set_connection_type(NuguNetworkConnectionType ctype)
 	return 0;
 }
 
-EXPORT_API NuguNetworkConnectionType
-nugu_network_manager_get_connection_type(void)
+NuguNetworkConnectionType nugu_network_manager_get_connection_type(void)
 {
 	if (!_network) {
 		nugu_error("network manager not initialized");

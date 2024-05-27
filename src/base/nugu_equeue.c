@@ -136,7 +136,7 @@ static gboolean on_event(GIOChannel *channel, GIOCondition cond,
 	return TRUE;
 }
 
-EXPORT_API int nugu_equeue_initialize(void)
+int nugu_equeue_initialize(void)
 {
 	GIOChannel *channel;
 #if !defined(HAVE_EVENTFD) && !defined(__MSYS__)
@@ -211,7 +211,7 @@ EXPORT_API int nugu_equeue_initialize(void)
 	return 0;
 }
 
-EXPORT_API void nugu_equeue_deinitialize(void)
+void nugu_equeue_deinitialize(void)
 {
 	pthread_mutex_lock(&_lock);
 
@@ -261,10 +261,10 @@ EXPORT_API void nugu_equeue_deinitialize(void)
 	pthread_mutex_unlock(&_lock);
 }
 
-EXPORT_API int
-nugu_equeue_set_handler(enum nugu_equeue_type type, NuguEqueueCallback callback,
-			NuguEqueueDestroyCallback destroy_callback,
-			void *userdata)
+int nugu_equeue_set_handler(enum nugu_equeue_type type,
+			    NuguEqueueCallback callback,
+			    NuguEqueueDestroyCallback destroy_callback,
+			    void *userdata)
 {
 	g_return_val_if_fail(type < NUGU_EQUEUE_TYPE_MAX, -1);
 	g_return_val_if_fail(callback != NULL, -1);
@@ -286,7 +286,7 @@ nugu_equeue_set_handler(enum nugu_equeue_type type, NuguEqueueCallback callback,
 	return 0;
 }
 
-EXPORT_API int nugu_equeue_unset_handler(enum nugu_equeue_type type)
+int nugu_equeue_unset_handler(enum nugu_equeue_type type)
 {
 	g_return_val_if_fail(type < NUGU_EQUEUE_TYPE_MAX, -1);
 
@@ -307,7 +307,7 @@ EXPORT_API int nugu_equeue_unset_handler(enum nugu_equeue_type type)
 	return 0;
 }
 
-EXPORT_API int nugu_equeue_push(enum nugu_equeue_type type, void *data)
+int nugu_equeue_push(enum nugu_equeue_type type, void *data)
 {
 	struct _econtainer *item;
 	ssize_t written;

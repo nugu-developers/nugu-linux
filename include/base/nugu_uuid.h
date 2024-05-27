@@ -18,6 +18,7 @@
 #define __NUGU_UUID_H__
 
 #include <time.h>
+#include <nugu.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -58,7 +59,7 @@ extern "C" {
  * @brief Generate time based UUID
  * @return memory allocated UUID string. Developer must free the data manually.
  */
-char *nugu_uuid_generate_time(void);
+NUGU_API char *nugu_uuid_generate_time(void);
 
 /**
  * @brief Convert base16-encoded string to byte array
@@ -70,8 +71,8 @@ char *nugu_uuid_generate_time(void);
  * @retval 0 Success
  * @retval -1 Failure
  */
-int nugu_uuid_convert_bytes(const char *base16, size_t base16_len,
-			    unsigned char *out, size_t out_len);
+NUGU_API int nugu_uuid_convert_bytes(const char *base16, size_t base16_len,
+				     unsigned char *out, size_t out_len);
 
 /**
  * @brief Convert byte array to base16-encoded string
@@ -83,8 +84,9 @@ int nugu_uuid_convert_bytes(const char *base16, size_t base16_len,
  * @retval 0 Success
  * @retval -1 Failure
  */
-int nugu_uuid_convert_base16(const unsigned char *bytes, size_t bytes_len,
-			     char *out, size_t out_len);
+NUGU_API int nugu_uuid_convert_base16(const unsigned char *bytes,
+				      size_t bytes_len, char *out,
+				      size_t out_len);
 
 /**
  * @brief Convert byte array to base16-encoded string
@@ -95,8 +97,9 @@ int nugu_uuid_convert_base16(const unsigned char *bytes, size_t bytes_len,
  * @retval 0 Success
  * @retval -1 Failure
  */
-int nugu_uuid_convert_timespec(const unsigned char *bytes, size_t bytes_len,
-			       struct timespec *out_time);
+NUGU_API int nugu_uuid_convert_timespec(const unsigned char *bytes,
+					size_t bytes_len,
+					struct timespec *out_time);
 
 /**
  * @brief Generate random bytes and fill to destination buffer
@@ -106,7 +109,7 @@ int nugu_uuid_convert_timespec(const unsigned char *bytes, size_t bytes_len,
  * @retval 0 Success
  * @retval -1 Failure
  */
-int nugu_uuid_fill_random(unsigned char *dest, size_t dest_len);
+NUGU_API int nugu_uuid_fill_random(unsigned char *dest, size_t dest_len);
 
 /**
  * @brief Fill to output buffer with NUGU UUID format using parameters
@@ -119,8 +122,9 @@ int nugu_uuid_fill_random(unsigned char *dest, size_t dest_len);
  * @retval 0 Success
  * @retval -1 Failure
  */
-int nugu_uuid_fill(const struct timespec *time, const unsigned char *hash,
-		   size_t hash_len, unsigned char *out, size_t out_len);
+NUGU_API int nugu_uuid_fill(const struct timespec *time,
+			    const unsigned char *hash, size_t hash_len,
+			    unsigned char *out, size_t out_len);
 /**
  * @}
  */

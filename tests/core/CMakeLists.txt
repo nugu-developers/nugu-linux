@@ -24,9 +24,6 @@ FOREACH(test ${UNIT_TESTS})
 		LIST(APPEND SRC ${${test}_srcs})
 	ENDIF ()
 	ADD_EXECUTABLE(${test} ${SRC})
-	TARGET_COMPILE_DEFINITIONS(${test} PRIVATE
-		-DEXPORT_API=__attribute__\(\(visibility\(\"default\"\)\)\)
-		-DRUNPATH="${CMAKE_CURRENT_BINARY_DIR}")
 	TARGET_INCLUDE_DIRECTORIES(${test} PRIVATE
 		../../src/core
 		../../include

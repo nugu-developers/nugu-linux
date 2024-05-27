@@ -43,6 +43,21 @@ extern "C" {
 
 #define NUGU_PLUGIN_DIR "@plugindir@"
 
+
+#if defined(_WIN32)
+#define NUGU_API_EXPORT __declspec(dllexport)
+#define NUGU_API_IMPORT __declspec(dllimport)
+#else
+#define NUGU_API_EXPORT __attribute__((visibility("default")))
+#define NUGU_API_IMPORT
+#endif
+
+#ifdef NUGU_LIBRARY_BUILD
+#define NUGU_API NUGU_API_EXPORT
+#else
+#define NUGU_API NUGU_API_IMPORT
+#endif
+
 /**
  * @}
  */

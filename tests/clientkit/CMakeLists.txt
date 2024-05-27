@@ -8,8 +8,6 @@ SET(UNIT_TESTS
 
 FOREACH(test ${UNIT_TESTS})
 	ADD_EXECUTABLE(${test} ${test}.cc)
-	TARGET_COMPILE_DEFINITIONS(${test} PRIVATE
-		-DRUNPATH="${CMAKE_CURRENT_BINARY_DIR}")
 	TARGET_INCLUDE_DIRECTORIES(${test} PRIVATE
 		../../src/clientkit
 		../../include)

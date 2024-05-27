@@ -83,8 +83,8 @@ struct _nugu_event {
 	char *mime_type;
 };
 
-EXPORT_API NuguEvent *nugu_event_new(const char *name_space, const char *name,
-				     const char *version)
+NuguEvent *nugu_event_new(const char *name_space, const char *name,
+			  const char *version)
 {
 	NuguEvent *nev;
 
@@ -111,7 +111,7 @@ EXPORT_API NuguEvent *nugu_event_new(const char *name_space, const char *name,
 	return nev;
 }
 
-EXPORT_API void nugu_event_free(NuguEvent *nev)
+void nugu_event_free(NuguEvent *nev)
 {
 	g_return_if_fail(nev != NULL);
 
@@ -137,28 +137,28 @@ EXPORT_API void nugu_event_free(NuguEvent *nev)
 	free(nev);
 }
 
-EXPORT_API const char *nugu_event_peek_namespace(NuguEvent *nev)
+const char *nugu_event_peek_namespace(NuguEvent *nev)
 {
 	g_return_val_if_fail(nev != NULL, NULL);
 
 	return nev->name_space;
 }
 
-EXPORT_API const char *nugu_event_peek_name(NuguEvent *nev)
+const char *nugu_event_peek_name(NuguEvent *nev)
 {
 	g_return_val_if_fail(nev != NULL, NULL);
 
 	return nev->name;
 }
 
-EXPORT_API const char *nugu_event_peek_version(NuguEvent *nev)
+const char *nugu_event_peek_version(NuguEvent *nev)
 {
 	g_return_val_if_fail(nev != NULL, NULL);
 
 	return nev->version;
 }
 
-EXPORT_API int nugu_event_set_context(NuguEvent *nev, const char *context)
+int nugu_event_set_context(NuguEvent *nev, const char *context)
 {
 	int length;
 
@@ -178,14 +178,14 @@ EXPORT_API int nugu_event_set_context(NuguEvent *nev, const char *context)
 	return 0;
 }
 
-EXPORT_API const char *nugu_event_peek_context(NuguEvent *nev)
+const char *nugu_event_peek_context(NuguEvent *nev)
 {
 	g_return_val_if_fail(nev != NULL, NULL);
 
 	return nev->context;
 }
 
-EXPORT_API int nugu_event_set_json(NuguEvent *nev, const char *json)
+int nugu_event_set_json(NuguEvent *nev, const char *json)
 {
 	int length;
 
@@ -209,19 +209,19 @@ EXPORT_API int nugu_event_set_json(NuguEvent *nev, const char *json)
 	return 0;
 }
 
-EXPORT_API const char *nugu_event_peek_json(NuguEvent *nev)
+const char *nugu_event_peek_json(NuguEvent *nev)
 {
 	return nev->json;
 }
 
-EXPORT_API const char *nugu_event_peek_msg_id(NuguEvent *nev)
+const char *nugu_event_peek_msg_id(NuguEvent *nev)
 {
 	g_return_val_if_fail(nev != NULL, NULL);
 
 	return nev->msg_id;
 }
 
-EXPORT_API int nugu_event_set_dialog_id(NuguEvent *nev, const char *dialog_id)
+int nugu_event_set_dialog_id(NuguEvent *nev, const char *dialog_id)
 {
 	g_return_val_if_fail(nev != NULL, -1);
 	g_return_val_if_fail(dialog_id != NULL, -1);
@@ -234,15 +234,14 @@ EXPORT_API int nugu_event_set_dialog_id(NuguEvent *nev, const char *dialog_id)
 	return 0;
 }
 
-EXPORT_API const char *nugu_event_peek_dialog_id(NuguEvent *nev)
+const char *nugu_event_peek_dialog_id(NuguEvent *nev)
 {
 	g_return_val_if_fail(nev != NULL, NULL);
 
 	return nev->dialog_id;
 }
 
-EXPORT_API int nugu_event_set_referrer_id(NuguEvent *nev,
-					  const char *referrer_id)
+int nugu_event_set_referrer_id(NuguEvent *nev, const char *referrer_id)
 {
 	g_return_val_if_fail(nev != NULL, -1);
 
@@ -257,21 +256,21 @@ EXPORT_API int nugu_event_set_referrer_id(NuguEvent *nev,
 	return 0;
 }
 
-EXPORT_API const char *nugu_event_peek_referrer_id(NuguEvent *nev)
+const char *nugu_event_peek_referrer_id(NuguEvent *nev)
 {
 	g_return_val_if_fail(nev != NULL, NULL);
 
 	return nev->referrer_id;
 }
 
-EXPORT_API int nugu_event_get_seq(NuguEvent *nev)
+int nugu_event_get_seq(NuguEvent *nev)
 {
 	g_return_val_if_fail(nev != NULL, -1);
 
 	return nev->seq;
 }
 
-EXPORT_API int nugu_event_increase_seq(NuguEvent *nev)
+int nugu_event_increase_seq(NuguEvent *nev)
 {
 	g_return_val_if_fail(nev != NULL, -1);
 
@@ -280,7 +279,7 @@ EXPORT_API int nugu_event_increase_seq(NuguEvent *nev)
 	return nev->seq;
 }
 
-EXPORT_API char *nugu_event_generate_payload(NuguEvent *nev)
+char *nugu_event_generate_payload(NuguEvent *nev)
 {
 	const char *payload;
 	gchar *buf;
@@ -305,7 +304,7 @@ EXPORT_API char *nugu_event_generate_payload(NuguEvent *nev)
 	return buf;
 }
 
-EXPORT_API int nugu_event_set_type(NuguEvent *nev, enum nugu_event_type type)
+int nugu_event_set_type(NuguEvent *nev, enum nugu_event_type type)
 {
 	g_return_val_if_fail(nev != NULL, -1);
 
@@ -314,14 +313,14 @@ EXPORT_API int nugu_event_set_type(NuguEvent *nev, enum nugu_event_type type)
 	return 0;
 }
 
-EXPORT_API enum nugu_event_type nugu_event_get_type(NuguEvent *nev)
+enum nugu_event_type nugu_event_get_type(NuguEvent *nev)
 {
 	g_return_val_if_fail(nev != NULL, NUGU_EVENT_TYPE_DEFAULT);
 
 	return nev->type;
 }
 
-EXPORT_API int nugu_event_set_mime_type(NuguEvent *nev, const char *type)
+int nugu_event_set_mime_type(NuguEvent *nev, const char *type)
 {
 	g_return_val_if_fail(nev != NULL, -1);
 
@@ -336,7 +335,7 @@ EXPORT_API int nugu_event_set_mime_type(NuguEvent *nev, const char *type)
 	return 0;
 }
 
-EXPORT_API const char *nugu_event_peek_mime_type(NuguEvent *nev)
+const char *nugu_event_peek_mime_type(NuguEvent *nev)
 {
 	g_return_val_if_fail(nev != NULL, NULL);
 

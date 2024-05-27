@@ -17,6 +17,8 @@
 #ifndef __NUGU_AUDIO_H__
 #define __NUGU_AUDIO_H__
 
+#include <nugu.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -108,22 +110,23 @@ typedef struct nugu_audio_property NuguAudioProperty;
  * @param[in] attribute audio attribute
  * @param[in] str audio attribute's string
  */
-void nugu_audio_set_attribute_str(const NuguAudioAttribute attribute,
-				  const char *str);
+NUGU_API void nugu_audio_set_attribute_str(const NuguAudioAttribute attribute,
+					   const char *str);
 
 /**
  * @brief Get audio attribute string
  * @param[in] attribute audio attribute
  * @return audio attribute string
  */
-const char *nugu_audio_get_attribute_str(const NuguAudioAttribute attribute);
+NUGU_API const char *
+nugu_audio_get_attribute_str(const NuguAudioAttribute attribute);
 
 /**
  * @brief Get audio attribute type from string
  * @param[in] str audio attribute's string
  * @return audio attribute
  */
-NuguAudioAttribute nugu_audio_get_attribute(const char *str);
+NUGU_API NuguAudioAttribute nugu_audio_get_attribute(const char *str);
 
 #ifdef __cplusplus
 }

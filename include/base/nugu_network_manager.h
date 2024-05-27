@@ -17,6 +17,7 @@
 #ifndef __NUGU_NETWORK_MANAGER_H__
 #define __NUGU_NETWORK_MANAGER_H__
 
+#include <nugu.h>
 #include <base/nugu_event.h>
 #include <base/nugu_directive.h>
 
@@ -192,7 +193,7 @@ typedef struct nugu_network_server_policy {
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_network_manager_set_status_callback(
+NUGU_API int nugu_network_manager_set_status_callback(
 	NuguNetworkManagerStatusCallback callback, void *userdata);
 
 /**
@@ -203,7 +204,7 @@ int nugu_network_manager_set_status_callback(
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_network_manager_set_handoff_status_callback(
+NUGU_API int nugu_network_manager_set_handoff_status_callback(
 	NuguNetworkManagerHandoffStatusCallback callback, void *userdata);
 
 /**
@@ -214,7 +215,7 @@ int nugu_network_manager_set_handoff_status_callback(
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_network_manager_set_event_send_notify_callback(
+NUGU_API int nugu_network_manager_set_event_send_notify_callback(
 	NuguNetworkManagerEventSendNotifyCallback callback, void *userdata);
 
 /**
@@ -225,7 +226,7 @@ int nugu_network_manager_set_event_send_notify_callback(
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_network_manager_set_event_data_send_notify_callback(
+NUGU_API int nugu_network_manager_set_event_data_send_notify_callback(
 	NuguNetworkManagerEventDataSendNotifyCallback callback, void *userdata);
 
 /**
@@ -236,7 +237,7 @@ int nugu_network_manager_set_event_data_send_notify_callback(
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_network_manager_set_event_result_callback(
+NUGU_API int nugu_network_manager_set_event_result_callback(
 	NuguNetworkManagerEventResultCallback callback, void *userdata);
 
 /**
@@ -247,7 +248,7 @@ int nugu_network_manager_set_event_result_callback(
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_network_manager_set_event_response_callback(
+NUGU_API int nugu_network_manager_set_event_response_callback(
 	NuguNetworkManagerEventResponseCallback callback, void *userdata);
 
 /**
@@ -258,7 +259,7 @@ int nugu_network_manager_set_event_response_callback(
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_network_manager_set_directive_callback(
+NUGU_API int nugu_network_manager_set_directive_callback(
 	NuguNetworkManagerDirectiveCallback callback, void *userdata);
 
 /**
@@ -269,7 +270,7 @@ int nugu_network_manager_set_directive_callback(
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_network_manager_set_attachment_callback(
+NUGU_API int nugu_network_manager_set_attachment_callback(
 	NuguNetworkManagerAttachmentCallback callback, void *userdata);
 
 /**
@@ -280,14 +281,14 @@ int nugu_network_manager_set_attachment_callback(
  * @retval -1 failure
  * @see nugu_network_manager_get_status()
  */
-int nugu_network_manager_set_status(NuguNetworkStatus network_status);
+NUGU_API int nugu_network_manager_set_status(NuguNetworkStatus network_status);
 
 /**
  * @brief Get the current network status
  * @return NuguNetworkStatus network status
  * @see nugu_network_manager_set_status()
  */
-NuguNetworkStatus nugu_network_manager_get_status(void);
+NUGU_API NuguNetworkStatus nugu_network_manager_get_status(void);
 
 /**
  * @brief Send the event to server
@@ -299,7 +300,7 @@ NuguNetworkStatus nugu_network_manager_get_status(void);
  * @see nugu_network_manager_send_event_data()
  * @see nugu_network_manager_force_close_event()
  */
-int nugu_network_manager_send_event(NuguEvent *nev);
+NUGU_API int nugu_network_manager_send_event(NuguEvent *nev);
 
 /**
  * @brief Send the attachment data of event to server
@@ -312,8 +313,9 @@ int nugu_network_manager_send_event(NuguEvent *nev);
  * @retval -1 failure
  * @see nugu_network_manager_send_event()
  */
-int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
-					 size_t length, unsigned char *data);
+NUGU_API int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
+						  size_t length,
+						  unsigned char *data);
 
 /**
  * @brief Force close the NUGU_EVENT_TYPE_WITH_ATTACHMENT type event.
@@ -323,7 +325,7 @@ int nugu_network_manager_send_event_data(NuguEvent *nev, int is_end,
  * @retval -1 failure
  * @see nugu_event_set_type()
  */
-int nugu_network_manager_force_close_event(NuguEvent *nev);
+NUGU_API int nugu_network_manager_force_close_event(NuguEvent *nev);
 
 /**
  * @brief Initialize the network manager
@@ -331,12 +333,12 @@ int nugu_network_manager_force_close_event(NuguEvent *nev);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_network_manager_initialize(void);
+NUGU_API int nugu_network_manager_initialize(void);
 
 /**
  * @brief De-initialize the network manager
  */
-void nugu_network_manager_deinitialize(void);
+NUGU_API void nugu_network_manager_deinitialize(void);
 
 /**
  * @brief Connect to server
@@ -345,7 +347,7 @@ void nugu_network_manager_deinitialize(void);
  * @retval -1 failure
  * @see nugu_network_manager_disconnect()
  */
-int nugu_network_manager_connect(void);
+NUGU_API int nugu_network_manager_connect(void);
 
 /**
  * @brief Disconnect from server
@@ -354,7 +356,7 @@ int nugu_network_manager_connect(void);
  * @retval -1 failure
  * @see nugu_network_manager_connect()
  */
-int nugu_network_manager_disconnect(void);
+NUGU_API int nugu_network_manager_disconnect(void);
 
 /**
  * @brief Handoff the current connection to new server
@@ -372,7 +374,8 @@ int nugu_network_manager_disconnect(void);
  *   - If the handoff connection is lost, start again from the Registry step.
  *
  */
-int nugu_network_manager_handoff(const NuguNetworkServerPolicy *policy);
+NUGU_API int
+nugu_network_manager_handoff(const NuguNetworkServerPolicy *policy);
 
 /**
  * @brief Immediately disconnect the current connection and reconnect.
@@ -380,7 +383,7 @@ int nugu_network_manager_handoff(const NuguNetworkServerPolicy *policy);
  * @retval 0 success
  * @retval -1 failure
  */
-int nugu_network_manager_reset_connection(void);
+NUGU_API int nugu_network_manager_reset_connection(void);
 
 /**
  * @brief Set the access token value.
@@ -390,14 +393,14 @@ int nugu_network_manager_reset_connection(void);
  * @retval -1 failure
  * @see nugu_network_manager_peek_token()
  */
-int nugu_network_manager_set_token(const char *token);
+NUGU_API int nugu_network_manager_set_token(const char *token);
 
 /**
  * @brief Get the access token value.
  * @return access token value. Please do not modify the data manually.
  * @see nugu_network_manager_set_token()
  */
-const char *nugu_network_manager_peek_token(void);
+NUGU_API const char *nugu_network_manager_peek_token(void);
 
 /**
  * @brief Set the device gateway registry url.
@@ -407,14 +410,14 @@ const char *nugu_network_manager_peek_token(void);
  * @retval -1 failure
  * @see nugu_network_manager_peek_registry_url()
  */
-int nugu_network_manager_set_registry_url(const char *urlname);
+NUGU_API int nugu_network_manager_set_registry_url(const char *urlname);
 
 /**
  * @brief Get the device gateway registry url.
  * @return gateway registry url. Please do not modify the data manually.
  * @see nugu_network_manager_set_registry_url()
  */
-const char *nugu_network_manager_peek_registry_url(void);
+NUGU_API const char *nugu_network_manager_peek_registry_url(void);
 
 /**
  * @brief Set the HTTP header UserAgent information.
@@ -425,21 +428,21 @@ const char *nugu_network_manager_peek_registry_url(void);
  * @retval -1 failure
  * @see nugu_network_manager_peek_useragent()
  */
-int nugu_network_manager_set_useragent(const char *app_version,
-				       const char *additional_info);
+NUGU_API int nugu_network_manager_set_useragent(const char *app_version,
+						const char *additional_info);
 
 /**
  * @brief Get the UserAgent information.
  * @return UserAgent information. Please do not modify the data manually.
  * @see nugu_network_manager_set_useragent()
  */
-const char *nugu_network_manager_peek_useragent(void);
+NUGU_API const char *nugu_network_manager_peek_useragent(void);
 
 /**
  * @brief Get the last ASR event time information.
  * @return Last-Asr-Event-Time. Please do not modify the data manually.
  */
-const char *nugu_network_manager_peek_last_asr_time(void);
+NUGU_API const char *nugu_network_manager_peek_last_asr_time(void);
 
 /**
  * @brief Set the connection type.
@@ -449,14 +452,16 @@ const char *nugu_network_manager_peek_last_asr_time(void);
  * @retval -1 failure
  * @see nugu_network_manager_get_connection_type()
  */
-int nugu_network_manager_set_connection_type(NuguNetworkConnectionType ctype);
+NUGU_API int
+nugu_network_manager_set_connection_type(NuguNetworkConnectionType ctype);
 
 /**
  * @brief Get the connection type.
  * @return network connection type
  * @see nugu_network_manager_set_connection_type()
  */
-NuguNetworkConnectionType nugu_network_manager_get_connection_type(void);
+NUGU_API NuguNetworkConnectionType
+nugu_network_manager_get_connection_type(void);
 
 /**
  * @}
