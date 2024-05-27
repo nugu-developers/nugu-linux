@@ -114,21 +114,20 @@ int nugu_uuid_convert_bytes(const char *base16, size_t base16_len,
 	return 0;
 }
 
-int nugu_uuid_convert_timespec(const unsigned char *bytes, size_t bytes_len,
-			       struct timespec *out_time)
+int nugu_uuid_convert_msec(const unsigned char *bytes, size_t bytes_len,
+			   gint64 *msec)
 {
-	uint64_t t;
+	gint64 t;
 
 	g_return_val_if_fail(bytes != NULL, -1);
 	g_return_val_if_fail(bytes_len > 4, -1);
-	g_return_val_if_fail(out_time != NULL, -1);
+	g_return_val_if_fail(msec != NULL, -1);
 
-	t = ((uint64_t)bytes[0] << 32) | ((uint64_t)bytes[1] << 24) |
+	t = ((gint64)bytes[0] << 32) | ((gint64)bytes[1] << 24) |
 	    (bytes[2] << 16) | (bytes[3] << 8) | bytes[4];
 	t += NUGU_BASE_TIMESTAMP_MSEC;
 
-	out_time->tv_sec = t / 1000;
-	out_time->tv_nsec = (t % 1000) * 1e+6;
+	*msec = t;
 
 	return 0;
 }
@@ -153,10 +152,7 @@ char *nugu_uuid_generate_time(void)
 {
 	unsigned char buf[NUGU_MAX_UUID_SIZE];
 	char base16[NUGU_MAX_UUID_SIZE * 2 + 1];
-	struct timespec spec;
 	const char *seed;
-
-	clock_gettime(CLOCK_REALTIME, &spec);
 
 	seed = nugu_network_manager_peek_token();
 	if (seed == NULL) {
@@ -176,35 +172,32 @@ char *nugu_uuid_generate_time(void)
 		_cached_seed = seed;
 	}
 
-	nugu_uuid_fill(&spec, _cached_hash, sizeof(_cached_hash), buf,
-		       sizeof(buf));
+	nugu_uuid_fill(g_get_real_time() / 1000, _cached_hash,
+		       sizeof(_cached_hash), buf, sizeof(buf));
 
 	nugu_uuid_convert_base16(buf, sizeof(buf), base16, sizeof(base16));
 
 	return g_strdup(base16);
 }
 
-int nugu_uuid_fill(const struct timespec *time, const unsigned char *hash,
-		   size_t hash_len, unsigned char *out, size_t out_len)
+int nugu_uuid_fill(gint64 msec, const unsigned char *hash, size_t hash_len,
+		   unsigned char *out, size_t out_len)
 {
-	uint64_t milliseconds;
+	gint64 msec_nugu;
 
-	g_return_val_if_fail(time != NULL, -1);
+	g_return_val_if_fail(msec >= NUGU_BASE_TIMESTAMP_MSEC, -1);
 	g_return_val_if_fail(hash != NULL, -1);
 	g_return_val_if_fail(hash_len > 0, -1);
 	g_return_val_if_fail(out != NULL, -1);
 	g_return_val_if_fail(out_len >= NUGU_MAX_UUID_SIZE, -1);
 
-	milliseconds = (uint64_t)(time->tv_sec - NUGU_BASE_TIMESTAMP_SEC) *
-		       (uint64_t)1000;
-	milliseconds += (time->tv_nsec / 1e+6);
-
 	/* time: 5 bytes */
-	out[0] = ((uint64_t)milliseconds & 0xFF00000000) >> 32;
-	out[1] = (milliseconds & 0x00FF000000) >> 24;
-	out[2] = (milliseconds & 0x0000FF0000) >> 16;
-	out[3] = (milliseconds & 0x000000FF00) >> 8;
-	out[4] = (milliseconds & 0x00000000FF);
+	msec_nugu = msec - NUGU_BASE_TIMESTAMP_MSEC;
+	out[0] = (msec_nugu & 0xFF00000000) >> 32;
+	out[1] = (msec_nugu & 0x00FF000000) >> 24;
+	out[2] = (msec_nugu & 0x0000FF0000) >> 16;
+	out[3] = (msec_nugu & 0x000000FF00) >> 8;
+	out[4] = (msec_nugu & 0x00000000FF);
 
 	/* version: 1 byte */
 	out[5] = 0x1;

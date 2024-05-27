@@ -19,6 +19,7 @@
 
 #include <time.h>
 #include <nugu.h>
+#include <glib.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -92,14 +93,13 @@ NUGU_API int nugu_uuid_convert_base16(const unsigned char *bytes,
  * @brief Convert byte array to base16-encoded string
  * @param[in] bytes byte array
  * @param[in] bytes_len length
- * @param[out] out_time memory allocated structure
+ * @param[out] msec milliseconds
  * @return Result of conversion success or failure
  * @retval 0 Success
  * @retval -1 Failure
  */
-NUGU_API int nugu_uuid_convert_timespec(const unsigned char *bytes,
-					size_t bytes_len,
-					struct timespec *out_time);
+NUGU_API int nugu_uuid_convert_msec(const unsigned char *bytes,
+				    size_t bytes_len, gint64 *msec);
 
 /**
  * @brief Generate random bytes and fill to destination buffer
@@ -113,7 +113,7 @@ NUGU_API int nugu_uuid_fill_random(unsigned char *dest, size_t dest_len);
 
 /**
  * @brief Fill to output buffer with NUGU UUID format using parameters
- * @param[in] time timestamp information
+ * @param[in] msec milliseconds
  * @param[in] hash hash value(e.g. SHA1(token))
  * @param[in] hash_len length of hash value
  * @param[out] out memory allocated output buffer
@@ -122,9 +122,9 @@ NUGU_API int nugu_uuid_fill_random(unsigned char *dest, size_t dest_len);
  * @retval 0 Success
  * @retval -1 Failure
  */
-NUGU_API int nugu_uuid_fill(const struct timespec *time,
-			    const unsigned char *hash, size_t hash_len,
-			    unsigned char *out, size_t out_len);
+NUGU_API int nugu_uuid_fill(gint64 msec, const unsigned char *hash,
+			    size_t hash_len, unsigned char *out,
+			    size_t out_len);
 /**
  * @}
  */

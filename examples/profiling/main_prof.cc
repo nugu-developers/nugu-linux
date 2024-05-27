@@ -102,7 +102,7 @@ static void test_finished(void)
 
     /* CSV data, NOLINTNEXTLINE(cert-err33-c) */
     fprintf(fp_out, "%s,%d,%ld,%d,%d,%d,%d,%d,%s\n",
-        test_name.c_str(), test_iteration, tmp->timestamp.tv_sec,
+        test_name.c_str(), test_iteration, (long int)(tmp->timestamp / 1000000),
         nugu_prof_get_diff_msec_type(NUGU_PROF_TYPE_ASR_LISTENING_STARTED, NUGU_PROF_TYPE_ASR_END_POINT_DETECTED),
         nugu_prof_get_diff_msec_type(NUGU_PROF_TYPE_ASR_END_POINT_DETECTED, NUGU_PROF_TYPE_ASR_RESULT),
         nugu_prof_get_diff_msec_type(NUGU_PROF_TYPE_ASR_RESULT, NUGU_PROF_TYPE_TTS_SPEAK_DIRECTIVE),

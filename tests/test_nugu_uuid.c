@@ -81,7 +81,8 @@ static void test_nugu_uuid_time(void)
 	unsigned char buf[NUGU_MAX_UUID_SIZE];
 	unsigned char outbuf[NUGU_MAX_UUID_SIZE];
 	struct tm t_tm;
-	struct timespec t_spec;
+	time_t t_sec;
+	gint64 msec;
 	char timestr[32];
 	unsigned char dummy_hash[6] = { '0', '0', '0', '0', '0', '0' };
 
@@ -89,45 +90,57 @@ static void test_nugu_uuid_time(void)
 	g_assert(nugu_uuid_convert_bytes(TEST1, strlen(TEST1), buf,
 					 sizeof(buf)) == 0);
 
-	g_assert(nugu_uuid_convert_timespec(buf, sizeof(buf), &t_spec) == 0);
-	g_assert(t_spec.tv_sec == 1579655759);
-	g_assert(t_spec.tv_nsec == 39000000);
-	gmtime_r(&t_spec.tv_sec, &t_tm);
+	g_assert(nugu_uuid_convert_msec(buf, sizeof(buf), &msec) == 0);
+	g_assert(msec == 1579655759039);
+	t_sec = msec / 1000;
+#ifdef _WIN32
+	gmtime_s(&t_tm, &t_sec);
+#else
+	gmtime_r(&t_sec, &t_tm);
+#endif
 	g_assert(strftime(timestr, sizeof(timestr), "%F %T", &t_tm) != 0);
 	g_assert_cmpstr(timestr, ==, "2020-01-22 01:15:59");
 
 	/* Convert timespec to 5 bytes */
-	g_assert(nugu_uuid_fill(&t_spec, dummy_hash, sizeof(dummy_hash) - 5,
+	g_assert(nugu_uuid_fill(msec, dummy_hash, sizeof(dummy_hash) - 5,
 				outbuf, sizeof(outbuf)) == 0);
 	g_assert_cmpmem(buf, 5, outbuf, 5);
 
 	/* Convert 5 bytes to integer from NUGU_BASE_TIMESTAMP_MSEC */
 	g_assert(nugu_uuid_convert_bytes(TEST2, strlen(TEST2), buf,
 					 sizeof(buf)) == 0);
-	g_assert(nugu_uuid_convert_timespec(buf, sizeof(buf), &t_spec) == 0);
-	g_assert(t_spec.tv_sec == 1579655809);
-	g_assert(t_spec.tv_nsec == 627000000);
-	gmtime_r(&t_spec.tv_sec, &t_tm);
+	g_assert(nugu_uuid_convert_msec(buf, sizeof(buf), &msec) == 0);
+	g_assert(msec == 1579655809627);
+	t_sec = msec / 1000;
+#ifdef _WIN32
+	gmtime_s(&t_tm, &t_sec);
+#else
+	gmtime_r(&t_sec, &t_tm);
+#endif
 	g_assert(strftime(timestr, sizeof(timestr), "%F %T", &t_tm) != 0);
 	g_assert_cmpstr(timestr, ==, "2020-01-22 01:16:49");
 
 	/* Convert timespec to 5 bytes */
-	g_assert(nugu_uuid_fill(&t_spec, dummy_hash, sizeof(dummy_hash) - 5,
+	g_assert(nugu_uuid_fill(msec, dummy_hash, sizeof(dummy_hash) - 5,
 				outbuf, sizeof(outbuf)) == 0);
 	g_assert_cmpmem(buf, 5, outbuf, 5);
 
 	/* Convert 5 bytes to integer from NUGU_BASE_TIMESTAMP_MSEC */
 	g_assert(nugu_uuid_convert_bytes(TEST3, strlen(TEST3), buf,
 					 sizeof(buf)) == 0);
-	g_assert(nugu_uuid_convert_timespec(buf, sizeof(buf), &t_spec) == 0);
-	g_assert(t_spec.tv_sec == 1579740221);
-	g_assert(t_spec.tv_nsec == 516000000);
-	gmtime_r(&t_spec.tv_sec, &t_tm);
+	g_assert(nugu_uuid_convert_msec(buf, sizeof(buf), &msec) == 0);
+	g_assert(msec == 1579740221516);
+	t_sec = msec / 1000;
+#ifdef _WIN32
+	gmtime_s(&t_tm, &t_sec);
+#else
+	gmtime_r(&t_sec, &t_tm);
+#endif
 	g_assert(strftime(timestr, sizeof(timestr), "%F %T", &t_tm) != 0);
 	g_assert_cmpstr(timestr, ==, "2020-01-23 00:43:41");
 
 	/* Convert timespec to 5 bytes */
-	g_assert(nugu_uuid_fill(&t_spec, dummy_hash, sizeof(dummy_hash) - 5,
+	g_assert(nugu_uuid_fill(msec, dummy_hash, sizeof(dummy_hash) - 5,
 				outbuf, sizeof(outbuf)) == 0);
 	g_assert_cmpmem(buf, 5, outbuf, 5);
 }

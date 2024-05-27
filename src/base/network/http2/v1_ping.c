@@ -75,7 +75,11 @@ static int _get_next_timeout(V1Ping *ping)
 	/**
 	 * max(ttl_max_ms * (0 < random() <= 1), retry_delay_ms)
 	 */
+#ifdef _WIN32
+	timeout = ping->policy.ttl_max_ms * (rand() / (float)RAND_MAX * 1.0f);
+#else
 	timeout = ping->policy.ttl_max_ms * (random() / (float)RAND_MAX * 1.0f);
+#endif
 	if (timeout < ping->policy.retry_delay_ms)
 		timeout = ping->policy.retry_delay_ms;
 

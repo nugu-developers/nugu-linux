@@ -292,15 +292,24 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 	int len = 0;
 
 	if (_log_prefix_fields & NUGU_LOG_PREFIX_TIMESTAMP) {
-		struct timespec tp;
 		struct tm ti;
+		int msec;
+		gint64 microseconds;
+		time_t now;
 
-		clock_gettime(CLOCK_REALTIME, &tp);
-		localtime_r(&(tp.tv_sec), &ti);
+		microseconds = g_get_real_time();
+
+		msec = (int)((microseconds % 1000000) / 1000);
+		now = (time_t)(microseconds / 1000000);
+
+#ifdef _WIN32
+		localtime_s(&ti, &now);
+#else
+		localtime_r(&now, &ti);
+#endif
 
 		len += (int)strftime(prefix, 15, "%m-%d %H:%M:%S", &ti);
-		len += snprintf(prefix + len, 6, ".%03ld ",
-				tp.tv_nsec / 1000000);
+		len += snprintf(prefix + len, 6, ".%03d ", msec);
 	}
 
 	if (_log_prefix_fields & NUGU_LOG_PREFIX_PID ||

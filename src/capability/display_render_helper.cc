@@ -15,7 +15,11 @@
  */
 
 #include <stdexcept>
+#include <glib.h>
+
+#ifndef _WIN32
 #include <sys/time.h>
+#endif
 
 #include "base/nugu_log.h"
 #include "display_render_helper.hh"
@@ -100,10 +104,7 @@ DisplayRenderInfo* DisplayRenderHelper::Builder::build()
 
 std::string DisplayRenderHelper::Builder::makeId()
 {
-    struct timeval tv;
-    gettimeofday(&tv, NULL);
-
-    return std::to_string(tv.tv_sec) + std::to_string(tv.tv_usec);
+    return std::to_string(g_get_real_time());
 }
 
 DisplayRenderHelper::DisplayRenderHelper()
