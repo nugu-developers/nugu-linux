@@ -24,7 +24,7 @@
 namespace NuguCore {
 
 // define default property values
-//static const char* WAKEUP_WORD = "아리아";
+// static const char* WAKEUP_WORD = "아리아";
 static const char* WAKEUP_WORD = "aria";
 static const char* CONTEXT_OS = "Linux";
 

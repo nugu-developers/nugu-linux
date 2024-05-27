@@ -27,14 +27,18 @@
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
 
+#ifndef _WIN32
 #include "builtin.h"
+#endif
 
 #ifdef _WIN32
+#if 0
 #define DYNLIB_HANDLE HMODULE
 #define DYNLIB_LOAD(a) LoadLibrary(a)
 #define DYNLIB_GETSYM(a, b) GetProcAddress(a, b)
 #define DYNLIB_UNLOAD(a) FreeLibrary(a)
 #define DYNLIB_ERROR() "dlerror()"
+#endif
 #else
 #define DYNLIB_HANDLE void *
 #define DYNLIB_LOAD(a) dlopen(a, RTLD_NOW | RTLD_LOCAL)
@@ -46,7 +50,9 @@
 struct _plugin {
 	const struct nugu_plugin_desc *desc;
 	void *data;
+#ifndef _WIN32
 	DYNLIB_HANDLE handle;
+#endif
 	char *filename;
 	gboolean active;
 };
@@ -73,7 +79,9 @@ NuguPlugin *nugu_plugin_new(struct nugu_plugin_desc *desc)
 
 	p->desc = desc;
 	p->data = NULL;
+#ifndef _WIN32
 	p->handle = NULL;
+#endif
 	p->active = FALSE;
 	p->filename = NULL;
 
@@ -82,6 +90,7 @@ NuguPlugin *nugu_plugin_new(struct nugu_plugin_desc *desc)
 
 NuguPlugin *nugu_plugin_new_from_file(const char *filepath)
 {
+#ifndef _WIN32
 	void *handle;
 	struct nugu_plugin_desc *desc;
 	NuguPlugin *p;
@@ -112,6 +121,9 @@ NuguPlugin *nugu_plugin_new_from_file(const char *filepath)
 	p->handle = handle;
 
 	return p;
+#else
+	return NULL;
+#endif
 }
 
 void nugu_plugin_free(NuguPlugin *p)
@@ -121,8 +133,10 @@ void nugu_plugin_free(NuguPlugin *p)
 	if (p->active && p->desc && p->desc->unload)
 		p->desc->unload(p);
 
+#ifndef _WIN32
 	if (p->handle)
 		DYNLIB_UNLOAD(p->handle);
+#endif
 
 	if (p->filename)
 		free(p->filename);
@@ -198,7 +212,11 @@ void *nugu_plugin_get_symbol(NuguPlugin *p, const char *symbol_name)
 	g_return_val_if_fail(p != NULL, NULL);
 	g_return_val_if_fail(symbol_name != NULL, NULL);
 
+#ifndef _WIN32
 	return DYNLIB_GETSYM(p->handle, symbol_name);
+#else
+	return NULL;
+#endif
 }
 
 const struct nugu_plugin_desc *nugu_plugin_get_description(NuguPlugin *p)
@@ -210,6 +228,7 @@ const struct nugu_plugin_desc *nugu_plugin_get_description(NuguPlugin *p)
 
 int nugu_plugin_load_directory(const char *dirpath)
 {
+#ifndef _WIN32
 	const gchar *file;
 	gchar *filename;
 	gchar *env_dirpath;
@@ -259,10 +278,31 @@ int nugu_plugin_load_directory(const char *dirpath)
 		return 0;
 	else
 		return g_list_length(_plugin_list);
+#else
+	return 0;
+#endif
 }
 
 int nugu_plugin_load_builtin(void)
 {
+/* FIXME: Build error 
+ * 9>c:\workspace\git\nugu-linux\src\base\nugu_plugin.c : fatal error C1001: 내부 컴파일러 오류가 발생했습니다. [C:\workspace\git\nugu-linux\build\src\libnugu.vcxproj]
+(컴파일러 파일 'D:\a\_work\1\s\src\vctools\Compiler\Utc\src\p2\main.c', 줄 235)
+ 이 문제를 해결하려면 위 목록에 나오는 위치 부근의 프로그램을 단순화하거나 변경하세요.
+가능한 경우 https://developercommunity.visualstudio.com에서 재현해 주세요.
+자세한 내용을 보려면 Visual C++ [도움말] 메뉴에서 [기술 지원] 명령을
+ 선택하거나 기술 지원 도움말 파일을 참조하세요.
+  link!RaiseException()+0x69
+  link!RaiseException()+0x69
+  link!CloseTypeServerPDB()+0x9a5d7
+  link!CloseTypeServerPDB()+0x12152b
+  link!DllGetObjHandler()+0x1ffc
+  link!DllGetObjHandler()+0x1a65
+  link!DllGetObjHandler()+0x16c1
+  link!InvokeCompilerPassW()+0x3d9
+  link!InvokeCompilerPass()+0x7b57
+ */
+#ifndef _WIN32
 	size_t length;
 	size_t i;
 	NuguPlugin *p;
@@ -282,6 +322,9 @@ int nugu_plugin_load_builtin(void)
 	}
 
 	return g_list_length(_plugin_list);
+#else
+	return 0;
+#endif
 }
 
 static gint _sort_priority_cmp(gconstpointer a, gconstpointer b)
