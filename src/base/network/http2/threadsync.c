@@ -66,11 +66,13 @@ enum thread_sync_result thread_sync_wait_secs(ThreadSync *s, unsigned int secs)
 {
 	struct timespec spec;
 	int status = 0;
+	gint64 microseconds;
 
 	g_return_val_if_fail(s != NULL, THREAD_SYNC_RESULT_FAILURE);
 
-	clock_gettime(CLOCK_REALTIME, &spec);
-	spec.tv_sec = spec.tv_sec + secs;
+	microseconds = g_get_real_time();
+	spec.tv_nsec = (microseconds % 1000000) * 1000;
+	spec.tv_sec = microseconds / 1000000 + secs;
 
 	pthread_mutex_lock(&s->lock);
 	if (s->flag == 0)

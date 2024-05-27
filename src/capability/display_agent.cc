@@ -15,7 +15,10 @@
  */
 
 #include <string.h>
+
+#ifndef _WIN32
 #include <sys/time.h>
+#endif
 
 #include "base/nugu_log.h"
 #include "display_agent.hh"

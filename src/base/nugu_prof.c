@@ -121,10 +121,10 @@ static void *_callback_userdata;
 static pthread_mutex_t _lock;
 static gboolean _trace;
 
-static void _fill_timestr(char *dest_buf, size_t bufsize,
-			  const struct timespec *ts)
+static void _fill_timestr(char *dest_buf, size_t bufsize, gint64 msec)
 {
 	struct tm tm_local;
+	time_t sec;
 
 	memset(dest_buf, ' ', bufsize);
 	dest_buf[bufsize - 1] = '\0';
@@ -132,7 +132,12 @@ static void _fill_timestr(char *dest_buf, size_t bufsize,
 	if (bufsize < BUFSIZE_TIMESTR)
 		return;
 
-	localtime_r(&(ts->tv_sec), &tm_local);
+	sec = msec / 1000;
+#ifdef _WIN32
+	localtime_s(&tm_local, &sec);
+#else
+	localtime_r(&sec, &tm_local);
+#endif
 
 	if (strftime(dest_buf, 15, "%m-%d %H:%M:%S", &tm_local) == 0) {
 		nugu_error("strftime() failed");
@@ -140,8 +145,7 @@ static void _fill_timestr(char *dest_buf, size_t bufsize,
 	}
 
 	/* NOLINTNEXTLINE(cert-err33-c) */
-	snprintf(dest_buf + 14, bufsize - 14, ".%03d",
-		 (int)(ts->tv_nsec / 1000000));
+	snprintf(dest_buf + 14, bufsize - 14, ".%03d", (int)msec);
 }
 
 void nugu_prof_clear(void)
@@ -192,7 +196,7 @@ static gboolean _emit_in_idle(gpointer userdata)
 	if (_trace) {
 		char timestr[25];
 
-		_fill_timestr(timestr, sizeof(timestr), &data->timestamp);
+		_fill_timestr(timestr, sizeof(timestr), data->timestamp);
 
 		nugu_log_print(NUGU_LOG_MODULE_PROFILING, NUGU_LOG_LEVEL_DEBUG,
 			       NULL, NULL, -1, "Profiling %d (%-20s) <%s>",
@@ -248,7 +252,7 @@ static void _emit_callback(enum nugu_prof_type type, const char *contents)
 static void _set_timestamp_with_emit(enum nugu_prof_type type,
 				     const char *contents)
 {
-	clock_gettime(CLOCK_REALTIME, &_prof_data[type].timestamp);
+	_prof_data[type].timestamp = g_get_real_time();
 	_prof_data[type].type = type;
 
 	if ((nugu_log_get_modules() & NUGU_LOG_MODULE_PROFILING) != 0)
@@ -336,8 +340,8 @@ int nugu_prof_get_diff_msec_timespec(const struct timespec *ts1,
 int nugu_prof_get_diff_msec_type(enum nugu_prof_type type1,
 				 enum nugu_prof_type type2)
 {
-	return nugu_prof_get_diff_msec_timespec(&_prof_data[type1].timestamp,
-						&_prof_data[type2].timestamp);
+	return (_prof_data[type1].timestamp - _prof_data[type2].timestamp) /
+	       1000;
 }
 
 int nugu_prof_get_diff_msec(const struct nugu_prof_data *prof1,
@@ -347,11 +351,10 @@ int nugu_prof_get_diff_msec(const struct nugu_prof_data *prof1,
 		return 0;
 
 	/* profile item empty */
-	if (prof1->timestamp.tv_sec == 0 || prof2->timestamp.tv_sec == 0)
+	if (prof1->timestamp == 0 || prof2->timestamp == 0)
 		return 0;
 
-	return nugu_prof_get_diff_msec_timespec(&prof1->timestamp,
-						&prof2->timestamp);
+	return (prof1->timestamp - prof2->timestamp) / 1000;
 }
 
 const char *nugu_prof_get_type_name(enum nugu_prof_type type)
@@ -453,10 +456,10 @@ void nugu_prof_dump(enum nugu_prof_type from, enum nugu_prof_type to)
 		const struct nugu_prof_data *prof;
 
 		prof = &_prof_data[cur];
-		if (prof->timestamp.tv_sec == 0)
+		if (prof->timestamp == 0)
 			continue;
 
-		_fill_timestr(ts_str, sizeof(ts_str), &prof->timestamp);
+		_fill_timestr(ts_str, sizeof(ts_str), prof->timestamp);
 		_fill_timeunit(nugu_prof_get_diff_msec(&_prof_data[from], prof),
 			       time_from, sizeof(time_from));
 		_fill_relative_part(cur, relative_part, sizeof(relative_part));

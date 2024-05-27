@@ -84,7 +84,11 @@ static int _dumpfile_open(const char *path, const char *prefix)
 		return -1;
 
 	now = time(NULL);
+#ifdef _WIN32
+	localtime_s(&now_tm, &now);
+#else
 	localtime_r(&now, &now_tm);
+#endif
 
 	snprintf(ymd, sizeof(ymd), "%04d%02d%02d", now_tm.tm_year + 1900,
 		 now_tm.tm_mon + 1, now_tm.tm_mday);

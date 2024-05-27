@@ -90,7 +90,7 @@ struct _nugu_network {
 
 	/* Server */
 	DGServer *server;
-	struct timespec ts_connected;
+	time_t tsec_connected;
 
 	/* Handoff */
 	DGServer *handoff;
@@ -648,7 +648,7 @@ static void on_directives_closed(enum nugu_equeue_type type, void *data,
 				 void *userdata)
 {
 	NetworkManager *nm = userdata;
-	struct timespec spec;
+	time_t sec = 0;
 
 	nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_DIRECTIVES_CLOSED);
 
@@ -657,9 +657,9 @@ static void on_directives_closed(enum nugu_equeue_type type, void *data,
 		return;
 	}
 
-	clock_gettime(CLOCK_REALTIME, &spec);
+	sec = time(NULL);
 
-	if (spec.tv_sec - nm->ts_connected.tv_sec == 0) {
+	if (sec - nm->tsec_connected == 0) {
 		nugu_error(
 			"Connection was finished immediately on the server.");
 
@@ -706,7 +706,7 @@ static void on_event(enum nugu_equeue_type type, void *data, void *userdata)
 		nugu_prof_mark(
 			NUGU_PROF_TYPE_NETWORK_SERVER_ESTABLISH_RESPONSE);
 		nugu_prof_mark(NUGU_PROF_TYPE_NETWORK_CONNECTED);
-		clock_gettime(CLOCK_REALTIME, &nm->ts_connected);
+		nm->tsec_connected = time(NULL);
 		_process_connecting(userdata, STEP_SERVER_CONNECTED);
 		break;
 	default:
@@ -798,7 +798,6 @@ static NetworkManager *_network;
 
 int nugu_network_manager_initialize(void)
 {
-	struct timespec spec;
 	curl_version_info_data *cinfo;
 
 	if (_network) {
@@ -823,9 +822,11 @@ int nugu_network_manager_initialize(void)
 		}
 	}
 
-	clock_gettime(CLOCK_REALTIME, &spec);
-	srandom(spec.tv_nsec ^ spec.tv_sec);
-
+#ifdef _WIN32
+	srand(g_get_real_time());
+#else
+	srandom(g_get_real_time());
+#endif
 	_network = nugu_network_manager_new();
 	if (!_network)
 		return -1;
@@ -1074,7 +1075,11 @@ int nugu_network_manager_send_event(NuguEvent *nev)
 		struct tm tm;
 
 		now = time(NULL);
+#ifdef _WIN32
+		gmtime_s(&tm, &now);
+#else
 		gmtime_r(&now, &tm);
+#endif
 		if (strftime(buf, sizeof(buf), "%a, %d %b %Y %H:%M:%S %Z",
 			     &tm) == 0) {
 			nugu_error("strftime() failed");

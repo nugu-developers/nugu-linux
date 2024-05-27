@@ -19,6 +19,7 @@
 
 #include <nugu.h>
 #include <base/nugu_uuid.h>
+#include <glib.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -202,7 +203,7 @@ struct nugu_prof_data {
 	enum nugu_prof_type type; /**< profiling type */
 	char dialog_id[NUGU_MAX_UUID_STRING_SIZE + 1]; /* dialog request id */
 	char msg_id[NUGU_MAX_UUID_STRING_SIZE + 1]; /* message id */
-	struct timespec timestamp; /* timestamp */
+	gint64 timestamp; /* timestamp(microseconds) */
 	char *contents; /* additional contents */
 };
 
