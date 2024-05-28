@@ -22,6 +22,8 @@
 
 namespace NuguCapability {
 
+typedef struct _SpeechStateEventParam SpeechStateEventParam;
+
 class TTSAgent final : public Capability,
                        public ITTSHandler,
                        public IMediaPlayerListener,
@@ -56,8 +58,6 @@ public:
     void onSyncState(const std::string& ps_id, PlaySyncState state, void* extra_data) override;
 
 private:
-    using SpeechStateEventParam = struct _SpeechStateEventParam;
-
     // send event
     void sendEventCommon(CapabilityEvent* event, const std::string& token, EventResultCallback cb = nullptr);
     void sendEventSpeechStarted(EventResultCallback cb = nullptr);
