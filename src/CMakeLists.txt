@@ -23,8 +23,8 @@ ELSE()
 ENDIF()
 
 TARGET_LINK_LIBRARIES(libnugu PUBLIC
-	${CURL_LIBRARY} njson -lstdc++
-	${pkgs_LDFLAGS}
+	${CURL_LIBRARY} njson
+	${COMMON_LDFLAGS}
 	${builtin_plugin_pkgs_LDFLAGS}
 	${BUILTIN_PLUGIN_LIBS}
 	${LDFLAG_SOCKET}

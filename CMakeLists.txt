@@ -295,6 +295,12 @@ FOREACH(flag ${pkgs_CFLAGS})
 	ADD_COMPILE_OPTIONS(${flag})
 ENDFOREACH()
 
+IF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
+	SET(pkgs_LDFLAGS "${pkgs_LDFLAGS} -lstdc++")
+ENDIF()
+
+SET(COMMON_LDFLAGS "${pkgs_LDFLAGS}")
+
 IF(ENABLE_GSTREAMER_PLUGIN)
 	pkg_check_modules(gstreamer_pkgs REQUIRED
 		gstreamer-1.0 gstreamer-app-1.0 gstreamer-pbutils-1.0)
