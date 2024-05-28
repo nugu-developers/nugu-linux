@@ -28,7 +28,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <glib.h>
+
+#ifndef _WIN32
 #include <unistd.h>
+#endif
 
 #include "base/nugu_log.h"
 #include "base/nugu_winsock.h"

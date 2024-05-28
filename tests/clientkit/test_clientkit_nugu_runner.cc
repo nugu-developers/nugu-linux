@@ -18,11 +18,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#ifdef __MSYS__
-#include <windows.h>
-#endif
 #include <pthread.h>
+
+#if defined(__MSYS__) || defined(_WIN32)
+#include <windows.h>
+#else
 #include <unistd.h>
+#endif
 
 #include "clientkit/nugu_runner.hh"
 

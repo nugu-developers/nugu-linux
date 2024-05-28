@@ -21,11 +21,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <time.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <pthread.h>
+
+#ifndef _WIN32
+#include <unistd.h>
+#endif
 
 #include <alsa/error.h>
 #include <glib.h>

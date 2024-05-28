@@ -16,7 +16,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <errno.h>
 #include <pthread.h>
 #include <glib.h>
@@ -27,6 +26,13 @@
 #include "base/nugu_winsock.h"
 #else
 #include <glib-unix.h>
+#endif
+
+#ifdef _WIN32
+#include <windows.h>
+typedef SSIZE_T ssize_t;
+#else
+#include <unistd.h>
 #endif
 
 #include "base/nugu_log.h"

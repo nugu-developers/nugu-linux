@@ -22,12 +22,18 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <time.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <glib.h>
 #include <pthread.h>
+
+#ifdef _WIN32
+#include <windows.h>
+typedef SSIZE_T ssize_t;
+#else
+#include <unistd.h>
+#endif
 
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
