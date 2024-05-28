@@ -25,8 +25,9 @@
 
 #ifdef HAVE_EVENTFD
 #include <sys/eventfd.h>
-#elif defined(__MSYS__)
+#elif defined(__MSYS__) || defined(_WIN32)
 #include "base/nugu_winsock.h"
+#define USE_WINSOCK
 #else
 #include <glib-unix.h>
 #endif
@@ -89,7 +90,7 @@ struct _http2_network {
 	/* thread creation check */
 	ThreadSync *sync_init;
 
-#ifdef __MSYS__
+#ifdef USE_WINSOCK
 	NuguWinSocket *wsock;
 #endif
 };
@@ -336,7 +337,7 @@ static void *_loop(void *data)
 	char *fake_p;
 	int still_running = 0;
 	int i;
-#ifndef __MSYS__
+#ifndef USE_WINSOCK
 	struct curl_waitfd extra_fds[1];
 	int numfds;
 #endif
@@ -378,7 +379,7 @@ static void *_loop(void *data)
 
 			_process_completed(net, curl_message);
 		}
-#ifdef __MSYS__
+#ifdef USE_WINSOCK
 		if (nugu_winsock_check_for_data(net->wakeup_fds[0]) == 0) {
 			char ev;
 
@@ -459,7 +460,7 @@ static void *_loop(void *data)
 HTTP2Network *http2_network_new(void)
 {
 	struct _http2_network *net;
-#if !defined(HAVE_EVENTFD) && !defined(__MSYS__)
+#if !defined(HAVE_EVENTFD) && !defined(USE_WINSOCK)
 	GError *error = NULL;
 #endif
 
@@ -472,7 +473,7 @@ HTTP2Network *http2_network_new(void)
 	net->wakeup_fds[0] = -1;
 	net->wakeup_fds[1] = -1;
 
-#ifdef __MSYS__
+#ifdef USE_WINSOCK
 	net->wsock = nugu_winsock_create();
 	if (net->wsock == NULL) {
 		nugu_error("failed to create window socket");
@@ -540,7 +541,7 @@ void http2_network_free(HTTP2Network *net)
 	if (net->requests)
 		g_async_queue_unref(net->requests);
 
-#ifdef __MSYS__
+#ifdef USE_WINSOCK
 	nugu_winsock_remove(net->wsock);
 #else
 	if (net->wakeup_fds[0] != -1)
@@ -601,7 +602,7 @@ int http2_network_wakeup(HTTP2Network *net)
 
 	g_return_val_if_fail(net != NULL, -1);
 
-#ifdef __MSYS__
+#ifdef USE_WINSOCK
 	if (net->wakeup_fds[1] != -1) {
 		char ev = '1';
 
