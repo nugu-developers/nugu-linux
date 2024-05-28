@@ -15,7 +15,7 @@ static int on_init(NuguPlugin *p)
 }
 
 /* Function defined to call directly from the application. */
-int custom_add(int a, int b)
+NUGU_API_EXPORT int custom_add(int a, int b)
 {
 	return a + b;
 }
