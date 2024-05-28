@@ -11,7 +11,7 @@ FOREACH(test ${UNIT_TESTS})
 	TARGET_INCLUDE_DIRECTORIES(${test} PRIVATE
 		../../src/clientkit
 		../../include)
-	TARGET_LINK_LIBRARIES(${test} ${pkgs_LDFLAGS} -lnugu -lstdc++)
+	TARGET_LINK_LIBRARIES(${test} ${COMMON_LDFLAGS} libnugu)
 	ADD_DEPENDENCIES(${test} libnugu)
 	ADD_TEST(${test} ${test})
 	SET_PROPERTY(TEST ${test} PROPERTY ENVIRONMENT "LD_LIBRARY_PATH=${PROJECT_BINARY_DIR}/src")
