@@ -22,10 +22,16 @@
 #include <stdarg.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <time.h>
 #include <fcntl.h>
 #include <errno.h>
+
+#ifdef _WIN32
+#include <windows.h>
+typedef SSIZE_T ssize_t;
+#else
+#include <unistd.h>
+#endif
 
 #include <alsa/error.h>
 #include <glib.h>

@@ -19,20 +19,27 @@
 #include <stdarg.h>
 #include <time.h>
 #include <string.h>
-#ifdef HAVE_SYSCALL
-#include <sys/syscall.h>
-#elif defined(__MSYS__)
-#include <windows.h>
-#endif
 #include <syslog.h>
 #include <errno.h>
-#include <sys/types.h>
-#include <unistd.h>
 #include <pthread.h>
 #include <inttypes.h>
 #include <ctype.h>
-
 #include <glib.h>
+
+#ifdef HAVE_SYSCALL
+#include <sys/syscall.h>
+#endif
+
+#if defined(__MSYS__) || defined(_WIN32)
+#include <windows.h>
+#endif
+
+#ifdef _WIN32
+#define strncasecmp _strnicmp
+#else
+#include <sys/types.h>
+#include <unistd.h>
+#endif
 
 #include "base/nugu_log.h"
 
