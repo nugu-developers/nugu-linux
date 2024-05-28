@@ -19,7 +19,6 @@
 #include <stdarg.h>
 #include <time.h>
 #include <string.h>
-#include <syslog.h>
 #include <errno.h>
 #include <pthread.h>
 #include <inttypes.h>
@@ -35,8 +34,13 @@
 #endif
 
 #ifdef _WIN32
+#define LOG_ERR 3
+#define LOG_WARNING 4
+#define LOG_INFO 6
+#define LOG_DEBUG 7
 #define strncasecmp _strnicmp
 #else
+#include <syslog.h>
 #include <sys/types.h>
 #include <unistd.h>
 #endif
@@ -339,7 +343,7 @@ static int _log_make_prefix(char *prefix, enum nugu_log_level level,
 			if (pid != 0 && pid != tid)
 				is_main_thread = 0;
 #endif
-#elif defined(__MSYS__)
+#elif defined(__MSYS__) || defined(_WIN32)
 			tid = (pid_t)GetCurrentThreadId();
 			if (pid != 0 && pid != tid)
 				is_main_thread = 0;
@@ -488,6 +492,7 @@ static void _log_formatted(enum nugu_log_module module,
 	pthread_mutex_unlock(&_log_mutex);
 }
 
+#ifndef _WIN32
 static void _syslog_formatted(enum nugu_log_module module,
 			      enum nugu_log_level level, const char *filename,
 			      const char *funcname, int line,
@@ -516,6 +521,7 @@ static void _syslog_formatted(enum nugu_log_module module,
 	vsyslog(_log_level_map[level].syslog_level, buf->str, arg);
 	g_string_free(buf, TRUE);
 }
+#endif
 
 void nugu_log_print(enum nugu_log_module module, enum nugu_log_level level,
 		    const char *filename, const char *funcname, int line,
@@ -543,6 +549,7 @@ void nugu_log_print(enum nugu_log_module module, enum nugu_log_level level,
 
 	switch (log_system) {
 	case NUGU_LOG_SYSTEM_SYSLOG:
+#ifndef _WIN32
 		va_start(arg, format);
 		if (_log_prefix_fields == NUGU_LOG_PREFIX_NONE)
 			vsyslog(_log_level_map[level].syslog_level, format,
@@ -552,7 +559,7 @@ void nugu_log_print(enum nugu_log_module module, enum nugu_log_level level,
 					  line, format, arg);
 		va_end(arg);
 		break;
-
+#endif
 	case NUGU_LOG_SYSTEM_STDERR:
 	case NUGU_LOG_SYSTEM_STDOUT:
 	case NUGU_LOG_SYSTEM_CUSTOM:
