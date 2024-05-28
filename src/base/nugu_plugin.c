@@ -16,19 +16,37 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <dlfcn.h>
-
 #include <glib.h>
+
+#ifdef _WIN32
+#include <windows.h>
+#else
+#include <dlfcn.h>
+#endif
 
 #include "base/nugu_log.h"
 #include "base/nugu_plugin.h"
 
 #include "builtin.h"
 
+#ifdef _WIN32
+#define DYNLIB_HANDLE HMODULE
+#define DYNLIB_LOAD(a) LoadLibrary(a)
+#define DYNLIB_GETSYM(a, b) GetProcAddress(a, b)
+#define DYNLIB_UNLOAD(a) FreeLibrary(a)
+#define DYNLIB_ERROR() "dlerror()"
+#else
+#define DYNLIB_HANDLE void *
+#define DYNLIB_LOAD(a) dlopen(a, RTLD_NOW | RTLD_LOCAL)
+#define DYNLIB_GETSYM(a, b) dlsym(a, b)
+#define DYNLIB_UNLOAD(a) dlclose(a)
+#define DYNLIB_ERROR() dlerror()
+#endif
+
 struct _plugin {
 	const struct nugu_plugin_desc *desc;
 	void *data;
-	void *handle;
+	DYNLIB_HANDLE handle;
 	char *filename;
 	gboolean active;
 };
@@ -70,23 +88,23 @@ NuguPlugin *nugu_plugin_new_from_file(const char *filepath)
 
 	g_return_val_if_fail(filepath != NULL, NULL);
 
-	handle = dlopen(filepath, RTLD_NOW | RTLD_LOCAL);
+	handle = DYNLIB_LOAD(filepath);
 	if (!handle) {
 		nugu_error("dlopen failed: '%s' plugin. %s", filepath,
-			   dlerror());
+			   DYNLIB_ERROR());
 		return NULL;
 	}
 
-	desc = dlsym(handle, NUGU_PLUGIN_SYMBOL);
+	desc = DYNLIB_GETSYM(handle, NUGU_PLUGIN_SYMBOL);
 	if (!desc) {
-		nugu_error("dlsym failed: %s", dlerror());
-		dlclose(handle);
+		nugu_error("dlsym failed: %s", DYNLIB_ERROR());
+		DYNLIB_UNLOAD(handle);
 		return NULL;
 	}
 
 	p = nugu_plugin_new(desc);
 	if (!p) {
-		dlclose(handle);
+		DYNLIB_UNLOAD(handle);
 		return NULL;
 	}
 
@@ -104,7 +122,7 @@ void nugu_plugin_free(NuguPlugin *p)
 		p->desc->unload(p);
 
 	if (p->handle)
-		dlclose(p->handle);
+		DYNLIB_UNLOAD(p->handle);
 
 	if (p->filename)
 		free(p->filename);
@@ -180,7 +198,7 @@ void *nugu_plugin_get_symbol(NuguPlugin *p, const char *symbol_name)
 	g_return_val_if_fail(p != NULL, NULL);
 	g_return_val_if_fail(symbol_name != NULL, NULL);
 
-	return dlsym(p->handle, symbol_name);
+	return DYNLIB_GETSYM(p->handle, symbol_name);
 }
 
 const struct nugu_plugin_desc *nugu_plugin_get_description(NuguPlugin *p)

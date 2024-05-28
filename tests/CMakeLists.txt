@@ -1,14 +1,14 @@
 # Test resources
-ADD_LIBRARY(plugin_dummy.so SHARED plugin_dummy.c)
-SET_TARGET_PROPERTIES(plugin_dummy.so PROPERTIES PREFIX "" OUTPUT_NAME plugin_dummy)
+ADD_LIBRARY(plugin_dummy SHARED plugin_dummy.c)
+SET_TARGET_PROPERTIES(plugin_dummy PROPERTIES PREFIX "" OUTPUT_NAME plugin_dummy)
 
-ADD_LIBRARY(plugin_nugu.so SHARED plugin_nugu.c)
-SET_TARGET_PROPERTIES(plugin_nugu.so PROPERTIES PREFIX "" OUTPUT_NAME plugin_nugu)
-ADD_DEPENDENCIES(plugin_nugu.so libnugu)
+ADD_LIBRARY(plugin_nugu SHARED plugin_nugu.c)
+SET_TARGET_PROPERTIES(plugin_nugu PROPERTIES PREFIX "" OUTPUT_NAME plugin_nugu)
+ADD_DEPENDENCIES(plugin_nugu libnugu)
 
-ADD_LIBRARY(plugin_nugu_custom.so SHARED plugin_nugu_custom.c)
-SET_TARGET_PROPERTIES(plugin_nugu_custom.so PROPERTIES PREFIX "" OUTPUT_NAME plugin_nugu_custom)
-ADD_DEPENDENCIES(plugin_nugu_custom.so libnugu)
+ADD_LIBRARY(plugin_nugu_custom SHARED plugin_nugu_custom.c)
+SET_TARGET_PROPERTIES(plugin_nugu_custom PROPERTIES PREFIX "" OUTPUT_NAME plugin_nugu_custom)
+ADD_DEPENDENCIES(plugin_nugu_custom libnugu)
 
 # Unit tests
 SET(UNIT_TESTS
@@ -29,8 +29,13 @@ SET(UNIT_TESTS
 
 FOREACH(test ${UNIT_TESTS})
 	ADD_EXECUTABLE(${test} ${test}.c)
-	TARGET_COMPILE_DEFINITIONS(${test} PRIVATE
-		-DRUNPATH="${CMAKE_CURRENT_BINARY_DIR}")
+	IF(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		TARGET_COMPILE_DEFINITIONS(${test} PRIVATE
+			-DRUNPATH="${CMAKE_CURRENT_BINARY_DIR}/${CMAKE_BUILD_TYPE}")
+	ELSE()
+		TARGET_COMPILE_DEFINITIONS(${test} PRIVATE
+			-DRUNPATH="${CMAKE_CURRENT_BINARY_DIR}")
+	ENDIF()
 	TARGET_LINK_LIBRARIES(${test} ${pkgs_LDFLAGS} -lnugu -lstdc++)
 	ADD_DEPENDENCIES(${test} libnugu)
 	ADD_TEST(${test} ${test})
