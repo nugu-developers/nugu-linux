@@ -22,7 +22,8 @@
 
 #ifdef HAVE_EVENTFD
 #include <sys/eventfd.h>
-#elif defined(__MSYS__)
+#elif defined(__MSYS__) || defined(_WIN32)
+#define USE_WINSOCK
 #include "base/nugu_winsock.h"
 #else
 #include <glib-unix.h>
@@ -53,7 +54,7 @@ struct _equeue {
 	guint source;
 	GAsyncQueue *pendings;
 	struct _equeue_typemap typemap[NUGU_EQUEUE_TYPE_MAX];
-#ifdef __MSYS__
+#ifdef USE_WINSOCK
 	NuguWinSocket *wsock;
 #endif
 };
@@ -89,7 +90,7 @@ static gboolean on_event(GIOChannel *channel, GIOCondition cond,
 		return FALSE;
 	}
 
-#ifdef __MSYS__
+#ifdef USE_WINSOCK
 	if (nugu_winsock_check_for_data(_equeue->fds[0]) == 0) {
 		char ev;
 
@@ -145,7 +146,7 @@ static gboolean on_event(GIOChannel *channel, GIOCondition cond,
 int nugu_equeue_initialize(void)
 {
 	GIOChannel *channel;
-#if !defined(HAVE_EVENTFD) && !defined(__MSYS__)
+#if !defined(HAVE_EVENTFD) && !defined(USE_WINSOCK)
 	GError *error = NULL;
 #endif
 
@@ -176,7 +177,7 @@ int nugu_equeue_initialize(void)
 		pthread_mutex_unlock(&_lock);
 		return -1;
 	}
-#elif defined(__MSYS__)
+#elif defined(USE_WINSOCK)
 	_equeue->wsock = nugu_winsock_create();
 	if (_equeue->wsock == NULL) {
 		nugu_error("failed to create window socket");
@@ -202,7 +203,7 @@ int nugu_equeue_initialize(void)
 	nugu_dbg("pipe fds[1] = %d", _equeue->fds[1]);
 #endif
 
-#ifdef __MSYS__
+#ifdef USE_WINSOCK
 	channel = g_io_channel_win32_new_socket(_equeue->fds[0]);
 #else
 	channel = g_io_channel_unix_new(_equeue->fds[0]);
@@ -227,7 +228,7 @@ void nugu_equeue_deinitialize(void)
 		return;
 	}
 
-#ifdef __MSYS__
+#ifdef USE_WINSOCK
 	nugu_winsock_remove(_equeue->wsock);
 #else
 	if (_equeue->fds[0] != -1)
@@ -346,7 +347,7 @@ int nugu_equeue_push(enum nugu_equeue_type type, void *data)
 
 	g_async_queue_push(_equeue->pendings, item);
 
-#ifdef __MSYS__
+#ifdef USE_WINSOCK
 	if (_equeue->fds[1] != -1) {
 		char ev = '1';
 
