@@ -17,6 +17,11 @@ TARGET_INCLUDE_DIRECTORIES(objhttp2 PRIVATE
 	network
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${CURL_INCLUDE})
+IF(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	SET_TARGET_PROPERTIES(objhttp2 PROPERTIES
+		COMPILE_PDB_NAME "objhttp2"
+		COMPILE_PDB_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
+ENDIF()
 IF(ENABLE_BUILTIN_CURL)
 	ADD_DEPENDENCIES(objhttp2 CURL)
 ENDIF()
@@ -29,15 +34,21 @@ TARGET_INCLUDE_DIRECTORIES(objbase PRIVATE
 	${CMAKE_CURRENT_SOURCE_DIR}
 	${PROJECT_SOURCE_DIR}/externals/curl/include)
 TARGET_COMPILE_DEFINITIONS(objbase PRIVATE -DNUGU_LIBRARY_BUILD)
-TARGET_COMPILE_OPTIONS(objbase PRIVATE
-	# Set default visibility to hidden to reduce symbol count
-	-fvisibility=hidden
+IF(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+	SET_TARGET_PROPERTIES(objbase PROPERTIES
+		COMPILE_PDB_NAME "objbase"
+		COMPILE_PDB_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
+ELSE()
+	TARGET_COMPILE_OPTIONS(objbase PRIVATE
+		# Set default visibility to hidden to reduce symbol count
+		-fvisibility=hidden
 
-	# Turn on extra warnings
-	-Wmissing-prototypes
-	-Waggregate-return
-	-Wmissing-declarations
-	-Wswitch-default)
+		# Turn on extra warnings
+		-Wmissing-prototypes
+		-Waggregate-return
+		-Wmissing-declarations
+		-Wswitch-default)
+ENDIF()
 IF(ENABLE_BUILTIN_CURL)
 	ADD_DEPENDENCIES(objbase CURL)
 ENDIF()
