@@ -414,7 +414,7 @@ static GstreamerHandle *_create(NuguRecorder *rec)
 	}
 
 	gh->pipeline = gst_pipeline_new(pipeline);
-#ifdef __MSYS__
+#if defined(__MSYS__) || defined(_WIN32)
 	gh->audio_source =
 		gst_element_factory_make("directsoundsrc", audio_source);
 #else

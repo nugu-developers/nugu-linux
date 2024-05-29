@@ -35,7 +35,7 @@ using namespace NuguClientKit;
 #define TIMER_100MS 100
 #define TIMEOUT_IMMEDIATELY 1
 
-#ifdef __MSYS__
+#if defined(__MSYS__) || defined(_WIN32)
 void usleep(unsigned int usec)
 {
     Sleep(usec / 1000); // msec

@@ -431,7 +431,7 @@ static int _create_gst_elements(struct pa_audio_param *pcm_param)
 	}
 #endif
 
-#ifdef __MSYS__
+#if defined(__MSYS__) || defined(_WIN32)
 	pcm_param->audio_sink =
 		gst_element_factory_make("directsoundsink", audio_sink);
 	if (!pcm_param->audio_sink) {
