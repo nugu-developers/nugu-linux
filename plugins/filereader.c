@@ -18,6 +18,12 @@
 #define NUGU_PLUGIN_BUILTIN
 #endif
 
+#ifdef _WIN32
+#ifdef NUGU_ENV_DUMP_LINK_FILE_RECORDER
+#undef NUGU_ENV_DUMP_LINK_FILE_RECORDER
+#endif
+#endif
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
@@ -55,6 +61,7 @@ struct audio_param {
 static NuguRecorderDriver *rec_driver;
 static pthread_mutex_t mutex;
 
+#ifdef NUGU_ENV_DUMP_LINK_FILE_RECORDER
 static void _dumpfile_link(const char *filename)
 {
 	char *link_file;
@@ -76,6 +83,7 @@ static void _dumpfile_link(const char *filename)
 
 	nugu_dbg("link file: %s -> %s", link_file, filename);
 }
+#endif
 
 static int _dumpfile_open(const char *path, const char *prefix)
 {
@@ -109,7 +117,9 @@ static int _dumpfile_open(const char *path, const char *prefix)
 
 	nugu_dbg("%s filedump to '%s' (fd=%d)", prefix, buf, fd);
 
+#ifdef NUGU_ENV_DUMP_LINK_FILE_RECORDER
 	_dumpfile_link(buf);
+#endif
 	g_free(buf);
 
 	return fd;

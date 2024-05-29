@@ -18,6 +18,12 @@
 #define NUGU_PLUGIN_BUILTIN
 #endif
 
+#ifdef _WIN32
+#ifdef NUGU_ENV_DUMP_LINK_FILE_PCM
+#undef NUGU_ENV_DUMP_LINK_FILE_PCM
+#endif
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
