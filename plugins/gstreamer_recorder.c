@@ -18,6 +18,12 @@
 #define NUGU_PLUGIN_BUILTIN
 #endif
 
+#ifdef _WIN32
+#ifdef NUGU_ENV_DUMP_LINK_FILE_RECORDER
+#undef NUGU_ENV_DUMP_LINK_FILE_RECORDER
+#endif
+#endif
+
 #include <stdio.h>
 #include <stdarg.h>
 #include <stdlib.h>
