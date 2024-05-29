@@ -1,10 +1,18 @@
 include(ExternalProject)
 
 # njson
+find_package(RapidJSON) # Provide RAPIDJSON_INCLUDE_DIRS variable
+IF(RapidJSON_FOUND)
+	SET(RAPIDJSON_INCLUDE ${RAPIDJSON_INCLUDE_DIRS})
+ELSE()
+	pkg_check_modules(rapidjson_pkgs REQUIRED RapidJSON)
+	SET(RAPIDJSON_INCLUDE ${rapidjson_pkgs_CFLAGS})
+ENDIF()
+
 FILE(GLOB_RECURSE njson_files njson/src/*.cpp)
 ADD_LIBRARY(njson STATIC ${njson_files})
-TARGET_INCLUDE_DIRECTORIES(njson PRIVATE njson/include)
-IF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
+TARGET_INCLUDE_DIRECTORIES(njson PRIVATE njson/include ${RAPIDJSON_INCLUDE})
+IF(IS_MINGW)
 	TARGET_COMPILE_OPTIONS(njson PRIVATE -Wno-class-memaccess)
 ENDIF()
 INSTALL(DIRECTORY njson/include/njson

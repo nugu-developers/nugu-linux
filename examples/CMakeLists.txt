@@ -1,43 +1,43 @@
 # OAuth2 example
 IF(ENABLE_EXAMPLES_OOB_SETUP)
-    ADD_SUBDIRECTORY(oob_setup)
+	ADD_SUBDIRECTORY(oob_setup)
 ENDIF()
 
 # C/C++ based SDK examples
 IF(ENABLE_EXAMPLES_STANDALONE)
-    ADD_SUBDIRECTORY(standalone)
+	ADD_SUBDIRECTORY(standalone)
 ENDIF()
 
 IF(ENABLE_EXAMPLES_SIMPLE_TEXT)
-    ADD_SUBDIRECTORY(simple_text)
+	ADD_SUBDIRECTORY(simple_text)
 ENDIF()
 
 IF(ENABLE_EXAMPLES_SIMPLE_ASR)
-    ADD_SUBDIRECTORY(simple_asr)
+	ADD_SUBDIRECTORY(simple_asr)
 ENDIF()
 
 IF(ENABLE_EXAMPLES_SIMPLE_PLAY)
-    ADD_SUBDIRECTORY(simple_play)
+	ADD_SUBDIRECTORY(simple_play)
 ENDIF()
 
 IF(ENABLE_EXAMPLES_SIMPLE_TTS)
-    ADD_SUBDIRECTORY(simple_tts)
+	ADD_SUBDIRECTORY(simple_tts)
 ENDIF()
 
 IF(ENABLE_EXAMPLES_PROFILING)
-    ADD_SUBDIRECTORY(profiling)
+	ADD_SUBDIRECTORY(profiling)
 ENDIF()
 
 IF(ENABLE_EXAMPLES_CAP_INJECTION)
-    ADD_SUBDIRECTORY(capability_injection)
+	ADD_SUBDIRECTORY(capability_injection)
 ENDIF()
 
 IF(ENABLE_EXAMPLES_RESP_FILTER)
-    ADD_SUBDIRECTORY(response_filter)
+	ADD_SUBDIRECTORY(response_filter)
 ENDIF()
 
 # A shell script that executes a program using the token information
 # generated in the OAuth2 example.
 INSTALL(PROGRAMS nugusdk_start_sample.sh
-    DESTINATION ${CMAKE_INSTALL_BINDIR}
-    RENAME nugusdk_start_sample)
+	DESTINATION ${CMAKE_INSTALL_BINDIR}
+	RENAME nugusdk_start_sample)
