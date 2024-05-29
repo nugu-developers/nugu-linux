@@ -7,12 +7,27 @@ INCLUDE(FeatureSummary)
 INCLUDE(CMakePushCheckState)
 INCLUDE(CheckSymbolExists)
 
-SET(VERSION_MAJOR 1)
-SET(VERSION_MINOR 7)
-SET(VERSION_PATCH 5)
-SET(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
+# Generate compile_commands.json
+SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-MESSAGE("-- Build information:\n")
+# C++ standard: c++11 (not gnu++11)
+SET(CMAKE_CXX_STANDARD 11)
+SET(CMAKE_CXX_EXTENSIONS OFF)
+
+# C standard: gnu99 (not c99)
+SET(CMAKE_C_STANDARD 99)
+SET(CMAKE_C_EXTENSIONS ON)
+
+# build type: debug (default)
+IF (NOT CMAKE_BUILD_TYPE)
+	SET(CMAKE_BUILD_TYPE Debug)
+ENDIF()
+
+# ----------------------------------------------------------------------------
+# Build environment
+# ----------------------------------------------------------------------------
+
+MESSAGE(STATUS "Build information")
 MESSAGE(" * System: ${CMAKE_SYSTEM_NAME}")
 MESSAGE(" * Compiler: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}")
 MESSAGE(" * CMAKE_GENERATOR = ${CMAKE_GENERATOR}")
@@ -20,6 +35,39 @@ MESSAGE(" * CMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}")
 MESSAGE(" * PROJECT_SOURCE_DIR = ${PROJECT_SOURCE_DIR}")
 MESSAGE(" * CMAKE_BINARY_DIR = ${CMAKE_BINARY_DIR}")
 MESSAGE(" * CMAKE_INSTALL_PREFIX = ${CMAKE_INSTALL_PREFIX}")
+
+IF (MSVC)
+	MESSAGE(STATUS "Using MSVC compiler")
+ENDIF()
+
+# Check for MinGW
+IF (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND WIN32)
+	IF (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 5)
+		SET(IS_MINGW TRUE)
+		MESSAGE(STATUS "Using MinGW compiler")
+	ENDIF()
+ENDIF()
+
+# Check for macOS
+IF (${CMAKE_SYSTEM_NAME} STREQUAL "Darwin")
+	SET(IS_MACOS TRUE)
+	MESSAGE(STATUS "Using macOS")
+ENDIF()
+
+# Check for Linux
+IF (${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+	SET(IS_LINUX TRUE)
+	MESSAGE(STATUS "Using Linux")
+ENDIF()
+
+# ----------------------------------------------------------------------------
+# Variables
+# ----------------------------------------------------------------------------
+
+SET(VERSION_MAJOR 1)
+SET(VERSION_MINOR 7)
+SET(VERSION_PATCH 5)
+SET(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 # OpenSDK/{sdk-version} ({platform}) Client/{app-version} [additional-info]
 SET(NUGU_USERAGENT_FORMAT "OpenSDK/${VERSION} (Linux) Client/%s %s")
@@ -38,33 +86,26 @@ SET(BUILTIN_PLUGIN_LIST "") # Array for built-in plugin
 SET(BUILTIN_PLUGIN_LIBS "") # TARGET_LINK_LIBRARIES for libnugu
 SET(BUILTIN_PLUGIN_DEPS "") # ADD_DEPENDENCIES for libnugu
 
-IF(PLUGIN_DIR)
+IF (PLUGIN_DIR)
 	SET(plugindir "${PLUGIN_DIR}")
 ELSE()
 	SET(plugindir "${CMAKE_INSTALL_FULL_LIBDIR}/nugu")
 ENDIF()
 
-IF(ASSET_DIR)
+IF (ASSET_DIR)
 	SET(assetdir "${ASSET_DIR}")
 ELSE()
 	SET(assetdir "${datadir}")
 ENDIF()
 
-# Generate compile_commands.json
-SET(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+SET(BUILD_LIBRARY ON)
+SET(BUILD_PLUGINS ON)
+SET(BUILD_EXAMPLES ON)
+SET(BUILD_TESTS ON)
 
-# C++ standard: c++11 (not gnu++11)
-SET(CMAKE_CXX_STANDARD 11)
-SET(CMAKE_CXX_EXTENSIONS OFF)
-
-# C standard: gnu99 (not c99)
-SET(CMAKE_C_STANDARD 99)
-SET(CMAKE_C_EXTENSIONS ON)
-
-# build type: debug (default)
-IF (NOT CMAKE_BUILD_TYPE)
-	SET(CMAKE_BUILD_TYPE Debug)
-ENDIF()
+# ----------------------------------------------------------------------------
+# Feature
+# ----------------------------------------------------------------------------
 
 # Macro for feature definition (Get all options: cmake -LAH)
 MACRO(DEFINE_FEATURE id default description)
@@ -72,52 +113,44 @@ MACRO(DEFINE_FEATURE id default description)
 	add_feature_info(FEATURE_${id} ENABLE_${id} "${description} (Default: ${default})")
 ENDMACRO(DEFINE_FEATURE)
 
-IF (PACKAGING)
-	SET(ASAN_DEFAULT "OFF")
-	SET(LTO_DEFAULT "ON")
-ELSE()
-	IF ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
-		SET(ASAN_DEFAULT "ON")
-		SET(LTO_DEFAULT "OFF")
-	ELSE()
+# Feature default value
+IF (IS_LINUX)
+	IF (PACKAGING)
 		SET(ASAN_DEFAULT "OFF")
 		SET(LTO_DEFAULT "ON")
+	ELSE()
+		IF ("${CMAKE_BUILD_TYPE}" STREQUAL "Debug")
+			SET(ASAN_DEFAULT "ON")
+			SET(LTO_DEFAULT "OFF")
+		ELSE()
+			SET(ASAN_DEFAULT "OFF")
+			SET(LTO_DEFAULT "ON")
+		ENDIF()
 	ENDIF()
-ENDIF()
 
-SET(BUILTIN_CURL_DEFAULT "OFF")
-SET(PULSEAUDIO_DEFAULT "OFF")
-SET(PORTAUDIO_PLUGIN_DEFAULT "OFF")
-
-IF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
-	SET(ASAN_DEFAULT "OFF")
-
-	ADD_DEFINITIONS(
-		-DNUGU_PLUGIN_FILE_EXTENSION=".dylib"
-	)
-ELSEIF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
-	ADD_DEFINITIONS(
-		# Run-time buffer overflow detection
-		-D_FORTIFY_SOURCE=2
-
-		-DNUGU_PLUGIN_FILE_EXTENSION=".dll"
-	)
-ELSE()
 	SET(BUILTIN_CURL_DEFAULT "ON")
 	SET(PULSEAUDIO_DEFAULT "ON")
-
-	ADD_DEFINITIONS(
-		# Run-time buffer overflow detection
-		-D_FORTIFY_SOURCE=2
-
-		-DNUGU_PLUGIN_FILE_EXTENSION=".so"
-	)
+ELSE()
+	SET(ASAN_DEFAULT "OFF")
+	SET(LTO_DEFAULT "OFF")
+	SET(BUILTIN_CURL_DEFAULT "OFF")
+	SET(PULSEAUDIO_DEFAULT "OFF")
 ENDIF()
 
 # Set default build options
 DEFINE_FEATURE(LOG_ANSICOLOR ON "ANSI Color to log message")
 DEFINE_FEATURE(LTO ${LTO_DEFAULT} "Link Time Optimization")
 DEFINE_FEATURE(ASAN ${ASAN_DEFAULT} "Address Sanitizer")
+
+DEFINE_FEATURE(LIBRARY_ONLY OFF "compile only SDK libraries")
+DEFINE_FEATURE(PLUGINS_ONLY OFF "compile only plugins")
+DEFINE_FEATURE(EXAMPLES_ONLY OFF "compile only examples")
+
+DEFINE_FEATURE(DL_LINKING ON "-ldl linking")
+DEFINE_FEATURE(SOCKET_LINKING OFF "-lsocket linking")
+DEFINE_FEATURE(EVENTFD ON "eventfd")
+DEFINE_FEATURE(PULSEAUDIO ${PULSEAUDIO_DEFAULT} "pulseaudio")
+
 DEFINE_FEATURE(VENDOR_LIBRARY ON "vendor specific library(nugu_wwd, nugu_epd)")
 DEFINE_FEATURE(VOICE_STREAMING OFF "voice streaming without epd")
 
@@ -126,11 +159,6 @@ DEFINE_FEATURE(BUILTIN_OPUS_FLOAT_API OFF "floating point to OPUS library")
 DEFINE_FEATURE(BUILTIN_CURL ${BUILTIN_CURL_DEFAULT} "compile built-in curl library")
 DEFINE_FEATURE(BUILTIN_PLUGIN "dummy,filedump" "List of plugins to be built-in in SDK")
 
-DEFINE_FEATURE(DL_LINKING ON "-ldl linking")
-DEFINE_FEATURE(SOCKET_LINKING OFF "-lsocket linking")
-DEFINE_FEATURE(EVENTFD ON "eventfd")
-DEFINE_FEATURE(PULSEAUDIO ${PULSEAUDIO_DEFAULT} "pulseaudio")
-
 DEFINE_FEATURE(GSTREAMER_PLUGIN ON "GStreamer plugin")
 DEFINE_FEATURE(GSTREAMER_PLUGIN_VOLUME ON "gstreamer plugin volume")
 DEFINE_FEATURE(OPUS_PLUGIN ON "OPUS plugin")
@@ -138,124 +166,139 @@ DEFINE_FEATURE(SPEEX_PLUGIN ON "SPEEX plugin")
 DEFINE_FEATURE(PORTAUDIO_PLUGIN OFF "PortAudio plugin")
 DEFINE_FEATURE(OPUSENC_PLUGIN OFF "OPUS encoder plugin")
 
-DEFINE_FEATURE(LIBRARY_ONLY OFF "compile only SDK libraries")
-DEFINE_FEATURE(PLUGINS_ONLY OFF "compile only plugins")
-DEFINE_FEATURE(EXAMPLES_ONLY OFF "compile only examples")
+DEFINE_FEATURE(EXAMPLES_OOB_SETUP ${BUILD_EXAMPLES} "Examples - OOB setup")
+DEFINE_FEATURE(EXAMPLES_STANDALONE ${BUILD_EXAMPLES} "Examples - standalone")
+DEFINE_FEATURE(EXAMPLES_SIMPLE_TEXT ${BUILD_EXAMPLES} "Examples - simple-text")
+DEFINE_FEATURE(EXAMPLES_SIMPLE_ASR ${BUILD_EXAMPLES} "Examples - simple-asr")
+DEFINE_FEATURE(EXAMPLES_SIMPLE_PLAY ${BUILD_EXAMPLES} "Examples - simple-play")
+DEFINE_FEATURE(EXAMPLES_SIMPLE_TTS ${BUILD_EXAMPLES} "Examples - simple-tts")
+DEFINE_FEATURE(EXAMPLES_PROFILING ${BUILD_EXAMPLES} "Examples - profiling")
+DEFINE_FEATURE(EXAMPLES_CAP_INJECTION ${BUILD_EXAMPLES} "Examples - capability-injection")
+DEFINE_FEATURE(EXAMPLES_RESP_FILTER ${BUILD_EXAMPLES} "Examples - response-filter")
 
-DEFINE_FEATURE(EXAMPLES_OOB_SETUP ON "Examples - OOB setup")
-DEFINE_FEATURE(EXAMPLES_STANDALONE ON "Examples - standalone")
-DEFINE_FEATURE(EXAMPLES_SIMPLE_TEXT ON "Examples - simple-text")
-DEFINE_FEATURE(EXAMPLES_SIMPLE_ASR ON "Examples - simple-asr")
-DEFINE_FEATURE(EXAMPLES_SIMPLE_PLAY ON "Examples - simple-play")
-DEFINE_FEATURE(EXAMPLES_SIMPLE_TTS ON "Examples - simple-tts")
-DEFINE_FEATURE(EXAMPLES_PROFILING ON "Examples - profiling")
-DEFINE_FEATURE(EXAMPLES_CAP_INJECTION ON "Examples - capability-injection")
-DEFINE_FEATURE(EXAMPLES_RESP_FILTER ON "Examples - response-filter")
-
-# API check
-CMAKE_PUSH_CHECK_STATE(RESET)
-SET(CMAKE_REQUIRED_DEFINITIONS -D_GNU_SOURCE)
-SET(CMAKE_REQUIRED_LIBRARIES "pthread")
-CHECK_SYMBOL_EXISTS(pthread_setname_np "pthread.h" HAVE_PTHREAD_SETNAME_NP)
-IF(ENABLE_EVENTFD)
-	CHECK_SYMBOL_EXISTS(eventfd "sys/eventfd.h" HAVE_EVENTFD)
-ENDIF()
-CHECK_SYMBOL_EXISTS(syscall "unistd.h" HAVE_SYSCALL)
-CMAKE_POP_CHECK_STATE()
-
-IF(HAVE_PTHREAD_SETNAME_NP)
-	ADD_DEFINITIONS(-DHAVE_PTHREAD_SETNAME_NP)
-ENDIF()
-IF(HAVE_EVENTFD)
-	ADD_DEFINITIONS(-DHAVE_EVENTFD)
-ENDIF()
-IF(HAVE_SYSCALL)
-	ADD_DEFINITIONS(-DHAVE_SYSCALL)
+IF (ENABLE_LOG_ANSICOLOR)
+	# Turn on the colorful log message
+	ADD_DEFINITIONS(-DNUGU_LOG_USE_ANSICOLOR)
 ENDIF()
 
-IF(ENABLE_BUILTIN_CURL)
-	SET(CURL_LIBRARY
-		${PROJECT_BINARY_DIR}/curl/lib/libcurl.a
-		${PROJECT_BINARY_DIR}/nghttp2/lib/libnghttp2.a)
-	SET(CURL_PKGCONFIG zlib openssl)
-	SET(CURL_INCLUDE ${PROJECT_SOURCE_DIR}/externals/curl/include)
-ELSE()
-	SET(CURL_LIBRARY)
-	SET(CURL_PKGCONFIG libcurl)
-	SET(CURL_INCLUDE)
+# Link Time Optimization
+IF (ENABLE_LTO)
+	INCLUDE(CheckIPOSupported)
+	check_ipo_supported(RESULT IPO_SUPPORTED)
+	IF (IPO_SUPPORTED)
+		SET(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+		MESSAGE(" * LTO supported and enabled")
+	ENDIF()
 ENDIF()
 
-# set njson variables
-SET(NJSON_LIBRARY ${PROJECT_BINARY_DIR}/externals/libnjson.a)
-INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/externals/njson/include)
-pkg_check_modules(rapidjson_pkgs QUIET RapidJSON)
-IF(rapidjson_pkgs_FOUND)
-	SET(RAPIDJSON_PKGCONFIG RapidJSON)
+# Apply AddressSanitizer
+# - https://github.com/google/sanitizers/wiki/AddressSanitizer
+IF (ENABLE_ASAN)
+	ADD_COMPILE_OPTIONS(
+		-fsanitize=address
+
+		# Disable warning message for '... changed in GCC 7.1'
+		-Wno-psabi)
+	LINK_LIBRARIES(-lasan)
+	MESSAGE(" * Address Sanitizer enabled")
 ENDIF()
 
-IF(ENABLE_VOICE_STREAMING)
-	ADD_DEFINITIONS(-DENABLE_VOICE_STREAMING)
-# Add vendor specific library dependency (keyword detector, end-point detector)
-ELSEIF(ENABLE_VENDOR_LIBRARY)
-	SET(VENDOR_PKGCONFIG nugu-kwd nugu-epd)
-
-	ADD_DEFINITIONS(-DENABLE_VENDOR_LIBRARY)
-ELSE()
-	SET(VENDOR_PKGCONFIG)
-ENDIF()
-
-IF(ENABLE_PULSEAUDIO)
-	ADD_DEFINITIONS(-DENABLE_PULSEAUDIO)
-ENDIF()
-
-IF(ENABLE_DL_LINKING)
-	SET(LDFLAG_DL "-ldl")
-ELSE()
-	SET(LDFLAG_DL "")
-ENDIF()
-
-IF(ENABLE_SOCKET_LINKING)
-	SET(LDFLAG_SOCKET "-lsocket")
-ELSE()
-	SET(LDFLAG_SOCKET "")
-ENDIF()
-
-IF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
-	SET(LDFLAG_WINSOCK "-lws2_32")
-ELSEIF(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-	SET(LDFLAG_WINSOCK "ws2_32.lib")
-ELSE()
-	SET(LDFLAG_WINSOCK "")
-ENDIF()
-
-SET(BUILD_LIBRARY ON)
-SET(BUILD_PLUGINS ON)
-SET(BUILD_EXAMPLES ON)
-
-IF(ENABLE_LIBRARY_ONLY)
+# Settings for building separately
+IF (ENABLE_LIBRARY_ONLY)
 	SET(BUILD_LIBRARY ON)
 	SET(BUILD_PLUGINS OFF)
 	SET(BUILD_EXAMPLES OFF)
 ENDIF()
 
-IF(ENABLE_PLUGINS_ONLY)
+IF (ENABLE_PLUGINS_ONLY)
 	SET(BUILD_LIBRARY OFF)
 	SET(BUILD_PLUGINS ON)
 	SET(BUILD_EXAMPLES OFF)
-
-	# The SPEEX plugin requires nugu-epd.
-	IF(ENABLE_VENDOR_LIBRARY)
-		SET(VENDOR_PKGCONFIG nugu-epd)
-	ENDIF()
 ENDIF()
 
-IF(ENABLE_EXAMPLES_ONLY)
+IF (ENABLE_EXAMPLES_ONLY)
 	SET(BUILD_LIBRARY OFF)
 	SET(BUILD_PLUGINS OFF)
 	SET(BUILD_EXAMPLES ON)
 ENDIF()
 
-IF(ENABLE_BUILTIN_PLUGIN)
+# Optionable compilation flags
+IF (ENABLE_DL_LINKING)
+	IF(MSVC)
+		SET(LDFLAG_DL "kernel32")
+	ELSE()
+		SET(LDFLAG_DL "-ldl")
+	ENDIF()
+ENDIF()
+
+IF (ENABLE_SOCKET_LINKING)
+	SET(LDFLAG_SOCKET "-lsocket")
+ENDIF()
+
+CMAKE_PUSH_CHECK_STATE(RESET)
+SET(CMAKE_REQUIRED_DEFINITIONS -D_GNU_SOURCE)
+SET(CMAKE_REQUIRED_LIBRARIES "pthread")
+CHECK_SYMBOL_EXISTS(pthread_setname_np "pthread.h" HAVE_PTHREAD_SETNAME_NP)
+IF (ENABLE_EVENTFD)
+	CHECK_SYMBOL_EXISTS(eventfd "sys/eventfd.h" HAVE_EVENTFD)
+ENDIF()
+CHECK_SYMBOL_EXISTS(syscall "unistd.h" HAVE_SYSCALL)
+CMAKE_POP_CHECK_STATE()
+
+IF (HAVE_PTHREAD_SETNAME_NP)
+	ADD_DEFINITIONS(-DHAVE_PTHREAD_SETNAME_NP)
+ENDIF()
+IF (HAVE_EVENTFD)
+	ADD_DEFINITIONS(-DHAVE_EVENTFD)
+ENDIF()
+IF (HAVE_SYSCALL)
+	ADD_DEFINITIONS(-DHAVE_SYSCALL)
+ENDIF()
+
+IF (ENABLE_PULSEAUDIO AND BUILD_PLUGINS)
+	ADD_DEFINITIONS(-DENABLE_PULSEAUDIO)
+ENDIF()
+
+# Voice streaming (epd not required) and vendor specific library dependency
+IF (ENABLE_VOICE_STREAMING)
+	ADD_DEFINITIONS(-DENABLE_VOICE_STREAMING)
+
+	IF (BUILD_LIBRARY AND ENABLE_VENDOR_LIBRARY)
+		ADD_DEFINITIONS(-DENABLE_VENDOR_LIBRARY)
+		SET(VENDOR_PKGCONFIG nugu-kwd)
+	ENDIF()
+ELSEIF(ENABLE_VENDOR_LIBRARY)
+	ADD_DEFINITIONS(-DENABLE_VENDOR_LIBRARY)
+
+	IF (BUILD_LIBRARY)
+		# The SDK libraries require both nugu-kwd and nugu-epd
+		SET(VENDOR_PKGCONFIG nugu-kwd nugu-epd)
+	ELSEIF (BUILD_PLUGINS AND ENABLE_SPEEX_PLUGIN)
+		# The Speex plugin requires the speex API provided by nugu-epd
+		SET(VENDOR_PKGCONFIG nugu-epd)
+	ENDIF()
+ENDIF()
+
+# Built-in curl library
+IF (ENABLE_BUILTIN_CURL)
+	SET(CURL_LIBRARY
+		${PROJECT_BINARY_DIR}/curl/lib/libcurl.a
+		${PROJECT_BINARY_DIR}/nghttp2/lib/libnghttp2.a)
+	SET(CURL_INCLUDE ${PROJECT_SOURCE_DIR}/externals/curl/include)
+	SET(CURL_DEP_PKGCONF zlib openssl)
+ELSE()
+	find_package(CURL)
+	IF (CURL_FOUND)
+		SET(CURL_LIBRARY CURL::libcurl)
+	ELSE()
+		pkg_check_modules(CURL_PKG REQUIRED libcurl)
+		SET(CURL_LIBRARY ${CURL_PKG_LDFLAGS})
+		SET(CURL_INCLUDE ${CURL_PKG_CFLAGS})
+	ENDIF()
+ENDIF()
+
+# Built-in plugin (embedding to libnugu)
+IF (ENABLE_BUILTIN_PLUGIN)
 	# Remove \" from plugin list
 	STRING(REPLACE "\"" "" TMPSTR ${ENABLE_BUILTIN_PLUGIN} )
 
@@ -263,45 +306,8 @@ IF(ENABLE_BUILTIN_PLUGIN)
 	STRING(REPLACE "," ";" BUILTIN_PLUGIN_LIST ${TMPSTR})
 ENDIF()
 
-IF(VENDOR_PKGCONFIG)
-	pkg_check_modules(vendor_pkgs REQUIRED ${VENDOR_PKGCONFIG})
-ENDIF()
-
-IF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
-	SET(GIO_PKGCONFIG gio-windows-2.0)
-ELSE()
-	SET(GIO_PKGCONFIG gio-unix-2.0)
-ENDIF()
-
-IF(BUILD_LIBRARY)
-	# Set NUGU SDK library default dependency
-	SET(DEFAULT_LIB_DEPENDENCY
-		glib-2.0 gio-2.0 gthread-2.0 ${GIO_PKGCONFIG}
-		${CURL_PKGCONFIG} ${VENDOR_PKGCONFIG} ${RAPIDJSON_PKGCONFIG})
-
-	# Sets the option so that the built library has a higher link order than
-	# the library already installed on the system.
-	LINK_LIBRARIES(-L${PROJECT_BINARY_DIR}/src)
-ELSE()
-	SET(DEFAULT_LIB_DEPENDENCY nugu)
-
-	# Dummy target
-	ADD_CUSTOM_TARGET(libnugu)
-ENDIF()
-
-# Get CFLAGS and LDFLAGS from pkg-config list
-pkg_check_modules(pkgs REQUIRED ${DEFAULT_LIB_DEPENDENCY})
-FOREACH(flag ${pkgs_CFLAGS})
-	ADD_COMPILE_OPTIONS(${flag})
-ENDFOREACH()
-
-IF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
-	SET(pkgs_LDFLAGS "${pkgs_LDFLAGS} -lstdc++")
-ENDIF()
-
-SET(COMMON_LDFLAGS "${pkgs_LDFLAGS}")
-
-IF(ENABLE_GSTREAMER_PLUGIN)
+# GStreamer library dependency
+IF (ENABLE_GSTREAMER_PLUGIN)
 	pkg_check_modules(gstreamer_pkgs REQUIRED
 		gstreamer-1.0 gstreamer-app-1.0 gstreamer-pbutils-1.0)
 
@@ -310,53 +316,136 @@ IF(ENABLE_GSTREAMER_PLUGIN)
 	ENDIF()
 ENDIF()
 
-# Common compile options
-ADD_COMPILE_OPTIONS(
-	-g -Os
-	-fPIC
+# Opus & Ogg library dependency
+IF (ENABLE_OPUSENC_PLUGIN OR ENABLE_OPUS_PLUGIN)
+	find_package(Opus) # Provide OPUS_LIBRARY, OPUS_INCLUDE_DIR variables
+	IF (NOT Opus_FOUND)
+		pkg_check_modules(OPUS_PKG REQUIRED opus)
+		SET(OPUS_LIBRARY ${OPUS_PKG_LDFLAGS})
+		SET(OPUS_INCLUDE_DIR ${OPUS_PKG_CFLAGS})
+	ENDIF()
 
-	# Improved version of “-fstack-protector” since gcc 4.9
-	-fstack-protector-strong
-
-	# Store the stack frame pointer in a register.
-	-fno-omit-frame-pointer
-
-	# Eliminate unused code and data (with --gc-sections link option)
-	-fdata-sections -ffunction-sections
-
-	# Increase reliability of backtraces
-	-fasynchronous-unwind-tables
-
-	# Turn on all warnings and treat all warnings as errors.
-	-Werror -Wall -Wextra
-
-	# Additional warnings
-	-Wunreachable-code -Wpointer-arith
-	-Wformat=2 -Wno-format-nonliteral
-
-	# Not warnings
-	-Wno-missing-field-initializers
-	-Wno-unused-parameter)
-
-IF (ENABLE_LTO)
-	INCLUDE(CheckIPOSupported)
-	check_ipo_supported(RESULT IPO_SUPPORTED)
-	IF(IPO_SUPPORTED)
-		SET(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
-		MESSAGE(" * LTO supported and enabled")
+	IF (ENABLE_OPUSENC_PLUGIN)
+		find_package(Ogg) # Provide OGG_LIBRARY, OGG_INCLUDE_DIR variables
+		IF(NOT Ogg_FOUND)
+			pkg_check_modules(OGG_PKG REQUIRED ogg)
+			SET(OGG_LIBRARY ${OGG_PKG_LDFLAGS})
+			SET(OGG_INCLUDE_DIR ${OGG_PKG_CFLAGS})
+		ENDIF()
 	ENDIF()
 ENDIF()
 
-IF(ENABLE_ASAN)
-	ADD_COMPILE_OPTIONS(
-		# Apply AddressSanitizer
-		# - https://github.com/google/sanitizers/wiki/AddressSanitizer
-		-fsanitize=address
+# ----------------------------------------------------------------------------
+# Compile options - pkg-config
+# ----------------------------------------------------------------------------
 
-		# Disable warning message for '... changed in GCC 7.1'
-		-Wno-psabi)
-	LINK_LIBRARIES(-lasan)
-	MESSAGE(" * Address Sanitizer enabled")
+# pkg-config list
+IF (BUILD_LIBRARY)
+	IF (IS_MINGW OR MSVC)
+		SET(GIO_PKGCONFIG gio-windows-2.0)
+	ELSE()
+		SET(GIO_PKGCONFIG gio-unix-2.0)
+	ENDIF()
+
+	# Set NUGU SDK library default dependency
+	SET(DEFAULT_LIB_DEPENDENCY glib-2.0 gio-2.0 gthread-2.0
+		${GIO_PKGCONFIG} ${CURL_DEP_PKGCONF})
+ELSE()
+	SET(DEFAULT_LIB_DEPENDENCY nugu)
+ENDIF()
+
+# Set compile flags from pkg-config list
+pkg_check_modules(pkgs REQUIRED ${DEFAULT_LIB_DEPENDENCY})
+IF (MSVC)
+	FOREACH(flag ${pkgs_INCLUDE_DIRS})
+		INCLUDE_DIRECTORIES(${flag})
+	ENDFOREACH()
+ELSE()
+	FOREACH(flag ${pkgs_CFLAGS})
+		ADD_COMPILE_OPTIONS(${flag})
+	ENDFOREACH()
+ENDIF()
+
+LINK_DIRECTORIES(${pkgs_LIBRARY_DIRS})
+
+IF (VENDOR_PKGCONFIG)
+	pkg_check_modules(vendor_pkgs REQUIRED ${VENDOR_PKGCONFIG})
+	IF (MSVC)
+		INCLUDE_DIRECTORIES(${vendor_pkgs_INCLUDE_DIRS})
+	ELSE()
+		ADD_COMPILE_OPTIONS(${vendor_pkgs_CFLAGS})
+	ENDIF()
+
+	# Change array to space separated string
+	STRING(REPLACE ";" " " requires "${VENDOR_PKGCONFIG}")
+ENDIF()
+
+# Set link flags from pkg-config list
+IF (IS_MINGW)
+	SET(pkgs_LDFLAGS ${pkgs_LDFLAGS} -lstdc++)
+ELSEIF (MSVC)
+	find_package(PThreads4W REQUIRED)
+	SET(COMMON_LDFLAGS PThreads4W::PThreads4W)
+ENDIF()
+
+IF (BUILD_LIBRARY)
+	IF (MSVC)
+		SET(COMMON_LDFLAGS ${COMMON_LDFLAGS} ${pkgs_LIBRARIES})
+	ELSE()
+		SET(COMMON_LDFLAGS ${COMMON_LDFLAGS} ${vendor_pkgs_LDFLAGS})
+
+		# Sets the option so that the built library has a higher link order than
+		# the library already installed on the system.
+		LINK_LIBRARIES(-L${PROJECT_BINARY_DIR}/src)
+	ENDIF()
+ENDIF()
+
+IF (NOT MSVC)
+	SET(COMMON_LDFLAGS ${COMMON_LDFLAGS} ${pkgs_LDFLAGS})
+ENDIF()
+
+# ----------------------------------------------------------------------------
+# Compile options
+# ----------------------------------------------------------------------------
+
+IF (NOT BUILD_LIBRARY)
+	# Dummy target
+	ADD_CUSTOM_TARGET(libnugu)
+ENDIF()
+
+IF (NOT IS_MACOS)
+	# Run-time buffer overflow detection
+	ADD_DEFINITIONS(-D_FORTIFY_SOURCE=2)
+ENDIF()
+
+# Global compile options
+IF (NOT MSVC)
+	ADD_COMPILE_OPTIONS(
+		-g -Os
+		-fPIC
+
+		# Improved version of “-fstack-protector” since gcc 4.9
+		-fstack-protector-strong
+
+		# Store the stack frame pointer in a register.
+		-fno-omit-frame-pointer
+
+		# Eliminate unused code and data (with --gc-sections link option)
+		-fdata-sections -ffunction-sections
+
+		# Increase reliability of backtraces
+		-fasynchronous-unwind-tables
+
+		# Turn on all warnings and treat all warnings as errors.
+		-Werror -Wall -Wextra
+
+		# Additional warnings
+		-Wunreachable-code -Wpointer-arith
+		-Wformat=2 -Wno-format-nonliteral
+
+		# Not warnings
+		-Wno-missing-field-initializers
+		-Wno-unused-parameter)
 ENDIF()
 
 # Compiler specific options (gcc, clang)
@@ -373,13 +462,13 @@ IF (CMAKE_COMPILER_IS_GNUCC)
 		# Not warnings (GCC 10.3 issue)
 		STRING(APPEND CMAKE_C_FLAGS " -Wno-analyzer-malloc-leak")
 
-		IF(CMAKE_SYSTEM_NAME MATCHES "MINGW")
+		IF (IS_MINGW)
 			# Not warnings (false alarm in window)
 			STRING(APPEND CMAKE_C_FLAGS " -Wno-analyzer-fd-leak")
 		ENDIF()
 	ENDIF()
 
-	IF(NOT CMAKE_SYSTEM_NAME MATCHES "MINGW")
+	IF (NOT IS_MINGW)
 		ADD_COMPILE_OPTIONS(
 			# Non-executable stack
 			-Wa,--execstack
@@ -408,14 +497,16 @@ IF (CMAKE_COMPILER_IS_GNUCC)
 	ENDIF()
 
 	# Add __FILENAME__ macro to use path from source directory instead of full path
-	IF(CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 8.0)
+	IF (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER 8.0)
 		ADD_COMPILE_OPTIONS(-fmacro-prefix-map=${PROJECT_SOURCE_DIR}/=)
 	ELSE()
-		IF(CMAKE_GENERATOR MATCHES "Unix Makefiles")
+		IF (CMAKE_GENERATOR MATCHES "Unix Makefiles")
 			SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${PROJECT_SOURCE_DIR})/,,$(abspath $<))\"'")
 			SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D__FILENAME__='\"$(subst $(realpath ${PROJECT_SOURCE_DIR})/,,$(abspath $<))\"'")
 		ENDIF()
 	ENDIF()
+ELSEIF (MSVC)
+	ADD_COMPILE_OPTIONS(/W0 /utf-8)
 ELSE()
 	ADD_COMPILE_OPTIONS(-fmacro-prefix-map=${PROJECT_SOURCE_DIR}/=)
 
@@ -424,16 +515,13 @@ ELSE()
 	ENDIF()
 ENDIF()
 
-IF(ENABLE_LOG_ANSICOLOR)
-	# Turn on the colorful log message
-	ADD_DEFINITIONS(-DNUGU_LOG_USE_ANSICOLOR)
-ENDIF()
-
 # Set asset file path
 ADD_DEFINITIONS(-DNUGU_ASSET_PATH="${assetdir}")
 
 # Global definitions
 ADD_DEFINITIONS(
+	-DNUGU_PLUGIN_FILE_EXTENSION="${CMAKE_SHARED_LIBRARY_SUFFIX}"
+
 	# Environment variable names
 	# - Please comment out the following definition to avoid overwriting
 	#   the value by setting an environment variable. (e.g. Production)
@@ -460,9 +548,10 @@ ADD_DEFINITIONS(
 MESSAGE("")
 feature_summary(WHAT ALL)
 
-IF(BUILD_LIBRARY)
+IF (BUILD_LIBRARY)
 	# Global include directories
 	INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)
+	INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/externals/njson/include)
 
 	FOREACH(item ${BUILTIN_PLUGIN_LIST})
 		SET(builtin_decl "${builtin_decl}extern struct nugu_plugin_desc _builtin_plugin_${item};\n")
@@ -477,20 +566,16 @@ ENDIF()
 ADD_SUBDIRECTORY(externals)
 
 # Plugins
-IF(BUILD_PLUGINS)
+IF (BUILD_PLUGINS)
 	ADD_SUBDIRECTORY(plugins)
 ENDIF()
 
-IF(BUILD_LIBRARY)
+IF (BUILD_LIBRARY)
 	# Install header files
 	INSTALL(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
 
 	# Install pkgconfig
-	IF(ENABLE_VOICE_STREAMING)
-		CONFIGURE_FILE(nugu-no-epd.pc.in ${PROJECT_BINARY_DIR}/nugu.pc @ONLY)
-	ELSE()
-		CONFIGURE_FILE(nugu.pc.in ${PROJECT_BINARY_DIR}/nugu.pc @ONLY)
-	ENDIF()
+	CONFIGURE_FILE(nugu.pc.in ${PROJECT_BINARY_DIR}/nugu.pc @ONLY)
 	INSTALL(FILES ${PROJECT_BINARY_DIR}/nugu.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
 
 	# Install asset files
@@ -502,11 +587,13 @@ IF(BUILD_LIBRARY)
 	ADD_SUBDIRECTORY(src)
 
 	# Unit tests
-	ADD_SUBDIRECTORY(tests)
+	IF (BUILD_TESTS)
+		ADD_SUBDIRECTORY(tests)
+	ENDIF()
 ENDIF()
 
 # Examples
-IF(BUILD_EXAMPLES)
+IF (BUILD_EXAMPLES)
 	ADD_SUBDIRECTORY(examples)
 ENDIF()
 
