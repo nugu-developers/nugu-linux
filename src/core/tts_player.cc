@@ -84,7 +84,7 @@ TTSPlayer::TTSPlayer(int volume)
     nugu_dbg("player's name: %s", d->player_name.c_str());
 
     d->player = nugu_pcm_new(d->player_name.c_str(), nugu_pcm_driver_get_default(),
-        (NuguAudioProperty) { NUGU_AUDIO_SAMPLE_RATE_22K, NUGU_AUDIO_FORMAT_S16_LE, 1 });
+        { NUGU_AUDIO_SAMPLE_RATE_22K, NUGU_AUDIO_FORMAT_S16_LE, 1 });
     if (!d->player) {
         nugu_error("couldn't create tts player");
         return;
