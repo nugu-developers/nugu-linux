@@ -107,10 +107,10 @@ int main(int argc, char* argv[])
     nugu_client = std::make_shared<NuguClient>();
 
     /* Create System, AudioPlayer capability default */
-    auto system_handler(std::shared_ptr<ISystemHandler>(
-        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>()));
-    auto audio_player_handler(std::shared_ptr<IAudioPlayerHandler>(
-        CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>()));
+    auto system_handler = std::shared_ptr<ISystemHandler>(
+        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>());
+    auto audio_player_handler = std::shared_ptr<IAudioPlayerHandler>(
+        CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>());
 
     /* Create a Text capability */
     text_handler = std::shared_ptr<ITextHandler>(

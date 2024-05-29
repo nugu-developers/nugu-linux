@@ -17,6 +17,7 @@
 #ifndef __NUGU_BLUETOOTH_INTERFACE_H__
 #define __NUGU_BLUETOOTH_INTERFACE_H__
 
+#include <nugu.h>
 #include <clientkit/capability_interface.hh>
 
 namespace NuguCapability {
@@ -62,7 +63,7 @@ typedef struct _BTDeviceInfo {
  * @brief bluetooth listener interface
  * @see IBluetoothHandler
  */
-class IBluetoothListener : virtual public ICapabilityListener {
+class NUGU_API IBluetoothListener : virtual public ICapabilityListener {
 public:
     virtual ~IBluetoothListener() = default;
 
@@ -116,7 +117,7 @@ public:
  * @brief bluetooth handler interface
  * @see IBluetoothListener
  */
-class IBluetoothHandler : virtual public ICapabilityInterface {
+class NUGU_API IBluetoothHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IBluetoothHandler() = default;
 

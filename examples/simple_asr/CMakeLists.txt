@@ -1,4 +1,4 @@
 ADD_EXECUTABLE(nugu_simple_asr main_asr.cc)
-TARGET_LINK_LIBRARIES(nugu_simple_asr ${pkgs_LDFLAGS} -lnugu -lstdc++)
+TARGET_LINK_LIBRARIES(nugu_simple_asr ${pkgs_LDFLAGS} libnugu -lstdc++)
 ADD_DEPENDENCIES(nugu_simple_asr libnugu)
 INSTALL(TARGETS nugu_simple_asr RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})

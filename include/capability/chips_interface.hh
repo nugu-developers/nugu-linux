@@ -17,6 +17,7 @@
 #ifndef __NUGU_CHIPS_INTERFACE_H__
 #define __NUGU_CHIPS_INTERFACE_H__
 
+#include <nugu.h>
 #include <clientkit/capability_interface.hh>
 
 namespace NuguCapability {
@@ -72,7 +73,7 @@ typedef struct _ChipsInfo {
  * @brief chips listener interface
  * @see IChipsHandler
  */
-class IChipsListener : virtual public ICapabilityListener {
+class NUGU_API IChipsListener : virtual public ICapabilityListener {
 public:
     virtual ~IChipsListener() = default;
 
@@ -87,7 +88,7 @@ public:
  * @brief chips handler interface
  * @see IChipsListener
  */
-class IChipsHandler : virtual public ICapabilityInterface {
+class NUGU_API IChipsHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IChipsHandler() = default;
 

@@ -17,6 +17,7 @@
 #ifndef __NUGU_MEDIA_PLAYER_INTERFACE_H__
 #define __NUGU_MEDIA_PLAYER_INTERFACE_H__
 
+#include <nugu.h>
 #include <base/nugu_audio.h>
 #include <string>
 
@@ -60,7 +61,7 @@ enum class MediaPlayerEvent {
  * @brief mediaplayer listener interface
  * @see IMediaPlayer
  */
-class IMediaPlayerListener {
+class NUGU_API IMediaPlayerListener {
 public:
     virtual ~IMediaPlayerListener() = default;
 
@@ -111,7 +112,7 @@ public:
  * @brief mediaplayer interface
  * @see IMediaPlayerListener
  */
-class IMediaPlayer {
+class NUGU_API IMediaPlayer {
 public:
     virtual ~IMediaPlayer() = default;
 
@@ -261,7 +262,7 @@ public:
  * @brief ttsplayer interface
  * @see IMediaPlayer
  */
-class ITTSPlayer : public IMediaPlayer {
+class NUGU_API ITTSPlayer : public IMediaPlayer {
 public:
     virtual ~ITTSPlayer() = default;
 

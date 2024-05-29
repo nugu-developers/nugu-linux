@@ -22,6 +22,7 @@
 #include <string>
 #include <vector>
 
+#include <nugu.h>
 #include <base/nugu_event.h>
 #include <base/nugu_network_manager.h>
 #include <clientkit/capability_interface.hh>
@@ -43,12 +44,12 @@ namespace NuguClientKit {
 /**
  * @brief Capability
  */
-class Capability;
+class NUGU_API Capability;
 
 /**
  * @brief CapabilityEvent
  */
-class CapabilityEvent {
+class NUGU_API CapabilityEvent {
 public:
     explicit CapabilityEvent(const std::string& name, Capability* cap);
     virtual ~CapabilityEvent();
@@ -117,7 +118,7 @@ private:
 /**
  * @brief Capability
  */
-class Capability : virtual public ICapabilityInterface {
+class NUGU_API Capability : virtual public ICapabilityInterface {
 public:
     explicit Capability(const std::string& name, const std::string& ver = "1.0");
     virtual ~Capability();

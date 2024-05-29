@@ -21,6 +21,7 @@
 #include <string>
 #include <vector>
 
+#include <nugu.h>
 #include <base/nugu_directive.h>
 
 namespace NuguClientKit {
@@ -62,7 +63,7 @@ enum class PlayStackActivity {
  * @brief IPlaySyncManagerListener interface
  * @see IPlaySyncManager
  */
-class IPlaySyncManagerListener {
+class NUGU_API IPlaySyncManagerListener {
 public:
     virtual ~IPlaySyncManagerListener() = default;
 
@@ -92,7 +93,7 @@ public:
  * @brief IPlaySyncManager interface
  * @see IPlaySyncManagerListener
  */
-class IPlaySyncManager {
+class NUGU_API IPlaySyncManager {
 public:
     using PlaySyncContainer = std::map<std::string, std::pair<PlaySyncState, void*>>;
     using PlayStacks = std::map<std::string, PlaySyncContainer>;

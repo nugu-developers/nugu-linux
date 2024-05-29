@@ -17,6 +17,7 @@
 #ifndef __NUGU_CORE_CONTAINER_INTERFACE_H__
 #define __NUGU_CORE_CONTAINER_INTERFACE_H__
 
+#include <nugu.h>
 #include <clientkit/capability_helper_interface.hh>
 #include <clientkit/media_player_interface.hh>
 #include <clientkit/network_manager_interface.hh>
@@ -40,7 +41,7 @@ namespace NuguClientKit {
 /**
  * @brief NuguCoreContainer interface
  */
-class INuguCoreContainer {
+class NUGU_API INuguCoreContainer {
 public:
     virtual ~INuguCoreContainer() = default;
 

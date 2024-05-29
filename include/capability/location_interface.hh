@@ -17,6 +17,7 @@
 #ifndef __NUGU_LOCATION_INTERFACE_H__
 #define __NUGU_LOCATION_INTERFACE_H__
 
+#include <nugu.h>
 #include <clientkit/capability_interface.hh>
 
 namespace NuguCapability {
@@ -46,7 +47,7 @@ typedef struct _LocationInfo {
  * @brief location listener interface
  * @see ILocationHandler
  */
-class ILocationListener : virtual public ICapabilityListener {
+class NUGU_API ILocationListener : virtual public ICapabilityListener {
 public:
     virtual ~ILocationListener() = default;
 
@@ -61,7 +62,7 @@ public:
  * @brief location handler interface
  * @see ILocationListener
  */
-class ILocationHandler : virtual public ICapabilityInterface {
+class NUGU_API ILocationHandler : virtual public ICapabilityInterface {
 public:
     virtual ~ILocationHandler() = default;
 };

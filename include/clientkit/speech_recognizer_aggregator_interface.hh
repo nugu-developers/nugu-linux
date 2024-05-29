@@ -19,6 +19,7 @@
 
 #include <memory>
 
+#include <nugu.h>
 #include <capability/asr_interface.hh>
 #include <clientkit/wakeup_interface.hh>
 
@@ -64,7 +65,7 @@ typedef struct _RecognitionResult {
  * @brief SpeechRecognizerAggregator listener interface
  * @see ISpeechRecognizerAggregator
  */
-class ISpeechRecognizerAggregatorListener {
+class NUGU_API ISpeechRecognizerAggregatorListener {
 public:
     virtual ~ISpeechRecognizerAggregatorListener() = default;
 
@@ -96,7 +97,7 @@ public:
  * @brief SpeechRecognizerAggregator interface
  * @see ISpeechRecognizerAggregatorListener
  */
-class ISpeechRecognizerAggregator {
+class NUGU_API ISpeechRecognizerAggregator {
 public:
     virtual ~ISpeechRecognizerAggregator() = default;
 

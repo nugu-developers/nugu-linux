@@ -17,6 +17,7 @@
 #ifndef __NUGU_MESSAGE_INTERFACE_H__
 #define __NUGU_MESSAGE_INTERFACE_H__
 
+#include <nugu.h>
 #include <clientkit/capability.hh>
 
 namespace NuguCapability {
@@ -47,7 +48,7 @@ enum class MessageState {
  * @brief message listener interface
  * @see IMessageHandler
  */
-class IMessageListener : virtual public ICapabilityListener {
+class NUGU_API IMessageListener : virtual public ICapabilityListener {
 public:
     virtual ~IMessageListener() = default;
 
@@ -83,7 +84,7 @@ public:
  * @brief message handler interface
  * @see IMessageListener
  */
-class IMessageHandler : virtual public ICapabilityInterface {
+class NUGU_API IMessageHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IMessageHandler() = default;
 

@@ -17,6 +17,7 @@
 #ifndef __NUGU_WAKEUP_INTERFACE_H__
 #define __NUGU_WAKEUP_INTERFACE_H__
 
+#include <nugu.h>
 #include <string>
 
 namespace NuguClientKit {
@@ -55,7 +56,7 @@ typedef struct _WakeupModelFile {
  * @brief Wakeup listener interface
  * @see IWakeupHandler
  */
-class IWakeupListener {
+class NUGU_API IWakeupListener {
 public:
     virtual ~IWakeupListener() = default;
 
@@ -73,7 +74,7 @@ public:
  * @brief Wakeup handler interface
  * @see IWakeupListener
  */
-class IWakeupHandler {
+class NUGU_API IWakeupHandler {
 public:
     virtual ~IWakeupHandler() = default;
 

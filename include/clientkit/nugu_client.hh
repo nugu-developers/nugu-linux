@@ -20,6 +20,7 @@
 #include <memory>
 #include <string>
 
+#include <nugu.h>
 #include <clientkit/capability_interface.hh>
 #include <clientkit/dialog_ux_state_aggregator_interface.hh>
 #include <clientkit/nugu_core_container_interface.hh>
@@ -39,18 +40,18 @@ namespace NuguClientKit {
  * @{
  */
 
-class NuguClientImpl;
+class NUGU_API NuguClientImpl;
 
 /**
  * @brief NUGU Client
  * @see INuguClientListener
  */
-class NuguClient {
+class NUGU_API NuguClient {
 public:
     /**
      * @brief CapabilityBuilder
      */
-    class CapabilityBuilder {
+    class NUGU_API CapabilityBuilder {
     public:
         /**
          * @brief Add capability instance. It could create from CapabilityFactory or by self as inhering ICapabilityInterface

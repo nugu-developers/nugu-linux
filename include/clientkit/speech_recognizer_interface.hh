@@ -17,6 +17,7 @@
 #ifndef __NUGU_SPEECH_RECOGNIZER_INTERFACE_H__
 #define __NUGU_SPEECH_RECOGNIZER_INTERFACE_H__
 
+#include <nugu.h>
 #include <string>
 
 namespace NuguClientKit {
@@ -58,7 +59,7 @@ typedef struct _EpdAttribute {
  * @brief SpeechRecognizer listener interface
  * @see ISpeechRecognizer
  */
-class ISpeechRecognizerListener {
+class NUGU_API ISpeechRecognizerListener {
 public:
     virtual ~ISpeechRecognizerListener() = default;
 
@@ -82,7 +83,7 @@ public:
  * @brief SpeechRecognizer interface
  * @see ISpeechRecognizerListener
  */
-class ISpeechRecognizer {
+class NUGU_API ISpeechRecognizer {
 public:
     virtual ~ISpeechRecognizer() = default;
 

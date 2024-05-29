@@ -23,16 +23,17 @@
 
 #include <glib.h>
 
+#include "nugu.h"
 #include "clientkit/directive_sequencer_interface.hh"
 
 namespace NuguCore {
 
 using namespace NuguClientKit;
 
-class LookupTable;
-class DialogDirectiveList;
+class NUGU_API LookupTable;
+class NUGU_API DialogDirectiveList;
 
-class DirectiveSequencer : public IDirectiveSequencer {
+class NUGU_API DirectiveSequencer : public IDirectiveSequencer {
 
 public:
     DirectiveSequencer();

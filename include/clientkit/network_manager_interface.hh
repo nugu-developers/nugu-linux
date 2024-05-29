@@ -17,6 +17,7 @@
 #ifndef __NUGU_NETWORK_MANAGER_INTERFACE_H__
 #define __NUGU_NETWORK_MANAGER_INTERFACE_H__
 
+#include <nugu.h>
 #include <string>
 #include <base/nugu_event.h>
 
@@ -51,7 +52,7 @@ enum class NetworkError {
  * @brief network manager listener interface
  * @see INetworkManager
  */
-class INetworkManagerListener {
+class NUGU_API INetworkManagerListener {
 public:
     virtual ~INetworkManagerListener() = default;
 
@@ -100,7 +101,7 @@ public:
  * @brief network manager interface
  * @see INetworkManagerListener
  */
-class INetworkManager {
+class NUGU_API INetworkManager {
 public:
     virtual ~INetworkManager() = default;
 

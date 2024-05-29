@@ -20,6 +20,7 @@
 #include <functional>
 #include <string>
 
+#include <nugu.h>
 #include <base/nugu_http.h>
 
 namespace NuguClientKit {
@@ -38,7 +39,7 @@ namespace NuguClientKit {
 /**
  * @brief NUGU HTTP Rest
  */
-class NuguHttpRest {
+class NUGU_API NuguHttpRest {
 public:
     explicit NuguHttpRest(const std::string& url);
     virtual ~NuguHttpRest();

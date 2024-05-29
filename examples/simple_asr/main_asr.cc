@@ -172,12 +172,12 @@ int main()
     nugu_client = std::make_shared<NuguClient>();
 
     /* Create System, AudioPlayer, Text capability default */
-    auto system_handler(std::shared_ptr<ISystemHandler>(
-        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>()));
-    auto audio_player_handler(std::shared_ptr<IAudioPlayerHandler>(
-        CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>()));
-    auto text_handler(std::shared_ptr<ITextHandler>(
-        CapabilityFactory::makeCapability<TextAgent, ITextHandler>()));
+    auto system_handler = std::shared_ptr<ISystemHandler>(
+        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>());
+    auto audio_player_handler = std::shared_ptr<IAudioPlayerHandler>(
+        CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>());
+    auto text_handler = std::shared_ptr<ITextHandler>(
+        CapabilityFactory::makeCapability<TextAgent, ITextHandler>());
 
     /* Create an ASR capability with model file path */
     auto my_asr_listener(std::make_shared<MyASR>());

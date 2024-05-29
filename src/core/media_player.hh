@@ -19,6 +19,7 @@
 
 #include <string>
 
+#include "nugu.h"
 #include "base/nugu_media.h"
 #include "base/nugu_player.h"
 #include "clientkit/media_player_interface.hh"
@@ -28,7 +29,7 @@ namespace NuguCore {
 using namespace NuguClientKit;
 
 class MediaPlayerPrivate;
-class MediaPlayer : public IMediaPlayer {
+class NUGU_API MediaPlayer : public IMediaPlayer {
 public:
     explicit MediaPlayer(int volume = NUGU_SET_VOLUME_MAX);
     virtual ~MediaPlayer();

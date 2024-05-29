@@ -20,9 +20,10 @@
 #include <string.h>
 #ifdef _WIN32
 #include <windows.h>
+#else
+#include <unistd.h>
 #endif
 #include <pthread.h>
-#include <unistd.h>
 
 #include "clientkit/nugu_runner.hh"
 

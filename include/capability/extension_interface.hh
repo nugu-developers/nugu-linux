@@ -17,6 +17,7 @@
 #ifndef __NUGU_EXTENSION_INTERFACE_H__
 #define __NUGU_EXTENSION_INTERFACE_H__
 
+#include <nugu.h>
 #include <clientkit/capability_interface.hh>
 
 namespace NuguCapability {
@@ -38,7 +39,7 @@ using namespace NuguClientKit;
  * @brief extension listener interface
  * @see IExtensionHandler
  */
-class IExtensionListener : virtual public ICapabilityListener {
+class NUGU_API IExtensionListener : virtual public ICapabilityListener {
 public:
     virtual ~IExtensionListener() = default;
 
@@ -61,7 +62,7 @@ public:
  * @brief extension handler interface
  * @see IExtensionListener
  */
-class IExtensionHandler : virtual public ICapabilityInterface {
+class NUGU_API IExtensionHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IExtensionHandler() = default;
 

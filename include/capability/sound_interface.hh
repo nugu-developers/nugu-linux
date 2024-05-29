@@ -17,6 +17,7 @@
 #ifndef __NUGU_SOUND_INTERFACE_H__
 #define __NUGU_SOUND_INTERFACE_H__
 
+#include <nugu.h>
 #include <clientkit/capability_interface.hh>
 
 namespace NuguCapability {
@@ -46,7 +47,7 @@ enum class BeepType {
  * @brief sound listener interface
  * @see ISoundHandler
  */
-class ISoundListener : virtual public ICapabilityListener {
+class NUGU_API ISoundListener : virtual public ICapabilityListener {
 public:
     virtual ~ISoundListener() = default;
 
@@ -62,7 +63,7 @@ public:
  * @brief sound handler interface
  * @see ISoundListener
  */
-class ISoundHandler : virtual public ICapabilityInterface {
+class NUGU_API ISoundHandler : virtual public ICapabilityInterface {
 public:
     virtual ~ISoundHandler() = default;
 

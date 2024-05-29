@@ -354,10 +354,10 @@ int main(int argc, char* argv[])
     nugu_client = std::make_shared<NuguClient>();
 
     /* Create System, AudioPlayer, Text capability default */
-    auto system_handler(std::shared_ptr<ISystemHandler>(
-        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>()));
-    auto audio_player_handler(std::shared_ptr<IAudioPlayerHandler>(
-        CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>()));
+    auto system_handler = std::shared_ptr<ISystemHandler>(
+        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>());
+    auto audio_player_handler = std::shared_ptr<IAudioPlayerHandler>(
+        CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>());
 
     /* Create an ASR capability with model file path */
     auto my_asr_listener(std::make_shared<MyASR>());
@@ -366,9 +366,9 @@ int main(int argc, char* argv[])
     asr_handler->setAttribute(ASRAttribute { model_path, "CLIENT", "COMPLETE" });
 
     /* Create a TTS capability */
-    auto tts_listener(std::make_shared<MyTTSListener>());
-    auto tts_handler(std::shared_ptr<ITTSHandler>(
-        CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(tts_listener.get())));
+    auto tts_listener = std::make_shared<MyTTSListener>();
+    auto tts_handler = std::shared_ptr<ITTSHandler>(
+        CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(tts_listener.get()));
 
     /* Register build-in capabilities */
     nugu_client->getCapabilityBuilder()

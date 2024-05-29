@@ -19,6 +19,7 @@
 
 #include <memory>
 
+#include "nugu.h"
 #include "capability/asr_interface.hh"
 #include "capability/chips_interface.hh"
 #include "capability/tts_interface.hh"
@@ -30,7 +31,7 @@ namespace NuguClientKit {
 
 using namespace NuguCapability;
 
-class DialogUXStateAggregator : public IASRListener,
+class NUGU_API DialogUXStateAggregator : public IASRListener,
                                 public ITTSListener,
                                 public IChipsListener,
                                 public IInteractionControlManagerListener {

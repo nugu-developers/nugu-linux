@@ -17,6 +17,7 @@
 #ifndef __NUGU_RUNNER_H__
 #define __NUGU_RUNNER_H__
 
+#include <nugu.h>
 #include <functional>
 #include <memory>
 #include <string>
@@ -35,7 +36,7 @@ namespace NuguClientKit {
  * @{
  */
 
-struct NuguRunnerPrivate;
+struct NUGU_API NuguRunnerPrivate;
 
 /**
  * @brief ExecuteType
@@ -49,7 +50,7 @@ enum class ExecuteType {
 /**
  * @brief NuguRunner
  */
-class NuguRunner {
+class NUGU_API NuguRunner {
 public:
     /**
      * @brief The request method callback

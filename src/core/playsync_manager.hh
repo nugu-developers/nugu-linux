@@ -22,6 +22,7 @@
 #include <set>
 #include <vector>
 
+#include "nugu.h"
 #include "base/nugu_directive.h"
 
 #include "clientkit/playsync_manager_interface.hh"
@@ -32,7 +33,7 @@ namespace NuguCore {
 
 using namespace NuguClientKit;
 
-class PlaySyncManager : public IPlaySyncManager,
+class NUGU_API PlaySyncManager : public IPlaySyncManager,
                         public IPlayStackManagerListener {
 public:
     PlaySyncManager();

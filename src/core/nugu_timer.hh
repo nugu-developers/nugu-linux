@@ -17,14 +17,15 @@
 #ifndef __NUGU_TIMER_HH__
 #define __NUGU_TIMER_HH__
 
+#include "nugu.h"
 #include "clientkit/nugu_timer_interface.hh"
 
 namespace NuguCore {
 
 using namespace NuguClientKit;
 
-class NUGUTimerPrivate;
-class NUGUTimer : public INuguTimer {
+class NUGU_API NUGUTimerPrivate;
+class NUGU_API NUGUTimer : public INuguTimer {
 public:
     NUGUTimer(bool singleshot = false);
     virtual ~NUGUTimer();

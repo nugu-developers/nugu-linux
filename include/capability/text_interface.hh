@@ -17,6 +17,7 @@
 #ifndef __NUGU_TEXT_INTERFACE_H__
 #define __NUGU_TEXT_INTERFACE_H__
 
+#include <nugu.h>
 #include <clientkit/capability_interface.hh>
 
 namespace NuguCapability {
@@ -62,7 +63,7 @@ typedef struct _TextAttribute {
  * @brief text listener interface
  * @see ITextHandler
  */
-class ITextListener : virtual public ICapabilityListener {
+class NUGU_API ITextListener : virtual public ICapabilityListener {
 public:
     virtual ~ITextListener() = default;
 
@@ -101,7 +102,7 @@ public:
  * @brief text handler interface
  * @see ITextListener
  */
-class ITextHandler : virtual public ICapabilityInterface {
+class NUGU_API ITextHandler : virtual public ICapabilityInterface {
 public:
     virtual ~ITextHandler() = default;
 

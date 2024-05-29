@@ -20,6 +20,7 @@
 #include <list>
 #include <njson/njson.h>
 
+#include <nugu.h>
 #include <base/nugu_event.h>
 #include <clientkit/directive_sequencer_interface.hh>
 #include <clientkit/focus_manager_interface.hh>
@@ -43,7 +44,7 @@ namespace NuguClientKit {
 /**
  * @brief CapabilityHelper interface
  */
-class ICapabilityHelper {
+class NUGU_API ICapabilityHelper {
 public:
     virtual ~ICapabilityHelper() = default;
 

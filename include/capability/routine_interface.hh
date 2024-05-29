@@ -17,6 +17,7 @@
 #ifndef __NUGU_ROUTINE_INTERFACE_H__
 #define __NUGU_ROUTINE_INTERFACE_H__
 
+#include <nugu.h>
 #include <clientkit/capability_interface.hh>
 
 namespace NuguCapability {
@@ -38,7 +39,7 @@ using namespace NuguClientKit;
  * @brief routine listener interface
  * @see IRoutineHandler
  */
-class IRoutineListener : virtual public ICapabilityListener {
+class NUGU_API IRoutineListener : virtual public ICapabilityListener {
 public:
     virtual ~IRoutineListener() = default;
 };
@@ -47,7 +48,7 @@ public:
  * @brief routine handler interface
  * @see IRoutineListener
  */
-class IRoutineHandler : virtual public ICapabilityInterface {
+class NUGU_API IRoutineHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IRoutineHandler() = default;
 

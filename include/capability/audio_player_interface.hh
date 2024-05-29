@@ -17,6 +17,7 @@
 #ifndef __NUGU_AUDIO_PLAYER_INTERFACE_H__
 #define __NUGU_AUDIO_PLAYER_INTERFACE_H__
 
+#include <nugu.h>
 #include <capability/display_interface.hh>
 #include <clientkit/capability_interface.hh>
 
@@ -73,7 +74,7 @@ enum class RepeatType {
  * @brief audioplayer listener interface
  * @see IAudioPlayerHandler
  */
-class IAudioPlayerListener : virtual public ICapabilityListener {
+class NUGU_API IAudioPlayerListener : virtual public ICapabilityListener {
 public:
     virtual ~IAudioPlayerListener() = default;
 
@@ -142,7 +143,7 @@ public:
  * @brief audioplayer's display listener interface
  * @see IAudioPlayerHandler
  */
-class IAudioPlayerDisplayListener : virtual public IDisplayListener {
+class NUGU_API IAudioPlayerDisplayListener : virtual public IDisplayListener {
 public:
     virtual ~IAudioPlayerDisplayListener() = default;
 
@@ -180,7 +181,7 @@ public:
  * @brief audioplayer handler interface
  * @see IAudioPlayerListener
  */
-class IAudioPlayerHandler : virtual public ICapabilityInterface,
+class NUGU_API IAudioPlayerHandler : virtual public ICapabilityInterface,
                             virtual public IDisplayHandler {
 public:
     virtual ~IAudioPlayerHandler() = default;

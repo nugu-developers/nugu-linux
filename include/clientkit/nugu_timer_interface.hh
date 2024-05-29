@@ -17,6 +17,7 @@
 #ifndef __NUGU_TIMER_INTERFACE_H__
 #define __NUGU_TIMER_INTERFACE_H__
 
+#include <nugu.h>
 #include <functional>
 #include <string>
 
@@ -39,7 +40,7 @@ namespace NuguClientKit {
 /**
  * @brief nugu timer interface
  */
-class INuguTimer {
+class NUGU_API INuguTimer {
 public:
     /**
      * @brief Timer Callback

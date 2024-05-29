@@ -17,6 +17,7 @@
 #ifndef __CAPABILITY_FACTORY_H__
 #define __CAPABILITY_FACTORY_H__
 
+#include <nugu.h>
 #include <clientkit/capability_interface.hh>
 
 namespace NuguCapability {
@@ -38,107 +39,107 @@ using namespace NuguClientKit;
 /**
  * @brief ASRAgent
  */
-class ASRAgent;
+class NUGU_API ASRAgent;
 
 /**
  * @brief TTSAgent
  */
-class TTSAgent;
+class NUGU_API TTSAgent;
 
 /**
  * @brief AudioPlayerAgent
  */
-class AudioPlayerAgent;
+class NUGU_API AudioPlayerAgent;
 
 /**
  * @brief SystemAgent
  */
-class SystemAgent;
+class NUGU_API SystemAgent;
 
 /**
  * @brief TextAgent
  */
-class TextAgent;
+class NUGU_API TextAgent;
 
 /**
  * @brief SpeakerAgent
  */
-class SpeakerAgent;
+class NUGU_API SpeakerAgent;
 
 /**
  * @brief MicAgent
  */
-class MicAgent;
+class NUGU_API MicAgent;
 
 /**
  * @brief SoundAgent
  */
-class SoundAgent;
+class NUGU_API SoundAgent;
 
 /**
  * @brief SessionAgent
  */
-class SessionAgent;
+class NUGU_API SessionAgent;
 
 /**
  * @brief DisplayAgent
  */
-class DisplayAgent;
+class NUGU_API DisplayAgent;
 
 /**
  * @brief UtilityAgent
  */
-class UtilityAgent;
+class NUGU_API UtilityAgent;
 
 /**
  * @brief ExtensionAgent
  */
-class ExtensionAgent;
+class NUGU_API ExtensionAgent;
 
 /**
  * @brief ChipsAgent
  */
-class ChipsAgent;
+class NUGU_API ChipsAgent;
 
 /**
  * @brief NudgeAgent
  */
-class NudgeAgent;
+class NUGU_API NudgeAgent;
 
 /**
  * @brief RoutineAgent
  */
-class RoutineAgent;
+class NUGU_API RoutineAgent;
 
 /**
  * @brief PhoneCallAgent
  */
-class PhoneCallAgent;
+class NUGU_API PhoneCallAgent;
 
 /**
  * @brief MessageAgent
  */
-class MessageAgent;
+class NUGU_API MessageAgent;
 
 /**
  * @brief BluetoothAgent
  */
-class BluetoothAgent;
+class NUGU_API BluetoothAgent;
 
 /**
  * @brief LocationAgent
  */
-class LocationAgent;
+class NUGU_API LocationAgent;
 
 /**
  * @brief BatteryAgent
  */
-class BatteryAgent;
+class NUGU_API BatteryAgent;
 
 /**
  * @brief CapabilityFactory
  */
-class CapabilityFactory {
+class NUGU_API CapabilityFactory {
 public:
     CapabilityFactory() = delete;
 

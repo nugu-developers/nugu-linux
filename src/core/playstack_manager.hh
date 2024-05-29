@@ -20,6 +20,7 @@
 #include <memory>
 #include <set>
 
+#include "nugu.h"
 #include "clientkit/playsync_manager_interface.hh"
 #include "nugu_timer.hh"
 
@@ -33,7 +34,7 @@ enum class PlayStackRemoveMode {
     Later
 };
 
-class IPlayStackManagerListener {
+class NUGU_API IPlayStackManagerListener {
 public:
     virtual ~IPlayStackManagerListener() = default;
 
@@ -41,13 +42,13 @@ public:
     virtual void onStackRemoved(const std::string& ps_id) = 0;
 };
 
-class IStackTimer : public NUGUTimer {
+class NUGU_API IStackTimer : public NUGUTimer {
 public:
     virtual ~IStackTimer() = default;
     virtual bool isStarted() = 0;
 };
 
-class PlayStackManager {
+class NUGU_API PlayStackManager {
 public:
     using PlayStack = std::pair<std::map<std::string, PlayStackActivity>, std::vector<std::string>>;
     using PlayStackHoldTimes = struct _PlayStackHoldTimes {

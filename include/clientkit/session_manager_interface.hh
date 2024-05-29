@@ -17,6 +17,7 @@
 #ifndef __NUGU_SESSION_MANAGER_INTERFACE_H__
 #define __NUGU_SESSION_MANAGER_INTERFACE_H__
 
+#include <nugu.h>
 #include <njson/njson.h>
 #include <string>
 
@@ -46,7 +47,7 @@ typedef struct _Session {
  * @brief ISessionManagerListener interface
  * @see ISessionManager
  */
-class ISessionManagerListener {
+class NUGU_API ISessionManagerListener {
 public:
     virtual ~ISessionManagerListener() = default;
 
@@ -68,7 +69,7 @@ public:
  * @brief SessionManager interface
  * @see ISessionManagerListener
  */
-class ISessionManager {
+class NUGU_API ISessionManager {
 public:
     virtual ~ISessionManager() = default;
 

@@ -38,7 +38,7 @@
 #include "capability/capability_factory.hh"
 
 #define TEMPLATE_EXPLICIT_INSTANTIATION(agent, handler) \
-    template handler* CapabilityFactory::makeCapability<agent, handler>(ICapabilityListener* listener)
+    template NUGU_API handler* CapabilityFactory::makeCapability<agent, handler>(ICapabilityListener* listener)
 
 namespace NuguCapability {
 

@@ -17,6 +17,7 @@
 #ifndef __NUGU_SESSION_INTERFACE_H__
 #define __NUGU_SESSION_INTERFACE_H__
 
+#include <nugu.h>
 #include <clientkit/capability_interface.hh>
 
 namespace NuguCapability {
@@ -47,7 +48,7 @@ enum class SessionState {
  * @brief session listener interface
  * @see ISessionHandler
  */
-class ISessionListener : virtual public ICapabilityListener {
+class NUGU_API ISessionListener : virtual public ICapabilityListener {
 public:
     virtual ~ISessionListener() = default;
 
@@ -63,7 +64,7 @@ public:
  * @brief session handler interface
  * @see ISessionListener
  */
-class ISessionHandler : virtual public ICapabilityInterface {
+class NUGU_API ISessionHandler : virtual public ICapabilityInterface {
 public:
     virtual ~ISessionHandler() = default;
 };

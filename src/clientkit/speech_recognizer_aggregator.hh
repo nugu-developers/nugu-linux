@@ -17,11 +17,12 @@
 #ifndef __SPEECH_RECOGNIZER_AGGREGATOR_H__
 #define __SPEECH_RECOGNIZER_AGGREGATOR_H__
 
+#include "nugu.h"
 #include "clientkit/speech_recognizer_aggregator_interface.hh"
 
 namespace NuguClientKit {
 
-class SpeechRecognizerAggregator : public ISpeechRecognizerAggregator,
+class NUGU_API SpeechRecognizerAggregator : public ISpeechRecognizerAggregator,
                                    public IWakeupListener,
                                    public IASRListener {
 public:

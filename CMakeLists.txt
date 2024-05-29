@@ -383,6 +383,10 @@ IF(ENABLE_ASAN)
 	MESSAGE(" * Address Sanitizer enabled")
 ENDIF()
 
+if(MSVC)
+	ADD_COMPILE_OPTIONS(/utf-8)
+endif()
+
 # Compiler specific options (gcc, clang)
 IF (CMAKE_COMPILER_IS_GNUCC)
 	# Enable a new static analysis pass and associated warnings. (Introduced gcc v10.1)
