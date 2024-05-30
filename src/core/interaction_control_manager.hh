@@ -26,7 +26,7 @@ namespace NuguCore {
 
 using namespace NuguClientKit;
 
-class InteractionControlManager : public IInteractionControlManager {
+class NUGU_API InteractionControlManager : public IInteractionControlManager {
 public:
     using Requesters = std::set<std::string>;
 

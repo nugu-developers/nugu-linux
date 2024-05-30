@@ -25,13 +25,14 @@
 #include <vector>
 
 #include "clientkit/routine_manager_interface.hh"
+#include "nugu.h"
 #include "nugu_timer.hh"
 
 namespace NuguCore {
 
 using namespace NuguClientKit;
 
-class RoutineManager : public IRoutineManager {
+class NUGU_API RoutineManager : public IRoutineManager {
 public:
     using RoutineAction = struct _RoutineAction {
         std::string type;
