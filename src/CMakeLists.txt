@@ -41,16 +41,15 @@ FOREACH(lib ${BUILTIN_PLUGIN_DEPS})
 	ADD_DEPENDENCIES(libnugu ${lib})
 ENDFOREACH()
 
+TARGET_INCLUDE_DIRECTORIES(libnugu PRIVATE ${GST_INCLUDE_DIR})
+TARGET_COMPILE_OPTIONS(libnugu PRIVATE ${GST_CFLAGS})
+
 # Gstreamer does not support dynamic loading/unloading of their libraries.
 # Therefore, add the library dependency to NUGU SDK instead of NUGU Plugin.
-FOREACH(flag ${gstreamer_pkgs_CFLAGS})
-	TARGET_COMPILE_OPTIONS(libnugu PRIVATE ${flag})
-ENDFOREACH(flag)
-
 IF(CMAKE_COMPILER_IS_GNUCC)
-	TARGET_LINK_LIBRARIES(libnugu PUBLIC -Wl,--no-as-needed ${gstreamer_pkgs_LDFLAGS})
+	TARGET_LINK_LIBRARIES(libnugu PRIVATE -Wl,--no-as-needed ${GST_LIBRARY})
 ELSE()
-	TARGET_LINK_LIBRARIES(libnugu PUBLIC ${gstreamer_pkgs_LDFLAGS})
+	TARGET_LINK_LIBRARIES(libnugu PRIVATE ${GST_LIBRARY})
 ENDIF()
 
 IF(IS_MINGW OR MSVC)
