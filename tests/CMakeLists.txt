@@ -1,13 +1,13 @@
 # Test resources
 ADD_LIBRARY(plugin_dummy SHARED plugin_dummy.c)
-SET_TARGET_PROPERTIES(plugin_dummy PROPERTIES PREFIX "" OUTPUT_NAME plugin_dummy)
+SET_TARGET_PROPERTIES(plugin_dummy PROPERTIES PREFIX "" OUTPUT_NAME nugu_plugin_dummy)
 
 ADD_LIBRARY(plugin_nugu SHARED plugin_nugu.c)
-SET_TARGET_PROPERTIES(plugin_nugu PROPERTIES PREFIX "" OUTPUT_NAME plugin_nugu)
+SET_TARGET_PROPERTIES(plugin_nugu PROPERTIES PREFIX "" OUTPUT_NAME nugu_plugin_nugu)
 ADD_DEPENDENCIES(plugin_nugu libnugu)
 
 ADD_LIBRARY(plugin_nugu_custom SHARED plugin_nugu_custom.c)
-SET_TARGET_PROPERTIES(plugin_nugu_custom PROPERTIES PREFIX "" OUTPUT_NAME plugin_nugu_custom)
+SET_TARGET_PROPERTIES(plugin_nugu_custom PROPERTIES PREFIX "" OUTPUT_NAME nugu_plugin_nugu_custom)
 ADD_DEPENDENCIES(plugin_nugu_custom libnugu)
 
 # Unit tests

@@ -158,11 +158,11 @@ static void test_plugin_load(void)
 	g_assert(nugu_plugin_new_from_file(PLUGIN_NOFILE) == NULL);
 
 	/* Not the nugu plugin (can't get pre-defined symbol) */
-#define PLUGIN_DUMMY RUNPATH "/plugin_dummy" NUGU_PLUGIN_FILE_EXTENSION
+#define PLUGIN_DUMMY RUNPATH "/nugu_plugin_dummy" NUGU_PLUGIN_FILE_EXTENSION
 	g_assert(nugu_plugin_new_from_file(PLUGIN_DUMMY) == NULL);
 
 	/* nugu plugin */
-#define PLUGIN_NUGU RUNPATH "/plugin_nugu" NUGU_PLUGIN_FILE_EXTENSION
+#define PLUGIN_NUGU RUNPATH "/nugu_plugin_nugu" NUGU_PLUGIN_FILE_EXTENSION
 	plugin = nugu_plugin_new_from_file(PLUGIN_NUGU);
 	g_assert(plugin != NULL);
 
@@ -184,7 +184,7 @@ static void test_plugin_load(void)
 
 	/* nugu plugin with custom symbol */
 #define PLUGIN_NUGU_CUSTOM                                                     \
-	RUNPATH "/plugin_nugu_custom" NUGU_PLUGIN_FILE_EXTENSION
+	RUNPATH "/nugu_plugin_nugu_custom" NUGU_PLUGIN_FILE_EXTENSION
 
 	plugin = nugu_plugin_new_from_file(PLUGIN_NUGU_CUSTOM);
 	g_assert(plugin != NULL);
