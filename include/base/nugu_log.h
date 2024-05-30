@@ -47,74 +47,74 @@ extern "C" {
 
 #ifndef NUGU_ANSI_COLOR_NORMAL
 #ifdef NUGU_LOG_USE_ANSICOLOR
-#define NUGU_ANSI_COLOR_NORMAL       "\e[0m"
+#define NUGU_ANSI_COLOR_NORMAL       "\x1b[0m"
 #else
 #define NUGU_ANSI_COLOR_NORMAL       ""
 #endif
 #endif
 
 #ifndef NUGU_ANSI_COLOR_BLACK
-#define NUGU_ANSI_COLOR_BLACK        "\e[0;30m"
+#define NUGU_ANSI_COLOR_BLACK        "\x1b[0;30m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_RED
-#define NUGU_ANSI_COLOR_RED          "\e[0;31m"
+#define NUGU_ANSI_COLOR_RED          "\x1b[0;31m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_GREEN
-#define NUGU_ANSI_COLOR_GREEN        "\e[0;32m"
+#define NUGU_ANSI_COLOR_GREEN        "\x1b[0;32m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_BROWN
-#define NUGU_ANSI_COLOR_BROWN        "\e[0;33m"
+#define NUGU_ANSI_COLOR_BROWN        "\x1b[0;33m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_BLUE
-#define NUGU_ANSI_COLOR_BLUE         "\e[0;34m"
+#define NUGU_ANSI_COLOR_BLUE         "\x1b[0;34m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_MAGENTA
-#define NUGU_ANSI_COLOR_MAGENTA      "\e[0;35m"
+#define NUGU_ANSI_COLOR_MAGENTA      "\x1b[0;35m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_CYAN
-#define NUGU_ANSI_COLOR_CYAN         "\e[0;36m"
+#define NUGU_ANSI_COLOR_CYAN         "\x1b[0;36m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_LIGHTGRAY
-#define NUGU_ANSI_COLOR_LIGHTGRAY    "\e[0;37m"
+#define NUGU_ANSI_COLOR_LIGHTGRAY    "\x1b[0;37m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_DARKGRAY
-#define NUGU_ANSI_COLOR_DARKGRAY     "\e[1;30m"
+#define NUGU_ANSI_COLOR_DARKGRAY     "\x1b[1;30m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_LIGHTRED
-#define NUGU_ANSI_COLOR_LIGHTRED     "\e[1;31m"
+#define NUGU_ANSI_COLOR_LIGHTRED     "\x1b[1;31m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_LIGHTGREEN
-#define NUGU_ANSI_COLOR_LIGHTGREEN   "\e[1;32m"
+#define NUGU_ANSI_COLOR_LIGHTGREEN   "\x1b[1;32m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_YELLOW
-#define NUGU_ANSI_COLOR_YELLOW       "\e[1;33m"
+#define NUGU_ANSI_COLOR_YELLOW       "\x1b[1;33m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_LIGHTBLUE
-#define NUGU_ANSI_COLOR_LIGHTBLUE    "\e[1;34m"
+#define NUGU_ANSI_COLOR_LIGHTBLUE    "\x1b[1;34m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_LIGHTMAGENTA
-#define NUGU_ANSI_COLOR_LIGHTMAGENTA "\e[1;35m"
+#define NUGU_ANSI_COLOR_LIGHTMAGENTA "\x1b[1;35m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_LIGHTCYAN
-#define NUGU_ANSI_COLOR_LIGHTCYAN    "\e[1;36m"
+#define NUGU_ANSI_COLOR_LIGHTCYAN    "\x1b[1;36m"
 #endif
 
 #ifndef NUGU_ANSI_COLOR_WHITE
-#define NUGU_ANSI_COLOR_WHITE        "\e[1;37m"
+#define NUGU_ANSI_COLOR_WHITE        "\x1b[1;37m"
 #endif
 
 /**
