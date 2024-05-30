@@ -311,6 +311,15 @@ IF (ENABLE_GSTREAMER_PLUGIN)
 	pkg_check_modules(gstreamer_pkgs REQUIRED
 		gstreamer-1.0 gstreamer-app-1.0 gstreamer-pbutils-1.0)
 
+	IF (MSVC)
+		SET(GST_LIBRARY ${gstreamer_pkgs_LIBRARIES})
+	ELSE()
+		SET(GST_CFLAGS ${gstreamer_pkgs_CFLAGS})
+		SET(GST_LIBRARY ${gstreamer_pkgs_LDFLAGS})
+	ENDIF()
+
+	SET(GST_INCLUDE_DIR ${gstreamer_pkgs_INCLUDE_DIRS})
+
 	IF(ENABLE_GSTREAMER_PLUGIN_VOLUME)
 		ADD_DEFINITIONS(-DENABLE_GSTREAMER_PLUGIN_VOLUME)
 	ENDIF()
