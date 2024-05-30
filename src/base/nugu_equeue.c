@@ -65,7 +65,7 @@ struct _econtainer {
 };
 
 static struct _equeue *_equeue;
-static pthread_mutex_t _lock;
+static pthread_mutex_t _lock = PTHREAD_MUTEX_INITIALIZER;
 
 static void on_item_destroy(gpointer data)
 {
