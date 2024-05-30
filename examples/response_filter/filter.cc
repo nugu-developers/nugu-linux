@@ -5,7 +5,7 @@
 
 #include <base/nugu_log.h>
 #include <capability/tts_interface.hh>
-#include <clientkit/nugu_client.hh>
+#include <clientkit/directive_sequencer_interface.hh>
 #include <njson/njson.h>
 
 #include "filter.h"

@@ -264,6 +264,55 @@ public:
     }
 };
 
+#ifdef _WIN32
+static char *optarg;
+static int optind = 1, opterr = 1, optopt;
+
+static char *next = NULL;
+
+static int getopt(int argc, char * const argv[], const char *optstring) {
+    if (optind == 0) {
+        optind = 1;
+        next = NULL;
+    }
+    if (next == NULL || *next == '\0') {
+        if (optind == argc || argv[optind][0] != '-' || argv[optind][1] == '\0') {
+            return -1;
+        }
+        if (strcmp(argv[optind], "--") == 0) {
+            optind++;
+            return -1;
+        }
+        next = argv[optind] + 1;
+        optind++;
+    }
+
+    optopt = *next++;
+    const char *opt = strchr(optstring, optopt);
+    if (opt == NULL || optopt == ':') {
+        if (opterr) {
+            fprintf(stderr, "Unknown option -%c\n", optopt);
+        }
+        return '?';
+    }
+    if (opt[1] == ':') {
+        if (*next != '\0') {
+            optarg = next;
+            next = NULL;
+        } else if (optind < argc) {
+            optarg = argv[optind];
+            optind++;
+        } else {
+            if (opterr) {
+                fprintf(stderr, "Option -%c requires an argument\n", optopt);
+            }
+            return '?';
+        }
+    }
+    return optopt;
+}
+#endif
+
 int main(int argc, char* argv[])
 {
     std::shared_ptr<NuguClient> nugu_client;
@@ -325,7 +374,11 @@ int main(int argc, char* argv[])
     if (test_name.size() == 0)
         test_name = input_file;
 
+#ifdef _WIN32
+    _putenv_s("NUGU_RECORDING_FROM_FILE", input_file.c_str());
+#else
     setenv("NUGU_RECORDING_FROM_FILE", input_file.c_str(), 1);
+#endif
 
     fp_out = fopen(output_file.c_str(), "w");
     if (!fp_out) {
@@ -357,10 +410,10 @@ int main(int argc, char* argv[])
     nugu_client = std::make_shared<NuguClient>();
 
     /* Create System, AudioPlayer, Text capability default */
-    auto system_handler(std::shared_ptr<ISystemHandler>(
-        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>()));
-    auto audio_player_handler(std::shared_ptr<IAudioPlayerHandler>(
-        CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>()));
+    auto system_handler = std::shared_ptr<ISystemHandler>(
+        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>());
+    auto audio_player_handler = std::shared_ptr<IAudioPlayerHandler>(
+        CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>());
 
     /* Create an ASR capability with model file path */
     auto my_asr_listener(std::make_shared<MyASR>());
@@ -369,9 +422,9 @@ int main(int argc, char* argv[])
     asr_handler->setAttribute(ASRAttribute { model_path, "CLIENT", "COMPLETE" });
 
     /* Create a TTS capability */
-    auto tts_listener(std::make_shared<MyTTSListener>());
-    auto tts_handler(std::shared_ptr<ITTSHandler>(
-        CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(tts_listener.get())));
+    auto tts_listener = std::make_shared<MyTTSListener>();
+    auto tts_handler = std::shared_ptr<ITTSHandler>(
+        CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(tts_listener.get()));
 
     /* Register build-in capabilities */
     nugu_client->getCapabilityBuilder()

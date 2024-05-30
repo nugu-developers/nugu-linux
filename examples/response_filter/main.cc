@@ -177,7 +177,7 @@ public:
 
 int main(int argc, char* argv[])
 {
-    const char *env_token;
+    const char* env_token;
 
     env_token = getenv("NUGU_TOKEN");
     if (env_token == NULL) {
@@ -200,10 +200,10 @@ int main(int argc, char* argv[])
     nugu_client = std::make_shared<NuguClient>();
 
     /* Create System, AudioPlayer capability default */
-    auto system_handler(std::shared_ptr<ISystemHandler>(
-        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>()));
-    auto audio_player_handler(std::shared_ptr<IAudioPlayerHandler>(
-        CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>()));
+    auto system_handler = std::shared_ptr<ISystemHandler>(
+        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>());
+    auto audio_player_handler = std::shared_ptr<IAudioPlayerHandler>(
+        CapabilityFactory::makeCapability<AudioPlayerAgent, IAudioPlayerHandler>());
 
     /* Create a Text capability */
     text_handler = std::shared_ptr<ITextHandler>(
@@ -216,9 +216,9 @@ int main(int argc, char* argv[])
     asr_handler->setAttribute(ASRAttribute { NUGU_ASSET_PATH "/model", "CLIENT", "PARTIAL" });
 
     /* Create a TTS capability */
-    auto tts_listener(std::make_shared<MyTTSListener>());
-    auto tts_handler(std::shared_ptr<ITTSHandler>(
-        CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(tts_listener.get())));
+    auto tts_listener = std::make_shared<MyTTSListener>();
+    auto tts_handler = std::shared_ptr<ITTSHandler>(
+        CapabilityFactory::makeCapability<TTSAgent, ITTSHandler>(tts_listener.get()));
 
     filter_register(nugu_client.get());
 
