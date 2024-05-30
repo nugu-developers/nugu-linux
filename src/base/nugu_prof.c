@@ -118,7 +118,7 @@ static struct nugu_prof_data _prof_data[NUGU_PROF_TYPE_MAX + 1];
 
 static NuguProfCallback _callback;
 static void *_callback_userdata;
-static pthread_mutex_t _lock;
+static pthread_mutex_t _lock = PTHREAD_MUTEX_INITIALIZER;
 static gboolean _trace;
 
 static void _fill_timestr(char *dest_buf, size_t bufsize, gint64 msec)
