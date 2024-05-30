@@ -25,15 +25,16 @@
 #include "clientkit/dialog_ux_state_aggregator_interface.hh"
 #include "clientkit/interaction_control_manager_interface.hh"
 #include "clientkit/session_manager_interface.hh"
+#include "nugu.h"
 
 namespace NuguClientKit {
 
 using namespace NuguCapability;
 
-class DialogUXStateAggregator : public IASRListener,
-                                public ITTSListener,
-                                public IChipsListener,
-                                public IInteractionControlManagerListener {
+class NUGU_API DialogUXStateAggregator : public IASRListener,
+                                         public ITTSListener,
+                                         public IChipsListener,
+                                         public IInteractionControlManagerListener {
 public:
     explicit DialogUXStateAggregator(ISessionManager* session_manager);
     virtual ~DialogUXStateAggregator();

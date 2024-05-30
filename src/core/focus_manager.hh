@@ -23,19 +23,20 @@
 #include <memory>
 
 #include "clientkit/focus_manager_interface.hh"
+#include "nugu.h"
 
 namespace NuguCore {
 
 using namespace NuguClientKit;
 
-class IFocusResourceObserver {
+class NUGU_API IFocusResourceObserver {
 public:
     virtual ~IFocusResourceObserver() = default;
 
     virtual void onFocusChanged(const std::string& type, const std::string& name, FocusState state) = 0;
 };
 
-class FocusResource {
+class NUGU_API FocusResource {
 public:
     FocusResource(const std::string& type, const std::string& name, int request_priority, int release_priority, IFocusResourceListener* listener, IFocusResourceObserver* observer);
     virtual ~FocusResource() = default;
@@ -55,8 +56,8 @@ public:
     IFocusResourceObserver* observer;
 };
 
-class FocusManager : public IFocusManager,
-                     public IFocusResourceObserver {
+class NUGU_API FocusManager : public IFocusManager,
+                              public IFocusResourceObserver {
 public:
     FocusManager();
     virtual ~FocusManager() = default;

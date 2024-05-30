@@ -18,12 +18,13 @@
 #define __SPEECH_RECOGNIZER_AGGREGATOR_H__
 
 #include "clientkit/speech_recognizer_aggregator_interface.hh"
+#include "nugu.h"
 
 namespace NuguClientKit {
 
-class SpeechRecognizerAggregator : public ISpeechRecognizerAggregator,
-                                   public IWakeupListener,
-                                   public IASRListener {
+class NUGU_API SpeechRecognizerAggregator : public ISpeechRecognizerAggregator,
+                                            public IWakeupListener,
+                                            public IASRListener {
 public:
     SpeechRecognizerAggregator();
     virtual ~SpeechRecognizerAggregator();

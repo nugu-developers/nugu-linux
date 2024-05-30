@@ -23,6 +23,7 @@
 #include <vector>
 
 #include "base/nugu_directive.h"
+#include "nugu.h"
 
 #include "clientkit/playsync_manager_interface.hh"
 #include "interaction_control_manager.hh"
@@ -32,8 +33,8 @@ namespace NuguCore {
 
 using namespace NuguClientKit;
 
-class PlaySyncManager : public IPlaySyncManager,
-                        public IPlayStackManagerListener {
+class NUGU_API PlaySyncManager : public IPlaySyncManager,
+                                 public IPlayStackManagerListener {
 public:
     PlaySyncManager();
     virtual ~PlaySyncManager();

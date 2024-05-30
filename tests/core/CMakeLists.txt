@@ -18,6 +18,13 @@ SET(test_core_media_player_srcs
 	../../src/core/nugu_timer.cc
 	../../src/core/media_player.cc)
 
+# doesn't work timer mock in msvc cause of PDB issue.
+IF(MSVC)
+	LIST(REMOVE_ITEM UNIT_TESTS
+		"test_core_nugu_timer"
+		"test_core_media_player")
+ENDIF()
+
 FOREACH(test ${UNIT_TESTS})
 	SET(SRC ${test}.cc)
 	IF (${test}_srcs)

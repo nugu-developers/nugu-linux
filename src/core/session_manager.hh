@@ -21,12 +21,13 @@
 #include <vector>
 
 #include "clientkit/session_manager_interface.hh"
+#include "nugu.h"
 
 namespace NuguCore {
 
 using namespace NuguClientKit;
 
-class SessionManager : public ISessionManager {
+class NUGU_API SessionManager : public ISessionManager {
 public:
     using ActiveDialogs = std::vector<std::pair<std::string, int>>;
     using Sessions = std::map<std::string, Session>;
