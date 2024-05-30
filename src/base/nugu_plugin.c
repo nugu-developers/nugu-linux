@@ -227,6 +227,8 @@ int nugu_plugin_load_directory(const char *dirpath)
 
 	g_return_val_if_fail(plugin_path != NULL, -1);
 
+	nugu_info("plugin path: %s", plugin_path);
+
 	dir = g_dir_open(plugin_path, 0, NULL);
 	if (!dir) {
 		nugu_error("g_dir_open(%s) failed", plugin_path);
@@ -234,9 +236,19 @@ int nugu_plugin_load_directory(const char *dirpath)
 	}
 
 	while ((file = g_dir_read_name(dir)) != NULL) {
-		if (g_str_has_prefix(file, "lib") == TRUE ||
-		    g_str_has_suffix(file, NUGU_PLUGIN_FILE_EXTENSION) == FALSE)
+		/* Allow only shared library (e.g. *.so, *.dylib, *.dll) */
+		if (g_str_has_suffix(file, NUGU_PLUGIN_FILE_EXTENSION) == FALSE)
 			continue;
+
+#ifdef _WIN32
+		/* Allow only 'nugu_plugin_{xxx}' filename */
+		if (g_str_has_prefix(file, "nugu_plugin_") == FALSE)
+			continue;
+#else
+		/* Skip all 'lib{xxx}' filename */
+		if (g_str_has_prefix(file, "lib") == TRUE)
+			continue;
+#endif
 
 		filename = g_build_filename(plugin_path, file, NULL);
 		p = nugu_plugin_new_from_file(filename);
