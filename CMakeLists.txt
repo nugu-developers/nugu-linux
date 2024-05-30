@@ -157,7 +157,7 @@ DEFINE_FEATURE(VOICE_STREAMING OFF "voice streaming without epd")
 DEFINE_FEATURE(BUILTIN_OPUS OFF "compile built-in OPUS library")
 DEFINE_FEATURE(BUILTIN_OPUS_FLOAT_API OFF "floating point to OPUS library")
 DEFINE_FEATURE(BUILTIN_CURL ${BUILTIN_CURL_DEFAULT} "compile built-in curl library")
-DEFINE_FEATURE(BUILTIN_PLUGIN "dummy,filedump" "List of plugins to be built-in in SDK")
+SET(ENABLE_BUILTIN_PLUGIN "dummy,filedump" CACHE STRING "List of plugins to be built-in in SDK")
 
 DEFINE_FEATURE(GSTREAMER_PLUGIN ON "GStreamer plugin")
 DEFINE_FEATURE(GSTREAMER_PLUGIN_VOLUME ON "gstreamer plugin volume")
