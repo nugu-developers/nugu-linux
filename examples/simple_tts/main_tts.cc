@@ -114,8 +114,8 @@ int main(int argc, char* argv[])
     nugu_client = std::make_shared<NuguClient>();
 
     /* Create System capability */
-    auto system_handler(std::shared_ptr<ISystemHandler>(
-        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>()));
+    auto system_handler = std::shared_ptr<ISystemHandler>(
+        CapabilityFactory::makeCapability<SystemAgent, ISystemHandler>());
 
     /* Create a TTS capability */
     auto tts_listener(std::make_shared<MyTTSListener>());

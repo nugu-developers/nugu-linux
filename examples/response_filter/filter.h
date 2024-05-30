@@ -1,9 +1,11 @@
 #ifndef __EXAMPLES_FILTER_H__
 #define __EXAMPLES_FILTER_H__
 
-#include <clientkit/directive_sequencer_interface.hh>
+#include <clientkit/nugu_client.hh>
 
-int filter_register(NuguClientKit::NuguClient *sequencer);
+using namespace NuguClientKit;
+
+int filter_register(NuguClientKit::NuguClient* client);
 void filter_remove(void);
 
 #endif

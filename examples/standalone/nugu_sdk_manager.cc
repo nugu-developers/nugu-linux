@@ -33,7 +33,9 @@ void msg_info(std::string&& message)
 {
     NuguSampleManager::info(std::move(message));
 }
+}
 
+namespace CustomImpl {
 template <typename T, typename... Ts>
 std::unique_ptr<T> make_unique(Ts&&... params)
 {
@@ -103,8 +105,8 @@ void SpeakerController::toggleMute()
  ******************************************************************************/
 
 NuguSDKManager::NuguSDKManager(NuguSampleManager* manager)
-    : speaker_controller(make_unique<SpeakerController>())
-    , speech_recognizer_aggregator_listener(make_unique<SpeechRecognizerAggregatorListener>(DEFAULT_WAKEUP_WORD))
+    : speaker_controller(CustomImpl::make_unique<SpeakerController>())
+    , speech_recognizer_aggregator_listener(CustomImpl::make_unique<SpeechRecognizerAggregatorListener>(DEFAULT_WAKEUP_WORD))
     , nugu_sample_manager(manager)
     , bluetooth_status(BluetoothStatus::getInstance())
     , speaker_status(SpeakerStatus::getInstance())
@@ -215,8 +217,8 @@ void NuguSDKManager::composeSDKCommands()
 
 void NuguSDKManager::createInstance()
 {
-    nugu_client = make_unique<NuguClient>();
-    capa_collection = make_unique<CapabilityCollection>();
+    nugu_client = CustomImpl::make_unique<NuguClient>();
+    capa_collection = CustomImpl::make_unique<CapabilityCollection>();
     nugu_core_container = nugu_client->getNuguCoreContainer();
     network_manager = nugu_client->getNetworkManager();
     speech_recognizer_aggregator = nugu_client->getSpeechRecognizerAggregator();
