@@ -23,6 +23,7 @@
 #include <clientkit/nugu_timer_interface.hh>
 #include <clientkit/speech_recognizer_interface.hh>
 #include <clientkit/wakeup_interface.hh>
+#include <nugu.h>
 
 namespace NuguClientKit {
 
@@ -40,7 +41,7 @@ namespace NuguClientKit {
 /**
  * @brief NuguCoreContainer interface
  */
-class INuguCoreContainer {
+class NUGU_API INuguCoreContainer {
 public:
     virtual ~INuguCoreContainer() = default;
 

@@ -19,6 +19,8 @@
 
 #include <string>
 
+#include <nugu.h>
+
 namespace NuguClientKit {
 
 /**
@@ -44,7 +46,7 @@ enum class InteractionMode {
  * @brief IInteractionControlManagerListener interface
  * @see InteractionControlManager
  */
-class IInteractionControlManagerListener {
+class NUGU_API IInteractionControlManagerListener {
 public:
     virtual ~IInteractionControlManagerListener() = default;
 
@@ -64,7 +66,7 @@ public:
  * @brief InteractionControlManager interface
  * @see IInteractionControlManagerListener
  */
-class IInteractionControlManager {
+class NUGU_API IInteractionControlManager {
 public:
     virtual ~IInteractionControlManager() = default;
 

@@ -20,6 +20,8 @@
 #include <iostream>
 #include <vector>
 
+#include <nugu.h>
+
 namespace NuguClientKit {
 
 /**
@@ -90,7 +92,7 @@ typedef struct _FocusConfiguration {
  * @brief IFocusResourceListener
  * @see IFocusManager
  */
-class IFocusResourceListener {
+class NUGU_API IFocusResourceListener {
 public:
     virtual ~IFocusResourceListener() = default;
 
@@ -105,7 +107,7 @@ public:
  * @brief IFocusManagerObserver
  * @see IFocusManager
  */
-class IFocusManagerObserver {
+class NUGU_API IFocusManagerObserver {
 public:
     virtual ~IFocusManagerObserver() = default;
 
@@ -123,7 +125,7 @@ public:
  * @see IFocusResourceListener
  * @see IFocusManagerObserver
  */
-class IFocusManager {
+class NUGU_API IFocusManager {
 public:
     /**
      * @brief Request Focus

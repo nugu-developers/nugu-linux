@@ -17,9 +17,11 @@
 #ifndef __NUGU_AUTH_H__
 #define __NUGU_AUTH_H__
 
-#include <clientkit/nugu_http_rest.hh>
 #include <string>
 #include <vector>
+
+#include <clientkit/nugu_http_rest.hh>
+#include <nugu.h>
 
 namespace NuguClientKit {
 
@@ -88,7 +90,7 @@ struct AuthResponse {
 /**
  * @brief NuguAuth
  */
-class NuguAuth {
+class NUGU_API NuguAuth {
 public:
     explicit NuguAuth(const NuguDeviceConfig& config);
     ~NuguAuth();

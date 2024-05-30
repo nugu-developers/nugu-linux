@@ -18,9 +18,10 @@
 #define __NUGU_ROUTINE_MANAGER_INTERFACE_H__
 
 #include <functional>
+#include <njson/njson.h>
 
 #include <base/nugu_directive.h>
-#include <njson/njson.h>
+#include <nugu.h>
 
 namespace NuguClientKit {
 
@@ -51,7 +52,7 @@ enum class RoutineActivity {
  * @brief IRoutineManagerListener interface
  * @see IRoutineManager
  */
-class IRoutineManagerListener {
+class NUGU_API IRoutineManagerListener {
 public:
     virtual ~IRoutineManagerListener() = default;
 
@@ -72,7 +73,7 @@ public:
  * @brief IRoutineManager interface
  * @see IRoutineManagerListener
  */
-class IRoutineManager {
+class NUGU_API IRoutineManager {
 public:
     using TextRequester = std::function<std::string(const std::string&, const std::string&, const std::string&)>;
     using DataRequester = std::function<std::string(const std::string&, const NJson::Value&)>;

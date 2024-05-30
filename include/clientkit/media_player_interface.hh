@@ -17,8 +17,10 @@
 #ifndef __NUGU_MEDIA_PLAYER_INTERFACE_H__
 #define __NUGU_MEDIA_PLAYER_INTERFACE_H__
 
-#include <base/nugu_audio.h>
 #include <string>
+
+#include <base/nugu_audio.h>
+#include <nugu.h>
 
 namespace NuguClientKit {
 
@@ -60,7 +62,7 @@ enum class MediaPlayerEvent {
  * @brief mediaplayer listener interface
  * @see IMediaPlayer
  */
-class IMediaPlayerListener {
+class NUGU_API IMediaPlayerListener {
 public:
     virtual ~IMediaPlayerListener() = default;
 
@@ -111,7 +113,7 @@ public:
  * @brief mediaplayer interface
  * @see IMediaPlayerListener
  */
-class IMediaPlayer {
+class NUGU_API IMediaPlayer {
 public:
     virtual ~IMediaPlayer() = default;
 
@@ -261,7 +263,7 @@ public:
  * @brief ttsplayer interface
  * @see IMediaPlayer
  */
-class ITTSPlayer : public IMediaPlayer {
+class NUGU_API ITTSPlayer : public IMediaPlayer {
 public:
     virtual ~ITTSPlayer() = default;
 
@@ -271,7 +273,7 @@ public:
      * @param[in] size data size
      * @return success or not
      */
-    virtual bool writeAudio(const char *data, int size) = 0;
+    virtual bool writeAudio(const char* data, int size) = 0;
 
     /**
      * @brief Notify to write done to the tts player.

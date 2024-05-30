@@ -18,6 +18,7 @@
 #define __NUGU_PHONE_CALL_INTERFACE_H__
 
 #include <clientkit/capability_interface.hh>
+#include <nugu.h>
 
 namespace NuguCapability {
 
@@ -49,7 +50,7 @@ enum class PhoneCallState {
  * @brief phone call listener interface
  * @see IPhoneCallHandler
  */
-class IPhoneCallListener : virtual public ICapabilityListener {
+class NUGU_API IPhoneCallListener : virtual public ICapabilityListener {
 public:
     virtual ~IPhoneCallListener() = default;
 
@@ -100,7 +101,7 @@ public:
  * @brief phone call handler interface
  * @see IPhoneCallListener
  */
-class IPhoneCallHandler : virtual public ICapabilityInterface {
+class NUGU_API IPhoneCallHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IPhoneCallHandler() = default;
 

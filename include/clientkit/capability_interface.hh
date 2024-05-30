@@ -25,6 +25,7 @@
 
 #include <base/nugu_directive.h>
 #include <clientkit/nugu_core_container_interface.hh>
+#include <nugu.h>
 
 namespace NuguClientKit {
 
@@ -50,13 +51,13 @@ typedef struct _DirectiveCancelPolicy {
 /**
  * @brief capability interface
  */
-class ICapabilityInterface;
+class NUGU_API ICapabilityInterface;
 
 /**
  * @brief capability listener interface
  * @see ICapabilityHandler
  */
-class ICapabilityListener {
+class NUGU_API ICapabilityListener {
 public:
     virtual ~ICapabilityListener() = default;
 
@@ -78,7 +79,7 @@ public:
  * @see NuguDirective
  * @see ICapabilityListener
  */
-class ICapabilityInterface {
+class NUGU_API ICapabilityInterface {
 public:
     /**
      * @brief Capability suspend policy

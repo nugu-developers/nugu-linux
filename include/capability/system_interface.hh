@@ -18,6 +18,7 @@
 #define __NUGU_SYSTEM_INTERFACE_H__
 
 #include <clientkit/capability_interface.hh>
+#include <nugu.h>
 
 namespace NuguCapability {
 
@@ -57,7 +58,7 @@ enum class RevokeReason {
  * @brief system listener interface
  * @see ISystemHandler
  */
-class ISystemListener : virtual public ICapabilityListener {
+class NUGU_API ISystemListener : virtual public ICapabilityListener {
 public:
     virtual ~ISystemListener() = default;
 
@@ -90,7 +91,7 @@ public:
  * @brief system handler interface
  * @see ISystemListener
  */
-class ISystemHandler : virtual public ICapabilityInterface {
+class NUGU_API ISystemHandler : virtual public ICapabilityInterface {
 public:
     virtual ~ISystemHandler() = default;
 

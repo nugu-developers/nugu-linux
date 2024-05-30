@@ -18,7 +18,9 @@
 #define __NUGU_NETWORK_MANAGER_INTERFACE_H__
 
 #include <string>
+
 #include <base/nugu_event.h>
+#include <nugu.h>
 
 namespace NuguClientKit {
 
@@ -51,7 +53,7 @@ enum class NetworkError {
  * @brief network manager listener interface
  * @see INetworkManager
  */
-class INetworkManagerListener {
+class NUGU_API INetworkManagerListener {
 public:
     virtual ~INetworkManagerListener() = default;
 
@@ -71,13 +73,13 @@ public:
      * @brief Report that the event will be sent to the server.
      * @param[in] nev NuguEvent object
      */
-    virtual void onEventSend(NuguEvent *nev);
+    virtual void onEventSend(NuguEvent* nev);
 
     /**
      * @brief Report that the attachment will be sent to the server.
      * @param[in] nev NuguEvent object
      */
-    virtual void onEventAttachmentSend(NuguEvent *nev, int seq, bool is_end, size_t length, unsigned char *data);
+    virtual void onEventAttachmentSend(NuguEvent* nev, int seq, bool is_end, size_t length, unsigned char* data);
 
     /**
      * @brief Report the result of sending an event from the server.
@@ -100,7 +102,7 @@ public:
  * @brief network manager interface
  * @see INetworkManagerListener
  */
-class INetworkManager {
+class NUGU_API INetworkManager {
 public:
     virtual ~INetworkManager() = default;
 

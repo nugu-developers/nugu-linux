@@ -18,6 +18,7 @@
 #define __NUGU_MIC_INTERFACE_H__
 
 #include <clientkit/capability_interface.hh>
+#include <nugu.h>
 
 namespace NuguCapability {
 
@@ -46,7 +47,7 @@ enum class MicStatus {
  * @brief mic listener interface
  * @see IMicHandler
  */
-class IMicListener : virtual public ICapabilityListener {
+class NUGU_API IMicListener : virtual public ICapabilityListener {
 public:
     virtual ~IMicListener() = default;
 
@@ -61,7 +62,7 @@ public:
  * @brief mic handler interface
  * @see IMicListener
  */
-class IMicHandler : virtual public ICapabilityInterface {
+class NUGU_API IMicHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IMicHandler() = default;
 

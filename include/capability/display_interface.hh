@@ -18,6 +18,7 @@
 #define __NUGU_DISPLAY_INTERFACE_H__
 
 #include <clientkit/capability_interface.hh>
+#include <nugu.h>
 
 namespace NuguCapability {
 
@@ -62,7 +63,7 @@ typedef struct _DisplayContextInfo {
  * @brief display listener interface
  * @see IDisplayHandler
  */
-class IDisplayListener : virtual public ICapabilityListener {
+class NUGU_API IDisplayListener : virtual public ICapabilityListener {
 public:
     virtual ~IDisplayListener() = default;
     /**
@@ -103,7 +104,7 @@ public:
  * @brief display handler interface
  * @see IDisplayListener
  */
-class IDisplayHandler : virtual public ICapabilityInterface {
+class NUGU_API IDisplayHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IDisplayHandler() = default;
 

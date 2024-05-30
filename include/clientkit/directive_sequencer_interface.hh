@@ -17,9 +17,10 @@
 #ifndef __NUGU_DIRECTIVE_SEQUENCER_INTERFACE_H__
 #define __NUGU_DIRECTIVE_SEQUENCER_INTERFACE_H__
 
-#include <base/nugu_directive.h>
-
 #include <set>
+
+#include <base/nugu_directive.h>
+#include <nugu.h>
 
 namespace NuguClientKit {
 
@@ -57,7 +58,7 @@ typedef struct _BlockingPolicy {
  * @brief IDirectiveSequencerListener
  * @see IDirectiveSequencer
  */
-class IDirectiveSequencerListener {
+class NUGU_API IDirectiveSequencerListener {
 public:
     virtual ~IDirectiveSequencerListener() = default;
 
@@ -90,7 +91,7 @@ public:
  * @brief IDirectiveSequencer
  * @see IDirectiveSequencerListener
  */
-class IDirectiveSequencer {
+class NUGU_API IDirectiveSequencer {
 public:
     virtual ~IDirectiveSequencer() = default;
 
