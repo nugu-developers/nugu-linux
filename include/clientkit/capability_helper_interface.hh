@@ -27,6 +27,7 @@
 #include <clientkit/playsync_manager_interface.hh>
 #include <clientkit/routine_manager_interface.hh>
 #include <clientkit/session_manager_interface.hh>
+#include <nugu.h>
 
 namespace NuguClientKit {
 /**
@@ -43,7 +44,7 @@ namespace NuguClientKit {
 /**
  * @brief CapabilityHelper interface
  */
-class ICapabilityHelper {
+class NUGU_API ICapabilityHelper {
 public:
     virtual ~ICapabilityHelper() = default;
 

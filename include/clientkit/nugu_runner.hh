@@ -21,6 +21,8 @@
 #include <memory>
 #include <string>
 
+#include <nugu.h>
+
 namespace NuguClientKit {
 
 /**
@@ -35,7 +37,7 @@ namespace NuguClientKit {
  * @{
  */
 
-struct NuguRunnerPrivate;
+struct NUGU_API NuguRunnerPrivate;
 
 /**
  * @brief ExecuteType
@@ -49,7 +51,7 @@ enum class ExecuteType {
 /**
  * @brief NuguRunner
  */
-class NuguRunner {
+class NUGU_API NuguRunner {
 public:
     /**
      * @brief The request method callback

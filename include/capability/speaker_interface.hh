@@ -19,6 +19,7 @@
 
 #include <base/nugu_audio.h>
 #include <clientkit/capability_interface.hh>
+#include <nugu.h>
 
 namespace NuguCapability {
 
@@ -70,7 +71,7 @@ enum class SpeakerType {
 /**
  * @brief SpeakerInfo
  */
-class SpeakerInfo {
+class NUGU_API SpeakerInfo {
 public:
     SpeakerInfo() = default;
     ~SpeakerInfo() = default;
@@ -90,7 +91,7 @@ public:
  * @brief speaker listener interface
  * @see ISpeakerHandler
  */
-class ISpeakerListener : virtual public ICapabilityListener {
+class NUGU_API ISpeakerListener : virtual public ICapabilityListener {
 public:
     virtual ~ISpeakerListener() = default;
 
@@ -118,7 +119,7 @@ public:
  * @brief speaker handler interface
  * @see ISpeakerListener
  */
-class ISpeakerHandler : virtual public ICapabilityInterface {
+class NUGU_API ISpeakerHandler : virtual public ICapabilityInterface {
 public:
     virtual ~ISpeakerHandler() = default;
 

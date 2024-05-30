@@ -17,8 +17,10 @@
 #ifndef __NUGU_ASR_INTERFACE_H__
 #define __NUGU_ASR_INTERFACE_H__
 
-#include <clientkit/capability_interface.hh>
 #include <functional>
+
+#include <clientkit/capability_interface.hh>
+#include <nugu.h>
 
 namespace NuguCapability {
 
@@ -91,7 +93,7 @@ typedef struct _ASRAttribute {
  * @brief ASR listener interface
  * @see IASRHandler
  */
-class IASRListener : virtual public ICapabilityListener {
+class NUGU_API IASRListener : virtual public ICapabilityListener {
 public:
     virtual ~IASRListener() = default;
 
@@ -144,7 +146,7 @@ public:
  * @brief ASR handler interface
  * @see IASRListener
  */
-class IASRHandler : virtual public ICapabilityInterface {
+class NUGU_API IASRHandler : virtual public ICapabilityInterface {
 public:
     /**
      * @brief ASR recognize callback for user request and response mapping

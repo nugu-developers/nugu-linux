@@ -18,6 +18,7 @@
 #define __NUGU_BATTERY_INTERFACE_H__
 
 #include <clientkit/capability_interface.hh>
+#include <nugu.h>
 
 namespace NuguCapability {
 
@@ -47,7 +48,7 @@ typedef struct _BatteryInfo {
  * @brief battery listener interface
  * @see IBatteryHandler
  */
-class IBatteryListener : virtual public ICapabilityListener {
+class NUGU_API IBatteryListener : virtual public ICapabilityListener {
 public:
     virtual ~IBatteryListener() = default;
 
@@ -62,7 +63,7 @@ public:
  * @brief battery handler interface
  * @see IBatteryListener
  */
-class IBatteryHandler : virtual public ICapabilityInterface {
+class NUGU_API IBatteryHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IBatteryHandler() = default;
 };

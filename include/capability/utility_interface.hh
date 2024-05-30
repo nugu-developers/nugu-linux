@@ -18,6 +18,7 @@
 #define __NUGU_UTILITY_INTERFACE_H__
 
 #include <clientkit/capability_interface.hh>
+#include <nugu.h>
 
 namespace NuguCapability {
 
@@ -38,7 +39,7 @@ using namespace NuguClientKit;
  * @brief utility listener interface
  * @see IUtilityHandler
  */
-class IUtilityListener : virtual public ICapabilityListener {
+class NUGU_API IUtilityListener : virtual public ICapabilityListener {
 public:
     virtual ~IUtilityListener() = default;
 };
@@ -47,7 +48,7 @@ public:
  * @brief utility handler interface
  * @see IUtilityListener
  */
-class IUtilityHandler : virtual public ICapabilityInterface {
+class NUGU_API IUtilityHandler : virtual public ICapabilityInterface {
 public:
     virtual ~IUtilityHandler() = default;
 };

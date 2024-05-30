@@ -18,6 +18,7 @@
 #define __NUGU_NUDGE_INTERFACE_H__
 
 #include <clientkit/capability_interface.hh>
+#include <nugu.h>
 
 namespace NuguCapability {
 
@@ -38,7 +39,7 @@ using namespace NuguClientKit;
  * @brief nudge listener interface
  * @see INudgeHandler
  */
-class INudgeListener : virtual public ICapabilityListener {
+class NUGU_API INudgeListener : virtual public ICapabilityListener {
 public:
     virtual ~INudgeListener() = default;
 };
@@ -47,7 +48,7 @@ public:
  * @brief nudge handler interface
  * @see INudgeListener
  */
-class INudgeHandler : virtual public ICapabilityInterface {
+class NUGU_API INudgeHandler : virtual public ICapabilityInterface {
 public:
     virtual ~INudgeHandler() = default;
 };

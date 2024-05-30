@@ -20,6 +20,8 @@
 #include <functional>
 #include <string>
 
+#include <nugu.h>
+
 namespace NuguClientKit {
 
 /**
@@ -39,7 +41,7 @@ namespace NuguClientKit {
 /**
  * @brief nugu timer interface
  */
-class INuguTimer {
+class NUGU_API INuguTimer {
 public:
     /**
      * @brief Timer Callback

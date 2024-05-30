@@ -20,6 +20,7 @@
 #include <string>
 
 #include <capability/chips_interface.hh>
+#include <nugu.h>
 
 namespace NuguClientKit {
 
@@ -51,7 +52,7 @@ enum class DialogUXState {
 /**
  * @brief IDialogUXStateAggregatorListener interface
  */
-class IDialogUXStateAggregatorListener {
+class NUGU_API IDialogUXStateAggregatorListener {
 public:
     virtual ~IDialogUXStateAggregatorListener() = default;
 
