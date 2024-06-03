@@ -25,6 +25,10 @@
 #include "nugu_timer.hh"
 #include "speech_recognizer.hh"
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
 #define EPD_MODEL_FILE "skt_epd_model.raw"
 #define OUT_DATA_SIZE (1024 * 9)
 
@@ -192,6 +196,7 @@ void SpeechRecognizer::loop()
     std::string id = listening_id;
 
     while (g_atomic_int_get(&destroy) == 0) {
+        char *pcm_buf = nullptr;
         std::unique_lock<std::mutex> lock(mutex);
         cond.wait(lock);
         lock.unlock();
@@ -237,11 +242,15 @@ void SpeechRecognizer::loop()
         prev_epd_ret = 0;
         is_epd_end = false;
         pcm_size = recorder->getAudioFrameSize();
+        pcm_buf = (char *)calloc(1, pcm_size);
+        if (!pcm_buf) {
+            nugu_error_nomem();
+            continue;
+        }
 
         while (is_running) {
-            char pcm_buf[pcm_size];
-
             if (!recorder->isRecording()) {
+#ifndef _WIN32
                 struct timespec ts;
 
                 ts.tv_sec = 0;
@@ -249,6 +258,10 @@ void SpeechRecognizer::loop()
 
                 nugu_dbg("Listening Thread: not recording state");
                 nanosleep(&ts, NULL);
+#else
+                nugu_dbg("Listening Thread: not recording state (10ms wait)");
+                Sleep(10);
+#endif
                 continue;
             }
 
@@ -345,6 +358,11 @@ void SpeechRecognizer::loop()
         if (g_atomic_int_get(&destroy) == 0)
             sendListeningEvent(ListeningState::DONE, id);
 
+        if (pcm_buf) {
+            free(pcm_buf);
+            pcm_buf = nullptr;
+        }
+
         is_running = false;
         recorder->stop();
         epd_client_release();
@@ -390,6 +408,7 @@ void SpeechRecognizer::loop()
     std::string id = listening_id;
 
     while (g_atomic_int_get(&destroy) == 0) {
+        char *pcm_buf = nullptr;
         std::unique_lock<std::mutex> lock(mutex);
         cond.wait(lock);
         lock.unlock();
@@ -423,11 +442,15 @@ void SpeechRecognizer::loop()
         sendListeningEvent(ListeningState::LISTENING, id);
 
         pcm_size = recorder->getAudioFrameSize();
+        pcm_buf = (char *)calloc(1, pcm_size);
+        if (!pcm_buf) {
+            nugu_error_nomem();
+            continue;
+        }
 
         while (is_running) {
-            char pcm_buf[pcm_size];
-
             if (!recorder->isRecording()) {
+#ifndef _WIN32
                 struct timespec ts;
 
                 ts.tv_sec = 0;
@@ -435,6 +458,10 @@ void SpeechRecognizer::loop()
 
                 nugu_dbg("Listening Thread: not recording state");
                 nanosleep(&ts, NULL);
+#else
+                nugu_dbg("Listening Thread: not recording state (10ms wait)");
+                Sleep(10);
+#endif
                 continue;
             }
 
@@ -491,6 +518,11 @@ void SpeechRecognizer::loop()
 
         if (g_atomic_int_get(&destroy) == 0)
             sendListeningEvent(ListeningState::DONE, id);
+
+        if (pcm_buf) {
+            free(pcm_buf);
+            pcm_buf = nullptr;
+        }
 
         is_running = false;
         is_first = true;
