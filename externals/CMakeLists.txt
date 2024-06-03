@@ -1,12 +1,20 @@
 include(ExternalProject)
+include(CheckIncludeFileCXX)
 
 # njson
 find_package(RapidJSON) # Provide RAPIDJSON_INCLUDE_DIRS variable
 IF(RapidJSON_FOUND)
 	SET(RAPIDJSON_INCLUDE ${RAPIDJSON_INCLUDE_DIRS})
 ELSE()
-	pkg_check_modules(rapidjson_pkgs REQUIRED RapidJSON)
-	SET(RAPIDJSON_INCLUDE ${rapidjson_pkgs_CFLAGS})
+	pkg_check_modules(rapidjson_pkgs RapidJSON)
+	IF(rapidjson_pkgs_FOUND)
+		SET(RAPIDJSON_INCLUDE ${rapidjson_pkgs_CFLAGS})
+	ELSE()
+		CHECK_INCLUDE_FILE_CXX("rapidjson/rapidjson.h" HAVE_RAPIDJSON)
+		IF(NOT HAVE_RAPIDJSON)
+			MESSAGE(FATAL_ERROR "rapidjson.h file is not found")
+		ENDIF()
+	ENDIF()
 ENDIF()
 
 FILE(GLOB_RECURSE njson_files njson/src/*.cpp)
