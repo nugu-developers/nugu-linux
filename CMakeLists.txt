@@ -268,6 +268,7 @@ IF (ENABLE_VOICE_STREAMING)
 	IF (BUILD_LIBRARY AND ENABLE_VENDOR_LIBRARY)
 		ADD_DEFINITIONS(-DENABLE_VENDOR_LIBRARY)
 		SET(VENDOR_PKGCONFIG nugu-kwd)
+		LIST(APPEND PC_DEPS nugu-kwd)
 	ENDIF()
 ELSEIF(ENABLE_VENDOR_LIBRARY)
 	ADD_DEFINITIONS(-DENABLE_VENDOR_LIBRARY)
@@ -275,15 +276,18 @@ ELSEIF(ENABLE_VENDOR_LIBRARY)
 	IF (BUILD_LIBRARY)
 		# The SDK libraries require both nugu-kwd and nugu-epd
 		SET(VENDOR_PKGCONFIG nugu-kwd nugu-epd)
+		LIST(APPEND PC_DEPS nugu-kwd nugu-epd)
 	ELSEIF (BUILD_PLUGINS AND ENABLE_SPEEX_PLUGIN)
 		# The Speex plugin requires the speex API provided by nugu-epd
 		SET(VENDOR_PKGCONFIG nugu-epd)
+		LIST(APPEND PC_DEPS nugu-epd)
 	ENDIF()
 ENDIF()
 
 # Built-in njson library
 IF (NOT ENABLE_BUILTIN_NJSON)
 	pkg_check_modules(njson_pkgs REQUIRED njson)
+	LIST(APPEND PC_DEPS njson)
 	IF (MSVC)
 		INCLUDE_DIRECTORIES(${njson_pkgs_INCLUDE_DIRS})
 		SET(NJSON_LIBRARY ${njson_pkgs_LIBRARIES})
@@ -402,9 +406,6 @@ IF (VENDOR_PKGCONFIG)
 	ELSE()
 		ADD_COMPILE_OPTIONS(${vendor_pkgs_CFLAGS})
 	ENDIF()
-
-	# Change array to space separated string
-	STRING(REPLACE ";" " " requires "${VENDOR_PKGCONFIG}")
 ENDIF()
 
 # Set link flags from pkg-config list
@@ -602,6 +603,7 @@ IF (BUILD_LIBRARY)
 	INSTALL(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
 
 	# Install pkgconfig
+	STRING(REPLACE ";" " " requires "${PC_DEPS}")
 	CONFIGURE_FILE(nugu.pc.in ${PROJECT_BINARY_DIR}/nugu.pc @ONLY)
 	INSTALL(FILES ${PROJECT_BINARY_DIR}/nugu.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig/)
 
