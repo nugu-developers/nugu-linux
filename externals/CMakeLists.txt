@@ -2,29 +2,30 @@ include(ExternalProject)
 include(CheckIncludeFileCXX)
 
 # njson
-find_package(RapidJSON) # Provide RAPIDJSON_INCLUDE_DIRS variable
-IF(RapidJSON_FOUND)
-	SET(RAPIDJSON_INCLUDE ${RAPIDJSON_INCLUDE_DIRS})
-ELSE()
-	pkg_check_modules(rapidjson_pkgs RapidJSON)
-	IF(rapidjson_pkgs_FOUND)
-		SET(RAPIDJSON_INCLUDE ${rapidjson_pkgs_CFLAGS})
+IF(ENABLE_BUILTIN_NJSON)
+	find_package(RapidJSON) # Provide RAPIDJSON_INCLUDE_DIRS variable
+	IF(RapidJSON_FOUND)
+		SET(RAPIDJSON_INCLUDE ${RAPIDJSON_INCLUDE_DIRS})
 	ELSE()
-		CHECK_INCLUDE_FILE_CXX("rapidjson/rapidjson.h" HAVE_RAPIDJSON)
-		IF(NOT HAVE_RAPIDJSON)
-			MESSAGE(FATAL_ERROR "rapidjson.h file is not found")
+		pkg_check_modules(rapidjson_pkgs RapidJSON)
+		IF(rapidjson_pkgs_FOUND)
+			SET(RAPIDJSON_INCLUDE ${rapidjson_pkgs_CFLAGS})
+		ELSE()
+			CHECK_INCLUDE_FILE_CXX("rapidjson/rapidjson.h" HAVE_RAPIDJSON)
+			IF(NOT HAVE_RAPIDJSON)
+				MESSAGE(FATAL_ERROR "rapidjson.h file is not found")
+			ENDIF()
 		ENDIF()
 	ENDIF()
-ENDIF()
 
-FILE(GLOB_RECURSE njson_files njson/src/*.cpp)
-ADD_LIBRARY(njson STATIC ${njson_files})
-TARGET_INCLUDE_DIRECTORIES(njson PRIVATE njson/include ${RAPIDJSON_INCLUDE})
-IF(IS_MINGW)
-	TARGET_COMPILE_OPTIONS(njson PRIVATE -Wno-class-memaccess)
+	FILE(GLOB_RECURSE njson_files njson/src/*.cpp)
+	ADD_LIBRARY(njson STATIC ${njson_files})
+	TARGET_INCLUDE_DIRECTORIES(njson PRIVATE njson/include ${RAPIDJSON_INCLUDE})
+	IF(IS_MINGW)
+		TARGET_COMPILE_OPTIONS(njson PRIVATE -Wno-class-memaccess)
+	ENDIF()
+	INSTALL(DIRECTORY njson/include/njson DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
 ENDIF()
-INSTALL(DIRECTORY njson/include/njson
-		DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/nugu/)
 
 # In Bionic(18.04), the PKG_CONFIG_EXECUTABLE value with an absolute path is
 # passed from the debian package build script.

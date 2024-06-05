@@ -155,6 +155,7 @@ DEFINE_FEATURE(PULSEAUDIO ${PULSEAUDIO_DEFAULT} "pulseaudio")
 DEFINE_FEATURE(VENDOR_LIBRARY ON "vendor specific library(nugu_wwd, nugu_epd)")
 DEFINE_FEATURE(VOICE_STREAMING OFF "voice streaming without epd")
 
+DEFINE_FEATURE(BUILTIN_NJSON ON "compile built-in njson library")
 DEFINE_FEATURE(BUILTIN_OPUS OFF "compile built-in OPUS library")
 DEFINE_FEATURE(BUILTIN_OPUS_FLOAT_API OFF "floating point to OPUS library")
 DEFINE_FEATURE(BUILTIN_CURL ${BUILTIN_CURL_DEFAULT} "compile built-in curl library")
@@ -278,6 +279,20 @@ ELSEIF(ENABLE_VENDOR_LIBRARY)
 		# The Speex plugin requires the speex API provided by nugu-epd
 		SET(VENDOR_PKGCONFIG nugu-epd)
 	ENDIF()
+ENDIF()
+
+# Built-in njson library
+IF (NOT ENABLE_BUILTIN_NJSON)
+	pkg_check_modules(njson_pkgs REQUIRED njson)
+	IF (MSVC)
+		INCLUDE_DIRECTORIES(${njson_pkgs_INCLUDE_DIRS})
+		SET(NJSON_LIBRARY ${njson_pkgs_LIBRARIES})
+	ELSE()
+		ADD_COMPILE_OPTIONS(${njson_pkgs_CFLAGS})
+		SET(NJSON_LIBRARY ${njson_pkgs_LDFLAGS})
+	ENDIF()
+
+	LINK_DIRECTORIES(${njson_pkgs_LIBRARY_DIRS})
 ENDIF()
 
 # Built-in curl library
@@ -413,7 +428,7 @@ IF (BUILD_LIBRARY)
 ENDIF()
 
 IF (NOT MSVC)
-	SET(COMMON_LDFLAGS ${COMMON_LDFLAGS} ${pkgs_LDFLAGS})
+	SET(COMMON_LDFLAGS ${COMMON_LDFLAGS} ${NJSON_LIBRARY} ${pkgs_LDFLAGS})
 ENDIF()
 
 # ----------------------------------------------------------------------------
