@@ -50,6 +50,12 @@ static void _network_curl_log(void *req, enum curl_log_type type,
 	} else {
 		int flag = 0;
 
+		if (size == 2) {
+			/* Skip '\r\n' */
+			if (data[0] == '\r' && data[1] == '\n')
+				return;
+		}
+
 		/* temporary remove a last new-line code */
 		if (data[size - 1] == '\n') {
 			data[size - 1] = '\0';
