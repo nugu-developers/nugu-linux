@@ -75,6 +75,7 @@ public:
 
 private:
     void setPositionWithSeek(int position);
+    bool isActive();
 
     MediaPlayerPrivate* d;
 };
