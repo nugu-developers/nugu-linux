@@ -215,31 +215,9 @@ bool NetworkManager::setToken(const std::string& token)
 
     nugu_dbg("JWT payload: %s", json_text);
 
-    /* find the 'device:S.I.D.' from the scope */
-    NJson::Reader reader;
-    NJson::Value root;
-
-    if (!reader.parse(json_text, root)) {
-        nugu_error("Payload parsing error");
-        g_free(json_text);
-        return false;
-    }
+    bool is_connection_oriented = isConnectionOriented(json_text);
 
     g_free(json_text);
-
-    bool is_connection_oriented = false;
-
-    NJson::Value scope = root["scope"];
-    if (scope.isArray()) {
-        NJson::ArrayIndex scope_len = scope.size();
-        for (NJson::ArrayIndex i = 0; i < scope_len; ++i) {
-            nugu_dbg("scope[%d] = %s", i, scope[i].asCString());
-            if (scope[i].asString() == "device:S.I.D.") {
-                is_connection_oriented = true;
-                break;
-            }
-        }
-    }
 
     if (nugu_network_manager_set_token(token.c_str()) < 0) {
         nugu_error("network set token failed");
@@ -255,6 +233,35 @@ bool NetworkManager::setToken(const std::string& token)
     }
 
     return true;
+}
+
+bool NetworkManager::isConnectionOriented(const char* json_text)
+{
+    NJson::Reader reader;
+    NJson::Value root;
+
+    /*
+     * because it's not possible to parse another type token currently,
+     * it decide to connection oriented mode, when fail to parse.
+     */
+    if (!reader.parse(json_text, root)) {
+        nugu_error("Payload parsing error");
+        return true;
+    }
+
+    /* find the 'device:S.I.D.' from the scope */
+    NJson::Value scope = root["scope"];
+    if (scope.isArray()) {
+        NJson::ArrayIndex scope_len = scope.size();
+        for (NJson::ArrayIndex i = 0; i < scope_len; ++i) {
+            nugu_dbg("scope[%d] = %s", i, scope[i].asCString());
+            if (scope[i].asString() == "device:S.I.D.") {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 bool NetworkManager::setRegistryUrl(const std::string& url)

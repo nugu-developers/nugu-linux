@@ -40,6 +40,8 @@ public:
     bool setUserAgent(const std::string& app_version, const std::string& additional_info) override;
 
 private:
+    bool isConnectionOriented(const char* json_text);
+
     std::vector<INetworkManagerListener*> listeners;
 };
 
