@@ -1176,7 +1176,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
         report_interval_time = report["progressReportIntervalInMilliseconds"].asLargestInt();
     }
 
-    playsync_manager->startSync(getPlayServiceIdInStackControl(root["playStackControl"]), getName());
+    playsync_manager->startSync(getPlayServiceIdInStackControl(root["playStackControl"]), getName(), composeRenderInfo(getNuguDirective(), message));
 
     is_finished = false;
     is_paused_by_unfocus = false;
