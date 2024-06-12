@@ -470,7 +470,7 @@ std::string AudioPlayerAgent::resume(bool direct_access)
 void AudioPlayerAgent::seek(int msec)
 {
     if (cur_player)
-        cur_player->seek(msec * 1000);
+        cur_player->seek(msec / 1000);
 }
 
 std::string AudioPlayerAgent::requestFavoriteCommand(bool current_favorite)
@@ -1230,7 +1230,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "can't set source");
             return;
         }
-        if (offset >= 0 && !cur_player->seek(offset / 1000)) {
+        if (offset >= 0 && !cur_player->seek(offset)) {
             nugu_error("seek media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "can't seek");
             return;
