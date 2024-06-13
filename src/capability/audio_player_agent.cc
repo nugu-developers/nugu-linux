@@ -1230,7 +1230,7 @@ void AudioPlayerAgent::parsingPlay(const char* message)
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "can't set source");
             return;
         }
-        if (offset >= 0 && !cur_player->seek(offset)) {
+        if (offset >= 0 && !cur_player->seek(offset / 1000)) {
             nugu_error("seek media failed");
             sendEventPlaybackFailed(PlaybackError::MEDIA_ERROR_INTERNAL_DEVICE_ERROR, "can't seek");
             return;
