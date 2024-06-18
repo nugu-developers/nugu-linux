@@ -284,6 +284,8 @@ bool MediaPlayer::resume()
 {
     nugu_dbg("request to resume mediaplayer");
 
+    d->pos_timer->restart();
+
     if (nugu_player_resume(d->player) < 0)
         return false;
 
