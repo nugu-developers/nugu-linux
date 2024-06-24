@@ -1,3 +1,33 @@
+nugu (1.7.6ubuntu1~bionic) bionic; urgency=medium
+
+  * Fixed memory deallocation pair
+  * Fixed NuguClient hang-up issue
+  * Fixed AudioRecorderManager to use NuguRunner
+  * Fixed seek time unit
+  * Fixed media player position handling
+  * Fixed pthread mutex usage
+  * Fixed curl log to skip CRLF data
+  * Fixed capability version check
+  * Fixed clang-tidy analysis issues
+  * Fixed macOS/CodeQL build error
+  * Added to support Windows OS
+  * Added nugu_audio attribute getter API
+  * Added voice streaming recognition
+  * Added black duck analysis in CI
+  * Updated SpeechRecognizer
+  * Updated NetworkManager
+  * Updated PlaySyncManager
+  * Updated plugin architecture to support embedding
+  * Updated method documentation
+  * Updated Github action to reuse workflows
+  * Upgraded Github action version
+  * Enhanced speex validation check
+  * Improved AudioPlayer playsync handling
+  * Refactoring NuguRunner
+  * Refactoring entire build script
+
+ -- nugulinux <nugulinux@gmail.com>  Tue, 25 Jun 2024 14:00:00 +0900
+
 nugu (1.7.5ubuntu1~bionic) bionic; urgency=medium
 
   * Fixed RoutineManager test memory leak
@@ -223,7 +253,7 @@ nugu (1.0.0ubuntu1~bionic) bionic; urgency=medium
 
 nugu (0.24.0ubuntu1~bionic) bionic; urgency=medium
 
-  * Fixed PlaySyncManager clearance  
+  * Fixed PlaySyncManager clearance
   * Fixed TTSAgent
   * Added Extension interface v1.1
   * Added Chips interface v1.1
@@ -231,12 +261,12 @@ nugu (0.24.0ubuntu1~bionic) bionic; urgency=medium
   * Applied directive blocking policy
   * Applied activity and playstack policy
   * Updated TextAgent
-  * Updated context scope of some events 
+  * Updated context scope of some events
   * Updated network multipart rule
   * Updated session management flow
-  * Updated nugu log readability  
+  * Updated nugu log readability
   * Updated nugu_sample UI
-  
+
  -- nugulinux <nugulinux@gmail.com>  Wed, 3 Feb 2020 10:30:00 +0900
 
 nugu (0.23.0ubuntu1~bionic) bionic; urgency=medium
