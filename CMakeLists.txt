@@ -67,7 +67,7 @@ ENDIF()
 
 SET(VERSION_MAJOR 1)
 SET(VERSION_MINOR 7)
-SET(VERSION_PATCH 5)
+SET(VERSION_PATCH 6)
 SET(VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 
 # OpenSDK/{sdk-version} ({platform}) Client/{app-version} [additional-info]
