@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['max_2310',['max',['../classNuguCapability_1_1SpeakerInfo.html#a63a909bad5c32807cf6a3a79f3cae003',1,'NuguCapability::SpeakerInfo']]],
-  ['medium_2311',['medium',['../structNuguClientKit_1_1__BlockingPolicy.html#a0121c7a88803c59a2d2b486d0460c980',1,'NuguClientKit::_BlockingPolicy']]],
-  ['min_2312',['min',['../classNuguCapability_1_1SpeakerInfo.html#a4018769b0894b03683ea2bee22e3735f',1,'NuguCapability::SpeakerInfo']]],
-  ['model_5fpath_2313',['model_path',['../structNuguCapability_1_1__ASRAttribute.html#ae52cec3ec0541489cb35534e7dc83f5d',1,'NuguCapability::_ASRAttribute']]],
-  ['mute_2314',['mute',['../classNuguCapability_1_1SpeakerInfo.html#a7cbad4634291669487cbe5ab2e528abb',1,'NuguCapability::SpeakerInfo']]]
+  ['latitude_2339',['latitude',['../structNuguCapability_1_1__LocationInfo.html#af3f20ca30dcd2e97d298c5fdcef0779c',1,'NuguCapability::_LocationInfo']]],
+  ['level_2340',['level',['../structNuguCapability_1_1__BatteryInfo.html#ada17551c822976bacac44a12a99df92c',1,'NuguCapability::_BatteryInfo::level()'],['../classNuguCapability_1_1SpeakerInfo.html#a5b131e46bdd99c34c493dd9f6e09a7c8',1,'NuguCapability::SpeakerInfo::level()']]],
+  ['listen_5ftimeout_5ffail_5fbeep_2341',['listen_timeout_fail_beep',['../group__SpeechRecognizerAggregatorInterface.html#gaf924042adefcf4b23a03e6944841c669',1,'NuguClientKit::_RecognitionResult']]],
+  ['load_2342',['load',['../structnugu__plugin__desc.html#afef3d74c5f09b6dbc1d82c43640d3093',1,'nugu_plugin_desc']]],
+  ['locationagent_2343',['LocationAgent',['../group__CapabilityFactory.html#ga76bb9e5ee80a1120fef7a476dd0c1ff9',1,'NuguCapability']]],
+  ['longitude_2344',['longitude',['../structNuguCapability_1_1__LocationInfo.html#a2adc008bb973508e2505337a079ffe06',1,'NuguCapability::_LocationInfo']]]
 ];

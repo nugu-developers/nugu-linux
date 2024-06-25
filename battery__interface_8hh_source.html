@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.5</span>
+   &#160;<span id="projectnumber">1.7.6</span>
    </div>
   </td>
  </tr>
@@ -106,50 +106,51 @@ $(document).ready(function(){initNavTree('battery__interface_8hh_source.html',''
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#define __NUGU_BATTERY_INTERFACE_H__</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="capability__interface_8hh.html">clientkit/capability_interface.hh</a>&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span>NuguCapability {</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">using namespace </span>NuguClientKit;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="structNuguCapability_1_1__BatteryInfo.html">   40</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structNuguCapability_1_1__BatteryInfo.html">_BatteryInfo</a> {</div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="structNuguCapability_1_1__BatteryInfo.html#ada17551c822976bacac44a12a99df92c">   41</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structNuguCapability_1_1__BatteryInfo.html#ada17551c822976bacac44a12a99df92c">level</a> = -1; </div>
-<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="structNuguCapability_1_1__BatteryInfo.html#a73ddfca2f8e5ac8ecabe252fb095858b">   42</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structNuguCapability_1_1__BatteryInfo.html#a73ddfca2f8e5ac8ecabe252fb095858b">charging</a> = <span class="keyword">false</span>; </div>
-<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="structNuguCapability_1_1__BatteryInfo.html#abea563daf60eee7629e9887267cc5034">   43</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structNuguCapability_1_1__BatteryInfo.html#abea563daf60eee7629e9887267cc5034">approximate_level</a> = <span class="keyword">false</span>; </div>
-<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="group__BatteryInterface.html#gafc9cff02e1368acc5ed027387fe3d3a1">   44</a></span>&#160;} <a class="code" href="group__BatteryInterface.html#gafc9cff02e1368acc5ed027387fe3d3a1">BatteryInfo</a>;</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IBatteryListener.html">   50</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1IBatteryListener.html">IBatteryListener</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IBatteryListener.html">IBatteryListener</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
-<div class="line"><a name="l00058"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IBatteryListener.html#a8fa4ca45b33332a1d55909d747236639">   58</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1IBatteryListener.html#a8fa4ca45b33332a1d55909d747236639">requestContext</a>(<a class="code" href="structNuguCapability_1_1__BatteryInfo.html">BatteryInfo</a>&amp; battery_info) = 0;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;};</div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00065"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IBatteryHandler.html">   65</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1IBatteryHandler.html">IBatteryHandler</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a> {</div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IBatteryHandler.html">IBatteryHandler</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;};</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;} <span class="comment">// NuguCapability</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_BATTERY_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;nugu.h&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">namespace </span>NuguCapability {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">using namespace </span>NuguClientKit;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="structNuguCapability_1_1__BatteryInfo.html">   41</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structNuguCapability_1_1__BatteryInfo.html">_BatteryInfo</a> {</div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="structNuguCapability_1_1__BatteryInfo.html#ada17551c822976bacac44a12a99df92c">   42</a></span>&#160;    <span class="keywordtype">int</span> <a class="code" href="structNuguCapability_1_1__BatteryInfo.html#ada17551c822976bacac44a12a99df92c">level</a> = -1; </div>
+<div class="line"><a name="l00043"></a><span class="lineno"><a class="line" href="structNuguCapability_1_1__BatteryInfo.html#a73ddfca2f8e5ac8ecabe252fb095858b">   43</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structNuguCapability_1_1__BatteryInfo.html#a73ddfca2f8e5ac8ecabe252fb095858b">charging</a> = <span class="keyword">false</span>; </div>
+<div class="line"><a name="l00044"></a><span class="lineno"><a class="line" href="structNuguCapability_1_1__BatteryInfo.html#abea563daf60eee7629e9887267cc5034">   44</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="structNuguCapability_1_1__BatteryInfo.html#abea563daf60eee7629e9887267cc5034">approximate_level</a> = <span class="keyword">false</span>; </div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="group__BatteryInterface.html#gafc9cff02e1368acc5ed027387fe3d3a1">   45</a></span>&#160;} <a class="code" href="group__BatteryInterface.html#gafc9cff02e1368acc5ed027387fe3d3a1">BatteryInfo</a>;</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IBatteryListener.html">   51</a></span>&#160;<span class="keyword">class </span>NUGU_API <a class="code" href="classNuguCapability_1_1IBatteryListener.html">IBatteryListener</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IBatteryListener.html">IBatteryListener</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
+<div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IBatteryListener.html#a8fa4ca45b33332a1d55909d747236639">   59</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classNuguCapability_1_1IBatteryListener.html#a8fa4ca45b33332a1d55909d747236639">requestContext</a>(<a class="code" href="structNuguCapability_1_1__BatteryInfo.html">BatteryInfo</a>&amp; battery_info) = 0;</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;};</div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00066"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IBatteryHandler.html">   66</a></span>&#160;<span class="keyword">class </span>NUGU_API <a class="code" href="classNuguCapability_1_1IBatteryHandler.html">IBatteryHandler</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a> {</div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IBatteryHandler.html">IBatteryHandler</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;};</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;} <span class="comment">// NuguCapability</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_BATTERY_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="acapability__interface_8hh_html"><div class="ttname"><a href="capability__interface_8hh.html">capability_interface.hh</a></div></div>
-<div class="ttc" id="aclassNuguCapability_1_1IBatteryHandler_html"><div class="ttname"><a href="classNuguCapability_1_1IBatteryHandler.html">NuguCapability::IBatteryHandler</a></div><div class="ttdoc">battery handler interface</div><div class="ttdef"><b>Definition:</b> battery_interface.hh:65</div></div>
-<div class="ttc" id="aclassNuguCapability_1_1IBatteryListener_html"><div class="ttname"><a href="classNuguCapability_1_1IBatteryListener.html">NuguCapability::IBatteryListener</a></div><div class="ttdoc">battery listener interface</div><div class="ttdef"><b>Definition:</b> battery_interface.hh:50</div></div>
+<div class="ttc" id="aclassNuguCapability_1_1IBatteryHandler_html"><div class="ttname"><a href="classNuguCapability_1_1IBatteryHandler.html">NuguCapability::IBatteryHandler</a></div><div class="ttdoc">battery handler interface</div><div class="ttdef"><b>Definition:</b> battery_interface.hh:66</div></div>
+<div class="ttc" id="aclassNuguCapability_1_1IBatteryListener_html"><div class="ttname"><a href="classNuguCapability_1_1IBatteryListener.html">NuguCapability::IBatteryListener</a></div><div class="ttdoc">battery listener interface</div><div class="ttdef"><b>Definition:</b> battery_interface.hh:51</div></div>
 <div class="ttc" id="aclassNuguCapability_1_1IBatteryListener_html_a8fa4ca45b33332a1d55909d747236639"><div class="ttname"><a href="classNuguCapability_1_1IBatteryListener.html#a8fa4ca45b33332a1d55909d747236639">NuguCapability::IBatteryListener::requestContext</a></div><div class="ttdeci">virtual void requestContext(BatteryInfo &amp;battery_info)=0</div><div class="ttdoc">Request context information for battery context.</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:81</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityListener_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></div><div class="ttdoc">capability listener interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:59</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:82</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityListener_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></div><div class="ttdoc">capability listener interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:60</div></div>
 <div class="ttc" id="agroup__BatteryInterface_html_gafc9cff02e1368acc5ed027387fe3d3a1"><div class="ttname"><a href="group__BatteryInterface.html#gafc9cff02e1368acc5ed027387fe3d3a1">NuguCapability::BatteryInfo</a></div><div class="ttdeci">struct NuguCapability::_BatteryInfo BatteryInfo</div><div class="ttdoc">Battery Information.</div></div>
-<div class="ttc" id="astructNuguCapability_1_1__BatteryInfo_html"><div class="ttname"><a href="structNuguCapability_1_1__BatteryInfo.html">NuguCapability::_BatteryInfo</a></div><div class="ttdoc">Battery Information.</div><div class="ttdef"><b>Definition:</b> battery_interface.hh:40</div></div>
-<div class="ttc" id="astructNuguCapability_1_1__BatteryInfo_html_a73ddfca2f8e5ac8ecabe252fb095858b"><div class="ttname"><a href="structNuguCapability_1_1__BatteryInfo.html#a73ddfca2f8e5ac8ecabe252fb095858b">NuguCapability::_BatteryInfo::charging</a></div><div class="ttdeci">bool charging</div><div class="ttdef"><b>Definition:</b> battery_interface.hh:42</div></div>
-<div class="ttc" id="astructNuguCapability_1_1__BatteryInfo_html_abea563daf60eee7629e9887267cc5034"><div class="ttname"><a href="structNuguCapability_1_1__BatteryInfo.html#abea563daf60eee7629e9887267cc5034">NuguCapability::_BatteryInfo::approximate_level</a></div><div class="ttdeci">bool approximate_level</div><div class="ttdef"><b>Definition:</b> battery_interface.hh:43</div></div>
-<div class="ttc" id="astructNuguCapability_1_1__BatteryInfo_html_ada17551c822976bacac44a12a99df92c"><div class="ttname"><a href="structNuguCapability_1_1__BatteryInfo.html#ada17551c822976bacac44a12a99df92c">NuguCapability::_BatteryInfo::level</a></div><div class="ttdeci">int level</div><div class="ttdef"><b>Definition:</b> battery_interface.hh:41</div></div>
+<div class="ttc" id="astructNuguCapability_1_1__BatteryInfo_html"><div class="ttname"><a href="structNuguCapability_1_1__BatteryInfo.html">NuguCapability::_BatteryInfo</a></div><div class="ttdoc">Battery Information.</div><div class="ttdef"><b>Definition:</b> battery_interface.hh:41</div></div>
+<div class="ttc" id="astructNuguCapability_1_1__BatteryInfo_html_a73ddfca2f8e5ac8ecabe252fb095858b"><div class="ttname"><a href="structNuguCapability_1_1__BatteryInfo.html#a73ddfca2f8e5ac8ecabe252fb095858b">NuguCapability::_BatteryInfo::charging</a></div><div class="ttdeci">bool charging</div><div class="ttdef"><b>Definition:</b> battery_interface.hh:43</div></div>
+<div class="ttc" id="astructNuguCapability_1_1__BatteryInfo_html_abea563daf60eee7629e9887267cc5034"><div class="ttname"><a href="structNuguCapability_1_1__BatteryInfo.html#abea563daf60eee7629e9887267cc5034">NuguCapability::_BatteryInfo::approximate_level</a></div><div class="ttdeci">bool approximate_level</div><div class="ttdef"><b>Definition:</b> battery_interface.hh:44</div></div>
+<div class="ttc" id="astructNuguCapability_1_1__BatteryInfo_html_ada17551c822976bacac44a12a99df92c"><div class="ttname"><a href="structNuguCapability_1_1__BatteryInfo.html#ada17551c822976bacac44a12a99df92c">NuguCapability::_BatteryInfo::level</a></div><div class="ttdeci">int level</div><div class="ttdef"><b>Definition:</b> battery_interface.hh:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fe91053431442a18fd8b50c6b5c5d672.html">capability</a></li><li class="navelem"><a class="el" href="battery__interface_8hh.html">battery_interface.hh</a></li>
-    <li class="footer">Generated on Wed Aug 30 2023 09:35:57 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jun 25 2024 00:59:08 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

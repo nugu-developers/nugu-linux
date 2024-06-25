@@ -17,9 +17,9 @@ var nugu__equeue_8h =
       [ "NUGU_EQUEUE_TYPE_DIRECTIVES_CLOSED", "group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba050d3eccb50bcd084bf50ed8527ba59b", null ],
       [ "NUGU_EQUEUE_TYPE_MAX", "group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcba71a2740adf555abd8fd757d93cd19ffc", null ]
     ] ],
-    [ "nugu_equeue_initialize", "group__NuguEventQueue.html#ga94b136461320345223b21a5bb2ddfad3", null ],
-    [ "nugu_equeue_deinitialize", "group__NuguEventQueue.html#ga0ab09322d09d2adb9ed219212e8011fc", null ],
-    [ "nugu_equeue_set_handler", "group__NuguEventQueue.html#gabdd474afe452ae29200599d8443e4dae", null ],
-    [ "nugu_equeue_unset_handler", "group__NuguEventQueue.html#ga6b89310011d5b8ab153ce8cb1646e0ac", null ],
-    [ "nugu_equeue_push", "group__NuguEventQueue.html#gab4c77b0124f17b5852adcc6f449db337", null ]
+    [ "nugu_equeue_initialize", "group__NuguEventQueue.html#ga10d91d07101e091102903ae72190b116", null ],
+    [ "nugu_equeue_deinitialize", "group__NuguEventQueue.html#ga9004cdf3857fb387068961c62eabc46f", null ],
+    [ "nugu_equeue_set_handler", "group__NuguEventQueue.html#gac7bf797d58d1e2eae33ea40366024203", null ],
+    [ "nugu_equeue_unset_handler", "group__NuguEventQueue.html#ga18b0a68a0862c5b2cb719ac53e5ccbf0", null ],
+    [ "nugu_equeue_push", "group__NuguEventQueue.html#ga88b1d04cf68e34ae9a5e2c88e6bbeb5a", null ]
 ];

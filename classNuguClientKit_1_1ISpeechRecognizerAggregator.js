@@ -7,5 +7,6 @@ var classNuguClientKit_1_1ISpeechRecognizerAggregator =
     [ "setWakeupModel", "group__SpeechRecognizerAggregatorInterface.html#gac8d0f94931a28ae577393d64475f4050", null ],
     [ "startListeningWithTrigger", "group__SpeechRecognizerAggregatorInterface.html#ga2429c6d937c4e2a824efc279b67719b5", null ],
     [ "startListening", "group__SpeechRecognizerAggregatorInterface.html#gacc193b1f2a4365b0ca6661932b908833", null ],
-    [ "stopListening", "group__SpeechRecognizerAggregatorInterface.html#ga80fa045d97d261547fd58068b44e02e6", null ]
+    [ "stopListening", "group__SpeechRecognizerAggregatorInterface.html#ga80fa045d97d261547fd58068b44e02e6", null ],
+    [ "finishListening", "group__SpeechRecognizerAggregatorInterface.html#gadb853354e867ca76af551d389a416fb0", null ]
 ];

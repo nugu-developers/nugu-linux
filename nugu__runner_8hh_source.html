@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.5</span>
+   &#160;<span id="projectnumber">1.7.6</span>
    </div>
   </td>
  </tr>
@@ -106,19 +106,22 @@ $(document).ready(function(){initNavTree('nugu__runner_8hh_source.html',''); ini
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#define __NUGU_RUNNER_H__</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;functional&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">namespace </span>NuguClientKit {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="group__NuguRunner.html#gaa88d90fee499ac8cb7491616e6630bb8">   40</a></span>&#160;<span class="keyword">enum class</span> <a class="code" href="group__NuguRunner.html#gaa88d90fee499ac8cb7491616e6630bb8">ExecuteType</a> {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    <a class="code" href="group__NuguRunner.html#ggaa88d90fee499ac8cb7491616e6630bb8a06b9281e396db002010bde1de57262eb">Auto</a>, </div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    <a class="code" href="group__NuguRunner.html#ggaa88d90fee499ac8cb7491616e6630bb8a7b2f31b90fe1c2cc33a52233c1925df3">Queued</a>, </div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <a class="code" href="group__NuguRunner.html#ggaa88d90fee499ac8cb7491616e6630bb8abd0ca6be53b0f3d2886fd53fcb52574e">Blocking</a> </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;};</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">class </span>NuguRunnerPrivate;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;nugu.h&gt;</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>NuguClientKit {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="keyword">struct </span>NUGU_API NuguRunnerPrivate;</div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="group__NuguRunner.html#gaa88d90fee499ac8cb7491616e6630bb8">   45</a></span>&#160;<span class="keyword">enum class</span> <a class="code" href="group__NuguRunner.html#gaa88d90fee499ac8cb7491616e6630bb8">ExecuteType</a> {</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <a class="code" href="group__NuguRunner.html#ggaa88d90fee499ac8cb7491616e6630bb8a06b9281e396db002010bde1de57262eb">Auto</a>, </div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;    <a class="code" href="group__NuguRunner.html#ggaa88d90fee499ac8cb7491616e6630bb8a7b2f31b90fe1c2cc33a52233c1925df3">Queued</a>, </div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;    <a class="code" href="group__NuguRunner.html#ggaa88d90fee499ac8cb7491616e6630bb8abd0ca6be53b0f3d2886fd53fcb52574e">Blocking</a> </div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;};</div>
 <div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160; </div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguRunner.html">   54</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguClientKit_1_1NuguRunner.html">NuguRunner</a> {</div>
+<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguRunner.html">   54</a></span>&#160;<span class="keyword">class </span>NUGU_API <a class="code" href="classNuguClientKit_1_1NuguRunner.html">NuguRunner</a> {</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00059"></a><span class="lineno"><a class="line" href="group__NuguRunner.html#ga2e15837ae41f91f3a96968e547bf664d">   59</a></span>&#160;    <span class="keyword">typedef</span> std::function&lt;void()&gt; <a class="code" href="group__NuguRunner.html#ga2e15837ae41f91f3a96968e547bf664d">request_method</a>;</div>
 <div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
@@ -129,18 +132,15 @@ $(document).ready(function(){initNavTree('nugu__runner_8hh_source.html',''); ini
 <div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="group__NuguRunner.html#gacbb8a2dc63ce16467038f814655935c8">   73</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="group__NuguRunner.html#gacbb8a2dc63ce16467038f814655935c8">invokeMethod</a>(<span class="keyword">const</span> std::string&amp; tag, <a class="code" href="group__NuguRunner.html#ga2e15837ae41f91f3a96968e547bf664d">request_method</a> method, <a class="code" href="group__NuguRunner.html#gaa88d90fee499ac8cb7491616e6630bb8">ExecuteType</a> type = <a class="code" href="group__NuguRunner.html#ggaa88d90fee499ac8cb7491616e6630bb8a06b9281e396db002010bde1de57262eb">ExecuteType::Auto</a>, <span class="keywordtype">int</span> timeout = 0);</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    <span class="keywordtype">void</span> addMethod2Dispatcher(<span class="keyword">const</span> std::string&amp; tag, <a class="code" href="group__NuguRunner.html#ga2e15837ae41f91f3a96968e547bf664d">NuguRunner::request_method</a> method, <a class="code" href="group__NuguRunner.html#gaa88d90fee499ac8cb7491616e6630bb8">ExecuteType</a> type);</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    NuguRunnerPrivate* d;</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;} <span class="comment">// NuguClientKit</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160; </div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __NUGU_RUNNER_H__</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    std::unique_ptr&lt;NuguRunnerPrivate&gt; priv;</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;} <span class="comment">// NuguClientKit</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;<span class="preprocessor">#endif </span><span class="comment">// __NUGU_RUNNER_H__</span></div>
 <div class="ttc" id="aclassNuguClientKit_1_1NuguRunner_html"><div class="ttname"><a href="classNuguClientKit_1_1NuguRunner.html">NuguClientKit::NuguRunner</a></div><div class="ttdoc">NuguRunner.</div><div class="ttdef"><b>Definition:</b> nugu_runner.hh:54</div></div>
 <div class="ttc" id="agroup__NuguRunner_html_ga2e15837ae41f91f3a96968e547bf664d"><div class="ttname"><a href="group__NuguRunner.html#ga2e15837ae41f91f3a96968e547bf664d">NuguClientKit::NuguRunner::request_method</a></div><div class="ttdeci">std::function&lt; void()&gt; request_method</div><div class="ttdoc">The request method callback.</div><div class="ttdef"><b>Definition:</b> nugu_runner.hh:59</div></div>
-<div class="ttc" id="agroup__NuguRunner_html_gaa88d90fee499ac8cb7491616e6630bb8"><div class="ttname"><a href="group__NuguRunner.html#gaa88d90fee499ac8cb7491616e6630bb8">NuguClientKit::ExecuteType</a></div><div class="ttdeci">ExecuteType</div><div class="ttdoc">ExecuteType.</div><div class="ttdef"><b>Definition:</b> nugu_runner.hh:40</div></div>
+<div class="ttc" id="agroup__NuguRunner_html_gaa88d90fee499ac8cb7491616e6630bb8"><div class="ttname"><a href="group__NuguRunner.html#gaa88d90fee499ac8cb7491616e6630bb8">NuguClientKit::ExecuteType</a></div><div class="ttdeci">ExecuteType</div><div class="ttdoc">ExecuteType.</div><div class="ttdef"><b>Definition:</b> nugu_runner.hh:45</div></div>
 <div class="ttc" id="agroup__NuguRunner_html_gacbb8a2dc63ce16467038f814655935c8"><div class="ttname"><a href="group__NuguRunner.html#gacbb8a2dc63ce16467038f814655935c8">NuguClientKit::NuguRunner::invokeMethod</a></div><div class="ttdeci">bool invokeMethod(const std::string &amp;tag, request_method method, ExecuteType type=ExecuteType::Auto, int timeout=0)</div><div class="ttdoc">Request to execute method on nugu loop.</div></div>
 <div class="ttc" id="agroup__NuguRunner_html_ggaa88d90fee499ac8cb7491616e6630bb8a06b9281e396db002010bde1de57262eb"><div class="ttname"><a href="group__NuguRunner.html#ggaa88d90fee499ac8cb7491616e6630bb8a06b9281e396db002010bde1de57262eb">NuguClientKit::ExecuteType::Auto</a></div><div class="ttdeci">@ Auto</div></div>
 <div class="ttc" id="agroup__NuguRunner_html_ggaa88d90fee499ac8cb7491616e6630bb8a7b2f31b90fe1c2cc33a52233c1925df3"><div class="ttname"><a href="group__NuguRunner.html#ggaa88d90fee499ac8cb7491616e6630bb8a7b2f31b90fe1c2cc33a52233c1925df3">NuguClientKit::ExecuteType::Queued</a></div><div class="ttdeci">@ Queued</div></div>
@@ -151,7 +151,7 @@ $(document).ready(function(){initNavTree('nugu__runner_8hh_source.html',''); ini
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_261219a980049fd8e6168264a7da95ca.html">clientkit</a></li><li class="navelem"><a class="el" href="nugu__runner_8hh.html">nugu_runner.hh</a></li>
-    <li class="footer">Generated on Wed Aug 30 2023 09:35:57 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jun 25 2024 00:59:08 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

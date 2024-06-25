@@ -1,10 +1,10 @@
 var searchData=
 [
-  ['enable_2285',['enable',['../structNuguCapability_1_1__BTProfile.html#a37b7bc3f08170d1a3b15be4097f2b1bb',1,'NuguCapability::_BTProfile']]],
-  ['encode_2286',['encode',['../structnugu__encoder__driver__ops.html#a87509da7c98f944ff6d366bd65bd2ef5',1,'nugu_encoder_driver_ops']]],
-  ['epd_5fmax_5fduration_2287',['epd_max_duration',['../structNuguClientKit_1_1__EpdAttribute.html#a202703a92d40701a6312fa8754ac325b',1,'NuguClientKit::_EpdAttribute']]],
-  ['epd_5fpause_5flength_2288',['epd_pause_length',['../structNuguClientKit_1_1__EpdAttribute.html#a1016597033afad8698907bcb108016fc',1,'NuguClientKit::_EpdAttribute']]],
-  ['epd_5ftimeout_2289',['epd_timeout',['../structNuguClientKit_1_1__EpdAttribute.html#a32267d54dbed3d07b0d1e401cfa9a0a8',1,'NuguClientKit::_EpdAttribute']]],
-  ['epd_5ftype_2290',['epd_type',['../structNuguCapability_1_1__ASRAttribute.html#acef924f58318d143127d86b3c28b6798',1,'NuguCapability::_ASRAttribute']]],
-  ['error_2291',['error',['../group__SpeechRecognizerAggregatorInterface.html#gaa60529987720ce7ca5048b723bda0517',1,'NuguClientKit::_RecognitionResult']]]
+  ['decode_2310',['decode',['../structnugu__decoder__driver__ops.html#a5bd3be120948e3175035215e6022b108',1,'nugu_decoder_driver_ops']]],
+  ['destroy_2311',['destroy',['../structnugu__decoder__driver__ops.html#a48bc82d59e17e36c6d694e96a9b51467',1,'nugu_decoder_driver_ops::destroy()'],['../structnugu__encoder__driver__ops.html#a8915209fb94546d328d7ed29c05e49b0',1,'nugu_encoder_driver_ops::destroy()'],['../structnugu__pcm__driver__ops.html#aa3ca08a2b0c5be43a802876a10256283',1,'nugu_pcm_driver_ops::destroy()'],['../structnugu__player__driver__ops.html#a6e72c98933ca5cf61e28c27e4e207a1d',1,'nugu_player_driver_ops::destroy()']]],
+  ['destroy_5fdirective_5fby_5fagent_2312',['destroy_directive_by_agent',['../classNuguClientKit_1_1Capability.html#a2b7910d3feda791de178d7dcc82ee30d',1,'NuguClientKit::Capability']]],
+  ['device_5fname_2313',['device_name',['../structNuguCapability_1_1__BTDeviceInfo.html#a81f3ba1abb9e6159d85ae45034fdd8ab',1,'NuguCapability::_BTDeviceInfo']]],
+  ['dir_5fgroups_2314',['dir_groups',['../structNuguClientKit_1_1__DirectiveCancelPolicy.html#afc838eacf4e220e73c7db15fe6baa1df',1,'NuguClientKit::_DirectiveCancelPolicy']]],
+  ['directive_5fsequencer_2315',['directive_sequencer',['../classNuguClientKit_1_1Capability.html#a8658b77a46b306bfb8289c2220fd099b',1,'NuguClientKit::Capability']]],
+  ['displayagent_2316',['DisplayAgent',['../group__CapabilityFactory.html#ga3c1babfcd0068766bc254e5e7d7b955d',1,'NuguCapability']]]
 ];

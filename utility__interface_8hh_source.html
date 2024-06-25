@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.5</span>
+   &#160;<span id="projectnumber">1.7.6</span>
    </div>
   </td>
  </tr>
@@ -106,36 +106,37 @@ $(document).ready(function(){initNavTree('utility__interface_8hh_source.html',''
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#define __NUGU_UTILITY_INTERFACE_H__</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="capability__interface_8hh.html">clientkit/capability_interface.hh</a>&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keyword">namespace </span>NuguCapability {</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">using namespace </span>NuguClientKit;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00041"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IUtilityListener.html">   41</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1IUtilityListener.html">IUtilityListener</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> {</div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IUtilityListener.html">IUtilityListener</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;};</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IUtilityHandler.html">   50</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguCapability_1_1IUtilityHandler.html">IUtilityHandler</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a> {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IUtilityHandler.html">IUtilityHandler</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;};</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160; </div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;} <span class="comment">// NuguCapability</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_UTILITY_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;nugu.h&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">namespace </span>NuguCapability {</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160; </div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">using namespace </span>NuguClientKit;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IUtilityListener.html">   42</a></span>&#160;<span class="keyword">class </span>NUGU_API <a class="code" href="classNuguCapability_1_1IUtilityListener.html">IUtilityListener</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityListener.html">ICapabilityListener</a> {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IUtilityListener.html">IUtilityListener</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;};</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno"><a class="line" href="classNuguCapability_1_1IUtilityHandler.html">   51</a></span>&#160;<span class="keyword">class </span>NUGU_API <a class="code" href="classNuguCapability_1_1IUtilityHandler.html">IUtilityHandler</a> : <span class="keyword">virtual</span> <span class="keyword">public</span> <a class="code" href="classNuguClientKit_1_1ICapabilityInterface.html">ICapabilityInterface</a> {</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    <span class="keyword">virtual</span> ~<a class="code" href="classNuguCapability_1_1IUtilityHandler.html">IUtilityHandler</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;};</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160; </div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;} <span class="comment">// NuguCapability</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160; </div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_UTILITY_INTERFACE_H__ */</span><span class="preprocessor"></span></div>
 <div class="ttc" id="acapability__interface_8hh_html"><div class="ttname"><a href="capability__interface_8hh.html">capability_interface.hh</a></div></div>
-<div class="ttc" id="aclassNuguCapability_1_1IUtilityHandler_html"><div class="ttname"><a href="classNuguCapability_1_1IUtilityHandler.html">NuguCapability::IUtilityHandler</a></div><div class="ttdoc">utility handler interface</div><div class="ttdef"><b>Definition:</b> utility_interface.hh:50</div></div>
-<div class="ttc" id="aclassNuguCapability_1_1IUtilityListener_html"><div class="ttname"><a href="classNuguCapability_1_1IUtilityListener.html">NuguCapability::IUtilityListener</a></div><div class="ttdoc">utility listener interface</div><div class="ttdef"><b>Definition:</b> utility_interface.hh:41</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:81</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityListener_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></div><div class="ttdoc">capability listener interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:59</div></div>
+<div class="ttc" id="aclassNuguCapability_1_1IUtilityHandler_html"><div class="ttname"><a href="classNuguCapability_1_1IUtilityHandler.html">NuguCapability::IUtilityHandler</a></div><div class="ttdoc">utility handler interface</div><div class="ttdef"><b>Definition:</b> utility_interface.hh:51</div></div>
+<div class="ttc" id="aclassNuguCapability_1_1IUtilityListener_html"><div class="ttname"><a href="classNuguCapability_1_1IUtilityListener.html">NuguCapability::IUtilityListener</a></div><div class="ttdoc">utility listener interface</div><div class="ttdef"><b>Definition:</b> utility_interface.hh:42</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityInterface_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityInterface.html">NuguClientKit::ICapabilityInterface</a></div><div class="ttdoc">capability interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:82</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1ICapabilityListener_html"><div class="ttname"><a href="classNuguClientKit_1_1ICapabilityListener.html">NuguClientKit::ICapabilityListener</a></div><div class="ttdoc">capability listener interface</div><div class="ttdef"><b>Definition:</b> capability_interface.hh:60</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_fe91053431442a18fd8b50c6b5c5d672.html">capability</a></li><li class="navelem"><a class="el" href="utility__interface_8hh.html">utility_interface.hh</a></li>
-    <li class="footer">Generated on Wed Aug 30 2023 09:35:57 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jun 25 2024 00:59:08 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

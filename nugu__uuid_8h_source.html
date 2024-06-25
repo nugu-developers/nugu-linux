@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.5</span>
+   &#160;<span id="projectnumber">1.7.6</span>
    </div>
   </td>
  </tr>
@@ -106,52 +106,56 @@ $(document).ready(function(){initNavTree('nugu__uuid_8h_source.html',''); initRe
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#define __NUGU_UUID_H__</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;time.h&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160; </div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno"><a class="line" href="group__uuid.html#gadcdfa588cf5e3233476e5b4752b63d74">   38</a></span>&#160;<span class="preprocessor">#define NUGU_BASE_TIMESTAMP_SEC 1546300800</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00045"></a><span class="lineno"><a class="line" href="group__uuid.html#gaff6041ce1d21c47646a8b38f65494095">   45</a></span>&#160;<span class="preprocessor">#define NUGU_BASE_TIMESTAMP_MSEC 1546300800000</span></div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="group__uuid.html#ga14c275ed58be091f3690406c142ef99f">   50</a></span>&#160;<span class="preprocessor">#define NUGU_MAX_UUID_SIZE 16</span></div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00055"></a><span class="lineno"><a class="line" href="group__uuid.html#ga5f21be5aae5fd4ef7bae41eb578ee373">   55</a></span>&#160;<span class="preprocessor">#define NUGU_MAX_UUID_STRING_SIZE (NUGU_MAX_UUID_SIZE * 2)</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
-<div class="line"><a name="l00061"></a><span class="lineno"><a class="line" href="group__uuid.html#gaa9ba86139cb5e850c77f1deb0902a434">   61</a></span>&#160;<span class="keywordtype">char</span> *<a class="code" href="group__uuid.html#gaa9ba86139cb5e850c77f1deb0902a434">nugu_uuid_generate_time</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160; </div>
-<div class="line"><a name="l00073"></a><span class="lineno"><a class="line" href="group__uuid.html#ga35f5f90fd73a6a93c09e09613a1a14c7">   73</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__uuid.html#ga35f5f90fd73a6a93c09e09613a1a14c7">nugu_uuid_convert_bytes</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *base16, <span class="keywordtype">size_t</span> base16_len,</div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;                            <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *out, <span class="keywordtype">size_t</span> out_len);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno"><a class="line" href="group__uuid.html#ga680fd8dd3617514fa7b7ef5c1ce6ba63">   86</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__uuid.html#ga680fd8dd3617514fa7b7ef5c1ce6ba63">nugu_uuid_convert_base16</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *bytes, <span class="keywordtype">size_t</span> bytes_len,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;                             <span class="keywordtype">char</span> *out, <span class="keywordtype">size_t</span> out_len);</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
-<div class="line"><a name="l00098"></a><span class="lineno"><a class="line" href="group__uuid.html#ga7cce59fa0ba778c8a46707df02003d2c">   98</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__uuid.html#ga7cce59fa0ba778c8a46707df02003d2c">nugu_uuid_convert_timespec</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *bytes, <span class="keywordtype">size_t</span> bytes_len,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;                               <span class="keyword">struct</span> timespec *out_time);</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="group__uuid.html#ga98a7f70acff1804014eadbe698fbcfea">  109</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__uuid.html#ga98a7f70acff1804014eadbe698fbcfea">nugu_uuid_fill_random</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *dest, <span class="keywordtype">size_t</span> dest_len);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160; </div>
-<div class="line"><a name="l00122"></a><span class="lineno"><a class="line" href="group__uuid.html#gabcebf51cf57b8ead681e4cb0abfc8e77">  122</a></span>&#160;<span class="keywordtype">int</span> <a class="code" href="group__uuid.html#gabcebf51cf57b8ead681e4cb0abfc8e77">nugu_uuid_fill</a>(<span class="keyword">const</span> <span class="keyword">struct</span> timespec *time, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *hash,</div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;                   <span class="keywordtype">size_t</span> hash_len, <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *out, <span class="keywordtype">size_t</span> out_len);</div>
-<div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;}</div>
-<div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="agroup__uuid_html_ga35f5f90fd73a6a93c09e09613a1a14c7"><div class="ttname"><a href="group__uuid.html#ga35f5f90fd73a6a93c09e09613a1a14c7">nugu_uuid_convert_bytes</a></div><div class="ttdeci">int nugu_uuid_convert_bytes(const char *base16, size_t base16_len, unsigned char *out, size_t out_len)</div><div class="ttdoc">Convert base16-encoded string to byte array.</div></div>
-<div class="ttc" id="agroup__uuid_html_ga680fd8dd3617514fa7b7ef5c1ce6ba63"><div class="ttname"><a href="group__uuid.html#ga680fd8dd3617514fa7b7ef5c1ce6ba63">nugu_uuid_convert_base16</a></div><div class="ttdeci">int nugu_uuid_convert_base16(const unsigned char *bytes, size_t bytes_len, char *out, size_t out_len)</div><div class="ttdoc">Convert byte array to base16-encoded string.</div></div>
-<div class="ttc" id="agroup__uuid_html_ga7cce59fa0ba778c8a46707df02003d2c"><div class="ttname"><a href="group__uuid.html#ga7cce59fa0ba778c8a46707df02003d2c">nugu_uuid_convert_timespec</a></div><div class="ttdeci">int nugu_uuid_convert_timespec(const unsigned char *bytes, size_t bytes_len, struct timespec *out_time)</div><div class="ttdoc">Convert byte array to base16-encoded string.</div></div>
-<div class="ttc" id="agroup__uuid_html_ga98a7f70acff1804014eadbe698fbcfea"><div class="ttname"><a href="group__uuid.html#ga98a7f70acff1804014eadbe698fbcfea">nugu_uuid_fill_random</a></div><div class="ttdeci">int nugu_uuid_fill_random(unsigned char *dest, size_t dest_len)</div><div class="ttdoc">Generate random bytes and fill to destination buffer.</div></div>
-<div class="ttc" id="agroup__uuid_html_gaa9ba86139cb5e850c77f1deb0902a434"><div class="ttname"><a href="group__uuid.html#gaa9ba86139cb5e850c77f1deb0902a434">nugu_uuid_generate_time</a></div><div class="ttdeci">char * nugu_uuid_generate_time(void)</div><div class="ttdoc">Generate time based UUID.</div></div>
-<div class="ttc" id="agroup__uuid_html_gabcebf51cf57b8ead681e4cb0abfc8e77"><div class="ttname"><a href="group__uuid.html#gabcebf51cf57b8ead681e4cb0abfc8e77">nugu_uuid_fill</a></div><div class="ttdeci">int nugu_uuid_fill(const struct timespec *time, const unsigned char *hash, size_t hash_len, unsigned char *out, size_t out_len)</div><div class="ttdoc">Fill to output buffer with NUGU UUID format using parameters.</div></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;nugu.h&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;glib.h&gt;</span></div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="group__uuid.html#gadcdfa588cf5e3233476e5b4752b63d74">   40</a></span>&#160;<span class="preprocessor">#define NUGU_BASE_TIMESTAMP_SEC 1546300800</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160; </div>
+<div class="line"><a name="l00047"></a><span class="lineno"><a class="line" href="group__uuid.html#gaff6041ce1d21c47646a8b38f65494095">   47</a></span>&#160;<span class="preprocessor">#define NUGU_BASE_TIMESTAMP_MSEC 1546300800000</span></div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="group__uuid.html#ga14c275ed58be091f3690406c142ef99f">   52</a></span>&#160;<span class="preprocessor">#define NUGU_MAX_UUID_SIZE 16</span></div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="group__uuid.html#ga5f21be5aae5fd4ef7bae41eb578ee373">   57</a></span>&#160;<span class="preprocessor">#define NUGU_MAX_UUID_STRING_SIZE (NUGU_MAX_UUID_SIZE * 2)</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno"><a class="line" href="group__uuid.html#ga47779c83b3b47a43854069739dd9ad5d">   63</a></span>&#160;NUGU_API <span class="keywordtype">char</span> *<a class="code" href="group__uuid.html#ga47779c83b3b47a43854069739dd9ad5d">nugu_uuid_generate_time</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno"><a class="line" href="group__uuid.html#ga871a901d1d83c1a2b1d597f55ef50ea5">   75</a></span>&#160;NUGU_API <span class="keywordtype">int</span> <a class="code" href="group__uuid.html#ga871a901d1d83c1a2b1d597f55ef50ea5">nugu_uuid_convert_bytes</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *base16, <span class="keywordtype">size_t</span> base16_len,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;                                     <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *out, <span class="keywordtype">size_t</span> out_len);</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160; </div>
+<div class="line"><a name="l00088"></a><span class="lineno"><a class="line" href="group__uuid.html#ga3076449a768ba5db70fbafccf568ad9e">   88</a></span>&#160;NUGU_API <span class="keywordtype">int</span> <a class="code" href="group__uuid.html#ga3076449a768ba5db70fbafccf568ad9e">nugu_uuid_convert_base16</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *bytes,</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;                                      <span class="keywordtype">size_t</span> bytes_len, <span class="keywordtype">char</span> *out,</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;                                      <span class="keywordtype">size_t</span> out_len);</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160; </div>
+<div class="line"><a name="l00101"></a><span class="lineno"><a class="line" href="group__uuid.html#ga6c73ce9db275ab2e15ed69cd154ab6e2">  101</a></span>&#160;NUGU_API <span class="keywordtype">int</span> <a class="code" href="group__uuid.html#ga6c73ce9db275ab2e15ed69cd154ab6e2">nugu_uuid_convert_msec</a>(<span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *bytes,</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;                                    <span class="keywordtype">size_t</span> bytes_len, gint64 *msec);</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="group__uuid.html#gad8b3755bb4a4c002fa8a4fac347ea690">  112</a></span>&#160;NUGU_API <span class="keywordtype">int</span> <a class="code" href="group__uuid.html#gad8b3755bb4a4c002fa8a4fac347ea690">nugu_uuid_fill_random</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *dest, <span class="keywordtype">size_t</span> dest_len);</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno"><a class="line" href="group__uuid.html#gafba06fff49402be4afa8f3b03fbd7a82">  125</a></span>&#160;NUGU_API <span class="keywordtype">int</span> <a class="code" href="group__uuid.html#gafba06fff49402be4afa8f3b03fbd7a82">nugu_uuid_fill</a>(gint64 msec, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *hash,</div>
+<div class="line"><a name="l00126"></a><span class="lineno">  126</span>&#160;                            <span class="keywordtype">size_t</span> hash_len, <span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> *out,</div>
+<div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;                            <span class="keywordtype">size_t</span> out_len);</div>
+<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160;<span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;}</div>
+<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160; </div>
+<div class="line"><a name="l00136"></a><span class="lineno">  136</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="agroup__uuid_html_ga3076449a768ba5db70fbafccf568ad9e"><div class="ttname"><a href="group__uuid.html#ga3076449a768ba5db70fbafccf568ad9e">nugu_uuid_convert_base16</a></div><div class="ttdeci">NUGU_API int nugu_uuid_convert_base16(const unsigned char *bytes, size_t bytes_len, char *out, size_t out_len)</div><div class="ttdoc">Convert byte array to base16-encoded string.</div></div>
+<div class="ttc" id="agroup__uuid_html_ga47779c83b3b47a43854069739dd9ad5d"><div class="ttname"><a href="group__uuid.html#ga47779c83b3b47a43854069739dd9ad5d">nugu_uuid_generate_time</a></div><div class="ttdeci">NUGU_API char * nugu_uuid_generate_time(void)</div><div class="ttdoc">Generate time based UUID.</div></div>
+<div class="ttc" id="agroup__uuid_html_ga6c73ce9db275ab2e15ed69cd154ab6e2"><div class="ttname"><a href="group__uuid.html#ga6c73ce9db275ab2e15ed69cd154ab6e2">nugu_uuid_convert_msec</a></div><div class="ttdeci">NUGU_API int nugu_uuid_convert_msec(const unsigned char *bytes, size_t bytes_len, gint64 *msec)</div><div class="ttdoc">Convert byte array to base16-encoded string.</div></div>
+<div class="ttc" id="agroup__uuid_html_ga871a901d1d83c1a2b1d597f55ef50ea5"><div class="ttname"><a href="group__uuid.html#ga871a901d1d83c1a2b1d597f55ef50ea5">nugu_uuid_convert_bytes</a></div><div class="ttdeci">NUGU_API int nugu_uuid_convert_bytes(const char *base16, size_t base16_len, unsigned char *out, size_t out_len)</div><div class="ttdoc">Convert base16-encoded string to byte array.</div></div>
+<div class="ttc" id="agroup__uuid_html_gad8b3755bb4a4c002fa8a4fac347ea690"><div class="ttname"><a href="group__uuid.html#gad8b3755bb4a4c002fa8a4fac347ea690">nugu_uuid_fill_random</a></div><div class="ttdeci">NUGU_API int nugu_uuid_fill_random(unsigned char *dest, size_t dest_len)</div><div class="ttdoc">Generate random bytes and fill to destination buffer.</div></div>
+<div class="ttc" id="agroup__uuid_html_gafba06fff49402be4afa8f3b03fbd7a82"><div class="ttname"><a href="group__uuid.html#gafba06fff49402be4afa8f3b03fbd7a82">nugu_uuid_fill</a></div><div class="ttdeci">NUGU_API int nugu_uuid_fill(gint64 msec, const unsigned char *hash, size_t hash_len, unsigned char *out, size_t out_len)</div><div class="ttdoc">Fill to output buffer with NUGU UUID format using parameters.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_ab1c81409f0df724f17c9ef30afee877.html">base</a></li><li class="navelem"><a class="el" href="nugu__uuid_8h.html">nugu_uuid.h</a></li>
-    <li class="footer">Generated on Wed Aug 30 2023 09:35:57 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jun 25 2024 00:59:08 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

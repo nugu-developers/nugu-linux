@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.5</span>
+   &#160;<span id="projectnumber">1.7.6</span>
    </div>
   </td>
  </tr>
@@ -89,7 +89,19 @@ $(document).ready(function(){initNavTree('nugu__timer_8h.html',''); initResizabl
 <div class="title">nugu_timer.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
+<div class="textblock"><code>#include &lt;nugu.h&gt;</code><br />
+</div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for nugu_timer.h:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="nugu__timer_8h__incl.png" border="0" usemap="#anugu__timer_8h" alt=""/></div>
+<map name="anugu__timer_8h" id="anugu__timer_8h">
+<area shape="rect" title=" " alt="" coords="5,5,112,32"/>
+<area shape="rect" title=" " alt="" coords="25,80,92,107"/>
+</map>
+</div>
+</div>
 <p><a href="nugu__timer_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -105,33 +117,33 @@ typedef struct _nugu_timer&#160;</td><td class="memItemRight" valign="bottom"><a
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga9b94911aaaf3be16ecee5a1eb56e1fd7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga9b94911aaaf3be16ecee5a1eb56e1fd7">nugu_timer_delete</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer)</td></tr>
-<tr class="memdesc:ga9b94911aaaf3be16ecee5a1eb56e1fd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the timer object.  <a href="group__NuguTimer.html#ga9b94911aaaf3be16ecee5a1eb56e1fd7">More...</a><br /></td></tr>
-<tr class="separator:ga9b94911aaaf3be16ecee5a1eb56e1fd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac2bfc033a765fd2927cba4cf9aa8c483"><td class="memItemLeft" align="right" valign="top">long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#gac2bfc033a765fd2927cba4cf9aa8c483">nugu_timer_get_interval</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer)</td></tr>
-<tr class="memdesc:gac2bfc033a765fd2927cba4cf9aa8c483"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get interval.  <a href="group__NuguTimer.html#gac2bfc033a765fd2927cba4cf9aa8c483">More...</a><br /></td></tr>
-<tr class="separator:gac2bfc033a765fd2927cba4cf9aa8c483"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga01fa3e3e65f5541ad87fcf40a6531bd1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga01fa3e3e65f5541ad87fcf40a6531bd1">nugu_timer_get_singleshot</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer)</td></tr>
-<tr class="memdesc:ga01fa3e3e65f5541ad87fcf40a6531bd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get timer single shot property.  <a href="group__NuguTimer.html#ga01fa3e3e65f5541ad87fcf40a6531bd1">More...</a><br /></td></tr>
-<tr class="separator:ga01fa3e3e65f5541ad87fcf40a6531bd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa18428c72fa39915106b3c6641fd5374"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#gaa18428c72fa39915106b3c6641fd5374">nugu_timer_new</a> (long interval)</td></tr>
-<tr class="memdesc:gaa18428c72fa39915106b3c6641fd5374"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new timer object.  <a href="group__NuguTimer.html#gaa18428c72fa39915106b3c6641fd5374">More...</a><br /></td></tr>
-<tr class="separator:gaa18428c72fa39915106b3c6641fd5374"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3439d4c2af68342057b1e6b0f46cd0b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga3439d4c2af68342057b1e6b0f46cd0b1">nugu_timer_set_callback</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer, <a class="el" href="group__NuguTimer.html#ga72cf38b517d8c38750825d74f0e86985">NuguTimeoutCallback</a> callback, void *userdata)</td></tr>
-<tr class="memdesc:ga3439d4c2af68342057b1e6b0f46cd0b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set timeout callback.  <a href="group__NuguTimer.html#ga3439d4c2af68342057b1e6b0f46cd0b1">More...</a><br /></td></tr>
-<tr class="separator:ga3439d4c2af68342057b1e6b0f46cd0b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga2a63d0ad8391b9a779fbef5cd8468d37"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga2a63d0ad8391b9a779fbef5cd8468d37">nugu_timer_set_interval</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer, long interval)</td></tr>
-<tr class="memdesc:ga2a63d0ad8391b9a779fbef5cd8468d37"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interval.  <a href="group__NuguTimer.html#ga2a63d0ad8391b9a779fbef5cd8468d37">More...</a><br /></td></tr>
-<tr class="separator:ga2a63d0ad8391b9a779fbef5cd8468d37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1f32044a160159929fc63156f87baf7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga1f32044a160159929fc63156f87baf7e">nugu_timer_set_singleshot</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer, int singleshot)</td></tr>
-<tr class="memdesc:ga1f32044a160159929fc63156f87baf7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set timer running single shot.  <a href="group__NuguTimer.html#ga1f32044a160159929fc63156f87baf7e">More...</a><br /></td></tr>
-<tr class="separator:ga1f32044a160159929fc63156f87baf7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gafc6167fa33146c874a63199b722c8ef8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#gafc6167fa33146c874a63199b722c8ef8">nugu_timer_start</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer)</td></tr>
-<tr class="memdesc:gafc6167fa33146c874a63199b722c8ef8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the timer.  <a href="group__NuguTimer.html#gafc6167fa33146c874a63199b722c8ef8">More...</a><br /></td></tr>
-<tr class="separator:gafc6167fa33146c874a63199b722c8ef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaade4b4779df6ee12a657a1866414def1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#gaade4b4779df6ee12a657a1866414def1">nugu_timer_stop</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer)</td></tr>
-<tr class="memdesc:gaade4b4779df6ee12a657a1866414def1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop the timer.  <a href="group__NuguTimer.html#gaade4b4779df6ee12a657a1866414def1">More...</a><br /></td></tr>
-<tr class="separator:gaade4b4779df6ee12a657a1866414def1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4a92b212c16f4f892c61e3f567d922d5"><td class="memItemLeft" align="right" valign="top">NUGU_API void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga4a92b212c16f4f892c61e3f567d922d5">nugu_timer_delete</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer)</td></tr>
+<tr class="memdesc:ga4a92b212c16f4f892c61e3f567d922d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the timer object.  <a href="group__NuguTimer.html#ga4a92b212c16f4f892c61e3f567d922d5">More...</a><br /></td></tr>
+<tr class="separator:ga4a92b212c16f4f892c61e3f567d922d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa31a94d400e1d48797d5b376a186fb83"><td class="memItemLeft" align="right" valign="top">NUGU_API long&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#gaa31a94d400e1d48797d5b376a186fb83">nugu_timer_get_interval</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer)</td></tr>
+<tr class="memdesc:gaa31a94d400e1d48797d5b376a186fb83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get interval.  <a href="group__NuguTimer.html#gaa31a94d400e1d48797d5b376a186fb83">More...</a><br /></td></tr>
+<tr class="separator:gaa31a94d400e1d48797d5b376a186fb83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaffed599fef3fc3b21f8d177ba3977aa8"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#gaffed599fef3fc3b21f8d177ba3977aa8">nugu_timer_get_singleshot</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer)</td></tr>
+<tr class="memdesc:gaffed599fef3fc3b21f8d177ba3977aa8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get timer single shot property.  <a href="group__NuguTimer.html#gaffed599fef3fc3b21f8d177ba3977aa8">More...</a><br /></td></tr>
+<tr class="separator:gaffed599fef3fc3b21f8d177ba3977aa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga131af6f491c1e72339fdab34a13846cd"><td class="memItemLeft" align="right" valign="top">NUGU_API <a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga131af6f491c1e72339fdab34a13846cd">nugu_timer_new</a> (long interval)</td></tr>
+<tr class="memdesc:ga131af6f491c1e72339fdab34a13846cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new timer object.  <a href="group__NuguTimer.html#ga131af6f491c1e72339fdab34a13846cd">More...</a><br /></td></tr>
+<tr class="separator:ga131af6f491c1e72339fdab34a13846cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8628b2de507113064bb71b59b2e8d9be"><td class="memItemLeft" align="right" valign="top">NUGU_API void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga8628b2de507113064bb71b59b2e8d9be">nugu_timer_set_callback</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer, <a class="el" href="group__NuguTimer.html#ga72cf38b517d8c38750825d74f0e86985">NuguTimeoutCallback</a> callback, void *userdata)</td></tr>
+<tr class="memdesc:ga8628b2de507113064bb71b59b2e8d9be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set timeout callback.  <a href="group__NuguTimer.html#ga8628b2de507113064bb71b59b2e8d9be">More...</a><br /></td></tr>
+<tr class="separator:ga8628b2de507113064bb71b59b2e8d9be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga59929ac7d71606192c508e8f3c431b96"><td class="memItemLeft" align="right" valign="top">NUGU_API void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga59929ac7d71606192c508e8f3c431b96">nugu_timer_set_interval</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer, long interval)</td></tr>
+<tr class="memdesc:ga59929ac7d71606192c508e8f3c431b96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set interval.  <a href="group__NuguTimer.html#ga59929ac7d71606192c508e8f3c431b96">More...</a><br /></td></tr>
+<tr class="separator:ga59929ac7d71606192c508e8f3c431b96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga569d142873ae976198f81cc9f57bc17b"><td class="memItemLeft" align="right" valign="top">NUGU_API void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga569d142873ae976198f81cc9f57bc17b">nugu_timer_set_singleshot</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer, int singleshot)</td></tr>
+<tr class="memdesc:ga569d142873ae976198f81cc9f57bc17b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set timer running single shot.  <a href="group__NuguTimer.html#ga569d142873ae976198f81cc9f57bc17b">More...</a><br /></td></tr>
+<tr class="separator:ga569d142873ae976198f81cc9f57bc17b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6e7b1e6431a1322d673ec02c91e10c1f"><td class="memItemLeft" align="right" valign="top">NUGU_API void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#ga6e7b1e6431a1322d673ec02c91e10c1f">nugu_timer_start</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer)</td></tr>
+<tr class="memdesc:ga6e7b1e6431a1322d673ec02c91e10c1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Start the timer.  <a href="group__NuguTimer.html#ga6e7b1e6431a1322d673ec02c91e10c1f">More...</a><br /></td></tr>
+<tr class="separator:ga6e7b1e6431a1322d673ec02c91e10c1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad7db15424cf5643a517497ee9cab716c"><td class="memItemLeft" align="right" valign="top">NUGU_API void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguTimer.html#gad7db15424cf5643a517497ee9cab716c">nugu_timer_stop</a> (<a class="el" href="group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e">NuguTimer</a> *timer)</td></tr>
+<tr class="memdesc:gad7db15424cf5643a517497ee9cab716c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Stop the timer.  <a href="group__NuguTimer.html#gad7db15424cf5643a517497ee9cab716c">More...</a><br /></td></tr>
+<tr class="separator:gad7db15424cf5643a517497ee9cab716c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -139,7 +151,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_ab1c81409f0df724f17c9ef30afee877.html">base</a></li><li class="navelem"><a class="el" href="nugu__timer_8h.html">nugu_timer.h</a></li>
-    <li class="footer">Generated on Wed Aug 30 2023 09:35:57 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jun 25 2024 00:59:09 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

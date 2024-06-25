@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.5</span>
+   &#160;<span id="projectnumber">1.7.6</span>
    </div>
   </td>
  </tr>
@@ -92,11 +92,23 @@ $(document).ready(function(){initNavTree('nugu__audio_8h.html',''); initResizabl
 <div class="title">nugu_audio.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
-  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> This graph shows which files directly or indirectly include this file:</div>
+<div class="textblock"><code>#include &lt;nugu.h&gt;</code><br />
+</div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for nugu_audio.h:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
 </div>
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="nugu__audio_8h__incl.png" border="0" usemap="#anugu__audio_8h" alt=""/></div>
+<map name="anugu__audio_8h" id="anugu__audio_8h">
+<area shape="rect" title=" " alt="" coords="5,5,115,32"/>
+<area shape="rect" title=" " alt="" coords="27,80,93,107"/>
+</map>
+</div>
+</div><div class="textblock"><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-1-trigger" src="closed.png" alt="+"/> This graph shows which files directly or indirectly include this file:</div>
+<div id="dynsection-1-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-1-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="nugu__audio_8h__dep__incl.png" border="0" usemap="#anugu__audio_8hdep" alt=""/></div>
 <map name="anugu__audio_8hdep" id="anugu__audio_8hdep">
 <area shape="rect" title=" " alt="" coords="455,5,565,32"/>
@@ -237,12 +249,15 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af7185f86c4e029f966e37e2f0925b025"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nugu__audio_8h.html#af7185f86c4e029f966e37e2f0925b025">nugu_audio_get_attribute_str</a> (const <a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a> attribute)</td></tr>
-<tr class="memdesc:af7185f86c4e029f966e37e2f0925b025"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get audio attribute string.  <a href="nugu__audio_8h.html#af7185f86c4e029f966e37e2f0925b025">More...</a><br /></td></tr>
-<tr class="separator:af7185f86c4e029f966e37e2f0925b025"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4395b9f8e40d61ffa26e641d0ac954df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nugu__audio_8h.html#a4395b9f8e40d61ffa26e641d0ac954df">nugu_audio_set_attribute_str</a> (const <a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a> attribute, const char *str)</td></tr>
-<tr class="memdesc:a4395b9f8e40d61ffa26e641d0ac954df"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set audio attribute string.  <a href="nugu__audio_8h.html#a4395b9f8e40d61ffa26e641d0ac954df">More...</a><br /></td></tr>
-<tr class="separator:a4395b9f8e40d61ffa26e641d0ac954df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed157e169a931757c5601372ef478012"><td class="memItemLeft" align="right" valign="top">NUGU_API <a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nugu__audio_8h.html#aed157e169a931757c5601372ef478012">nugu_audio_get_attribute</a> (const char *str)</td></tr>
+<tr class="memdesc:aed157e169a931757c5601372ef478012"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get audio attribute type from string.  <a href="nugu__audio_8h.html#aed157e169a931757c5601372ef478012">More...</a><br /></td></tr>
+<tr class="separator:aed157e169a931757c5601372ef478012"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5656a9da65549279ec37176222804d97"><td class="memItemLeft" align="right" valign="top">NUGU_API const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nugu__audio_8h.html#a5656a9da65549279ec37176222804d97">nugu_audio_get_attribute_str</a> (const <a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a> attribute)</td></tr>
+<tr class="memdesc:a5656a9da65549279ec37176222804d97"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get audio attribute string.  <a href="nugu__audio_8h.html#a5656a9da65549279ec37176222804d97">More...</a><br /></td></tr>
+<tr class="separator:a5656a9da65549279ec37176222804d97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac27a491646b40853bfb1a60717cf4faf"><td class="memItemLeft" align="right" valign="top">NUGU_API void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="nugu__audio_8h.html#ac27a491646b40853bfb1a60717cf4faf">nugu_audio_set_attribute_str</a> (const <a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a> attribute, const char *str)</td></tr>
+<tr class="memdesc:ac27a491646b40853bfb1a60717cf4faf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set audio attribute string.  <a href="nugu__audio_8h.html#ac27a491646b40853bfb1a60717cf4faf">More...</a><br /></td></tr>
+<tr class="separator:ac27a491646b40853bfb1a60717cf4faf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="a45142699425266966bf2e0eed6dad69c"></a>
@@ -354,14 +369,14 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a4395b9f8e40d61ffa26e641d0ac954df"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4395b9f8e40d61ffa26e641d0ac954df">&#9670;&nbsp;</a></span>nugu_audio_set_attribute_str()</h2>
+<a id="ac27a491646b40853bfb1a60717cf4faf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac27a491646b40853bfb1a60717cf4faf">&#9670;&nbsp;</a></span>nugu_audio_set_attribute_str()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void nugu_audio_set_attribute_str </td>
+          <td class="memname">NUGU_API void nugu_audio_set_attribute_str </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a>&#160;</td>
           <td class="paramname"><em>attribute</em>, </td>
@@ -391,14 +406,14 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="af7185f86c4e029f966e37e2f0925b025"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7185f86c4e029f966e37e2f0925b025">&#9670;&nbsp;</a></span>nugu_audio_get_attribute_str()</h2>
+<a id="a5656a9da65549279ec37176222804d97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5656a9da65549279ec37176222804d97">&#9670;&nbsp;</a></span>nugu_audio_get_attribute_str()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const char* nugu_audio_get_attribute_str </td>
+          <td class="memname">NUGU_API const char* nugu_audio_get_attribute_str </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a>&#160;</td>
           <td class="paramname"><em>attribute</em></td><td>)</td>
@@ -418,13 +433,40 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="aed157e169a931757c5601372ef478012"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed157e169a931757c5601372ef478012">&#9670;&nbsp;</a></span>nugu_audio_get_attribute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">NUGU_API <a class="el" href="nugu__audio_8h.html#a8987418ace0063cc16e14f1b8bfc2cc2">NuguAudioAttribute</a> nugu_audio_get_attribute </td>
+          <td>(</td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Get audio attribute type from string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">str</td><td>audio attribute's string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>audio attribute </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_ab1c81409f0df724f17c9ef30afee877.html">base</a></li><li class="navelem"><a class="el" href="nugu__audio_8h.html">nugu_audio.h</a></li>
-    <li class="footer">Generated on Wed Aug 30 2023 09:35:57 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jun 25 2024 00:59:08 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

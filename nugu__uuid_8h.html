@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.5</span>
+   &#160;<span id="projectnumber">1.7.6</span>
    </div>
   </td>
  </tr>
@@ -90,6 +90,8 @@ $(document).ready(function(){initNavTree('nugu__uuid_8h.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;time.h&gt;</code><br />
+<code>#include &lt;nugu.h&gt;</code><br />
+<code>#include &lt;glib.h&gt;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for nugu_uuid.h:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -97,8 +99,10 @@ $(document).ready(function(){initNavTree('nugu__uuid_8h.html',''); initResizable
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="nugu__uuid_8h__incl.png" border="0" usemap="#anugu__uuid_8h" alt=""/></div>
 <map name="anugu__uuid_8h" id="anugu__uuid_8h">
-<area shape="rect" title=" " alt="" coords="5,5,107,32"/>
-<area shape="rect" title=" " alt="" coords="24,80,88,107"/>
+<area shape="rect" title=" " alt="" coords="76,5,177,32"/>
+<area shape="rect" title=" " alt="" coords="5,80,69,107"/>
+<area shape="rect" title=" " alt="" coords="93,80,160,107"/>
+<area shape="rect" title=" " alt="" coords="184,80,243,107"/>
 </map>
 </div>
 </div><div class="textblock"><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -135,24 +139,24 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga680fd8dd3617514fa7b7ef5c1ce6ba63"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uuid.html#ga680fd8dd3617514fa7b7ef5c1ce6ba63">nugu_uuid_convert_base16</a> (const unsigned char *bytes, size_t bytes_len, char *out, size_t out_len)</td></tr>
-<tr class="memdesc:ga680fd8dd3617514fa7b7ef5c1ce6ba63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert byte array to base16-encoded string.  <a href="group__uuid.html#ga680fd8dd3617514fa7b7ef5c1ce6ba63">More...</a><br /></td></tr>
-<tr class="separator:ga680fd8dd3617514fa7b7ef5c1ce6ba63"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga35f5f90fd73a6a93c09e09613a1a14c7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uuid.html#ga35f5f90fd73a6a93c09e09613a1a14c7">nugu_uuid_convert_bytes</a> (const char *base16, size_t base16_len, unsigned char *out, size_t out_len)</td></tr>
-<tr class="memdesc:ga35f5f90fd73a6a93c09e09613a1a14c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert base16-encoded string to byte array.  <a href="group__uuid.html#ga35f5f90fd73a6a93c09e09613a1a14c7">More...</a><br /></td></tr>
-<tr class="separator:ga35f5f90fd73a6a93c09e09613a1a14c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7cce59fa0ba778c8a46707df02003d2c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uuid.html#ga7cce59fa0ba778c8a46707df02003d2c">nugu_uuid_convert_timespec</a> (const unsigned char *bytes, size_t bytes_len, struct timespec *out_time)</td></tr>
-<tr class="memdesc:ga7cce59fa0ba778c8a46707df02003d2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert byte array to base16-encoded string.  <a href="group__uuid.html#ga7cce59fa0ba778c8a46707df02003d2c">More...</a><br /></td></tr>
-<tr class="separator:ga7cce59fa0ba778c8a46707df02003d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabcebf51cf57b8ead681e4cb0abfc8e77"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uuid.html#gabcebf51cf57b8ead681e4cb0abfc8e77">nugu_uuid_fill</a> (const struct timespec *time, const unsigned char *hash, size_t hash_len, unsigned char *out, size_t out_len)</td></tr>
-<tr class="memdesc:gabcebf51cf57b8ead681e4cb0abfc8e77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill to output buffer with NUGU UUID format using parameters.  <a href="group__uuid.html#gabcebf51cf57b8ead681e4cb0abfc8e77">More...</a><br /></td></tr>
-<tr class="separator:gabcebf51cf57b8ead681e4cb0abfc8e77"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga98a7f70acff1804014eadbe698fbcfea"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uuid.html#ga98a7f70acff1804014eadbe698fbcfea">nugu_uuid_fill_random</a> (unsigned char *dest, size_t dest_len)</td></tr>
-<tr class="memdesc:ga98a7f70acff1804014eadbe698fbcfea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate random bytes and fill to destination buffer.  <a href="group__uuid.html#ga98a7f70acff1804014eadbe698fbcfea">More...</a><br /></td></tr>
-<tr class="separator:ga98a7f70acff1804014eadbe698fbcfea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaa9ba86139cb5e850c77f1deb0902a434"><td class="memItemLeft" align="right" valign="top">char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uuid.html#gaa9ba86139cb5e850c77f1deb0902a434">nugu_uuid_generate_time</a> (void)</td></tr>
-<tr class="memdesc:gaa9ba86139cb5e850c77f1deb0902a434"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate time based UUID.  <a href="group__uuid.html#gaa9ba86139cb5e850c77f1deb0902a434">More...</a><br /></td></tr>
-<tr class="separator:gaa9ba86139cb5e850c77f1deb0902a434"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3076449a768ba5db70fbafccf568ad9e"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uuid.html#ga3076449a768ba5db70fbafccf568ad9e">nugu_uuid_convert_base16</a> (const unsigned char *bytes, size_t bytes_len, char *out, size_t out_len)</td></tr>
+<tr class="memdesc:ga3076449a768ba5db70fbafccf568ad9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert byte array to base16-encoded string.  <a href="group__uuid.html#ga3076449a768ba5db70fbafccf568ad9e">More...</a><br /></td></tr>
+<tr class="separator:ga3076449a768ba5db70fbafccf568ad9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga871a901d1d83c1a2b1d597f55ef50ea5"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uuid.html#ga871a901d1d83c1a2b1d597f55ef50ea5">nugu_uuid_convert_bytes</a> (const char *base16, size_t base16_len, unsigned char *out, size_t out_len)</td></tr>
+<tr class="memdesc:ga871a901d1d83c1a2b1d597f55ef50ea5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert base16-encoded string to byte array.  <a href="group__uuid.html#ga871a901d1d83c1a2b1d597f55ef50ea5">More...</a><br /></td></tr>
+<tr class="separator:ga871a901d1d83c1a2b1d597f55ef50ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6c73ce9db275ab2e15ed69cd154ab6e2"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uuid.html#ga6c73ce9db275ab2e15ed69cd154ab6e2">nugu_uuid_convert_msec</a> (const unsigned char *bytes, size_t bytes_len, gint64 *msec)</td></tr>
+<tr class="memdesc:ga6c73ce9db275ab2e15ed69cd154ab6e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert byte array to base16-encoded string.  <a href="group__uuid.html#ga6c73ce9db275ab2e15ed69cd154ab6e2">More...</a><br /></td></tr>
+<tr class="separator:ga6c73ce9db275ab2e15ed69cd154ab6e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafba06fff49402be4afa8f3b03fbd7a82"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uuid.html#gafba06fff49402be4afa8f3b03fbd7a82">nugu_uuid_fill</a> (gint64 msec, const unsigned char *hash, size_t hash_len, unsigned char *out, size_t out_len)</td></tr>
+<tr class="memdesc:gafba06fff49402be4afa8f3b03fbd7a82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fill to output buffer with NUGU UUID format using parameters.  <a href="group__uuid.html#gafba06fff49402be4afa8f3b03fbd7a82">More...</a><br /></td></tr>
+<tr class="separator:gafba06fff49402be4afa8f3b03fbd7a82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad8b3755bb4a4c002fa8a4fac347ea690"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uuid.html#gad8b3755bb4a4c002fa8a4fac347ea690">nugu_uuid_fill_random</a> (unsigned char *dest, size_t dest_len)</td></tr>
+<tr class="memdesc:gad8b3755bb4a4c002fa8a4fac347ea690"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate random bytes and fill to destination buffer.  <a href="group__uuid.html#gad8b3755bb4a4c002fa8a4fac347ea690">More...</a><br /></td></tr>
+<tr class="separator:gad8b3755bb4a4c002fa8a4fac347ea690"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga47779c83b3b47a43854069739dd9ad5d"><td class="memItemLeft" align="right" valign="top">NUGU_API char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__uuid.html#ga47779c83b3b47a43854069739dd9ad5d">nugu_uuid_generate_time</a> (void)</td></tr>
+<tr class="memdesc:ga47779c83b3b47a43854069739dd9ad5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Generate time based UUID.  <a href="group__uuid.html#ga47779c83b3b47a43854069739dd9ad5d">More...</a><br /></td></tr>
+<tr class="separator:ga47779c83b3b47a43854069739dd9ad5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -160,7 +164,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_ab1c81409f0df724f17c9ef30afee877.html">base</a></li><li class="navelem"><a class="el" href="nugu__uuid_8h.html">nugu_uuid.h</a></li>
-    <li class="footer">Generated on Wed Aug 30 2023 09:35:57 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jun 25 2024 00:59:09 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

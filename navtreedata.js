@@ -60,16 +60,16 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"classNuguCapability_1_1ISessionListener.html#a6fad5654bd092325bbb97f556667faa3",
-"classNuguClientKit_1_1IMediaPlayerListener.html",
-"focus__manager__interface_8hh.html#gga0a43ecaeb330bca6b94215d69e54bfe6ae41f4c3e11dd067fd5691da0124b8fd2",
-"group__Log.html",
-"group__NuguDecoderDriver.html#gae5fd62b9f1bbe24126d9f9ce16331607",
-"group__NuguHttp.html#ga999fabe32f49e9ce44bf61cb43f4c7df",
-"group__NuguRecorder.html#gab25cb0b868f2ac4f88c3920257db580c",
-"group__SessionInterface.html#gga4b3903e444431d8dcb96a672d48be180a18ff74f43da410c5529f7d6fca84f115",
-"group__uuid.html#ga98a7f70acff1804014eadbe698fbcfea",
-"structNuguCapability_1_1__BTDeviceInfo.html#a42fa7cd64a6e2a80f598b6124ba560a7"
+"classNuguCapability_1_1IPhoneCallHandler.html#a469706973f26f48e82c8d757ae55958b",
+"classNuguClientKit_1_1IMediaPlayer.html#a2d73568f405fa85861a48b651646f5de",
+"directive__sequencer__interface_8hh.html#gga27f22301768541185c29c12af55aa862a8e1bde3c3d303163521522cf1d62f21f",
+"group__FocusManagerInterface.html#ga6cc9ba79643dd904c7cc417159405314",
+"group__NetworkManagerInterface.html#ga6aff79e2435c590ea44de8c43754e015",
+"group__NuguEventQueue.html#gga54d0f533b2309e92861df75daaa6efcbad50174ba6d9eeccabab08ac56b37dcf9",
+"group__NuguPlugin.html#ga902899332433a0695927c4085cb12664",
+"group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadcab8f22fd0940ce174acf3a3e245fea9f5",
+"group__nugu__network.html#gae61aba38030a0bb251625f0612cb4394",
+"routine__manager__interface_8hh.html#ga85ba501685094b1c1d34f42229ed227b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

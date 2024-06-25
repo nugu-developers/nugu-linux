@@ -1,8 +1,11 @@
 var searchData=
 [
-  ['latitude_2305',['latitude',['../structNuguCapability_1_1__LocationInfo.html#af3f20ca30dcd2e97d298c5fdcef0779c',1,'NuguCapability::_LocationInfo']]],
-  ['level_2306',['level',['../structNuguCapability_1_1__BatteryInfo.html#ada17551c822976bacac44a12a99df92c',1,'NuguCapability::_BatteryInfo::level()'],['../classNuguCapability_1_1SpeakerInfo.html#a5b131e46bdd99c34c493dd9f6e09a7c8',1,'NuguCapability::SpeakerInfo::level()']]],
-  ['listen_5ftimeout_5ffail_5fbeep_2307',['listen_timeout_fail_beep',['../group__SpeechRecognizerAggregatorInterface.html#gaf924042adefcf4b23a03e6944841c669',1,'NuguClientKit::_RecognitionResult']]],
-  ['load_2308',['load',['../structnugu__plugin__desc.html#afef3d74c5f09b6dbc1d82c43640d3093',1,'nugu_plugin_desc']]],
-  ['longitude_2309',['longitude',['../structNuguCapability_1_1__LocationInfo.html#a2adc008bb973508e2505337a079ffe06',1,'NuguCapability::_LocationInfo']]]
+  ['icapabilityinterface_2331',['ICapabilityInterface',['../group__CapabilityInterface.html#ga39400bc740ad91eb1671d081df2bf3bd',1,'NuguClientKit']]],
+  ['init_2332',['init',['../structnugu__plugin__desc.html#a6974e1009410fd2e79c433c49a21cea8',1,'nugu_plugin_desc']]],
+  ['initialized_2333',['initialized',['../classNuguClientKit_1_1Capability.html#ac208e94ea13143d4503824230d04c296',1,'NuguClientKit::Capability']]],
+  ['interaction_5fcontrol_5fmanager_2334',['interaction_control_manager',['../classNuguClientKit_1_1Capability.html#a0f3b7c451056a734824e98de6a98bb40',1,'NuguClientKit::Capability']]],
+  ['is_5factive_5fdevice_2335',['is_active_device',['../structNuguCapability_1_1__BTDeviceInfo.html#ae9d49cfff60d3136997710dafee96d37',1,'NuguCapability::_BTDeviceInfo']]],
+  ['is_5fcharge_2336',['is_charge',['../structnugu__network__server__policy.html#a291b38fe1ccf3735965b8fbaedb3f816',1,'nugu_network_server_policy']]],
+  ['is_5fpaired_5fdevice_2337',['is_paired_device',['../structNuguCapability_1_1__BTDeviceInfo.html#a42fa7cd64a6e2a80f598b6124ba560a7',1,'NuguCapability::_BTDeviceInfo']]],
+  ['isblocking_2338',['isBlocking',['../structNuguClientKit_1_1__BlockingPolicy.html#a9e99c3d27752fb93113d285a39943159',1,'NuguClientKit::_BlockingPolicy']]]
 ];

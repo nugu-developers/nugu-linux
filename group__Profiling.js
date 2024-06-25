@@ -4,7 +4,7 @@ var group__Profiling =
       [ "type", "structnugu__prof__data.html#a062ca9707171a1f9ffce1efc0682e06f", null ],
       [ "dialog_id", "structnugu__prof__data.html#a1bad250798c022c071a5c1d08bfee990", null ],
       [ "msg_id", "structnugu__prof__data.html#a1b91f49957872b7b5e78b6f14e53cdb9", null ],
-      [ "timestamp", "structnugu__prof__data.html#aa955ea88f1c2e3830274bf140ae674a4", null ],
+      [ "timestamp", "structnugu__prof__data.html#ab59929de8b77fdbbe0910ae3378720f5", null ],
       [ "contents", "structnugu__prof__data.html#a5c6c0568076c7392e46cedba34350a00", null ]
     ] ],
     [ "NuguProfCallback", "group__Profiling.html#ga67b444ebdce684b4b878b02aaffc5268", null ],
@@ -60,16 +60,16 @@ var group__Profiling =
       [ "NUGU_PROF_TYPE_AUDIO_FINISHED", "group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadcaa1ee277704dcaa755f0a15a161d26f65", null ],
       [ "NUGU_PROF_TYPE_MAX", "group__Profiling.html#gga29547fb0921eb21d78568eff10a4eadcadb21d8cfa4f3b29b4006cc5b1feb3720", null ]
     ] ],
-    [ "nugu_prof_clear", "group__Profiling.html#ga01316fd0dab899b273a1231ebeaefd87", null ],
-    [ "nugu_prof_enable_tracelog", "group__Profiling.html#ga4de161c334fe307b410c00295446733f", null ],
-    [ "nugu_prof_disable_tracelog", "group__Profiling.html#gafc7a21238eb0cb7bd22a3fe01620ba05", null ],
-    [ "nugu_prof_set_callback", "group__Profiling.html#ga8f540c18c9e891d4086dc1c0b22ab60e", null ],
-    [ "nugu_prof_mark", "group__Profiling.html#gacc741fd7a4b748c1d6ca24c1aa957269", null ],
-    [ "nugu_prof_mark_data", "group__Profiling.html#ga3bfd35e98ee59483a808f4f48f78eac7", null ],
-    [ "nugu_prof_get_last_data", "group__Profiling.html#gadc75f0cf1d4377b2a98008552d336c2e", null ],
-    [ "nugu_prof_get_diff_msec_timespec", "group__Profiling.html#ga09d04b4bab1f2e3a471343b6ad9cac76", null ],
-    [ "nugu_prof_get_diff_msec_type", "group__Profiling.html#gace36d6879c1ced5093d67fa4578c0a4d", null ],
-    [ "nugu_prof_get_diff_msec", "group__Profiling.html#ga97a10b7b761d35d7502b58917a533c9f", null ],
-    [ "nugu_prof_get_type_name", "group__Profiling.html#ga5ced31590017e916ca50dfc50694ef76", null ],
-    [ "nugu_prof_dump", "group__Profiling.html#ga97ae0725519cf14096a9e105f90a8c61", null ]
+    [ "nugu_prof_clear", "group__Profiling.html#gae04b6b66a96203a8ebfe423b3a0ed4a9", null ],
+    [ "nugu_prof_enable_tracelog", "group__Profiling.html#ga4c5772cd785fbb6afbdc18a01bdbaebb", null ],
+    [ "nugu_prof_disable_tracelog", "group__Profiling.html#gab62d7ba309516babcc45fb48eafa24f5", null ],
+    [ "nugu_prof_set_callback", "group__Profiling.html#ga094cdda8c5c9d6dcb00f42b7b28de30e", null ],
+    [ "nugu_prof_mark", "group__Profiling.html#gac06272760610ed9550e06ad77e771a07", null ],
+    [ "nugu_prof_mark_data", "group__Profiling.html#gaca4b56b19beb01fba06fb9b092630d66", null ],
+    [ "nugu_prof_get_last_data", "group__Profiling.html#ga363fb7e18eda2800d255f8a2e231dd34", null ],
+    [ "nugu_prof_get_diff_msec_timespec", "group__Profiling.html#ga7993e9a0456bdeb0bf77ab91914d6956", null ],
+    [ "nugu_prof_get_diff_msec_type", "group__Profiling.html#ga7a8b1df180958062056abdf035901bab", null ],
+    [ "nugu_prof_get_diff_msec", "group__Profiling.html#gab25ee3e2c61f3dd0822c1b7d3c65dd1e", null ],
+    [ "nugu_prof_get_type_name", "group__Profiling.html#ga77f4a0eae5194ced74a88539aa64075e", null ],
+    [ "nugu_prof_dump", "group__Profiling.html#ga5beb5f5a600c61b9a5116e651d4030a3", null ]
 ];

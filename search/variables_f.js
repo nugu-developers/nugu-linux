@@ -1,4 +1,10 @@
 var searchData=
 [
-  ['unload_2349',['unload',['../structnugu__plugin__desc.html#aaf3aa968711c64ffbeed877d28860eaa',1,'nugu_plugin_desc']]]
+  ['target_2388',['target',['../structNuguCapability_1_1__ChipsInfo.html#aa0429e02213ba85c037b7481e0601c09',1,'NuguCapability::_ChipsInfo']]],
+  ['text_2389',['text',['../structNuguCapability_1_1__ChipsInfo_1_1Content.html#a6073cf7c47001bf9049c8397bccedfb5',1,'NuguCapability::_ChipsInfo::Content']]],
+  ['textagent_2390',['TextAgent',['../group__CapabilityFactory.html#ga1b7cda68fa0e6bdefcd478a413040075',1,'NuguCapability']]],
+  ['token_2391',['token',['../structNuguCapability_1_1__ChipsInfo_1_1Content.html#af7b7dfe667630cfefa2eeeb59ed2f148',1,'NuguCapability::_ChipsInfo::Content']]],
+  ['tts_5fengine_2392',['tts_engine',['../structNuguCapability_1_1__TTSAttribute.html#aabda45b4a9023ae7f514777e08bbd646',1,'NuguCapability::_TTSAttribute']]],
+  ['ttsagent_2393',['TTSAgent',['../group__CapabilityFactory.html#ga8e2b3f513a6aa4db19360033dd459d16',1,'NuguCapability']]],
+  ['type_2394',['type',['../structnugu__prof__data.html#a062ca9707171a1f9ffce1efc0682e06f',1,'nugu_prof_data::type()'],['../structNuguCapability_1_1__ChipsInfo_1_1Content.html#ad5c71283ce6da76adf50166f3375f84e',1,'NuguCapability::_ChipsInfo::Content::type()'],['../classNuguCapability_1_1SpeakerInfo.html#ae8a602ed2f1acabfe439030ac269061c',1,'NuguCapability::SpeakerInfo::type()'],['../group__FocusManagerInterface.html#ga6cc9ba79643dd904c7cc417159405314',1,'NuguClientKit::_FocusConfiguration::type()']]]
 ];

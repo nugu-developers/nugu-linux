@@ -2,13 +2,13 @@ var group__NuguTimer =
 [
     [ "NuguTimer", "group__NuguTimer.html#ga55228b917136cf8e8705703673e80e6e", null ],
     [ "NuguTimeoutCallback", "group__NuguTimer.html#ga72cf38b517d8c38750825d74f0e86985", null ],
-    [ "nugu_timer_new", "group__NuguTimer.html#gaa18428c72fa39915106b3c6641fd5374", null ],
-    [ "nugu_timer_delete", "group__NuguTimer.html#ga9b94911aaaf3be16ecee5a1eb56e1fd7", null ],
-    [ "nugu_timer_set_interval", "group__NuguTimer.html#ga2a63d0ad8391b9a779fbef5cd8468d37", null ],
-    [ "nugu_timer_get_interval", "group__NuguTimer.html#gac2bfc033a765fd2927cba4cf9aa8c483", null ],
-    [ "nugu_timer_set_singleshot", "group__NuguTimer.html#ga1f32044a160159929fc63156f87baf7e", null ],
-    [ "nugu_timer_get_singleshot", "group__NuguTimer.html#ga01fa3e3e65f5541ad87fcf40a6531bd1", null ],
-    [ "nugu_timer_start", "group__NuguTimer.html#gafc6167fa33146c874a63199b722c8ef8", null ],
-    [ "nugu_timer_stop", "group__NuguTimer.html#gaade4b4779df6ee12a657a1866414def1", null ],
-    [ "nugu_timer_set_callback", "group__NuguTimer.html#ga3439d4c2af68342057b1e6b0f46cd0b1", null ]
+    [ "nugu_timer_new", "group__NuguTimer.html#ga131af6f491c1e72339fdab34a13846cd", null ],
+    [ "nugu_timer_delete", "group__NuguTimer.html#ga4a92b212c16f4f892c61e3f567d922d5", null ],
+    [ "nugu_timer_set_interval", "group__NuguTimer.html#ga59929ac7d71606192c508e8f3c431b96", null ],
+    [ "nugu_timer_get_interval", "group__NuguTimer.html#gaa31a94d400e1d48797d5b376a186fb83", null ],
+    [ "nugu_timer_set_singleshot", "group__NuguTimer.html#ga569d142873ae976198f81cc9f57bc17b", null ],
+    [ "nugu_timer_get_singleshot", "group__NuguTimer.html#gaffed599fef3fc3b21f8d177ba3977aa8", null ],
+    [ "nugu_timer_start", "group__NuguTimer.html#ga6e7b1e6431a1322d673ec02c91e10c1f", null ],
+    [ "nugu_timer_stop", "group__NuguTimer.html#gad7db15424cf5643a517497ee9cab716c", null ],
+    [ "nugu_timer_set_callback", "group__NuguTimer.html#ga8628b2de507113064bb71b59b2e8d9be", null ]
 ];

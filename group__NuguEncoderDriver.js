@@ -11,10 +11,10 @@ var group__NuguEncoderDriver =
       [ "NUGU_ENCODER_TYPE_OPUS", "group__NuguEncoderDriver.html#ggae4d81ca6eb4ee96ca94df42454f38cd7a108dfa721675a8f0df19d4b758ba0fcb", null ],
       [ "NUGU_ENCODER_TYPE_CUSTOM", "group__NuguEncoderDriver.html#ggae4d81ca6eb4ee96ca94df42454f38cd7aa06c1250a1319fee2f9c3ea6db89b236", null ]
     ] ],
-    [ "nugu_encoder_driver_new", "group__NuguEncoderDriver.html#ga111d288f9f53bd935f48d695f0cb49c5", null ],
-    [ "nugu_encoder_driver_free", "group__NuguEncoderDriver.html#gafaa6bdefd59e2a5c00860dd89448ddb0", null ],
-    [ "nugu_encoder_driver_register", "group__NuguEncoderDriver.html#ga803eb120d700237bd521cb8d7ec2c10d", null ],
-    [ "nugu_encoder_driver_remove", "group__NuguEncoderDriver.html#ga3368aa56b50dc01b71e1345caf969001", null ],
-    [ "nugu_encoder_driver_find", "group__NuguEncoderDriver.html#ga21a9bd26f04b42b1c425ec5c5aea12b1", null ],
-    [ "nugu_encoder_driver_find_bytype", "group__NuguEncoderDriver.html#ga648bc8f88876cbd3dffa533a03eddf5d", null ]
+    [ "nugu_encoder_driver_new", "group__NuguEncoderDriver.html#gab47e1d8ac6f42a1e7ee4c707c2619754", null ],
+    [ "nugu_encoder_driver_free", "group__NuguEncoderDriver.html#ga4532a1460860043fac03455657affdce", null ],
+    [ "nugu_encoder_driver_register", "group__NuguEncoderDriver.html#gab22ff0264d16f71c932cc0cc6dd316b7", null ],
+    [ "nugu_encoder_driver_remove", "group__NuguEncoderDriver.html#ga439bdc1886433ea5893150d350c73c8d", null ],
+    [ "nugu_encoder_driver_find", "group__NuguEncoderDriver.html#ga3633c0bab34b6d877ad7ca5ac2e337ac", null ],
+    [ "nugu_encoder_driver_find_bytype", "group__NuguEncoderDriver.html#ga1499920904b22e032c14f9fad93c2bb3", null ]
 ];

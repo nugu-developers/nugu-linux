@@ -1,6 +1,7 @@
 <map id="nugu_pcm.h" name="nugu_pcm.h">
-<area shape="rect" id="node1" title=" " alt="" coords="125,5,227,32"/>
+<area shape="rect" id="node1" title=" " alt="" coords="121,5,223,32"/>
 <area shape="rect" id="node2" title=" " alt="" coords="5,80,80,107"/>
-<area shape="rect" id="node3" href="$nugu__audio_8h.html" title=" " alt="" coords="104,80,248,107"/>
-<area shape="rect" id="node4" href="$nugu__media_8h.html" title=" " alt="" coords="272,80,421,107"/>
+<area shape="rect" id="node3" title=" " alt="" coords="139,155,205,181"/>
+<area shape="rect" id="node4" href="$nugu__audio_8h.html" title=" " alt="" coords="155,80,299,107"/>
+<area shape="rect" id="node5" href="$nugu__media_8h.html" title=" " alt="" coords="323,80,472,107"/>
 </map>

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.5</span>
+   &#160;<span id="projectnumber">1.7.6</span>
    </div>
   </td>
  </tr>
@@ -91,6 +91,7 @@ $(document).ready(function(){initNavTree('nugu__buffer_8h.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;stddef.h&gt;</code><br />
+<code>#include &lt;nugu.h&gt;</code><br />
 </div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
   <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for nugu_buffer.h:</div>
 <div id="dynsection-0-summary" class="dynsummary" style="display:block;">
@@ -98,8 +99,9 @@ $(document).ready(function(){initNavTree('nugu__buffer_8h.html',''); initResizab
 <div id="dynsection-0-content" class="dyncontent" style="display:none;">
 <div class="center"><img src="nugu__buffer_8h__incl.png" border="0" usemap="#anugu__buffer_8h" alt=""/></div>
 <map name="anugu__buffer_8h" id="anugu__buffer_8h">
-<area shape="rect" title=" " alt="" coords="5,5,116,32"/>
-<area shape="rect" title=" " alt="" coords="23,80,98,107"/>
+<area shape="rect" title=" " alt="" coords="34,5,145,32"/>
+<area shape="rect" title=" " alt="" coords="5,80,80,107"/>
+<area shape="rect" title=" " alt="" coords="104,80,171,107"/>
 </map>
 </div>
 </div><div class="textblock"><div id="dynsection-1" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
@@ -119,8 +121,8 @@ $(document).ready(function(){initNavTree('nugu__buffer_8h.html',''); initResizab
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:ga06a7db582786fb15f30593938661d999"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga06a7db582786fb15f30593938661d999">NUGU_BUFFER_NOT_FOUND</a>&#160;&#160;&#160;((size_t)-1)</td></tr>
-<tr class="memdesc:ga06a7db582786fb15f30593938661d999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not found return type of <a class="el" href="group__Buffer.html#ga14ae6c47535a68b6fed00128432eadb1" title="Get the position of the data you want to find.">nugu_buffer_find_byte()</a>  <a href="group__Buffer.html#ga06a7db582786fb15f30593938661d999">More...</a><br /></td></tr>
+<tr class="memitem:ga06a7db582786fb15f30593938661d999"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga06a7db582786fb15f30593938661d999">NUGU_BUFFER_NOT_FOUND</a>&#160;&#160;&#160;((size_t) - 1)</td></tr>
+<tr class="memdesc:ga06a7db582786fb15f30593938661d999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Not found return type of <a class="el" href="group__Buffer.html#gadff35d7af11015abfad74fcb7853aa69" title="Get the position of the data you want to find.">nugu_buffer_find_byte()</a>  <a href="group__Buffer.html#ga06a7db582786fb15f30593938661d999">More...</a><br /></td></tr>
 <tr class="separator:ga06a7db582786fb15f30593938661d999"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -132,48 +134,48 @@ typedef struct _nugu_buffer&#160;</td><td class="memItemRight" valign="bottom"><
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:gaacefd9e2f61220e4b88a519c6c34be05"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#gaacefd9e2f61220e4b88a519c6c34be05">nugu_buffer_add</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, const void *data, size_t data_len)</td></tr>
-<tr class="memdesc:gaacefd9e2f61220e4b88a519c6c34be05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append the data to buffer object.  <a href="group__Buffer.html#gaacefd9e2f61220e4b88a519c6c34be05">More...</a><br /></td></tr>
-<tr class="separator:gaacefd9e2f61220e4b88a519c6c34be05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga9e4953146b489246dc6dbc89edeb7b93"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga9e4953146b489246dc6dbc89edeb7b93">nugu_buffer_add_byte</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, unsigned char byte)</td></tr>
-<tr class="memdesc:ga9e4953146b489246dc6dbc89edeb7b93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append the data to buffer object.  <a href="group__Buffer.html#ga9e4953146b489246dc6dbc89edeb7b93">More...</a><br /></td></tr>
-<tr class="separator:ga9e4953146b489246dc6dbc89edeb7b93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga019669c66b35ae928ffb750914473ae8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga019669c66b35ae928ffb750914473ae8">nugu_buffer_clear</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf)</td></tr>
-<tr class="memdesc:ga019669c66b35ae928ffb750914473ae8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the buffer.  <a href="group__Buffer.html#ga019669c66b35ae928ffb750914473ae8">More...</a><br /></td></tr>
-<tr class="separator:ga019669c66b35ae928ffb750914473ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gad80f1cc9f7ba8b332a1c4c55fc156aaa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#gad80f1cc9f7ba8b332a1c4c55fc156aaa">nugu_buffer_clear_from</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, size_t pos)</td></tr>
-<tr class="memdesc:gad80f1cc9f7ba8b332a1c4c55fc156aaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear data from a specific position to the end.  <a href="group__Buffer.html#gad80f1cc9f7ba8b332a1c4c55fc156aaa">More...</a><br /></td></tr>
-<tr class="separator:gad80f1cc9f7ba8b332a1c4c55fc156aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga14ae6c47535a68b6fed00128432eadb1"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga14ae6c47535a68b6fed00128432eadb1">nugu_buffer_find_byte</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, unsigned char want)</td></tr>
-<tr class="memdesc:ga14ae6c47535a68b6fed00128432eadb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the position of the data you want to find.  <a href="group__Buffer.html#ga14ae6c47535a68b6fed00128432eadb1">More...</a><br /></td></tr>
-<tr class="separator:ga14ae6c47535a68b6fed00128432eadb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga505b48bbb39128531e1ea281ac7dac44"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga505b48bbb39128531e1ea281ac7dac44">nugu_buffer_free</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, int is_data_free)</td></tr>
-<tr class="memdesc:ga505b48bbb39128531e1ea281ac7dac44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the buffer object.  <a href="group__Buffer.html#ga505b48bbb39128531e1ea281ac7dac44">More...</a><br /></td></tr>
-<tr class="separator:ga505b48bbb39128531e1ea281ac7dac44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga943ac429f9b17b6898f422129b3d97c6"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga943ac429f9b17b6898f422129b3d97c6">nugu_buffer_get_alloc_size</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf)</td></tr>
-<tr class="memdesc:ga943ac429f9b17b6898f422129b3d97c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the size of the entire data allocated for the buffer.  <a href="group__Buffer.html#ga943ac429f9b17b6898f422129b3d97c6">More...</a><br /></td></tr>
-<tr class="separator:ga943ac429f9b17b6898f422129b3d97c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga56b97f3aa4d3badc9f88207f59ffed45"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga56b97f3aa4d3badc9f88207f59ffed45">nugu_buffer_get_size</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf)</td></tr>
-<tr class="memdesc:ga56b97f3aa4d3badc9f88207f59ffed45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the size of the entire data added to the buffer.  <a href="group__Buffer.html#ga56b97f3aa4d3badc9f88207f59ffed45">More...</a><br /></td></tr>
-<tr class="separator:ga56b97f3aa4d3badc9f88207f59ffed45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0b9004f84813282e2107c1e85c53dcf9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga0b9004f84813282e2107c1e85c53dcf9">nugu_buffer_new</a> (size_t default_size)</td></tr>
-<tr class="memdesc:ga0b9004f84813282e2107c1e85c53dcf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new buffer object.  <a href="group__Buffer.html#ga0b9004f84813282e2107c1e85c53dcf9">More...</a><br /></td></tr>
-<tr class="separator:ga0b9004f84813282e2107c1e85c53dcf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga388846c7b43f57daa5915d7a17b3ec8b"><td class="memItemLeft" align="right" valign="top">const void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga388846c7b43f57daa5915d7a17b3ec8b">nugu_buffer_peek</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf)</td></tr>
-<tr class="memdesc:ga388846c7b43f57daa5915d7a17b3ec8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the internal buffer.  <a href="group__Buffer.html#ga388846c7b43f57daa5915d7a17b3ec8b">More...</a><br /></td></tr>
-<tr class="separator:ga388846c7b43f57daa5915d7a17b3ec8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga15772924a4c4892eef6eee75013ebb05"><td class="memItemLeft" align="right" valign="top">unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga15772924a4c4892eef6eee75013ebb05">nugu_buffer_peek_byte</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, size_t pos)</td></tr>
-<tr class="memdesc:ga15772924a4c4892eef6eee75013ebb05"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data at a specific position.  <a href="group__Buffer.html#ga15772924a4c4892eef6eee75013ebb05">More...</a><br /></td></tr>
-<tr class="separator:ga15772924a4c4892eef6eee75013ebb05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3f7e77f6a4ebb2ad714ea0882d52fb57"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga3f7e77f6a4ebb2ad714ea0882d52fb57">nugu_buffer_pop</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, size_t size)</td></tr>
-<tr class="memdesc:ga3f7e77f6a4ebb2ad714ea0882d52fb57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract data by a certain size.  <a href="group__Buffer.html#ga3f7e77f6a4ebb2ad714ea0882d52fb57">More...</a><br /></td></tr>
-<tr class="separator:ga3f7e77f6a4ebb2ad714ea0882d52fb57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga99dac5cd15cd1408e07cc3528dc6e14b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga99dac5cd15cd1408e07cc3528dc6e14b">nugu_buffer_set_byte</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, size_t pos, unsigned char byte)</td></tr>
-<tr class="memdesc:ga99dac5cd15cd1408e07cc3528dc6e14b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append the data to buffer object.  <a href="group__Buffer.html#ga99dac5cd15cd1408e07cc3528dc6e14b">More...</a><br /></td></tr>
-<tr class="separator:ga99dac5cd15cd1408e07cc3528dc6e14b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga294cfae33d6510cf9b6a59b9f2056493"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga294cfae33d6510cf9b6a59b9f2056493">nugu_buffer_shift_left</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, size_t size)</td></tr>
-<tr class="memdesc:ga294cfae33d6510cf9b6a59b9f2056493"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a certain amount of data and move the remaining data forward.  <a href="group__Buffer.html#ga294cfae33d6510cf9b6a59b9f2056493">More...</a><br /></td></tr>
-<tr class="separator:ga294cfae33d6510cf9b6a59b9f2056493"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1cdbba36e927033684fa61f3a0c45361"><td class="memItemLeft" align="right" valign="top">NUGU_API size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga1cdbba36e927033684fa61f3a0c45361">nugu_buffer_add</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, const void *data, size_t data_len)</td></tr>
+<tr class="memdesc:ga1cdbba36e927033684fa61f3a0c45361"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append the data to buffer object.  <a href="group__Buffer.html#ga1cdbba36e927033684fa61f3a0c45361">More...</a><br /></td></tr>
+<tr class="separator:ga1cdbba36e927033684fa61f3a0c45361"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7fdd89b71a37892511f7e745afc86bb0"><td class="memItemLeft" align="right" valign="top">NUGU_API size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga7fdd89b71a37892511f7e745afc86bb0">nugu_buffer_add_byte</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, unsigned char byte)</td></tr>
+<tr class="memdesc:ga7fdd89b71a37892511f7e745afc86bb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append the data to buffer object.  <a href="group__Buffer.html#ga7fdd89b71a37892511f7e745afc86bb0">More...</a><br /></td></tr>
+<tr class="separator:ga7fdd89b71a37892511f7e745afc86bb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae99aeafd7a459aa3a60dd106cd1d9c96"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#gae99aeafd7a459aa3a60dd106cd1d9c96">nugu_buffer_clear</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf)</td></tr>
+<tr class="memdesc:gae99aeafd7a459aa3a60dd106cd1d9c96"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear the buffer.  <a href="group__Buffer.html#gae99aeafd7a459aa3a60dd106cd1d9c96">More...</a><br /></td></tr>
+<tr class="separator:gae99aeafd7a459aa3a60dd106cd1d9c96"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga72c2f2dc216013183348007fed74e606"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga72c2f2dc216013183348007fed74e606">nugu_buffer_clear_from</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, size_t pos)</td></tr>
+<tr class="memdesc:ga72c2f2dc216013183348007fed74e606"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear data from a specific position to the end.  <a href="group__Buffer.html#ga72c2f2dc216013183348007fed74e606">More...</a><br /></td></tr>
+<tr class="separator:ga72c2f2dc216013183348007fed74e606"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadff35d7af11015abfad74fcb7853aa69"><td class="memItemLeft" align="right" valign="top">NUGU_API size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#gadff35d7af11015abfad74fcb7853aa69">nugu_buffer_find_byte</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, unsigned char want)</td></tr>
+<tr class="memdesc:gadff35d7af11015abfad74fcb7853aa69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the position of the data you want to find.  <a href="group__Buffer.html#gadff35d7af11015abfad74fcb7853aa69">More...</a><br /></td></tr>
+<tr class="separator:gadff35d7af11015abfad74fcb7853aa69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga920f8470bd0fad3f5ea79eb2713321a9"><td class="memItemLeft" align="right" valign="top">NUGU_API void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga920f8470bd0fad3f5ea79eb2713321a9">nugu_buffer_free</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, int is_data_free)</td></tr>
+<tr class="memdesc:ga920f8470bd0fad3f5ea79eb2713321a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the buffer object.  <a href="group__Buffer.html#ga920f8470bd0fad3f5ea79eb2713321a9">More...</a><br /></td></tr>
+<tr class="separator:ga920f8470bd0fad3f5ea79eb2713321a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3eb1568b9594f8cf12e5cfa78cb6233f"><td class="memItemLeft" align="right" valign="top">NUGU_API size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga3eb1568b9594f8cf12e5cfa78cb6233f">nugu_buffer_get_alloc_size</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf)</td></tr>
+<tr class="memdesc:ga3eb1568b9594f8cf12e5cfa78cb6233f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the size of the entire data allocated for the buffer.  <a href="group__Buffer.html#ga3eb1568b9594f8cf12e5cfa78cb6233f">More...</a><br /></td></tr>
+<tr class="separator:ga3eb1568b9594f8cf12e5cfa78cb6233f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadd7570716dd6474c89293f28ce6be7b1"><td class="memItemLeft" align="right" valign="top">NUGU_API size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#gadd7570716dd6474c89293f28ce6be7b1">nugu_buffer_get_size</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf)</td></tr>
+<tr class="memdesc:gadd7570716dd6474c89293f28ce6be7b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the size of the entire data added to the buffer.  <a href="group__Buffer.html#gadd7570716dd6474c89293f28ce6be7b1">More...</a><br /></td></tr>
+<tr class="separator:gadd7570716dd6474c89293f28ce6be7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac917669aa7c5837bf75ea8f65c6ce224"><td class="memItemLeft" align="right" valign="top">NUGU_API <a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#gac917669aa7c5837bf75ea8f65c6ce224">nugu_buffer_new</a> (size_t default_size)</td></tr>
+<tr class="memdesc:gac917669aa7c5837bf75ea8f65c6ce224"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new buffer object.  <a href="group__Buffer.html#gac917669aa7c5837bf75ea8f65c6ce224">More...</a><br /></td></tr>
+<tr class="separator:gac917669aa7c5837bf75ea8f65c6ce224"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6b295a5262784a8ec0ba75d25dfe1c89"><td class="memItemLeft" align="right" valign="top">NUGU_API const void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga6b295a5262784a8ec0ba75d25dfe1c89">nugu_buffer_peek</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf)</td></tr>
+<tr class="memdesc:ga6b295a5262784a8ec0ba75d25dfe1c89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the internal buffer.  <a href="group__Buffer.html#ga6b295a5262784a8ec0ba75d25dfe1c89">More...</a><br /></td></tr>
+<tr class="separator:ga6b295a5262784a8ec0ba75d25dfe1c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadad736f39785df5366808741d85937c2"><td class="memItemLeft" align="right" valign="top">NUGU_API unsigned char&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#gadad736f39785df5366808741d85937c2">nugu_buffer_peek_byte</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, size_t pos)</td></tr>
+<tr class="memdesc:gadad736f39785df5366808741d85937c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get data at a specific position.  <a href="group__Buffer.html#gadad736f39785df5366808741d85937c2">More...</a><br /></td></tr>
+<tr class="separator:gadad736f39785df5366808741d85937c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga75f107eb7917ffa7c857270707b491c6"><td class="memItemLeft" align="right" valign="top">NUGU_API void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga75f107eb7917ffa7c857270707b491c6">nugu_buffer_pop</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, size_t size)</td></tr>
+<tr class="memdesc:ga75f107eb7917ffa7c857270707b491c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Extract data by a certain size.  <a href="group__Buffer.html#ga75f107eb7917ffa7c857270707b491c6">More...</a><br /></td></tr>
+<tr class="separator:ga75f107eb7917ffa7c857270707b491c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3720ce78cc4617d474bcb4efb3c1affe"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga3720ce78cc4617d474bcb4efb3c1affe">nugu_buffer_set_byte</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, size_t pos, unsigned char byte)</td></tr>
+<tr class="memdesc:ga3720ce78cc4617d474bcb4efb3c1affe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Append the data to buffer object.  <a href="group__Buffer.html#ga3720ce78cc4617d474bcb4efb3c1affe">More...</a><br /></td></tr>
+<tr class="separator:ga3720ce78cc4617d474bcb4efb3c1affe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga66f1982384073a3f8fb1b0433a96a913"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__Buffer.html#ga66f1982384073a3f8fb1b0433a96a913">nugu_buffer_shift_left</a> (<a class="el" href="group__Buffer.html#ga065b515fc87d13912c156adb17456129">NuguBuffer</a> *buf, size_t size)</td></tr>
+<tr class="memdesc:ga66f1982384073a3f8fb1b0433a96a913"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete a certain amount of data and move the remaining data forward.  <a href="group__Buffer.html#ga66f1982384073a3f8fb1b0433a96a913">More...</a><br /></td></tr>
+<tr class="separator:ga66f1982384073a3f8fb1b0433a96a913"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -181,7 +183,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_ab1c81409f0df724f17c9ef30afee877.html">base</a></li><li class="navelem"><a class="el" href="nugu__buffer_8h.html">nugu_buffer.h</a></li>
-    <li class="footer">Generated on Wed Aug 30 2023 09:35:57 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jun 25 2024 00:59:08 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.5</span>
+   &#160;<span id="projectnumber">1.7.6</span>
    </div>
   </td>
  </tr>
@@ -105,100 +105,102 @@ $(document).ready(function(){initNavTree('nugu__auth_8hh_source.html',''); initR
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#ifndef __NUGU_AUTH_H__</span></div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="preprocessor">#define __NUGU_AUTH_H__</span></div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160; </div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="nugu__http__rest_8hh.html">clientkit/nugu_http_rest.hh</a>&gt;</span></div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160; </div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keyword">namespace </span>NuguClientKit {</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160; </div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="preprocessor">#include &lt;<a class="code" href="nugu__http__rest_8hh.html">clientkit/nugu_http_rest.hh</a>&gt;</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="preprocessor">#include &lt;nugu.h&gt;</span></div>
 <div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160; </div>
-<div class="line"><a name="l00040"></a><span class="lineno"><a class="line" href="group__NuguAuth.html#ga27852a74a7a2172424a4606ed2a92a5c">   40</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="group__NuguAuth.html#ga27852a74a7a2172424a4606ed2a92a5c">GrantType</a> {</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;    AUTHORIZATION_CODE = 0x1, <span class="comment">/* OAuth2 Authorization code */</span></div>
-<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;    CLIENT_CREDENTIALS = 0x2, <span class="comment">/* OAuth2 Client credentials */</span></div>
-<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    REFRESH_TOKEN = 0x4, <span class="comment">/* OAuth2 refresh token */</span></div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    DEVICE_CODE = 0x8 <span class="comment">/* OAuth2 device code */</span></div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;};</div>
-<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="structNuguClientKit_1_1NuguDeviceConfig.html">   50</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structNuguClientKit_1_1NuguDeviceConfig.html">NuguDeviceConfig</a> {</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    std::string oauth_server_url; <span class="comment">/* OAuth2 server url */</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;    std::string oauth_client_id; <span class="comment">/* Client id */</span></div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    std::string oauth_client_secret; <span class="comment">/* Client secret */</span></div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    std::string oauth_redirect_uri; <span class="comment">/* Redirect uri */</span></div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    std::string device_type_code; <span class="comment">/* Device type code */</span></div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    std::string poc_id; <span class="comment">/* PoC id */</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;};</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno"><a class="line" href="structNuguClientKit_1_1NuguToken.html">   62</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a> {</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    std::string access_token; <span class="comment">/* OAuth2 access token */</span></div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;    std::string refresh_token; <span class="comment">/* OAuth2 refresh token */</span></div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::string token_type; <span class="comment">/* OAuth2 token type. e.g. &quot;Bearer&quot; */</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    <span class="keywordtype">int</span> expires_in; <span class="comment">/* Expiration time remaining after token issuance (secs) */</span></div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    time_t timestamp; <span class="comment">/* Token issuance time */</span></div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160; </div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    std::vector&lt;std::string&gt; scope; <span class="comment">/* scope */</span></div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;    <span class="keywordtype">int</span> exp; <span class="comment">/* Token expiration time (unix timestamp) */</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    std::string client_id; <span class="comment">/* OAuth2 client id */</span></div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    std::string ext_usr; <span class="comment">/* user id */</span></div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    std::string ext_dvc; <span class="comment">/* device id */</span></div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    std::string ext_srl; <span class="comment">/* device serial */</span></div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    std::string ext_poc; <span class="comment">/* PoC id */</span></div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    <span class="keywordtype">bool</span> sid; <span class="comment">/* flag for server-initiative-directive support */</span></div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;};</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160; </div>
-<div class="line"><a name="l00083"></a><span class="lineno"><a class="line" href="structNuguClientKit_1_1AuthResponse.html">   83</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a> {</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;    <span class="keywordtype">int</span> code; <span class="comment">/* HTTP Response code */</span></div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;    std::string body; <span class="comment">/* HTTP Response body */</span></div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;};</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html">   91</a></span>&#160;<span class="keyword">class </span><a class="code" href="classNuguClientKit_1_1NuguAuth.html">NuguAuth</a> {</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html">NuguAuth</a>(<span class="keyword">const</span> <a class="code" href="structNuguClientKit_1_1NuguDeviceConfig.html">NuguDeviceConfig</a>&amp; config);</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    ~<a class="code" href="classNuguClientKit_1_1NuguAuth.html">NuguAuth</a>();</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160; </div>
-<div class="line"><a name="l00103"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#aa65ac971dec370b107abbf4543846af8">  103</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html#aa65ac971dec370b107abbf4543846af8">discovery</a>(<span class="keyword">struct</span> <a class="code" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a>* response = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160; </div>
-<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#a92afb4025f47e51774487a1e58011cfd">  112</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html#a92afb4025f47e51774487a1e58011cfd">discovery</a>(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keywordtype">bool</span> success, <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a>* response)&gt;&amp; cb);</div>
-<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160; </div>
-<div class="line"><a name="l00121"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#a34c8890f95eab4dfd4abe8a296a548e8">  121</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html#a34c8890f95eab4dfd4abe8a296a548e8">isSupport</a>(<span class="keyword">const</span> <a class="code" href="group__NuguAuth.html#ga27852a74a7a2172424a4606ed2a92a5c">GrantType</a>&amp; gtype);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
-<div class="line"><a name="l00128"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#ac66df0ab9510fba799d35bfe4ce62eea">  128</a></span>&#160;    std::string <a class="code" href="classNuguClientKit_1_1NuguAuth.html#ac66df0ab9510fba799d35bfe4ce62eea">generateAuthorizeUrl</a>(<span class="keyword">const</span> std::string&amp; device_serial);</div>
-<div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160; </div>
-<div class="line"><a name="l00137"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#ab316f16ed44e743070c2b15bb605d6df">  137</a></span>&#160;    <a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* <a class="code" href="classNuguClientKit_1_1NuguAuth.html#ab316f16ed44e743070c2b15bb605d6df">getAuthorizationCodeToken</a>(<span class="keyword">const</span> std::string&amp; code, <span class="keyword">const</span> std::string&amp; device_serial,</div>
-<div class="line"><a name="l00138"></a><span class="lineno">  138</span>&#160;        <span class="keyword">struct</span> <a class="code" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a>* response = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00139"></a><span class="lineno">  139</span>&#160; </div>
-<div class="line"><a name="l00146"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#ad605f2d7d7c83723ece7d6f5b4e6d76f">  146</a></span>&#160;    <a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* <a class="code" href="classNuguClientKit_1_1NuguAuth.html#ad605f2d7d7c83723ece7d6f5b4e6d76f">getClientCredentialsToken</a>(<span class="keyword">const</span> std::string&amp; device_serial,</div>
-<div class="line"><a name="l00147"></a><span class="lineno">  147</span>&#160;        <span class="keyword">struct</span> <a class="code" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a>* response = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00148"></a><span class="lineno">  148</span>&#160; </div>
-<div class="line"><a name="l00155"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#a0f9055afa4777c1d8f91bc21201140e5">  155</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html#a0f9055afa4777c1d8f91bc21201140e5">parseAccessToken</a>(<a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* token);</div>
-<div class="line"><a name="l00156"></a><span class="lineno">  156</span>&#160; </div>
-<div class="line"><a name="l00165"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#ac3ad8ca3b28cc06880da07202dcabeee">  165</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html#ac3ad8ca3b28cc06880da07202dcabeee">refresh</a>(<a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* token, <span class="keyword">const</span> std::string&amp; device_serial = <span class="stringliteral">&quot;&quot;</span>,</div>
-<div class="line"><a name="l00166"></a><span class="lineno">  166</span>&#160;        <span class="keyword">struct</span> <a class="code" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a>* response = <span class="keyword">nullptr</span>);</div>
-<div class="line"><a name="l00167"></a><span class="lineno">  167</span>&#160; </div>
-<div class="line"><a name="l00175"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#a3468edef747d718b146067accba8b258">  175</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html#a3468edef747d718b146067accba8b258">isExpired</a>(<span class="keyword">const</span> <a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* token, time_t base_time = 0);</div>
-<div class="line"><a name="l00176"></a><span class="lineno">  176</span>&#160; </div>
-<div class="line"><a name="l00183"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#a02b4b82bfad17b21e76de8c81da259d9">  183</a></span>&#160;    time_t <a class="code" href="classNuguClientKit_1_1NuguAuth.html#a02b4b82bfad17b21e76de8c81da259d9">getRemainExpireTime</a>(<span class="keyword">const</span> <a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* token, time_t base_time = 0);</div>
-<div class="line"><a name="l00184"></a><span class="lineno">  184</span>&#160; </div>
-<div class="line"><a name="l00189"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#aebda0279b846615cc15aaa8fe76fae5e">  189</a></span>&#160;    std::string <a class="code" href="classNuguClientKit_1_1NuguAuth.html#aebda0279b846615cc15aaa8fe76fae5e">getGatewayRegistryUri</a>();</div>
-<div class="line"><a name="l00190"></a><span class="lineno">  190</span>&#160; </div>
-<div class="line"><a name="l00195"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#addf9e46b37dcf5e8e9e3a4c81a29eb70">  195</a></span>&#160;    std::string <a class="code" href="classNuguClientKit_1_1NuguAuth.html#addf9e46b37dcf5e8e9e3a4c81a29eb70">getTemplateServerUri</a>();</div>
-<div class="line"><a name="l00196"></a><span class="lineno">  196</span>&#160; </div>
-<div class="line"><a name="l00197"></a><span class="lineno">  197</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160;    <span class="keywordtype">bool</span> parseDiscoveryResult(<span class="keyword">const</span> std::string&amp; response);</div>
-<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;    <span class="keywordtype">bool</span> parseAndSaveToken(<span class="keyword">const</span> std::string&amp; response, <a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* token);</div>
-<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160; </div>
-<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <a class="code" href="structNuguClientKit_1_1NuguDeviceConfig.html">NuguDeviceConfig</a> config;</div>
-<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160;    <a class="code" href="classNuguClientKit_1_1NuguHttpRest.html">NuguHttpRest</a>* rest;</div>
-<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> supported_grant_types;</div>
-<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    std::string ep_token;</div>
-<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    std::string ep_authorization;</div>
-<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    std::string uri_gateway_registry;</div>
-<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    std::string uri_template_server;</div>
-<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;};</div>
-<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160; </div>
-<div class="line"><a name="l00214"></a><span class="lineno">  214</span>&#160;} <span class="comment">// NuguClientKit</span></div>
-<div class="line"><a name="l00215"></a><span class="lineno">  215</span>&#160; </div>
-<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_AUTH_H__ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="aclassNuguClientKit_1_1NuguAuth_html"><div class="ttname"><a href="classNuguClientKit_1_1NuguAuth.html">NuguClientKit::NuguAuth</a></div><div class="ttdoc">NuguAuth.</div><div class="ttdef"><b>Definition:</b> nugu_auth.hh:91</div></div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keyword">namespace </span>NuguClientKit {</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160; </div>
+<div class="line"><a name="l00042"></a><span class="lineno"><a class="line" href="group__NuguAuth.html#ga27852a74a7a2172424a4606ed2a92a5c">   42</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="group__NuguAuth.html#ga27852a74a7a2172424a4606ed2a92a5c">GrantType</a> {</div>
+<div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;    AUTHORIZATION_CODE = 0x1, <span class="comment">/* OAuth2 Authorization code */</span></div>
+<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    CLIENT_CREDENTIALS = 0x2, <span class="comment">/* OAuth2 Client credentials */</span></div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    REFRESH_TOKEN = 0x4, <span class="comment">/* OAuth2 refresh token */</span></div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    DEVICE_CODE = 0x8 <span class="comment">/* OAuth2 device code */</span></div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;};</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160; </div>
+<div class="line"><a name="l00052"></a><span class="lineno"><a class="line" href="structNuguClientKit_1_1NuguDeviceConfig.html">   52</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structNuguClientKit_1_1NuguDeviceConfig.html">NuguDeviceConfig</a> {</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;    std::string oauth_server_url; <span class="comment">/* OAuth2 server url */</span></div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;    std::string oauth_client_id; <span class="comment">/* Client id */</span></div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;    std::string oauth_client_secret; <span class="comment">/* Client secret */</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    std::string oauth_redirect_uri; <span class="comment">/* Redirect uri */</span></div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    std::string device_type_code; <span class="comment">/* Device type code */</span></div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;    std::string poc_id; <span class="comment">/* PoC id */</span></div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;};</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160; </div>
+<div class="line"><a name="l00064"></a><span class="lineno"><a class="line" href="structNuguClientKit_1_1NuguToken.html">   64</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a> {</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;    std::string access_token; <span class="comment">/* OAuth2 access token */</span></div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;    std::string refresh_token; <span class="comment">/* OAuth2 refresh token */</span></div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;    std::string token_type; <span class="comment">/* OAuth2 token type. e.g. &quot;Bearer&quot; */</span></div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">int</span> expires_in; <span class="comment">/* Expiration time remaining after token issuance (secs) */</span></div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    time_t timestamp; <span class="comment">/* Token issuance time */</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;    std::vector&lt;std::string&gt; scope; <span class="comment">/* scope */</span></div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    <span class="keywordtype">int</span> exp; <span class="comment">/* Token expiration time (unix timestamp) */</span></div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;    std::string client_id; <span class="comment">/* OAuth2 client id */</span></div>
+<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    std::string ext_usr; <span class="comment">/* user id */</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    std::string ext_dvc; <span class="comment">/* device id */</span></div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;    std::string ext_srl; <span class="comment">/* device serial */</span></div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;    std::string ext_poc; <span class="comment">/* PoC id */</span></div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;    <span class="keywordtype">bool</span> sid; <span class="comment">/* flag for server-initiative-directive support */</span></div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;};</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="structNuguClientKit_1_1AuthResponse.html">   85</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a> {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">int</span> code; <span class="comment">/* HTTP Response code */</span></div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    std::string body; <span class="comment">/* HTTP Response body */</span></div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;};</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160; </div>
+<div class="line"><a name="l00093"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html">   93</a></span>&#160;<span class="keyword">class </span>NUGU_API <a class="code" href="classNuguClientKit_1_1NuguAuth.html">NuguAuth</a> {</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html">NuguAuth</a>(<span class="keyword">const</span> <a class="code" href="structNuguClientKit_1_1NuguDeviceConfig.html">NuguDeviceConfig</a>&amp; config);</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    ~<a class="code" href="classNuguClientKit_1_1NuguAuth.html">NuguAuth</a>();</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160; </div>
+<div class="line"><a name="l00105"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#aa65ac971dec370b107abbf4543846af8">  105</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html#aa65ac971dec370b107abbf4543846af8">discovery</a>(<span class="keyword">struct</span> <a class="code" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a>* response = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
+<div class="line"><a name="l00114"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#a92afb4025f47e51774487a1e58011cfd">  114</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html#a92afb4025f47e51774487a1e58011cfd">discovery</a>(<span class="keyword">const</span> std::function&lt;<span class="keywordtype">void</span>(<span class="keywordtype">bool</span> success, <span class="keyword">const</span> <span class="keyword">struct</span> <a class="code" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a>* response)&gt;&amp; cb);</div>
+<div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#a34c8890f95eab4dfd4abe8a296a548e8">  123</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html#a34c8890f95eab4dfd4abe8a296a548e8">isSupport</a>(<span class="keyword">const</span> <a class="code" href="group__NuguAuth.html#ga27852a74a7a2172424a4606ed2a92a5c">GrantType</a>&amp; gtype);</div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#ac66df0ab9510fba799d35bfe4ce62eea">  130</a></span>&#160;    std::string <a class="code" href="classNuguClientKit_1_1NuguAuth.html#ac66df0ab9510fba799d35bfe4ce62eea">generateAuthorizeUrl</a>(<span class="keyword">const</span> std::string&amp; device_serial);</div>
+<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160; </div>
+<div class="line"><a name="l00139"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#ab316f16ed44e743070c2b15bb605d6df">  139</a></span>&#160;    <a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* <a class="code" href="classNuguClientKit_1_1NuguAuth.html#ab316f16ed44e743070c2b15bb605d6df">getAuthorizationCodeToken</a>(<span class="keyword">const</span> std::string&amp; code, <span class="keyword">const</span> std::string&amp; device_serial,</div>
+<div class="line"><a name="l00140"></a><span class="lineno">  140</span>&#160;        <span class="keyword">struct</span> <a class="code" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a>* response = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00141"></a><span class="lineno">  141</span>&#160; </div>
+<div class="line"><a name="l00148"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#ad605f2d7d7c83723ece7d6f5b4e6d76f">  148</a></span>&#160;    <a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* <a class="code" href="classNuguClientKit_1_1NuguAuth.html#ad605f2d7d7c83723ece7d6f5b4e6d76f">getClientCredentialsToken</a>(<span class="keyword">const</span> std::string&amp; device_serial,</div>
+<div class="line"><a name="l00149"></a><span class="lineno">  149</span>&#160;        <span class="keyword">struct</span> <a class="code" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a>* response = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00150"></a><span class="lineno">  150</span>&#160; </div>
+<div class="line"><a name="l00157"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#a0f9055afa4777c1d8f91bc21201140e5">  157</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html#a0f9055afa4777c1d8f91bc21201140e5">parseAccessToken</a>(<a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* token);</div>
+<div class="line"><a name="l00158"></a><span class="lineno">  158</span>&#160; </div>
+<div class="line"><a name="l00167"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#ac3ad8ca3b28cc06880da07202dcabeee">  167</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html#ac3ad8ca3b28cc06880da07202dcabeee">refresh</a>(<a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* token, <span class="keyword">const</span> std::string&amp; device_serial = <span class="stringliteral">&quot;&quot;</span>,</div>
+<div class="line"><a name="l00168"></a><span class="lineno">  168</span>&#160;        <span class="keyword">struct</span> <a class="code" href="structNuguClientKit_1_1AuthResponse.html">AuthResponse</a>* response = <span class="keyword">nullptr</span>);</div>
+<div class="line"><a name="l00169"></a><span class="lineno">  169</span>&#160; </div>
+<div class="line"><a name="l00177"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#a3468edef747d718b146067accba8b258">  177</a></span>&#160;    <span class="keywordtype">bool</span> <a class="code" href="classNuguClientKit_1_1NuguAuth.html#a3468edef747d718b146067accba8b258">isExpired</a>(<span class="keyword">const</span> <a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* token, time_t base_time = 0);</div>
+<div class="line"><a name="l00178"></a><span class="lineno">  178</span>&#160; </div>
+<div class="line"><a name="l00185"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#a02b4b82bfad17b21e76de8c81da259d9">  185</a></span>&#160;    time_t <a class="code" href="classNuguClientKit_1_1NuguAuth.html#a02b4b82bfad17b21e76de8c81da259d9">getRemainExpireTime</a>(<span class="keyword">const</span> <a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* token, time_t base_time = 0);</div>
+<div class="line"><a name="l00186"></a><span class="lineno">  186</span>&#160; </div>
+<div class="line"><a name="l00191"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#aebda0279b846615cc15aaa8fe76fae5e">  191</a></span>&#160;    std::string <a class="code" href="classNuguClientKit_1_1NuguAuth.html#aebda0279b846615cc15aaa8fe76fae5e">getGatewayRegistryUri</a>();</div>
+<div class="line"><a name="l00192"></a><span class="lineno">  192</span>&#160; </div>
+<div class="line"><a name="l00197"></a><span class="lineno"><a class="line" href="classNuguClientKit_1_1NuguAuth.html#addf9e46b37dcf5e8e9e3a4c81a29eb70">  197</a></span>&#160;    std::string <a class="code" href="classNuguClientKit_1_1NuguAuth.html#addf9e46b37dcf5e8e9e3a4c81a29eb70">getTemplateServerUri</a>();</div>
+<div class="line"><a name="l00198"></a><span class="lineno">  198</span>&#160; </div>
+<div class="line"><a name="l00199"></a><span class="lineno">  199</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00200"></a><span class="lineno">  200</span>&#160;    <span class="keywordtype">bool</span> parseDiscoveryResult(<span class="keyword">const</span> std::string&amp; response);</div>
+<div class="line"><a name="l00201"></a><span class="lineno">  201</span>&#160;    <span class="keywordtype">bool</span> parseAndSaveToken(<span class="keyword">const</span> std::string&amp; response, <a class="code" href="structNuguClientKit_1_1NuguToken.html">NuguToken</a>* token);</div>
+<div class="line"><a name="l00202"></a><span class="lineno">  202</span>&#160; </div>
+<div class="line"><a name="l00203"></a><span class="lineno">  203</span>&#160;    <a class="code" href="structNuguClientKit_1_1NuguDeviceConfig.html">NuguDeviceConfig</a> config;</div>
+<div class="line"><a name="l00204"></a><span class="lineno">  204</span>&#160;    <a class="code" href="classNuguClientKit_1_1NuguHttpRest.html">NuguHttpRest</a>* rest;</div>
+<div class="line"><a name="l00205"></a><span class="lineno">  205</span>&#160;    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> supported_grant_types;</div>
+<div class="line"><a name="l00206"></a><span class="lineno">  206</span>&#160;    std::string ep_token;</div>
+<div class="line"><a name="l00207"></a><span class="lineno">  207</span>&#160;    std::string ep_authorization;</div>
+<div class="line"><a name="l00208"></a><span class="lineno">  208</span>&#160;    std::string uri_gateway_registry;</div>
+<div class="line"><a name="l00209"></a><span class="lineno">  209</span>&#160;    std::string uri_template_server;</div>
+<div class="line"><a name="l00210"></a><span class="lineno">  210</span>&#160;};</div>
+<div class="line"><a name="l00211"></a><span class="lineno">  211</span>&#160; </div>
+<div class="line"><a name="l00216"></a><span class="lineno">  216</span>&#160;} <span class="comment">// NuguClientKit</span></div>
+<div class="line"><a name="l00217"></a><span class="lineno">  217</span>&#160; </div>
+<div class="line"><a name="l00218"></a><span class="lineno">  218</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __NUGU_AUTH_H__ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aclassNuguClientKit_1_1NuguAuth_html"><div class="ttname"><a href="classNuguClientKit_1_1NuguAuth.html">NuguClientKit::NuguAuth</a></div><div class="ttdoc">NuguAuth.</div><div class="ttdef"><b>Definition:</b> nugu_auth.hh:93</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1NuguAuth_html_a02b4b82bfad17b21e76de8c81da259d9"><div class="ttname"><a href="classNuguClientKit_1_1NuguAuth.html#a02b4b82bfad17b21e76de8c81da259d9">NuguClientKit::NuguAuth::getRemainExpireTime</a></div><div class="ttdeci">time_t getRemainExpireTime(const NuguToken *token, time_t base_time=0)</div><div class="ttdoc">Get remaining expiration time based on base_time.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1NuguAuth_html_a0f9055afa4777c1d8f91bc21201140e5"><div class="ttname"><a href="classNuguClientKit_1_1NuguAuth.html#a0f9055afa4777c1d8f91bc21201140e5">NuguClientKit::NuguAuth::parseAccessToken</a></div><div class="ttdeci">bool parseAccessToken(NuguToken *token)</div><div class="ttdoc">Parsing the JWT access_token and fill the token information.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1NuguAuth_html_a3468edef747d718b146067accba8b258"><div class="ttname"><a href="classNuguClientKit_1_1NuguAuth.html#a3468edef747d718b146067accba8b258">NuguClientKit::NuguAuth::isExpired</a></div><div class="ttdeci">bool isExpired(const NuguToken *token, time_t base_time=0)</div><div class="ttdoc">Check the token is expired or not.</div></div>
@@ -211,19 +213,19 @@ $(document).ready(function(){initNavTree('nugu__auth_8hh_source.html',''); initR
 <div class="ttc" id="aclassNuguClientKit_1_1NuguAuth_html_ad605f2d7d7c83723ece7d6f5b4e6d76f"><div class="ttname"><a href="classNuguClientKit_1_1NuguAuth.html#ad605f2d7d7c83723ece7d6f5b4e6d76f">NuguClientKit::NuguAuth::getClientCredentialsToken</a></div><div class="ttdeci">NuguToken * getClientCredentialsToken(const std::string &amp;device_serial, struct AuthResponse *response=nullptr)</div><div class="ttdoc">Get the token using client credentials.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1NuguAuth_html_addf9e46b37dcf5e8e9e3a4c81a29eb70"><div class="ttname"><a href="classNuguClientKit_1_1NuguAuth.html#addf9e46b37dcf5e8e9e3a4c81a29eb70">NuguClientKit::NuguAuth::getTemplateServerUri</a></div><div class="ttdeci">std::string getTemplateServerUri()</div><div class="ttdoc">Get uri for template server.</div></div>
 <div class="ttc" id="aclassNuguClientKit_1_1NuguAuth_html_aebda0279b846615cc15aaa8fe76fae5e"><div class="ttname"><a href="classNuguClientKit_1_1NuguAuth.html#aebda0279b846615cc15aaa8fe76fae5e">NuguClientKit::NuguAuth::getGatewayRegistryUri</a></div><div class="ttdeci">std::string getGatewayRegistryUri()</div><div class="ttdoc">Get uri for device gateway registry.</div></div>
-<div class="ttc" id="aclassNuguClientKit_1_1NuguHttpRest_html"><div class="ttname"><a href="classNuguClientKit_1_1NuguHttpRest.html">NuguClientKit::NuguHttpRest</a></div><div class="ttdoc">NUGU HTTP Rest.</div><div class="ttdef"><b>Definition:</b> nugu_http_rest.hh:41</div></div>
-<div class="ttc" id="agroup__NuguAuth_html_ga27852a74a7a2172424a4606ed2a92a5c"><div class="ttname"><a href="group__NuguAuth.html#ga27852a74a7a2172424a4606ed2a92a5c">NuguClientKit::GrantType</a></div><div class="ttdeci">GrantType</div><div class="ttdoc">GrantType.</div><div class="ttdef"><b>Definition:</b> nugu_auth.hh:40</div></div>
+<div class="ttc" id="aclassNuguClientKit_1_1NuguHttpRest_html"><div class="ttname"><a href="classNuguClientKit_1_1NuguHttpRest.html">NuguClientKit::NuguHttpRest</a></div><div class="ttdoc">NUGU HTTP Rest.</div><div class="ttdef"><b>Definition:</b> nugu_http_rest.hh:42</div></div>
+<div class="ttc" id="agroup__NuguAuth_html_ga27852a74a7a2172424a4606ed2a92a5c"><div class="ttname"><a href="group__NuguAuth.html#ga27852a74a7a2172424a4606ed2a92a5c">NuguClientKit::GrantType</a></div><div class="ttdeci">GrantType</div><div class="ttdoc">GrantType.</div><div class="ttdef"><b>Definition:</b> nugu_auth.hh:42</div></div>
 <div class="ttc" id="anugu__http__rest_8hh_html"><div class="ttname"><a href="nugu__http__rest_8hh.html">nugu_http_rest.hh</a></div></div>
-<div class="ttc" id="astructNuguClientKit_1_1AuthResponse_html"><div class="ttname"><a href="structNuguClientKit_1_1AuthResponse.html">NuguClientKit::AuthResponse</a></div><div class="ttdoc">AuthResponse.</div><div class="ttdef"><b>Definition:</b> nugu_auth.hh:83</div></div>
-<div class="ttc" id="astructNuguClientKit_1_1NuguDeviceConfig_html"><div class="ttname"><a href="structNuguClientKit_1_1NuguDeviceConfig.html">NuguClientKit::NuguDeviceConfig</a></div><div class="ttdoc">NuguDeviceConfig.</div><div class="ttdef"><b>Definition:</b> nugu_auth.hh:50</div></div>
-<div class="ttc" id="astructNuguClientKit_1_1NuguToken_html"><div class="ttname"><a href="structNuguClientKit_1_1NuguToken.html">NuguClientKit::NuguToken</a></div><div class="ttdoc">NuguToken.</div><div class="ttdef"><b>Definition:</b> nugu_auth.hh:62</div></div>
+<div class="ttc" id="astructNuguClientKit_1_1AuthResponse_html"><div class="ttname"><a href="structNuguClientKit_1_1AuthResponse.html">NuguClientKit::AuthResponse</a></div><div class="ttdoc">AuthResponse.</div><div class="ttdef"><b>Definition:</b> nugu_auth.hh:85</div></div>
+<div class="ttc" id="astructNuguClientKit_1_1NuguDeviceConfig_html"><div class="ttname"><a href="structNuguClientKit_1_1NuguDeviceConfig.html">NuguClientKit::NuguDeviceConfig</a></div><div class="ttdoc">NuguDeviceConfig.</div><div class="ttdef"><b>Definition:</b> nugu_auth.hh:52</div></div>
+<div class="ttc" id="astructNuguClientKit_1_1NuguToken_html"><div class="ttname"><a href="structNuguClientKit_1_1NuguToken.html">NuguClientKit::NuguToken</a></div><div class="ttdoc">NuguToken.</div><div class="ttdef"><b>Definition:</b> nugu_auth.hh:64</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_261219a980049fd8e6168264a7da95ca.html">clientkit</a></li><li class="navelem"><a class="el" href="nugu__auth_8hh.html">nugu_auth.hh</a></li>
-    <li class="footer">Generated on Wed Aug 30 2023 09:35:57 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jun 25 2024 00:59:08 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

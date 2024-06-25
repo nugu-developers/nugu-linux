@@ -12,11 +12,11 @@ var group__NuguPcmDriver =
       [ "get_position", "structnugu__pcm__driver__ops.html#a645e4986471b2a98162987c9ea372bee", null ]
     ] ],
     [ "NuguPcmDriver", "group__NuguPcmDriver.html#gac12e878b75b09a46af6435d993a9f1db", null ],
-    [ "nugu_pcm_driver_new", "group__NuguPcmDriver.html#gace677c67cb8df2cb886615b8cbbdcdc4", null ],
-    [ "nugu_pcm_driver_free", "group__NuguPcmDriver.html#ga5893fa10b25358d360770eeae1a5dc2c", null ],
-    [ "nugu_pcm_driver_register", "group__NuguPcmDriver.html#ga009d38dba90e58b22fbeb93e07c91441", null ],
-    [ "nugu_pcm_driver_remove", "group__NuguPcmDriver.html#gad079f5e1ae81018d2c4016cd41517ac6", null ],
-    [ "nugu_pcm_driver_set_default", "group__NuguPcmDriver.html#ga50c00a3f3d348eeb6d04954663c6859c", null ],
-    [ "nugu_pcm_driver_get_default", "group__NuguPcmDriver.html#gad3b8ac9fb5aa81a80704130a29c8ef88", null ],
-    [ "nugu_pcm_driver_find", "group__NuguPcmDriver.html#ga07a738d821c1d3f7573651e5610f6479", null ]
+    [ "nugu_pcm_driver_new", "group__NuguPcmDriver.html#ga3fe2c2d1c2aa414a17abda54a8d926d9", null ],
+    [ "nugu_pcm_driver_free", "group__NuguPcmDriver.html#ga2fe16ffe22209518a78df24512bdcc13", null ],
+    [ "nugu_pcm_driver_register", "group__NuguPcmDriver.html#gad45dd9fb57e95e6817541a42daee713e", null ],
+    [ "nugu_pcm_driver_remove", "group__NuguPcmDriver.html#ga89c25b3c6d565a8a7bcea84ffac6a950", null ],
+    [ "nugu_pcm_driver_set_default", "group__NuguPcmDriver.html#gacf3d7da0e7c5950986b53fa618f97f0c", null ],
+    [ "nugu_pcm_driver_get_default", "group__NuguPcmDriver.html#ga3e99838ff45dce55c8aa90983bcdb286", null ],
+    [ "nugu_pcm_driver_find", "group__NuguPcmDriver.html#ga9bd642bb142e467797ee0d1949c8c3cc", null ]
 ];

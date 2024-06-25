@@ -1,5 +1,6 @@
 <map id="nugu_player.h" name="nugu_player.h">
-<area shape="rect" id="node1" title=" " alt="" coords="106,5,219,32"/>
-<area shape="rect" id="node2" href="$nugu__audio_8h.html" title=" " alt="" coords="5,80,149,107"/>
-<area shape="rect" id="node3" href="$nugu__media_8h.html" title=" " alt="" coords="173,80,323,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="37,5,151,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="6,155,73,181"/>
+<area shape="rect" id="node3" href="$nugu__audio_8h.html" title=" " alt="" coords="22,80,166,107"/>
+<area shape="rect" id="node4" href="$nugu__media_8h.html" title=" " alt="" coords="190,80,339,107"/>
 </map>

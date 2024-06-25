@@ -40,5 +40,6 @@ var group__CapabilityInterface =
       [ "setCapabilityHandler", "classNuguClientKit_1_1ICapabilityListener.html#ab6ebe17fe8072da3d5c227dff4eda9db", null ],
       [ "getCapabilityHandler", "classNuguClientKit_1_1ICapabilityListener.html#aa2e5938f8c942d662f560c33f13fa254", null ]
     ] ],
-    [ "DirectiveCancelPolicy", "group__CapabilityInterface.html#gac56614dfff5697a72cf4299d24f654b6", null ]
+    [ "DirectiveCancelPolicy", "group__CapabilityInterface.html#gac56614dfff5697a72cf4299d24f654b6", null ],
+    [ "ICapabilityInterface", "group__CapabilityInterface.html#ga39400bc740ad91eb1671d081df2bf3bd", null ]
 ];

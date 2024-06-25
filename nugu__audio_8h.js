@@ -46,6 +46,7 @@ var nugu__audio_8h =
       [ "NUGU_AUDIO_ATTRIBUTE_NAVIGATION", "nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6a1601ba3e0fbf1846dcbeaabaf982f85a", null ],
       [ "NUGU_AUDIO_ATTRIBUTE_SYSTEM_SOUND", "nugu__audio_8h.html#a128c0dd74041da6f1bb0fa16e47c6ce6ad5d86b392f095eb49f6b357cee724d57", null ]
     ] ],
-    [ "nugu_audio_set_attribute_str", "nugu__audio_8h.html#a4395b9f8e40d61ffa26e641d0ac954df", null ],
-    [ "nugu_audio_get_attribute_str", "nugu__audio_8h.html#af7185f86c4e029f966e37e2f0925b025", null ]
+    [ "nugu_audio_set_attribute_str", "nugu__audio_8h.html#ac27a491646b40853bfb1a60717cf4faf", null ],
+    [ "nugu_audio_get_attribute_str", "nugu__audio_8h.html#a5656a9da65549279ec37176222804d97", null ],
+    [ "nugu_audio_get_attribute", "nugu__audio_8h.html#aed157e169a931757c5601372ef478012", null ]
 ];

@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">NUGU SDK Linux
-   &#160;<span id="projectnumber">1.7.5</span>
+   &#160;<span id="projectnumber">1.7.6</span>
    </div>
   </td>
  </tr>
@@ -91,7 +91,19 @@ $(document).ready(function(){initNavTree('nugu__plugin_8h.html',''); initResizab
 <div class="title">nugu_plugin.h File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-
+<div class="textblock"><code>#include &lt;nugu.h&gt;</code><br />
+</div><div class="textblock"><div id="dynsection-0" onclick="return toggleVisibility(this)" class="dynheader closed" style="cursor:pointer;">
+  <img id="dynsection-0-trigger" src="closed.png" alt="+"/> Include dependency graph for nugu_plugin.h:</div>
+<div id="dynsection-0-summary" class="dynsummary" style="display:block;">
+</div>
+<div id="dynsection-0-content" class="dyncontent" style="display:none;">
+<div class="center"><img src="nugu__plugin_8h__incl.png" border="0" usemap="#anugu__plugin_8h" alt=""/></div>
+<map name="anugu__plugin_8h" id="anugu__plugin_8h">
+<area shape="rect" title=" " alt="" coords="5,5,119,32"/>
+<area shape="rect" title=" " alt="" coords="29,80,95,107"/>
+</map>
+</div>
+</div>
 <p><a href="nugu__plugin_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
@@ -131,46 +143,49 @@ typedef struct _plugin&#160;</td><td class="memItemRight" valign="bottom"><a cla
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga1d99ecccf4dadcfe53c3da572d944686"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga1d99ecccf4dadcfe53c3da572d944686">nugu_plugin_add</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p)</td></tr>
-<tr class="memdesc:ga1d99ecccf4dadcfe53c3da572d944686"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the plugin to managed list.  <a href="group__NuguPlugin.html#ga1d99ecccf4dadcfe53c3da572d944686">More...</a><br /></td></tr>
-<tr class="separator:ga1d99ecccf4dadcfe53c3da572d944686"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga317d4b64fb2a1cc2f7270b7a9688bf6c"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga317d4b64fb2a1cc2f7270b7a9688bf6c">nugu_plugin_deinitialize</a> (void)</td></tr>
-<tr class="memdesc:ga317d4b64fb2a1cc2f7270b7a9688bf6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">De-initialize plugin. <br /></td></tr>
-<tr class="separator:ga317d4b64fb2a1cc2f7270b7a9688bf6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga878a6a31bb675c3d82b52ec5d1c317ed"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga878a6a31bb675c3d82b52ec5d1c317ed">nugu_plugin_find</a> (const char *name)</td></tr>
-<tr class="memdesc:ga878a6a31bb675c3d82b52ec5d1c317ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a plugin by name in the managed list.  <a href="group__NuguPlugin.html#ga878a6a31bb675c3d82b52ec5d1c317ed">More...</a><br /></td></tr>
-<tr class="separator:ga878a6a31bb675c3d82b52ec5d1c317ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae83df410d1067baf60734b4395a12ce0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#gae83df410d1067baf60734b4395a12ce0">nugu_plugin_free</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p)</td></tr>
-<tr class="memdesc:gae83df410d1067baf60734b4395a12ce0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the plugin.  <a href="group__NuguPlugin.html#gae83df410d1067baf60734b4395a12ce0">More...</a><br /></td></tr>
-<tr class="separator:gae83df410d1067baf60734b4395a12ce0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga22f9504ad974ca9140165483116dc3c5"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga22f9504ad974ca9140165483116dc3c5">nugu_plugin_get_data</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p)</td></tr>
-<tr class="memdesc:ga22f9504ad974ca9140165483116dc3c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get private data from plugin.  <a href="group__NuguPlugin.html#ga22f9504ad974ca9140165483116dc3c5">More...</a><br /></td></tr>
-<tr class="separator:ga22f9504ad974ca9140165483116dc3c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6757e7893948f0113cb5fd744ab6e561"><td class="memItemLeft" align="right" valign="top">const struct <a class="el" href="structnugu__plugin__desc.html">nugu_plugin_desc</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga6757e7893948f0113cb5fd744ab6e561">nugu_plugin_get_description</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p)</td></tr>
-<tr class="memdesc:ga6757e7893948f0113cb5fd744ab6e561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the plugin description.  <a href="group__NuguPlugin.html#ga6757e7893948f0113cb5fd744ab6e561">More...</a><br /></td></tr>
-<tr class="separator:ga6757e7893948f0113cb5fd744ab6e561"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga785bff8a36596b933979a1ef935e40d8"><td class="memItemLeft" align="right" valign="top">void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga785bff8a36596b933979a1ef935e40d8">nugu_plugin_get_symbol</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p, const char *symbol_name)</td></tr>
-<tr class="memdesc:ga785bff8a36596b933979a1ef935e40d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get dlsym result from plugin.  <a href="group__NuguPlugin.html#ga785bff8a36596b933979a1ef935e40d8">More...</a><br /></td></tr>
-<tr class="separator:ga785bff8a36596b933979a1ef935e40d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga90501f96849ed8aa65cf93fcb148adf4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga90501f96849ed8aa65cf93fcb148adf4">nugu_plugin_initialize</a> (void)</td></tr>
-<tr class="memdesc:ga90501f96849ed8aa65cf93fcb148adf4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize plugin.  <a href="group__NuguPlugin.html#ga90501f96849ed8aa65cf93fcb148adf4">More...</a><br /></td></tr>
-<tr class="separator:ga90501f96849ed8aa65cf93fcb148adf4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaae5f77ec394a07ddb7b8279cf30bc66f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#gaae5f77ec394a07ddb7b8279cf30bc66f">nugu_plugin_load_directory</a> (const char *dirpath)</td></tr>
-<tr class="memdesc:gaae5f77ec394a07ddb7b8279cf30bc66f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all plugin files from directory.  <a href="group__NuguPlugin.html#gaae5f77ec394a07ddb7b8279cf30bc66f">More...</a><br /></td></tr>
-<tr class="separator:gaae5f77ec394a07ddb7b8279cf30bc66f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7247bb64c4cd7bb1a0a316dce40ade6d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga7247bb64c4cd7bb1a0a316dce40ade6d">nugu_plugin_new</a> (struct <a class="el" href="structnugu__plugin__desc.html">nugu_plugin_desc</a> *desc)</td></tr>
-<tr class="memdesc:ga7247bb64c4cd7bb1a0a316dce40ade6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new plugin object.  <a href="group__NuguPlugin.html#ga7247bb64c4cd7bb1a0a316dce40ade6d">More...</a><br /></td></tr>
-<tr class="separator:ga7247bb64c4cd7bb1a0a316dce40ade6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gabe0f43e389ff146df074281699d0dfc5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#gabe0f43e389ff146df074281699d0dfc5">nugu_plugin_new_from_file</a> (const char *filepath)</td></tr>
-<tr class="memdesc:gabe0f43e389ff146df074281699d0dfc5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new plugin object from file.  <a href="group__NuguPlugin.html#gabe0f43e389ff146df074281699d0dfc5">More...</a><br /></td></tr>
-<tr class="separator:gabe0f43e389ff146df074281699d0dfc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7d9edd5e0c8237d60272c8698094801e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga7d9edd5e0c8237d60272c8698094801e">nugu_plugin_remove</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p)</td></tr>
-<tr class="memdesc:ga7d9edd5e0c8237d60272c8698094801e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the plugin to managed list.  <a href="group__NuguPlugin.html#ga7d9edd5e0c8237d60272c8698094801e">More...</a><br /></td></tr>
-<tr class="separator:ga7d9edd5e0c8237d60272c8698094801e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga5c1e838b734979f94e6bfad152e69ed3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga5c1e838b734979f94e6bfad152e69ed3">nugu_plugin_set_data</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p, void *data)</td></tr>
-<tr class="memdesc:ga5c1e838b734979f94e6bfad152e69ed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set private data to plugin.  <a href="group__NuguPlugin.html#ga5c1e838b734979f94e6bfad152e69ed3">More...</a><br /></td></tr>
-<tr class="separator:ga5c1e838b734979f94e6bfad152e69ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga847732486edb297fefc6639dff02076a"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga847732486edb297fefc6639dff02076a">nugu_plugin_add</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p)</td></tr>
+<tr class="memdesc:ga847732486edb297fefc6639dff02076a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add the plugin to managed list.  <a href="group__NuguPlugin.html#ga847732486edb297fefc6639dff02076a">More...</a><br /></td></tr>
+<tr class="separator:ga847732486edb297fefc6639dff02076a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga3257b42a89cde923b774aef678263de7"><td class="memItemLeft" align="right" valign="top">
+NUGU_API void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga3257b42a89cde923b774aef678263de7">nugu_plugin_deinitialize</a> (void)</td></tr>
+<tr class="memdesc:ga3257b42a89cde923b774aef678263de7"><td class="mdescLeft">&#160;</td><td class="mdescRight">De-initialize plugin. <br /></td></tr>
+<tr class="separator:ga3257b42a89cde923b774aef678263de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa6de57633a3dd31c4b1c28c6e71c3f68"><td class="memItemLeft" align="right" valign="top">NUGU_API <a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#gaa6de57633a3dd31c4b1c28c6e71c3f68">nugu_plugin_find</a> (const char *name)</td></tr>
+<tr class="memdesc:gaa6de57633a3dd31c4b1c28c6e71c3f68"><td class="mdescLeft">&#160;</td><td class="mdescRight">Find a plugin by name in the managed list.  <a href="group__NuguPlugin.html#gaa6de57633a3dd31c4b1c28c6e71c3f68">More...</a><br /></td></tr>
+<tr class="separator:gaa6de57633a3dd31c4b1c28c6e71c3f68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae9b5110d2c5f90a3d06511748e92cc29"><td class="memItemLeft" align="right" valign="top">NUGU_API void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#gae9b5110d2c5f90a3d06511748e92cc29">nugu_plugin_free</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p)</td></tr>
+<tr class="memdesc:gae9b5110d2c5f90a3d06511748e92cc29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroy the plugin.  <a href="group__NuguPlugin.html#gae9b5110d2c5f90a3d06511748e92cc29">More...</a><br /></td></tr>
+<tr class="separator:gae9b5110d2c5f90a3d06511748e92cc29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga38a48814ac04cb0da9dc0f4ac28e085f"><td class="memItemLeft" align="right" valign="top">NUGU_API void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga38a48814ac04cb0da9dc0f4ac28e085f">nugu_plugin_get_data</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p)</td></tr>
+<tr class="memdesc:ga38a48814ac04cb0da9dc0f4ac28e085f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get private data from plugin.  <a href="group__NuguPlugin.html#ga38a48814ac04cb0da9dc0f4ac28e085f">More...</a><br /></td></tr>
+<tr class="separator:ga38a48814ac04cb0da9dc0f4ac28e085f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga26b489a2ea0680b5b2574a8be20906e0"><td class="memItemLeft" align="right" valign="top">NUGU_API const struct <a class="el" href="structnugu__plugin__desc.html">nugu_plugin_desc</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga26b489a2ea0680b5b2574a8be20906e0">nugu_plugin_get_description</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p)</td></tr>
+<tr class="memdesc:ga26b489a2ea0680b5b2574a8be20906e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the plugin description.  <a href="group__NuguPlugin.html#ga26b489a2ea0680b5b2574a8be20906e0">More...</a><br /></td></tr>
+<tr class="separator:ga26b489a2ea0680b5b2574a8be20906e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga8fbc48f190c5f2d39981bcfd1a3d8fb0"><td class="memItemLeft" align="right" valign="top">NUGU_API void *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga8fbc48f190c5f2d39981bcfd1a3d8fb0">nugu_plugin_get_symbol</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p, const char *symbol_name)</td></tr>
+<tr class="memdesc:ga8fbc48f190c5f2d39981bcfd1a3d8fb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get dlsym result from plugin.  <a href="group__NuguPlugin.html#ga8fbc48f190c5f2d39981bcfd1a3d8fb0">More...</a><br /></td></tr>
+<tr class="separator:ga8fbc48f190c5f2d39981bcfd1a3d8fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga285982bd2b4104dee179201693707fc9"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga285982bd2b4104dee179201693707fc9">nugu_plugin_initialize</a> (void)</td></tr>
+<tr class="memdesc:ga285982bd2b4104dee179201693707fc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize plugin.  <a href="group__NuguPlugin.html#ga285982bd2b4104dee179201693707fc9">More...</a><br /></td></tr>
+<tr class="separator:ga285982bd2b4104dee179201693707fc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga35ba78b640cc6ae2c017af531da65e3f"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#ga35ba78b640cc6ae2c017af531da65e3f">nugu_plugin_load_builtin</a> (void)</td></tr>
+<tr class="memdesc:ga35ba78b640cc6ae2c017af531da65e3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all built-in plugins.  <a href="group__NuguPlugin.html#ga35ba78b640cc6ae2c017af531da65e3f">More...</a><br /></td></tr>
+<tr class="separator:ga35ba78b640cc6ae2c017af531da65e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad63fe8e7b56ad0cd92ea6aa54c2cb4c8"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#gad63fe8e7b56ad0cd92ea6aa54c2cb4c8">nugu_plugin_load_directory</a> (const char *dirpath)</td></tr>
+<tr class="memdesc:gad63fe8e7b56ad0cd92ea6aa54c2cb4c8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load all plugin files from directory.  <a href="group__NuguPlugin.html#gad63fe8e7b56ad0cd92ea6aa54c2cb4c8">More...</a><br /></td></tr>
+<tr class="separator:gad63fe8e7b56ad0cd92ea6aa54c2cb4c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabcbe99c2170aeae243a1087657bb4377"><td class="memItemLeft" align="right" valign="top">NUGU_API <a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#gabcbe99c2170aeae243a1087657bb4377">nugu_plugin_new</a> (struct <a class="el" href="structnugu__plugin__desc.html">nugu_plugin_desc</a> *desc)</td></tr>
+<tr class="memdesc:gabcbe99c2170aeae243a1087657bb4377"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new plugin object.  <a href="group__NuguPlugin.html#gabcbe99c2170aeae243a1087657bb4377">More...</a><br /></td></tr>
+<tr class="separator:gabcbe99c2170aeae243a1087657bb4377"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab3b294a5834cb76e780f18ad9a8c4e7c"><td class="memItemLeft" align="right" valign="top">NUGU_API <a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#gab3b294a5834cb76e780f18ad9a8c4e7c">nugu_plugin_new_from_file</a> (const char *filepath)</td></tr>
+<tr class="memdesc:gab3b294a5834cb76e780f18ad9a8c4e7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Create new plugin object from file.  <a href="group__NuguPlugin.html#gab3b294a5834cb76e780f18ad9a8c4e7c">More...</a><br /></td></tr>
+<tr class="separator:gab3b294a5834cb76e780f18ad9a8c4e7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae23b167185f34080c54d965925e2743a"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#gae23b167185f34080c54d965925e2743a">nugu_plugin_remove</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p)</td></tr>
+<tr class="memdesc:gae23b167185f34080c54d965925e2743a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Remove the plugin to managed list.  <a href="group__NuguPlugin.html#gae23b167185f34080c54d965925e2743a">More...</a><br /></td></tr>
+<tr class="separator:gae23b167185f34080c54d965925e2743a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabeec62138db08fb0c0c2ecbce57c1e7f"><td class="memItemLeft" align="right" valign="top">NUGU_API int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__NuguPlugin.html#gabeec62138db08fb0c0c2ecbce57c1e7f">nugu_plugin_set_data</a> (<a class="el" href="group__NuguPlugin.html#ga902899332433a0695927c4085cb12664">NuguPlugin</a> *p, void *data)</td></tr>
+<tr class="memdesc:gabeec62138db08fb0c0c2ecbce57c1e7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set private data to plugin.  <a href="group__NuguPlugin.html#gabeec62138db08fb0c0c2ecbce57c1e7f">More...</a><br /></td></tr>
+<tr class="separator:gabeec62138db08fb0c0c2ecbce57c1e7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -178,7 +193,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="grou
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="dir_ab1c81409f0df724f17c9ef30afee877.html">base</a></li><li class="navelem"><a class="el" href="nugu__plugin_8h.html">nugu_plugin.h</a></li>
-    <li class="footer">Generated on Wed Aug 30 2023 09:35:57 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
+    <li class="footer">Generated on Tue Jun 25 2024 00:59:09 for NUGU SDK Linux by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>
 </body>

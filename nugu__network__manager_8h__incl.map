@@ -1,6 +1,7 @@
 <map id="nugu_network_manager.h" name="nugu_network_manager.h">
-<area shape="rect" id="node1" title=" " alt="" coords="72,5,263,32"/>
-<area shape="rect" id="node2" href="$nugu__event_8h.html" title=" " alt="" coords="5,80,151,107"/>
-<area shape="rect" id="node3" href="$nugu__directive_8h.html" title=" " alt="" coords="175,80,341,107"/>
-<area shape="rect" id="node4" title=" " alt="" coords="221,155,295,181"/>
+<area shape="rect" id="node1" title=" " alt="" coords="5,5,196,32"/>
+<area shape="rect" id="node2" title=" " alt="" coords="67,155,134,181"/>
+<area shape="rect" id="node3" href="$nugu__event_8h.html" title=" " alt="" coords="28,80,173,107"/>
+<area shape="rect" id="node4" href="$nugu__directive_8h.html" title=" " alt="" coords="198,80,363,107"/>
+<area shape="rect" id="node5" title=" " alt="" coords="243,155,318,181"/>
 </map>

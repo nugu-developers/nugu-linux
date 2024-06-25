@@ -67,5 +67,6 @@ var group__Capability =
       [ "forceClose", "classNuguClientKit_1_1CapabilityEvent.html#ac02f80f01da658db759c118dec31cf55", null ],
       [ "sendEvent", "classNuguClientKit_1_1CapabilityEvent.html#a4b3ecb7b84f133dfa4075fec87af39e5", null ],
       [ "sendAttachmentEvent", "classNuguClientKit_1_1CapabilityEvent.html#a855cb351fa7f623a9d5c147d0c42c1d6", null ]
-    ] ]
+    ] ],
+    [ "Capability", "group__Capability.html#ga0ef69917a9040b2c996656f389688591", null ]
 ];

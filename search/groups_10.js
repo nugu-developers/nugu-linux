@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['wakeupinterface_2828',['WakeupInterface',['../group__WakeupInterface.html',1,'']]]
+  ['wakeupinterface_2878',['WakeupInterface',['../group__WakeupInterface.html',1,'']]]
 ];
