@@ -1,0 +1,6 @@
+binary-without-manpage usr/bin/nugusdk_start_sample
+binary-without-manpage usr/bin/nugu_sample
+binary-without-manpage usr/bin/nugu_oob_server
+binary-without-manpage usr/bin/nugu_simple_asr
+binary-without-manpage usr/bin/nugu_simple_text
+binary-without-manpage usr/bin/nugu_capability_injection

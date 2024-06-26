@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [checkpatch_review, clang_tidy_review]
     strategy:
-      fail-fast: true
+      fail-fast: false
       matrix:
         target:
           [
@@ -36,6 +36,9 @@ jobs:
             jammy_x64,
             jammy_arm64,
             jammy_armhf,
+            noble_x64,
+            noble_arm64,
+            noble_armhf,
           ]
     steps:
       - name: Check out the repo
