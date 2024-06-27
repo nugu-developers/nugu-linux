@@ -444,8 +444,10 @@ IF (NOT BUILD_LIBRARY)
 ENDIF()
 
 IF (NOT IS_MACOS)
-	# Run-time buffer overflow detection
-	ADD_DEFINITIONS(-D_FORTIFY_SOURCE=2)
+	IF (NOT "${CMAKE_BUILD_TYPE}" STREQUAL "RelWithDebInfo")
+		# Run-time buffer overflow detection
+		ADD_DEFINITIONS(-D_FORTIFY_SOURCE=2)
+	ENDIF()
 ENDIF()
 
 # Global compile options

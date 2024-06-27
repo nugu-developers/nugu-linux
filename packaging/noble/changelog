@@ -1,0 +1,29 @@
+nugu (1.7.6ubuntu1~noble) noble; urgency=medium
+
+  * Fixed memory deallocation pair
+  * Fixed NuguClient hang-up issue
+  * Fixed AudioRecorderManager to use NuguRunner
+  * Fixed seek time unit
+  * Fixed media player position handling
+  * Fixed pthread mutex usage
+  * Fixed curl log to skip CRLF data
+  * Fixed capability version check
+  * Fixed clang-tidy analysis issues
+  * Fixed macOS/CodeQL build error
+  * Added to support Windows OS
+  * Added nugu_audio attribute getter API
+  * Added voice streaming recognition
+  * Added black duck analysis in CI
+  * Updated SpeechRecognizer
+  * Updated NetworkManager
+  * Updated PlaySyncManager
+  * Updated plugin architecture to support embedding
+  * Updated method documentation
+  * Updated Github action to reuse workflows
+  * Upgraded Github action version
+  * Enhanced speex validation check
+  * Improved AudioPlayer playsync handling
+  * Refactoring NuguRunner
+  * Refactoring entire build script
+
+ -- nugulinux <nugulinux@gmail.com>  Wed, 26 Jun 2024 11:30:00 +0900
